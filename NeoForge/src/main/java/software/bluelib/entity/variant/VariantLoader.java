@@ -6,8 +6,10 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
+import software.bluelib.BlueLib;
 import software.bluelib.exception.CouldNotLoadJSON;
 import software.bluelib.exception.ResourceNotFound;
 import software.bluelib.interfaces.variant.IVariantEntity;
@@ -26,9 +28,9 @@ public class VariantLoader implements IVariantEntity {
     private static final Gson gson = new Gson();
     private final List<VariantParameter> variants = new ArrayList<>();
 
-    public void loadVariants(ResourceLocation pJSONLocation) {
-        ResourceManager resourceManager = Minecraft.getInstance().getResourceManager();
-        loadVariantsFromJson(pJSONLocation);
+    public void loadVariants(ResourceLocation pJSONLocation, MinecraftServer pServer) {
+        ResourceManager resourceManager = pServer.getResourceManager();
+        loadVariantsFromJson(resourceManager, pJSONLocation);
         loadVariantsFromResourcePacks(resourceManager, pJSONLocation);
     }
 
@@ -40,7 +42,7 @@ public class VariantLoader implements IVariantEntity {
                 Optional<Resource> resource = pResourceManager.getResource(pJSONLocation);
 
                 if (resource.isEmpty()) {
-                    throw new ResourceNotFound("JSON File not Found from resource: " + pJSONLocation, pJSONLocation.toString());
+                    throw new ResourceNotFound("Resource 'variant/entity/dragon.json' does not exist." + pJSONLocation, pJSONLocation.toString());
                 }
 
                 InputStream inputStream = resource.get().open();
@@ -53,14 +55,13 @@ public class VariantLoader implements IVariantEntity {
         }
     }
 
-    private void loadVariantsFromJson(ResourceLocation pJSONLocation) {
-        ResourceManager resourceManager = Minecraft.getInstance().getResourceManager();
+    private void loadVariantsFromJson(ResourceManager pResourceManager, ResourceLocation pJSONLocation) {
 
         try {
-            Optional<Resource> resource = resourceManager.getResource(pJSONLocation);
+            Optional<Resource> resource = pResourceManager.getResource(pJSONLocation);
 
             if (resource.isEmpty()) {
-                throw new ResourceNotFound("JSON File not Found from resource: " + pJSONLocation, pJSONLocation.toString());
+                throw new ResourceNotFound("Resource 'variant/entity/dragon.json' does not exist." + pJSONLocation, pJSONLocation.toString());
             }
 
             InputStream inputStream = resource.get().open();

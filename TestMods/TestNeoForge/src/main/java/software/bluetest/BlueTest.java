@@ -38,9 +38,9 @@ public class BlueTest
         Optional<Resource> resourceOptional = resourceManager.getResource(resourceLocation);
 
         if (resourceOptional.isPresent()) {
-            LOGGER.info("Resource 'bluetest:variant/entity/dragon.json' exists. " + resourceLocation);
+            LOGGER.info("Resource 'bluetest:variant/entity/dragon.json' exists. GOGO2 1");
         } else {
-            LOGGER.info("Resource 'bluetest:variant/entity/dragon.json' does not exist. " + resourceLocation);
+            LOGGER.info("Resource 'bluetest:variant/entity/dragon.json' does not exist. GOGO2 1");
         }
     }
 
