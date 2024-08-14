@@ -1,7 +1,9 @@
-package software.bluelib.entity.variant;
+package software.bluelib.interfaces.variant;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
+import software.bluelib.entity.variant.VariantLoader;
+import software.bluelib.entity.variant.VariantParameter;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -15,8 +17,6 @@ public interface IVariantEntity {
 
     String getVariantName();
 
-    String getEntityName();
-
     default String getRandomVariant(List<String> pVariantNamesList, String pDefaultVariant) {
         List<String> spawnableVariants = pVariantNamesList.stream()
                 .toList();
@@ -26,10 +26,10 @@ public interface IVariantEntity {
         return pDefaultVariant;
     }
 
-    default List<String> getEntityVariants(String pEntityName, VariantRegistry pVariantRegistry) {
-        return pVariantRegistry.getVariants().stream()
+    default List<String> getEntityVariants(String pEntityName, VariantLoader pVariantLoader) {
+        return pVariantLoader.getVariants().stream()
                 .filter(variant -> pEntityName.equals(variant.getEntityName()))
-                .map(VariantKeys::getVariantName)
+                .map(VariantParameter::getVariantName)
                 .collect(Collectors.toList());
     }
 }

@@ -1,4 +1,7 @@
-package software.bluelib.entity.variant;
+package software.bluelib.utils;
+
+import software.bluelib.entity.variant.VariantParameter;
+import software.bluelib.entity.variant.VariantLoader;
 
 import java.util.HashMap;
 import java.util.List;
@@ -9,10 +12,10 @@ public class VariantUtils {
 
     private static final Map<String, Map<String, String>> variantParametersMap = new HashMap<>();
 
-    public static void processVariants(VariantRegistry pRegistry, Function<VariantKeys, Map<String, String>> pICustomParameter) {
+    public static void processVariants(VariantLoader pLoader, Function<VariantParameter, Map<String, String>> pICustomParameter) {
         variantParametersMap.clear();
-        List<VariantKeys> variants = pRegistry.getVariants();
-        for (VariantKeys variant : variants) {
+        List<VariantParameter> variants = pLoader.getVariants();
+        for (VariantParameter variant : variants) {
             Map<String, String> parameters = pICustomParameter.apply(variant);
             variantParametersMap.put(variant.getVariantName(), parameters);
         }

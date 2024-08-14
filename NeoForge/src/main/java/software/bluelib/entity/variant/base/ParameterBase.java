@@ -1,9 +1,9 @@
-package software.bluelib.entity.variant;
+package software.bluelib.entity.variant.base;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class VariantKeysBase {
+public abstract class ParameterBase {
     private final Map<String, Object> parameters = new HashMap<>();
 
     protected void addParameter(String pKey, Object pValue) {

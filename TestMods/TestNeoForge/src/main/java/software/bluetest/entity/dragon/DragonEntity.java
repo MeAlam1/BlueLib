@@ -18,10 +18,10 @@ import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.util.GeckoLibUtil;
-import software.bluelib.entity.variant.IVariantEntity;
-import software.bluelib.entity.variant.VariantKeys;
-import software.bluelib.entity.variant.VariantRegistry;
-import software.bluelib.entity.variant.VariantUtils;
+import software.bluelib.entity.variant.VariantLoader;
+import software.bluelib.entity.variant.VariantParameter;
+import software.bluelib.interfaces.variant.IVariantEntity;
+import software.bluelib.utils.VariantUtils;
 import software.bluetest.BlueTest;
 
 import java.util.HashMap;
@@ -30,18 +30,21 @@ import java.util.Map;
 
 public class DragonEntity extends TamableAnimal implements IVariantEntity, GeoEntity {
     public static final EntityDataAccessor<String> VARIANT = SynchedEntityData.defineId(DragonEntity.class, EntityDataSerializers.STRING);
-    private final String entityName = "dragon";
-    private final VariantRegistry texturesLoader = new VariantRegistry();
+    private final VariantLoader texturesLoader = new VariantLoader();
+    protected final String entityName = "dragon";
 
     public DragonEntity(EntityType<? extends TamableAnimal> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
         texturesLoader.loadVariantsFromJson(getJSONLocation());
+
+        // TODO. OPTIONAL
         VariantUtils.processVariants(texturesLoader, this::getCustomParameters);
     }
 
-    private Map<String, String> getCustomParameters(VariantKeys pVariant) {
+    // TODO. OPTIONAL
+    private Map<String, String> getCustomParameters(VariantParameter pVariant) {
         Map<String, String> parameters = new HashMap<>();
-        parameters.put("number", pVariant.getParameter("number"));
+        parameters.put("customParameter", pVariant.getParameter("customParameter"));
         return parameters;
     }
 
@@ -66,19 +69,14 @@ public class DragonEntity extends TamableAnimal implements IVariantEntity, GeoEn
     @Override
     public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor pLevel, @NotNull DifficultyInstance pDifficulty, @NotNull MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData, @Nullable CompoundTag pDataTag) {
         if (getVariantName().isEmpty()) {
-            List<String> availableVariants = getEntityVariants(getEntityName(), texturesLoader);
-            this.setVariantName(getRandomVariant(availableVariants, "blue"));
-            System.out.println("Number: " + VariantUtils.getParameter(getVariantName(), "number"));
+            this.setVariantName(getRandomVariant(getEntityVariants(this.entityName, texturesLoader), "normal"));
+
+            // TODO. OPTIONAL
+            System.out.println("Custom Parameter: " + VariantUtils.getParameter(getVariantName(), "customParameter"));
         }
         return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
     }
 
-    @Override
-    public String getEntityName() {
-        return entityName;
-    }
-
-    // Set the Variant
     public void setVariantName(String pName) {
         this.entityData.set(VARIANT, pName);
     }
@@ -92,6 +90,7 @@ public class DragonEntity extends TamableAnimal implements IVariantEntity, GeoEn
         return new ResourceLocation(BlueTest.MODID, "variant/entity/dragon.json");
     }
 
+    // TODO. OPTIONAL
     // Just to get the Entity Working
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);

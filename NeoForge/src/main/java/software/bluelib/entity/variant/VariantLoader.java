@@ -9,6 +9,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 import software.bluelib.exception.ResourceNotFound;
+import software.bluelib.interfaces.variant.IVariantEntity;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,18 +20,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public class VariantRegistry implements IVariantEntity {
+public class VariantLoader implements IVariantEntity {
 
     private static final Gson gson = new Gson();
-    private final List<VariantKeys> variants = new ArrayList<>();
+    private final List<VariantParameter> variants = new ArrayList<>();
 
     public final void loadVariantsFromJson(ResourceLocation pJSONLocation) {
-        /**
-         * if (Objects.equals(this.returnEntity(), "") || this.returnEntity() == null) {
-         *    throw new EntityNotDefined("Entity name is not defined. The method returnEntity() returned an empty string.");
-         * }
-         */
-
         ResourceManager resourceManager = Minecraft.getInstance().getResourceManager();
 
         try {
@@ -52,28 +47,22 @@ public class VariantRegistry implements IVariantEntity {
             JsonArray textureArray = entry.getValue().getAsJsonArray();
 
             for (JsonElement element : textureArray) {
-                VariantKeys dragonVariants = getEntityVariant(entry.getKey(), element.getAsJsonObject());
+                VariantParameter dragonVariants = getEntityVariant(entry.getKey(), element.getAsJsonObject());
                 variants.add(dragonVariants);
             }
         }
     }
 
-    private static VariantKeys getEntityVariant(String pJsonKey, JsonObject pJsonObject) {
-        return new VariantKeys(pJsonKey, pJsonObject);
+    private static VariantParameter getEntityVariant(String pJsonKey, JsonObject pJsonObject) {
+        return new VariantParameter(pJsonKey, pJsonObject);
     }
 
-
-    public List<VariantKeys> getVariants() {
+    public List<VariantParameter> getVariants() {
         return variants;
     }
 
     @Override
     public String getVariantName() {
-        return "EntityName";
-    }
-
-    @Override
-    public String getEntityName() {
         return "EntityName";
     }
 }

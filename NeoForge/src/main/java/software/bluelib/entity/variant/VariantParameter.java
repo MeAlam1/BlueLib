@@ -2,15 +2,16 @@ package software.bluelib.entity.variant;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import software.bluelib.entity.variant.base.ParameterBase;
 
 import java.util.Map;
 import java.util.Set;
 
-public class VariantKeys extends VariantKeysBase {
+public class VariantParameter extends ParameterBase {
 
     private final String jsonKey;
 
-    public VariantKeys(String pJsonKey, JsonObject pJsonObject) {
+    public VariantParameter(String pJsonKey, JsonObject pJsonObject) {
         this.jsonKey = pJsonKey;
         Set<Map.Entry<String, JsonElement>> entrySet = pJsonObject.entrySet();
         for (Map.Entry<String, JsonElement> entry : entrySet) {
