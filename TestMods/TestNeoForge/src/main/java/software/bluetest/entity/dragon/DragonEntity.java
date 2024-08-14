@@ -27,23 +27,15 @@ import software.bluetest.BlueTest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class DragonEntity extends TamableAnimal implements IVariantEntity, GeoEntity {
+    public static final EntityDataAccessor<String> VARIANT = SynchedEntityData.defineId(DragonEntity.class, EntityDataSerializers.STRING);
     private final String entityName = "dragon";
     private final VariantRegistry texturesLoader = new VariantRegistry();
-    private List<String> variantNames;
-
-    public static final EntityDataAccessor<String> VARIANT = SynchedEntityData.defineId(DragonEntity.class, EntityDataSerializers.STRING);
 
     public DragonEntity(EntityType<? extends TamableAnimal> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
         texturesLoader.loadVariantsFromJson(getJSONLocation());
-        this.variantNames = List.of(getEntityName());
-            List<String> variants = getDragonVariants(getEntityName());
-        if (variants != null && !variants.isEmpty()) {
-            this.variantNames = variants;
-        }
         VariantUtils.processVariants(texturesLoader, this::getCustomParameters);
     }
 
@@ -74,7 +66,8 @@ public class DragonEntity extends TamableAnimal implements IVariantEntity, GeoEn
     @Override
     public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor pLevel, @NotNull DifficultyInstance pDifficulty, @NotNull MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData, @Nullable CompoundTag pDataTag) {
         if (getVariantName().isEmpty()) {
-            this.setVariantName(getRandomVariant(variantNames, "blue"));
+            List<String> availableVariants = getEntityVariants(getEntityName(), texturesLoader);
+            this.setVariantName(getRandomVariant(availableVariants, "blue"));
             System.out.println("Number: " + VariantUtils.getParameter(getVariantName(), "number"));
         }
         return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
@@ -93,13 +86,6 @@ public class DragonEntity extends TamableAnimal implements IVariantEntity, GeoEn
     @Override
     public String getVariantName() {
         return this.entityData.get(VARIANT);
-    }
-
-    public List<String> getDragonVariants(String pVariantType) {
-        return texturesLoader.getVariants().stream()
-                .filter(variant -> pVariantType.equals(variant.getEntityName()))
-                .map(VariantKeys::getVariantName)
-                .collect(Collectors.toList());
     }
 
     public ResourceLocation getJSONLocation() {
