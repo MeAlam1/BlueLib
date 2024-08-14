@@ -1,8 +1,11 @@
 package software.bluelib;
 
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.loading.FMLEnvironment;
+import net.neoforged.neoforge.event.AddReloadListenerEvent;
+import software.bluelib.entity.variant.VariantLoader;
 
 @Mod(BlueLib.MODID)
 public class BlueLib

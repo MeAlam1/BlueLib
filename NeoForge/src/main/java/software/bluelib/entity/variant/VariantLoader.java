@@ -26,18 +26,46 @@ public class VariantLoader implements IVariantEntity {
     private static final Gson gson = new Gson();
     private final List<VariantParameter> variants = new ArrayList<>();
 
-    public final void loadVariantsFromJson(ResourceLocation pJSONLocation) {
+    public void loadVariants(ResourceLocation pJSONLocation) {
+        ResourceManager resourceManager = Minecraft.getInstance().getResourceManager();
+        loadVariantsFromJson(pJSONLocation);
+        loadVariantsFromResourcePacks(resourceManager, pJSONLocation);
+    }
+
+    private void loadVariantsFromResourcePacks(ResourceManager pResourceManager, ResourceLocation pJSONLocation) {
+
+        for (String ignored : pResourceManager.getNamespaces()) {
+            try {
+
+                Optional<Resource> resource = pResourceManager.getResource(pJSONLocation);
+
+                if (resource.isEmpty()) {
+                    throw new ResourceNotFound("JSON File not Found from resource: " + pJSONLocation, pJSONLocation.toString());
+                }
+
+                InputStream inputStream = resource.get().open();
+                JsonObject jsonObject = gson.fromJson(new InputStreamReader(inputStream, StandardCharsets.UTF_8), JsonObject.class);
+                parseVariants(jsonObject);
+
+            } catch (CouldNotLoadJSON | IOException e) {
+                throw new CouldNotLoadJSON("Failed to parse JSON from resource: " + pJSONLocation.toString(), pJSONLocation.toString());
+            }
+        }
+    }
+
+    private void loadVariantsFromJson(ResourceLocation pJSONLocation) {
         ResourceManager resourceManager = Minecraft.getInstance().getResourceManager();
 
         try {
             Optional<Resource> resource = resourceManager.getResource(pJSONLocation);
-            if (resource.isPresent()) {
-                InputStream inputStream = resource.get().open();
-                JsonObject jsonObject = gson.fromJson(new InputStreamReader(inputStream, StandardCharsets.UTF_8), JsonObject.class);
-                parseVariants(jsonObject);
-            } else {
+
+            if (resource.isEmpty()) {
                 throw new ResourceNotFound("JSON File not Found from resource: " + pJSONLocation, pJSONLocation.toString());
             }
+
+            InputStream inputStream = resource.get().open();
+            JsonObject jsonObject = gson.fromJson(new InputStreamReader(inputStream, StandardCharsets.UTF_8), JsonObject.class);
+            parseVariants(jsonObject);
         } catch (CouldNotLoadJSON | IOException e) {
             throw new CouldNotLoadJSON("Failed to parse JSON from resource: " + pJSONLocation.toString(), pJSONLocation.toString());
         }
@@ -47,12 +75,19 @@ public class VariantLoader implements IVariantEntity {
         for (Map.Entry<String, JsonElement> entry : pJsonObject.entrySet()) {
             JsonArray textureArray = entry.getValue().getAsJsonArray();
 
-            for (JsonElement element : textureArray) {
-                VariantParameter dragonVariants = getEntityVariant(entry.getKey(), element.getAsJsonObject());
-                variants.add(dragonVariants);
+            // Check if this variant key is already loaded
+            boolean variantExists = variants.stream()
+                    .anyMatch(v -> v.getEntityName().equals(entry.getKey()));
+
+            if (!variantExists) {
+                for (JsonElement element : textureArray) {
+                    VariantParameter variant = getEntityVariant(entry.getKey(), element.getAsJsonObject());
+                    variants.add(variant);
+                }
             }
         }
     }
+
 
     private static VariantParameter getEntityVariant(String pJsonKey, JsonObject pJsonObject) {
         return new VariantParameter(pJsonKey, pJsonObject);

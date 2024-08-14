@@ -8,7 +8,6 @@ import java.util.Map;
 import java.util.Set;
 
 public class VariantParameter extends ParameterBase {
-
     private final String jsonKey;
 
     public VariantParameter(String pJsonKey, JsonObject pJsonObject) {
