@@ -22,17 +22,44 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * Base of the Variant Loader. <br>
+ * Loads and manages variant parameters for entities by merging JSON data from multiple sources.
+ */
 public class VariantLoader implements IVariantEntity {
 
+    /**
+     * Gson instance for parsing JSON data.
+     */
     private static final Gson gson = new Gson();
+
+    /**
+     * List to store the loaded variant parameters.
+     */
     private final List<VariantParameter> variants = new ArrayList<>();
 
+    /**
+     * Loads and merges variant data from both the Main Mod and the <strong>Latest</strong> Datapack. <br>
+     * Parses the merged data into variant parameters
+     *
+     * @param pJSONLocationMod  The {@link ResourceLocation} of the Mod's JSON data.
+     * @param pJSONLocationPack The {@link ResourceLocation} of the <strong>Latest</strong> DataPack's JSON data.
+     * @param pServer           The {@link MinecraftServer} instance.
+     */
     public void loadVariants(ResourceLocation pJSONLocationMod, ResourceLocation pJSONLocationPack, MinecraftServer pServer) {
         ResourceManager resourceManager = pServer.getResourceManager();
         JsonObject mergedJsonObject = mergeVariantsToObject(pJSONLocationMod, pJSONLocationPack, resourceManager);
         parseVariants(mergedJsonObject);
     }
 
+    /**
+     * Merges JSON data from the Main Mod and the <strong>Latest</strong> Datapack resource locations into a single {@link JsonObject}.
+     *
+     * @param pJSONLocationMod   The {@link ResourceLocation} of the Mod's JSON data.
+     * @param pJSONLocationPack  The {@link ResourceLocation} of the <strong>Latest</strong> DataPack's JSON data.
+     * @param pResourceManager   The {@link ResourceManager} to load the resources.
+     * @return The merged {@link JsonObject} containing data from both sources.
+     */
     private JsonObject mergeVariantsToObject(ResourceLocation pJSONLocationMod, ResourceLocation pJSONLocationPack, ResourceManager pResourceManager) {
         JsonObject mergedJsonObject = new JsonObject();
 
@@ -42,6 +69,13 @@ public class VariantLoader implements IVariantEntity {
         return mergedJsonObject;
     }
 
+    /**
+     * Loads JSON data from a resource location and merges it into the target {@link JsonObject}.
+     *
+     * @param pResourceLocation  The {@link ResourceLocation} of the JSON resource.
+     * @param pResourceManager   The {@link ResourceManager} to load the resource.
+     * @param pTargetJsonObject  The target {@link JsonObject} to merge the data into.
+     */
     private void loadVariantsFromJson(ResourceLocation pResourceLocation, ResourceManager pResourceManager, JsonObject pTargetJsonObject) {
         try {
             Optional<Resource> resource = pResourceManager.getResource(pResourceLocation);
@@ -61,7 +95,13 @@ public class VariantLoader implements IVariantEntity {
         }
     }
 
-
+    /**
+     * Merges data from a source {@link JsonObject} into a target {@link JsonObject}. <br>
+     * If the key exists in the target, the source data is appended to the existing data.
+     *
+     * @param pTarget  The target {@link JsonObject} to merge data into.
+     * @param pSource  The source {@link JsonObject} to merge data from.
+     */
     private void mergeModAndDataVariants(JsonObject pTarget, JsonObject pSource) {
         for (Map.Entry<String, JsonElement> entry : pSource.entrySet()) {
             if (pTarget.has(entry.getKey())) {
@@ -76,6 +116,11 @@ public class VariantLoader implements IVariantEntity {
         }
     }
 
+    /**
+     * Parses the merged JSON data and converts it into {@link VariantParameter} instances.
+     *
+     * @param pJsonObject The merged {@link JsonObject} containing variant data.
+     */
     private void parseVariants(JsonObject pJsonObject) {
         for (Map.Entry<String, JsonElement> entry : pJsonObject.entrySet()) {
             JsonArray textureArray = entry.getValue().getAsJsonArray();
@@ -92,14 +137,31 @@ public class VariantLoader implements IVariantEntity {
         }
     }
 
+    /**
+     * Creates a new {@link VariantParameter} instance from a JSON object.
+     *
+     * @param pJsonKey     The key associated with this variant.
+     * @param pJsonObject  The {@link JsonObject} containing the variant data.
+     * @return A {@link VariantParameter} instance.
+     */
     private static VariantParameter getEntityVariant(String pJsonKey, JsonObject pJsonObject) {
         return new VariantParameter(pJsonKey, pJsonObject);
     }
 
+    /**
+     * Retrieves the list of loaded variant parameters.
+     *
+     * @return A {@link List} of {@link VariantParameter} instances.
+     */
     public List<VariantParameter> getVariants() {
         return variants;
     }
 
+    /**
+     * Gets the name of the variant, which is overridden from {@link IVariantEntity}.
+     *
+     * @return The name of the variant as a string.
+     */
     @Override
     public String getVariantName() {
         return "EntityName";

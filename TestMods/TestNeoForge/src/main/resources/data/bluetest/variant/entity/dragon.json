@@ -1,11 +1,11 @@
 {
   "dragon": [
     {
-      "VariantName": "dark",
+      "Variant": "dark",
       "customParameter": "customValue1"
     },
     {
-      "VariantName": "bright",
+      "Variant": "bright",
       "customParameter": "customValue2"
     }
   ]

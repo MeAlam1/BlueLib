@@ -40,6 +40,7 @@ public class DragonEntity extends TamableAnimal implements IVariantEntity, GeoEn
     private Map<String, String> getCustomParameters(VariantParameter pVariant) {
         Map<String, String> parameters = new HashMap<>();
         parameters.put("customParameter", pVariant.getParameter("customParameter"));
+        // Add more Parameters!
         return parameters;
     }
 
@@ -75,7 +76,7 @@ public class DragonEntity extends TamableAnimal implements IVariantEntity, GeoEn
 
             // NOTE. These 3 lines aren't
             System.out.println("Variant List: " + getEntityVariants(this.entityName, texturesLoader));
-            VariantUtils.processVariants(texturesLoader, this::getCustomParameters);
+            VariantUtils.connectParameters(texturesLoader, this::getCustomParameters);
             System.out.println("Custom Parameter: " + VariantUtils.getParameter(getVariantName(), "customParameter"));
 
 

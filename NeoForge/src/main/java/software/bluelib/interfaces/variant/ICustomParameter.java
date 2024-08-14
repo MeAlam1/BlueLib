@@ -6,6 +6,19 @@ import software.bluelib.entity.variant.VariantParameter;
 
 import java.util.Map;
 
+/**
+ * An interface for defining custom parameters associated with a specific {@link VariantParameter}. <br>
+ * Implementations of this interface should provide a method to retrieve custom key-value pairs
+ * that are tied to a particular variant.
+ */
 public interface ICustomParameter {
+
+    /**
+     * Retrieves a map of custom parameters for the specified variant.
+     *
+     * @param pVariant The {@link VariantParameter} for which custom parameters are to be retrieved.
+     * @return A map containing custom parameters as key-value pairs, where the key is the parameter name
+     * and the value is the parameter's value.
+     */
     Map<String, String> getCustomParameters(VariantParameter pVariant);
 }
