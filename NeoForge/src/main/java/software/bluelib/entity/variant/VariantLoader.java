@@ -34,56 +34,41 @@ public class VariantLoader implements IVariantEntity {
     private JsonObject mergeVariantsFromResources(ResourceLocation pJSONLocationMod, ResourceLocation pJSONLocationPack, ResourceManager pResourceManager) {
         JsonObject mergedJsonObject = new JsonObject();
 
-        // Process the first resource
-        try {
-            Optional<Resource> resourceMod = pResourceManager.getResource(pJSONLocationMod);
-
-            if (resourceMod.isEmpty()) {
-                System.out.println("Resource not found, skipping: " + pJSONLocationMod);
-            } else {
-                System.out.println("Resource found, Not skipping: " + pJSONLocationMod);
-
-                InputStream inputStream = resourceMod.get().open();
-                JsonObject jsonObject = gson.fromJson(new InputStreamReader(inputStream, StandardCharsets.UTF_8), JsonObject.class);
-                mergeJsonObjects(mergedJsonObject, jsonObject);
-            }
-        } catch (CouldNotLoadJSON | IOException e) {
-            throw new CouldNotLoadJSON("Failed to parse JSON from resource: " + pJSONLocationMod + ". Error: " + e.getMessage(), pJSONLocationMod.toString());
-        }
-
-        // Process the second resource
-        try {
-            Optional<Resource> resourcePack = pResourceManager.getResource(pJSONLocationPack);
-
-            if (resourcePack.isEmpty()) {
-                System.out.println("Resource not found, skipping: " + pJSONLocationPack);
-            } else {
-                System.out.println("Resource found, Not skipping: " + pJSONLocationPack);
-
-                InputStream inputStream = resourcePack.get().open();
-                JsonObject jsonObject = gson.fromJson(new InputStreamReader(inputStream, StandardCharsets.UTF_8), JsonObject.class);
-                mergeJsonObjects(mergedJsonObject, jsonObject);
-            }
-        } catch (CouldNotLoadJSON | IOException e) {
-            throw new CouldNotLoadJSON("Failed to parse JSON from resource: " + pJSONLocationPack + ". Error: " + e.getMessage(), pJSONLocationPack.toString());
-        }
+        mergeResourceIntoJsonObject(pJSONLocationMod, pResourceManager, mergedJsonObject);
+        mergeResourceIntoJsonObject(pJSONLocationPack, pResourceManager, mergedJsonObject);
 
         return mergedJsonObject;
     }
 
+    private void mergeResourceIntoJsonObject(ResourceLocation resourceLocation, ResourceManager resourceManager, JsonObject targetJsonObject) {
+        try {
+            Optional<Resource> resource = resourceManager.getResource(resourceLocation);
+
+            if (resource.isEmpty()) {
+                return;
+            }
+
+            try (InputStream inputStream = resource.get().open();
+                 InputStreamReader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8)) {
+
+                JsonObject jsonObject = gson.fromJson(reader, JsonObject.class);
+                mergeJsonObjects(targetJsonObject, jsonObject);
+            }
+        } catch (CouldNotLoadJSON | IOException e) {
+            throw new CouldNotLoadJSON("Failed to parse JSON from resource: " + resourceLocation + ". Error: " + e.getMessage(), resourceLocation.toString());
+        }
+    }
+
+
     private void mergeJsonObjects(JsonObject target, JsonObject source) {
         for (Map.Entry<String, JsonElement> entry : source.entrySet()) {
             if (target.has(entry.getKey())) {
-                // If the key already exists, merge arrays
                 JsonArray targetArray = target.getAsJsonArray(entry.getKey());
                 JsonArray sourceArray = entry.getValue().getAsJsonArray();
-
-                // Merge arrays
                 for (JsonElement element : sourceArray) {
                     targetArray.add(element);
                 }
             } else {
-                // If the key does not exist, add the new entry
                 target.add(entry.getKey(), entry.getValue());
             }
         }
