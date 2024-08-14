@@ -1,4 +1,4 @@
-# BlueLib is an Allround Library for Minecraft Mods with Data Driven Features to ensure that anyone can implement this Library and have full freedom over the Features with both Resource and Datapack Support!
+# BlueLib is an All round Library for Minecraft Mods with Data Driven Features to ensure that anyone can implement this Library and have full freedom over the Features with both Resource and Datapack Support!
 ## Available for:
 ### NeoForge: 1.20.x/1.21.x
 ### Forge: 1.16.5/1.18.2/1.20.x/1.21.x

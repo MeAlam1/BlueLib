@@ -1,3 +1,5 @@
+// Copyright (c) BlueLib. Licensed under the MIT License.
+
 package software.bluelib.entity.variant;
 
 import com.google.gson.Gson;
@@ -27,22 +29,22 @@ public class VariantLoader implements IVariantEntity {
 
     public void loadVariants(ResourceLocation pJSONLocationMod, ResourceLocation pJSONLocationPack, MinecraftServer pServer) {
         ResourceManager resourceManager = pServer.getResourceManager();
-        JsonObject mergedJsonObject = mergeVariantsFromResources(pJSONLocationMod, pJSONLocationPack, resourceManager);
+        JsonObject mergedJsonObject = mergeVariantsToObject(pJSONLocationMod, pJSONLocationPack, resourceManager);
         parseVariants(mergedJsonObject);
     }
 
-    private JsonObject mergeVariantsFromResources(ResourceLocation pJSONLocationMod, ResourceLocation pJSONLocationPack, ResourceManager pResourceManager) {
+    private JsonObject mergeVariantsToObject(ResourceLocation pJSONLocationMod, ResourceLocation pJSONLocationPack, ResourceManager pResourceManager) {
         JsonObject mergedJsonObject = new JsonObject();
 
-        mergeResourceIntoJsonObject(pJSONLocationMod, pResourceManager, mergedJsonObject);
-        mergeResourceIntoJsonObject(pJSONLocationPack, pResourceManager, mergedJsonObject);
+        loadVariantsFromJson(pJSONLocationMod, pResourceManager, mergedJsonObject);
+        loadVariantsFromJson(pJSONLocationPack, pResourceManager, mergedJsonObject);
 
         return mergedJsonObject;
     }
 
-    private void mergeResourceIntoJsonObject(ResourceLocation resourceLocation, ResourceManager resourceManager, JsonObject targetJsonObject) {
+    private void loadVariantsFromJson(ResourceLocation pResourceLocation, ResourceManager pResourceManager, JsonObject pTargetJsonObject) {
         try {
-            Optional<Resource> resource = resourceManager.getResource(resourceLocation);
+            Optional<Resource> resource = pResourceManager.getResource(pResourceLocation);
 
             if (resource.isEmpty()) {
                 return;
@@ -52,24 +54,24 @@ public class VariantLoader implements IVariantEntity {
                  InputStreamReader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8)) {
 
                 JsonObject jsonObject = gson.fromJson(reader, JsonObject.class);
-                mergeJsonObjects(targetJsonObject, jsonObject);
+                mergeModAndDataVariants(pTargetJsonObject, jsonObject);
             }
         } catch (CouldNotLoadJSON | IOException e) {
-            throw new CouldNotLoadJSON("Failed to parse JSON from resource: " + resourceLocation + ". Error: " + e.getMessage(), resourceLocation.toString());
+            throw new CouldNotLoadJSON("Failed to parse JSON from resource: " + pResourceLocation + ". Error: " + e.getMessage(), pResourceLocation.toString());
         }
     }
 
 
-    private void mergeJsonObjects(JsonObject target, JsonObject source) {
-        for (Map.Entry<String, JsonElement> entry : source.entrySet()) {
-            if (target.has(entry.getKey())) {
-                JsonArray targetArray = target.getAsJsonArray(entry.getKey());
+    private void mergeModAndDataVariants(JsonObject pTarget, JsonObject pSource) {
+        for (Map.Entry<String, JsonElement> entry : pSource.entrySet()) {
+            if (pTarget.has(entry.getKey())) {
+                JsonArray targetArray = pTarget.getAsJsonArray(entry.getKey());
                 JsonArray sourceArray = entry.getValue().getAsJsonArray();
                 for (JsonElement element : sourceArray) {
                     targetArray.add(element);
                 }
             } else {
-                target.add(entry.getKey(), entry.getValue());
+                pTarget.add(entry.getKey(), entry.getValue());
             }
         }
     }
