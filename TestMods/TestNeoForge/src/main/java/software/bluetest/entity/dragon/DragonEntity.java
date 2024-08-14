@@ -70,7 +70,7 @@ public class DragonEntity extends TamableAnimal implements IVariantEntity, GeoEn
     @Override
     public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor pLevel, @NotNull DifficultyInstance pDifficulty, @NotNull MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData, @Nullable CompoundTag pDataTag) {
         if (getVariantName().isEmpty()) {
-            texturesLoader.loadVariants((getJSONLocation()), this.level().getServer());
+            texturesLoader.loadVariants((getJSONLocationMod()), getJSONLocationPack(), this.level().getServer());
 
             // TODO. OPTIONAL
             VariantUtils.processVariants(texturesLoader, this::getCustomParameters);
@@ -92,8 +92,12 @@ public class DragonEntity extends TamableAnimal implements IVariantEntity, GeoEn
         return this.entityData.get(VARIANT);
     }
 
-    public ResourceLocation getJSONLocation() {
+    public ResourceLocation getJSONLocationMod() {
         return new ResourceLocation(BlueTest.MODID, "variant/entity/dragon.json");
+    }
+
+    public ResourceLocation getJSONLocationPack() {
+        return new ResourceLocation(BlueTest.MODID, "variant/entity/dragonpack.json");
     }
 
     // TODO. OPTIONAL
