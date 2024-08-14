@@ -75,7 +75,6 @@ public class VariantLoader implements IVariantEntity {
         for (Map.Entry<String, JsonElement> entry : pJsonObject.entrySet()) {
             JsonArray textureArray = entry.getValue().getAsJsonArray();
 
-            // Check if this variant key is already loaded
             boolean variantExists = variants.stream()
                     .anyMatch(v -> v.getEntityName().equals(entry.getKey()));
 

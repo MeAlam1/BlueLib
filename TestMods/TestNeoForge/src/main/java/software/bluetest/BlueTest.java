@@ -35,8 +35,7 @@ public class BlueTest
         ResourceManager resourceManager = server.getResourceManager();
         ResourceLocation resourceLocation = new ResourceLocation(MODID, "variant/entity/dragon.json");
 
-        Optional<Resource> resourceOptional;
-        resourceOptional = resourceManager.getResource(resourceLocation);
+        Optional<Resource> resourceOptional = resourceManager.getResource(resourceLocation);
 
         if (resourceOptional.isPresent()) {
             LOGGER.info("Resource 'bluetest:variant/entity/dragon.json' exists. " + resourceLocation);
