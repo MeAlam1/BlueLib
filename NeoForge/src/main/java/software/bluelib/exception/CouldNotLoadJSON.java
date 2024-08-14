@@ -1,10 +1,9 @@
 package software.bluelib.exception;
 
-public class ResourceNotFound extends RuntimeException {
+public class CouldNotLoadJSON extends RuntimeException {
     private final String resourceId;
 
-
-    public ResourceNotFound(String pMessage, String resourceId) {
+    public CouldNotLoadJSON(String pMessage, String resourceId) {
         super(pMessage);
         this.resourceId = resourceId;
     }

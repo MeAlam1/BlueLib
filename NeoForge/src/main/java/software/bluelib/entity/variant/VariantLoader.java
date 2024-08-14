@@ -8,6 +8,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
+import software.bluelib.exception.CouldNotLoadJSON;
 import software.bluelib.exception.ResourceNotFound;
 import software.bluelib.interfaces.variant.IVariantEntity;
 
@@ -35,10 +36,10 @@ public class VariantLoader implements IVariantEntity {
                 JsonObject jsonObject = gson.fromJson(new InputStreamReader(inputStream, StandardCharsets.UTF_8), JsonObject.class);
                 parseVariants(jsonObject);
             } else {
-                throw new ResourceNotFound("JSON File not Found. Please check the ResourceLocation thoroughly.");
+                throw new ResourceNotFound("JSON File not Found from resource: " + pJSONLocation, pJSONLocation.toString());
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (CouldNotLoadJSON | IOException e) {
+            throw new CouldNotLoadJSON("Failed to parse JSON from resource: " + pJSONLocation.toString(), pJSONLocation.toString());
         }
     }
 
