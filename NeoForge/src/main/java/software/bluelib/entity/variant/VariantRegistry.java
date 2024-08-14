@@ -22,7 +22,7 @@ public class VariantRegistry implements IVariantEntity {
     private static final Gson gson = new Gson();
     private final List<VariantKeys> variants = new ArrayList<>();
 
-    private void LoadVariantsFromJson() {
+    public final void loadVariantsFromJson(ResourceLocation pJSONLocation) {
         /**
          * if (Objects.equals(this.returnEntity(), "") || this.returnEntity() == null) {
          *    throw new EntityNotDefined("Entity name is not defined. The method returnEntity() returned an empty string.");
@@ -33,11 +33,11 @@ public class VariantRegistry implements IVariantEntity {
         ResourceManager resourceManager = Minecraft.getInstance().getResourceManager();
 
         try {
-            Optional<Resource> resource = resourceManager.getResource(GetVariantResource());
+            Optional<Resource> resource = resourceManager.getResource(pJSONLocation);
             if (resource.isPresent()) {
                 InputStream inputStream = resource.get().open();
                 JsonObject jsonObject = gson.fromJson(new InputStreamReader(inputStream, StandardCharsets.UTF_8), JsonObject.class);
-                ParseVariants(jsonObject);
+                parseVariants(jsonObject);
             } else {
                 throw new ResourceNotFound("JSON File not Found. Please check the ResourceLocation thoroughly.");
             }
@@ -46,41 +46,36 @@ public class VariantRegistry implements IVariantEntity {
         }
     }
 
-    private void ParseVariants(JsonObject jsonObject) {
-        for (Map.Entry<String, JsonElement> entry : jsonObject.entrySet()) {
+    private void parseVariants(JsonObject pJsonObject) {
+        for (Map.Entry<String, JsonElement> entry : pJsonObject.entrySet()) {
             String type = entry.getKey();
             JsonArray textureArray = entry.getValue().getAsJsonArray();
 
             for (JsonElement element : textureArray) {
-                VariantKeys dragonVariants = GetEntityVariant(element, type);
+                VariantKeys dragonVariants = getEntityVariant(element, type);
                 variants.add(dragonVariants);
             }
         }
     }
 
-    private static VariantKeys GetEntityVariant(JsonElement element, String type) {
-        JsonObject textureObject = element.getAsJsonObject();
+    private static VariantKeys getEntityVariant(JsonElement pElement, String pType) {
+        JsonObject textureObject = pElement.getAsJsonObject();
         String variantName = textureObject.get("VariantName").getAsString();
 
-        return new VariantKeys(variantName, type);
+        return new VariantKeys(variantName, pType);
     }
 
-    public List<VariantKeys> GetVariants() {
+    public List<VariantKeys> getVariants() {
         return variants;
     }
 
     @Override
-    public ResourceLocation GetVariantResource() {
-        return new ResourceLocation(BlueLib.MODID, "bluelib/entity/variant/EntityName.json");
-    }
-
-    @Override
-    public String GetVariantName() {
+    public String getVariantName() {
         return "EntityName";
     }
 
     @Override
-    public String GetEntityName() {
+    public String getEntityName() {
         return "EntityName";
     }
 }

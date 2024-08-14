@@ -9,19 +9,16 @@ import java.util.List;
 public interface IVariantEntity {
     RandomSource random = RandomSource.create();
 
-    default ResourceLocation GetTextureLocation() {
-        return new ResourceLocation(BlueLib.MODID, "textures/entity/" + this.GetEntityName() + "/" + this.GetVariantName() + ".png");
+    default ResourceLocation getTextureLocation(String pModId, String pPath) {
+        return new ResourceLocation(pModId, pPath);
     }
 
-    String GetVariantName();
+    String getVariantName();
 
-    String GetEntityName();
+    String getEntityName();
 
-    ResourceLocation GetVariantResource();
-
-    default String ReturnRandomVariant(String pDefaultVariant) {
-        List<String> entityVariantNames = List.of(GetEntityName());
-        List<String> spawnableVariants = entityVariantNames.stream()
+    default String getRandomVariant(List<String> pVariantNamesList, String pDefaultVariant) {
+        List<String> spawnableVariants = pVariantNamesList.stream()
                 .toList();
         if (!spawnableVariants.isEmpty()) {
             return spawnableVariants.get(this.random.nextInt(spawnableVariants.size()));

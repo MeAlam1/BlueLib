@@ -3,18 +3,18 @@ package software.bluelib.entity.variant;
 public class VariantKeys extends VariantKeysBase {
 
     public VariantKeys(
-            String variantName,
-            String entityName
+            String pVariantName,
+            String pEntityName
     ) {
-        AddParameter("VariantName", variantName);
-        AddParameter("EntityName", entityName);
+        addParameter("VariantName", pVariantName);
+        addParameter("EntityName", pEntityName);
     }
 
-    public String GetVariantName() {
-        return (String) GetParameter("VariantName");
+    public String getVariantName() {
+        return (String) getParameter("VariantName");
     }
 
-    public String GetEntityType() {
-        return (String) GetParameter("EntityName");
+    public String getEntityName() {
+        return (String) getParameter("EntityName");
     }
 }

@@ -15,7 +15,7 @@ public class DragonModel extends GeoModel<DragonEntity> {
     // Get the Texture Location
     @Override
     public ResourceLocation getTextureResource(DragonEntity pObject) {
-        return pObject.GetTextureLocation();
+        return pObject.getTextureLocation(BlueTest.MODID, "textures/entity/" + pObject.getEntityName() + "/" + pObject.getVariantName() + ".png");
     }
 
     // Get the Animation Location

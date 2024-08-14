@@ -14,7 +14,7 @@ public class ModEntities {
 
     // List of Entities
     public static final DeferredHolder<EntityType<?>, EntityType<DragonEntity>> DRAGON = register(
-            "test",
+            "dragon",
             EntityType.Builder.of(DragonEntity::new, MobCategory.AMBIENT)
                     .setShouldReceiveVelocityUpdates(true)
                     .setTrackingRange(64)
