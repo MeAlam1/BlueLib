@@ -8,7 +8,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
-import software.bluelib.BlueLib;
 import software.bluelib.exception.ResourceNotFound;
 
 import java.io.IOException;
@@ -48,22 +47,19 @@ public class VariantRegistry implements IVariantEntity {
 
     private void parseVariants(JsonObject pJsonObject) {
         for (Map.Entry<String, JsonElement> entry : pJsonObject.entrySet()) {
-            String type = entry.getKey();
             JsonArray textureArray = entry.getValue().getAsJsonArray();
 
             for (JsonElement element : textureArray) {
-                VariantKeys dragonVariants = getEntityVariant(element, type);
+                VariantKeys dragonVariants = getEntityVariant(entry.getKey(), element.getAsJsonObject());
                 variants.add(dragonVariants);
             }
         }
     }
 
-    private static VariantKeys getEntityVariant(JsonElement pElement, String pType) {
-        JsonObject textureObject = pElement.getAsJsonObject();
-        String variantName = textureObject.get("VariantName").getAsString();
-
-        return new VariantKeys(variantName, pType);
+    private static VariantKeys getEntityVariant(String pJsonKey, JsonObject pJsonObject) {
+        return new VariantKeys(pJsonKey, pJsonObject);
     }
+
 
     public List<VariantKeys> getVariants() {
         return variants;

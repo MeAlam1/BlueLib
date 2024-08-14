@@ -6,10 +6,12 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -19,9 +21,12 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 import software.bluelib.entity.variant.IVariantEntity;
 import software.bluelib.entity.variant.VariantKeys;
 import software.bluelib.entity.variant.VariantRegistry;
+import software.bluelib.entity.variant.VariantUtils;
 import software.bluetest.BlueTest;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class DragonEntity extends TamableAnimal implements IVariantEntity, GeoEntity {
@@ -39,6 +44,13 @@ public class DragonEntity extends TamableAnimal implements IVariantEntity, GeoEn
         if (variants != null && !variants.isEmpty()) {
             this.variantNames = variants;
         }
+        VariantUtils.processVariants(texturesLoader, this::getCustomParameters);
+    }
+
+    private Map<String, String> getCustomParameters(VariantKeys pVariant) {
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put("number", pVariant.getParameter("number"));
+        return parameters;
     }
 
     @Override
@@ -59,15 +71,13 @@ public class DragonEntity extends TamableAnimal implements IVariantEntity, GeoEn
         this.setVariantName(pCompound.getString("Variant"));
     }
 
-    // When Entity is Spawned
     @Override
-    public void onAddedToWorld() {
-        super.onAddedToWorld();
-        if (!this.level().isClientSide) {
-            if (getVariantName().isEmpty()) {
-                this.setVariantName(getRandomVariant(variantNames, "blue"));
-            }
+    public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor pLevel, @NotNull DifficultyInstance pDifficulty, @NotNull MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData, @Nullable CompoundTag pDataTag) {
+        if (getVariantName().isEmpty()) {
+            this.setVariantName(getRandomVariant(variantNames, "blue"));
+            System.out.println("Number: " + VariantUtils.getParameter(getVariantName(), "number"));
         }
+        return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
     }
 
     @Override
@@ -85,9 +95,9 @@ public class DragonEntity extends TamableAnimal implements IVariantEntity, GeoEn
         return this.entityData.get(VARIANT);
     }
 
-    public List<String> getDragonVariants(String variantType) {
+    public List<String> getDragonVariants(String pVariantType) {
         return texturesLoader.getVariants().stream()
-                .filter(variant -> variantType.equals(variant.getEntityName()))
+                .filter(variant -> pVariantType.equals(variant.getEntityName()))
                 .map(VariantKeys::getVariantName)
                 .collect(Collectors.toList());
     }

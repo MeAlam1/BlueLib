@@ -2,7 +2,6 @@ package software.bluelib.entity.variant;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
-import software.bluelib.BlueLib;
 
 import java.util.List;
 

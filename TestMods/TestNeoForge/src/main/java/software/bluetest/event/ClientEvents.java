@@ -2,7 +2,6 @@ package software.bluetest.event;
 
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
-import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import software.bluetest.entity.dragon.DragonEntity;
 import software.bluetest.entity.dragon.DragonRender;
