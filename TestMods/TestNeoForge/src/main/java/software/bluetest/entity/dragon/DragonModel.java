@@ -3,6 +3,7 @@ package software.bluetest.entity.dragon;
 import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib.model.GeoModel;
 import software.bluetest.BlueTest;
+import software.bluetest.init.ModEntities;
 
 public class DragonModel extends GeoModel<DragonEntity> {
 
@@ -16,7 +17,7 @@ public class DragonModel extends GeoModel<DragonEntity> {
     // Get the Texture Location
     @Override
     public ResourceLocation getTextureResource(DragonEntity pObject) {
-        return pObject.getTextureLocation(BlueTest.MODID, "textures/entity/" + pObject.entityName + "/" + pObject.getVariantName() + ".png");
+        return pObject.getTextureLocation(BlueTest.MODID, "textures/entity/" + ModEntities.DRAGON.getKey().location().getPath() + "/" + pObject.getVariantName() + ".png");
     }
 
     // Get the Animation Location

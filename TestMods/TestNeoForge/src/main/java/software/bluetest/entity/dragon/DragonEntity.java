@@ -4,7 +4,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.*;
@@ -18,30 +17,20 @@ import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.util.GeckoLibUtil;
-import software.bluelib.entity.variant.VariantLoader;
-import software.bluelib.entity.variant.VariantParameter;
 import software.bluelib.interfaces.variant.IVariantEntity;
-import software.bluelib.utils.VariantUtils;
-import software.bluetest.BlueTest;
+import software.bluelib.utils.ParameterUtils;
+import software.bluetest.init.ModEntities;
 
-import java.util.HashMap;
 import java.util.Map;
+
+import static software.bluetest.event.ReloadEventHandler.texturesLoader;
 
 public class DragonEntity extends TamableAnimal implements IVariantEntity, GeoEntity {
     // NOTE. 3 Lines Required for the Wiki
     public static final EntityDataAccessor<String> VARIANT = SynchedEntityData.defineId(DragonEntity.class, EntityDataSerializers.STRING);
-    private final VariantLoader texturesLoader = new VariantLoader();
-    protected final String entityName = "dragon";
 
     public DragonEntity(EntityType<? extends TamableAnimal> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
-    }
-
-    private Map<String, String> getCustomParameters(VariantParameter pVariant) {
-        Map<String, String> parameters = new HashMap<>();
-        parameters.put("customParameter", pVariant.getParameter("customParameter"));
-        // Add more Parameters!
-        return parameters;
     }
 
     // NOTE. Required for the Wiki
@@ -69,17 +58,13 @@ public class DragonEntity extends TamableAnimal implements IVariantEntity, GeoEn
     @Override
     public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor pLevel, @NotNull DifficultyInstance pDifficulty, @NotNull MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData, @Nullable CompoundTag pDataTag) {
         if (getVariantName().isEmpty()) {
-            final ResourceLocation JsonLocationMod = new ResourceLocation(BlueTest.MODID, "variant/entity/dragon.json");
-            final ResourceLocation JsonLocationPack = new ResourceLocation(BlueTest.MODID, "variant/entity/dragondata.json");
-            texturesLoader.loadVariants(JsonLocationMod, JsonLocationPack, this.level().getServer());
-            this.setVariantName(getRandomVariant(getEntityVariants(this.entityName, texturesLoader), "normal"));
-
-            // NOTE. These 3 lines aren't
-            System.out.println("Variant List: " + getEntityVariants(this.entityName, texturesLoader));
-            VariantUtils.connectParameters(texturesLoader, this::getCustomParameters);
-            System.out.println("Custom Parameter: " + VariantUtils.getParameter(getVariantName(), "customParameter"));
-
-
+            this.setVariantName(getRandomVariant(getEntityVariants(ModEntities.DRAGON.getKey().location().getPath(), texturesLoader), "normal"));
+            ParameterUtils.ParameterBuilder.forVariant(this.getVariantName())
+                    .withParameter("customParameter")
+                    .withParameter("customParameter2")
+                    .connect();
+            System.out.println("Variant List: " + getEntityVariants(ModEntities.DRAGON.getKey().location().getPath(), texturesLoader));
+            System.out.println("Custom Parameter: " + ParameterUtils.getParameter(this.getVariantName(), "customParameter"));
         }
         return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
     }
