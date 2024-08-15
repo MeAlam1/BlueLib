@@ -89,6 +89,6 @@
   </tr>
 </table>
 <p align="center">
-  <a href="https://discord.gg/WMpmqMbJsH"><img src="https://img.shields.io/discord/730912704776110121?color=blue&label=Discord&logo=Discord&logoColor=blue&style=for-the-badge" alt="Discord"/></a>
+  <a href="https://discord.gg/WMpmqMbJsH"><img src="https://img.shields.io/discord/1272923738895286457?color=blue&label=Discord&logo=Discord&logoColor=blue&style=for-the-badge" alt="Discord"/></a>
 </p>
 
