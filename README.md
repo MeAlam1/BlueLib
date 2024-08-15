@@ -5,9 +5,9 @@
     <td colspan="3" align="center"> <h3>Minecraft Mod Loaders</h3></td>
   </tr>
   <tr>
-    <td align="center">Neoforge Versions</td>
-    <td align="center">Forge Versions</td>
-    <td align="center">Fabric Versions</td>
+    <td align="center"><strong>Neoforge</strong></td>
+    <td align="center"><strong>Forge</strong></td>
+    <td align="center"><strong>Fabric</strong></td>
   </tr>
   <tr>
     <td>
