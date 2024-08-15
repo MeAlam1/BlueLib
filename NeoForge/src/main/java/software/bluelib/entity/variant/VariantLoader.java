@@ -160,12 +160,12 @@ public class VariantLoader implements IVariantEntity {
     /**
      * Retrieves a {@link VariantParameter} by its name.
      *
-     * @param variantName The name of the variant to retrieve.
+     * @param pVariantName The name of the variant to retrieve.
      * @return The {@link VariantParameter} with the specified name, or {@code null} if not found.
      */
-    public static VariantParameter getVariantByName(String variantName) {
+    public static VariantParameter getVariantByName(String pVariantName) {
         for (VariantParameter variant : getVariants()) {
-            if (variant.getVariantName().equals(variantName)) {
+            if (variant.getVariantName().equals(pVariantName)) {
                 return variant;
             }
         }

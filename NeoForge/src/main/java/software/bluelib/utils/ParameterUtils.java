@@ -59,28 +59,28 @@ public class ParameterUtils {
         private final String variantName;
         private final Map<String, String> parameters = new HashMap<>();
 
-        private ParameterBuilder(String variantName) {
-            this.variantName = variantName;
+        private ParameterBuilder(String pVariantName) {
+            this.variantName = pVariantName;
         }
 
         /**
          * Static factory method to create a {@link ParameterBuilder} for a specific variant.
          *
-         * @param variantName The name of the variant for which parameters are being built.
+         * @param pVariantName The name of the variant for which parameters are being built.
          * @return A new instance of {@link ParameterBuilder}.
          */
-        public static ParameterBuilder forVariant(String variantName) {
-            return new ParameterBuilder(variantName);
+        public static ParameterBuilder forVariant(String pVariantName) {
+            return new ParameterBuilder(pVariantName);
         }
 
         /**
          * Adds a parameter with the given key to the builder.
          *
-         * @param key The key of the parameter to add.
+         * @param pParameter The key of the parameter to add.
          * @return The current instance of {@link ParameterBuilder} to allow method chaining.
          */
-        public ParameterBuilder withParameter(String key) {
-            parameters.put(key, "");
+        public ParameterBuilder withParameter(String pParameter) {
+            parameters.put(pParameter, "");
             return this;
         }
 
