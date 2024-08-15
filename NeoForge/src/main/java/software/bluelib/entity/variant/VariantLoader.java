@@ -36,7 +36,7 @@ public class VariantLoader implements IVariantEntity {
     /**
      * List to store the loaded variant parameters.
      */
-    private final List<VariantParameter> variants = new ArrayList<>();
+    private static final List<VariantParameter> variants = new ArrayList<>();
 
     /**
      * Loads and merges variant data from both the Main Mod and the <strong>Latest</strong> Datapack. <br>
@@ -153,8 +153,23 @@ public class VariantLoader implements IVariantEntity {
      *
      * @return A {@link List} of {@link VariantParameter} instances.
      */
-    public List<VariantParameter> getVariants() {
+    public static List<VariantParameter> getVariants() {
         return variants;
+    }
+
+    /**
+     * Retrieves a {@link VariantParameter} by its name.
+     *
+     * @param pVariantName The name of the variant to retrieve.
+     * @return The {@link VariantParameter} with the specified name, or {@code null} if not found.
+     */
+    public static VariantParameter getVariantByName(String pVariantName) {
+        for (VariantParameter variant : getVariants()) {
+            if (variant.getVariantName().equals(pVariantName)) {
+                return variant;
+            }
+        }
+        return null;
     }
 
     /**
