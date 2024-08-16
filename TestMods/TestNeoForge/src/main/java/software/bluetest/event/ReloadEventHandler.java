@@ -23,11 +23,17 @@ public class ReloadEventHandler {
     }
 
     public static void loadEntityVariants(ServerStartingEvent pEvent) {
-        final ResourceLocation JsonLocationMod = new ResourceLocation(BlueTest.MODID, "variant/entity/dragon.json");
-        final ResourceLocation JsonLocationPack = new ResourceLocation(BlueTest.MODID, "variant/entity/dragondata.json");
-        texturesLoader.loadVariants(JsonLocationMod, JsonLocationPack, pEvent.getServer());
+        loadEntityVariant(pEvent, "dragon");
+        loadEntityVariant(pEvent, "rex");
+    }
 
+    private static void loadEntityVariant(ServerStartingEvent pEvent, String pEntityName) {
+        ResourceLocation modLocation = new ResourceLocation(BlueTest.MODID, "variant/entity/" + pEntityName + ".json");
+        ResourceLocation packLocation = new ResourceLocation(BlueTest.MODID, "variant/entity/" + pEntityName + "data.json");
+        texturesLoader.loadVariants(modLocation, packLocation, pEvent.getServer());
+        System.out.println("Loaded " + modLocation + " and " + packLocation);
+        System.out.println("Variants: " + VariantLoader.getVariants().size());
+    }
 
-        }
 }
 

@@ -8,6 +8,7 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import software.bluetest.BlueTest;
 import software.bluetest.entity.dragon.DragonEntity;
+import software.bluetest.entity.rex.RexEntity;
 
 public class ModEntities {
     public static final DeferredRegister<EntityType<?>> REGISTRY = DeferredRegister.create(Registries.ENTITY_TYPE, BlueTest.MODID);
@@ -16,6 +17,15 @@ public class ModEntities {
     public static final DeferredHolder<EntityType<?>, EntityType<DragonEntity>> DRAGON = register(
             "dragon",
             EntityType.Builder.of(DragonEntity::new, MobCategory.AMBIENT)
+                    .setShouldReceiveVelocityUpdates(true)
+                    .setTrackingRange(64)
+                    .setUpdateInterval(3)
+                    .fireImmune()
+                    .sized(0.6f, 1.8f));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<RexEntity>> REX = register(
+            "rex",
+            EntityType.Builder.of(RexEntity::new, MobCategory.AMBIENT)
                     .setShouldReceiveVelocityUpdates(true)
                     .setTrackingRange(64)
                     .setUpdateInterval(3)
