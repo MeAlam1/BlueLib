@@ -105,10 +105,11 @@ public class ParameterUtils {
         }
 
         /**
-         * Builds and returns a map of the parameters added to this builder.
-         *
+         * Builds and returns a map of the parameters added to this builder. <br> <br>
+         * <strong>TODO. Requires thorough testing before deletion. However, it should be deprecated and is no longer necessary.</strong><br>
          * @return A map containing the parameters added to this builder.
          */
+        @Deprecated
         public Map<String, String> build() {
             return new HashMap<>(parameters);
         }
