@@ -1,3 +1,5 @@
+// Copyright (c) BlueLib. Licensed under the MIT License.
+
 package software.bluelib.json;
 
 import com.google.gson.JsonArray;
