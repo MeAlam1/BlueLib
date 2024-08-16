@@ -1,0 +1,12 @@
+{
+  "rex": [
+    {
+      "Variant": "brown",
+      "customParameter": "customValue11"
+    },
+    {
+      "Variant": "green",
+      "customParameter": "customValue22"
+    }
+  ]
+}
