@@ -64,8 +64,7 @@ dependencies {
     // For all intends and purposes: You can treat this dependency as if it is a normal library you would use.
     implementation "net.neoforged:neoforge:${neo_version}"
     implementation "curse.maven:geckolib-388172:5188406"
-    implementation 'software.bluelib:bluelib:1.0.0'
-
+    implementation "software.bluelib:bluelib:1.0.0"
 
     // Example optional mod dependency with JEI
     // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime
