@@ -9,15 +9,15 @@ import com.google.gson.JsonObject;
 import java.util.Map;
 
 /**
- * General {@link JSONMerger}  to merge JSON data.
+ * A {@code Class} that merges JSON data from a source {@link JsonObject} into a target {@link JsonObject}.
  */
 public class JSONMerger {
 
     /**
-     * Merges data from a source {@link JsonObject} into a target {@link JsonObject}.
+     * A {@code Void} that merges data from a source {@link JsonObject} into a target {@link JsonObject}.
      *
-     * @param pTarget  The target {@link JsonObject} to merge data into.
-     * @param pSource  The source {@link JsonObject} to merge data from.
+     * @param pTarget {@link JsonObject} - The target {@link JsonObject} to merge data into.
+     * @param pSource {@link JsonObject} - The source {@link JsonObject} to merge data from.
      */
     public void mergeJsonObjects(JsonObject pTarget, JsonObject pSource) {
         for (Map.Entry<String, JsonElement> entry : pSource.entrySet()) {
