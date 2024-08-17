@@ -1,3 +1,5 @@
+// Copyright (c) BlueLib. Licensed under the MIT License.
+
 package software.bluelib.interfaces.variant.base;
 
 import net.minecraft.resources.ResourceLocation;
