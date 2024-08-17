@@ -30,12 +30,12 @@ public class VariantLoader implements IVariantEntity {
     /**
      * {@link JSONLoader} instance to load JSON data.
      */
-    private final JSONLoader jsonLoader = new JSONLoader();
+    private static final JSONLoader jsonLoader = new JSONLoader();
 
     /**
      * {@link JSONMerger} instance to merge JSON data.
      */
-    private final JSONMerger jsonParser = new JSONMerger();
+    private static final JSONMerger jsonParser = new JSONMerger();
 
     /**
      * Loads and merges variant data from both the Main Mod and the <strong>Latest</strong> Datapack.
@@ -45,7 +45,7 @@ public class VariantLoader implements IVariantEntity {
      * @param pJSONLocationPack The {@link ResourceLocation} of the <strong>Latest</strong> DataPack's JSON data.
      * @param pServer           The {@link MinecraftServer} instance.
      */
-    public void loadVariants(ResourceLocation pJSONLocationMod, ResourceLocation pJSONLocationPack, MinecraftServer pServer) {
+    public static void loadVariants(ResourceLocation pJSONLocationMod, ResourceLocation pJSONLocationPack, MinecraftServer pServer) {
         ResourceManager resourceManager = pServer.getResourceManager();
 
         JsonObject modJson = jsonLoader.loadJson(pJSONLocationMod, resourceManager);
@@ -63,7 +63,7 @@ public class VariantLoader implements IVariantEntity {
      *
      * @param pJsonObject The merged {@link JsonObject} containing variant data.
      */
-    private void parseVariants(JsonObject pJsonObject) {
+    private static void parseVariants(JsonObject pJsonObject) {
         for (Map.Entry<String, JsonElement> entry : pJsonObject.entrySet()) {
             JsonArray textureArray = entry.getValue().getAsJsonArray();
 

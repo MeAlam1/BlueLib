@@ -21,8 +21,6 @@ import software.bluelib.interfaces.variant.IVariantEntity;
 import software.bluelib.utils.ParameterUtils;
 import software.bluetest.init.ModEntities;
 
-import static software.bluetest.event.ReloadEventHandler.texturesLoader;
-
 public class RexEntity extends TamableAnimal implements IVariantEntity, GeoEntity {
     // NOTE. 3 Lines Required for the Wiki
     public static final EntityDataAccessor<String> VARIANT = SynchedEntityData.defineId(RexEntity.class, EntityDataSerializers.STRING);
@@ -56,13 +54,12 @@ public class RexEntity extends TamableAnimal implements IVariantEntity, GeoEntit
     @Override
     public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor pLevel, @NotNull DifficultyInstance pDifficulty, @NotNull MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData, @Nullable CompoundTag pDataTag) {
         if (getVariantName().isEmpty()) {
-            System.out.println("Looking for variants at " + getEntityVariants(ModEntities.REX.getKey().location().getPath(), texturesLoader));
-            this.setVariantName(getRandomVariant(getEntityVariants(ModEntities.REX.getKey().location().getPath(), texturesLoader), "normal"));
+            this.setVariantName(getRandomVariant(getEntityVariants(ModEntities.REX.getKey().location().getPath()), "normal"));
             ParameterUtils.ParameterBuilder.forVariant(this.getVariantName())
                     .withParameter("customParameter")
                     .withParameter("customParameter2")
                     .connect();
-            System.out.println("Variant List: " + getEntityVariants(ModEntities.REX.getKey().location().getPath(), texturesLoader));
+            System.out.println("Variant List: " + getEntityVariants(ModEntities.REX.getKey().location().getPath()));
             System.out.println("Custom Parameter: " + ParameterUtils.getParameter(this.getVariantName(), "customParameter"));
         }
         return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);

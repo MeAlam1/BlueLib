@@ -58,11 +58,10 @@ public interface IVariantEntity {
      * Retrieves a list of variant names associated with a specific entity name from the given {@link VariantLoader}.
      *
      * @param pEntityName  The name of the entity whose variants are to be retrieved.
-     * @param pVariantLoader The {@link VariantLoader} instance used to load the variants.
      * @return A list of variant names associated with the specified entity.
      */
-    default List<String> getEntityVariants(String pEntityName, VariantLoader pVariantLoader) {
-        return pVariantLoader.getVariants().stream()
+    default List<String> getEntityVariants(String pEntityName) {
+        return VariantLoader.getVariants().stream()
                 .filter(variant -> pEntityName.equals(variant.getEntityName()))
                 .map(VariantParameter::getVariantName)
                 .collect(Collectors.toList());
