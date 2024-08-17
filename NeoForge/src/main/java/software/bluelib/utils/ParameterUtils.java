@@ -10,6 +10,7 @@ import java.util.Map;
 
 /**
  * A {@code Class} to connect custom parameters to the variants.
+ * @author MeAlam
  */
 public class ParameterUtils {
 
@@ -27,6 +28,7 @@ public class ParameterUtils {
      * @param pParameterKey {@link String} - The parameter you want to see.
      * @return The value of the custom parameter identified by {@code pParameterKey}
      * for the variant specified by {@code pVariantName}.
+     * @author MeAlam
      */
     public static String getParameter(String pVariantName, String pParameterKey) {
         return variantParametersMap.getOrDefault(pVariantName, new HashMap<>()).getOrDefault(pParameterKey, "unknown");
@@ -34,11 +36,12 @@ public class ParameterUtils {
 
     /**
      * {@link ParameterBuilder} class for creating and connecting custom parameters to a specific variant.
+     * @author MeAlam
      */
     public static class ParameterBuilder {
         /**
          * A {@link String} representing the name of the variant for which parameters are built.
-          */
+         */
         private final String variantName;
 
         /**
@@ -49,7 +52,8 @@ public class ParameterUtils {
 
         /**
          * Constructor that initializes the builder with a specific variant name.
-          */
+         * @author MeAlam
+         */
         private ParameterBuilder(String pVariantName) {
             this.variantName = pVariantName;
         }
@@ -59,6 +63,7 @@ public class ParameterUtils {
          *
          * @param pVariantName {@link String} - The name of the variant for which parameters are being built.
          * @return A new instance of {@link ParameterBuilder}.
+         * @author MeAlam
          */
         public static ParameterBuilder forVariant(String pVariantName) {
             return new ParameterBuilder(pVariantName);
@@ -69,6 +74,7 @@ public class ParameterUtils {
          *
          * @param pParameter The key of the parameter to add.
          * @return The current instance of {@link ParameterBuilder} to allow method chaining.
+         * @author MeAlam
          */
         public ParameterBuilder withParameter(String pParameter) {
             parameters.put(pParameter, "");
@@ -81,6 +87,7 @@ public class ParameterUtils {
          * This method updates the static {@link VariantParameter} with the parameters for the specified variant.
          *
          * @return The current instance of {@link ParameterBuilder} to allow method chaining.
+         * @author MeAlam
          */
         public ParameterBuilder connect() {
             VariantParameter variant = VariantLoader.getVariantByName(variantName);
@@ -99,6 +106,7 @@ public class ParameterUtils {
         /**
          * A {@link VariantLoader} method to create a new instance of {@link VariantLoader}.
          * @return A new instance of {@link VariantLoader}.
+         * @author MeAlam
          */
         private VariantLoader getVariantLoader() {
             return new VariantLoader();

@@ -10,6 +10,7 @@ import java.util.Map;
  * An {@code Interface} for defining custom parameters associated with a specific {@link VariantParameter}. <br>
  * Implementations of this interface should provide a method to retrieve custom key-value pairs
  * that are tied to a particular variant.
+ * @author MeAlam
  */
 public interface ICustomParameter {
 
@@ -19,6 +20,7 @@ public interface ICustomParameter {
      * @param pVariant {@link VariantParameter} - The {@link VariantParameter} for which custom parameters are to be retrieved.
      * @return A {@link Map<String>} containing custom parameters as key-value pairs, where the key is the parameter name
      * and the value is the parameter's value.
+     * @author MeAlam
      */
     Map<String, String> getCustomParameters(VariantParameter pVariant);
 }

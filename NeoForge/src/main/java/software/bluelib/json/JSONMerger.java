@@ -10,6 +10,7 @@ import java.util.Map;
 
 /**
  * A {@code Class} that merges JSON data from a source {@link JsonObject} into a target {@link JsonObject}.
+ * @author MeAlam
  */
 public class JSONMerger {
 
@@ -18,6 +19,7 @@ public class JSONMerger {
      *
      * @param pTarget {@link JsonObject} - The target {@link JsonObject} to merge data into.
      * @param pSource {@link JsonObject} - The source {@link JsonObject} to merge data from.
+     * @author MeAlam
      */
     public void mergeJsonObjects(JsonObject pTarget, JsonObject pSource) {
         for (Map.Entry<String, JsonElement> entry : pSource.entrySet()) {

@@ -13,6 +13,7 @@ import java.util.Set;
  * A {@code Class} that represents the parameters associated with a specific variant of an entity. <br>
  * This class extends {@link ParameterBase} to store and manage variant-specific parameters
  * parsed from a JSON object.
+ * @author MeAlam
  */
 public class VariantParameter extends ParameterBase {
 
@@ -26,6 +27,7 @@ public class VariantParameter extends ParameterBase {
      *
      * @param pJsonKey {@link String} - The key that identifies this entity within the {@link JsonObject}.
      * @param pJsonObject {@link JsonObject} - The {@link JsonObject} containing the variant parameters.
+     * @author MeAlam
      */
     public VariantParameter(String pJsonKey, JsonObject pJsonObject) {
         this.jsonKey = pJsonKey;
@@ -39,6 +41,7 @@ public class VariantParameter extends ParameterBase {
      * A {@link String} that represents the key of the {@link JsonObject} that identifies this entity.
      *
      * @return The entity name, which corresponds to the key in the {@link JsonObject}.
+     * @author MeAlam
      */
     public String getEntityName() {
         return this.jsonKey;
@@ -48,6 +51,7 @@ public class VariantParameter extends ParameterBase {
      * A {@link String} that represents the name of the variant.
      *
      * @return The variant name, which is stored under the key {@code "Variant"}.
+     * @author MeAlam
      */
     public String getVariantName() {
         return getParameter("Variant");
@@ -58,6 +62,7 @@ public class VariantParameter extends ParameterBase {
      *
      * @param pKey {@link String} - The key of the parameter to retrieve.
      * @return The value of the parameter, or {@code null} if the key does not exist.
+     * @author MeAlam
      */
     public String getParameter(String pKey) {
         return (String) super.getParameter(pKey);
