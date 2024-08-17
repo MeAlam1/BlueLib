@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * An interface representing an entity that supports multiple variants. <br>
+ * An {@code Interface} representing an entity that supports multiple variants. <br>
  * Provides methods to retrieve textures, get random variants, and manage variant lists for entities.
  */
 public interface IVariantEntity {

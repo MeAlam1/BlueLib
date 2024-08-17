@@ -16,20 +16,20 @@ import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
 /**
- * General {@link JSONLoader} to load JSON data from resource locations.
+ * A {@code Class} that loads JSON data from a {@link ResourceLocation}.
  */
 public class JSONLoader {
 
     /**
-     * Gson instance for parsing JSON data.
+     * A {@link Gson} instance for parsing JSON data.
      */
     private static final Gson gson = new Gson();
 
     /**
-     * Loads JSON data from a resource location.
+     * A {@link JsonObject} that Loads JSON data from a {@link ResourceLocation}.
      *
-     * @param pResourceLocation  The {@link ResourceLocation} of the JSON resource.
-     * @param pResourceManager   The {@link ResourceManager} to load the resource.
+     * @param pResourceLocation {@link ResourceLocation} - The {@link ResourceLocation} of the JSON resource.
+     * @param pResourceManager {@link ResourceManager} - The {@link ResourceManager} to load the resource.
      * @return The loaded {@link JsonObject}.
      * @throws CouldNotLoadJSON If the JSON could not be loaded.
      */
