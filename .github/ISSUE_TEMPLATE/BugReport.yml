@@ -6,7 +6,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        Thank you for making a Bug Report!
+        Thank you for making a Bug Report! Please provide as much detail as possible to help us diagnose and resolve the issue.
   - type: checkboxes
     attributes:
       label: Bug Report rule checks (please read carefully)
@@ -20,14 +20,14 @@ body:
     attributes:
       label: What happened?
       description: |
-        Please tell us about the bug as detailed as possible.
+        Please describe the bug in as much detail as possible.
     validations:
       required: true
   - type: textarea
     id: how-to-reproduce
     attributes:
       label: How to reproduce this issue?
-      description: Try to explain what you did for the bug to occur. A good explanation of steps to reproduce helps us locate the bug faster. If applicable, add screenshots to help explain your problem.
+      description: Explain the steps to reproduce the bug. A clear description will help us find and fix the issue faster. If possible, include screenshots.
       placeholder: |
         Step 1:
         Step 2:
@@ -44,12 +44,12 @@ body:
     id: steps-already-taken
     attributes:
       label: Steps Already Taken
-      description: What troubleshooting steps or workarounds have you tried so far?
+      description: What troubleshooting steps or workarounds have you attempted?
   - type: textarea
     id: logs-and-error-messages
     attributes:
       label: Logs and Error Messages
-      description: Provide any relevant logs or error messages that occurred when the bug was experienced.
+      description: Provide any relevant logs or error messages. This information helps us understand the issue better.
   - type: dropdown
     id: modloader-version
     attributes:
@@ -84,7 +84,7 @@ body:
     id: which-other-mods
     attributes:
       label: Which other mods?
-      description: Please provide a screenshot or a list of your mod folder.
+      description: List any other mods you have installed. This can help us determine if there is an interaction with another mod.
   - type: input
     id: operating-system
     attributes:
@@ -96,9 +96,4 @@ body:
     id: more-information
     attributes:
       label: More information
-      description: Is there anything else relevant that you want/need to share?
-  - type: file
-    id: attach-files
-    attributes:
-      label: Attach Files
-      description: Attach any relevant files, such as crash reports or configuration files.
+      description: Provide any additional information that might be relevant to the issue.
