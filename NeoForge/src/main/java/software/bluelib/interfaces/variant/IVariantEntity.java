@@ -62,7 +62,7 @@ public interface IVariantEntity {
      * @return A list of variant names associated with the specified entity.
      */
     default List<String> getEntityVariants(String pEntityName, VariantLoader pVariantLoader) {
-        return pVariantLoader.getVariants().stream()
+        return VariantLoader.getVariants().stream()
                 .filter(variant -> pEntityName.equals(variant.getEntityName()))
                 .map(VariantParameter::getVariantName)
                 .collect(Collectors.toList());

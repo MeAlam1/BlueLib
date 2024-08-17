@@ -24,23 +24,6 @@ public class ParameterUtils {
      */
     private static final Map<String, Map<String, String>> variantParametersMap = new HashMap<>();
 
-
-    /**
-     * Connects custom parameter(s) to the specified {@link software.bluelib.entity.variant.VariantLoader}.<br>
-     * <strong>Note:</strong> Currently, only one {@link software.bluelib.entity.variant.VariantLoader} instance is present.<br><br>
-     * <strong>TODO. Requires thorough testing before deletion. However, it should be deprecated and is no longer necessary.</strong><br>
-     * @param pICustomParameter A function that maps a {@link VariantParameter} to a {@link Map} containing the custom parameters as key-value pairs.
-     */
-    @Deprecated
-    public static void connectParameters(Function<VariantParameter, Map<String, String>> pICustomParameter) {
-        variantParametersMap.clear();
-        List<VariantParameter> variants = VariantLoader.getVariants();
-        for (VariantParameter variant : variants) {
-            Map<String, String> parameters = pICustomParameter.apply(variant);
-            variantParametersMap.put(variant.getVariantName(), parameters);
-        }
-    }
-
     /**
      * Retrieves the value of a custom parameter for a specific variant.
      *
@@ -56,9 +39,20 @@ public class ParameterUtils {
      * Builder class for creating and connecting custom parameters to a specific variant.
      */
     public static class ParameterBuilder {
+        /**
+         * The name of the variant for which the parameters are being built.
+          */
         private final String variantName;
+
+        /**
+         * A map to store parameters associated with the variant, <br>
+         * where each key-value pair represents a parameter name and its corresponding value.
+         */
         private final Map<String, String> parameters = new HashMap<>();
 
+        /**
+         * Private constructor that initializes the builder with a specific variant name.
+          */
         private ParameterBuilder(String pVariantName) {
             this.variantName = pVariantName;
         }
@@ -105,16 +99,9 @@ public class ParameterUtils {
         }
 
         /**
-         * Builds and returns a map of the parameters added to this builder. <br> <br>
-         * <strong>TODO. Requires thorough testing before deletion. However, it should be deprecated and is no longer necessary.</strong><br>
-         * @return A map containing the parameters added to this builder.
+         * Retrieves the {@link VariantLoader} instance to load variants.
+         * @return A new instance of {@link VariantLoader}.
          */
-        @Deprecated
-        public Map<String, String> build() {
-            return new HashMap<>(parameters);
-        }
-
-        // Private method for getting a new instance of VariantLoader. Not used directly.
         private VariantLoader getVariantLoader() {
             return new VariantLoader();
         }
