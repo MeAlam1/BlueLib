@@ -50,7 +50,7 @@ public class VariantParameter extends ParameterBase {
      * @return The variant name, which is stored under the key "Variant".
      */
     public String getVariantName() {
-        return (String) getParameter("Variant");
+        return getParameter("Variant");
     }
 
     /**

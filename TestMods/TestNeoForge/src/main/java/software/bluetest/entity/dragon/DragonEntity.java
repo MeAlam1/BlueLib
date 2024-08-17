@@ -21,10 +21,6 @@ import software.bluelib.interfaces.variant.IVariantEntity;
 import software.bluelib.utils.ParameterUtils;
 import software.bluetest.init.ModEntities;
 
-import java.util.Map;
-
-import static software.bluetest.event.ReloadEventHandler.texturesLoader;
-
 public class DragonEntity extends TamableAnimal implements IVariantEntity, GeoEntity {
     // NOTE. 3 Lines Required for the Wiki
     public static final EntityDataAccessor<String> VARIANT = SynchedEntityData.defineId(DragonEntity.class, EntityDataSerializers.STRING);
@@ -58,12 +54,12 @@ public class DragonEntity extends TamableAnimal implements IVariantEntity, GeoEn
     @Override
     public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor pLevel, @NotNull DifficultyInstance pDifficulty, @NotNull MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData, @Nullable CompoundTag pDataTag) {
         if (getVariantName().isEmpty()) {
-            this.setVariantName(getRandomVariant(getEntityVariants(ModEntities.DRAGON.getKey().location().getPath(), texturesLoader), "normal"));
+            this.setVariantName(getRandomVariant(getEntityVariants(ModEntities.DRAGON.getKey().location().getPath()), "normal"));
             ParameterUtils.ParameterBuilder.forVariant(this.getVariantName())
                     .withParameter("customParameter")
                     .withParameter("customParameter2")
                     .connect();
-            System.out.println("Variant List: " + getEntityVariants(ModEntities.DRAGON.getKey().location().getPath(), texturesLoader));
+            System.out.println("Variant List: " + getEntityVariants(ModEntities.DRAGON.getKey().location().getPath()));
             System.out.println("Custom Parameter: " + ParameterUtils.getParameter(this.getVariantName(), "customParameter"));
         }
         return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);

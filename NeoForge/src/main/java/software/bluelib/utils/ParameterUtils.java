@@ -16,11 +16,9 @@ import java.util.function.Function;
 public class ParameterUtils {
 
     /**
-     * A static map that holds the custom parameters associated with each variant.
-     * The outer map's key represents the variant's name, and the inner map stores
-     * key-value pairs of custom parameters for that variant.
-     * <p>
-     * This map is cleared and populated whenever {@link #connectParameters(Function)} is called.
+     * A static map that holds the custom parameters associated with each variant. <br>
+     * The outer map's key represents the variant's name, <br>
+     * and the inner map stores key-value pairs of custom parameters for that variant.
      */
     private static final Map<String, Map<String, String>> variantParametersMap = new HashMap<>();
 
