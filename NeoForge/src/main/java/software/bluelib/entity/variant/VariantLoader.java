@@ -8,6 +8,7 @@ import com.google.gson.JsonObject;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.packs.resources.ResourceManager;
+import software.bluelib.interfaces.variant.base.IVariantEntityBase;
 import software.bluelib.json.JSONLoader;
 import software.bluelib.json.JSONMerger;
 import software.bluelib.interfaces.variant.IVariantEntity;
@@ -19,8 +20,9 @@ import java.util.Map;
 /**
  * A {@code Class} that is the Base for all Variant Loaders.
  * {@link VariantLoader} class that loads and manages {@link VariantParameter} for entities by merging JSON data from multiple sources.
+ * @author MeAlam
  */
-public class VariantLoader implements IVariantEntity {
+public class VariantLoader implements IVariantEntityBase {
 
     /**
      * A {@link List<VariantParameter>} to store the loaded {@link VariantParameter}.
@@ -44,6 +46,7 @@ public class VariantLoader implements IVariantEntity {
      * @param pJSONLocationMod {@link ResourceLocation} - The {@link ResourceLocation} of the Mod's JSON data.
      * @param pJSONLocationPack {@link ResourceLocation} - The {@link ResourceLocation} of the <strong>Latest</strong> DataPack's JSON data.
      * @param pServer {@link MinecraftServer} - The {@link MinecraftServer} instance.
+     * @author MeAlam
      */
     public static void loadVariants(ResourceLocation pJSONLocationMod, ResourceLocation pJSONLocationPack, MinecraftServer pServer) {
         ResourceManager resourceManager = pServer.getResourceManager();
@@ -62,6 +65,7 @@ public class VariantLoader implements IVariantEntity {
      * A {@code Void} that parses the merged JSON data and converts it into {@link VariantParameter} instances.
      *
      * @param pJsonObject {@link JsonObject} - The merged {@link JsonObject} containing variant data.
+     * @author MeAlam
      */
     private static void parseVariants(JsonObject pJsonObject) {
         for (Map.Entry<String, JsonElement> entry : pJsonObject.entrySet()) {
@@ -85,6 +89,7 @@ public class VariantLoader implements IVariantEntity {
      * @param pJsonKey {@link String} - The key associated with this variant.
      * @param pJsonObject {@link JsonObject} - The {@link JsonObject} containing the variant data.
      * @return A {@link VariantParameter} instance.
+     * @author MeAlam
      */
     private static VariantParameter getEntityVariant(String pJsonKey, JsonObject pJsonObject) {
         return new VariantParameter(pJsonKey, pJsonObject);
@@ -94,6 +99,7 @@ public class VariantLoader implements IVariantEntity {
      * A {@link List<VariantParameter>} that retrieves the {@link List<VariantParameter>} of loaded {@link VariantParameter}.
      *
      * @return A {@link List<VariantParameter>} of {@link VariantParameter} instances.
+     * @author MeAlam
      */
     public static List<VariantParameter> getVariants() {
         return variants;
@@ -104,6 +110,7 @@ public class VariantLoader implements IVariantEntity {
      *
      * @param pVariantName {@link String} - The name of the variant to retrieve.
      * @return The {@link VariantParameter} with the specified name, or {@code null} if not found.
+     * @author MeAlam
      */
     public static VariantParameter getVariantByName(String pVariantName) {
         for (VariantParameter variant : getVariants()) {
@@ -112,16 +119,5 @@ public class VariantLoader implements IVariantEntity {
             }
         }
         return null;
-    }
-
-    /**
-     * A {@link String} that retrieves the name of the variant. <br>
-     * Overridden from {@link IVariantEntity}.
-     *
-     * @return The name of the variant as a {@link String}.
-     */
-    @Override
-    public String getVariantName() {
-        return "EntityName";
     }
 }

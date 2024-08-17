@@ -8,6 +8,7 @@ import java.util.Map;
 /**
  * An {@code Abstract base class} for managing a collection of parameters. <br>
  * This class provides methods to add, retrieve, remove, and list parameters.
+ * @author MeAlam
  */
 public abstract class ParameterBase {
 
@@ -21,6 +22,7 @@ public abstract class ParameterBase {
      *
      * @param pKey {@link String} - The key under which the parameter is stored.
      * @param pValue {@link Object} - The value of the parameter.
+     * @author MeAlam
      */
     protected void addParameter(String pKey, Object pValue) {
         parameters.put(pKey, pValue);
@@ -31,6 +33,7 @@ public abstract class ParameterBase {
      *
      * @param pKey {@link String} - The key of the parameter to retrieve.
      * @return The value associated with the key, or {@code null} if the key does not exist.
+     * @author MeAlam
      */
     public Object getParameter(String pKey) {
         return parameters.get(pKey);
@@ -40,6 +43,7 @@ public abstract class ParameterBase {
      * A {@code Void} that removes a parameter from the collection by its key.
      *
      * @param pKey {@link String} - The key of the parameter to remove.
+     * @author MeAlam
      */
     public void removeParameter(String pKey) {
         parameters.remove(pKey);
@@ -49,6 +53,7 @@ public abstract class ParameterBase {
      * A {@link Map<Object>} method that returns all parameters in the collection.
      *
      * @return A {@link Map<Object>} containing all parameters.
+     * @author MeAlam
      */
     public Map<String, Object> getAllParameters() {
         return new HashMap<>(parameters);

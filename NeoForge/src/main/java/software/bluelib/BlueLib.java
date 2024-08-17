@@ -15,6 +15,7 @@ import net.neoforged.fml.loading.FMLEnvironment;
  * <a href="https://github.com/MeAlam1/BlueLib/wiki">Bluelib Wiki | Introduction</a>.
  *
  * @see <a href="https://github.com/MeAlam1/BlueLib/wiki">Bluelib Wiki | Introduction</a>
+ * @author MeAlam
  */
 @Mod(BlueLib.MODID)
 public class BlueLib {
@@ -30,6 +31,7 @@ public class BlueLib {
      * Constructor for the {@link BlueLib} class. This constructor registers the mod event bus.
      *
      * @param pModEventBus {@link IEventBus} - The event bus to which the mod will register its event handlers.
+     * @author MeAlam
      */
     public BlueLib(IEventBus pModEventBus) {
         // Register this class to the NeoForge event bus.
@@ -44,6 +46,7 @@ public class BlueLib {
      * A {@link Boolean} that checks if the mod is running in developer mode.
      *
      * @return {@code true} if the mod is running in developer mode, {@code false} otherwise.
+     * @author MeAlam
      */
     static boolean developerMode() {
         return !FMLEnvironment.production;

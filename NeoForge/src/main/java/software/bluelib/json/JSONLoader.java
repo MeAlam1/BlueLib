@@ -17,6 +17,7 @@ import java.util.Optional;
 
 /**
  * A {@code Class} that loads JSON data from a {@link ResourceLocation}.
+ * @author MeAlam
  */
 public class JSONLoader {
 
@@ -32,6 +33,7 @@ public class JSONLoader {
      * @param pResourceManager {@link ResourceManager} - The {@link ResourceManager} to load the resource.
      * @return The loaded {@link JsonObject}.
      * @throws CouldNotLoadJSON If the JSON could not be loaded.
+     * @author MeAlam
      */
     public JsonObject loadJson(ResourceLocation pResourceLocation, ResourceManager pResourceManager) throws CouldNotLoadJSON {
         try {
