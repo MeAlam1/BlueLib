@@ -1,0 +1,110 @@
+/* Global Styles */
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: #1F1F1F;
+    color: whitesmoke;
+    display: flex;
+    flex-direction: column;
+    height: 100vh; 
+    overflow: hidden;
+}
+
+header {
+    background-color: #171717;
+    border-bottom: 2px solid #3b3b3b;
+    padding: 10px 0;
+    text-align: center;
+    width: 100%;
+    box-sizing: border-box;
+    z-index: 1000;
+}
+
+h1, h2 {
+    color: rgb(230, 230, 230);
+}
+
+/* Links */
+a {
+    text-decoration: none;
+}
+
+a::before {
+    font-weight: bold;
+    color: #1f5fe1;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+a::after {
+    font-weight: bold;
+    color: #551A8B;
+}
+
+/* Navigation */
+nav {
+    padding: 10px 0;
+    text-align: center;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+nav a {
+    padding: 10px;
+    margin-right: 10px;
+}
+
+nav a:hover {
+    background-color: #3b3b3b;
+    border-radius: 5px;
+}
+
+/* Layout */
+.container {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+}
+
+.left-panel {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    border-right: 2px solid #ccc;
+    overflow: hidden;
+}
+
+.top-panel, .bottom-panel {
+    overflow: auto;
+    padding: 10px;
+}
+
+.top-panel {
+    flex-grow: 1;
+    border-bottom: 2px solid #ccc;
+}
+
+.bottom-panel {
+    flex-grow: 1;
+}
+
+.resizer {
+    height: 10px;
+    cursor: row-resize;
+    flex-shrink: 0;
+}
+
+.main-content {
+    flex: 1;
+    padding-left: 20px;
+    padding-top: 20px;
+    overflow-y: auto;
+}
+
+.section {
+    margin-bottom: 40px;
+}
