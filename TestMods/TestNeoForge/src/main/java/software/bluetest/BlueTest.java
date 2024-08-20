@@ -2,10 +2,9 @@ package software.bluetest;
 
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
+import software.bluelib.event.ReloadEventHandler;
 import software.bluetest.event.ClientEvents;
 import software.bluetest.init.ModEntities;
-
-import java.util.Optional;
 
 @Mod(BlueTest.MODID)
 public class BlueTest
@@ -20,5 +19,11 @@ public class BlueTest
 
         pModEventBus.addListener(ClientEvents::registerAttributes);
         pModEventBus.addListener(ClientEvents::registerRenderers);
+        registerEntityVariants();
+    }
+
+    private void registerEntityVariants() {
+        ReloadEventHandler.registerEntityVariants(MODID, "dragon", "variant/entity/dragon.json", "variant/entity/dragondata.json");
+        ReloadEventHandler.registerEntityVariants(MODID, "rex", "variant/entity/rex.json", "variant/entity/rexdata.json");
     }
 }
