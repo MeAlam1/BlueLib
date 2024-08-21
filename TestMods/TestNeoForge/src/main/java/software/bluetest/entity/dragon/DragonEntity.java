@@ -56,7 +56,7 @@ public class DragonEntity extends TamableAnimal implements IVariantEntity, GeoEn
         String variantName = getVariantName();
         if (variantName == null || variantName.isEmpty()) {
             this.setVariantName(getRandomVariant(getEntityVariants(ModEntities.DRAGON.getKey().location().getPath()), "normal"));
-            ParameterUtils.ParameterBuilder.forVariant(this.getVariantName())
+            ParameterUtils.ParameterBuilder.forVariant(ModEntities.DRAGON.getKey().location().getPath(),this.getVariantName())
                     .withParameter("customParameter")
                     .withParameter("int")
                     .withParameter("bool")

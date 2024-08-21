@@ -45,6 +45,11 @@ public class ParameterUtils {
         private final String variantName;
 
         /**
+         * A {@link String} representing the name of the entity for which parameters are built.
+         */
+        private final String entityName;
+
+        /**
          * A {@link Map<String>} to store parameters associated with the variant, <br>
          * where each key-value pair represents a parameter name and its corresponding value.
          */
@@ -54,19 +59,21 @@ public class ParameterUtils {
          * Constructor that initializes the builder with a specific variant name.
          * @author MeAlam
          */
-        private ParameterBuilder(String pVariantName) {
+        private ParameterBuilder(String pEntityName, String pVariantName) {
             this.variantName = pVariantName;
+            this.entityName = pEntityName;
         }
 
         /**
          * A {@link ParameterBuilder} method to create a new instance of {@link ParameterBuilder}.
          *
+         * @param pEntityName {@link String} - The name of the entity for which parameters are being built.
          * @param pVariantName {@link String} - The name of the variant for which parameters are being built.
          * @return A new instance of {@link ParameterBuilder}.
          * @author MeAlam
          */
-        public static ParameterBuilder forVariant(String pVariantName) {
-            return new ParameterBuilder(pVariantName);
+        public static ParameterBuilder forVariant(String pEntityName, String pVariantName) {
+            return new ParameterBuilder(pEntityName, pVariantName);
         }
 
         /**
@@ -90,7 +97,7 @@ public class ParameterUtils {
          * @author MeAlam
          */
         public ParameterBuilder connect() {
-            VariantParameter variant = VariantLoader.getVariantByName(variantName);
+            VariantParameter variant = VariantLoader.getVariantByName(entityName, variantName);
             if (variant != null) {
                 Map<String, String> updatedParameters = new HashMap<>();
                 for (String key : parameters.keySet()) {

@@ -56,7 +56,7 @@ public class RexEntity extends TamableAnimal implements IVariantEntity, GeoEntit
         String variantName = getVariantName();
         if (variantName == null || variantName.isEmpty()) {
             this.setVariantName(getRandomVariant(getEntityVariants(ModEntities.REX.getKey().location().getPath()), "normal"));
-            ParameterUtils.ParameterBuilder.forVariant(this.getVariantName())
+            ParameterUtils.ParameterBuilder.forVariant(ModEntities.REX.getKey().location().getPath(),this.getVariantName())
                     .withParameter("customParameter")
                     .withParameter("int")
                     .withParameter("bool")
