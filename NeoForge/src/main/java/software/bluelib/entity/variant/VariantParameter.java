@@ -23,7 +23,12 @@ public class VariantParameter extends ParameterBase {
     private final String jsonKey;
 
     /**
-     * Constructs a new {@code VariantParameter} instance by extracting parameters from a given JSON object.
+     * Constructs a new {@code VariantParameter} instance by extracting parameters from a given JSON object. <br>
+     * This method processes different types of {@link JsonElement} values: <br>
+     * - {@code JsonPrimitive}: Stored directly as a string. <br>
+     * - {@code JsonArray}: Converts array elements into a single comma-separated string. <br>
+     * - {@code JsonObject}: Converts the nested JSON object to a string representation. <br>
+     * - {@code Other Types}: Stores "null" for unhandled JSON types. <br>
      *
      * @param pJsonKey {@link String} - The key that identifies this entity within the {@link JsonObject}.
      * @param pJsonObject {@link JsonObject} - The {@link JsonObject} containing the variant parameters.
@@ -33,7 +38,21 @@ public class VariantParameter extends ParameterBase {
         this.jsonKey = pJsonKey;
         Set<Map.Entry<String, JsonElement>> entrySet = pJsonObject.entrySet();
         for (Map.Entry<String, JsonElement> entry : entrySet) {
-            addParameter(entry.getKey(), entry.getValue().getAsString());
+            JsonElement element = entry.getValue();
+            if (element.isJsonPrimitive()) {
+                addParameter(entry.getKey(), element.getAsString());
+            } else if (element.isJsonArray()) {
+                StringBuilder arrayValues = new StringBuilder();
+                element.getAsJsonArray().forEach(e -> arrayValues.append(e.getAsString()).append(","));
+                if (!arrayValues.isEmpty()) {
+                    arrayValues.setLength(arrayValues.length() - 1);
+                }
+                addParameter(entry.getKey(), arrayValues.toString());
+            } else if (element.isJsonObject()) {
+                addParameter(entry.getKey(), element.toString());
+            } else {
+                addParameter(entry.getKey(), "null");
+            }
         }
     }
 
