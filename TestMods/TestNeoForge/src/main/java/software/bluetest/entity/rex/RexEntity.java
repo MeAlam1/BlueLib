@@ -33,7 +33,7 @@ public class RexEntity extends TamableAnimal implements IVariantEntity, GeoEntit
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(VARIANT, "");
+        this.entityData.define(VARIANT, "normal");
     }
 
     // NOTE. Required for the Wiki
@@ -53,13 +53,20 @@ public class RexEntity extends TamableAnimal implements IVariantEntity, GeoEntit
     // NOTE. Required for the Wiki
     @Override
     public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor pLevel, @NotNull DifficultyInstance pDifficulty, @NotNull MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData, @Nullable CompoundTag pDataTag) {
-        if (getVariantName().isEmpty()) {
+        String variantName = getVariantName();
+        if (variantName == null || variantName.isEmpty()) {
             this.setVariantName(getRandomVariant(getEntityVariants(ModEntities.REX.getKey().location().getPath()), "normal"));
             ParameterUtils.ParameterBuilder.forVariant(this.getVariantName())
                     .withParameter("customParameter")
+                    .withParameter("int")
+                    .withParameter("bool")
+                    .withParameter("array")
                     .connect();
             System.out.println("Variant List: " + getEntityVariants(ModEntities.REX.getKey().location().getPath()));
-            System.out.println("Custom Parameter: " + ParameterUtils.getParameter(this.getVariantName(), "customParameter"));
+            System.out.println("String: " + ParameterUtils.getParameter(this.getVariantName(), "customParameter"));
+            System.out.println("Int: " + ParameterUtils.getParameter(this.getVariantName(), "int"));
+            System.out.println("Bool: " + ParameterUtils.getParameter(this.getVariantName(), "bool"));
+            System.out.println("Array: " + ParameterUtils.getParameter(this.getVariantName(), "array"));
         }
         return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
     }

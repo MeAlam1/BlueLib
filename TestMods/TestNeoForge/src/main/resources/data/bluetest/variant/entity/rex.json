@@ -2,11 +2,23 @@
   "rex": [
     {
       "Variant": "brown",
-      "customParameter": "customValue11"
+      "customParameter": "customValue11",
+      "int": 1,
+      "bool": true,
+      "array": [
+        "boop",
+        "blep"
+      ]
     },
     {
       "Variant": "green",
-      "customParameter": "customValue22"
+      "customParameter": "customValue22",
+      "int": 1,
+      "bool": true,
+      "array": [
+        "boop",
+        "blep"
+      ]
     }
   ]
 }

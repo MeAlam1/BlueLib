@@ -33,7 +33,7 @@ public class DragonEntity extends TamableAnimal implements IVariantEntity, GeoEn
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(VARIANT, "");
+        this.entityData.define(VARIANT, "normal");
     }
 
     // NOTE. Required for the Wiki
@@ -53,7 +53,8 @@ public class DragonEntity extends TamableAnimal implements IVariantEntity, GeoEn
     // NOTE. Required for the Wiki
     @Override
     public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor pLevel, @NotNull DifficultyInstance pDifficulty, @NotNull MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData, @Nullable CompoundTag pDataTag) {
-        if (getVariantName().isEmpty()) {
+        String variantName = getVariantName();
+        if (variantName == null || variantName.isEmpty()) {
             this.setVariantName(getRandomVariant(getEntityVariants(ModEntities.DRAGON.getKey().location().getPath()), "normal"));
             ParameterUtils.ParameterBuilder.forVariant(this.getVariantName())
                     .withParameter("customParameter")
