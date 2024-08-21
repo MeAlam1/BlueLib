@@ -33,9 +33,24 @@ public class VariantParameter extends ParameterBase {
         this.jsonKey = pJsonKey;
         Set<Map.Entry<String, JsonElement>> entrySet = pJsonObject.entrySet();
         for (Map.Entry<String, JsonElement> entry : entrySet) {
-            addParameter(entry.getKey(), entry.getValue().getAsString());
+            JsonElement element = entry.getValue();
+            if (element.isJsonPrimitive()) {
+                addParameter(entry.getKey(), element.getAsString());
+            } else if (element.isJsonArray()) {
+                StringBuilder arrayValues = new StringBuilder();
+                element.getAsJsonArray().forEach(e -> arrayValues.append(e.getAsString()).append(","));
+                if (!arrayValues.isEmpty()) {
+                    arrayValues.setLength(arrayValues.length() - 1);
+                }
+                addParameter(entry.getKey(), arrayValues.toString());
+            } else if (element.isJsonObject()) {
+                addParameter(entry.getKey(), element.toString());
+            } else {
+                addParameter(entry.getKey(), "null");
+            }
         }
     }
+
 
     /**
      * A {@link String} that represents the key of the {@link JsonObject} that identifies this entity.

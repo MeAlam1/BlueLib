@@ -57,10 +57,15 @@ public class DragonEntity extends TamableAnimal implements IVariantEntity, GeoEn
             this.setVariantName(getRandomVariant(getEntityVariants(ModEntities.DRAGON.getKey().location().getPath()), "normal"));
             ParameterUtils.ParameterBuilder.forVariant(this.getVariantName())
                     .withParameter("customParameter")
-                    .withParameter("customParameter2")
+                    .withParameter("int")
+                    .withParameter("bool")
+                    .withParameter("array")
                     .connect();
             System.out.println("Variant List: " + getEntityVariants(ModEntities.DRAGON.getKey().location().getPath()));
-            System.out.println("Custom Parameter: " + ParameterUtils.getParameter(this.getVariantName(), "customParameter"));
+            System.out.println("String: " + ParameterUtils.getParameter(this.getVariantName(), "customParameter"));
+            System.out.println("Int: " + ParameterUtils.getParameter(this.getVariantName(), "int"));
+            System.out.println("Bool: " + ParameterUtils.getParameter(this.getVariantName(), "bool"));
+            System.out.println("Array: " + ParameterUtils.getParameter(this.getVariantName(), "array"));
         }
         return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
     }

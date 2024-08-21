@@ -57,7 +57,6 @@ public class RexEntity extends TamableAnimal implements IVariantEntity, GeoEntit
             this.setVariantName(getRandomVariant(getEntityVariants(ModEntities.REX.getKey().location().getPath()), "normal"));
             ParameterUtils.ParameterBuilder.forVariant(this.getVariantName())
                     .withParameter("customParameter")
-                    .withParameter("customParameter2")
                     .connect();
             System.out.println("Variant List: " + getEntityVariants(ModEntities.REX.getKey().location().getPath()));
             System.out.println("Custom Parameter: " + ParameterUtils.getParameter(this.getVariantName(), "customParameter"));
