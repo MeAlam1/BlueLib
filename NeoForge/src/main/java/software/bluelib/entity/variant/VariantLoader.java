@@ -1,3 +1,5 @@
+// Copyright (c) BlueLib. Licensed under the MIT License.
+
 package software.bluelib.entity.variant;
 
 import com.google.gson.JsonArray;
@@ -9,7 +11,6 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import software.bluelib.interfaces.variant.base.IVariantEntityBase;
 import software.bluelib.json.JSONLoader;
 import software.bluelib.json.JSONMerger;
-import software.bluelib.interfaces.variant.IVariantEntity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,7 +25,7 @@ import java.util.Map;
 public class VariantLoader implements IVariantEntityBase {
 
     /**
-     * A {@link Map<String, List<VariantParameter>>} to store loaded {@link VariantParameter} for each entity type.
+     * A {@link Map<String>} to store loaded {@link VariantParameter} for each entity type.
      */
     private static final Map<String, List<VariantParameter>> entityVariantsMap = new HashMap<>();
 
@@ -39,7 +40,7 @@ public class VariantLoader implements IVariantEntityBase {
     private static final JSONMerger jsonParser = new JSONMerger();
 
     /**
-     * A {@code Void} that loads and merges variant data from both the Main Mod and the <strong>Latest</strong> Datapack.
+     * A {@code void} that loads and merges variant data from both the Main Mod and the <strong>Latest</strong> Datapack.
      * Parses the merged data into {@link VariantParameter}.
      *
      * @param pJSONLocationMod {@link ResourceLocation} - The {@link ResourceLocation} of the Mod's JSON data.
@@ -64,7 +65,7 @@ public class VariantLoader implements IVariantEntityBase {
     }
 
     /**
-     * A {@code Void} that clears variants for a specific entity type from the map.
+     * A {@code void} that clears variants for a specific entity type from the map.
      *
      * @param pEntityName {@link String} - The name of the entity whose variants should be cleared.
      * @author MeAlam
@@ -74,7 +75,7 @@ public class VariantLoader implements IVariantEntityBase {
     }
 
     /**
-     * A {@code Void} that parses the merged JSON data and converts it into {@link VariantParameter} instances.
+     * A {@code void} that parses the merged JSON data and converts it into {@link VariantParameter} instances.
      *
      * @param pJsonObject {@link JsonObject} - The merged {@link JsonObject} containing variant data.
      * @author MeAlam
