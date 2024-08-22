@@ -109,14 +109,5 @@ public class ParameterUtils {
             }
             return this;
         }
-
-        /**
-         * A {@link VariantLoader} method to create a new instance of {@link VariantLoader}.
-         * @return A new instance of {@link VariantLoader}.
-         * @author MeAlam
-         */
-        private VariantLoader getVariantLoader() {
-            return new VariantLoader();
-        }
     }
 }
