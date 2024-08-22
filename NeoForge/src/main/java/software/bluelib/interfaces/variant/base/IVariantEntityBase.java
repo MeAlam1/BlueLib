@@ -34,8 +34,8 @@ public interface IVariantEntityBase {
      * @author MeAlam
      */
     default List<String> getEntityVariants(String pEntityName) {
-        return VariantLoader.getVariants().stream()
-                .filter(variant -> pEntityName.equals(variant.getEntityName()))
+        List<VariantParameter> variants = VariantLoader.getVariantsForEntity(pEntityName);
+        return variants.stream()
                 .map(VariantParameter::getVariantName)
                 .collect(Collectors.toList());
     }
