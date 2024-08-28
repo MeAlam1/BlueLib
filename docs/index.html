@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BlueLib | Developer Wiki</title>
-    <script src="resizeWindow.js"></script>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -28,50 +27,41 @@
         </div>
         <!-- Main Content -->
         <div class="main-content">
-            <nav>
-                <a href="index.html">README</a>
-                <a href="#packages">Packages</a>
-                <a href="#classes">Classes</a>
-                <a href="#deprecated">Deprecated</a>
-                <a href="changelog.html">Changelog</a>
+            <nav>   
+                <div class="dropdown-container">
+                    <div class="dropdown">
+                        <button class="dropdown-button">Minecraft Version</button>
+                        <div class="dropdown-content">
+                            <a href="#">1.16.5</a>
+                            <a href="#">1.18.2</a>
+                            <a href="#">1.20.x</a>
+                            <a href="#">1.21.x</a>
+                        </div>
+                    </div>
+                    <div class="dropdown">
+                        <button class="dropdown-button">Mod Loader</button>
+                        <div class="dropdown-content">
+                            <a href="#">Forge</a>
+                            <a href="#">Fabric</a>
+                            <a href="#">NeoForge</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="left-links">
+                    <a href="index.html" class="main-content-a">ReadMe</a>
+                    <a href="packages.html" class="main-content-a">Packages</a>
+                    <a href="classes.html" class="main-content-a">Classes</a>
+                    <a href="deprecated.html" class="main-content-a">Deprecated</a>
+                    <a href="changelog.html" class="main-content-a">Changelog</a>
+                </div>
             </nav>
-            <section id="packages" class="section">
-                <h2>Packages</h2>
-                <ul>
-                    <li><a href="examplePackage.html">Package1</a></li>
-                    <li><a href="package2.html">Package2</a></li>
-                    <!-- Add links to other package pages -->
-                </ul>
-            </section>
 
-            <section id="classes" class="section">
-                <h2>Classes</h2>
-                <p>Details on individual classes are available on their respective package pages.</p>
-            </section>
-
-            <section id="interfaces" class="section">
-                <h2>Interfaces</h2>
-                <p>Details on interfaces are available on their respective package pages.</p>
-            </section>
-
-            <section id="methods" class="section">
-                <h2>Methods</h2>
-                <p>Details on methods are available on their respective package pages.</p>
-            </section>
-
-            <section id="variables" class="section">
-                <h2>Variables</h2>
-                <p>Details on variables are available on their respective package pages.</p>
-            </section>
-
-            <section id="deprecated" class="section">
-                <h2>Deprecated</h2>
-                <p>Details on deprecated items are available on their respective package pages.</p>
-            </section>
-
-            <section id="changelog" class="section">
-                <h2>Changelog</h2>
-                <p>Version history and updates are available on their respective package pages.</p>
+            <section id="readme" class="section">
+                <h2>ReadMe</h2>
+                <p>
+                    TBA
+                </p>
             </section>
 
             <section id="additional-resources" class="section">
