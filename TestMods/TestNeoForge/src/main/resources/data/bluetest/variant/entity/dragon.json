@@ -1,7 +1,7 @@
 {
   "dragon": [
     {
-      "Variant": "dark",
+      "variantName": "dark",
       "customParameter": "customValue1",
       "int": 1,
       "bool": true,
@@ -11,7 +11,7 @@
       ]
     },
     {
-      "Variant": "bright",
+      "variantName": "bright",
       "customParameter": "customValue2",
       "int": 2,
       "bool": true,

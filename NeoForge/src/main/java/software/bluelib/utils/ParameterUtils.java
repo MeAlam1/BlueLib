@@ -7,10 +7,12 @@ import software.bluelib.entity.variant.VariantLoader;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 /**
  * A {@code Class} to connect custom parameters to the variants.
  * @author MeAlam
+ * @Co-author Dan
  */
 public class ParameterUtils {
 
@@ -18,6 +20,7 @@ public class ParameterUtils {
      * A {@link Map<String>} that holds the custom parameters associated with each variant. <br>
      * The outer {@link Map}'s key represents the variant's name, <br>
      * and the inner {@link Map} stores key-value pairs of custom parameters for that variant.
+     * @Co-author MeAlam, Dan
      */
     private static final Map<String, Map<String, String>> variantParametersMap = new HashMap<>();
 
@@ -29,35 +32,41 @@ public class ParameterUtils {
      * @return The value of the custom parameter identified by {@code pParameterKey}
      * for the variant specified by {@code pVariantName}.
      * @author MeAlam
+     * @Co-author Dan
      */
     public static String getParameter(String pVariantName, String pParameterKey) {
-        return variantParametersMap.getOrDefault(pVariantName, new HashMap<>()).getOrDefault(pParameterKey, "unknown");
+        return variantParametersMap.getOrDefault(pVariantName, new HashMap<>()).getOrDefault(pParameterKey, "null");
     }
 
     /**
      * {@link ParameterBuilder} class for creating and connecting custom parameters to a specific variant.
      * @author MeAlam
+     * @Co-author Dan
      */
     public static class ParameterBuilder {
         /**
          * A {@link String} representing the name of the variant for which parameters are built.
+         * @Co-author MeAlam, Dan
          */
         private final String variantName;
 
         /**
          * A {@link String} representing the name of the entity for which parameters are built.
+         * @Co-author MeAlam, Dan
          */
         private final String entityName;
 
         /**
          * A {@link Map<String>} to store parameters associated with the variant, <br>
          * where each key-value pair represents a parameter name and its corresponding value.
+         * @Co-author MeAlam, Dan
          */
         private final Map<String, String> parameters = new HashMap<>();
 
         /**
          * Constructor that initializes the builder with a specific variant name.
          * @author MeAlam
+         * @Co-author Dan
          */
         private ParameterBuilder(String pEntityName, String pVariantName) {
             this.variantName = pVariantName;
@@ -71,6 +80,7 @@ public class ParameterUtils {
          * @param pVariantName {@link String} - The name of the variant for which parameters are being built.
          * @return A new instance of {@link ParameterBuilder}.
          * @author MeAlam
+         * @Co-author Dan
          */
         public static ParameterBuilder forVariant(String pEntityName, String pVariantName) {
             return new ParameterBuilder(pEntityName, pVariantName);
@@ -82,9 +92,10 @@ public class ParameterUtils {
          * @param pParameter The key of the parameter to add.
          * @return The current instance of {@link ParameterBuilder} to allow method chaining.
          * @author MeAlam
+         * @Co-author Dan
          */
         public ParameterBuilder withParameter(String pParameter) {
-            parameters.put(pParameter, "");
+            parameters.put(pParameter, "null");
             return this;
         }
 
@@ -95,6 +106,7 @@ public class ParameterUtils {
          *
          * @return The current instance of {@link ParameterBuilder} to allow method chaining.
          * @author MeAlam
+         * @Co-author Dan
          */
         public ParameterBuilder connect() {
             VariantParameter variant = VariantLoader.getVariantByName(entityName, variantName);
@@ -105,7 +117,7 @@ public class ParameterUtils {
                 }
                 variantParametersMap.put(variantName, updatedParameters);
             } else {
-                System.out.println("Variant not found: " + variantName);
+                throw new NoSuchElementException("Variant '" + variantName + "' not found for entity '" + entityName + "'");
             }
             return this;
         }

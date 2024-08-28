@@ -11,21 +11,15 @@ import java.util.List;
  * An {@code Interface} representing an entity that supports multiple variants. <br>
  * Extends the {@link IVariantEntityBase} to provide entity-specific methods.
  * @author MeAlam
+ * @Co-author Dan
  */
 public interface IVariantEntity extends IVariantEntityBase {
 
     /**
      * A {@link RandomSource} used for generating random variants.
+     * @Co-author MeAlam, Dan
      */
     RandomSource random = RandomSource.create();
-
-    /**
-     * A {@link String} that gets the name of the variant associated with this entity.
-     *
-     * @return The variant name.
-     * @author MeAlam
-     */
-    String getVariantName();
 
     /**
      * A {@link String} that selects a random variant name from the provided list of variant names.
@@ -34,6 +28,7 @@ public interface IVariantEntity extends IVariantEntityBase {
      * @param pDefaultVariant {@link String} - The default variant name to return if the list is empty.
      * @return A random variant name from the list, or the default variant if the list is empty.
      * @author MeAlam
+     * @Co-author Dan
      */
     default String getRandomVariant(List<String> pVariantNamesList, String pDefaultVariant) {
         List<String> spawnableVariants = pVariantNamesList.stream().toList();

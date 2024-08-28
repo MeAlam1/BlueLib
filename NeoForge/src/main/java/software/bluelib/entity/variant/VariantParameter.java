@@ -14,11 +14,13 @@ import java.util.Set;
  * This class extends {@link ParameterBase} to store and manage variant-specific parameters
  * parsed from a JSON object.
  * @author MeAlam
+ * @Co-author Dan
  */
 public class VariantParameter extends ParameterBase {
 
     /**
      * A {@link String} that represents the key of the JSON object that identifies this entity.
+     * @Co-author MeAlam, Dan
      */
     private final String jsonKey;
 
@@ -33,11 +35,12 @@ public class VariantParameter extends ParameterBase {
      * @param pJsonKey {@link String} - The key that identifies this entity within the {@link JsonObject}.
      * @param pJsonObject {@link JsonObject} - The {@link JsonObject} containing the variant parameters.
      * @author MeAlam
+     * @Co-author Dan
      */
     public VariantParameter(String pJsonKey, JsonObject pJsonObject) {
         this.jsonKey = pJsonKey;
-        Set<Map.Entry<String, JsonElement>> entrySet = pJsonObject.entrySet();
-        for (Map.Entry<String, JsonElement> entry : entrySet) {
+        Set<Map.Entry<String, JsonElement>> entryMap = pJsonObject.entrySet();
+        for (Map.Entry<String, JsonElement> entry : entryMap) {
             JsonElement element = entry.getValue();
             if (element.isJsonPrimitive()) {
                 addParameter(entry.getKey(), element.getAsString());
@@ -61,8 +64,9 @@ public class VariantParameter extends ParameterBase {
      *
      * @return The entity name, which corresponds to the key in the {@link JsonObject}.
      * @author MeAlam
+     * @Co-author Dan
      */
-    public String getEntityName() {
+    public String getJsonKey() {
         return this.jsonKey;
     }
 
@@ -71,9 +75,10 @@ public class VariantParameter extends ParameterBase {
      *
      * @return The variant name, which is stored under the key {@code "Variant"}.
      * @author MeAlam
+     * @Co-author Dan
      */
     public String getVariantName() {
-        return getParameter("Variant");
+        return getParameter("variantName");
     }
 
     /**
@@ -82,6 +87,7 @@ public class VariantParameter extends ParameterBase {
      * @param pKey {@link String} - The key of the parameter to retrieve.
      * @return The value of the parameter, or {@code null} if the key does not exist.
      * @author MeAlam
+     * @Co-author Dan
      */
     public String getParameter(String pKey) {
         return (String) super.getParameter(pKey);
