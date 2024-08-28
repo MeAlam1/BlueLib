@@ -17,7 +17,7 @@ public class RexModel extends GeoModel<RexEntity> {
     // Get the Texture Location
     @Override
     public ResourceLocation getTextureResource(RexEntity pObject) {
-        return pObject.getTextureLocation(BlueTest.MODID, "textures/entity/" + ModEntities.REX.getKey().location().getPath() + "/" + pObject.getVariantName() + ".png");
+        return pObject.getTextureLocation(BlueTest.MODID, "textures/entity/" + pObject.entityName + "/" + pObject.getVariantName() + ".png");
     }
 
     // Get the Animation Location

@@ -1,7 +1,7 @@
 {
   "rex": [
     {
-      "Variant": "brown",
+      "variantName": "brown",
       "customParameter": "customValue11",
       "int": 1,
       "bool": true,
@@ -11,7 +11,7 @@
       ]
     },
     {
-      "Variant": "green",
+      "variantName": "green",
       "customParameter": "customValue22",
       "int": 1,
       "bool": true,

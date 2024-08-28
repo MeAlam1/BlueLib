@@ -18,11 +18,13 @@ import java.util.Optional;
 /**
  * A {@code Class} that loads JSON data from a {@link ResourceLocation}.
  * @author MeAlam
+ * @Co-author Dan
  */
 public class JSONLoader {
 
     /**
      * A {@link Gson} instance for parsing JSON data.
+     * @Co-author MeAlam, Dan
      */
     private static final Gson gson = new Gson();
 
@@ -34,6 +36,7 @@ public class JSONLoader {
      * @return The loaded {@link JsonObject}.
      * @throws CouldNotLoadJSON If the JSON could not be loaded.
      * @author MeAlam
+     * @Co-author Dan
      */
     public JsonObject loadJson(ResourceLocation pResourceLocation, ResourceManager pResourceManager) throws CouldNotLoadJSON {
         try {
@@ -48,8 +51,8 @@ public class JSONLoader {
 
                 return gson.fromJson(reader, JsonObject.class);
             }
-        } catch (IOException e) {
-            throw new CouldNotLoadJSON("Failed to load JSON from resource: " + pResourceLocation + ". Error: " + e.getMessage(), pResourceLocation.toString());
+        } catch (IOException pException) {
+            throw new CouldNotLoadJSON("Failed to load JSON from resource: " + pResourceLocation + ". Error: " + pException.getMessage(), pResourceLocation.toString());
         }
     }
 }

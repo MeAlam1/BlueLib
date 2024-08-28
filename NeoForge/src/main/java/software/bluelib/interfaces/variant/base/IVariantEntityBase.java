@@ -11,6 +11,8 @@ import java.util.stream.Collectors;
 
 /**
  * A base {@code Interface} providing fundamental methods for handling entity variants.
+ * @author MeAlam
+ * @Co-author Dan
  */
 public interface IVariantEntityBase {
 
@@ -21,6 +23,7 @@ public interface IVariantEntityBase {
      * @param pPath {@link String} - The texture path.
      * @return A {@link ResourceLocation} pointing to the specified texture.
      * @author MeAlam
+     * @Co-author Dan
      */
     default ResourceLocation getTextureLocation(String pModId, String pPath) {
         return new ResourceLocation(pModId, pPath);
@@ -32,9 +35,10 @@ public interface IVariantEntityBase {
      * @param pEntityName {@link String} - The name of the entity whose variants are to be retrieved.
      * @return A {@link List<String>} of variant names associated with the specified entity.
      * @author MeAlam
+     * @Co-author Dan
      */
     default List<String> getEntityVariants(String pEntityName) {
-        List<VariantParameter> variants = VariantLoader.getVariantsForEntity(pEntityName);
+        List<VariantParameter> variants = VariantLoader.getVariantsFromEntity(pEntityName);
         return variants.stream()
                 .map(VariantParameter::getVariantName)
                 .collect(Collectors.toList());

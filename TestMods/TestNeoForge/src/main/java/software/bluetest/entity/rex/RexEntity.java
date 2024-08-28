@@ -22,65 +22,57 @@ import software.bluelib.utils.ParameterUtils;
 import software.bluetest.init.ModEntities;
 
 public class RexEntity extends TamableAnimal implements IVariantEntity, GeoEntity {
-    // NOTE. 3 Lines Required for the Wiki
     public static final EntityDataAccessor<String> VARIANT = SynchedEntityData.defineId(RexEntity.class, EntityDataSerializers.STRING);
+    protected final String entityName = "rex";
 
     public RexEntity(EntityType<? extends TamableAnimal> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
     }
 
-    // NOTE. Required for the Wiki
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(VARIANT, "normal");
     }
 
-    // NOTE. Required for the Wiki
     @Override
     public void addAdditionalSaveData(@NotNull CompoundTag pCompound) {
         super.addAdditionalSaveData(pCompound);
         pCompound.putString("Variant", getVariantName());
     }
 
-    // NOTE. Required for the Wiki
     @Override
     public void readAdditionalSaveData(@NotNull CompoundTag pCompound) {
         super.readAdditionalSaveData(pCompound);
         this.setVariantName(pCompound.getString("Variant"));
     }
 
-    // NOTE. Required for the Wiki
     @Override
     public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor pLevel, @NotNull DifficultyInstance pDifficulty, @NotNull MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData, @Nullable CompoundTag pDataTag) {
         String variantName = getVariantName();
         if (variantName == null || variantName.isEmpty()) {
-            this.setVariantName(getRandomVariant(getEntityVariants(ModEntities.REX.getKey().location().getPath()), "normal"));
-            ParameterUtils.ParameterBuilder.forVariant(ModEntities.REX.getKey().location().getPath(),this.getVariantName())
+            this.setVariantName(getRandomVariant(getEntityVariants(entityName), "normal"));
+            ParameterUtils.ParameterBuilder.forVariant(entityName,this.getVariantName())
                     .withParameter("customParameter")
                     .withParameter("int")
                     .withParameter("bool")
                     .withParameter("array")
                     .connect();
-            System.out.println("Variant List: " + getEntityVariants(ModEntities.REX.getKey().location().getPath()));
-            System.out.println("String: " + ParameterUtils.getParameter(this.getVariantName(), "customParameter"));
-            System.out.println("Int: " + ParameterUtils.getParameter(this.getVariantName(), "int"));
-            System.out.println("Bool: " + ParameterUtils.getParameter(this.getVariantName(), "bool"));
-            System.out.println("Array: " + ParameterUtils.getParameter(this.getVariantName(), "array"));
         }
         return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
     }
 
-    // NOTE. Required for the Wiki
     public void setVariantName(String pName) {
         this.entityData.set(VARIANT, pName);
     }
 
-    // NOTE. Required for the Wiki
-    @Override
     public String getVariantName() {
         return this.entityData.get(VARIANT);
     }
+
+    /**
+     * All Code below this Fragment is not Library Related!!!
+     */
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
