@@ -1,3 +1,5 @@
+// Copyright (c) BlueLib. Licensed under the MIT License.
+
 package software.bluetest.init;
 
 import net.minecraft.core.registries.Registries;

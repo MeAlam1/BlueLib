@@ -1,3 +1,5 @@
+// Copyright (c) BlueLib. Licensed under the MIT License.
+
 package software.bluetest.event;
 
 import net.neoforged.bus.api.SubscribeEvent;
