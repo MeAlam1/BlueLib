@@ -82,6 +82,7 @@
     - Key Methods: In class-level comments, list out key methods provided by the class, which can help users quickly understand the main functionalities. 
     - Versioning: Include the `@since` tag in both class-level and method-level comments to indicate the version since which the class or method has been available.
       - If you update a Class/Method, please add/update the `@version` to indicate it has been changed.
+    - Copyright: Each file should start with `// Copyright (c) BlueLib. Licensed under the MIT License.`
 
 ### Deprecation
 
