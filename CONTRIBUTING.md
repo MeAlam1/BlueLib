@@ -80,7 +80,8 @@
     - When referencing variables or constants, use `{@code}` to wrap them within the comment.
     - Use `{@link}` to refer to classes, methods, or any other Java elements where appropriate.
     - Key Methods: In class-level comments, list out key methods provided by the class, which can help users quickly understand the main functionalities. 
-    - Versioning: Include the @since tag in both class-level and method-level comments to indicate the version since which the class or method has been available.
+    - Versioning: Include the `@since` tag in both class-level and method-level comments to indicate the version since which the class or method has been available.
+      - If you update a Class/Method, please add/update the `@version` to indicate it has been changed.
 
 ### Deprecation
 
