@@ -16,9 +16,17 @@ import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
 /**
- * A {@code Class} that loads JSON data from a {@link ResourceLocation}.
+ * The {@code JSONLoader} class is responsible for loading and parsing JSON data from
+ * resources defined by {@link ResourceLocation} within a Minecraft mod environment. <br>
+ * It uses the {@link Gson} library to convert JSON strings into {@link JsonObject} instances.
+ * <p>
+ * Key methods:
+ * <ul>
+ *   <li>{@link #loadJson(ResourceLocation, ResourceManager)} - Loads a JSON resource.</li>
+ * </ul>
  * @author MeAlam
  * @Co-author Dan
+ * @since 1.0.0
  */
 public class JSONLoader {
 
@@ -29,14 +37,17 @@ public class JSONLoader {
     private static final Gson gson = new Gson();
 
     /**
-     * A {@link JsonObject} that Loads JSON data from a {@link ResourceLocation}.
-     *
+     * A {@link JsonObject} that loads JSON data from a {@link ResourceLocation}. <br>
+     * This method is typically used to load configuration files or other JSON-based resources
+     * in a Minecraft mod environment.
+     * <p>
      * @param pResourceLocation {@link ResourceLocation} - The {@link ResourceLocation} of the JSON resource.
      * @param pResourceManager {@link ResourceManager} - The {@link ResourceManager} to load the resource.
      * @return The loaded {@link JsonObject}.
      * @throws CouldNotLoadJSON If the JSON could not be loaded.
      * @author MeAlam
      * @Co-author Dan
+     * @since 1.0.0
      */
     public JsonObject loadJson(ResourceLocation pResourceLocation, ResourceManager pResourceManager) throws CouldNotLoadJSON {
         try {
