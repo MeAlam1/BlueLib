@@ -15,62 +15,94 @@
 
 - All code should be commented using the `/** * * */` format. This ensures that comments are displayed when users hover over a method, class, or variable, even after the library is compiled. This helps maintain clarity and consistency in the documentation.
 
-- **Structure**:
-    - **Class and Method Descriptions**: Begin each comment with a brief description that typically starts with `A ...`, where the `...` represents a link to the relevant class or object using `{@link ClassName}`. If the method is `void`, use `{@code}` to refer to the method name instead.
-        - **Example for a Method**:
+  - **Structure**:
+      - **Class Descriptions**: 
+        - **Key Methods:** List key methods provided by the class, using bullet points for easy readability.
+        - **Author:** If you have contributed to a Method/Class, put yourself as Co-author, if you have created an Method/Class, put yourself as Author.
+        - **Since Version:** Use the `@since` tag to indicate the version since which the class has been available.
+            **Example:**
           ```java
           /**
-           * A {@link String} that retrieves the value of a custom parameter for a specific variant.
-           *
-           * @param pVariantName {@link String} - The variant name you want to see the custom parameter of.
-           * @param pParameterKey {@link String} - The parameter you want to see.
-           * @return The value of the custom parameter identified by {@code pParameterKey}
-           * for the variant specified by {@code pVariantName}.
+           * A {@code JSONLoader} class responsible for loading and parsing JSON data from resources
+           * defined by {@link ResourceLocation} within a Minecraft mod environment.
+           * <p> 
+           * Key Methods:
+           * <ul>
+           *   <li>{@link #loadJson(ResourceLocation, ResourceManager)} - Loads a JSON resource.</li>
+           * </ul>
+           * @author MeAlam
+           * @Co-author Dan
+           * @since 1.0.0
            */
-          public String getCustomParameter(String pVariantName, String pParameterKey) {
-              // Method implementation
+          public class JSONLoader {
           }
           ```
+      - **Method Descriptions**: Begin each comment with a brief description that typically starts with `A ...`, where the `...` represents a link to the relevant class or object using `{@link ClassName}`. If the method is `void`, use `{@code}` to refer to the method name instead.
+          - **Example for a Method**:
+            ```java
+            /**
+             * A {@link String} that retrieves the value of a custom parameter for a specific variant.
+             *
+             * @param pVariantName {@link String} - The variant name you want to see the custom parameter of.
+             * @param pParameterKey {@link String} - The parameter you want to see.
+             * @return The value of the custom parameter identified by {@code pParameterKey}
+             * for the variant specified by {@code pVariantName}.
+             * @author MeAlam
+             * @Co-author Dan
+             * @since 1.0.0
+               */
+              public String getCustomParameter(String pVariantName, String pParameterKey) {
+                  // Method implementation
+              }
+              ```
 
-    - **Parameters**: Start each parameter description with `{@link TypeOfParameter} - [Comment]`. If the parameter is referenced within the comment, enclose it in a code block using `{@code}`.
-        - **Example for Parameters**:
-          ```java
-          /**
-           * A {@link String} that retrieves the value of a custom parameter for a specific variant.
-           *
-           * @param pVariantName {@link String} - The variant name you want to see the custom parameter of.
-           * @param pParameterKey {@link String} - The parameter you want to see.
-           * @return The value of the custom parameter identified by {@code pParameterKey}
-           * for the variant specified by {@code pVariantName}.
-           */
-          public String getCustomParameter(String pVariantName, String pParameterKey) {
-              // Method implementation
-          }
-          ```
+      - **Parameters**: Start each parameter description with `{@link TypeOfParameter} - [Comment]`. If the parameter is referenced within the comment, enclose it in a code block using `{@code}`.
+          - **Example for Parameters**:
+            ```java
+            /**
+             * A {@link String} that retrieves the value of a custom parameter for a specific variant.
+             *
+             * @param pVariantName {@link String} - The variant name you want to see the custom parameter of.
+             * @param pParameterKey {@link String} - The parameter you want to see.
+             * @return The value of the custom parameter identified by {@code pParameterKey}
+             * for the variant specified by {@code pVariantName}.
+             * @author MeAlam
+             * @Co-author Dan
+             * @since 1.0.0
+             */
+             public String getCustomParameter(String pVariantName, String pParameterKey) {
+                  // Method implementation
+             }
+             ```
 
 - **General Guidelines**:
     - Always ensure that comments are clear, concise, and provide sufficient information to understand the code.
     - When referencing variables or constants, use `{@code}` to wrap them within the comment.
     - Use `{@link}` to refer to classes, methods, or any other Java elements where appropriate.
+    - Key Methods: In class-level comments, list out key methods provided by the class, which can help users quickly understand the main functionalities. 
+    - Versioning: Include the @since tag in both class-level and method-level comments to indicate the version since which the class or method has been available.
 
 ### Deprecation
 
 - If you optimize a method, variable, or class and determine that it is no longer necessary for the library, mark it as `@Deprecated` instead of removing it. This only applies to elements that have been included in previous released versions of the library.
 
 - Include a **strong TODO comment** explaining why it is deprecated and any further action required, such as testing or eventual removal.
-    - **Example**:
-      ```java
-      /**
-       * Builds and returns a map of the parameters added to this builder. <br><br>
-       * Building custom parameters will not go through this method anymore. However, it has not been tested with Multiple Entities and Datapack yet. <br>
-       * <strong>TODO: Testing with Multiple Entities and Datapacks required before Deletion/Refactoring.</strong><br>
-       * @return A map containing the parameters added to this builder.
-       */
-      @Deprecated
-      public Map<String, String> build() {
-          return new HashMap<>(parameters);
-      }
-      ```
+- **Example**:
+  ```java
+  /**
+   * Builds and returns a map of the parameters added to this builder. <br><br>
+   * Building custom parameters will not go through this method anymore. However, it has not been tested with Multiple Entities and Datapack yet. <br>
+   * <strong>TODO: Testing with Multiple Entities and Datapacks required before Deletion/Refactoring.</strong><br>
+   * @return A map containing the parameters added to this builder.
+   * @author MeAlam
+   * @Co-author Dan
+   * @since 1.0.0
+   */
+  @Deprecated
+  public Map<String, String> build() {
+      return new HashMap<>(parameters);
+  }
+  ```
 
 ## Workflow
 
