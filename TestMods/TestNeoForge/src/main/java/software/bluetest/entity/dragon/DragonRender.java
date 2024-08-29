@@ -1,3 +1,5 @@
+// Copyright (c) BlueLib. Licensed under the MIT License.
+
 package software.bluetest.entity.dragon;
 
 import net.minecraft.client.renderer.entity.EntityRendererProvider;

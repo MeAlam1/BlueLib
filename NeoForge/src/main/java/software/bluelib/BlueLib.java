@@ -13,41 +13,71 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 /**
- * The Base {@code Class} of {@link BlueLib}!<br>
- * Welcome, and thank you for using {@link BlueLib}!
+ * The main class of the {@link BlueLib} mod.
  * <p>
- * This class serves as the entry point for the {@link BlueLib} mod. It initializes the mod by registering event handlers
- * and setting up any necessary configurations. You can find more detailed documentation in the <br>
- * <a href="https://github.com/MeAlam1/BlueLib/wiki">Bluelib Wiki | Introduction</a>
+ * This class serves as the entry point for the {@link BlueLib} mod, handling initialization by registering event handlers
+ * and setting up necessary configurations. For more details, refer to the <a href="https://github.com/MeAlam1/BlueLib/wiki">BlueLib Wiki</a>.
+ * </p>
  *
- * @see <a href="https://github.com/MeAlam1/BlueLib/wiki">Bluelib Wiki | Introduction</a>
- * @author MeAlam
- * @Co-author Dan
+ * <p>
+ * Key Methods:
+ * <ul>
+ *   <li>{@link #BlueLib(IEventBus)} - Constructs the {@link BlueLib} instance and registers the mod event bus.</li>
+ *   <li>{@link #onLoadComplete(FMLLoadCompleteEvent)} - Handles the event when the mod loading is complete and prints a thank-you message if in developer mode.</li>
+ *   <li>{@link #isDeveloperMode()} - Determines if the mod is running in developer mode.</li>
+ * </ul>
+ * </p>
+ *
+ * @see <a href="https://github.com/MeAlam1/BlueLib/wiki">BlueLib Wiki</a>
+ * @author MeAlam, Dan
+ * @Co-author All Contributors of BlueLib!
+ * @since 1.0.0
  */
 @Mod(BlueLib.MODID)
 public class BlueLib {
 
+    /**
+     * A {@link ScheduledExecutorService} used for scheduling tasks, such as printing messages after a delay.
+     * <p>
+     * This is initialized with a single-threaded pool to handle delayed tasks in a separate thread.
+     * </p>
+     * @Co-author MeAlam, Dan
+     * @since 1.0.0
+     */
     private static final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
     /**
-     * The Mod ID for {@link BlueLib}. Used as a unique identifier for the mod.
+     * The Mod ID for {@link BlueLib}. This serves as a unique identifier for the mod.
      * @Co-author MeAlam, Dan
+     * @since 1.0.0
      */
     public static final String MODID = "bluelib";
 
     // public static final Logger LOGGER = LogUtils.getLogger();
 
     /**
-     * Constructor for the {@link BlueLib} class. This constructor registers the mod event bus.
+     * Constructs a new {@link BlueLib} instance and registers the mod event bus.
      *
      * @param pModEventBus {@link IEventBus} - The event bus to which the mod will register its event handlers.
      * @author MeAlam
      * @Co-author Dan
+     * @since 1.0.0
      */
     public BlueLib(IEventBus pModEventBus) {
         pModEventBus.register(this);
     }
 
+    /**
+     * Handles the {@link FMLLoadCompleteEvent}, which is triggered when the mod loading process is complete.
+     * <p>
+     * If the mod is running in developer mode, it schedules a task to print a thank-you message to the console after a short delay.
+     * </p>
+     *
+     * @param pEvent {@link FMLLoadCompleteEvent} - The event triggered upon the completion of the mod loading process.
+     * @author MeAlam
+     * @Co-author Dan
+     * @since 1.0.0
+     */
     @SubscribeEvent
     public void onLoadComplete(FMLLoadCompleteEvent pEvent) {
         if (isDeveloperMode()) {
@@ -67,11 +97,15 @@ public class BlueLib {
     }
 
     /**
-     * A {@link Boolean} that checks if the mod is running in developer mode.
+     * Checks if the mod is running in developer mode.
+     * <p>
+     * Developer mode is determined by checking if the mod is not running in a production environment.
+     * </p>
      *
      * @return {@code true} if the mod is running in developer mode, {@code false} otherwise.
      * @author MeAlam
      * @Co-author Dan
+     * @since 1.0.0
      */
     static boolean isDeveloperMode() {
         return !FMLEnvironment.production;
