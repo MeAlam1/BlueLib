@@ -103,7 +103,7 @@ publishing {
     publications {
         create('mavenJava', MavenPublication) {
             from components.java
-            groupId = "software.bluelib"
+            groupId = "software.bluelib.neoforge"
             artifactId = "bluelib"
             version = "1.0.0"
         }
