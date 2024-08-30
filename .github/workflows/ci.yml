@@ -47,5 +47,5 @@ jobs:
         run: cd NeoForge && ./gradlew jar
 
       - name: Run Additional Tasks for Forge
-        run: cd Forge/gradlew && ./gradlew jar
+        run: cd Forge && ./gradlew jar
 
