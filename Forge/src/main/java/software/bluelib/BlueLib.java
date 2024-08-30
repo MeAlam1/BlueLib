@@ -2,13 +2,19 @@
 
 package software.bluelib;
 
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.Mod;
-import net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent;
-import net.neoforged.fml.loading.FMLEnvironment;
-import software.bluelib.example.event.ClientEvents;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.loading.FMLEnvironment;
+import software.bluelib.example.event.ReloadHandler;
 import software.bluelib.example.init.ModEntities;
+import software.bluelib.example.proxy.ClientProxy;
+import software.bluelib.example.proxy.CommonProxy;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -24,7 +30,7 @@ import java.util.concurrent.TimeUnit;
  * <p>
  * Key Methods:
  * <ul>
- *   <li>{@link #BlueLib(IEventBus)} - Constructs the {@link BlueLib} instance and registers the mod event bus.</li>
+ *   <li>{@link #BlueLib()} - Constructs the {@link BlueLib} instance and registers the mod event bus.</li>
  *   <li>{@link #onLoadComplete(FMLLoadCompleteEvent)} - Handles the event when the mod loading is complete and prints a thank-you message if in developer mode.</li>
  *   <li>{@link #isDeveloperMode()} - Determines if the mod is running in developer mode.</li>
  * </ul>
@@ -55,24 +61,38 @@ public class BlueLib {
      */
     public static final String MODID = "bluelib";
 
+    public static CommonProxy PROXY = DistExecutor.safeRunForDist(() -> ClientProxy::new, () -> CommonProxy::new);
+
     // public static final Logger LOGGER = LogUtils.getLogger();
 
     /**
      * Constructs a new {@link BlueLib} instance and registers the mod event bus.
      *
-     * @param pModEventBus {@link IEventBus} - The event bus to which the mod will register its event handlers.
      * @author MeAlam
      * @Co-author Dan
      * @since 1.0.0
      */
-    public BlueLib(IEventBus pModEventBus) {
-        pModEventBus.register(this);
-        if (isDeveloperMode()) {
-            ModEntities.REGISTRY.register(pModEventBus);
+    public BlueLib()
+    {
+        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+        modEventBus.register(this);
 
-            pModEventBus.addListener(ClientEvents::registerAttributes);
-            pModEventBus.addListener(ClientEvents::registerRenderers);
+        if (isDeveloperMode()) {
+            ModEntities.register(modEventBus);
+            MinecraftForge.EVENT_BUS.register(ReloadHandler.class);
+            modEventBus.addListener(this::setupComplete);
+            modEventBus.addListener(this::setupClient);
         }
+    }
+
+    private void setupClient(final FMLClientSetupEvent event) {
+        event.enqueueWork(() -> {
+            PROXY.clientInit();
+        });
+    }
+
+    private void setupComplete(final FMLLoadCompleteEvent event) {
+        PROXY.postInit();
     }
 
     /**
