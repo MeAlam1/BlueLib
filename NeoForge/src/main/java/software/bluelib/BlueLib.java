@@ -7,6 +7,8 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.neoforged.fml.loading.FMLEnvironment;
+import software.bluelib.example.event.ClientEvents;
+import software.bluelib.example.init.ModEntities;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -65,6 +67,12 @@ public class BlueLib {
      */
     public BlueLib(IEventBus pModEventBus) {
         pModEventBus.register(this);
+        if (isDeveloperMode()) {
+            ModEntities.REGISTRY.register(pModEventBus);
+
+            pModEventBus.addListener(ClientEvents::registerAttributes);
+            pModEventBus.addListener(ClientEvents::registerRenderers);
+        }
     }
 
     /**

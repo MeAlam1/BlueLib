@@ -2,12 +2,19 @@
 
 package software.bluelib;
 
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLEnvironment;
+import software.bluelib.example.event.ReloadHandler;
+import software.bluelib.example.init.ModEntities;
+import software.bluelib.example.proxy.ClientProxy;
+import software.bluelib.example.proxy.CommonProxy;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -54,6 +61,8 @@ public class BlueLib {
      */
     public static final String MODID = "bluelib";
 
+    public static CommonProxy PROXY = DistExecutor.safeRunForDist(() -> ClientProxy::new, () -> CommonProxy::new);
+
     // public static final Logger LOGGER = LogUtils.getLogger();
 
     /**
@@ -67,6 +76,23 @@ public class BlueLib {
     {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         modEventBus.register(this);
+
+        if (isDeveloperMode()) {
+            ModEntities.register(modEventBus);
+            MinecraftForge.EVENT_BUS.register(ReloadHandler.class);
+            modEventBus.addListener(this::setupComplete);
+            modEventBus.addListener(this::setupClient);
+        }
+    }
+
+    private void setupClient(final FMLClientSetupEvent event) {
+        event.enqueueWork(() -> {
+            PROXY.clientInit();
+        });
+    }
+
+    private void setupComplete(final FMLLoadCompleteEvent event) {
+        PROXY.postInit();
     }
 
     /**
