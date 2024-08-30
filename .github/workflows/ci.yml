@@ -32,16 +32,20 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
-      - name: Grant execute permission for Gradle wrapper
-        run: chmod +x gradlew
-
-      - name: Run Build
-        run: ./gradlew build
-
-      - name: Run Client
-        run: ./gradlew runClient
-        continue-on-error: true
-
-      - name: Run Additional Tasks
+      - name: Grant execute permission for Gradle wrappers
         run: |
-          ./gradlew jar
+          chmod +x NeoForge/gradlew
+          chmod +x Forge/gradlew
+
+      - name: Build for NeoForge
+        run: cd NeoForge && ./gradlew build
+
+      - name: Build for Forge
+        run: cd Forge && ./gradlew build
+
+      - name: Run Additional Tasks for NeoForge
+        run: cd NeoForge && ./gradlew jar
+
+      - name: Run Additional Tasks for Forge
+        run: cd Forge && ./gradlew jar
+
