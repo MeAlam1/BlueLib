@@ -7,7 +7,6 @@
   <tr>
     <td align="center"><strong>Neoforge</strong></td>
     <td align="center"><strong>Forge</strong></td>
-    <td align="center"><strong>Fabric</strong></td>
   </tr>
   <tr>
     <td>
@@ -58,31 +57,6 @@
         </tbody>
       </table>
     </td>
-    <td>
-      <table border="1" align="center">
-        <thead>
-          <tr>
-            <th>Version</th>
-            <th>Support</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>1.16.5</td>
-            <td>Active</td>
-          </tr>
-          <tr>
-            <td>1.18.2</td>
-            <td>Active</td>
-          </tr>
-          <tr>
-            <td>1.20.x</td>
-            <td>Active</td>
-          </tr>
-          <tr>
-            <td>1.21.x</td>
-            <td>Active</td>
-          </tr>
         </tbody>
       </table>
     </td>
