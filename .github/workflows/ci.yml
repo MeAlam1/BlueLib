@@ -43,14 +43,6 @@ jobs:
       - name: Build for Forge
         run: cd Forge && ./gradlew build
 
-      - name: runClient for NeoForge
-        run: cd NeoForge && ./gradlew runClient
-        continue-on-error: true
-
-      - name: runClient for Forge
-        run: cd Forge && ./gradlew runClient
-        continue-on-error: true
-
       - name: Run Additional Tasks for NeoForge
         run: cd NeoForge && ./gradlew jar
 
