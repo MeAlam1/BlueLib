@@ -1,27 +1,44 @@
-const resizer = document.querySelector('.resizer');
+const resizerHorizontal = document.querySelector('.resizer-horizontal');
+const resizerVertical = document.querySelector('.resizer-vertical');
 const topPanel = document.querySelector('.top-panel');
 const bottomPanel = document.querySelector('.bottom-panel');
+const leftPanel = document.querySelector('.left-panel');
+const mainContent = document.querySelector('.main-content');
 
-let isResizing = false;
+let isResizingHorizontal = false;
+let isResizingVertical = false;
 
-resizer.addEventListener('mousedown', function(e) {
-    isResizing = true;
+resizerHorizontal.addEventListener('mousedown', function(e) {
+    isResizingHorizontal = true;
     document.body.style.cursor = 'row-resize';
     document.body.style.userSelect = 'none';
 });
 
-document.addEventListener('mousemove', function(e) {
-    if (!isResizing) return;
+resizerVertical.addEventListener('mousedown', function(e) {
+    isResizingVertical = true;
+    document.body.style.cursor = 'col-resize';
+    document.body.style.userSelect = 'none';
+});
 
-    const offset = e.clientY - topPanel.getBoundingClientRect().top;
-    topPanel.style.flexGrow = 0;
-    bottomPanel.style.flexGrow = 0;
-    topPanel.style.height = `${offset}px`;
-    bottomPanel.style.height = `calc(100% - ${offset}px - 3px)`;
+document.addEventListener('mousemove', function(e) {
+    if (isResizingHorizontal) {
+        const offset = e.clientY - topPanel.getBoundingClientRect().top;
+        topPanel.style.flexGrow = 0;
+        bottomPanel.style.flexGrow = 0;
+        topPanel.style.height = `${offset}px`;
+        bottomPanel.style.height = `calc(100% - ${offset}px - 2px)`;
+    }
+
+    if (isResizingVertical) {
+        const offset = e.clientX - leftPanel.getBoundingClientRect().left;
+        leftPanel.style.width = `${offset}px`;
+        mainContent.style.flexGrow = 1;
+    }
 });
 
 document.addEventListener('mouseup', function() {
-    isResizing = false;
+    isResizingHorizontal = false;
+    isResizingVertical = false;
     document.body.style.cursor = '';
     document.body.style.userSelect = '';
 });
