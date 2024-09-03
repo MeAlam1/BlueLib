@@ -142,7 +142,7 @@ nav a:hover {
     display: flex;
     flex-direction: column;
     width: 300px;
-    border-right: 2px solid #ccc;
+    border-right: 3px solid #ccc;
     overflow: hidden;
 }
 
@@ -154,10 +154,18 @@ nav a:hover {
 .top-panel {
     flex-grow: 1;
     border-bottom: 2px solid #ccc;
+    overflow: auto;
 }
 
 .bottom-panel {
     flex-grow: 1;
+    overflow: auto;
+}
+
+.resizer {
+    height: 3px;
+    background-color: #ccc;
+    cursor: row-resize;
 }
 
 .main-content {
@@ -173,4 +181,21 @@ nav a:hover {
 
 .section {
     margin-bottom: 40px;
+}
+
+/* Responsive */
+@media (max-width: 700px) {
+    .container {
+        flex-direction: column;
+    }
+
+    .left-panel {
+        width: 100%;
+        border-right: none;
+        border-bottom: 3px solid #ccc;
+    }
+
+    .main-content {
+        padding: 20px;
+    }
 }
