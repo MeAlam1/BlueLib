@@ -143,30 +143,37 @@ nav a:hover {
     display: flex;
     flex-direction: column;
     width: 300px;
-    border-right: 3px solid #ccc;
     overflow: hidden;
 }
 
 .top-panel, .bottom-panel {
-    overflow: auto;
+    overflow-y: auto;
     padding: 10px;
 }
 
 .top-panel {
     flex-grow: 1;
-    border-bottom: 3px solid #ccc;
-    overflow: auto;
 }
 
 .bottom-panel {
     flex-grow: 1;
-    overflow: auto;
 }
 
 .resizer-horizontal {
     height: 3px;
-    background-color: #ccc;
+    background: #ccc;
     cursor: row-resize;
+}
+
+.resizer-vertical {
+    width: 3px;
+    background: #ccc;
+    cursor: col-resize;
+}
+
+#left-panel-container {
+    display: flex;
+    height: 100%;
 }
 
 .resizer-vertical {
@@ -174,6 +181,37 @@ nav a:hover {
     background-color: #ccc;
     cursor: col-resize;
 }
+
+/* Customize scrollbar for the top panel */
+::-webkit-scrollbar,
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track,
+::-webkit-scrollbar-track {
+    background: #ccc;
+}
+
+::-webkit-scrollbar-thumb,
+::-webkit-scrollbar-thumb {
+    background-color: #3b3b3b;
+    border-radius: 10px;
+    border: 3px solid #ccc;
+}
+
+::-webkit-scrollbar-thumb:hover,
+::-webkit-scrollbar-thumb:hover {
+    background-color: #3b3b3b;
+}
+
+/* For Firefox */
+.body {
+    scrollbar-width: thin;
+    scrollbar-color: #3b3b3b #ccc;
+}
+
 .main-content {
     flex: 1;
     padding-left: 20px;
