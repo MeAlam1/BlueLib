@@ -4,9 +4,10 @@ package software.bluelib.json;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.packs.resources.Resource;
-import net.minecraft.server.packs.resources.ResourceManager;
+import com.google.gson.JsonSyntaxException;
+import net.minecraft.resources.IResource;
+import net.minecraft.resources.IResourceManager;
+import net.minecraft.util.ResourceLocation;
 import software.bluelib.exception.CouldNotLoadJSON;
 
 import java.io.FileNotFoundException;
@@ -22,7 +23,7 @@ import java.nio.charset.StandardCharsets;
  * <p>
  * Key methods:
  * <ul>
- *   <li>{@link #loadJson(ResourceLocation, ResourceManager)} - Loads a JSON resource.</li>
+ *   <li>{@link #loadJson(ResourceLocation, IResourceManager)} - Loads a JSON resource.</li>
  * </ul>
  * @author MeAlam
  * @Co-author Dan
@@ -42,26 +43,30 @@ public class JSONLoader {
      * in a Minecraft mod environment.
      * <p>
      * @param pResourceLocation {@link ResourceLocation} - The {@link ResourceLocation} of the JSON resource.
-     * @param pResourceManager {@link ResourceManager} - The {@link ResourceManager} to load the resource.
+     * @param pResourceManager {@link IResourceManager} - The {@link IResourceManager} to load the resource.
      * @return The loaded {@link JsonObject}.
      * @throws CouldNotLoadJSON If the JSON could not be loaded.
      * @author MeAlam
      * @Co-author Dan
      * @since 1.0.0
      */
-    public JsonObject loadJson(ResourceLocation pResourceLocation, ResourceManager pResourceManager) throws CouldNotLoadJSON {
+    public JsonObject loadJson(ResourceLocation pResourceLocation, IResourceManager pResourceManager) throws CouldNotLoadJSON {
         try {
-            Resource resource = pResourceManager.getResource(pResourceLocation);
+            IResource resource = pResourceManager.getResource(pResourceLocation);
 
             try (InputStream inputStream = resource.getInputStream();
                  InputStreamReader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8)) {
 
                 return gson.fromJson(reader, JsonObject.class);
             }
-        } catch (FileNotFoundException pException) {
-            return new JsonObject();
-        } catch (IOException pException) {
-            throw new CouldNotLoadJSON("Failed to load JSON from resource: " + pResourceLocation + ". Error: " + pException.getMessage(), pResourceLocation.toString());
+        } catch (IOException e) {
+            if (e instanceof FileNotFoundException) {
+                return new JsonObject(); // Return an empty JsonObject if the file is not found
+            } else {
+                throw new CouldNotLoadJSON("Failed to load JSON from resource: " + pResourceLocation + ". Error: " + e.getMessage(), pResourceLocation.toString());
+            }
+        } catch (JsonSyntaxException e) {
+            throw new CouldNotLoadJSON("Malformed JSON at resource: " + pResourceLocation + ". Error: " + e.getMessage(), pResourceLocation.toString());
         }
     }
 }

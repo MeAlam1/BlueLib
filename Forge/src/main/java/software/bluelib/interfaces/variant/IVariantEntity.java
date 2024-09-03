@@ -4,6 +4,8 @@ package software.bluelib.interfaces.variant;
 
 import software.bluelib.interfaces.variant.base.IVariantEntityBase;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -47,7 +49,7 @@ public interface IVariantEntity extends IVariantEntityBase {
      * @since 1.0.0
      */
     default String getRandomVariant(List<String> pVariantNamesList, String pDefaultVariant) {
-        List<String> spawnableVariants = List.copyOf(pVariantNamesList);
+        List<String> spawnableVariants = Collections.unmodifiableList(new ArrayList<>(pVariantNamesList));
         if (!spawnableVariants.isEmpty()) {
             return spawnableVariants.get(random.nextInt(spawnableVariants.size()));
         }

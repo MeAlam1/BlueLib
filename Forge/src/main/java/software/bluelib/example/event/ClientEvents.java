@@ -2,8 +2,8 @@
 
 package software.bluelib.example.event;
 
-import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import software.bluelib.BlueLib;
 import software.bluelib.example.entity.dragon.DragonRender;
@@ -15,7 +15,7 @@ public class ClientEvents {
 
     public static void registerRenderers() {
         // Register the renderer for all the Entities
-        EntityRenderers.register(ModEntities.DRAGON.get(), DragonRender::new);
-        EntityRenderers.register(ModEntities.REX.get(), RexRender::new);
+        RenderingRegistry.registerEntityRenderingHandler(ModEntities.DRAGON.get(), DragonRender::new);
+        RenderingRegistry.registerEntityRenderingHandler(ModEntities.REX.get(), RexRender::new);
     }
 }

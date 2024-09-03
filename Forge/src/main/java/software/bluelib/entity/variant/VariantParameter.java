@@ -70,7 +70,7 @@ public class VariantParameter extends ParameterBase {
             } else if (element.isJsonArray()) {
                 StringBuilder arrayValues = new StringBuilder();
                 element.getAsJsonArray().forEach(e -> arrayValues.append(e.getAsString()).append(","));
-                if (!arrayValues.isEmpty()) {
+                if (arrayValues.length() > 0) {
                     arrayValues.setLength(arrayValues.length() - 1);
                 }
                 addParameter(entry.getKey(), arrayValues.toString());

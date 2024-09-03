@@ -5,9 +5,9 @@ package software.bluelib.entity.variant;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.IResourceManager;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.util.ResourceLocation;
 import software.bluelib.interfaces.variant.base.IVariantEntityBase;
 import software.bluelib.json.JSONLoader;
 import software.bluelib.json.JSONMerger;
@@ -67,7 +67,7 @@ public class VariantLoader implements IVariantEntityBase {
      */
     public static void loadVariants(ResourceLocation pJSONLocationMod, ResourceLocation pJSONLocationData, MinecraftServer pServer, String pEntityName) {
         clearVariantsForEntity(pEntityName);
-        ResourceManager resourceManager = pServer.getResourceManager();
+        IResourceManager resourceManager = pServer.getResourceManager();
         JsonObject mergedJsonObject = new JsonObject();
 
         JsonObject modJson = jsonLoader.loadJson(pJSONLocationMod, resourceManager);

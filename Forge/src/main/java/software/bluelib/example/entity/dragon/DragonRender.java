@@ -2,13 +2,13 @@
 
 package software.bluelib.example.entity.dragon;
 
-import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
 import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
 
 public class DragonRender extends GeoEntityRenderer<DragonEntity> {
 
     // Render the entity
-    public DragonRender(EntityRendererProvider.Context pRenderManager) {
+    public DragonRender(EntityRendererManager pRenderManager) {
         super(pRenderManager, new DragonModel());
     }
 }

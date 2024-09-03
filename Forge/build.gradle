@@ -121,8 +121,12 @@ eclipse {
     synchronizationTasks 'genEclipseRuns'
 }
 
-sourceSets.each {
+sourceSets.main.resources {
+    srcDir 'src/generated/resources'
+}
+
+/*sourceSets.each {
     def dir = layout.buildDirectory.dir("sourcesSets/$it.name")
     it.output.resourcesDir = dir
     it.java.destinationDirectory = dir
-}
+}*/

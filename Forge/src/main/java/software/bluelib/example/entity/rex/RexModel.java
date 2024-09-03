@@ -2,7 +2,7 @@
 
 package software.bluelib.example.entity.rex;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.ResourceLocation;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
 import software.bluelib.BlueLib;
 
