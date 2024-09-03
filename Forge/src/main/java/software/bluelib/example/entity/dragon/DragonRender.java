@@ -3,7 +3,7 @@
 package software.bluelib.example.entity.dragon;
 
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import software.bernie.geckolib.renderer.GeoEntityRenderer;
+import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
 
 public class DragonRender extends GeoEntityRenderer<DragonEntity> {
 
