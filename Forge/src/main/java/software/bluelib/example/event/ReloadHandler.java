@@ -4,9 +4,8 @@ package software.bluelib.example.event;
 
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.event.AddReloadListenerEvent;
-import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import software.bluelib.BlueLib;
 import software.bluelib.event.ReloadEventHandler;
 
@@ -26,7 +25,7 @@ import java.util.concurrent.TimeUnit;
  * <p>
  * Key Methods:
  * <ul>
- *   <li>{@link #onServerStart(ServerStartingEvent)} - Handles server starting events to initialize entity variants.</li>
+ *   <li>{@link #onServerStart(FMLServerStartingEvent)} - Handles server starting events to initialize entity variants.</li>
  *   <li>{@link #onReload(AddReloadListenerEvent)} - Handles reload events to refresh entity variants.</li>
  *   <li>{@link #LoadEntityVariants(MinecraftServer)} - Loads entity variants from JSON files into the server.</li>
  * </ul>
@@ -53,14 +52,14 @@ public class ReloadHandler extends ReloadEventHandler {
      * Handles the server starting event to initialize the {@link MinecraftServer} instance
      * and load entity variants.
      *
-     * @param pEvent {@link ServerStartingEvent} - The event triggered when the server starts.
+     * @param pEvent {@link FMLServerStartingEvent} - The event triggered when the server starts.
      *
      * @since 1.0.0
      * @author MeAlam
      * @Co-author Dan
      */
     @SubscribeEvent
-    public static void onServerStart(ServerStartingEvent pEvent) {
+    public static void onServerStart(FMLServerStartingEvent pEvent) {
         server = pEvent.getServer();
         ReloadHandler.LoadEntityVariants(server);
     }

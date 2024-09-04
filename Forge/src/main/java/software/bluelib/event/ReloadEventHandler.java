@@ -3,8 +3,8 @@
 package software.bluelib.event;
 
 import com.google.gson.JsonParseException;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.ResourceLocation;
 import software.bluelib.entity.variant.VariantLoader;
 
 /**

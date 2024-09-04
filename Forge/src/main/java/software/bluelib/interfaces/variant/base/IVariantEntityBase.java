@@ -2,7 +2,7 @@
 
 package software.bluelib.interfaces.variant.base;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.ResourceLocation;
 import software.bluelib.entity.variant.VariantLoader;
 import software.bluelib.entity.variant.VariantParameter;
 

@@ -26,7 +26,7 @@ base {
     archivesName = "${mod_id}-forge-${minecraft_version}"
 }
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+java.toolchain.languageVersion = JavaLanguageVersion.of(java_version)
 
 println "Java: ${System.getProperty 'java.version'}, JVM: ${System.getProperty 'java.vm.version'} (${System.getProperty 'java.vendor'}), Arch: ${System.getProperty 'os.arch'}"
 minecraft {
@@ -73,8 +73,10 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
-    compileOnly fg.deobf("software.bernie.geckolib:geckolib-forge-${minecraft_version}:${geckolib_version}")
-    runtimeOnly fg.deobf("software.bernie.geckolib:geckolib-forge-${minecraft_version}:${geckolib_version}")
+    //compileOnly fg.deobf("software.bernie.geckolib:geckolib-forge-${geckolib_version}")
+    //runtimeOnly fg.deobf("software.bernie.geckolib:geckolib-forge-${geckolib_version}")
+    runtimeOnly "curse.maven:geckolib-388172:${geckolib_file}"
+    compileOnly "curse.maven:geckolib-388172:${geckolib_file}"
 }
 
 tasks.named('processResources', ProcessResources).configure {
@@ -121,8 +123,12 @@ eclipse {
     synchronizationTasks 'genEclipseRuns'
 }
 
-sourceSets.each {
+sourceSets.main.resources {
+    srcDir 'src/generated/resources'
+}
+
+/*sourceSets.each {
     def dir = layout.buildDirectory.dir("sourcesSets/$it.name")
     it.output.resourcesDir = dir
     it.java.destinationDirectory = dir
-}
+}*/

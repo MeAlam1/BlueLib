@@ -110,15 +110,15 @@ public class BlueLib {
     public void onLoadComplete(FMLLoadCompleteEvent pEvent) {
         if (isDeveloperMode()) {
             scheduler.schedule(() -> {
-                System.out.println("""
+                System.out.println(
+                        "**************************************************\n" +
+                        "*                                                *\n" +
+                        "*    Thank you for using BlueLib!                *\n" +
+                        "*    We appreciate your support.                 *\n" +
+                        "*                                                *\n" +
+                        "**************************************************"
+                );
 
-                        **************************************************
-                        *                                                *
-                        *    Thank you for using BlueLib!                *
-                        *    We appreciate your support.                 *
-                        *                                                *
-                        **************************************************
-                        """);
                 scheduler.shutdown();
             }, 3, TimeUnit.SECONDS);
         }
