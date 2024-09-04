@@ -6,7 +6,6 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 import software.bluelib.BlueLib;
 import software.bluelib.event.ReloadEventHandler;
 

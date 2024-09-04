@@ -120,7 +120,7 @@ public class BlueLib {
                         **************************************************
                         """);
                 scheduler.shutdown();
-            }, 3, TimeUnit.SECONDS);
+            }, 4, TimeUnit.SECONDS);
         }
     }
 

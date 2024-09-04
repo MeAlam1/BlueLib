@@ -9,11 +9,11 @@ import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 import software.bluelib.exception.CouldNotLoadJSON;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
-import java.util.Optional;
 
 /**
  * The {@code JSONLoader} class is responsible for loading and parsing JSON data from
@@ -51,17 +51,15 @@ public class JSONLoader {
      */
     public JsonObject loadJson(ResourceLocation pResourceLocation, ResourceManager pResourceManager) throws CouldNotLoadJSON {
         try {
-            Optional<Resource> resource = pResourceManager.getResource(pResourceLocation);
+            Resource resource = pResourceManager.getResource(pResourceLocation);
 
-            if (resource.isEmpty()) {
-                return new JsonObject();
-            }
-
-            try (InputStream inputStream = resource.get().open();
+            try (InputStream inputStream = resource.getInputStream();
                  InputStreamReader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8)) {
 
                 return gson.fromJson(reader, JsonObject.class);
             }
+        } catch (FileNotFoundException pException) {
+            return new JsonObject();
         } catch (IOException pException) {
             throw new CouldNotLoadJSON("Failed to load JSON from resource: " + pResourceLocation + ". Error: " + pException.getMessage(), pResourceLocation.toString());
         }

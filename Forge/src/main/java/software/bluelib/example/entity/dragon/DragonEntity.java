@@ -15,16 +15,16 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimatableManager;
-import software.bernie.geckolib.util.GeckoLibUtil;
+import software.bernie.geckolib3.core.IAnimatable;
+import software.bernie.geckolib3.core.manager.AnimationData;
+import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib3.util.GeckoLibUtil;
 import software.bluelib.interfaces.variant.IVariantEntity;
 import software.bluelib.utils.ParameterUtils;
 
 /**
  * A {@code DragonEntity} class representing a dragon entity in the game, which extends {@link TamableAnimal}
- * and implements {@link IVariantEntity} and {@link GeoEntity}.
+ * and implements {@link IVariantEntity} and {@link IAnimatable}.
  * <p>
  * This class manages the dragon's variant system, its data synchronization, and integrates with the GeckoLib
  * animation system.
@@ -46,7 +46,7 @@ import software.bluelib.utils.ParameterUtils;
  * @Co-author Dan
  * @since 1.0.0
  */
-public class DragonEntity extends TamableAnimal implements IVariantEntity, GeoEntity {
+public class DragonEntity extends TamableAnimal implements IVariantEntity, IAnimatable {
     /**
      * Entity data accessor for the variant of the dragon.
      * <p>
@@ -191,7 +191,7 @@ public class DragonEntity extends TamableAnimal implements IVariantEntity, GeoEn
      * All Code below this Fragment is not Library Related!!!
      */
 
-    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+    public AnimationFactory factory = GeckoLibUtil.createFactory(this);
 
     public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes()
@@ -204,12 +204,11 @@ public class DragonEntity extends TamableAnimal implements IVariantEntity, GeoEn
     }
 
     @Override
-    public void registerControllers(AnimatableManager.ControllerRegistrar pControllerRegistrar) {
-    }
+    public void registerControllers(AnimationData data) {}
 
     @Override
-    public AnimatableInstanceCache getAnimatableInstanceCache() {
-        return cache;
+    public AnimationFactory getFactory() {
+        return factory;
     }
 
     @Nullable

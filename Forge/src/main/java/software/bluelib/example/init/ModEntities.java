@@ -15,7 +15,7 @@ import software.bluelib.example.entity.rex.RexEntity;
 
 public class ModEntities {
     public static final DeferredRegister<EntityType<?>> REGISTER =
-            DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, BlueLib.MODID);
+            DeferredRegister.create(ForgeRegistries.ENTITIES, BlueLib.MODID);
 
     // List of Entities
     public static final RegistryObject<EntityType<DragonEntity>> DRAGON =

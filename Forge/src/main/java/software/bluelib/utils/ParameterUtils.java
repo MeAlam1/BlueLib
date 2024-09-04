@@ -2,8 +2,8 @@
 
 package software.bluelib.utils;
 
-import software.bluelib.entity.variant.VariantParameter;
 import software.bluelib.entity.variant.VariantLoader;
+import software.bluelib.entity.variant.VariantParameter;
 
 import java.util.HashMap;
 import java.util.Map;
