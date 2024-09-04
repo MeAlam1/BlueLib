@@ -41,7 +41,7 @@ public interface IVariantEntityBase {
      * @since 1.0.0
      */
     default ResourceLocation getTextureLocation(String pModId, String pPath) {
-        return new ResourceLocation(pModId, pPath);
+        return ResourceLocation.fromNamespaceAndPath(pModId, pPath);
     }
 
     /**

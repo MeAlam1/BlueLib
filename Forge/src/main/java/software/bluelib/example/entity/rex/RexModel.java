@@ -12,7 +12,7 @@ public class RexModel extends GeoModel<RexEntity> {
     // Get the Model Location
     @Override
     public ResourceLocation getModelResource(RexEntity pObject) {
-        return new ResourceLocation(BlueLib.MODID, "geo/rex.geo.json");
+        return ResourceLocation.fromNamespaceAndPath(BlueLib.MODID, "geo/rex.geo.json");
     }
 
     // Get the Texture Location
@@ -24,6 +24,6 @@ public class RexModel extends GeoModel<RexEntity> {
     // Get the Animation Location
     @Override
     public ResourceLocation getAnimationResource(RexEntity pAnimatable) {
-        return new ResourceLocation(BlueLib.MODID, "animations/rex.animation.json");
+        return ResourceLocation.fromNamespaceAndPath(BlueLib.MODID, "animations/rex.animation.json");
     }
 }

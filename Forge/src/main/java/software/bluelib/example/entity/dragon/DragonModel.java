@@ -12,7 +12,7 @@ public class DragonModel extends GeoModel<DragonEntity> {
     // Get the Model Location
     @Override
     public ResourceLocation getModelResource(DragonEntity pObject) {
-        return new ResourceLocation(BlueLib.MODID, "geo/dragon.geo.json");
+        return ResourceLocation.fromNamespaceAndPath(BlueLib.MODID, "geo/dragon.geo.json");
     }
 
     // Get the Texture Location
@@ -24,6 +24,6 @@ public class DragonModel extends GeoModel<DragonEntity> {
     // Get the Animation Location
     @Override
     public ResourceLocation getAnimationResource(DragonEntity pAnimatable) {
-        return new ResourceLocation(BlueLib.MODID, "animations/dragon.animation.json");
+        return ResourceLocation.fromNamespaceAndPath(BlueLib.MODID, "animations/dragon.animation.json");
     }
 }
