@@ -1,25 +1,25 @@
 modLoader="javafml"
 loaderVersion="${loader_version_range}"
-license="${mod_license}"
+license="MIT License"
 
 [[mods]]
-modId="${mod_id}"
-version="${mod_version}"
-displayName="${mod_name}"
+modId="bluelib"
+version="1.0.0"
+displayName="BlueLib"
 displayURL="https://github.com/MeAlam1/BlueLib/wiki"
 #logoFile="examplemod.png"
 credits="Anyone who contributed to the Source Code of BlueLib!"
-authors="${mod_authors}" 
-description='''${mod_description}'''
+authors="MeAlam, Dan"
+description='''BlueLib is an All round Minecraft mod library that offers data-driven features, allowing users to implement and customize its features with full freedom. \nIt supports both Resource and Datapacks, ensuring seamless integration and flexibility.'''
 
-[[dependencies.${mod_id}]]
+[[dependencies.bluelib]]
 modId="forge"
 mandatory=true
 versionRange="${forge_version_range}"
 ordering="NONE"
 side="BOTH"
 
-[[dependencies.${mod_id}]]
+[[dependencies.bluelib]]
 modId="minecraft"
 mandatory=true
 versionRange="${minecraft_version_range}"

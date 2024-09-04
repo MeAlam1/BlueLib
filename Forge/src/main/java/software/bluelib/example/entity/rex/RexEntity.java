@@ -208,7 +208,7 @@ public class RexEntity extends TameableEntity implements IVariantEntity, IAnimat
     }
 
     @Override
-    public void registerControllers(AnimationData data) {}
+    public void registerControllers(AnimationData pData) {}
 
     @Override
     public AnimationFactory getFactory() {
@@ -217,7 +217,7 @@ public class RexEntity extends TameableEntity implements IVariantEntity, IAnimat
 
     @Nullable
     @Override
-    public AgeableEntity getBreedOffspring(ServerWorld serverWorld, AgeableEntity ageableEntity) {
+    public AgeableEntity getBreedOffspring(ServerWorld pServerWorld, AgeableEntity pAgeableEntity) {
         return null;
     }
 }

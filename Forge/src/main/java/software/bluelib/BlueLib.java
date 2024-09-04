@@ -11,6 +11,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLEnvironment;
+import software.bernie.geckolib3.GeckoLib;
 import software.bluelib.example.event.ReloadHandler;
 import software.bluelib.example.init.ModEntities;
 import software.bluelib.example.proxy.ClientProxy;
@@ -76,6 +77,8 @@ public class BlueLib {
     {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         modEventBus.register(this);
+
+        GeckoLib.initialize();
 
         if (isDeveloperMode()) {
             ModEntities.register(modEventBus);

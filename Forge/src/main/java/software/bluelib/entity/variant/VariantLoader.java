@@ -67,7 +67,7 @@ public class VariantLoader implements IVariantEntityBase {
      */
     public static void loadVariants(ResourceLocation pJSONLocationMod, ResourceLocation pJSONLocationData, MinecraftServer pServer, String pEntityName) {
         clearVariantsForEntity(pEntityName);
-        IResourceManager resourceManager = pServer.getResourceManager();
+        IResourceManager resourceManager = pServer.getDataPackRegistries().getResourceManager();
         JsonObject mergedJsonObject = new JsonObject();
 
         JsonObject modJson = jsonLoader.loadJson(pJSONLocationMod, resourceManager);

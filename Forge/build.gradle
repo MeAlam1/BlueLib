@@ -20,14 +20,14 @@ repositories {
     maven {
         url "https://cursemaven.com"
     }
-    /**maven {
+    maven {
         name = 'GeckoLib'
         url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/'
         content {
             includeGroupByRegex("software\\.bernie.*")
             includeGroup("com.eliotlash.mclib")
         }
-    }*/
+    }
     mavenLocal()
 }
 
@@ -103,8 +103,8 @@ dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
     //compileOnly fg.deobf("software.bernie.geckolib:geckolib-forge-${geckolib_version}")
     //runtimeOnly fg.deobf("software.bernie.geckolib:geckolib-forge-${geckolib_version}")
-    runtimeOnly "curse.maven:geckolib-388172:${geckolib_file}"
-    compileOnly "curse.maven:geckolib-388172:${geckolib_file}"
+    runtimeOnly fg.deobf("curse.maven:geckolib-388172:${geckolib_file}")
+    compileOnly fg.deobf("curse.maven:geckolib-388172:${geckolib_file}")
 }
 
 jar {
