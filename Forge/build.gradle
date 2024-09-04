@@ -18,6 +18,9 @@ repositories {
             includeGroup("com.eliotlash.mclib")
         }
     }
+    maven {
+        url "https://cursemaven.com"
+    }
     mavenCentral()
     mavenLocal()
 }
