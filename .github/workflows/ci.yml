@@ -3,10 +3,10 @@ name: CI for Minecraft Mod
 on:
   pull_request:
     branches:
-      - 1.20.4
+      - 1.20
   push:
     branches:
-      - 1.20.4
+      - 1.20
 
 jobs:
   build:
@@ -42,10 +42,4 @@ jobs:
 
       - name: Build for Forge
         run: cd Forge && ./gradlew build
-
-      - name: Run Additional Tasks for NeoForge
-        run: cd NeoForge && ./gradlew jar
-
-      - name: Run Additional Tasks for Forge
-        run: cd Forge && ./gradlew jar
-
+        
