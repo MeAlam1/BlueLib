@@ -21,7 +21,7 @@ base {
     archivesName = "${mod_id}-neoforge-${minecraft_version}"
 }
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+java.toolchain.languageVersion = JavaLanguageVersion.of(java_version)
 
 //minecraft.accessTransformers.file rootProject.file('src/main/resources/META-INF/accesstransformer.cfg')
 //minecraft.accessTransformers.entry public net.minecraft.client.Minecraft textureManager # textureManager
@@ -62,8 +62,8 @@ configurations {
 
 dependencies {
     implementation "net.neoforged:neoforge:${neo_version}"
-    runtimeOnly "curse.maven:geckolib-388172:5188406"
-    compileOnly "curse.maven:geckolib-388172:5188406"
+    runtimeOnly "curse.maven:geckolib-388172:${geckolib_file}"
+    compileOnly "curse.maven:geckolib-388172:${geckolib_file}"
 }
 
 jar {
