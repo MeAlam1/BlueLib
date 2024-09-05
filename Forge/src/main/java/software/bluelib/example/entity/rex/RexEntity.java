@@ -63,7 +63,7 @@ public class RexEntity extends TamableAnimal implements IVariantEntity, GeoEntit
      * @Co-author MeAlam, Dan
      * @since 1.0.0
      */
-    protected final String entityName = "Rex";
+    protected final String entityName = "rex";
 
     /**
      * Constructs a new {@link RexEntity} instance with the specified entity type and level.

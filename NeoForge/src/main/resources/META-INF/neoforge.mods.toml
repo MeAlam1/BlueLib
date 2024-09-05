@@ -3,8 +3,8 @@ loaderVersion="${loader_version_range}"
 license="${mod_license}"
 issueTrackerURL="https://github.com/MeAlam1/BlueLib/issues"
 [[mods]]
-modId="${mod_id}"
-version="${mod_version}"
+modId="bluelib"
+version="1.0.0"
 displayName="${mod_name}"
 
 # A URL to query for updates for this mod. See the JSON update specification https://docs.neoforged.net/docs/misc/updatechecker/
@@ -16,14 +16,14 @@ authors="${mod_authors}"
 
 
 description='''${mod_description}'''
-[[dependencies.${mod_id}]]
+[[dependencies.bluelib]]
     modId="neoforge"
     type="required"
     versionRange="${neo_version_range}"
     ordering="NONE"
     side="BOTH"
 
-[[dependencies.${mod_id}]]
+[[dependencies.bluelib]]
     modId="minecraft"
     type="required"
     versionRange="${minecraft_version_range}"

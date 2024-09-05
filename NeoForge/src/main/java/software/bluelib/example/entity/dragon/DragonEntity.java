@@ -11,13 +11,14 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.util.GeckoLibUtil;
 import software.bluelib.interfaces.variant.IVariantEntity;
 import software.bluelib.utils.ParameterUtils;
@@ -33,10 +34,10 @@ import software.bluelib.utils.ParameterUtils;
  * <p>
  * Key Methods:
  * <ul>
- *   <li>{@link #defineSynchedData()} - Defines the synchronized data for the dragon entity, including its variant.</li>
+ *   <li>{@link #defineSynchedData(SynchedEntityData.Builder)} - Defines the synchronized data for the dragon entity, including its variant.</li>
  *   <li>{@link #addAdditionalSaveData(CompoundTag)} - Adds custom data to the entity's NBT for saving.</li>
  *   <li>{@link #readAdditionalSaveData(CompoundTag)} - Reads custom data from the entity's NBT for loading.</li>
- *   <li>{@link #finalizeSpawn(ServerLevelAccessor, DifficultyInstance, MobSpawnType, SpawnGroupData, CompoundTag)} - Finalizes the spawning process and sets up parameters.</li>
+ *   <li>{@link #finalizeSpawn(ServerLevelAccessor, DifficultyInstance, MobSpawnType, SpawnGroupData)} - Finalizes the spawning process and sets up parameters.</li>
  *   <li>{@link #setVariantName(String)} - Sets the variant name of the dragon.</li>
  *   <li>{@link #getVariantName()} - Retrieves the current variant name of the dragon.</li>
  * </ul>
@@ -89,9 +90,9 @@ public class DragonEntity extends TamableAnimal implements IVariantEntity, GeoEn
      * @Co-author Dan
      */
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(VARIANT, "normal");
+    protected void defineSynchedData(SynchedEntityData.@NotNull Builder pBuilder) {
+        super.defineSynchedData(pBuilder);
+        pBuilder.define(VARIANT, "normal");
     }
 
     /**
@@ -140,7 +141,6 @@ public class DragonEntity extends TamableAnimal implements IVariantEntity, GeoEn
      * @param pDifficulty {@link DifficultyInstance} - The difficulty instance for spawning.
      * @param pReason {@link MobSpawnType} - The reason for spawning the entity.
      * @param pSpawnData {@link SpawnGroupData} - Data related to the spawn.
-     * @param pDataTag {@link CompoundTag} - Additional data for spawning.
      * @return {@link SpawnGroupData} - Updated spawn data.
      *
      * @since 1.0.0
@@ -148,7 +148,7 @@ public class DragonEntity extends TamableAnimal implements IVariantEntity, GeoEn
      * @Co-author Dan
      */
     @Override
-    public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor pLevel, @NotNull DifficultyInstance pDifficulty, @NotNull MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData, @Nullable CompoundTag pDataTag) {
+    public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor pLevel, @NotNull DifficultyInstance pDifficulty, @NotNull MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData) {
         if (getVariantName() == null || getVariantName().isEmpty()) {
             this.setVariantName(getRandomVariant(getEntityVariants(entityName), "normal"));
             ParameterUtils.ParameterBuilder.forVariant(entityName,this.getVariantName())
@@ -158,7 +158,7 @@ public class DragonEntity extends TamableAnimal implements IVariantEntity, GeoEn
                     .withParameter("array")
                     .connect();
         }
-        return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
+        return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData);
     }
 
     /**
@@ -216,5 +216,10 @@ public class DragonEntity extends TamableAnimal implements IVariantEntity, GeoEn
     @Override
     public AgeableMob getBreedOffspring(@NotNull ServerLevel pLevel, @NotNull AgeableMob pOtherParent) {
         return null;
+    }
+
+    @Override
+    public boolean isFood(@NotNull ItemStack pItemStack) {
+        return false;
     }
 }
