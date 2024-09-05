@@ -10,19 +10,11 @@ version = mod_version
 group = mod_group_id
 
 repositories {
-    maven {
-        name = 'GeckoLib'
-        url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/'
-        content {
-            includeGroupByRegex("software\\.bernie.*")
-            includeGroup("com.eliotlash.mclib")
-        }
-    }
+    mavenLocal()
     maven {
         url "https://cursemaven.com"
     }
     mavenCentral()
-    mavenLocal()
 }
 
 base {
@@ -115,8 +107,6 @@ tasks.named('jar', Jar).configure {
                 'Implementation-Vendor'   : mod_authors
         ])
     }
-
-    finalizedBy 'reobfJar'
 }
 
 tasks.withType(JavaCompile).configureEach {
