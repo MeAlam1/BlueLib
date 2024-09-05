@@ -4,7 +4,7 @@ package software.bluelib.example.event;
 
 import net.minecraft.server.MinecraftServer;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.AddReloadListenerEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import software.bluelib.BlueLib;
@@ -36,7 +36,7 @@ import java.util.concurrent.TimeUnit;
  * @author MeAlam
  * @Co-author Dan
  */
-@Mod.EventBusSubscriber
+@EventBusSubscriber
 public class ReloadHandler extends ReloadEventHandler {
 
     /**

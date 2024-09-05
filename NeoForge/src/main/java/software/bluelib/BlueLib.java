@@ -4,9 +4,11 @@ package software.bluelib;
 
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.neoforged.fml.loading.FMLEnvironment;
+import net.neoforged.neoforge.common.NeoForge;
 import software.bluelib.example.event.ClientEvents;
 import software.bluelib.example.init.ModEntities;
 
@@ -24,7 +26,7 @@ import java.util.concurrent.TimeUnit;
  * <p>
  * Key Methods:
  * <ul>
- *   <li>{@link #BlueLib(IEventBus)} - Constructs the {@link BlueLib} instance and registers the mod event bus.</li>
+ *   <li>{@link #BlueLib(IEventBus, ModContainer)} - Constructs the {@link BlueLib} instance and registers the mod event bus.</li>
  *   <li>{@link #onLoadComplete(FMLLoadCompleteEvent)} - Handles the event when the mod loading is complete and prints a thank-you message if in developer mode.</li>
  *   <li>{@link #isDeveloperMode()} - Determines if the mod is running in developer mode.</li>
  * </ul>
@@ -61,17 +63,20 @@ public class BlueLib {
      * Constructs a new {@link BlueLib} instance and registers the mod event bus.
      *
      * @param pModEventBus {@link IEventBus} - The event bus to which the mod will register its event handlers.
+     * @param pModContainer {@link ModContainer} - The mod container for the mod instance.
      * @author MeAlam
      * @Co-author Dan
      * @since 1.0.0
      */
-    public BlueLib(IEventBus pModEventBus) {
+    public BlueLib(IEventBus pModEventBus, ModContainer pModContainer) {
         pModEventBus.register(this);
         if (isDeveloperMode()) {
             ModEntities.REGISTRY.register(pModEventBus);
 
-            pModEventBus.addListener(ClientEvents::registerAttributes);
-            pModEventBus.addListener(ClientEvents::registerRenderers);
+            if (FMLEnvironment.dist.isClient()) {
+                pModEventBus.addListener(ClientEvents::registerAttributes);
+                pModEventBus.addListener(ClientEvents::registerRenderers);
+            }
         }
     }
 

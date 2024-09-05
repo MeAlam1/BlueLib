@@ -65,8 +65,8 @@ public class ReloadEventHandler {
      * @since 1.0.0
      */
     protected static void registerEntityVariants(MinecraftServer pServer, String pEntityName, String pModID, String pModPathLocation, String pDataPathLocation) {
-        ResourceLocation modLocation = new ResourceLocation(pModID, pModPathLocation);
-        ResourceLocation dataLocation = new ResourceLocation(pModID, pDataPathLocation);
+        ResourceLocation modLocation = ResourceLocation.fromNamespaceAndPath(pModID, pModPathLocation);
+        ResourceLocation dataLocation = ResourceLocation.fromNamespaceAndPath(pModID, pDataPathLocation);
         try {
             VariantLoader.loadVariants(modLocation, dataLocation, pServer, pEntityName);
         } catch (JsonParseException pException) {

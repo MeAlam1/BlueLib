@@ -25,7 +25,7 @@ public class ModEntities {
                     .setUpdateInterval(3)
                     .fireImmune()
                     .sized(0.6f, 1.8f)
-                    .build(new ResourceLocation(BlueLib.MODID, "dragon").toString()));
+                    .build(ResourceLocation.fromNamespaceAndPath(BlueLib.MODID, "dragon").toString()));
 
     public static final RegistryObject<EntityType<RexEntity>> REX =
             REGISTER.register("example_two", () -> EntityType.Builder.of(RexEntity::new, MobCategory.AMBIENT)
@@ -34,7 +34,7 @@ public class ModEntities {
                     .setUpdateInterval(3)
                     .fireImmune()
                     .sized(0.6f, 1.8f)
-                    .build(new ResourceLocation(BlueLib.MODID, "rex").toString()));
+                    .build(ResourceLocation.fromNamespaceAndPath(BlueLib.MODID, "rex").toString()));
 
     public static void register(IEventBus eventBus) {
         REGISTER.register(eventBus);
