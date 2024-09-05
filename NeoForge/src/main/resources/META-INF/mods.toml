@@ -9,8 +9,8 @@ displayName="${mod_name}"
 
 # A URL to query for updates for this mod. See the JSON update specification https://docs.neoforged.net/docs/misc/updatechecker/
 #updateJSONURL="https://change.me.example.invalid/updates.json" #optional
-displayURL="https://github.com/MeAlam1/BlueLib/wiki"
-#logoFile="examplemod.png"
+displayURL="https://mealam1.github.io/BlueLib/"
+logoFile="bluelib.png"
 credits="Anyone who contributed to the Source Code of BlueLib!"
 authors="${mod_authors}"
 
