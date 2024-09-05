@@ -78,23 +78,20 @@ public class BlueLib {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         modEventBus.register(this);
 
-        GeckoLib.initialize();
-
         if (isDeveloperMode()) {
             ModEntities.register(modEventBus);
+            GeckoLib.initialize();
             MinecraftForge.EVENT_BUS.register(ReloadHandler.class);
             modEventBus.addListener(this::setupComplete);
             modEventBus.addListener(this::setupClient);
         }
     }
 
-    private void setupClient(final FMLClientSetupEvent event) {
-        event.enqueueWork(() -> {
-            PROXY.clientInit();
-        });
+    private void setupClient(final FMLClientSetupEvent pEvent) {
+        PROXY.clientInit();
     }
 
-    private void setupComplete(final FMLLoadCompleteEvent event) {
+    private void setupComplete(final FMLLoadCompleteEvent pEvent) {
         PROXY.postInit();
     }
 
@@ -114,6 +111,7 @@ public class BlueLib {
         if (isDeveloperMode()) {
             scheduler.schedule(() -> {
                 System.out.println(
+                        "\n" +
                         "**************************************************\n" +
                         "*                                                *\n" +
                         "*    Thank you for using BlueLib!                *\n" +
@@ -123,7 +121,7 @@ public class BlueLib {
                 );
 
                 scheduler.shutdown();
-            }, 3, TimeUnit.SECONDS);
+            }, 5, TimeUnit.SECONDS);
         }
     }
 

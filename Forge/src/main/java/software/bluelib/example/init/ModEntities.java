@@ -30,7 +30,7 @@ public class ModEntities {
                     .sized(0.6f, 1.8f)
                     .build(new ResourceLocation(BlueLib.MODID, "rex").toString()));
 
-    public static void register(IEventBus eventBus) {
-        REGISTER.register(eventBus);
+    public static void register(IEventBus pEventBus) {
+        REGISTER.register(pEventBus);
     }
 }
