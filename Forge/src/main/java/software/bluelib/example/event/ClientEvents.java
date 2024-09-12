@@ -14,8 +14,10 @@ import software.bluelib.example.init.ModEntities;
 public class ClientEvents {
 
     public static void registerRenderers() {
-        // Register the renderer for all the Entities
-        EntityRenderers.register(ModEntities.DRAGON.get(), DragonRender::new);
-        EntityRenderers.register(ModEntities.REX.get(), RexRender::new);
+        if (BlueLib.EditorMode) {
+            // Register the renderer for all the Entities
+            EntityRenderers.register(ModEntities.DRAGON.get(), DragonRender::new);
+            EntityRenderers.register(ModEntities.REX.get(), RexRender::new);
+        }
     }
 }

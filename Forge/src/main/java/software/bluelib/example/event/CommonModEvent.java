@@ -12,7 +12,9 @@ import software.bluelib.example.init.ModEntities;
 public class CommonModEvent {
     @SubscribeEvent
     public static void onAttributeCreate(EntityAttributeCreationEvent pEvent) {
+        if (BlueLib.EditorMode) {
             pEvent.put(ModEntities.DRAGON.get(), DragonEntity.createAttributes().build());
             pEvent.put(ModEntities.REX.get(), RexEntity.createAttributes().build());
         }
     }
+}

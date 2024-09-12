@@ -78,8 +78,8 @@ dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
     //compileOnly fg.deobf("software.bernie.geckolib:geckolib-forge-${minecraft_version}:${geckolib_version}")
     //runtimeOnly fg.deobf("software.bernie.geckolib:geckolib-forge-${minecraft_version}:${geckolib_version}")
-    runtimeOnly "curse.maven:geckolib-388172:${geckolib_file}"
-    compileOnly "curse.maven:geckolib-388172:${geckolib_file}"
+    runtimeOnly fg.deobf("curse.maven:geckolib-388172:${geckolib_file}")
+    compileOnly fg.deobf("curse.maven:geckolib-388172:${geckolib_file}")
 }
 
 tasks.named('processResources', ProcessResources).configure {

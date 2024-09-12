@@ -61,6 +61,8 @@ public class BlueLib {
      */
     public static final String MODID = "bluelib";
 
+    public static final boolean EditorMode = false;
+
     public static CommonProxy PROXY = DistExecutor.safeRunForDist(() -> ClientProxy::new, () -> CommonProxy::new);
 
     // public static final Logger LOGGER = LogUtils.getLogger();
@@ -78,10 +80,12 @@ public class BlueLib {
         modEventBus.register(this);
 
         if (isDeveloperMode()) {
-            ModEntities.register(modEventBus);
-            MinecraftForge.EVENT_BUS.register(ReloadHandler.class);
-            modEventBus.addListener(this::setupComplete);
-            modEventBus.addListener(this::setupClient);
+            if (EditorMode) {
+                ModEntities.register(modEventBus);
+                MinecraftForge.EVENT_BUS.register(ReloadHandler.class);
+                modEventBus.addListener(this::setupComplete);
+                modEventBus.addListener(this::setupClient);
+            }
         }
     }
 
