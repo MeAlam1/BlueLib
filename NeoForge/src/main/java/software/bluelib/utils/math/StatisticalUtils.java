@@ -127,9 +127,4 @@ public class StatisticalUtils {
         double stdDev = calculateStandardDeviation(pValues);
         return (stdDev / mean) * 100;
     }
-
-
-
-
-
 }
