@@ -1,5 +1,9 @@
 package software.bluelib.utils.math;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class ConversionUtils {
 
     /**
@@ -70,6 +74,35 @@ public class ConversionUtils {
      */
     public static double milesToKilometers(double pMiles) {
         return pMiles / 0.621371;
+    }
+
+    /**
+     * A {@code Date} that converts a string to a {@link Date} object.
+     *
+     * @param pDateStr {@link String} - The date in string format (e.g., "yyyy-MM-dd").
+     * @param pFormat {@link String} - The format of the input date string.
+     * @return The corresponding {@code Date} object.
+     * @throws ParseException if the string cannot be parsed.
+     * @author MeAlam
+     * @since 1.0.0
+     */
+    public static Date stringToDate(String pDateStr, String pFormat) throws ParseException {
+        SimpleDateFormat formatter = new SimpleDateFormat(pFormat);
+        return formatter.parse(pDateStr);
+    }
+
+    /**
+     * A {@code String} that converts a {@link Date} object to a string in a specified format.
+     *
+     * @param pDate {@link Date} - The date to be converted.
+     * @param pFormat {@link String} - The desired date format (e.g., "yyyy-MM-dd").
+     * @return The date as a string in the specified format.
+     * @author MeAlam
+     * @since 1.0.0
+     */
+    public static String dateToString(Date pDate, String pFormat) {
+        SimpleDateFormat formatter = new SimpleDateFormat(pFormat);
+        return formatter.format(pDate);
     }
 
 }
