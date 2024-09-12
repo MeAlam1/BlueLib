@@ -61,5 +61,15 @@ public class ConversionUtils {
         return pKilometers * 0.621371;
     }
 
+    /**
+     * A {@code double} that converts a distance from miles to kilometers.
+     *
+     * @param pMiles {@link double} - The distance in miles.
+     * @return The distance in kilometers.
+     * @since 1.0.0
+     */
+    public static double milesToKilometers(double pMiles) {
+        return pMiles / 0.621371;
+    }
 
 }
