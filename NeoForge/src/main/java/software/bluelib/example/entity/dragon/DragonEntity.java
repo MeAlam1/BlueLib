@@ -12,8 +12,10 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -21,7 +23,11 @@ import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.util.GeckoLibUtil;
 import software.bluelib.interfaces.variant.IVariantEntity;
+import software.bluelib.utils.minecraft.ChunkUtils;
 import software.bluelib.utils.variant.ParameterUtils;
+
+import java.util.Arrays;
+import java.util.Collection;
 
 /**
  * A {@code DragonEntity} class representing a dragon entity in the game, which extends {@link TamableAnimal}
@@ -158,6 +164,8 @@ public class DragonEntity extends TamableAnimal implements IVariantEntity, GeoEn
                     .withParameter("array")
                     .connect();
         }
+        int Check = ChunkUtils.getChunkBlockCount(pLevel.getLevel(), new ChunkPos(this.blockPosition()));
+        System.out.println(Check);
         return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData);
     }
 

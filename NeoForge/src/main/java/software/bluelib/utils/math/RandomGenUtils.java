@@ -1,8 +1,6 @@
-package software.bluelib.utils.math;
+// Copyright (c) BlueLib. Licensed under the MIT License.
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+package software.bluelib.utils.math;
 
 public class RandomGenUtils {
 
