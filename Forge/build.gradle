@@ -122,6 +122,21 @@ tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
 }
 
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+            groupId = 'software.bluelib'
+            artifactId = 'bluelib'
+            version = '1.0.0'
+        }
+    }
+    repositories {
+        mavenLocal()
+    }
+}
+
+
 eclipse {
     synchronizationTasks 'genEclipseRuns'
 }
