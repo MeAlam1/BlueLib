@@ -1,6 +1,6 @@
 // Copyright (c) BlueLib. Licensed under the MIT License.
 
-package software.bluelib.utils;
+package software.bluelib.utils.variant;
 
 import software.bluelib.entity.variant.VariantParameter;
 import software.bluelib.entity.variant.VariantLoader;

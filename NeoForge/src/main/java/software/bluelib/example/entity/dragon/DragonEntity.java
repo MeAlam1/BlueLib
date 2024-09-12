@@ -21,7 +21,7 @@ import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.util.GeckoLibUtil;
 import software.bluelib.interfaces.variant.IVariantEntity;
-import software.bluelib.utils.ParameterUtils;
+import software.bluelib.utils.variant.ParameterUtils;
 
 /**
  * A {@code DragonEntity} class representing a dragon entity in the game, which extends {@link TamableAnimal}
