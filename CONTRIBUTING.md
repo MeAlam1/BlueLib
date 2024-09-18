@@ -83,12 +83,16 @@
     - Versioning: Include the `@since` tag in both class-level and method-level comments to indicate the version since which the class or method has been available.
       - If you update a Class/Method, please add/update the `@version` to indicate it has been changed.
     - Copyright: Each file should start with `// Copyright (c) BlueLib. Licensed under the MIT License.`
+    - Tags: Use `@see` to link to the correct Wiki/Api Documentation page if it exists.
+    - Logging: Log every step using `BaseLogger.logError`, `BaseLogger.logWarning`, `BaseLogger.bluelibLogInfo`, or `BaseLogger.bluelibLogSuccess`, depending on the step.
+    - Error Handling: Always ensure that errors and warnings are logged using appropriate logging levels. Critical steps must be logged at least with `BaseLogger.bluelibLogInfo` to keep a trail of execution.
 
 ### Deprecation
 
 - If you optimize a method, variable, or class and determine that it is no longer necessary for the library, mark it as `@Deprecated` instead of removing it. This only applies to elements that have been included in previous released versions of the library.
 
 - Include a **strong TODO comment** explaining why it is deprecated and any further action required, such as testing or eventual removal.
+- Include an **`@see`** that links to the New Method
 - **Example**:
   ```java
   /**
@@ -99,6 +103,7 @@
    * @author MeAlam
    * @Co-author Dan
    * @since 1.0.0
+   * @see #newMethod()
    */
   @Deprecated
   public Map<String, String> build() {
