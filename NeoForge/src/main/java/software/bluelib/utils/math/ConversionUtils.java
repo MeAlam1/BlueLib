@@ -7,12 +7,29 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import software.bluelib.utils.logging.BaseLogger;
 
+/**
+ * A {@code class} providing methods for common unit and date conversions.
+ * <p>
+ * Key Methods:
+ * <ul>
+ *   <li>{@link #inchesToCentimeters(double)} - Converts inches to centimeters.</li>
+ *   <li>{@link #centimetersToInches(double)} - Converts centimeters to inches.</li>
+ *   <li>{@link #celsiusToFahrenheit(double)} - Converts Celsius to Fahrenheit.</li>
+ *   <li>{@link #fahrenheitToCelsius(double)} - Converts Fahrenheit to Celsius.</li>
+ *   <li>{@link #kilometersToMiles(double)} - Converts kilometers to miles.</li>
+ *   <li>{@link #milesToKilometers(double)} - Converts miles to kilometers.</li>
+ *   <li>{@link #stringToDate(String, String)} - Converts a string to a {@link Date} object.</li>
+ *   <li>{@link #dateToString(Date, String)} - Converts a {@link Date} object to a string.</li>
+ * </ul>
+ * @author MeAlam
+ * @since 1.0.0
+ */
 public class ConversionUtils {
 
     /**
-     * A {@code double} that converts a length from inches to centimeters.
+     * A {@link Double} that converts a length from inches to centimeters.
      *
-     * @param pInches {@link double} - The length in inches.
+     * @param pInches {@link Double} - The length in inches.
      * @return The length in centimeters.
      * @author MeAlam
      * @since 1.0.0
@@ -22,9 +39,9 @@ public class ConversionUtils {
     }
 
     /**
-     * A {@code double} that converts a length from centimeters to inches.
+     * A {@link Double} that converts a length from centimeters to inches.
      *
-     * @param pCentimeters {@link double} - The length in centimeters.
+     * @param pCentimeters {@link Double} - The length in centimeters.
      * @return The length in inches.
      * @since 1.0.0
      */
@@ -33,9 +50,9 @@ public class ConversionUtils {
     }
 
     /**
-     * A {@code double} that converts a temperature from Celsius to Fahrenheit.
+     * A {@link Double} that converts a temperature from Celsius to Fahrenheit.
      *
-     * @param pCelsius {@link double} - The temperature in Celsius.
+     * @param pCelsius {@link Double} - The temperature in Celsius.
      * @return The temperature in Fahrenheit.
      * @author MeAlam
      * @since 1.0.0
@@ -45,9 +62,9 @@ public class ConversionUtils {
     }
 
     /**
-     * A {@code double} that converts a temperature from Fahrenheit to Celsius.
+     * A {@link Double} that converts a temperature from Fahrenheit to Celsius.
      *
-     * @param pFahrenheit {@link double} - The temperature in Fahrenheit.
+     * @param pFahrenheit {@link Double} - The temperature in Fahrenheit.
      * @return The temperature in Celsius.
      * @since 1.0.0
      */
@@ -56,9 +73,9 @@ public class ConversionUtils {
     }
 
     /**
-     * A {@code double} that converts a distance from kilometers to miles.
+     * A {@link Double} that converts a distance from kilometers to miles.
      *
-     * @param pKilometers {@link double} - The distance in kilometers.
+     * @param pKilometers {@link Double} - The distance in kilometers.
      * @return The distance in miles.
      * @author MeAlam
      * @since 1.0.0
@@ -68,9 +85,9 @@ public class ConversionUtils {
     }
 
     /**
-     * A {@code double} that converts a distance from miles to kilometers.
+     * A {@link Double} that converts a distance from miles to kilometers.
      *
-     * @param pMiles {@link double} - The distance in miles.
+     * @param pMiles {@link Double} - The distance in miles.
      * @return The distance in kilometers.
      * @since 1.0.0
      */
@@ -79,7 +96,7 @@ public class ConversionUtils {
     }
 
     /**
-     * A {@code Date} that converts a string to a {@link Date} object.
+     * A {@link Date} that converts a string to a {@link Date} object.
      *
      * @param pDateStr {@link String} - The date in string format (e.g., "yyyy-MM-dd").
      * @param pFormat {@link String} - The format of the input date string.
@@ -99,7 +116,7 @@ public class ConversionUtils {
     }
 
     /**
-     * A {@code String} that converts a {@link Date} object to a string in a specified format.
+     * A {@link String} that converts a {@link Date} object to a string in a specified format.
      *
      * @param pDate {@link Date} - The date to be converted.
      * @param pFormat {@link String} - The desired date format (e.g., "yyyy-MM-dd").

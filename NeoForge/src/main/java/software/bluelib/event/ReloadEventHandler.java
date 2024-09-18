@@ -9,14 +9,14 @@ import software.bluelib.entity.variant.VariantLoader;
 import software.bluelib.utils.logging.BaseLogger;
 
 /**
- * A {@code ReloadEventHandler} class responsible for handling events related to reloading entity variants.
+ * A {@code class} responsible for handling events related to reloading entity variants.
  * <p>
- * This class includes methods for registering entity variants when the server starts.
+ * This class provides functionality to register entity variants from specified locations when the server starts.
  * </p>
  * <p>
  * Key Features:
  * <ul>
- *   <li>{@link #registerEntityVariants(MinecraftServer, String, String, String, String)} - Registers entity variants from specified locations.</li>
+ *   <li>{@link #registerEntityVariants(String, MinecraftServer, String, String)} - Registers entity variants from specified locations.</li>
  * </ul>
  * </p>
  * @see VariantLoader
@@ -29,31 +29,31 @@ import software.bluelib.utils.logging.BaseLogger;
 public class ReloadEventHandler {
 
     /**
-     * A {@code void} method that registers entity variants from specified locations.
+     * A {@code void} that registers entity variants from specified locations.
      * <p>
-     * This method attempts to load variants from both mod and datapack locations, providing status information
-     * and handling any exceptions that occur during the loading process.
+     * This method attempts to load variants from both mod and datapack locations. It logs status information and
+     * handles exceptions that occur during the loading process.
      * </p>
      * <p>
      * Parameters:
      * <ul>
-     *   <li>{@code pServer} - The server instance of the current world.</li>
-     *   <li>{@code pEntityName} - The entity name to load.</li>
-     *   <li>{@code pModID} - The mod ID used to locate the entity variant resources. (Use your Mod's ID)</li>
-     *   <li>{@code pModPathLocation} - The path location within the mod where variants are stored.</li>
-     *   <li>{@code pDataPathLocation} - The path location within the resource pack where variants are stored.</li>
+     *   <li>{@code pFolderPath} {@link String} - The folder path location within the mod or datapack where variants are stored.</li>
+     *   <li>{@code pServer} {@link MinecraftServer} - The server instance of the current world.</li>
+     *   <li>{@code pModID} {@link String} - The mod ID used to locate the entity variant resources. (Use your Mod's ID)</li>
+     *   <li>{@code pEntityName} {@link String} - The entity name to load.</li>
      * </ul>
      * </p>
      * <p>
      * Exception Handling:
      * <ul>
-     *   <li>{@code JsonParseException} - Thrown when there is an error parsing the JSON files.</li>
-     *   <li>{@code RuntimeException} - Thrown for unexpected errors during the registration process.</li>
+     *   <li>{@link JsonParseException} - Thrown when there is an error parsing the JSON files.</li>
+     *   <li>{@link RuntimeException} - Thrown for unexpected errors during the registration process.</li>
      * </ul>
      * </p>
+     * @param pFolderPath {@link String} - The folder path location within the mod or datapack where variants are stored.
      * @param pServer {@link MinecraftServer} - The server instance of the current world.
-     * @param pEntityName {@link String} - The entity name to load.
      * @param pModID {@link String} - The mod ID used to locate the entity variant resources. (Use your Mod's ID)
+     * @param pEntityName {@link String} - The entity name to load.
      * @throws JsonParseException if there is an error parsing the JSON files.
      * @throws RuntimeException if an unexpected error occurs during the registration process.
      * @see MinecraftServer
@@ -63,7 +63,7 @@ public class ReloadEventHandler {
      * @Co-author Dan
      * @since 1.0.0
      */
-    protected static void registerEntityVariants(String pFolderPath , MinecraftServer pServer, String pModID, String pEntityName) {
+    protected static void registerEntityVariants(String pFolderPath, MinecraftServer pServer, String pModID, String pEntityName) {
 
         BaseLogger.bluelibLogInfo("Attempting to register entity variants for " + pEntityName + " with ModID: " + pModID);
 

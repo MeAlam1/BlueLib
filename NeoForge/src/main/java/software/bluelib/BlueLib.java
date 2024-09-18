@@ -22,7 +22,6 @@ import java.util.concurrent.TimeUnit;
  * This class serves as the entry point for the {@link BlueLib} mod, handling initialization by registering event handlers
  * and setting up necessary configurations. For more details, refer to the <a href="https://github.com/MeAlam1/BlueLib/wiki">BlueLib Wiki</a>.
  * </p>
- *
  * <p>
  * Key Methods:
  * <ul>
@@ -41,9 +40,9 @@ import java.util.concurrent.TimeUnit;
 public class BlueLib {
 
     /**
-     * A {@link ScheduledExecutorService} used for scheduling tasks, such as printing messages after a delay.
+     * A {@link ScheduledExecutorService} used to schedule tasks, such as printing messages after a delay.
      * <p>
-     * This is initialized with a single-threaded pool to handle delayed tasks in a separate thread.
+     * This executor runs tasks on a single thread to ensure delayed tasks run in a separate thread from the main thread.
      * </p>
      * @Co-author MeAlam, Dan
      * @since 1.0.0
@@ -51,19 +50,21 @@ public class BlueLib {
     private static final ScheduledExecutorService SCHEDULER = Executors.newScheduledThreadPool(1);
 
     /**
-     * The Mod ID for {@link BlueLib}. This serves as a unique identifier for the mod.
+     * A {@link String} representing the Mod ID for the {@link BlueLib} mod.
+     * <p>This serves as a unique identifier for the mod.</p>
      * @Co-author MeAlam, Dan
      * @since 1.0.0
      */
     public static final String MODID = "bluelib";
 
-    // public static final Logger LOGGER = LogUtils.getLogger();
-
     /**
      * Constructs a new {@link BlueLib} instance and registers the mod event bus.
+     * <p>
+     * Registers necessary mod event listeners, and if in developer mode, additional client-side listeners for rendering and attributes.
+     * </p>
      *
-     * @param pModEventBus {@link IEventBus} - The event bus to which the mod will register its event handlers.
-     * @param pModContainer {@link ModContainer} - The mod container for the mod instance.
+     * @param pModEventBus {@link IEventBus} - The event bus where the mod registers its handlers.
+     * @param pModContainer {@link ModContainer} - The mod container that holds the instance of the mod.
      * @author MeAlam
      * @Co-author Dan
      * @since 1.0.0
@@ -80,12 +81,12 @@ public class BlueLib {
     }
 
     /**
-     * Handles the {@link FMLLoadCompleteEvent}, which is triggered when the mod loading process is complete.
+     * a {@code void} that handles the {@link FMLLoadCompleteEvent}, which occurs when the mod finishes loading.
      * <p>
-     * If the mod is running in developer mode, it schedules a task to print a thank-you message to the console after a short delay.
+     * If the mod is in developer mode, it schedules a task that prints a thank-you message after a short delay.
      * </p>
      *
-     * @param pEvent {@link FMLLoadCompleteEvent} - The event triggered upon the completion of the mod loading process.
+     * @param pEvent {@link FMLLoadCompleteEvent} - The event fired after the mod loading process completes.
      * @author MeAlam
      * @Co-author Dan
      * @since 1.0.0
@@ -106,12 +107,12 @@ public class BlueLib {
     }
 
     /**
-     * Checks if the mod is running in developer mode.
+     * a {@code void} that checks if the mod is running in developer mode.
      * <p>
-     * Developer mode is determined by checking if the mod is not running in a production environment.
+     * Developer mode is active when the mod is not running in a production environment.
      * </p>
      *
-     * @return {@code true} if the mod is running in developer mode, {@code false} otherwise.
+     * @return {@code true} if running in developer mode, {@code false} otherwise.
      * @author MeAlam
      * @Co-author Dan
      * @since 1.0.0

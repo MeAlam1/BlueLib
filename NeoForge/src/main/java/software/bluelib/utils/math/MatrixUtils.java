@@ -4,13 +4,26 @@ package software.bluelib.utils.math;
 
 import software.bluelib.utils.logging.BaseLogger;
 
+/**
+ * A {@code class} providing utility methods for matrix operations.
+ * <p>
+ * Key Methods:
+ * <ul>
+ *   <li>{@link #multiplyMatrices(double[][], double[][])} - Performs matrix multiplication on two matrices.</li>
+ *   <li>{@link #transposeMatrix(double[][])} - Computes the transpose of a matrix.</li>
+ *   <li>{@link #calculate2x2MatrixDeterminant(double[][])} - Calculates the determinant of a 2x2 matrix.</li>
+ *   <li>{@link #invert2x2Matrix(double[][])} - Calculates the inverse of a 2x2 matrix.</li>
+ * </ul>
+ * @author MeAlam
+ * @since 1.0.0
+ */
 public class MatrixUtils {
 
     /**
-     * A {@code double[][]} that performs matrix multiplication on two matrices.
+     * A {@link Double}{@code [][]} that performs matrix multiplication on two matrices.
      *
-     * @param pMatrixA {@link double[][]} - The first matrix to be multiplied.
-     * @param pMatrixB {@link double[][]} - The second matrix to be multiplied.
+     * @param pMatrixA {@link Double}{@code [][]} - The first matrix to be multiplied.
+     * @param pMatrixB {@link Double}{@code [][]} - The second matrix to be multiplied.
      * @return The product of the two matrices.
      * @throws IllegalArgumentException if the number of columns in the first matrix does not match the number of rows in the second matrix.
      * @author MeAlam
@@ -37,9 +50,9 @@ public class MatrixUtils {
     }
 
     /**
-     * A {@code double[][]} that computes the transpose of a matrix.
+     * A {@link Double}{@code [][]} that computes the transpose of a matrix.
      *
-     * @param pMatrix {@link double[][]} - The matrix to be transposed.
+     * @param pMatrix {@link Double}{@code [][]} - The matrix to be transposed.
      * @return The transposed matrix.
      * @author MeAlam
      * @since 1.0.0
@@ -57,9 +70,9 @@ public class MatrixUtils {
     }
 
     /**
-     * A {@code double} that calculates the determinant of a 2x2 matrix.
+     * A {@link Double}{@code [][]} that calculates the determinant of a 2x2 matrix.
      *
-     * @param pMatrix {@link double[][]} - The 2x2 matrix.
+     * @param pMatrix {@link Double}{@code [][]} - The 2x2 matrix.
      * @return The determinant of the matrix.
      * @throws IllegalArgumentException if the matrix is not 2x2.
      * @author MeAlam
@@ -75,9 +88,9 @@ public class MatrixUtils {
     }
 
     /**
-     * A {@code double[][]} that calculates the inverse of a 2x2 matrix.
+     * A {@link Double}{@code [][]} that calculates the inverse of a 2x2 matrix.
      *
-     * @param pMatrix {@link double[][]} - The 2x2 matrix.
+     * @param pMatrix {@link Double}{@code [][]} - The 2x2 matrix.
      * @return The inverse of the matrix.
      * @throws IllegalArgumentException if the matrix is not invertible or not 2x2.
      * @author MeAlam

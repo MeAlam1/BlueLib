@@ -9,15 +9,28 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * A {@code class} providing methods for various algebraic and combinatorial calculations.
+ * <p>
+ * Key Methods:
+ * <ul>
+ *   <li>{@link #solveQuadraticEquation(double, double, double)} - Solves a quadratic equation.</li>
+ *   <li>{@link #factorial(int)} - Calculates the factorial of a non-negative integer.</li>
+ *   <li>{@link #calculateGCD(int, int)} - Calculates the greatest common divisor of two integers.</li>
+ *   <li>{@link #generatePowerSet(Set)} - Generates the power set of a given set.</li>
+ * </ul>
+ * @author MeAlam
+ * @since 1.0.0
+ */
 public class AlgebraicUtils {
 
     /**
-     * A {@code double[]} that solves the quadratic equation {@code ax^2 + bx + c = 0}
+     * A {@link Double}{@code []} that solves the quadratic equation {@code ax^2 + bx + c = 0}
      * using the quadratic formula.
      *
-     * @param pA {@link double} - The coefficient a of the quadratic equation.
-     * @param pB {@link double} - The coefficient b of the quadratic equation.
-     * @param pC {@link double} - The coefficient c of the quadratic equation.
+     * @param pA {@link Double} - The coefficient a of the quadratic equation.
+     * @param pB {@link Double} - The coefficient b of the quadratic equation.
+     * @param pC {@link Double} - The coefficient c of the quadratic equation.
      * @return An array of roots of the quadratic equation. The array may be empty if there are no real roots.
      * @author MeAlam
      * @since 1.0.0
@@ -39,9 +52,9 @@ public class AlgebraicUtils {
     }
 
     /**
-     * A {@code long} that calculates the factorial of a non-negative integer.
+     * A {@link Long} that calculates the factorial of a non-negative integer.
      *
-     * @param pNumber {@link int} - The non-negative integer.
+     * @param pNumber {@link Integer} - The non-negative integer.
      * @return The factorial of the integer.
      * @throws IllegalArgumentException if {@code pNumber} is negative.
      * @author MeAlam
@@ -64,10 +77,10 @@ public class AlgebraicUtils {
     }
 
     /**
-     * A {@code int} that calculates the greatest common divisor of two integers using the Euclidean algorithm.
+     * A {@link Integer} that calculates the greatest common divisor of two integers using the Euclidean algorithm.
      *
-     * @param pA {@link int} - The first integer.
-     * @param pB {@link int} - The second integer.
+     * @param pA {@link Integer} - The first integer.
+     * @param pB {@link Integer} - The second integer.
      * @return The greatest common divisor of {@code pA} and {@code pB}.
      * @author MeAlam
      * @since 1.0.0
@@ -85,7 +98,7 @@ public class AlgebraicUtils {
     }
 
     /**
-     * A {@code List<Set<T>>} that generates the power set (all subsets) of a given set.
+     * A {@link List<Set>} that generates the power set (all subsets) of a given set.
      *
      * @param pSet {@link Set<T>} - The input set.
      * @param <T> The type of elements in the set.

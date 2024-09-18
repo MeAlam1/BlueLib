@@ -4,10 +4,23 @@ package software.bluelib.utils.math;
 
 import software.bluelib.utils.logging.BaseLogger;
 
+/**
+ * A {@code class} providing utility methods for various common operations.
+ * <p>
+ * Key Methods:
+ * <ul>
+ *   <li>{@link #isValidEmail(String)} - Checks if a string is a valid email address.</li>
+ *   <li>{@link #stringToIntWithDefault(String, int)} - Converts a string to an integer with a default value if conversion fails.</li>
+ *   <li>{@link #calculateLevenshteinDistance(String, String)} - Calculates the Levenshtein distance between two strings.</li>
+ *   <li>{@link #hexToRGB(String)} - Converts a hexadecimal color code to an RGB array.</li>
+ * </ul>
+ * @author MeAlam
+ * @since 1.0.0
+ */
 public class MiscUtils {
 
     /**
-     * A {@code boolean} that checks if a string is a valid email address.
+     * A {@link Boolean} that checks if a string is a valid email address.
      *
      * @param pEmail {@link String} - The string to be checked.
      * @return {@code true} if the string is a valid email address, {@code false} otherwise.
@@ -20,10 +33,10 @@ public class MiscUtils {
     }
 
     /**
-     * A {@code int} that converts a string to an integer, returning a default value if the string is not a valid integer.
+     * A {@link Integer} that converts a string to an integer, returning a default value if the string is not a valid integer.
      *
      * @param pString {@link String} - The string to be converted.
-     * @param pDefaultValue {@link int} - The default value to return if the string is not a valid integer.
+     * @param pDefaultValue {@link Integer} - The default value to return if the string is not a valid integer.
      * @return The integer value of the string, or {@code pDefaultValue} if the string is not a valid integer.
      * @author MeAlam
      * @since 1.0.0
@@ -38,7 +51,7 @@ public class MiscUtils {
     }
 
     /**
-     * A {@code int} that calculates the Levenshtein distance between two strings.
+     * A {@link Integer} that calculates the Levenshtein distance between two strings.
      *
      * @param pStr1 {@link String} - The first string.
      * @param pStr2 {@link String} - The second string.
@@ -67,7 +80,7 @@ public class MiscUtils {
     }
 
     /**
-     * A {@code int[]} that converts a hexadecimal color code to an RGB array.
+     * A {@link Integer}{@code []} that converts a hexadecimal color code to an RGB array.
      *
      * @param pHex {@link String} - The hexadecimal color code (e.g., "#FFFFFF").
      * @return An array containing the RGB values.

@@ -4,10 +4,31 @@ package software.bluelib.utils.math;
 
 import software.bluelib.utils.logging.BaseLogger;
 
+/**
+ * A {@code class} providing utility methods for various geometric calculations.
+ * <p>
+ * Key Methods:
+ * <ul>
+ *   <li>{@link #calculateDistance2D(double, double, double, double)} - Calculates the Euclidean distance between two points in 2D space.</li>
+ *   <li>{@link #calculateDistance3D(double, double, double, double, double, double)} - Calculates the Euclidean distance between two points in 3D space.</li>
+ *   <li>{@link #calculateCircleArea(double)} - Calculates the area of a circle given its radius.</li>
+ *   <li>{@link #calculateCircleCircumference(double)} - Calculates the circumference of a circle given its radius.</li>
+ *   <li>{@link #calculateRectangleArea(double, double)} - Calculates the area of a rectangle given its width and height.</li>
+ *   <li>{@link #calculateRectanglePerimeter(double, double)} - Calculates the perimeter of a rectangle given its width and height.</li>
+ *   <li>{@link #calculateTriangleArea(double, double)} - Calculates the area of a triangle given its base and height.</li>
+ *   <li>{@link #calculateTrianglePerimeter(double, double, double)} - Calculates the perimeter of a triangle given its three sides.</li>
+ *   <li>{@link #calculateSphereVolume(double)} - Calculates the volume of a sphere given its radius.</li>
+ *   <li>{@link #calculateCubeSurfaceArea(double)} - Calculates the surface area of a cube given its side length.</li>
+ *   <li>{@link #calculateCylinderVolume(double, double)} - Calculates the volume of a cylinder given its radius and height.</li>
+ *   <li>{@link #calculateConeSurfaceArea(double, double)} - Calculates the surface area of a cone given its radius and slant height.</li>
+ * </ul>
+ * @author MeAlam
+ * @since 1.0.0
+ */
 public class GeometricUtils {
 
     /**
-     * A {@code double} that calculates the Euclidean distance between two points in 2D space.
+     * A {@link Double} that calculates the Euclidean distance between two points in 2D space.
      *
      * @param pX1 {@link double} - The x-coordinate of the first point.
      * @param pY1 {@link double} - The y-coordinate of the first point.
@@ -24,14 +45,14 @@ public class GeometricUtils {
     }
 
     /**
-     * A {@code double} that calculates the Euclidean distance between two points in 3D space.
+     * A {@link Double} that calculates the Euclidean distance between two points in 3D space.
      *
-     * @param pX1 {@link double} - The x-coordinate of the first point.
-     * @param pY1 {@link double} - The y-coordinate of the first point.
-     * @param pZ1 {@link double} - The z-coordinate of the first point.
-     * @param pX2 {@link double} - The x-coordinate of the second point.
-     * @param pY2 {@link double} - The y-coordinate of the second point.
-     * @param pZ2 {@link double} - The z-coordinate of the second point.
+     * @param pX1 {@link Double} - The x-coordinate of the first point.
+     * @param pY1 {@link Double} - The y-coordinate of the first point.
+     * @param pZ1 {@link Double} - The z-coordinate of the first point.
+     * @param pX2 {@link Double} - The x-coordinate of the second point.
+     * @param pY2 {@link Double} - The y-coordinate of the second point.
+     * @param pZ2 {@link Double} - The z-coordinate of the second point.
      * @return The distance between the two points in 3D space.
      * @author MeAlam
      * @since 1.0.0
@@ -44,9 +65,9 @@ public class GeometricUtils {
     }
 
     /**
-     * A {@code double} that calculates the area of a circle given its radius.
+     * A {@link Double} that calculates the area of a circle given its radius.
      *
-     * @param pRadius {@link double} - The radius of the circle.
+     * @param pRadius {@link Double} - The radius of the circle.
      * @return The area of the circle.
      * @author MeAlam
      * @since 1.0.0
@@ -61,9 +82,9 @@ public class GeometricUtils {
     }
 
     /**
-     * A {@code double} that calculates the circumference of a circle given its radius.
+     * A {@link Double} that calculates the circumference of a circle given its radius.
      *
-     * @param pRadius {@link double} - The radius of the circle.
+     * @param pRadius {@link Double} - The radius of the circle.
      * @return The circumference of the circle.
      * @author MeAlam
      * @since 1.0.0
@@ -78,10 +99,10 @@ public class GeometricUtils {
     }
 
     /**
-     * A {@code double} that calculates the area of a rectangle given its width and height.
+     * A {@link Double} that calculates the area of a rectangle given its width and height.
      *
-     * @param pWidth {@link double} - The width of the rectangle.
-     * @param pHeight {@link double} - The height of the rectangle.
+     * @param pWidth {@link Double} - The width of the rectangle.
+     * @param pHeight {@link Double} - The height of the rectangle.
      * @return The area of the rectangle.
      * @author MeAlam
      * @since 1.0.0
@@ -96,10 +117,10 @@ public class GeometricUtils {
     }
 
     /**
-     * A {@code double} that calculates the perimeter of a rectangle given its width and height.
+     * A {@link Double} that calculates the perimeter of a rectangle given its width and height.
      *
-     * @param pWidth {@link double} - The width of the rectangle.
-     * @param pHeight {@link double} - The height of the rectangle.
+     * @param pWidth {@link Double} - The width of the rectangle.
+     * @param pHeight {@link Double} - The height of the rectangle.
      * @return The perimeter of the rectangle.
      * @author MeAlam
      * @since 1.0.0
@@ -114,10 +135,10 @@ public class GeometricUtils {
     }
 
     /**
-     * A {@code double} that calculates the area of a triangle given its base and height.
+     * A {@link Double} that calculates the area of a triangle given its base and height.
      *
-     * @param pBase {@link double} - The base of the triangle.
-     * @param pHeight {@link double} - The height of the triangle.
+     * @param pBase {@link Double} - The base of the triangle.
+     * @param pHeight {@link Double} - The height of the triangle.
      * @return The area of the triangle.
      * @since 1.0.0
      */
@@ -131,11 +152,11 @@ public class GeometricUtils {
     }
 
     /**
-     * A {@code double} that calculates the perimeter of a triangle given its three sides.
+     * A {@link Double} that calculates the perimeter of a triangle given its three sides.
      *
-     * @param pSide1 {@link double} - The first side of the triangle.
-     * @param pSide2 {@link double} - The second side of the triangle.
-     * @param pSide3 {@link double} - The third side of the triangle.
+     * @param pSide1 {@link Double} - The first side of the triangle.
+     * @param pSide2 {@link Double} - The second side of the triangle.
+     * @param pSide3 {@link Double} - The third side of the triangle.
      * @return The perimeter of the triangle.
      * @since 1.0.0
      */
@@ -149,9 +170,9 @@ public class GeometricUtils {
     }
 
     /**
-     * A {@code double} that calculates the volume of a sphere given its radius.
+     * A {@link Double} that calculates the volume of a sphere given its radius.
      *
-     * @param pRadius {@link double} - The radius of the sphere.
+     * @param pRadius {@link Double} - The radius of the sphere.
      * @return The volume of the sphere.
      * @author MeAlam
      * @since 1.0.0
@@ -166,9 +187,9 @@ public class GeometricUtils {
     }
 
     /**
-     * A {@code double} that calculates the surface area of a cube given its side length.
+     * A {@link Double} that calculates the surface area of a cube given its side length.
      *
-     * @param pSideLength {@link double} - The length of a side of the cube.
+     * @param pSideLength {@link Double} - The length of a side of the cube.
      * @return The surface area of the cube.
      * @author MeAlam
      * @since 1.0.0
@@ -183,10 +204,10 @@ public class GeometricUtils {
     }
 
     /**
-     * A {@code double} that calculates the volume of a cylinder given its radius and height.
+     * A {@link Double} that calculates the volume of a cylinder given its radius and height.
      *
-     * @param pRadius {@link double} - The radius of the cylinder's base.
-     * @param pHeight {@link double} - The height of the cylinder.
+     * @param pRadius {@link Double} - The radius of the cylinder's base.
+     * @param pHeight {@link Double} - The height of the cylinder.
      * @return The volume of the cylinder.
      * @author MeAlam
      * @since 1.0.0
@@ -201,10 +222,10 @@ public class GeometricUtils {
     }
 
     /**
-     * A {@code double} that calculates the surface area of a cone given its radius and slant height.
+     * A {@link Double} that calculates the surface area of a cone given its radius and slant height.
      *
-     * @param pRadius {@link double} - The radius of the base of the cone.
-     * @param pSlantHeight {@link double} - The slant height of the cone.
+     * @param pRadius {@link Double} - The radius of the base of the cone.
+     * @param pSlantHeight {@link Double} - The slant height of the cone.
      * @return The surface area of the cone.
      * @author MeAlam
      * @since 1.0.0

@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * A {@code base Interface} providing fundamental methods for handling entity variants.
+ * An {@code base Interface} providing fundamental methods for handling entity variants.
  * <p>
  * This interface defines methods for retrieving texture locations and variant names associated with entities.
  * </p>

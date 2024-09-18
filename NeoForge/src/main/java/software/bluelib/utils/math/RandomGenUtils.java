@@ -4,13 +4,38 @@ package software.bluelib.utils.math;
 
 import software.bluelib.utils.logging.BaseLogger;
 
+/**
+ * A {@code class} for generating random values of various types.
+ * <p>
+ * This class provides static methods to generate random integers, doubles, booleans, and alphanumeric strings.
+ * The methods offer flexibility in specifying the range or length for the generated values, and they ensure
+ * proper logging and error handling if invalid parameters are provided.
+ * </p>
+ * <p>
+ * Key Methods:
+ * <ul>
+ *   <li>{@link #generateRandomInt(int, int)} - Generates a random integer between a specified minimum and maximum value (inclusive).</li>
+ *   <li>{@link #generateRandomDouble(double, double)} - Generates a random double between a specified minimum and maximum value (inclusive).</li>
+ *   <li>{@link #generateRandomBoolean()} - Generates a random boolean value.</li>
+ *   <li>{@link #generateRandomString(int)} - Generates a random alphanumeric string of a specified length.</li>
+ *   <li>{@link #generateRandomStringWithPrefix(String, int)} - Generates a random alphanumeric string with a specified prefix and length.</li>
+ * </ul>
+ * </p>
+ * <p>
+ * Each method logs errors using {@link BaseLogger} when invalid parameters are provided (e.g., negative lengths
+ * or minimum values greater than maximum values) and returns default values (e.g., `0` for integers and `"unknown"` for strings)
+ * in such cases.
+ * </p>
+ * @author MeAlam
+ * @since 1.0.0
+ */
 public class RandomGenUtils {
 
     /**
-     * A {@code int} that generates a random integer between a specified minimum and maximum value (inclusive).
+     * A {@link Integer} that generates a random integer between a specified minimum and maximum value (inclusive).
      *
-     * @param pMin {@link int} - The minimum value (inclusive).
-     * @param pMax {@link int} - The maximum value (inclusive).
+     * @param pMin {@link Integer} - The minimum value (inclusive).
+     * @param pMax {@link Integer} - The maximum value (inclusive).
      * @return A random integer between {@code pMin} and {@code pMax}.
      * @author MeAlam
      * @since 1.0.0
@@ -25,10 +50,10 @@ public class RandomGenUtils {
     }
 
     /**
-     * A {@code double} that generates a random double between a specified minimum and maximum value (inclusive).
+     * A {@link Double} that generates a random double between a specified minimum and maximum value (inclusive).
      *
-     * @param pMin {@link double} - The minimum value (inclusive).
-     * @param pMax {@link double} - The maximum value (inclusive).
+     * @param pMin {@link Double} - The minimum value (inclusive).
+     * @param pMax {@link Double} - The maximum value (inclusive).
      * @return A random double between {@code pMin} and {@code pMax}.
      * @author MeAlam
      * @since 1.0.0
@@ -43,7 +68,7 @@ public class RandomGenUtils {
     }
 
     /**
-     * A {@code boolean} that generates a random boolean value.
+     * A {@link Boolean} that generates a random boolean value.
      *
      * @return A random boolean value.
      * @author MeAlam
@@ -54,9 +79,9 @@ public class RandomGenUtils {
     }
 
     /**
-     * A {@code String} that generates a random alphanumeric string of a specified length.
+     * A {@link String} that generates a random alphanumeric string of a specified length.
      *
-     * @param pLength {@link int} - The length of the string to be generated.
+     * @param pLength {@link Integer} - The length of the string to be generated.
      * @return A random alphanumeric string of the specified length.
      * @throws IllegalArgumentException if {@code pLength} is negative.
      * @author MeAlam
@@ -78,10 +103,10 @@ public class RandomGenUtils {
     }
 
     /**
-     * A {@code String} that generates a random alphanumeric string of a specified length with a specified prefix.
+     * A {@link String} that generates a random alphanumeric string of a specified length with a specified prefix.
      *
      * @param pPrefix {@link String} - The prefix of the string.
-     * @param pLength {@link int} - The length of the string to be generated.
+     * @param pLength {@link Integer} - The length of the string to be generated.
      * @return A random alphanumeric string of the specified length with the specified prefix.
      * @throws IllegalArgumentException if {@code pLength} is negative.
      * @since 1.0.0
