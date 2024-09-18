@@ -134,9 +134,8 @@ public class ReloadHandler extends ReloadEventHandler {
      */
     public static void LoadEntityVariants(MinecraftServer pServer) {
         for (String entityName : entityNames) {
-            String modPath = basePath + entityName + ".json";
-            String dataPath = basePath + entityName + "data.json";
-            ReloadEventHandler.registerEntityVariants(pServer, entityName, BlueLib.MODID, modPath, dataPath);
+            String folderPath = basePath + entityName;
+            ReloadEventHandler.registerEntityVariants(folderPath, pServer, BlueLib.MODID, entityName);
         }
     }
 }

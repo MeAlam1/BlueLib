@@ -8,22 +8,21 @@ import com.google.gson.JsonObject;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.packs.resources.ResourceManager;
+import software.bluelib.BlueLib;
 import software.bluelib.interfaces.variant.base.IVariantEntityBase;
 import software.bluelib.json.JSONLoader;
 import software.bluelib.json.JSONMerger;
 import software.bluelib.utils.logging.BaseLogger;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.File;
+import java.util.*;
 
 /**
  * A {@link VariantLoader} class that loads and manages {@link VariantParameter} for entities by merging JSON data from multiple sources.
  * <p>
  * Key Methods:
  * <ul>
- *   <li>{@link #loadVariants(ResourceLocation, ResourceLocation, MinecraftServer, String)} - Loads and merges variant data from both the main mod and the latest datapack.</li>
+ *   <li>{@link #loadVariants(String, MinecraftServer, String)} - Loads and merges variant data from both the main mod and the latest datapack.</li>
  *   <li>{@link #getVariantsFromEntity(String)} - Retrieves the list of loaded {@link VariantParameter} for a specific entity.</li>
  *   <li>{@link #getVariantByName(String, String)} - Retrieves a specific {@link VariantParameter} by its name for a given entity.</li>
  * </ul>
@@ -41,12 +40,10 @@ public class VariantLoader implements IVariantEntityBase {
      * A {@code void} method that loads and merges variant data from both the Main Mod and the <strong>Latest</strong> Datapack.
      * Parses the merged data into {@link VariantParameter}.
      *
-     * @param pJSONLocationMod {@link ResourceLocation} - The {@link ResourceLocation} of the Mod's JSON data.
-     * @param pJSONLocationData {@link ResourceLocation} - The {@link ResourceLocation} of the <strong>Latest</strong> DataPack's JSON data.
      * @param pServer {@link MinecraftServer} - The {@link MinecraftServer} instance.
      * @param pEntityName {@link String} - The name of the entity whose variants should be cleared before loading new ones.
      */
-    public static void loadVariants(ResourceLocation pJSONLocationMod, ResourceLocation pJSONLocationData, MinecraftServer pServer, String pEntityName) {
+    public static void loadVariants(String folderPath, MinecraftServer pServer, String pModID, String pEntityName) {
         BaseLogger.bluelibLogInfo("Starting to load variants for entity: " + pEntityName);
 
         clearVariantsForEntity(pEntityName);
@@ -54,19 +51,26 @@ public class VariantLoader implements IVariantEntityBase {
         ResourceManager resourceManager = pServer.getResourceManager();
         JsonObject mergedJsonObject = new JsonObject();
 
-        try {
-            JsonObject modJson = jsonLoader.loadJson(pJSONLocationMod, resourceManager);
-            JsonObject dataJson = jsonLoader.loadJson(pJSONLocationData, resourceManager);
+        Collection<ResourceLocation> collection = resourceManager.listResources(folderPath, pFiles -> pFiles.getPath().endsWith(".json")).keySet();
 
-            jsonMerger.mergeJsonObjects(mergedJsonObject, modJson);
-            jsonMerger.mergeJsonObjects(mergedJsonObject, dataJson);
+        BaseLogger.logBlueLib("Found resources: " + collection);
 
-            BaseLogger.bluelibLogInfo("Successfully loaded and merged JSON data for entity: " + pEntityName);
-            parseVariants(mergedJsonObject);
-        } catch (Exception pException) {
-            BaseLogger.logError("Failed to load variants for entity: " + pEntityName, pException);
+        for (ResourceLocation resourceLocation : collection) {
+            try {
+                BaseLogger.logBlueLib("Loading JSON data from resource: " + resourceLocation.toString());
+                JsonObject jsonObject = jsonLoader.loadJson(resourceLocation, resourceManager);
+                jsonMerger.mergeJsonObjects(mergedJsonObject, jsonObject);
+            } catch (Exception pException) {
+                BaseLogger.logError("Failed to load JSON data from resource: " + resourceLocation.toString(), pException);
+            }
         }
+
+        BaseLogger.logBlueLib("Successfully loaded and merged JSON data for entity: " + pEntityName);
+        parseVariants(mergedJsonObject);
     }
+
+
+
 
     /**
      * A {@code void} method that clears variants for a specific entity type from the map.

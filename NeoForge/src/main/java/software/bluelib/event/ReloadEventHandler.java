@@ -54,8 +54,6 @@ public class ReloadEventHandler {
      * @param pServer {@link MinecraftServer} - The server instance of the current world.
      * @param pEntityName {@link String} - The entity name to load.
      * @param pModID {@link String} - The mod ID used to locate the entity variant resources. (Use your Mod's ID)
-     * @param pModPathLocation {@link String} - The path location within the mod where variants are stored.
-     * @param pDataPathLocation {@link String} - The path location within the datapack where variants are stored.
      * @throws JsonParseException if there is an error parsing the JSON files.
      * @throws RuntimeException if an unexpected error occurs during the registration process.
      * @see MinecraftServer
@@ -65,14 +63,12 @@ public class ReloadEventHandler {
      * @Co-author Dan
      * @since 1.0.0
      */
-    protected static void registerEntityVariants(MinecraftServer pServer, String pEntityName, String pModID, String pModPathLocation, String pDataPathLocation) {
-        ResourceLocation modLocation = ResourceLocation.fromNamespaceAndPath(pModID, pModPathLocation);
-        ResourceLocation dataLocation = ResourceLocation.fromNamespaceAndPath(pModID, pDataPathLocation);
+    protected static void registerEntityVariants(String pFolderPath , MinecraftServer pServer, String pModID, String pEntityName) {
 
         BaseLogger.bluelibLogInfo("Attempting to register entity variants for " + pEntityName + " with ModID: " + pModID);
 
         try {
-            VariantLoader.loadVariants(modLocation, dataLocation, pServer, pEntityName);
+            VariantLoader.loadVariants(pFolderPath, pServer, pModID, pEntityName);
             BaseLogger.bluelibLogSuccess("Successfully registered entity variants for " + pEntityName + " from ModID: " + pModID);
         } catch (JsonParseException pException) {
             BaseLogger.logError("Failed to parse JSON(s) while registering entity variants for " + pEntityName + " from ModID: " + pModID, pException);

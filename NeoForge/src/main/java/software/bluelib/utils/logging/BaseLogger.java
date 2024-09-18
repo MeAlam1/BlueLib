@@ -7,7 +7,7 @@ public class BaseLogger {
     private static final Logger logger = Logger.getLogger(BaseLogger.class.getName());
 
     //FIXME: Set to false before release
-    private static boolean bluelibLogging = false;
+    private static boolean bluelibLogging = true;
 
     private static boolean logging = true;
 
