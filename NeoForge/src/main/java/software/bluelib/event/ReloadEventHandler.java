@@ -68,7 +68,7 @@ public class ReloadEventHandler {
         BaseLogger.bluelibLogInfo("Attempting to register entity variants for " + pEntityName + " with ModID: " + pModID);
 
         try {
-            VariantLoader.loadVariants(pFolderPath, pServer, pModID, pEntityName);
+            VariantLoader.loadVariants(pFolderPath, pServer, pEntityName);
             BaseLogger.bluelibLogSuccess("Successfully registered entity variants for " + pEntityName + " from ModID: " + pModID);
         } catch (JsonParseException pException) {
             BaseLogger.logError("Failed to parse JSON(s) while registering entity variants for " + pEntityName + " from ModID: " + pModID, pException);

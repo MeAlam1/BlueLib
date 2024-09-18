@@ -43,7 +43,7 @@ public class VariantLoader implements IVariantEntityBase {
      * @param pServer {@link MinecraftServer} - The {@link MinecraftServer} instance.
      * @param pEntityName {@link String} - The name of the entity whose variants should be cleared before loading new ones.
      */
-    public static void loadVariants(String folderPath, MinecraftServer pServer, String pModID, String pEntityName) {
+    public static void loadVariants(String folderPath, MinecraftServer pServer, String pEntityName) {
         BaseLogger.bluelibLogInfo("Starting to load variants for entity: " + pEntityName);
 
         clearVariantsForEntity(pEntityName);
