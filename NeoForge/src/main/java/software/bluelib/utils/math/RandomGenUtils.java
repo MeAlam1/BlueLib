@@ -2,6 +2,8 @@
 
 package software.bluelib.utils.math;
 
+import software.bluelib.utils.logging.BaseLogger;
+
 public class RandomGenUtils {
 
     /**
@@ -15,7 +17,9 @@ public class RandomGenUtils {
      */
     public static int generateRandomInt(int pMin, int pMax) {
         if (pMin > pMax) {
-            throw new IllegalArgumentException("Minimum value must not be greater than maximum value.");
+            Throwable throwable = new IllegalArgumentException("Minimum value must not be greater than maximum value.");
+            BaseLogger.logError("Error generating random integer", throwable);
+            return 0;
         }
         return pMin + (int)(Math.random() * (pMax - pMin + 1));
     }
@@ -31,7 +35,9 @@ public class RandomGenUtils {
      */
     public static double generateRandomDouble(double pMin, double pMax) {
         if (pMin > pMax) {
-            throw new IllegalArgumentException("Minimum value must not be greater than maximum value.");
+            Throwable throwable = new IllegalArgumentException("Minimum value must not be greater than maximum value.");
+            BaseLogger.logError("Error generating random double", throwable);
+            return 0;
         }
         return pMin + Math.random() * (pMax - pMin);
     }
@@ -58,7 +64,9 @@ public class RandomGenUtils {
      */
     public static String generateRandomString(int pLength) {
         if (pLength < 0) {
-            throw new IllegalArgumentException("Length must be non-negative.");
+            Throwable throwable = new IllegalArgumentException("Length must be non-negative.");
+            BaseLogger.logError("Error generating random string", throwable);
+            return "unknown";
         }
         String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         StringBuilder sb = new StringBuilder(pLength);
@@ -80,10 +88,10 @@ public class RandomGenUtils {
      */
     public static String generateRandomStringWithPrefix(String pPrefix, int pLength) {
         if (pLength < 0) {
-            throw new IllegalArgumentException("Length must be non-negative.");
+            Throwable throwable = new IllegalArgumentException("Length must be non-negative.");
+            BaseLogger.logError("Error generating random string with prefix", throwable);
+            return "unknown";
         }
         return pPrefix + generateRandomString(pLength - pPrefix.length());
     }
-
-
 }

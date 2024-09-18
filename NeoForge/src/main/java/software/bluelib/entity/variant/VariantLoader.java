@@ -11,6 +11,7 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import software.bluelib.interfaces.variant.base.IVariantEntityBase;
 import software.bluelib.json.JSONLoader;
 import software.bluelib.json.JSONMerger;
+import software.bluelib.utils.logging.BaseLogger;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,25 +33,8 @@ import java.util.Map;
  */
 public class VariantLoader implements IVariantEntityBase {
 
-    /**
-     * A {@link Map} to store loaded {@link VariantParameter} for each entity type.
-     * @Co-author MeAlam, Dan
-     * @since 1.0.0
-     */
     private static final Map<String, List<VariantParameter>> entityVariantsMap = new HashMap<>();
-
-    /**
-     * A {@link JSONLoader} instance to load JSON data.
-     * @Co-author MeAlam, Dan
-     * @since 1.0.0
-     */
     private static final JSONLoader jsonLoader = new JSONLoader();
-
-    /**
-     * A {@link JSONMerger} instance to merge JSON data.
-     * @Co-author MeAlam, Dan
-     * @since 1.0.0
-     */
     private static final JSONMerger jsonMerger = new JSONMerger();
 
     /**
@@ -61,33 +45,36 @@ public class VariantLoader implements IVariantEntityBase {
      * @param pJSONLocationData {@link ResourceLocation} - The {@link ResourceLocation} of the <strong>Latest</strong> DataPack's JSON data.
      * @param pServer {@link MinecraftServer} - The {@link MinecraftServer} instance.
      * @param pEntityName {@link String} - The name of the entity whose variants should be cleared before loading new ones.
-     * @author MeAlam
-     * @Co-author Dan
-     * @since 1.0.0
      */
     public static void loadVariants(ResourceLocation pJSONLocationMod, ResourceLocation pJSONLocationData, MinecraftServer pServer, String pEntityName) {
+        BaseLogger.bluelibLogInfo("Starting to load variants for entity: " + pEntityName);
+
         clearVariantsForEntity(pEntityName);
+
         ResourceManager resourceManager = pServer.getResourceManager();
         JsonObject mergedJsonObject = new JsonObject();
 
-        JsonObject modJson = jsonLoader.loadJson(pJSONLocationMod, resourceManager);
-        JsonObject dataJson = jsonLoader.loadJson(pJSONLocationData, resourceManager);
+        try {
+            JsonObject modJson = jsonLoader.loadJson(pJSONLocationMod, resourceManager);
+            JsonObject dataJson = jsonLoader.loadJson(pJSONLocationData, resourceManager);
 
-        jsonMerger.mergeJsonObjects(mergedJsonObject, modJson);
-        jsonMerger.mergeJsonObjects(mergedJsonObject, dataJson);
+            jsonMerger.mergeJsonObjects(mergedJsonObject, modJson);
+            jsonMerger.mergeJsonObjects(mergedJsonObject, dataJson);
 
-        parseVariants(mergedJsonObject);
+            BaseLogger.bluelibLogInfo("Successfully loaded and merged JSON data for entity: " + pEntityName);
+            parseVariants(mergedJsonObject);
+        } catch (Exception pException) {
+            BaseLogger.logError("Failed to load variants for entity: " + pEntityName, pException);
+        }
     }
 
     /**
      * A {@code void} method that clears variants for a specific entity type from the map.
      *
      * @param pEntityName {@link String} - The name of the entity whose variants should be cleared.
-     * @author MeAlam
-     * @Co-author Dan
-     * @since 1.0.0
      */
     private static void clearVariantsForEntity(String pEntityName) {
+        BaseLogger.bluelibLogInfo("Clearing variants for entity: " + pEntityName);
         entityVariantsMap.remove(pEntityName);
     }
 
@@ -95,15 +82,13 @@ public class VariantLoader implements IVariantEntityBase {
      * A {@code void} method that parses the merged JSON data and converts it into {@link VariantParameter} instances.
      *
      * @param pJsonObject {@link JsonObject} - The merged {@link JsonObject} containing variant data.
-     * @author MeAlam
-     * @Co-author Dan
-     * @since 1.0.0
      */
     private static void parseVariants(JsonObject pJsonObject) {
         for (Map.Entry<String, JsonElement> entry : pJsonObject.entrySet()) {
             String entityName = entry.getKey();
             JsonArray textureArray = entry.getValue().getAsJsonArray();
 
+            BaseLogger.bluelibLogInfo("Parsing variants for entity: " + entityName);
             List<VariantParameter> variantList = entityVariantsMap.computeIfAbsent(entityName, k -> new ArrayList<>());
 
             for (JsonElement variant : textureArray) {
@@ -125,9 +110,6 @@ public class VariantLoader implements IVariantEntityBase {
      * @param pJsonKey {@link String} - The key associated with this variant.
      * @param pJsonObject {@link JsonObject} - The {@link JsonObject} containing the variant data.
      * @return A {@link VariantParameter} instance.
-     * @author MeAlam
-     * @Co-author Dan
-     * @since 1.0.0
      */
     private static VariantParameter getEntityVariant(String pJsonKey, JsonObject pJsonObject) {
         return new VariantParameter(pJsonKey, pJsonObject);
@@ -139,11 +121,9 @@ public class VariantLoader implements IVariantEntityBase {
      *
      * @param pEntityName {@link String} - The name of the entity to retrieve variants for.
      * @return A {@link List} of {@link VariantParameter} instances for the specified entity.
-     * @author MeAlam
-     * @Co-author Dan
-     * @since 1.0.0
      */
     public static List<VariantParameter> getVariantsFromEntity(String pEntityName) {
+        BaseLogger.bluelibLogInfo("Retrieving variants for entity: " + pEntityName);
         return entityVariantsMap.getOrDefault(pEntityName, new ArrayList<>());
     }
 
@@ -153,17 +133,16 @@ public class VariantLoader implements IVariantEntityBase {
      * @param pEntityName {@link String} - The name of the entity to retrieve variants for.
      * @param pVariantName {@link String} - The name of the variant to retrieve.
      * @return The {@link VariantParameter} with the specified name, or {@code null} if not found.
-     * @author MeAlam
-     * @Co-author Dan
-     * @since 1.0.0
      */
     public static VariantParameter getVariantByName(String pEntityName, String pVariantName) {
+        BaseLogger.bluelibLogInfo("Retrieving variant by name: " + pVariantName + " for entity: " + pEntityName);
         List<VariantParameter> variants = getVariantsFromEntity(pEntityName);
         for (VariantParameter variant : variants) {
             if (variant.getVariantName().equals(pVariantName)) {
                 return variant;
             }
         }
+        BaseLogger.logWarning("Variant with name: " + pVariantName + " not found for entity: " + pEntityName);
         return null;
     }
 }

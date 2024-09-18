@@ -4,6 +4,7 @@ package software.bluelib.utils.variant;
 
 import software.bluelib.entity.variant.VariantParameter;
 import software.bluelib.entity.variant.VariantLoader;
+import software.bluelib.utils.logging.BaseLogger;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -97,7 +98,7 @@ public class ParameterUtils {
         private final String entityName;
 
         /**
-         * A {@link Map<String, String>} to store parameters for the variant.
+         * A {@link Map<String>} to store parameters for the variant.
          * <p>
          * Each key-value pair represents a parameter name and its default value.
          * </p>
@@ -135,7 +136,7 @@ public class ParameterUtils {
         }
 
         /**
-         * Adds a parameter to the parameters map with a default value of "null". <br>
+         * Adds a parameter to the parameter map with a default value of "null". <br>
          * <p>
          * **Note:** The "null" value is used only if the parameter is not specified in the JSON files.
          * </p>
@@ -159,7 +160,7 @@ public class ParameterUtils {
          * </p>
          *
          * @return The current instance of {@link ParameterBuilder} for method chaining.
-         * @throws NoSuchElementException if the specified variant is not found for the entity.
+         * @throws NoSuchElementException if the variant or entity is not found in the database.
          * @author MeAlam
          * @Co-author Dan
          * @since 1.0.0
@@ -173,9 +174,12 @@ public class ParameterUtils {
                 }
                 variantParametersMap.put(variantName, updatedParameters);
             } else {
-                throw new NoSuchElementException("Variant '" + variantName + "' not found for entity '" + entityName + "'");
+                Throwable cause = new Throwable("Variant or entity not found in the database");
+                NoSuchElementException exception = new NoSuchElementException("Variant '" + variantName + "' not found for entity '" + entityName + "'", cause);
+                BaseLogger.logError(exception.getMessage(), exception);
             }
             return this;
         }
+
     }
 }

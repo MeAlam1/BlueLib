@@ -8,9 +8,9 @@ import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.neoforged.fml.loading.FMLEnvironment;
-import net.neoforged.neoforge.common.NeoForge;
 import software.bluelib.example.event.ClientEvents;
 import software.bluelib.example.init.ModEntities;
+import software.bluelib.utils.logging.BaseLogger;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -48,7 +48,7 @@ public class BlueLib {
      * @Co-author MeAlam, Dan
      * @since 1.0.0
      */
-    private static final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+    private static final ScheduledExecutorService SCHEDULER = Executors.newScheduledThreadPool(1);
 
     /**
      * The Mod ID for {@link BlueLib}. This serves as a unique identifier for the mod.
@@ -72,7 +72,6 @@ public class BlueLib {
         pModEventBus.register(this);
         if (isDeveloperMode()) {
             ModEntities.REGISTRY.register(pModEventBus);
-
             if (FMLEnvironment.dist.isClient()) {
                 pModEventBus.addListener(ClientEvents::registerAttributes);
                 pModEventBus.addListener(ClientEvents::registerRenderers);
@@ -94,17 +93,14 @@ public class BlueLib {
     @SubscribeEvent
     public void onLoadComplete(FMLLoadCompleteEvent pEvent) {
         if (isDeveloperMode()) {
-            scheduler.schedule(() -> {
-                System.out.println("""
-
-                        **************************************************
-                        *                                                *
-                        *    Thank you for using BlueLib!                *
-                        *    We appreciate your support.                 *
-                        *                                                *
-                        **************************************************
-                        """);
-                scheduler.shutdown();
+            SCHEDULER.schedule(() -> {
+                BaseLogger.logBlueLib("**************************************************");
+                BaseLogger.logBlueLib("                                                  ");
+                BaseLogger.logBlueLib("     Thank you for using BlueLib!                 ");
+                BaseLogger.logBlueLib("     We appreciate your support.                  ");
+                BaseLogger.logBlueLib("                                                  ");
+                BaseLogger.logBlueLib("**************************************************");
+                SCHEDULER.shutdown();
             }, 3, TimeUnit.SECONDS);
         }
     }
@@ -121,6 +117,12 @@ public class BlueLib {
      * @since 1.0.0
      */
     static boolean isDeveloperMode() {
-        return !FMLEnvironment.production;
+        boolean isDevMode = !FMLEnvironment.production;
+        if (isDevMode) {
+            BaseLogger.bluelibLogSuccess("Running in Developer mode.");
+        } else {
+            BaseLogger.bluelibLogSuccess("Running in Production mode.");
+        }
+        return isDevMode;
     }
 }

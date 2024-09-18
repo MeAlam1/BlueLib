@@ -2,6 +2,8 @@
 
 package software.bluelib.entity.variant.base;
 
+import software.bluelib.utils.logging.BaseLogger;
+
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -48,6 +50,7 @@ public abstract class ParameterBase {
      */
     protected void addParameter(String pKey, Object pValue) {
         parameters.put(pKey, pValue);
+        BaseLogger.bluelibLogSuccess(String.format("Parameter added: Key = %s, Value = %s", pKey, pValue));
     }
 
     /**
@@ -60,11 +63,13 @@ public abstract class ParameterBase {
      * @since 1.0.0
      */
     protected Object getParameter(String pKey) {
-        return parameters.get(pKey);
+        Object value = parameters.get(pKey);
+        BaseLogger.bluelibLogSuccess(String.format("Parameter retrieved: Key = %s, Value = %s", pKey, value));
+        return value;
     }
 
     /**
-     * A {@code Void} that removes a parameter from the collection by its key.
+     * A {@code void} method that removes a parameter from the collection by its key.
      *
      * @param pKey {@link String} - The key of the parameter to remove.
      * @author MeAlam
@@ -72,18 +77,23 @@ public abstract class ParameterBase {
      * @since 1.0.0
      */
     protected void removeParameter(String pKey) {
-        parameters.remove(pKey);
+        if (parameters.remove(pKey) != null) {
+            BaseLogger.bluelibLogSuccess(String.format("Parameter removed: Key = %s", pKey));
+        } else {
+            BaseLogger.logWarning(String.format("Attempted to remove non-existent parameter: Key = %s", pKey));
+        }
     }
 
     /**
-     * A {@link Map<Object>} method that returns all parameters in the collection.
+     * A {@link Map} method that returns all parameters in the collection.
      *
-     * @return A {@link Map<Object>} containing all parameters.
+     * @return A {@link Map} containing all parameters.
      * @author MeAlam
      * @Co-author Dan
      * @since 1.0.0
      */
     protected Map<String, Object> getAllParameters() {
+        BaseLogger.bluelibLogSuccess("Retrieved all parameters.");
         return new HashMap<>(parameters);
     }
 
@@ -97,7 +107,9 @@ public abstract class ParameterBase {
      * @since 1.0.0
      */
     protected boolean containsParameter(String pKey) {
-        return parameters.containsKey(pKey);
+        boolean exists = parameters.containsKey(pKey);
+        BaseLogger.bluelibLogInfo(String.format("Parameter existence check: Key = %s, Exists = %b", pKey, exists));
+        return exists;
     }
 
     /**
@@ -109,7 +121,9 @@ public abstract class ParameterBase {
      * @since 1.0.0
      */
     protected boolean isEmpty() {
-        return parameters.isEmpty();
+        boolean empty = parameters.isEmpty();
+        BaseLogger.bluelibLogInfo("Checked if parameters are empty: " + empty);
+        return empty;
     }
 
     /**
@@ -121,6 +135,7 @@ public abstract class ParameterBase {
      */
     protected void clearParameters() {
         parameters.clear();
+        BaseLogger.bluelibLogSuccess("Cleared all parameters.");
     }
 
     /**
@@ -132,7 +147,9 @@ public abstract class ParameterBase {
      * @since 1.0.0
      */
     protected int getParameterCount() {
-        return parameters.size();
+        int count = parameters.size();
+        BaseLogger.bluelibLogSuccess("Retrieved parameter count: " + count);
+        return count;
     }
 
     /**
@@ -144,6 +161,7 @@ public abstract class ParameterBase {
      * @since 1.0.0
      */
     protected Set<String> getParameterKeys() {
+        BaseLogger.bluelibLogSuccess("Retrieved parameter keys.");
         return parameters.keySet();
     }
 
@@ -156,6 +174,7 @@ public abstract class ParameterBase {
      * @since 1.0.0
      */
     protected Collection<Object> getParameterValues() {
+        BaseLogger.bluelibLogSuccess("Retrieved parameter values.");
         return parameters.values();
     }
 
@@ -172,8 +191,12 @@ public abstract class ParameterBase {
     protected void updateParameter(String pKey, Object pNewValue) {
         if (parameters.containsKey(pKey)) {
             parameters.put(pKey, pNewValue);
+            BaseLogger.bluelibLogInfo(String.format("Parameter updated: Key = %s, New Value = %s", pKey, pNewValue));
         } else {
-            throw new IllegalArgumentException("Key does not exist: " + pKey);
+            Throwable throwable = new Throwable("Key does not exist: " + pKey);
+            IllegalArgumentException exception = new IllegalArgumentException("Key does not exist: " + pKey);
+            BaseLogger.logError(String.format("Attempted to update non-existent parameter: Key = %s", pKey), throwable);
+            throw exception;
         }
     }
 }

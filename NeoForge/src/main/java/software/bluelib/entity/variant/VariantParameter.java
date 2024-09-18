@@ -5,6 +5,7 @@ package software.bluelib.entity.variant;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import software.bluelib.entity.variant.base.ParameterBase;
+import software.bluelib.utils.logging.BaseLogger;
 
 import java.util.Map;
 import java.util.Set;
@@ -59,14 +60,19 @@ public class VariantParameter extends ParameterBase {
      */
     public VariantParameter(String pJsonKey, JsonObject pJsonObject) {
         if (pJsonKey == null || pJsonObject == null) {
-            throw new IllegalArgumentException("JSON key and object must not be null");
+            Throwable throwable = new Throwable("JSON key or JSON object is null");
+            IllegalArgumentException exception = new IllegalArgumentException("JSON key and object must not be null");
+            BaseLogger.logError(exception.toString(), throwable);
+            throw exception;
         }
         this.jsonKey = pJsonKey;
+        BaseLogger.bluelibLogInfo("Creating VariantParameter with JSON key: " + pJsonKey);
         Set<Map.Entry<String, JsonElement>> entryMap = pJsonObject.entrySet();
         for (Map.Entry<String, JsonElement> entry : entryMap) {
             JsonElement element = entry.getValue();
             if (element.isJsonPrimitive()) {
                 addParameter(entry.getKey(), element.getAsString());
+                BaseLogger.bluelibLogInfo("Added primitive parameter: " + entry.getKey() + " = " + element.getAsString());
             } else if (element.isJsonArray()) {
                 StringBuilder arrayValues = new StringBuilder();
                 element.getAsJsonArray().forEach(e -> arrayValues.append(e.getAsString()).append(","));
@@ -74,10 +80,13 @@ public class VariantParameter extends ParameterBase {
                     arrayValues.setLength(arrayValues.length() - 1);
                 }
                 addParameter(entry.getKey(), arrayValues.toString());
+                BaseLogger.bluelibLogInfo("Added array parameter: " + entry.getKey() + " = " + arrayValues.toString());
             } else if (element.isJsonObject()) {
                 addParameter(entry.getKey(), element.toString());
+                BaseLogger.bluelibLogInfo("Added object parameter: " + entry.getKey() + " = " + element.toString());
             } else {
                 addParameter(entry.getKey(), "null");
+                BaseLogger.bluelibLogInfo("Added null parameter for key: " + entry.getKey());
             }
         }
     }
@@ -95,8 +104,12 @@ public class VariantParameter extends ParameterBase {
      */
     public String getJsonKey() {
         if (this.jsonKey == null) {
-            throw new IllegalStateException("JSON key should not be null");
+            Throwable throwable = new Throwable("JSON key should not be null");
+            IllegalStateException exception = new IllegalStateException("JSON key is unexpectedly null when retrieving from VariantParameter.");
+            BaseLogger.logError(exception.toString(), throwable);
+            throw exception;
         }
+        BaseLogger.bluelibLogSuccess("Retrieved JSON key: " + this.jsonKey);
         return this.jsonKey;
     }
 
@@ -111,7 +124,9 @@ public class VariantParameter extends ParameterBase {
      * @since 1.0.0
      */
     public String getVariantName() {
-        return getParameter("variantName");
+        String variantName = getParameter("variantName");
+        BaseLogger.bluelibLogSuccess("Retrieved variant name: " + variantName);
+        return variantName;
     }
 
     /**
@@ -126,6 +141,8 @@ public class VariantParameter extends ParameterBase {
      * @since 1.0.0
      */
     public String getParameter(String pKey) {
-        return (String) super.getParameter(pKey);
+        String value = (String) super.getParameter(pKey);
+        BaseLogger.bluelibLogSuccess("Retrieved parameter for key " + pKey + ": " + value);
+        return value;
     }
 }

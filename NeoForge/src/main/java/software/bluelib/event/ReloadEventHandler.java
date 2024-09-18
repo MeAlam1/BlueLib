@@ -6,6 +6,7 @@ import com.google.gson.JsonParseException;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import software.bluelib.entity.variant.VariantLoader;
+import software.bluelib.utils.logging.BaseLogger;
 
 /**
  * A {@code ReloadEventHandler} class responsible for handling events related to reloading entity variants.
@@ -67,12 +68,18 @@ public class ReloadEventHandler {
     protected static void registerEntityVariants(MinecraftServer pServer, String pEntityName, String pModID, String pModPathLocation, String pDataPathLocation) {
         ResourceLocation modLocation = ResourceLocation.fromNamespaceAndPath(pModID, pModPathLocation);
         ResourceLocation dataLocation = ResourceLocation.fromNamespaceAndPath(pModID, pDataPathLocation);
+
+        BaseLogger.bluelibLogInfo("Attempting to register entity variants for " + pEntityName + " with ModID: " + pModID);
+
         try {
             VariantLoader.loadVariants(modLocation, dataLocation, pServer, pEntityName);
+            BaseLogger.bluelibLogSuccess("Successfully registered entity variants for " + pEntityName + " from ModID: " + pModID);
         } catch (JsonParseException pException) {
-            throw new RuntimeException("Failed to parse JSON(s) while registering entity variants for " + pEntityName + " from Mod with ModID: " + pModID, pException);
+            BaseLogger.logError("Failed to parse JSON(s) while registering entity variants for " + pEntityName + " from ModID: " + pModID, pException);
+            throw pException;
         } catch (Exception pException) {
-            throw new RuntimeException("Unexpected error occurred while registering entity variants for " + pEntityName + " from Mod with ModID: " + pModID, pException);
+            BaseLogger.logError("Unexpected error occurred while registering entity variants for " + pEntityName + " from ModID: " + pModID, pException);
+            throw pException;
         }
     }
 }

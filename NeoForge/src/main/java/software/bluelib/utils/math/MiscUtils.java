@@ -2,6 +2,8 @@
 
 package software.bluelib.utils.math;
 
+import software.bluelib.utils.logging.BaseLogger;
+
 public class MiscUtils {
 
     /**
@@ -17,7 +19,6 @@ public class MiscUtils {
         return pEmail != null && pEmail.matches(emailRegex);
     }
 
-
     /**
      * A {@code int} that converts a string to an integer, returning a default value if the string is not a valid integer.
      *
@@ -30,7 +31,8 @@ public class MiscUtils {
     public static int stringToIntWithDefault(String pString, int pDefaultValue) {
         try {
             return Integer.parseInt(pString);
-        } catch (NumberFormatException e) {
+        } catch (NumberFormatException pException) {
+            BaseLogger.logError("Error converting string to integer", pException);
             return pDefaultValue;
         }
     }
@@ -74,18 +76,27 @@ public class MiscUtils {
      * @since 1.0.0
      */
     public static int[] hexToRGB(String pHex) {
+        if (pHex == null || pHex.isEmpty()) {
+            Throwable throwable = new IllegalArgumentException("Hex color code cannot be null or empty.");
+            BaseLogger.logError("Error converting hex to RGB", throwable);
+            return new int[]{0, 0, 0};
+        }
         if (pHex.charAt(0) == '#') {
             pHex = pHex.substring(1);
         }
         if (pHex.length() != 6) {
-            throw new IllegalArgumentException("Invalid hex color code.");
+            Throwable throwable = new IllegalArgumentException("Invalid hex color code.");
+            BaseLogger.logError("Error converting hex to RGB", throwable);
+            return new int[]{0, 0, 0};
         }
-        int r = Integer.parseInt(pHex.substring(0, 2), 16);
-        int g = Integer.parseInt(pHex.substring(2, 4), 16);
-        int b = Integer.parseInt(pHex.substring(4, 6), 16);
-        return new int[]{r, g, b};
+        try {
+            int r = Integer.parseInt(pHex.substring(0, 2), 16);
+            int g = Integer.parseInt(pHex.substring(2, 4), 16);
+            int b = Integer.parseInt(pHex.substring(4, 6), 16);
+            return new int[]{r, g, b};
+        } catch (NumberFormatException pException) {
+            BaseLogger.logError("Error parsing hex color code to RGB", pException);
+            return new int[]{0, 0, 0};
+        }
     }
-
-
-
 }

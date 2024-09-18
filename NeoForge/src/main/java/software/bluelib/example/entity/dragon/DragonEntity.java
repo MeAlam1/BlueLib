@@ -23,6 +23,7 @@ import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.util.GeckoLibUtil;
 import software.bluelib.interfaces.variant.IVariantEntity;
+import software.bluelib.utils.logging.BaseLogger;
 import software.bluelib.utils.minecraft.ChunkUtils;
 import software.bluelib.utils.variant.ParameterUtils;
 
@@ -164,8 +165,7 @@ public class DragonEntity extends TamableAnimal implements IVariantEntity, GeoEn
                     .withParameter("array")
                     .connect();
         }
-        int Check = ChunkUtils.getChunkBlockCount(pLevel.getLevel(), new ChunkPos(this.blockPosition()));
-        System.out.println(Check);
+        BaseLogger.logSuccess("Dragon Spawned with Variant: " + getVariantName());
         return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData);
     }
 

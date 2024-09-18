@@ -7,7 +7,7 @@ import com.google.gson.JsonObject;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
-import software.bluelib.exception.CouldNotLoadJSON;
+import software.bluelib.utils.logging.BaseLogger;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -44,26 +44,32 @@ public class JSONLoader {
      * @param pResourceLocation {@link ResourceLocation} - The {@link ResourceLocation} of the JSON resource.
      * @param pResourceManager {@link ResourceManager} - The {@link ResourceManager} to load the resource.
      * @return The loaded {@link JsonObject}.
-     * @throws CouldNotLoadJSON If the JSON could not be loaded.
      * @author MeAlam
      * @Co-author Dan
      * @since 1.0.0
      */
-    public JsonObject loadJson(ResourceLocation pResourceLocation, ResourceManager pResourceManager) throws CouldNotLoadJSON {
+    public JsonObject loadJson(ResourceLocation pResourceLocation, ResourceManager pResourceManager) {
+        BaseLogger.bluelibLogInfo("Attempting to load JSON resource: " + pResourceLocation);
+
         try {
             Optional<Resource> resource = pResourceManager.getResource(pResourceLocation);
 
             if (resource.isEmpty()) {
+                BaseLogger.logWarning("Resource not found: " + pResourceLocation);
                 return new JsonObject();
             }
 
             try (InputStream inputStream = resource.get().open();
                  InputStreamReader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8)) {
 
-                return gson.fromJson(reader, JsonObject.class);
+                JsonObject jsonObject = gson.fromJson(reader, JsonObject.class);
+                BaseLogger.bluelibLogSuccess("Successfully loaded JSON resource: " + pResourceLocation);
+                return jsonObject;
             }
         } catch (IOException pException) {
-            throw new CouldNotLoadJSON("Failed to load JSON from resource: " + pResourceLocation + ". Error: " + pException.getMessage(), pResourceLocation.toString());
+            RuntimeException exception = new RuntimeException("Failed to load JSON resource: " + pResourceLocation, pException);
+            BaseLogger.logError("Failed to load JSON resource: " + pResourceLocation, exception);
+            throw exception;
         }
     }
 }

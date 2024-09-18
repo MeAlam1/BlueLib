@@ -5,6 +5,7 @@ package software.bluelib.utils.math;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import software.bluelib.utils.logging.BaseLogger;
 
 public class ConversionUtils {
 
@@ -30,7 +31,6 @@ public class ConversionUtils {
     public static double centimetersToInches(double pCentimeters) {
         return pCentimeters / 2.54;
     }
-
 
     /**
      * A {@code double} that converts a temperature from Celsius to Fahrenheit.
@@ -89,8 +89,13 @@ public class ConversionUtils {
      * @since 1.0.0
      */
     public static Date stringToDate(String pDateStr, String pFormat) throws ParseException {
-        SimpleDateFormat formatter = new SimpleDateFormat(pFormat);
-        return formatter.parse(pDateStr);
+        try {
+            SimpleDateFormat formatter = new SimpleDateFormat(pFormat);
+            return formatter.parse(pDateStr);
+        } catch (ParseException pException) {
+            BaseLogger.logError("Error parsing date string: " + pDateStr + " with format: " + pFormat, pException);
+            throw pException;
+        }
     }
 
     /**
@@ -103,8 +108,12 @@ public class ConversionUtils {
      * @since 1.0.0
      */
     public static String dateToString(Date pDate, String pFormat) {
-        SimpleDateFormat formatter = new SimpleDateFormat(pFormat);
-        return formatter.format(pDate);
+        try {
+            SimpleDateFormat formatter = new SimpleDateFormat(pFormat);
+            return formatter.format(pDate);
+        } catch (Exception pException) {
+            BaseLogger.logError("Error formatting date: " + pDate.toString() + " with format: " + pFormat, pException);
+            return pException.getMessage();
+        }
     }
-
 }

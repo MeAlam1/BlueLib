@@ -2,6 +2,8 @@
 
 package software.bluelib.utils.math;
 
+import software.bluelib.utils.logging.BaseLogger;
+
 public class MatrixUtils {
 
     /**
@@ -19,7 +21,9 @@ public class MatrixUtils {
         int colsA = pMatrixA[0].length;
         int colsB = pMatrixB[0].length;
         if (colsA != pMatrixB.length) {
-            throw new IllegalArgumentException("Number of columns in the first matrix must be equal to the number of rows in the second matrix.");
+            Throwable throwable = new IllegalArgumentException("Number of columns in the first matrix must be equal to the number of rows in the second matrix.");
+            BaseLogger.logError("Error performing matrix multiplication", throwable);
+            return new double[0][0];
         }
         double[][] result = new double[rowsA][colsB];
         for (int i = 0; i < rowsA; i++) {
@@ -31,7 +35,6 @@ public class MatrixUtils {
         }
         return result;
     }
-
 
     /**
      * A {@code double[][]} that computes the transpose of a matrix.
@@ -64,11 +67,12 @@ public class MatrixUtils {
      */
     public static double calculate2x2MatrixDeterminant(double[][] pMatrix) {
         if (pMatrix.length != 2 || pMatrix[0].length != 2) {
-            throw new IllegalArgumentException("Matrix must be 2x2.");
+            Throwable throwable = new IllegalArgumentException("Matrix must be 2x2.");
+            BaseLogger.logError("Error calculating 2x2 matrix determinant", throwable);
+            return Double.NaN;
         }
         return pMatrix[0][0] * pMatrix[1][1] - pMatrix[0][1] * pMatrix[1][0];
     }
-
 
     /**
      * A {@code double[][]} that calculates the inverse of a 2x2 matrix.
@@ -81,11 +85,15 @@ public class MatrixUtils {
      */
     public static double[][] invert2x2Matrix(double[][] pMatrix) {
         if (pMatrix.length != 2 || pMatrix[0].length != 2) {
-            throw new IllegalArgumentException("Matrix must be 2x2.");
+            Throwable throwable = new IllegalArgumentException("Matrix must be 2x2.");
+            BaseLogger.logError("Error inverting 2x2 matrix", throwable);
+            return new double[0][0];
         }
         double determinant = calculate2x2MatrixDeterminant(pMatrix);
         if (determinant == 0) {
-            throw new IllegalArgumentException("Matrix is not invertible.");
+            Throwable throwable = new IllegalArgumentException("Matrix is not invertible.");
+            BaseLogger.logError("Error inverting 2x2 matrix", throwable);
+            return new double[0][0];
         }
         double[][] inverse = new double[2][2];
         inverse[0][0] = pMatrix[1][1] / determinant;
@@ -94,7 +102,4 @@ public class MatrixUtils {
         inverse[1][1] = pMatrix[0][0] / determinant;
         return inverse;
     }
-
-
-
 }

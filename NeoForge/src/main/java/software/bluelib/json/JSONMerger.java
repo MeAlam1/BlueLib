@@ -5,6 +5,7 @@ package software.bluelib.json;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import software.bluelib.utils.logging.BaseLogger;
 
 import java.util.Map;
 
@@ -41,10 +42,14 @@ public class JSONMerger {
      * @since 1.0.0
      */
     public void mergeJsonObjects(JsonObject pTarget, JsonObject pSource) {
+        BaseLogger.bluelibLogInfo("Starting JSON merge operation.");
+
         for (Map.Entry<String, JsonElement> entry : pSource.entrySet()) {
-            if (pTarget.has(entry.getKey())) {
-                JsonElement targetElement = pTarget.get(entry.getKey());
-                JsonElement sourceElement = entry.getValue();
+            String key = entry.getKey();
+            JsonElement sourceElement = entry.getValue();
+
+            if (pTarget.has(key)) {
+                JsonElement targetElement = pTarget.get(key);
 
                 if (targetElement.isJsonArray() && sourceElement.isJsonArray()) {
                     JsonArray targetArray = targetElement.getAsJsonArray();
@@ -53,12 +58,18 @@ public class JSONMerger {
                     for (JsonElement element : sourceArray) {
                         targetArray.add(element);
                     }
+
+                    BaseLogger.bluelibLogInfo("Merged array for key: " + key);
                 } else {
-                    pTarget.add(entry.getKey(), sourceElement);
+                    pTarget.add(key, sourceElement);
+                    BaseLogger.bluelibLogInfo("Overwriting value for key: " + key);
                 }
             } else {
-                pTarget.add(entry.getKey(), entry.getValue());
+                pTarget.add(key, sourceElement);
+                BaseLogger.bluelibLogInfo("Adding new key: " + key);
             }
         }
+
+        BaseLogger.bluelibLogSuccess("JSON merge operation completed.");
     }
 }
