@@ -53,11 +53,11 @@ public class VariantLoader implements IVariantEntityBase {
 
         Collection<ResourceLocation> collection = resourceManager.listResources(folderPath, pFiles -> pFiles.getPath().endsWith(".json")).keySet();
 
-        BaseLogger.logBlueLib("Found resources: " + collection);
+        BaseLogger.bluelibLogSuccess("Found resources: " + collection);
 
         for (ResourceLocation resourceLocation : collection) {
             try {
-                BaseLogger.logBlueLib("Loading JSON data from resource: " + resourceLocation.toString());
+                BaseLogger.bluelibLogInfo("Loading JSON data from resource: " + resourceLocation.toString());
                 JsonObject jsonObject = jsonLoader.loadJson(resourceLocation, resourceManager);
                 jsonMerger.mergeJsonObjects(mergedJsonObject, jsonObject);
             } catch (Exception pException) {
@@ -65,7 +65,7 @@ public class VariantLoader implements IVariantEntityBase {
             }
         }
 
-        BaseLogger.logBlueLib("Successfully loaded and merged JSON data for entity: " + pEntityName);
+        BaseLogger.bluelibLogSuccess("Successfully loaded and merged JSON data for entity: " + pEntityName);
         parseVariants(mergedJsonObject);
     }
 
