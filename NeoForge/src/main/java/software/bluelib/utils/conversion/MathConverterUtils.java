@@ -1,6 +1,6 @@
 // Copyright (c) BlueLib. Licensed under the MIT License.
 
-package software.bluelib.utils.math;
+package software.bluelib.utils.conversion;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -24,7 +24,7 @@ import software.bluelib.utils.logging.BaseLogger;
  * @author MeAlam
  * @since 1.0.0
  */
-public class ConversionUtils {
+public class MathConverterUtils {
 
     /**
      * A {@link Double} that converts a length from inches to centimeters.
