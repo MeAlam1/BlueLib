@@ -10,23 +10,23 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * An abstract base class for managing a collection of parameters.
+ * An {@code public abstract base class} for managing a collection of {@link #parameters}.
  * <p>
- * This class provides methods to add, retrieve, remove, and manipulate parameters stored as key-value pairs.
+ * This {@code class} provides methods to add, retrieve, remove, and manipulate {@link #parameters} stored as key-value pairs.
  * </p>
  * Key Methods:
  * <ul>
- *   <li>{@link #addParameter(String, Object)} - Adds a parameter to the collection.</li>
- *   <li>{@link #getParameter(String)} - Retrieves a parameter from the collection.</li>
- *   <li>{@link #removeParameter(String)} - Removes a parameter from the collection.</li>
- *   <li>{@link #getAllParameters()} - Returns all parameters in the collection.</li>
- *   <li>{@link #containsParameter(String)} - Checks if a parameter exists by its key.</li>
- *   <li>{@link #isEmpty()} - Checks if the collection of parameters is empty.</li>
- *   <li>{@link #clearParameters()} - Clears all parameters from the collection.</li>
- *   <li>{@link #getParameterCount()} - Returns the number of parameters in the collection.</li>
- *   <li>{@link #getParameterKeys()} - Returns a set of all parameter keys.</li>
- *   <li>{@link #getParameterValues()} - Returns a collection of all parameter values.</li>
- *   <li>{@link #updateParameter(String, Object)} - Updates the value of an existing parameter.</li>
+ *   <li>{@link #addParameter(String, Object)} - Adds a parameter to {@link #parameters}.</li>
+ *   <li>{@link #getParameter(String)} - Retrieves a parameter from {@link #parameters}.</li>
+ *   <li>{@link #removeParameter(String)} - Removes a parameter from {@link #parameters}.</li>
+ *   <li>{@link #getAllParameters()} - Returns all parameters in {@link #parameters}.</li>
+ *   <li>{@link #containsParameter(String)} - Checks if a parameter exists by its key from {@link #parameters}.</li>
+ *   <li>{@link #isEmpty()} - Checks if {@link #parameters} is empty.</li>
+ *   <li>{@link #clearParameters()} - Clears all parameters from {@link #parameters}.</li>
+ *   <li>{@link #getParameterCount()} - Returns the number of parameters in {@link #parameters}.</li>
+ *   <li>{@link #getParameterKeys()} - Returns a set of all parameter keys from {@link #parameters}.</li>
+ *   <li>{@link #getParameterValues()} - Returns a collection of all parameter values from {@link #parameters}.</li>
+ *   <li>{@link #updateParameter(String, Object)} - Updates the value of an existing parameter in {@link #parameters}.</li>
  * </ul>
  * @author MeAlam
  * @Co-author Dan
@@ -35,9 +35,9 @@ import java.util.Set;
 public abstract class ParameterBase {
 
     /**
-     * A {@link Map} to store parameters as key-value pairs.
+     * A {@code private final} {@link Map<String>} to store parameters as key-value pairs.
      * <p>
-     * This map holds parameter keys and their corresponding values.
+     * This {@link Map<String>} holds parameter keys and their corresponding values.
      * </p>
      * @Co-author MeAlam, Dan
      * @since 1.0.0
@@ -45,9 +45,9 @@ public abstract class ParameterBase {
     private final Map<String, Object> parameters = new HashMap<>();
 
     /**
-     * A {@code void} that adds a parameter to the collection.
+     * A {@code protected void} that adds a parameter to {@link #parameters}.
      * <p>
-     * This method stores a new parameter with the specified key and value in the internal map.
+     * This method stores a new parameter with the specified key and value in {@link #parameters}.
      * </p>
      * @param pKey {@link String} - The key under which the parameter is stored.
      * @param pValue {@link Object} - The value of the parameter.
@@ -61,12 +61,12 @@ public abstract class ParameterBase {
     }
 
     /**
-     * A {@link Object} that retrieves a parameter from the collection by its key.
+     * A {@code protected} {@link Object} that retrieves a parameter from {@link #parameters} by its key.
      * <p>
      * This method returns the value associated with the specified key, or {@code null} if the key does not exist.
      * </p>
      * @param pKey {@link String} - The key of the parameter to retrieve.
-     * @return The value associated with the key, or {@code null} if the key does not exist.
+     * @return {@link Object} - The value associated with the key, or {@code null} if the key does not exist.
      * @author MeAlam
      * @Co-author Dan
      * @since 1.0.0
@@ -78,9 +78,9 @@ public abstract class ParameterBase {
     }
 
     /**
-     * A {@code void} that removes a parameter from the collection by its key.
+     * A {@code protected void} that removes a parameter from {@link #parameters} by its key.
      * <p>
-     * This method deletes the parameter with the specified key from the internal map. If the key does not exist, no action is taken.
+     * This method deletes the parameter with the specified key from {@link #parameters}. If the key does not exist, no action is taken.
      * </p>
      * @param pKey {@link String} - The key of the parameter to remove.
      * @author MeAlam
@@ -96,11 +96,11 @@ public abstract class ParameterBase {
     }
 
     /**
-     * A {@link Map<String>} that returns all parameters in the collection.
+     * A {@code protected} {@link Map<String>} that returns all parameters in {@link #parameters}.
      * <p>
-     * This method returns a new {@link Map} containing all parameters stored in the internal map.
+     * This method returns a new {@link Map<String>} containing all parameters stored in {@link #parameters}.
      * </p>
-     * @return A {@link Map} containing all parameters.
+     * @return {@link Map<String>} - A {@link Map<String>} containing all parameters.
      * @author MeAlam
      * @Co-author Dan
      * @since 1.0.0
@@ -111,12 +111,12 @@ public abstract class ParameterBase {
     }
 
     /**
-     * A {@link Boolean} that checks if a parameter exists by its key.
+     * A {@code protected} {@link Boolean} that checks if a parameter exists by its key.
      * <p>
-     * This method returns {@code true} if the parameter with the specified key exists in the collection, {@code false} otherwise.
+     * This method returns {@code true} if the parameter with the specified key exists in {@link #parameters}, {@code false} otherwise.
      * </p>
      * @param pKey {@link String} - The key of the parameter to check.
-     * @return {@code true} if the parameter exists, {@code false} otherwise.
+     * @return {@link Boolean} - {@code true} if the parameter exists, {@code false} otherwise.
      * @author MeAlam
      * @Co-author Dan
      * @since 1.0.0
@@ -128,11 +128,11 @@ public abstract class ParameterBase {
     }
 
     /**
-     * A {@link Boolean} that checks if the collection of parameters is empty.
+     * A {@code protected} {@link Boolean} that checks if {@link #parameters} is empty.
      * <p>
-     * This method returns {@code true} if the collection contains no parameters, {@code false} otherwise.
+     * This method returns {@code true} if {@link #parameters} contains no parameters, {@code false} otherwise.
      * </p>
-     * @return {@code true} if the collection is empty, {@code false} otherwise.
+     * @return {@link Boolean} - {@code true} if {@link #parameters} is empty, {@code false} otherwise.
      * @author MeAlam
      * @Co-author Dan
      * @since 1.0.0
@@ -144,9 +144,9 @@ public abstract class ParameterBase {
     }
 
     /**
-     * A {@code void} that clears all parameters from the collection.
+     * A {@code protected void} that clears all parameters from {@link #parameters}.
      * <p>
-     * This method removes all parameters from the internal map.
+     * This method removes all parameters from {@link #parameters}.
      * </p>
      * @author MeAlam
      * @Co-author Dan
@@ -158,11 +158,11 @@ public abstract class ParameterBase {
     }
 
     /**
-     * A {@link Integer} that returns the number of parameters in the collection.
+     * A {@code protected} {@link Integer} that returns the number of parameters in {@link #parameters}.
      * <p>
-     * This method provides the count of parameters currently stored in the internal map.
+     * This method provides the count of parameters currently stored in {@link #parameters}.
      * </p>
-     * @return The number of parameters in the collection.
+     * @return {@link Integer} - The number of parameters in the collection.
      * @author MeAlam
      * @Co-author Dan
      * @since 1.0.0
@@ -174,11 +174,11 @@ public abstract class ParameterBase {
     }
 
     /**
-     * A {@link Set<String>} that returns a set of all parameter keys.
+     * A {@code protected} {@link Set<String>} that returns a set of all parameter keys.
      * <p>
-     * This method provides a {@link Set} containing all the keys of parameters in the collection.
+     * This method provides a {@link Set<String>} containing all the keys of parameters in {@link #parameters}.
      * </p>
-     * @return A {@link Set} containing all parameter keys.
+     * @return {@link Set<String>} - A {@link Set<String>} containing all parameter keys.
      * @author MeAlam
      * @Co-author Dan
      * @since 1.0.0
@@ -189,11 +189,11 @@ public abstract class ParameterBase {
     }
 
     /**
-     * A {@link Collection<Object>} that returns a collection of all parameter values.
+     * A {@code protected} {@link Collection<Object>} that returns a {@link Collection<Object>} of all parameter values.
      * <p>
-     * This method provides a {@link Collection} containing all the values of parameters in the collection.
+     * This method provides a {@link Collection<Object>} containing all the values of parameters in {@link #parameters}.
      * </p>
-     * @return A {@link Collection} containing all parameter values.
+     * @return {@link Collection<Object>} - A {@link Collection<Object>} containing all parameter values.
      * @author MeAlam
      * @Co-author Dan
      * @since 1.0.0
@@ -204,9 +204,9 @@ public abstract class ParameterBase {
     }
 
     /**
-     * A {@code void} that updates the value of an existing parameter.
+     * A {@code protected void} that updates the value of an existing parameter.
      * <p>
-     * This method changes the value of a parameter identified by the specified key. If the key does not exist, an exception is thrown.
+     * This method changes the value of a parameter in {@link #parameters} that is identified by the specified key. If the key does not exist, an exception is thrown.
      * </p>
      * @param pKey {@link String} - The key of the parameter to update.
      * @param pNewValue {@link Object} - The new value to set for the parameter.
