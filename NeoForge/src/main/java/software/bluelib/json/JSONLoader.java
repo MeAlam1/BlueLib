@@ -50,13 +50,13 @@ public class JSONLoader {
      * @since 1.0.0
      */
     public JsonObject loadJson(ResourceLocation pResourceLocation, ResourceManager pResourceManager) {
-        BaseLogger.bluelibLogInfo("Attempting to load JSON resource: " + pResourceLocation);
+        BaseLogger.log("Attempting to load JSON resource: " + pResourceLocation);
 
         try {
             Optional<Resource> resource = pResourceManager.getResource(pResourceLocation);
 
             if (resource.isEmpty()) {
-                BaseLogger.logWarning("Resource not found: " + pResourceLocation);
+                BaseLogger.log("Resource not found: " + pResourceLocation);
                 return new JsonObject();
             }
 
@@ -64,12 +64,12 @@ public class JSONLoader {
                  InputStreamReader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8)) {
 
                 JsonObject jsonObject = gson.fromJson(reader, JsonObject.class);
-                BaseLogger.bluelibLogSuccess("Successfully loaded JSON resource: " + pResourceLocation);
+                BaseLogger.log("Successfully loaded JSON resource: " + pResourceLocation);
                 return jsonObject;
             }
         } catch (IOException pException) {
             RuntimeException exception = new RuntimeException("Failed to load JSON resource: " + pResourceLocation, pException);
-            BaseLogger.logError("Failed to load JSON resource: " + pResourceLocation, exception);
+            BaseLogger.log("Failed to load JSON resource: " + pResourceLocation, exception);
             throw exception;
         }
     }

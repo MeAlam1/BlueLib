@@ -19,7 +19,7 @@ import java.util.logging.Level;
  * @author MeAlam
  * @since 1.0.0
  */
-public class BlueLibLogLevel {
+public class BaseLogLevel {
     public static final Level INFO = new Level("INFO: ", Level.INFO.intValue()) {};
     public static final Level ERROR = new Level("ERROR: ", Level.SEVERE.intValue()) {};
     public static final Level WARNING = new Level("WARNING: ", Level.WARNING.intValue()) {};

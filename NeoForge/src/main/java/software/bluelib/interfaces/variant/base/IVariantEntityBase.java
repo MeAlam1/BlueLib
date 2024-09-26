@@ -62,7 +62,7 @@ public interface IVariantEntityBase {
         List<String> variantNames = variants.stream()
                 .map(VariantParameter::getVariantName)
                 .collect(Collectors.toList());
-        BaseLogger.bluelibLogSuccess("Retrieved " + variantNames.size() + " variants for entity: " + pEntityName);
+        BaseLogger.log("Retrieved " + variantNames.size() + " variants for entity: " + pEntityName);
         return variantNames;
     }
 }

@@ -39,7 +39,7 @@ public class AlgebraicUtils {
 
         double discriminant = pB * pB - 4 * pA * pC;
         if (discriminant < 0) {
-            BaseLogger.logWarning("No real roots found for the quadratic equation.");
+            BaseLogger.log("No real roots found for the quadratic equation.");
             return new double[0];
         }
 
@@ -47,7 +47,7 @@ public class AlgebraicUtils {
         double root1 = (-pB + sqrtDiscriminant) / (2 * pA);
         double root2 = (-pB - sqrtDiscriminant) / (2 * pA);
 
-        BaseLogger.bluelibLogInfo("Roots found: root1=" + root1 + ", root2=" + root2);
+        BaseLogger.log("Roots found: root1=" + root1 + ", root2=" + root2);
         return new double[] { root1, root2 };
     }
 
@@ -63,7 +63,7 @@ public class AlgebraicUtils {
     public static long factorial(int pNumber) {
         if (pNumber < 0) {
             IllegalArgumentException exception = new IllegalArgumentException("Number must be non-negative.");
-            BaseLogger.logError("Attempted to calculate factorial of a negative number: " + pNumber, exception);
+            BaseLogger.log("Attempted to calculate factorial of a negative number: " + pNumber, exception);
             throw exception;
         }
 
@@ -72,7 +72,7 @@ public class AlgebraicUtils {
             result *= i;
         }
 
-        BaseLogger.bluelibLogInfo("Factorial of " + pNumber + " is " + result);
+        BaseLogger.log("Factorial of " + pNumber + " is " + result);
         return result;
     }
 
@@ -93,7 +93,7 @@ public class AlgebraicUtils {
             pA = temp;
         }
 
-        BaseLogger.bluelibLogInfo("GCD found: " + pA);
+        BaseLogger.log("GCD found: " + pA);
         return pA;
     }
 
@@ -120,7 +120,7 @@ public class AlgebraicUtils {
             powerSet.addAll(newSubsets);
         }
 
-        BaseLogger.bluelibLogInfo("Power set generated with " + powerSet.size() + " subsets.");
+        BaseLogger.log("Power set generated with " + powerSet.size() + " subsets.");
         return powerSet;
     }
 }

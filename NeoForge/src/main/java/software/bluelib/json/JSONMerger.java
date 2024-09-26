@@ -39,7 +39,7 @@ public class JSONMerger {
      * @param pSource {@link JsonObject} - The source {@link JsonObject} to merge data from. This object is not modified by the operation.
      */
     public void mergeJsonObjects(JsonObject pTarget, JsonObject pSource) {
-        BaseLogger.bluelibLogInfo("Starting JSON merge operation.");
+        BaseLogger.log("Starting JSON merge operation.");
 
         for (Map.Entry<String, JsonElement> entry : pSource.entrySet()) {
             String key = entry.getKey();
@@ -56,17 +56,17 @@ public class JSONMerger {
                         targetArray.add(element);
                     }
 
-                    BaseLogger.bluelibLogInfo("Merged array for key: " + key);
+                    BaseLogger.log("Merged array for key: " + key);
                 } else {
                     pTarget.add(key, sourceElement);
-                    BaseLogger.bluelibLogInfo("Overwriting value for key: " + key);
+                    BaseLogger.log("Overwriting value for key: " + key);
                 }
             } else {
                 pTarget.add(key, sourceElement);
-                BaseLogger.bluelibLogInfo("Adding new key: " + key);
+                BaseLogger.log("Adding new key: " + key);
             }
         }
 
-        BaseLogger.bluelibLogSuccess("JSON merge operation completed.");
+        BaseLogger.log("JSON merge operation completed.");
     }
 }

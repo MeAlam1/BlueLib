@@ -4,7 +4,10 @@ package software.bluelib.utils.logging;
 
 import software.bluelib.interfaces.logging.ILogColorProvider;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.logging.ConsoleHandler;
+import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
@@ -37,12 +40,23 @@ public abstract class LoggerConfig {
     public static void configureLogger(Logger pLogger, ILogColorProvider pColorProvider) {
         ConsoleHandler handler = new ConsoleHandler();
         handler.setFormatter(new SimpleFormatter() {
-            @Override
-            public synchronized String format(java.util.logging.LogRecord pRecord) {
-                String color = pColorProvider.getColor(pRecord.getLevel());
-                return color + pRecord.getLevel().getName() + pRecord.getMessage() + RESET + "\n";
+        @Override
+        public synchronized String format(LogRecord pRecord) {
+                String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+                StringBuilder coloredMessage = new StringBuilder(pColorProvider.getColor(pRecord.getLevel()) + timestamp + " [" + pRecord.getLevel() + "] " + pRecord.getMessage());
+
+                if (pRecord.getThrown() != null) {
+                    coloredMessage.append("\nException: ").append(pRecord.getThrown().getMessage());
+                    for (StackTraceElement element : pRecord.getThrown().getStackTrace()) {
+                        coloredMessage.append("\n\tat ").append(element.toString());
+                    }
+                }
+
+                coloredMessage.append(RESET);
+                return coloredMessage + "\n";
             }
         });
+
         pLogger.setUseParentHandlers(false);
         pLogger.addHandler(handler);
     }

@@ -10,6 +10,7 @@ import net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.neoforged.fml.loading.FMLEnvironment;
 import software.bluelib.example.event.ClientEvents;
 import software.bluelib.example.init.ModEntities;
+import software.bluelib.utils.logging.BaseLogLevel;
 import software.bluelib.utils.logging.BaseLogger;
 
 import java.util.concurrent.Executors;
@@ -120,9 +121,9 @@ public class BlueLib {
     static boolean isDeveloperMode() {
         boolean isDevMode = !FMLEnvironment.production;
         if (isDevMode) {
-            BaseLogger.bluelibLogSuccess("Running in Developer mode.");
+            BaseLogger.log(BaseLogLevel.INFO ,"Running in Developer mode.", true);
         } else {
-            BaseLogger.bluelibLogSuccess("Running in Production mode.");
+            BaseLogger.log(BaseLogLevel.INFO ,"Running in Production mode.", true);
         }
         return isDevMode;
     }

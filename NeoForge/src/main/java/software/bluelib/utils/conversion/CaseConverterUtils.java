@@ -33,26 +33,26 @@ public class CaseConverterUtils {
      */
     public static String toCamelCase(String pInput) {
         if (pInput == null || pInput.isEmpty()) {
-            BaseLogger.logWarning("Input for toCamelCase is null or empty.");
+            BaseLogger.log("Input for toCamelCase is null or empty.");
             return pInput;
         }
 
         if (Character.isUpperCase(pInput.charAt(0)) && !pInput.contains("_") && !pInput.contains("-")) {
-            BaseLogger.bluelibLogInfo("Input detected as PascalCase.");
+            BaseLogger.log("Input detected as PascalCase.");
             return pInput.substring(0, 1).toLowerCase() + pInput.substring(1);
         }
 
         if (pInput.contains("_")) {
-            BaseLogger.bluelibLogInfo("Input detected as snake_case.");
+            BaseLogger.log("Input detected as snake_case.");
             return convertUsingDelimiter(pInput, "_", true);
         }
 
         if (pInput.contains("-")) {
-            BaseLogger.bluelibLogInfo("Input detected as kebab-case.");
+            BaseLogger.log("Input detected as kebab-case.");
             return convertUsingDelimiter(pInput, "-", true);
         }
 
-        BaseLogger.logWarning("Input case is not recognized.");
+        BaseLogger.log("Input case is not recognized.");
         return pInput;
     }
 
@@ -68,26 +68,26 @@ public class CaseConverterUtils {
      */
     public static String toPascalCase(String pInput) {
         if (pInput == null || pInput.isEmpty()) {
-            BaseLogger.logWarning("Input for toPascalCase is null or empty.");
+            BaseLogger.log("Input for toPascalCase is null or empty.");
             return pInput;
         }
 
         if (!pInput.contains("_") && !pInput.contains("-") && Character.isLowerCase(pInput.charAt(0))) {
-            BaseLogger.bluelibLogInfo("Input detected as camelCase.");
+            BaseLogger.log("Input detected as camelCase.");
             return pInput.substring(0, 1).toUpperCase() + pInput.substring(1);
         }
 
         if (pInput.contains("_")) {
-            BaseLogger.bluelibLogInfo("Input detected as snake_case.");
+            BaseLogger.log("Input detected as snake_case.");
             return convertUsingDelimiter(pInput, "_", false);
         }
 
         if (pInput.contains("-")) {
-            BaseLogger.bluelibLogInfo("Input detected as kebab-case.");
+            BaseLogger.log("Input detected as kebab-case.");
             return convertUsingDelimiter(pInput, "-", false);
         }
 
-        BaseLogger.logWarning("Input case is not recognized.");
+        BaseLogger.log("Input case is not recognized.");
         return pInput;
     }
 
@@ -103,7 +103,7 @@ public class CaseConverterUtils {
      */
     public static String toSnakeCase(String pInput) {
         if (pInput == null || pInput.isEmpty()) {
-            BaseLogger.logWarning("Input for toSnakeCase is null or empty.");
+            BaseLogger.log("Input for toSnakeCase is null or empty.");
             return pInput;
         }
 
@@ -113,7 +113,7 @@ public class CaseConverterUtils {
 
         result = result.replace("-", "_");
 
-        BaseLogger.bluelibLogSuccess("Converted to snake_case: " + result);
+        BaseLogger.log("Converted to snake_case: " + result);
         return result;
     }
 
@@ -129,7 +129,7 @@ public class CaseConverterUtils {
      */
     public static String toKebabCase(String pInput) {
         if (pInput == null || pInput.isEmpty()) {
-            BaseLogger.logWarning("Input for toKebabCase is null or empty.");
+            BaseLogger.log("Input for toKebabCase is null or empty.");
             return pInput;
         }
 
@@ -139,7 +139,7 @@ public class CaseConverterUtils {
 
         result = result.replace("_", "-");
 
-        BaseLogger.bluelibLogSuccess("Converted to kebab-case: " + result);
+        BaseLogger.log("Converted to kebab-case: " + result);
         return result;
     }
 
@@ -164,7 +164,7 @@ public class CaseConverterUtils {
             }
         }
         String result = convertedString.toString();
-        BaseLogger.bluelibLogSuccess("Converted: " + result);
+        BaseLogger.log("Converted: " + result);
         return result;
     }
 

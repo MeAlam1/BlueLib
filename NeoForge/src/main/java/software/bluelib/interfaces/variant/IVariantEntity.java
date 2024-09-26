@@ -49,12 +49,12 @@ public interface IVariantEntity extends IVariantEntityBase {
      */
     default String getRandomVariant(List<String> pVariantNamesList, String pDefaultVariant) {
         if (pVariantNamesList.isEmpty()) {
-            BaseLogger.logWarning("Variant names list is empty. Returning default variant: " + pDefaultVariant);
+            BaseLogger.log("Variant names list is empty. Returning default variant: " + pDefaultVariant);
             return pDefaultVariant;
         }
         int index = random.nextInt(pVariantNamesList.size());
         String selectedVariant = pVariantNamesList.get(index);
-        BaseLogger.bluelibLogSuccess("Selected random variant: " + selectedVariant + " from list of size: " + pVariantNamesList.size());
+        BaseLogger.log("Selected random variant: " + selectedVariant + " from list of size: " + pVariantNamesList.size());
         return selectedVariant;
     }
 }

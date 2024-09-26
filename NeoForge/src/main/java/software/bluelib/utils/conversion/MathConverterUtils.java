@@ -110,7 +110,7 @@ public class MathConverterUtils {
             SimpleDateFormat formatter = new SimpleDateFormat(pFormat);
             return formatter.parse(pDateStr);
         } catch (ParseException pException) {
-            BaseLogger.logError("Error parsing date string: " + pDateStr + " with format: " + pFormat, pException);
+            BaseLogger.log("Error parsing date string: " + pDateStr + " with format: " + pFormat, pException);
             throw pException;
         }
     }
@@ -129,7 +129,7 @@ public class MathConverterUtils {
             SimpleDateFormat formatter = new SimpleDateFormat(pFormat);
             return formatter.format(pDate);
         } catch (Exception pException) {
-            BaseLogger.logError("Error formatting date: " + pDate.toString() + " with format: " + pFormat, pException);
+            BaseLogger.log("Error formatting date: " + pDate.toString() + " with format: " + pFormat, pException);
             return pException.getMessage();
         }
     }

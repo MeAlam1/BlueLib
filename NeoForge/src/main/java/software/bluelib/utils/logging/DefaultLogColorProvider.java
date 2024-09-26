@@ -12,11 +12,11 @@ import java.util.logging.Level;
  * <p>
  * This implementation uses predefined colors for various log levels, including:
  * <ul>
- *   <li>{@link BlueLibLogLevel#ERROR} - Red color.</li>
- *   <li>{@link BlueLibLogLevel#WARNING} - Orange color.</li>
- *   <li>{@link BlueLibLogLevel#INFO} - Blue color.</li>
- *   <li>{@link BlueLibLogLevel#SUCCESS} - Green color.</li>
- *   <li>{@link BlueLibLogLevel#BLUELIB} - Green color.</li>
+ *   <li>{@link BaseLogLevel#ERROR} - Red color.</li>
+ *   <li>{@link BaseLogLevel#WARNING} - Orange color.</li>
+ *   <li>{@link BaseLogLevel#INFO} - Blue color.</li>
+ *   <li>{@link BaseLogLevel#SUCCESS} - Green color.</li>
+ *   <li>{@link BaseLogLevel#BLUELIB} - Green color.</li>
  * </ul>
  * @author MeAlam
  * @since 1.0.0
@@ -34,15 +34,15 @@ public class DefaultLogColorProvider implements ILogColorProvider {
      */
     @Override
     public String getColor(Level pLevel) {
-        if (pLevel == BlueLibLogLevel.ERROR) {
+        if (pLevel == BaseLogLevel.ERROR) {
             return LoggerConfig.RED;
-        } else if (pLevel == BlueLibLogLevel.WARNING) {
+        } else if (pLevel == BaseLogLevel.WARNING) {
             return LoggerConfig.ORANGE;
-        } else if (pLevel == BlueLibLogLevel.INFO) {
+        } else if (pLevel == BaseLogLevel.INFO) {
             return LoggerConfig.BLUE;
-        } else if (pLevel == BlueLibLogLevel.SUCCESS) {
+        } else if (pLevel == BaseLogLevel.SUCCESS) {
             return LoggerConfig.GREEN;
-        } else if (pLevel == BlueLibLogLevel.BLUELIB) {
+        } else if (pLevel == BaseLogLevel.BLUELIB) {
             return LoggerConfig.GREEN;
         } else {
             return LoggerConfig.RESET;

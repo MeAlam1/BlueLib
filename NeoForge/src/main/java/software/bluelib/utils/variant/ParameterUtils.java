@@ -178,7 +178,7 @@ public class ParameterUtils {
             } else {
                 Throwable cause = new Throwable("Variant or entity not found in the database");
                 NoSuchElementException exception = new NoSuchElementException("Variant '" + variantName + "' not found for entity '" + entityName + "'", cause);
-                BaseLogger.logError(exception.getMessage(), exception);
+                BaseLogger.log(exception.getMessage(), exception);
             }
             return this;
         }

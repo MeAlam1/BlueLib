@@ -8,7 +8,6 @@ import com.google.gson.JsonObject;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.packs.resources.ResourceManager;
-import software.bluelib.BlueLib;
 import software.bluelib.interfaces.variant.base.IVariantEntityBase;
 import software.bluelib.json.JSONLoader;
 import software.bluelib.json.JSONMerger;
@@ -77,7 +76,7 @@ public class VariantLoader implements IVariantEntityBase {
      * @param pEntityName {@link String} - The name of the entity whose variants should be cleared before loading new ones.
      */
     public static void loadVariants(String folderPath, MinecraftServer pServer, String pEntityName) {
-        BaseLogger.bluelibLogInfo("Starting to load variants for entity: " + pEntityName);
+        BaseLogger.log("Starting to load variants for entity: " + pEntityName);
 
         clearVariantsForEntity(pEntityName);
 
@@ -86,19 +85,19 @@ public class VariantLoader implements IVariantEntityBase {
 
         Collection<ResourceLocation> collection = resourceManager.listResources(folderPath, pFiles -> pFiles.getPath().endsWith(".json")).keySet();
 
-        BaseLogger.bluelibLogSuccess("Found resources: " + collection);
+        BaseLogger.log("Found resources: " + collection);
 
         for (ResourceLocation resourceLocation : collection) {
             try {
-                BaseLogger.bluelibLogInfo("Loading JSON data from resource: " + resourceLocation.toString());
+                BaseLogger.log("Loading JSON data from resource: " + resourceLocation.toString());
                 JsonObject jsonObject = jsonLoader.loadJson(resourceLocation, resourceManager);
                 jsonMerger.mergeJsonObjects(mergedJsonObject, jsonObject);
             } catch (Exception pException) {
-                BaseLogger.logError("Failed to load JSON data from resource: " + resourceLocation.toString(), pException);
+                BaseLogger.log("Failed to load JSON data from resource: " + resourceLocation.toString(), pException);
             }
         }
 
-        BaseLogger.bluelibLogSuccess("Successfully loaded and merged JSON data for entity: " + pEntityName);
+        BaseLogger.log("Successfully loaded and merged JSON data for entity: " + pEntityName);
         parseVariants(mergedJsonObject);
     }
 
@@ -110,7 +109,7 @@ public class VariantLoader implements IVariantEntityBase {
      * @param pEntityName {@link String} - The name of the entity whose variants should be cleared.
      */
     private static void clearVariantsForEntity(String pEntityName) {
-        BaseLogger.bluelibLogInfo("Clearing variants for entity: " + pEntityName);
+        BaseLogger.log("Clearing variants for entity: " + pEntityName);
         entityVariantsMap.remove(pEntityName);
     }
 
@@ -126,7 +125,7 @@ public class VariantLoader implements IVariantEntityBase {
             String entityName = entry.getKey();
             JsonArray textureArray = entry.getValue().getAsJsonArray();
 
-            BaseLogger.bluelibLogInfo("Parsing variants for entity: " + entityName);
+            BaseLogger.log("Parsing variants for entity: " + entityName);
             List<VariantParameter> variantList = entityVariantsMap.computeIfAbsent(entityName, k -> new ArrayList<>());
 
             for (JsonElement variant : textureArray) {
@@ -164,7 +163,7 @@ public class VariantLoader implements IVariantEntityBase {
      * @return {@link List<VariantParameter>} - A {@link List<VariantParameter>} of {@link VariantParameter} instances for the specified entity.
      */
     public static List<VariantParameter> getVariantsFromEntity(String pEntityName) {
-        BaseLogger.bluelibLogInfo("Retrieving variants for entity: " + pEntityName);
+        BaseLogger.log("Retrieving variants for entity: " + pEntityName);
         return entityVariantsMap.getOrDefault(pEntityName, new ArrayList<>());
     }
 
@@ -178,14 +177,14 @@ public class VariantLoader implements IVariantEntityBase {
      * @return {@link VariantParameter} - The {@link VariantParameter} with the specified name, or {@code null} if not found.
      */
     public static VariantParameter getVariantByName(String pEntityName, String pVariantName) {
-        BaseLogger.bluelibLogInfo("Retrieving variant by name: " + pVariantName + " for entity: " + pEntityName);
+        BaseLogger.log("Retrieving variant by name: " + pVariantName + " for entity: " + pEntityName);
         List<VariantParameter> variants = getVariantsFromEntity(pEntityName);
         for (VariantParameter variant : variants) {
             if (variant.getVariantName().equals(pVariantName)) {
                 return variant;
             }
         }
-        BaseLogger.logWarning("Variant with name: " + pVariantName + " not found for entity: " + pEntityName);
+        BaseLogger.log("Variant with name: " + pVariantName + " not found for entity: " + pEntityName);
         return null;
     }
 }
