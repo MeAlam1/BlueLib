@@ -8,6 +8,9 @@ import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.neoforged.fml.loading.FMLEnvironment;
+import org.spongepowered.asm.launch.MixinBootstrap;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.MixinEnvironment;
 import software.bluelib.example.event.ClientEvents;
 import software.bluelib.example.init.ModEntities;
 import software.bluelib.utils.logging.BaseLogLevel;
@@ -72,6 +75,7 @@ public class BlueLib {
      */
     public BlueLib(IEventBus pModEventBus, ModContainer pModContainer) {
         pModEventBus.register(this);
+        MixinBootstrap.init();
         if (isDeveloperMode()) {
             ModEntities.REGISTRY.register(pModEventBus);
             if (FMLEnvironment.dist.isClient()) {
