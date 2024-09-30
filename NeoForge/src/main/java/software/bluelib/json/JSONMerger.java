@@ -5,6 +5,7 @@ package software.bluelib.json;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import software.bluelib.utils.logging.BaseLogLevel;
 import software.bluelib.utils.logging.BaseLogger;
 
 import java.util.Map;
@@ -39,7 +40,7 @@ public class JSONMerger {
      * @param pSource {@link JsonObject} - The source {@link JsonObject} to merge data from. This object is not modified by the operation.
      */
     public void mergeJsonObjects(JsonObject pTarget, JsonObject pSource) {
-        BaseLogger.log("Starting JSON merge operation.");
+        BaseLogger.log(BaseLogLevel.INFO,"Starting JSON merge operation.");
 
         for (Map.Entry<String, JsonElement> entry : pSource.entrySet()) {
             String key = entry.getKey();
@@ -56,17 +57,17 @@ public class JSONMerger {
                         targetArray.add(element);
                     }
 
-                    BaseLogger.log("Merged array for key: " + key);
+                    BaseLogger.log(BaseLogLevel.ERROR,"Merged array for key: " + key);
                 } else {
                     pTarget.add(key, sourceElement);
-                    BaseLogger.log("Overwriting value for key: " + key);
+                    BaseLogger.log(BaseLogLevel.WARNING,"Overwriting value for key: " + key);
                 }
             } else {
                 pTarget.add(key, sourceElement);
-                BaseLogger.log("Adding new key: " + key);
+                BaseLogger.log(BaseLogLevel.SUCCESS,"Added new key: " + key);
             }
         }
 
-        BaseLogger.log("JSON merge operation completed.");
+        BaseLogger.log(BaseLogLevel.SUCCESS,"JSON merge operation completed.");
     }
 }

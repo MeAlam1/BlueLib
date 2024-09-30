@@ -5,6 +5,7 @@ package software.bluelib.entity.variant;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import software.bluelib.entity.variant.base.ParameterBase;
+import software.bluelib.utils.logging.BaseLogLevel;
 import software.bluelib.utils.logging.BaseLogger;
 
 import java.util.Map;
@@ -62,31 +63,31 @@ public class VariantParameter extends ParameterBase {
         if (pJsonKey == null || pJsonObject == null) {
             Throwable throwable = new Throwable("JSON key or JSON object is null");
             IllegalArgumentException exception = new IllegalArgumentException("JSON key and object must not be null");
-            BaseLogger.log(exception.toString(), throwable);
+            BaseLogger.log(BaseLogLevel.ERROR,exception.toString(), throwable);
             throw exception;
         }
         this.jsonKey = pJsonKey;
-        BaseLogger.log("Creating VariantParameter with JSON key: " + pJsonKey);
+        BaseLogger.log(BaseLogLevel.INFO,"Creating VariantParameter with JSON key: " + pJsonKey);
         Set<Map.Entry<String, JsonElement>> entryMap = pJsonObject.entrySet();
         for (Map.Entry<String, JsonElement> entry : entryMap) {
             JsonElement element = entry.getValue();
             if (element.isJsonPrimitive()) {
                 addParameter(entry.getKey(), element.getAsString());
-                BaseLogger.log("Added primitive parameter: " + entry.getKey() + " = " + element.getAsString());
+                BaseLogger.log(BaseLogLevel.SUCCESS,"Added primitive parameter: " + entry.getKey() + " = " + element.getAsString());
             } else if (element.isJsonArray()) {
                 StringBuilder arrayValues = new StringBuilder();
                 element.getAsJsonArray().forEach(e -> arrayValues.append(e.getAsString()).append(","));
-                if (arrayValues.length() > 0) {
-                    arrayValues.setLength(arrayValues.length() - 1); // Remove trailing comma
+                if (!arrayValues.isEmpty()) {
+                    arrayValues.setLength(arrayValues.length() - 1);
                 }
                 addParameter(entry.getKey(), arrayValues.toString());
-                BaseLogger.log("Added array parameter: " + entry.getKey() + " = " + arrayValues.toString());
+                BaseLogger.log(BaseLogLevel.SUCCESS,"Added array parameter: " + entry.getKey() + " = " + arrayValues.toString());
             } else if (element.isJsonObject()) {
                 addParameter(entry.getKey(), element.toString());
-                BaseLogger.log("Added object parameter: " + entry.getKey() + " = " + element.toString());
+                BaseLogger.log(BaseLogLevel.SUCCESS,"Added object parameter: " + entry.getKey() + " = " + element.toString());
             } else {
                 addParameter(entry.getKey(), "null");
-                BaseLogger.log("Added null parameter for key: " + entry.getKey());
+                BaseLogger.log(BaseLogLevel.SUCCESS,"Added null parameter for key: " + entry.getKey());
             }
         }
     }
@@ -106,10 +107,10 @@ public class VariantParameter extends ParameterBase {
         if (this.jsonKey == null) {
             Throwable throwable = new Throwable("JSON key should not be null");
             IllegalStateException exception = new IllegalStateException("JSON key is unexpectedly null when retrieving from VariantParameter.");
-            BaseLogger.log(exception.toString(), throwable);
+            BaseLogger.log(BaseLogLevel.ERROR, "JSON key is unexpectedly null when retrieving from VariantParameter.", throwable);
             throw exception;
         }
-        BaseLogger.log("Retrieved JSON key: " + this.jsonKey);
+        BaseLogger.log(BaseLogLevel.INFO,"Retrieved JSON key: " + this.jsonKey);
         return this.jsonKey;
     }
 
@@ -125,7 +126,7 @@ public class VariantParameter extends ParameterBase {
      */
     public String getVariantName() {
         String variantName = getParameter("variantName");
-        BaseLogger.log("Retrieved variant name: " + variantName);
+        BaseLogger.log(BaseLogLevel.INFO,"Retrieved variant name: " + variantName);
         return variantName;
     }
 
@@ -142,7 +143,7 @@ public class VariantParameter extends ParameterBase {
      */
     public String getParameter(String pKey) {
         String value = (String) super.getParameter(pKey);
-        BaseLogger.log("Retrieved parameter for key " + pKey + ": " + value);
+        BaseLogger.log(BaseLogLevel.INFO,"Retrieved parameter for key " + pKey + ": " + value);
         return value;
     }
 }

@@ -10,6 +10,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.chunk.LevelChunk;
+import software.bluelib.utils.logging.BaseLogLevel;
 import software.bluelib.utils.logging.BaseLogger;
 
 import java.util.Arrays;
@@ -51,10 +52,10 @@ public class ChunkUtils {
     public static Biome getBiomeOfChunk(Level pLevel, ChunkPos pChunkPos) {
         try {
             Biome biome = pLevel.getBiome(pChunkPos.getWorldPosition()).value();
-            BaseLogger.log("Retrieved biome for chunk at position " + pChunkPos + ": " + biome);
+            BaseLogger.log(BaseLogLevel.INFO,"Retrieved biome for chunk at position " + pChunkPos + ": " + biome);
             return biome;
         } catch (Exception pException) {
-            BaseLogger.log("Error retrieving biome for chunk at position " + pChunkPos, pException);
+            BaseLogger.log(BaseLogLevel.ERROR,"Error retrieving biome for chunk at position " + pChunkPos, pException);
             throw pException;
         }
     }
@@ -78,11 +79,11 @@ public class ChunkUtils {
 
         if (biomeKey == null) {
             NullPointerException exception = new NullPointerException("Biome at chunk position " + pChunkPos + " is null");
-            BaseLogger.log("Error retrieving biome registry name of chunk at " + pChunkPos, exception);
-            return "Biome at chunk position " + pChunkPos + " is null";
+            BaseLogger.log(BaseLogLevel.ERROR,"Error retrieving biome registry name of chunk at " + pChunkPos, exception);
+            return exception.getMessage();
         }
 
-        BaseLogger.log("Retrieved biome registry name for chunk at position " + pChunkPos + ": " + biomeKey);
+        BaseLogger.log(BaseLogLevel.SUCCESS,"Retrieved biome registry name for chunk at position " + pChunkPos + ": " + biomeKey);
         return biomeKey.toString();
     }
 
@@ -118,10 +119,10 @@ public class ChunkUtils {
         try {
             LevelChunk chunk = pLevel.getChunk(pChunkPos.x, pChunkPos.z);
             Collection<BlockEntity> tileEntities = chunk.getBlockEntities().values();
-            BaseLogger.log("Retrieved " + tileEntities.size() + " tile entities for chunk at position " + pChunkPos);
+            BaseLogger.log(BaseLogLevel.INFO,"Retrieved " + tileEntities.size() + " tile entities for chunk at position " + pChunkPos);
             return tileEntities;
         } catch (Exception pException) {
-            BaseLogger.log("Error retrieving tile entities for chunk at position " + pChunkPos, pException);
+            BaseLogger.log(BaseLogLevel.ERROR,"Error retrieving tile entities for chunk at position " + pChunkPos, pException);
             throw pException;
         }
     }
@@ -151,10 +152,10 @@ public class ChunkUtils {
                     })
                     .collect(Collectors.joining(", "));
 
-            BaseLogger.log("Tile entities for chunk at position " + pChunkPos + ": " + registryNames);
+            BaseLogger.log(BaseLogLevel.INFO,"Tile entities for chunk at position " + pChunkPos + ": " + registryNames);
             return registryNames;
         } catch (Exception pException) {
-            BaseLogger.log("Error retrieving tile entity registry names for chunk at position " + pChunkPos, pException);
+            BaseLogger.log(BaseLogLevel.ERROR,"Error retrieving tile entity registry names for chunk at position " + pChunkPos, pException);
             throw pException;
         }
     }
@@ -205,10 +206,10 @@ public class ChunkUtils {
                 }
             }
 
-            BaseLogger.log("Non-air block count for chunk at position " + pChunkPos + ": " + blockCount);
+            BaseLogger.log(BaseLogLevel.INFO,"Non-air block count for chunk at position " + pChunkPos + ": " + blockCount);
             return blockCount;
         } catch (Exception pException) {
-            BaseLogger.log("Error counting blocks for chunk at position " + pChunkPos, pException);
+            BaseLogger.log(BaseLogLevel.ERROR,"Error counting blocks for chunk at position " + pChunkPos, pException);
             throw pException;
         }
     }

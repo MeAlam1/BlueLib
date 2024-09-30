@@ -7,6 +7,7 @@ import com.google.gson.JsonObject;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
+import software.bluelib.utils.logging.BaseLogLevel;
 import software.bluelib.utils.logging.BaseLogger;
 
 import java.io.IOException;
@@ -50,13 +51,13 @@ public class JSONLoader {
      * @since 1.0.0
      */
     public JsonObject loadJson(ResourceLocation pResourceLocation, ResourceManager pResourceManager) {
-        BaseLogger.log("Attempting to load JSON resource: " + pResourceLocation);
+        BaseLogger.log(BaseLogLevel.INFO,"Attempting to load JSON resource: " + pResourceLocation);
 
         try {
             Optional<Resource> resource = pResourceManager.getResource(pResourceLocation);
 
             if (resource.isEmpty()) {
-                BaseLogger.log("Resource not found: " + pResourceLocation);
+                BaseLogger.log(BaseLogLevel.ERROR,"Resource not found: " + pResourceLocation);
                 return new JsonObject();
             }
 
@@ -64,12 +65,12 @@ public class JSONLoader {
                  InputStreamReader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8)) {
 
                 JsonObject jsonObject = gson.fromJson(reader, JsonObject.class);
-                BaseLogger.log("Successfully loaded JSON resource: " + pResourceLocation);
+                BaseLogger.log(BaseLogLevel.SUCCESS,"Successfully loaded JSON resource: " + pResourceLocation);
                 return jsonObject;
             }
         } catch (IOException pException) {
             RuntimeException exception = new RuntimeException("Failed to load JSON resource: " + pResourceLocation, pException);
-            BaseLogger.log("Failed to load JSON resource: " + pResourceLocation, exception);
+            BaseLogger.log(BaseLogLevel.ERROR,"Failed to load JSON resource: " + pResourceLocation, exception);
             throw exception;
         }
     }

@@ -2,6 +2,7 @@
 
 package software.bluelib.utils.math;
 
+import software.bluelib.utils.logging.BaseLogLevel;
 import software.bluelib.utils.logging.BaseLogger;
 
 /**
@@ -45,7 +46,7 @@ public class MiscUtils {
         try {
             return Integer.parseInt(pString);
         } catch (NumberFormatException pException) {
-            BaseLogger.log("Error converting string to integer", pException);
+            BaseLogger.log(BaseLogLevel.ERROR,"Error converting string to integer", pException);
             return pDefaultValue;
         }
     }
@@ -91,7 +92,7 @@ public class MiscUtils {
     public static int[] hexToRGB(String pHex) {
         if (pHex == null || pHex.isEmpty()) {
             Throwable throwable = new IllegalArgumentException("Hex color code cannot be null or empty.");
-            BaseLogger.log("Error converting hex to RGB", throwable);
+            BaseLogger.log(BaseLogLevel.ERROR,"Error converting hex to RGB", throwable);
             return new int[]{0, 0, 0};
         }
         if (pHex.charAt(0) == '#') {
@@ -99,7 +100,7 @@ public class MiscUtils {
         }
         if (pHex.length() != 6) {
             Throwable throwable = new IllegalArgumentException("Invalid hex color code.");
-            BaseLogger.log("Error converting hex to RGB", throwable);
+            BaseLogger.log(BaseLogLevel.ERROR,"Error converting hex to RGB", throwable);
             return new int[]{0, 0, 0};
         }
         try {
@@ -108,7 +109,7 @@ public class MiscUtils {
             int b = Integer.parseInt(pHex.substring(4, 6), 16);
             return new int[]{r, g, b};
         } catch (NumberFormatException pException) {
-            BaseLogger.log("Error parsing hex color code to RGB", pException);
+            BaseLogger.log(BaseLogLevel.ERROR,"Error parsing hex color code to RGB", pException);
             return new int[]{0, 0, 0};
         }
     }

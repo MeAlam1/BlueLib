@@ -2,6 +2,7 @@
 
 package software.bluelib.utils.math;
 
+import software.bluelib.utils.logging.BaseLogLevel;
 import software.bluelib.utils.logging.BaseLogger;
 
 /**
@@ -43,7 +44,7 @@ public class RandomGenUtils {
     public static int generateRandomInt(int pMin, int pMax) {
         if (pMin > pMax) {
             Throwable throwable = new IllegalArgumentException("Minimum value must not be greater than maximum value.");
-            BaseLogger.log("Error generating random integer", throwable);
+            BaseLogger.log(BaseLogLevel.WARNING,"Error generating random integer", throwable);
             return 0;
         }
         return pMin + (int)(Math.random() * (pMax - pMin + 1));
@@ -61,7 +62,7 @@ public class RandomGenUtils {
     public static double generateRandomDouble(double pMin, double pMax) {
         if (pMin > pMax) {
             Throwable throwable = new IllegalArgumentException("Minimum value must not be greater than maximum value.");
-            BaseLogger.log("Error generating random double", throwable);
+            BaseLogger.log(BaseLogLevel.WARNING,"Error generating random double", throwable);
             return 0;
         }
         return pMin + Math.random() * (pMax - pMin);
@@ -90,7 +91,7 @@ public class RandomGenUtils {
     public static String generateRandomString(int pLength) {
         if (pLength < 0) {
             Throwable throwable = new IllegalArgumentException("Length must be non-negative.");
-            BaseLogger.log("Error generating random string", throwable);
+            BaseLogger.log(BaseLogLevel.WARNING,"Error generating random string", throwable);
             return "unknown";
         }
         String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -114,7 +115,7 @@ public class RandomGenUtils {
     public static String generateRandomStringWithPrefix(String pPrefix, int pLength) {
         if (pLength < 0) {
             Throwable throwable = new IllegalArgumentException("Length must be non-negative.");
-            BaseLogger.log("Error generating random string with prefix", throwable);
+            BaseLogger.log(BaseLogLevel.WARNING,"Error generating random string with prefix", throwable);
             return "unknown";
         }
         return pPrefix + generateRandomString(pLength - pPrefix.length());

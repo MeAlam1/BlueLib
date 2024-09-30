@@ -2,6 +2,7 @@
 
 package software.bluelib.utils.conversion;
 
+import software.bluelib.utils.logging.BaseLogLevel;
 import software.bluelib.utils.logging.BaseLogger;
 
 /**
@@ -33,26 +34,26 @@ public class CaseConverterUtils {
      */
     public static String toCamelCase(String pInput) {
         if (pInput == null || pInput.isEmpty()) {
-            BaseLogger.log("Input for toCamelCase is null or empty.");
+            BaseLogger.log(BaseLogLevel.INFO,"Input for toCamelCase is null or empty.");
             return pInput;
         }
 
         if (Character.isUpperCase(pInput.charAt(0)) && !pInput.contains("_") && !pInput.contains("-")) {
-            BaseLogger.log("Input detected as PascalCase.");
+            BaseLogger.log(BaseLogLevel.INFO,"Input detected as PascalCase.");
             return pInput.substring(0, 1).toLowerCase() + pInput.substring(1);
         }
 
         if (pInput.contains("_")) {
-            BaseLogger.log("Input detected as snake_case.");
+            BaseLogger.log(BaseLogLevel.INFO,"Input detected as snake_case.");
             return convertUsingDelimiter(pInput, "_", true);
         }
 
         if (pInput.contains("-")) {
-            BaseLogger.log("Input detected as kebab-case.");
+            BaseLogger.log(BaseLogLevel.INFO,"Input detected as kebab-case.");
             return convertUsingDelimiter(pInput, "-", true);
         }
 
-        BaseLogger.log("Input case is not recognized.");
+        BaseLogger.log(BaseLogLevel.ERROR,"Input case is not recognized.");
         return pInput;
     }
 
@@ -68,26 +69,26 @@ public class CaseConverterUtils {
      */
     public static String toPascalCase(String pInput) {
         if (pInput == null || pInput.isEmpty()) {
-            BaseLogger.log("Input for toPascalCase is null or empty.");
+            BaseLogger.log(BaseLogLevel.WARNING,"Input for toPascalCase is null or empty.");
             return pInput;
         }
 
         if (!pInput.contains("_") && !pInput.contains("-") && Character.isLowerCase(pInput.charAt(0))) {
-            BaseLogger.log("Input detected as camelCase.");
+            BaseLogger.log(BaseLogLevel.INFO,"Input detected as camelCase.");
             return pInput.substring(0, 1).toUpperCase() + pInput.substring(1);
         }
 
         if (pInput.contains("_")) {
-            BaseLogger.log("Input detected as snake_case.");
+            BaseLogger.log(BaseLogLevel.INFO,"Input detected as snake_case.");
             return convertUsingDelimiter(pInput, "_", false);
         }
 
         if (pInput.contains("-")) {
-            BaseLogger.log("Input detected as kebab-case.");
+            BaseLogger.log(BaseLogLevel.INFO,"Input detected as kebab-case.");
             return convertUsingDelimiter(pInput, "-", false);
         }
 
-        BaseLogger.log("Input case is not recognized.");
+        BaseLogger.log(BaseLogLevel.ERROR,"Input case is not recognized.");
         return pInput;
     }
 
@@ -103,7 +104,7 @@ public class CaseConverterUtils {
      */
     public static String toSnakeCase(String pInput) {
         if (pInput == null || pInput.isEmpty()) {
-            BaseLogger.log("Input for toSnakeCase is null or empty.");
+            BaseLogger.log(BaseLogLevel.WARNING,"Input for toSnakeCase is null or empty.");
             return pInput;
         }
 
@@ -113,7 +114,7 @@ public class CaseConverterUtils {
 
         result = result.replace("-", "_");
 
-        BaseLogger.log("Converted to snake_case: " + result);
+        BaseLogger.log(BaseLogLevel.SUCCESS,"Converted to snake_case: " + result);
         return result;
     }
 
@@ -129,7 +130,7 @@ public class CaseConverterUtils {
      */
     public static String toKebabCase(String pInput) {
         if (pInput == null || pInput.isEmpty()) {
-            BaseLogger.log("Input for toKebabCase is null or empty.");
+            BaseLogger.log(BaseLogLevel.WARNING,"Input for toKebabCase is null or empty.");
             return pInput;
         }
 
@@ -139,7 +140,7 @@ public class CaseConverterUtils {
 
         result = result.replace("_", "-");
 
-        BaseLogger.log("Converted to kebab-case: " + result);
+        BaseLogger.log(BaseLogLevel.SUCCESS,"Converted to kebab-case: " + result);
         return result;
     }
 
@@ -164,7 +165,7 @@ public class CaseConverterUtils {
             }
         }
         String result = convertedString.toString();
-        BaseLogger.log("Converted: " + result);
+        BaseLogger.log(BaseLogLevel.SUCCESS,"Converted: " + result);
         return result;
     }
 

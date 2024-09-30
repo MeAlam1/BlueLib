@@ -5,6 +5,7 @@ package software.bluelib.interfaces.variant.base;
 import net.minecraft.resources.ResourceLocation;
 import software.bluelib.entity.variant.VariantLoader;
 import software.bluelib.entity.variant.VariantParameter;
+import software.bluelib.utils.logging.BaseLogLevel;
 import software.bluelib.utils.logging.BaseLogger;
 
 import java.util.List;
@@ -62,7 +63,7 @@ public interface IVariantEntityBase {
         List<String> variantNames = variants.stream()
                 .map(VariantParameter::getVariantName)
                 .collect(Collectors.toList());
-        BaseLogger.log("Retrieved " + variantNames.size() + " variants for entity: " + pEntityName);
+        BaseLogger.log(BaseLogLevel.SUCCESS,"Retrieved " + variantNames.size() + " variants for entity: " + pEntityName);
         return variantNames;
     }
 }

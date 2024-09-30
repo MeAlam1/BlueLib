@@ -42,8 +42,8 @@ public abstract class LoggerConfig {
         handler.setFormatter(new SimpleFormatter() {
         @Override
         public synchronized String format(LogRecord pRecord) {
-                String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-                StringBuilder coloredMessage = new StringBuilder(pColorProvider.getColor(pRecord.getLevel()) + timestamp + " [" + pRecord.getLevel() + "] " + pRecord.getMessage());
+                String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+                StringBuilder coloredMessage = new StringBuilder(pColorProvider.getColor(pRecord.getLevel()) + "[" + timestamp + "]" + " [" + pRecord.getLevel() + "]: " + pRecord.getMessage());
 
                 if (pRecord.getThrown() != null) {
                     coloredMessage.append("\nException: ").append(pRecord.getThrown().getMessage());

@@ -4,6 +4,7 @@ package software.bluelib.utils.variant;
 
 import software.bluelib.entity.variant.VariantParameter;
 import software.bluelib.entity.variant.VariantLoader;
+import software.bluelib.utils.logging.BaseLogLevel;
 import software.bluelib.utils.logging.BaseLogger;
 
 import java.util.HashMap;
@@ -177,8 +178,7 @@ public class ParameterUtils {
                 variantParametersMap.put(variantName, updatedParameters);
             } else {
                 Throwable cause = new Throwable("Variant or entity not found in the database");
-                NoSuchElementException exception = new NoSuchElementException("Variant '" + variantName + "' not found for entity '" + entityName + "'", cause);
-                BaseLogger.log(exception.getMessage(), exception);
+                BaseLogger.log(BaseLogLevel.ERROR, "Variant '" + variantName + "' not found for entity '" + entityName + "'", cause);
             }
             return this;
         }

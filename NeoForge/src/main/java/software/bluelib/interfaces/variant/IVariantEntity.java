@@ -4,6 +4,7 @@ package software.bluelib.interfaces.variant;
 
 import net.minecraft.util.RandomSource;
 import software.bluelib.interfaces.variant.base.IVariantEntityBase;
+import software.bluelib.utils.logging.BaseLogLevel;
 import software.bluelib.utils.logging.BaseLogger;
 
 import java.util.List;
@@ -49,12 +50,12 @@ public interface IVariantEntity extends IVariantEntityBase {
      */
     default String getRandomVariant(List<String> pVariantNamesList, String pDefaultVariant) {
         if (pVariantNamesList.isEmpty()) {
-            BaseLogger.log("Variant names list is empty. Returning default variant: " + pDefaultVariant);
+            BaseLogger.log(BaseLogLevel.INFO,"Variant names list is empty. Returning default variant: " + pDefaultVariant);
             return pDefaultVariant;
         }
         int index = random.nextInt(pVariantNamesList.size());
         String selectedVariant = pVariantNamesList.get(index);
-        BaseLogger.log("Selected random variant: " + selectedVariant + " from list of size: " + pVariantNamesList.size());
+        BaseLogger.log(BaseLogLevel.SUCCESS,"Selected random variant: " + selectedVariant + " from list of size: " + pVariantNamesList.size());
         return selectedVariant;
     }
 }

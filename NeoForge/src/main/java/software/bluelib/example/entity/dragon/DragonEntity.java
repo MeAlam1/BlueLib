@@ -20,6 +20,7 @@ import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.util.GeckoLibUtil;
 import software.bluelib.interfaces.variant.IVariantAccessor;
 import software.bluelib.interfaces.variant.IVariantEntity;
+import software.bluelib.utils.logging.BaseLogLevel;
 import software.bluelib.utils.logging.BaseLogger;
 import software.bluelib.utils.variant.ParameterUtils;
 
@@ -46,16 +47,6 @@ import software.bluelib.utils.variant.ParameterUtils;
  * @since 1.0.0
  */
 public class DragonEntity extends TamableAnimal implements IVariantEntity, GeoEntity {
-    /**
-     * Entity data accessor for the variant of the dragon.
-     * <p>
-     * This is used to store and retrieve the variant data for synchronization between server and client.
-     * </p>
-     * @Co-author MeAlam, Dan
-     * @since 1.0.0
-     */
-    public static final EntityDataAccessor<String> VARIANT = SynchedEntityData.defineId(DragonEntity.class, EntityDataSerializers.STRING);
-
     /**
      * The name of the entity.
      * @Co-author MeAlam, Dan
@@ -112,7 +103,7 @@ public class DragonEntity extends TamableAnimal implements IVariantEntity, GeoEn
                     .withParameter("array")
                     .connect();
         }
-        BaseLogger.log("Dragon Spawned with Variant: " + getVariantName());
+        BaseLogger.log(BaseLogLevel.SUCCESS,"Dragon Spawned with Variant: " + getVariantName());
         return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData);
     }
 
