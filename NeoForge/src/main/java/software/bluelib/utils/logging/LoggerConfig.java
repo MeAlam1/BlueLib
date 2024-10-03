@@ -12,38 +12,72 @@ import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
 /**
- * A {@code class} responsible for configuring logging settings
+ * A {@code public abstract class} responsible for configuring logging settings,
  * including setting up custom colors for log levels.
  * <p>
  * Key Methods:
  * <ul>
- *   <li>{@link #configureLogger(Logger, ILogColorProvider)} - Configures a {@link Logger} to use custom colors for log levels.</li>
+ *   <li>{@link #configureLogger(Logger, ILogColorProvider)} - Configures a {@link Logger}
+ *   to use custom colors for log levels.</li>
  * </ul>
+ *
  * @author MeAlam
  * @since 1.0.0
  */
 public abstract class LoggerConfig {
 
+    /**
+     * ANSI color codes for console output.
+     * @Co-author MeAlam
+     * @since 1.0.0
+     */
     protected static final String RESET = "\u001B[0m";
+
+    /**
+     * ANSI color codes for console output.
+     * @Co-author MeAlam
+     * @since 1.0.0
+     */
     protected static final String RED = "\u001B[31m";
+
+    /**
+     * ANSI color codes for console output.
+     * @Co-author MeAlam
+     * @since 1.0.0
+     */
     protected static final String ORANGE = "\u001B[38;5;214m";
+
+    /**
+     * ANSI color codes for console output.
+     * @Co-author MeAlam
+     * @since 1.0.0
+     */
     protected static final String BLUE = "\u001B[34m";
+
+    /**
+     * ANSI color codes for console output.
+     * @Co-author MeAlam
+     * @since 1.0.0
+     */
     protected static final String GREEN = "\u001B[38;5;10m";
 
     /**
-     * A {@link Logger} configuration method that sets up a {@link ConsoleHandler} with custom color formatting
-     * based on log level using the provided {@link ILogColorProvider}.
+     * A {@link Logger} configuration method that sets up a {@link ConsoleHandler}
+     * with custom color formatting based on log level using the provided {@link ILogColorProvider}.
      *
      * @param pLogger {@link Logger} - The logger instance to be configured.
      * @param pColorProvider {@link ILogColorProvider} - Provides color codes for different log levels.
+     * @author MeAlam
+     * @since 1.0.0
      */
     public static void configureLogger(Logger pLogger, ILogColorProvider pColorProvider) {
         ConsoleHandler handler = new ConsoleHandler();
         handler.setFormatter(new SimpleFormatter() {
-        @Override
-        public synchronized String format(LogRecord pRecord) {
+            @Override
+            public synchronized String format(LogRecord pRecord) {
                 String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
-                StringBuilder coloredMessage = new StringBuilder(pColorProvider.getColor(pRecord.getLevel()) + "[" + timestamp + "]" + " [" + pRecord.getLevel() + "]: " + pRecord.getMessage());
+                StringBuilder coloredMessage = new StringBuilder(pColorProvider.getColor(pRecord.getLevel()) +
+                        "[" + timestamp + "]" + " [" + pRecord.getLevel() + "]: " + pRecord.getMessage());
 
                 if (pRecord.getThrown() != null) {
                     coloredMessage.append("\nException: ").append(pRecord.getThrown().getMessage());
@@ -59,7 +93,6 @@ public abstract class LoggerConfig {
                                 .append(methodName).append("(Line: ")
                                 .append(lineNumber).append(")");
                     }
-
                 }
 
                 coloredMessage.append(RESET);
