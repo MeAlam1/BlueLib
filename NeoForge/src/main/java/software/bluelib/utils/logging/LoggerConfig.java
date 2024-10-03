@@ -48,8 +48,18 @@ public abstract class LoggerConfig {
                 if (pRecord.getThrown() != null) {
                     coloredMessage.append("\nException: ").append(pRecord.getThrown().getMessage());
                     for (StackTraceElement element : pRecord.getThrown().getStackTrace()) {
-                        coloredMessage.append("\n\tat ").append(element.toString());
+                        String packageName = element.getClassName().substring(0, element.getClassName().lastIndexOf('.'));
+                        String className = element.getClassName().substring(element.getClassName().lastIndexOf('.') + 1);
+                        String methodName = element.getMethodName();
+                        int lineNumber = element.getLineNumber();
+
+                        coloredMessage.append("\n\tat ")
+                                .append(packageName).append(".")
+                                .append(className).append(".")
+                                .append(methodName).append("(Line: ")
+                                .append(lineNumber).append(")");
                     }
+
                 }
 
                 coloredMessage.append(RESET);
