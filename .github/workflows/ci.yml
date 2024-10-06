@@ -34,12 +34,16 @@ jobs:
 
       - name: Grant execute permission for Gradle wrappers
         run: |
-          chmod +x NeoForge/gradlew
-          chmod +x Forge/gradlew
+          chmod +x neoforge/gradlew
+          chmod +x forge/gradlew
+          chmod +x fabric/gradlew
 
       - name: Build for NeoForge
-        run: cd NeoForge && ./gradlew build
+        run: cd neoForge && ./gradlew build
 
       - name: Build for Forge
-        run: cd Forge && ./gradlew build
+        run: cd forge && ./gradlew build
+
+      - name: Build for Fabric
+        run: cd fabric && ./gradlew build
 
