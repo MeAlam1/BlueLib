@@ -25,3 +25,29 @@ replay_pid*
 # Default ignored files
 .idea/*
 
+# BuildSrc
+buildSrc/build/*
+buildSrc/.gradle/*
+
+# Common
+common/build/*
+common/.gradle/*
+common/out/*
+
+# Fabric
+fabric/build/*
+fabric/.gradle/*
+fabric/runs/*
+fabric/run/*
+
+# Forge
+forge/build/*
+forge/.gradle/*
+forge/runs/*
+forge/run/*
+
+# Neoforge
+neoforge/build/*
+neoforge/.gradle/*
+neoforge/runs/*
+neoforge/run/*
