@@ -30,7 +30,7 @@ import software.bluelib.utils.logging.BaseLogger;
 public class ReloadEventHandler {
 
     /**
-     * A {@code void} that registers entity variants from specified locations.
+     * A {@code protected static void} that registers entity variants from specified locations.
      * <p>
      * This method attempts to load variants from both mod and datapack locations. It logs status information and
      * handles exceptions that occur during the loading process.

@@ -10,7 +10,7 @@ import software.bluelib.utils.logging.BaseLogger;
 import java.util.List;
 
 /**
- * An {@code Interface} representing an entity that supports multiple variants.
+ * A {@code public Interface} representing an entity that supports multiple variants.
  * <p>
  * This interface extends {@link IVariantEntityBase} to include methods specific to handling entity variants, including
  * random selection of variants.
@@ -35,7 +35,7 @@ public interface IVariantEntity extends IVariantEntityBase {
     RandomSource random = RandomSource.create();
 
     /**
-     * A {@link String} that selects a random variant name from the provided list of variant names.
+     * A {@code default} {@link String} that selects a random variant name from the provided list of variant names.
      * <p>
      * This method uses the {@link RandomSource} to pick a random variant from the list. If the list is empty, the default
      * variant name is returned.

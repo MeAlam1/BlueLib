@@ -44,7 +44,7 @@ import java.util.concurrent.TimeUnit;
 public class BlueLib {
 
     /**
-     * A {@link ScheduledExecutorService} used to schedule tasks, such as printing messages after a delay.
+     * A {@code public static final} {@link ScheduledExecutorService} used to schedule tasks, such as printing messages after a delay.
      * <p>
      * This executor runs tasks on a single thread to ensure delayed tasks run in a separate thread from the main thread.
      * </p>
@@ -54,7 +54,7 @@ public class BlueLib {
     private static final ScheduledExecutorService SCHEDULER = Executors.newScheduledThreadPool(1);
 
     /**
-     * A {@link String} representing the Mod ID for the {@link BlueLib} mod.
+     * A {@code public static final} {@link String} representing the Mod ID for the {@link BlueLib} mod.
      * <p>This serves as a unique identifier for the mod.</p>
      * @Co-author MeAlam, Dan
      * @since 1.0.0
@@ -86,7 +86,7 @@ public class BlueLib {
     }
 
     /**
-     * a {@code void} that handles the {@link FMLLoadCompleteEvent}, which occurs when the mod finishes loading.
+     * A {@code public void} that handles the {@link FMLLoadCompleteEvent}, which occurs when the mod finishes loading.
      * <p>
      * If the mod is in developer mode, it schedules a task that prints a thank-you message after a short delay.
      * </p>
@@ -112,7 +112,7 @@ public class BlueLib {
     }
 
     /**
-     * a {@code void} that checks if the mod is running in developer mode.
+     * A {@code static} {@link Boolean} that checks if the mod is running in developer mode.
      * <p>
      * Developer mode is active when the mod is not running in a production environment.
      * </p>

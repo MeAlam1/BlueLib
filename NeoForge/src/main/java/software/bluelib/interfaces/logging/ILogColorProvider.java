@@ -5,7 +5,7 @@ package software.bluelib.interfaces.logging;
 import java.util.logging.Level;
 
 /**
- * An {@code Interface} for providing color codes based on log levels.
+ * A {@code public Interface} for providing color codes based on log levels.
  * <p>
  * This interface defines a method to retrieve color codes for various log levels. Implementations should provide
  * the appropriate color codes for each log level to enhance the readability of log messages.

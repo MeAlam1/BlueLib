@@ -11,7 +11,7 @@ import software.bluelib.utils.logging.BaseLogger;
 import java.util.Map;
 
 /**
- * A {@code class} responsible for merging JSON data from a source {@link JsonObject} into a target {@link JsonObject}.
+ * A {@code public class} responsible for merging JSON data from a source {@link JsonObject} into a target {@link JsonObject}.
  * <p>
  * This class provides functionality to combine JSON data where overlapping keys result in merging arrays,
  * and non-overlapping keys are simply added to the target.
@@ -30,7 +30,7 @@ import java.util.Map;
 public class JSONMerger {
 
     /**
-     * A {@code void} method that merges data from a source {@link JsonObject} into a target {@link JsonObject}.
+     * A {@code public void} method that merges data from a source {@link JsonObject} into a target {@link JsonObject}.
      * <p>
      * If the target JSON object already contains a key present in the source JSON object, the values are merged if they are arrays.
      * Otherwise, the source value is added to the target JSON object.

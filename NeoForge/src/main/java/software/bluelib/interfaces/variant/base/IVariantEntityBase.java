@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * An {@code base Interface} providing fundamental methods for handling entity variants.
+ * A {@code public base Interface} providing fundamental methods for handling entity variants.
  * <p>
  * This interface defines methods for retrieving texture locations and variant names associated with entities.
  * </p>
@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
 public interface IVariantEntityBase {
 
     /**
-     * A {@link ResourceLocation} that points to the texture of an entity.
+     * A {@code default} {@link ResourceLocation} that points to the texture of an entity.
      * <p>
      * This method constructs a {@link ResourceLocation} using the provided mod ID and texture path.
      * </p>
@@ -47,7 +47,7 @@ public interface IVariantEntityBase {
     }
 
     /**
-     * A {@link List<String>} of variant names associated with the specified entity.
+     * A {@code default} {@link List<String>} of variant names associated with the specified entity.
      * <p>
      * This method retrieves the names of all variants for a given entity by querying the {@link VariantLoader}.
      * </p>

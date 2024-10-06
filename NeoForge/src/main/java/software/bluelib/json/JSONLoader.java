@@ -17,7 +17,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
 /**
- * A {@code class} responsible for loading and parsing JSON data from
+ * A {@code public class} responsible for loading and parsing JSON data from
  * resources defined by {@link ResourceLocation} within a Minecraft mod environment. <br>
  * It uses the {@link Gson} library to convert JSON strings into {@link JsonObject} instances.
  * <p>
@@ -32,13 +32,13 @@ import java.util.Optional;
 public class JSONLoader {
 
     /**
-     * A {@link Gson} instance for parsing JSON data.
+     * A {@code private static} {@link Gson} instance for parsing JSON data.
      * @Co-author MeAlam, Dan
      */
     private static final Gson gson = new Gson();
 
     /**
-     * A {@link JsonObject} that loads JSON data from a {@link ResourceLocation}. <br>
+     * A {@code public} {@link JsonObject} that loads JSON data from a {@link ResourceLocation}. <br>
      * This method is typically used to load configuration files or other JSON-based resources
      * in a Minecraft mod environment.
      * <p>
