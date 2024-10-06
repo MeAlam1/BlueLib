@@ -57,7 +57,7 @@ public class LivingEntityMixin implements IVariantAccessor {
      */
     @Inject(method = "defineSynchedData", at = @At("HEAD"))
     protected void defineSynchedData(SynchedEntityData.@NotNull Builder pBuilder, CallbackInfo pCi) {
-        pBuilder.define(bluelib$VARIANT, "normal"); // Default variant is "normal"
+        pBuilder.define(bluelib$VARIANT, "normal");
     }
 
     /**
