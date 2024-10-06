@@ -20,7 +20,7 @@ import java.util.*;
  * A {@code public class} that implements the {@link IVariantEntityBase} {@code interface} that manages the loading and storage of entity variants.
  * <p>
  * The class handles loading and merging of JSON Data by utilizing the {@link JSONLoader} and {@link JSONMerger} classes. <br>
- * To load the Variants it loops thru all resources in a folder and merges them into a single {@link JsonObject}. <br>
+ * To load the Variants it loops through all resources in a folder and merges them into a single {@link JsonObject}. <br>
  * The merged JSON data is then parsed into {@link VariantParameter} instances and stored in {@link #entityVariantsMap}. <br>
  * </p>
  * Key Methods:
@@ -47,9 +47,6 @@ public class VariantLoader implements IVariantEntityBase {
 
     /**
      * A {@code private static final} {@link JSONLoader} to load JSON data from resources.
-     * <p>
-     * This {@link JSONLoader} instance is used to load JSON data from resources.
-     * </p>
      * @Co-author MeAlam, Dan
      * @since 1.0.0
      */
@@ -66,10 +63,9 @@ public class VariantLoader implements IVariantEntityBase {
     private static final JSONMerger jsonMerger = new JSONMerger();
 
     /**
-     * A {@code public static void} that loads and merges variant data from JSON resources.
+     * A {@code public static void} that loads and merges variant data from JSON resources in the specified folder path.
      * <p>
-     * This method loads and merges JSON data from resources in the specified folder path. <br>
-     * The method loops thru all resources in the folder and merges them into a single {@link JsonObject}. <br>
+     * The method loops through all resources in the folder and merges them into a single {@link JsonObject}. <br>
      * The merged JSON data is then parsed into {@link VariantParameter} instances and stored in {@link #entityVariantsMap}.
      * </p>
      * @param folderPath {@link String} - The path to the folder containing JSON resources.
@@ -169,7 +165,7 @@ public class VariantLoader implements IVariantEntityBase {
     }
 
     /**
-     * A {@code public static} {@link VariantParameter} that retrieves a {@link VariantParameter} by its name for a specific entity.
+     * A {@code public static} {@link VariantParameter} that retrieves a {@link VariantParameter} for a specific entity, by the variant's name.
      * <p>
      * This method searches for a variant with the specified name within the list of variants for the given entity.
      * </p>
