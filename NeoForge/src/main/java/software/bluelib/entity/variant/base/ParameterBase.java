@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * An {@code public abstract base class} for managing a collection of {@link #parameters}.
+ * A {@code public abstract base class} for managing a collection of {@link #parameters}.
  * <p>
  * This {@code class} provides methods to add, retrieve, remove, and manipulate {@link #parameters} stored as key-value pairs.
  * </p>
@@ -117,7 +117,7 @@ public abstract class ParameterBase {
      * This method returns {@code true} if the parameter with the specified key exists in {@link #parameters}, {@code false} otherwise.
      * </p>
      * @param pKey {@link String} - The key of the parameter to check.
-     * @return {@link Boolean} - {@code true} if the parameter exists, {@code false} otherwise.
+     * @return {@link Boolean} - {@code true} if the parameter exists and {@code false} if it doesn't.
      * @author MeAlam
      * @Co-author Dan
      * @since 1.0.0
@@ -133,7 +133,7 @@ public abstract class ParameterBase {
      * <p>
      * This method returns {@code true} if {@link #parameters} contains no parameters, {@code false} otherwise.
      * </p>
-     * @return {@link Boolean} - {@code true} if {@link #parameters} is empty, {@code false} otherwise.
+     * @return {@link Boolean} - {@code true} if {@link #parameters} is empty and {@code false} if it isn't.
      * @author MeAlam
      * @Co-author Dan
      * @since 1.0.0
@@ -145,10 +145,7 @@ public abstract class ParameterBase {
     }
 
     /**
-     * A {@code protected void} that clears all parameters from {@link #parameters}.
-     * <p>
-     * This method removes all parameters from {@link #parameters}.
-     * </p>
+     * A {@code protected void} that removes all parameters from {@link #parameters}.
      * @author MeAlam
      * @Co-author Dan
      * @since 1.0.0
@@ -160,9 +157,6 @@ public abstract class ParameterBase {
 
     /**
      * A {@code protected} {@link Integer} that returns the number of parameters in {@link #parameters}.
-     * <p>
-     * This method provides the count of parameters currently stored in {@link #parameters}.
-     * </p>
      * @return {@link Integer} - The number of parameters in the collection.
      * @author MeAlam
      * @Co-author Dan
