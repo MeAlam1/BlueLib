@@ -32,18 +32,21 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
-      - name: Grant execute permission for Gradle wrappers
+      # Set up a single Gradle wrapper in a common directory
+      - name: Generate Gradle wrapper if not present
         run: |
-          chmod +x neoforge/gradlew
-          chmod +x forge/gradlew
-          chmod +x fabric/gradlew
+          if [ ! -f "./gradlew" ]; then
+            gradle wrapper
+          fi
+
+      - name: Grant execute permission for Gradle wrapper
+        run: chmod +x ./gradlew
 
       - name: Build for NeoForge
-        run: cd neoForge && ./gradlew build
+        run: ./gradlew build -p neoforge
 
       - name: Build for Forge
-        run: cd forge && ./gradlew build
+        run: ./gradlew build -p forge
 
       - name: Build for Fabric
-        run: cd fabric && ./gradlew build
-
+        run: ./gradlew build -p fabric
