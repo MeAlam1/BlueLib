@@ -21,7 +21,7 @@ import java.util.Set;
  * Key Methods:
  * <ul>
  *   <li>{@link #getJsonKey()} - Retrieves the key of the JSON object that identifies this entity.</li>
- *   <li>{@link #getVariantName()} - Retrieves the name of the variant.</li>
+ *   <li>{@link #getVariantParameter()} - Retrieves the name of the variant.</li>
  *   <li>{@link #getParameter(String)} - Retrieves the value of a specific parameter by its key.</li>
  * </ul>
  *
@@ -31,7 +31,7 @@ import java.util.Set;
 public class VariantParameter extends ParameterBase {
 
     /**
-     * A {@link String} that represents the key of the JSON object that identifies this entity.
+     * A {@code private final} {@link String} that represents the key of the JSON object that identifies this entity.
      * <p>
      * This key is used to map the entity to its corresponding parameters within a {@link JsonObject}.
      * </p>
@@ -39,6 +39,16 @@ public class VariantParameter extends ParameterBase {
      * @since 1.0.0
      */
     private final String jsonKey;
+
+    /**
+     * A {@code private static} {@link String} that represents the name of the Variant parameter.
+     * <p>
+     * This key is used to locate the variant name within the parameters/JSON files.
+     * </p>
+     *
+     * @since 1.0.0
+     */
+    private static String variantParameterName = "variantName";
 
     /**
      * Constructs a new {@code VariantParameter} instance by extracting parameters from a given {@link JsonObject}.
@@ -114,19 +124,35 @@ public class VariantParameter extends ParameterBase {
     }
 
     /**
-     * A {@link String} method that retrieves the name of the variant.
+     * A {@link String} method that retrieves the name of the variant parameter.
      * <p>
-     * The variant name is expected to be stored under the key {@code "variantName"} in the parameters/JSON files.
+     * The variant name is, by default, stored under the key {@code "variantName"} in the parameters/JSON files.
+     * Otherwise, the key is stored in the {@link #variantParameterName} field.
      * </p>
      *
      * @return The name of the variant, or {@code null} if the variant name is not found.
      * @author MeAlam
      * @since 1.0.0
      */
-    public String getVariantName() {
-        String variantName = getParameter("variantName");
-        BaseLogger.log(BaseLogLevel.INFO, "Retrieved variant name: " + variantName);
+    public String getVariantParameter() {
+        String variantName = getParameter(variantParameterName);
+        BaseLogger.log(BaseLogLevel.INFO, "Retrieved parameter name: " + variantName);
         return variantName;
+    }
+
+    /**
+     * A {@link String} method that sets the name of the variant parameter.
+     * <p>
+     * This method allows the user to customize the key used to locate the variant name within the parameters/JSON files.
+     * </p>
+     *
+     * @param pCustomVariantName {@link String} - The custom name of the variant parameter.
+     * @author MeAlam
+     * @since 1.0.0
+     */
+    public void setVariantParameter(String pCustomVariantName) {
+        variantParameterName = pCustomVariantName;
+        BaseLogger.log(BaseLogLevel.INFO, "Setting parameter name: " + variantParameterName);
     }
 
     /**

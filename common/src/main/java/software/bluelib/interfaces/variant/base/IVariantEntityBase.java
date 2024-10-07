@@ -58,7 +58,7 @@ public interface IVariantEntityBase {
     default List<String> getEntityVariants(String pEntityName) {
         List<VariantParameter> variants = VariantLoader.getVariantsFromEntity(pEntityName);
         List<String> variantNames = variants.stream()
-                .map(VariantParameter::getVariantName)
+                .map(VariantParameter::getVariantParameter)
                 .collect(Collectors.toList());
         BaseLogger.log(BaseLogLevel.SUCCESS, "Retrieved " + variantNames.size() + " variants for entity: " + pEntityName);
         return variantNames;
