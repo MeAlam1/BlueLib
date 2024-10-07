@@ -160,8 +160,6 @@ public class BaseLogger {
                         logger.log(pLogLevel, pMessage, pThrowable);
                     } else if (callingMethod.isAnnotationPresent(EnableLogging.class)) {
                         logger.log(pLogLevel, pMessage, pThrowable);
-                    } else {
-                        logger.log(pLogLevel,"Class: " + callingClass.getName() + ", Method: " + callingMethod.getName());
                     }
                 }
             }
@@ -191,8 +189,6 @@ public class BaseLogger {
                         logger.log(pLogLevel, pMessage);
                     } else if (callingMethod.isAnnotationPresent(EnableLogging.class)) {
                         logger.log(pLogLevel, pMessage);
-                    } else {
-                        logger.log(pLogLevel,"Class: " + callingClass.getName() + ", Method: " + callingMethod.getName());
                     }
                 }
             }
