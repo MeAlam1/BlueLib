@@ -39,7 +39,7 @@ public class LivingEntityMixin implements IVariantAccessor {
     /**
      * A {@link EntityDataAccessor} to hold the entity's variant name, which is synchronized
      * across clients and servers using {@link SynchedEntityData}.
-     * @Co-author MeAlam
+     * @co-author MeAlam
      * @since 1.0.0
      */
     @Unique

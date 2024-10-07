@@ -25,7 +25,7 @@ import java.util.Set;
  *   <li>{@link #getParameter(String)} - Retrieves the value of a specific parameter by its key.</li>
  * </ul>
  * @author MeAlam
- * @Co-author Dan
+ * @co-author Dan
  * @since 1.0.0
  */
 public class VariantParameter extends ParameterBase {
@@ -35,7 +35,7 @@ public class VariantParameter extends ParameterBase {
      * <p>
      * This key is used to map the entity to its corresponding parameters within a {@link JsonObject}.
      * </p>
-     * @Co-author MeAlam, Dan
+     * @co-author MeAlam, Dan
      * @since 1.0.0
      */
     private final String jsonKey;
@@ -56,7 +56,7 @@ public class VariantParameter extends ParameterBase {
      * @throws IllegalArgumentException if {@code pJsonKey} or {@code pJsonObject} is {@code null}.
      * @see ParameterBase
      * @author MeAlam
-     * @Co-author Dan
+     * @co-author Dan
      * @since 1.0.0
      */
     public VariantParameter(String pJsonKey, JsonObject pJsonObject) {
@@ -100,7 +100,7 @@ public class VariantParameter extends ParameterBase {
      * @return The key of the JSON object representing this entity.
      * @throws IllegalStateException if the key is unexpectedly {@code null}.
      * @author MeAlam
-     * @Co-author Dan
+     * @co-author Dan
      * @since 1.0.0
      */
     public String getJsonKey() {
@@ -121,7 +121,7 @@ public class VariantParameter extends ParameterBase {
      * </p>
      * @return The name of the variant, or {@code null} if the variant name is not found.
      * @author MeAlam
-     * @Co-author Dan
+     * @co-author Dan
      * @since 1.0.0
      */
     public String getVariantName() {
@@ -138,7 +138,7 @@ public class VariantParameter extends ParameterBase {
      * @param pKey {@link String} - The key of the parameter to retrieve.
      * @return The value of the parameter, or {@code null} if the key does not exist.
      * @author MeAlam
-     * @Co-author Dan
+     * @co-author Dan
      * @since 1.0.0
      */
     public String getParameter(String pKey) {

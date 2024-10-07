@@ -31,7 +31,7 @@ public class BlueLibCommon {
                 BaseLogger.logBlueLib("                                                  ");
                 BaseLogger.logBlueLib("**************************************************");
                 SCHEDULER.shutdown();
-            }, 3, TimeUnit.SECONDS);
+            }, 5, TimeUnit.SECONDS);
         }
     }
 
@@ -43,7 +43,7 @@ public class BlueLibCommon {
      *
      * @return {@code true} if running in developer mode, {@code false} otherwise.
      * @author MeAlam
-     * @Co-author Dan
+     * @co-author Dan
      * @since 1.0.0
      */
     static boolean isDeveloperMode() {

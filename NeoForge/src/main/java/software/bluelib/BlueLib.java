@@ -32,7 +32,7 @@ import static software.bluelib.BlueLibConstants.SCHEDULER;
  *
  * @see <a href="https://github.com/MeAlam1/BlueLib/wiki">BlueLib Wiki</a>
  * @author MeAlam, Dan
- * @Co-author All Contributors of BlueLib!
+ * @co-author All Contributors of BlueLib!
  * @since 1.0.0
  */
 @Mod(BlueLibConstants.MOD_ID)
@@ -47,7 +47,7 @@ public class BlueLib {
      * @param pModEventBus {@link IEventBus} - The event bus where the mod registers its handlers.
      * @param pModContainer {@link ModContainer} - The mod container that holds the instance of the mod.
      * @author MeAlam
-     * @Co-author Dan
+     * @co-author Dan
      * @since 1.0.0
      */
     public BlueLib(IEventBus pModEventBus, ModContainer pModContainer) {
@@ -60,7 +60,7 @@ public class BlueLib {
      *
      * @param pEvent {@link FMLLoadCompleteEvent} - The event fired after the mod loading process completes.
      * @author MeAlam
-     * @Co-author Dan
+     * @co-author Dan
      * @since 1.0.0
      */
     @SubscribeEvent

@@ -26,14 +26,14 @@ import java.util.Optional;
  *   <li>{@link #loadJson(ResourceLocation, ResourceManager)} - Loads a JSON resource from the specified location.</li>
  * </ul>
  * @author MeAlam
- * @Co-author Dan
+ * @co-author Dan
  * @since 1.0.0
  */
 public class JSONLoader {
 
     /**
      * A {@code private static} {@link Gson} instance for parsing JSON data.
-     * @Co-author MeAlam, Dan
+     * @co-author MeAlam, Dan
      */
     private static final Gson gson = new Gson();
 
@@ -47,7 +47,7 @@ public class JSONLoader {
      * @return The loaded {@link JsonObject}. Returns an empty {@link JsonObject} if the resource is not found.
      * @throws RuntimeException if there is an error reading the resource.
      * @author MeAlam
-     * @Co-author Dan
+     * @co-author Dan
      * @since 1.0.0
      */
     public JsonObject loadJson(ResourceLocation pResourceLocation, ResourceManager pResourceManager) {

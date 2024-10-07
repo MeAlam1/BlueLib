@@ -24,7 +24,7 @@ import java.util.Map;
  * </ul>
  * </p>
  * @author MeAlam
- * @Co-author Dan
+ * @co-author Dan
  * @since 1.0.0
  */
 public class JSONMerger {

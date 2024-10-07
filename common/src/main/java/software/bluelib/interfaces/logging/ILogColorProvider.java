@@ -17,7 +17,7 @@ import java.util.logging.Level;
  * </ul>
  * </p>
  * @author MeAlam
- * @Co-author Dan
+ * @co-author Dan
  * @since 1.0.0
  */
 public interface ILogColorProvider {
@@ -31,7 +31,7 @@ public interface ILogColorProvider {
      * @param pLevel {@link Level} - The log level for which to retrieve the color code.
      * @return The color code as a {@link String} for the specified log level.
      * @author MeAlam
-     * @Co-author Dan
+     * @co-author Dan
      * @since 1.0.0
      */
     String getColor(Level pLevel);

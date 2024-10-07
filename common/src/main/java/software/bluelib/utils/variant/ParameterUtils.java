@@ -32,7 +32,7 @@ import java.util.NoSuchElementException;
  *
  * @since 1.0.0
  * @author MeAlam
- * @Co-author Dan
+ * @co-author Dan
  * @version 1.0.0
  * @see software.bluelib.entity.variant.VariantParameter
  */
@@ -46,7 +46,7 @@ public class ParameterUtils {
      * </p>
      *
      * @since 1.0.0
-     * @Co-author MeAlam, Dan
+     * @co-author MeAlam, Dan
      */
     private static final Map<String, Map<String, String>> variantParametersMap = new HashMap<>();
 
@@ -61,7 +61,7 @@ public class ParameterUtils {
      * @return {@link String} The value of the custom parameter for the specified variant or {@code null}  if not found.
      * @since 1.0.0
      * @author MeAlam
-     * @Co-author Dan
+     * @co-author Dan
      */
     public static String getParameter(String pVariantName, String pParameterKey) {
         return variantParametersMap.getOrDefault(pVariantName, new HashMap<>()).getOrDefault(pParameterKey, "null");
@@ -83,7 +83,7 @@ public class ParameterUtils {
      *
      * @since 1.0.0
      * @author MeAlam
-     * @Co-author Dan
+     * @co-author Dan
      */
     public static class ParameterBuilder {
 
@@ -91,7 +91,7 @@ public class ParameterUtils {
          * The name of the variant being associated with custom parameters.
          *
          * @since 1.0.0
-         * @Co-author MeAlam, Dan
+         * @co-author MeAlam, Dan
          */
         private final String variantName;
 
@@ -99,7 +99,7 @@ public class ParameterUtils {
          * The name of the entity being associated with custom parameters.
          *
          * @since 1.0.0
-         * @Co-author MeAlam, Dan
+         * @co-author MeAlam, Dan
          */
         private final String entityName;
 
@@ -107,7 +107,7 @@ public class ParameterUtils {
          * Stores custom parameters being built for the variant.
          *
          * @since 1.0.0
-         * @Co-author MeAlam, Dan
+         * @co-author MeAlam, Dan
          */
         private final Map<String, String> parameters = new HashMap<>();
 
@@ -118,7 +118,7 @@ public class ParameterUtils {
          * @param pVariantName {@link String} The name of the variant.
          * @since 1.0.0
          * @author MeAlam
-         * @Co-author Dan
+         * @co-author Dan
          */
         private ParameterBuilder(String pEntityName, String pVariantName) {
             this.variantName = pVariantName;
@@ -133,7 +133,7 @@ public class ParameterUtils {
          * @return {@link ParameterBuilder} A new instance for chaining.
          * @since 1.0.0
          * @author MeAlam
-         * @Co-author Dan
+         * @co-author Dan
          */
         public static ParameterBuilder forVariant(String pEntityName, String pVariantName) {
             return new ParameterBuilder(pEntityName, pVariantName);
@@ -149,7 +149,7 @@ public class ParameterUtils {
          * @return {@link ParameterBuilder} The builder instance for chaining.
          * @since 1.0.0
          * @author MeAlam
-         * @Co-author Dan
+         * @co-author Dan
          */
         public ParameterBuilder withParameter(String pParameter) {
             parameters.put(pParameter, "null");
@@ -166,7 +166,7 @@ public class ParameterUtils {
          * @throws NoSuchElementException if the variant or entity is not found in the database.
          * @since 1.0.0
          * @author MeAlam
-         * @Co-author Dan
+         * @co-author Dan
          */
         public ParameterBuilder connect() {
             VariantParameter variant = VariantLoader.getVariantByName(entityName, variantName);

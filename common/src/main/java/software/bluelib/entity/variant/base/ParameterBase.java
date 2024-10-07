@@ -30,7 +30,7 @@ import java.util.Set;
  *   <li>{@link #updateParameter(String, Object)} - Updates the value of an existing parameter in {@link #parameters}.</li>
  * </ul>
  * @author MeAlam
- * @Co-author Dan
+ * @co-author Dan
  * @since 1.0.0
  */
 public abstract class ParameterBase {
@@ -40,7 +40,7 @@ public abstract class ParameterBase {
      * <p>
      * This {@link Map<String>} holds parameter keys and their corresponding values.
      * </p>
-     * @Co-author MeAlam, Dan
+     * @co-author MeAlam, Dan
      * @since 1.0.0
      */
     private final Map<String, Object> parameters = new HashMap<>();
@@ -53,7 +53,7 @@ public abstract class ParameterBase {
      * @param pKey {@link String} - The key under which the parameter is stored.
      * @param pValue {@link Object} - The value of the parameter.
      * @author MeAlam
-     * @Co-author Dan
+     * @co-author Dan
      * @since 1.0.0
      */
     protected void addParameter(String pKey, Object pValue) {
@@ -69,7 +69,7 @@ public abstract class ParameterBase {
      * @param pKey {@link String} - The key of the parameter to retrieve.
      * @return {@link Object} - The value associated with the key, or {@code null} if the key does not exist.
      * @author MeAlam
-     * @Co-author Dan
+     * @co-author Dan
      * @since 1.0.0
      */
     protected Object getParameter(String pKey) {
@@ -85,7 +85,7 @@ public abstract class ParameterBase {
      * </p>
      * @param pKey {@link String} - The key of the parameter to remove.
      * @author MeAlam
-     * @Co-author Dan
+     * @co-author Dan
      * @since 1.0.0
      */
     protected void removeParameter(String pKey) {
@@ -103,7 +103,7 @@ public abstract class ParameterBase {
      * </p>
      * @return {@link Map<String>} - A {@link Map<String>} containing all parameters.
      * @author MeAlam
-     * @Co-author Dan
+     * @co-author Dan
      * @since 1.0.0
      */
     protected Map<String, Object> getAllParameters() {
@@ -119,7 +119,7 @@ public abstract class ParameterBase {
      * @param pKey {@link String} - The key of the parameter to check.
      * @return {@link Boolean} - {@code true} if the parameter exists and {@code false} if it doesn't.
      * @author MeAlam
-     * @Co-author Dan
+     * @co-author Dan
      * @since 1.0.0
      */
     protected boolean containsParameter(String pKey) {
@@ -135,7 +135,7 @@ public abstract class ParameterBase {
      * </p>
      * @return {@link Boolean} - {@code true} if {@link #parameters} is empty and {@code false} if it isn't.
      * @author MeAlam
-     * @Co-author Dan
+     * @co-author Dan
      * @since 1.0.0
      */
     protected boolean isEmpty() {
@@ -147,7 +147,7 @@ public abstract class ParameterBase {
     /**
      * A {@code protected void} that removes all parameters from {@link #parameters}.
      * @author MeAlam
-     * @Co-author Dan
+     * @co-author Dan
      * @since 1.0.0
      */
     protected void clearParameters() {
@@ -159,7 +159,7 @@ public abstract class ParameterBase {
      * A {@code protected} {@link Integer} that returns the number of parameters in {@link #parameters}.
      * @return {@link Integer} - The number of parameters in the collection.
      * @author MeAlam
-     * @Co-author Dan
+     * @co-author Dan
      * @since 1.0.0
      */
     protected int getParameterCount() {
@@ -175,7 +175,7 @@ public abstract class ParameterBase {
      * </p>
      * @return {@link Set<String>} - A {@link Set<String>} containing all parameter keys.
      * @author MeAlam
-     * @Co-author Dan
+     * @co-author Dan
      * @since 1.0.0
      */
     protected Set<String> getParameterKeys() {
@@ -190,7 +190,7 @@ public abstract class ParameterBase {
      * </p>
      * @return {@link Collection<Object>} - A {@link Collection<Object>} containing all parameter values.
      * @author MeAlam
-     * @Co-author Dan
+     * @co-author Dan
      * @since 1.0.0
      */
     protected Collection<Object> getParameterValues() {
@@ -207,7 +207,7 @@ public abstract class ParameterBase {
      * @param pNewValue {@link Object} - The new value to set for the parameter.
      * @throws IllegalArgumentException if the key does not exist.
      * @author MeAlam
-     * @Co-author Dan
+     * @co-author Dan
      * @since 1.0.0
      */
     protected void updateParameter(String pKey, Object pNewValue) {

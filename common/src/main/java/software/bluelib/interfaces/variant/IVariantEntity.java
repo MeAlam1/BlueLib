@@ -22,14 +22,14 @@ import java.util.List;
  * </ul>
  * </p>
  * @author MeAlam
- * @Co-author Dan
+ * @co-author Dan
  * @since 1.0.0
  */
 public interface IVariantEntity extends IVariantEntityBase {
 
     /**
      * A {@link RandomSource} instance used for generating random variants.
-     * @Co-author MeAlam, Dan
+     * @co-author MeAlam, Dan
      * @since 1.0.0
      */
     RandomSource random = RandomSource.create();
@@ -45,7 +45,7 @@ public interface IVariantEntity extends IVariantEntityBase {
      * @param pDefaultVariant {@link String} - The default variant name to return if {@code pVariantNamesList} is empty.
      * @return A random variant name from the list, or the default variant if the list is empty.
      * @author MeAlam
-     * @Co-author Dan
+     * @co-author Dan
      * @since 1.0.0
      */
     default String getRandomVariant(List<String> pVariantNamesList, String pDefaultVariant) {

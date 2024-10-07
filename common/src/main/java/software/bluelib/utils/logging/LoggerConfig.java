@@ -28,35 +28,35 @@ public abstract class LoggerConfig {
 
     /**
      * ANSI color codes for console output.
-     * @Co-author MeAlam
+     * @co-author MeAlam
      * @since 1.0.0
      */
     protected static final String RESET = "\u001B[0m";
 
     /**
      * ANSI color codes for console output.
-     * @Co-author MeAlam
+     * @co-author MeAlam
      * @since 1.0.0
      */
     protected static final String RED = "\u001B[31m";
 
     /**
      * ANSI color codes for console output.
-     * @Co-author MeAlam
+     * @co-author MeAlam
      * @since 1.0.0
      */
     protected static final String ORANGE = "\u001B[38;5;214m";
 
     /**
      * ANSI color codes for console output.
-     * @Co-author MeAlam
+     * @co-author MeAlam
      * @since 1.0.0
      */
     protected static final String BLUE = "\u001B[34m";
 
     /**
      * ANSI color codes for console output.
-     * @Co-author MeAlam
+     * @co-author MeAlam
      * @since 1.0.0
      */
     protected static final String GREEN = "\u001B[38;5;10m";

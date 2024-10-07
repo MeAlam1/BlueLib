@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
  * </ul>
  * </p>
  * @author MeAlam
- * @Co-author Dan
+ * @co-author Dan
  * @since 1.0.0
  */
 public interface IVariantEntityBase {
@@ -39,7 +39,7 @@ public interface IVariantEntityBase {
      * @param pPath {@link String} - The path to the texture within the mod.
      * @return A {@link ResourceLocation} pointing to the specified texture.
      * @author MeAlam
-     * @Co-author Dan
+     * @co-author Dan
      * @since 1.0.0
      */
     default ResourceLocation getTextureLocation(String pModId, String pPath) {
@@ -55,7 +55,7 @@ public interface IVariantEntityBase {
      * @param pEntityName {@link String} - The name of the entity whose variant names are to be retrieved.
      * @return A {@link List<String>} containing the names of variants associated with the specified entity.
      * @author MeAlam
-     * @Co-author Dan
+     * @co-author Dan
      * @since 1.0.0
      */
     default List<String> getEntityVariants(String pEntityName) {

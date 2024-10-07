@@ -22,33 +22,33 @@ import java.util.logging.Level;
 public class BaseLogLevel {
     /**
      * Standard informational log level.
-     * @Co-author MeAlam
+     * @co-author MeAlam
      * @since 1.0.0
      */
     public static final Level INFO = new Level("INFO", Level.INFO.intValue()) {};
     /**
      * Log level for error messages.
-     * @Co-author MeAlam
+     * @co-author MeAlam
      * @since 1.0.0
      */
     public static final Level ERROR = new Level("ERROR", Level.SEVERE.intValue()) {};
     /**
      * Log level for warning messages.
-     * @Co-author MeAlam
+     * @co-author MeAlam
      * @since 1.0.0
      */
     public static final Level WARNING = new Level("WARNING", Level.WARNING.intValue()) {};
 
     /**
      * Custom log level for indicating successful operations.
-     * @Co-author MeAlam
+     * @co-author MeAlam
      * @since 1.0.0
      */
     public static final Level SUCCESS = new Level("SUCCESS", Level.INFO.intValue() + 50) {};
 
     /**
      * Custom log level specific to BlueLib.
-     * @Co-author MeAlam
+     * @co-author MeAlam
      * @since 1.0.0
      */
     public static final Level BLUELIB = new Level("BlueLib Developer", Level.INFO.intValue() + 50) {};

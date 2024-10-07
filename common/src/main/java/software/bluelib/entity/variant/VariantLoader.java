@@ -30,7 +30,7 @@ import java.util.*;
  *   <li>{@link #getVariantByName(String, String)} - Retrieves a specific {@link VariantParameter} by its name for a given entity.</li>
  * </ul>
  * @author MeAlam
- * @Co-author Dan
+ * @co-author Dan
  * @since 1.0.0
  */
 public class VariantLoader implements IVariantEntityBase {
@@ -40,14 +40,14 @@ public class VariantLoader implements IVariantEntityBase {
      * <p>
      * This {@link Map<String>} holds entity names and their corresponding list of {@link VariantParameter} instances.
      * </p>
-     * @Co-author MeAlam, Dan
+     * @co-author MeAlam, Dan
      * @since 1.0.0
      */
     private static final Map<String, List<VariantParameter>> entityVariantsMap = new HashMap<>();
 
     /**
      * A {@code private static final} {@link JSONLoader} to load JSON data from resources.
-     * @Co-author MeAlam, Dan
+     * @co-author MeAlam, Dan
      * @since 1.0.0
      */
     private static final JSONLoader jsonLoader = new JSONLoader();
@@ -57,7 +57,7 @@ public class VariantLoader implements IVariantEntityBase {
      * <p>
      * This {@link JSONMerger} instance is used to merge JSON data into a single {@link JsonObject}.
      * </p>
-     * @Co-author MeAlam, Dan
+     * @co-author MeAlam, Dan
      * @since 1.0.0
      */
     private static final JSONMerger jsonMerger = new JSONMerger();

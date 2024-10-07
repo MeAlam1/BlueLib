@@ -24,7 +24,7 @@ import software.bluelib.utils.logging.BaseLogger;
  * @see MinecraftServer
  * @see ResourceLocation
  * @author MeAlam
- * @Co-author Dan
+ * @co-author Dan
  * @since 1.0.0
  */
 public class ReloadEventHandler {
@@ -61,7 +61,7 @@ public class ReloadEventHandler {
      * @see ResourceLocation
      * @see VariantLoader
      * @author MeAlam
-     * @Co-author Dan
+     * @co-author Dan
      * @since 1.0.0
      */
     protected static void registerEntityVariants(String pFolderPath, MinecraftServer pServer, String pModID, String pEntityName) {
