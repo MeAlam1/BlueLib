@@ -2,6 +2,7 @@
 
 package software.bluelib;
 
+import software.bluelib.annotations.EnableLogging;
 import software.bluelib.interfaces.platform.IPlatformHelper;
 import software.bluelib.utils.logging.BaseLogLevel;
 import software.bluelib.utils.logging.BaseLogger;
@@ -87,11 +88,10 @@ public class BlueLibCommon {
     public static boolean isDeveloperMode() {
         boolean isDevMode = PLATFORM.isDevelopmentEnvironment();
         if (isDevMode) {
-            BaseLogger.log(BaseLogLevel.INFO, "Running in Developer mode.", true);
+            BaseLogger.log(BaseLogLevel.INFO, "Running in Developer mode.");
         } else {
-            BaseLogger.log(BaseLogLevel.INFO, "Running in Production mode.", true);
+            BaseLogger.log(BaseLogLevel.INFO, "Running in Production mode.");
         }
         return isDevMode;
     }
-
 }

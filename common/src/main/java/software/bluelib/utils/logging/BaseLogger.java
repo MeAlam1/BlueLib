@@ -3,7 +3,9 @@
 package software.bluelib.utils.logging;
 
 import software.bluelib.BlueLibConstants;
+import software.bluelib.annotations.EnableLogging;
 
+import java.lang.reflect.Method;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -40,14 +42,14 @@ public class BaseLogger {
      *
      * @since 1.0.0
      */
-    private static boolean bluelibLogging = true;
+    private static boolean bluelibLogging = false;
 
     /**
      * A {@link Boolean} to enable or disable general logging.
      *
      * @since 1.0.0
      */
-    private static boolean isLoggingEnabled = true;
+    private static boolean isLoggingEnabled = false;
 
     /**
      * A {@code void} to enable or disable {@code BlueLib} specific logging.
@@ -94,7 +96,8 @@ public class BaseLogger {
     }
 
     /**
-     * A {@code void} that logs a message with an associated {@link Throwable} if {@code BlueLib} logging is enabled.
+     * A {@code public static void} that logs a message with an associated {@link Throwable}
+     * if {@code BlueLib} logging is enabled.
      *
      * @param pLogLevel  {@link Level} - The logging level to use.
      * @param pMessage   {@link String} - The message to log.
@@ -103,13 +106,19 @@ public class BaseLogger {
      * @since 1.0.0
      */
     public static void log(Level pLogLevel, String pMessage, Throwable pThrowable, boolean pIsBlueLib) {
-        if (pIsBlueLib && bluelibLogging) {
-            logger.log(pLogLevel, pMessage, pThrowable);
+        try {
+            if (pIsBlueLib && bluelibLogging) {
+                logger.log(pLogLevel, pMessage, pThrowable);
+            } else if (!pIsBlueLib && isLoggingEnabled) {
+                logger.log(pLogLevel, pMessage, pThrowable);
+            }
+        } catch (Exception pException) {
+            logger.log(Level.SEVERE, "Failed to log message.", pException);
         }
     }
 
     /**
-     * A {@code void} that logs a message if BlueLib logging is enabled.
+     * A {@code public static void} that logs a message if {@code BlueLib} logging is enabled.
      *
      * @param pLogLevel  {@link Level} - The logging level to use.
      * @param pMessage   {@link String} - The message to log.
@@ -117,13 +126,20 @@ public class BaseLogger {
      * @since 1.0.0
      */
     public static void log(Level pLogLevel, String pMessage, boolean pIsBlueLib) {
-        if (pIsBlueLib && bluelibLogging) {
-            logger.log(pLogLevel, pMessage);
+        try {
+            if (pIsBlueLib && bluelibLogging) {
+                logger.log(pLogLevel, pMessage);
+            } else if (!pIsBlueLib && isLoggingEnabled) {
+                logger.log(pLogLevel, pMessage);
+            }
+        } catch (Exception pException) {
+            logger.log(Level.SEVERE, "Failed to log message.", pException);
         }
     }
 
     /**
-     * A {@code void} that logs a message with an associated {@link Throwable} if general logging is enabled.
+     * A {@code public static void} that logs a message with an associated {@link Throwable}
+     * if general logging is enabled.
      *
      * @param pLogLevel  {@link Level} - The logging level to use.
      * @param pMessage   {@link String} - The message to log.
@@ -131,26 +147,62 @@ public class BaseLogger {
      * @since 1.0.0
      */
     public static void log(Level pLogLevel, String pMessage, Throwable pThrowable) {
-        if (isLoggingEnabled) {
-            logger.log(pLogLevel, pMessage, pThrowable);
+        try {
+            if (isLoggingEnabled) {
+                logger.log(pLogLevel, pMessage, pThrowable);
+            } else {
+                StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+                if (stackTrace.length > 3) {
+                    Class<?> callingClass = Class.forName(stackTrace[3].getClassName());
+                    Method callingMethod = callingClass.getMethod(stackTrace[3].getMethodName());
+
+                    if (callingClass.isAnnotationPresent(EnableLogging.class)) {
+                        logger.log(pLogLevel, pMessage, pThrowable);
+                    } else if (callingMethod.isAnnotationPresent(EnableLogging.class)) {
+                        logger.log(pLogLevel, pMessage, pThrowable);
+                    } else {
+                        logger.log(pLogLevel,"Class: " + callingClass.getName() + ", Method: " + callingMethod.getName());
+                    }
+                }
+            }
+        } catch (Exception pException) {
+            logger.log(Level.SEVERE, "Failed to log message.", pException);
         }
     }
 
     /**
-     * A {@code void} that logs a message if general logging is enabled.
+     * A {@code public static void} that logs a message if general logging is enabled.
      *
      * @param pLogLevel {@link Level} - The logging level to use.
      * @param pMessage  {@link String} - The message to log.
      * @since 1.0.0
      */
     public static void log(Level pLogLevel, String pMessage) {
-        if (isLoggingEnabled) {
-            logger.log(pLogLevel, pMessage);
+        try {
+            if (isLoggingEnabled) {
+                logger.log(pLogLevel, pMessage);
+            } else {
+                StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+                if (stackTrace.length > 3) {
+                    Class<?> callingClass = Class.forName(stackTrace[3].getClassName());
+                    Method callingMethod = callingClass.getMethod(stackTrace[3].getMethodName());
+
+                    if (callingClass.isAnnotationPresent(EnableLogging.class)) {
+                        logger.log(pLogLevel, pMessage);
+                    } else if (callingMethod.isAnnotationPresent(EnableLogging.class)) {
+                        logger.log(pLogLevel, pMessage);
+                    } else {
+                        logger.log(pLogLevel,"Class: " + callingClass.getName() + ", Method: " + callingMethod.getName());
+                    }
+                }
+            }
+        } catch (Exception pException) {
+            logger.log(Level.SEVERE, "Failed to log message.", pException);
         }
     }
 
     /**
-     * A {@code void} that logs a {@code BlueLib} specific message at the {@code BlueLib} log level.
+     * A {@code public static void} that logs a {@code BlueLib} specific message at the {@code BlueLib} log level.
      *
      * @param pMessage {@link String} - The {@code BlueLib} message to log.
      * @since 1.0.0
