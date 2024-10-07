@@ -50,7 +50,6 @@ public class VariantParameter extends ParameterBase {
      *   <li>{@link JsonObject}: Converts the nested JSON object to a string representation.</li>
      *   <li>{@code Other Types}: Stores "null" for unhandled JSON types.</li>
      * </ul>
-     * </p>
      *
      * @param pJsonKey    {@link String} - The key that identifies this entity within the {@link JsonObject}.
      * @param pJsonObject {@link JsonObject} - The {@link JsonObject} containing the variant parameters.

@@ -15,7 +15,6 @@ import java.util.logging.Level;
  * <ul>
  *   <li>{@link #getColor(Level)} - Retrieves the color code associated with a specific {@link Level} of logging.</li>
  * </ul>
- * </p>
  *
  * @author MeAlam
  * @since 1.0.0

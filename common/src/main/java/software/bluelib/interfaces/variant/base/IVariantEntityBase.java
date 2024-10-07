@@ -22,7 +22,6 @@ import java.util.stream.Collectors;
  *   <li>{@link #getTextureLocation(String, String)} - Retrieves the {@link ResourceLocation} for the entity texture.</li>
  *   <li>{@link #getEntityVariants(String)} - Retrieves a {@link List<String>} of variant names for a specified entity.</li>
  * </ul>
- * </p>
  *
  * @author MeAlam
  * @since 1.0.0

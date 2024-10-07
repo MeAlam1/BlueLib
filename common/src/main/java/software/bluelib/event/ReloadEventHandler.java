@@ -42,13 +42,12 @@ public class ReloadEventHandler {
      *   <li>{@code pModID} {@link String} - The mod ID used to locate the entity variant resources. (Use your Mod's ID)</li>
      *   <li>{@code pEntityName} {@link String} - The entity name to load.</li>
      * </ul>
-     * <p>
+     *
      * Exception Handling:
      * <ul>
      *   <li>{@link JsonParseException} - Thrown when there is an error parsing the JSON files.</li>
      *   <li>{@link RuntimeException} - Thrown for unexpected errors during the registration process.</li>
      * </ul>
-     * </p>
      *
      * @param pFolderPath {@link String} - The folder path location within the mod or datapack where variants are stored.
      * @param pServer     {@link MinecraftServer} - The server instance of the current world.

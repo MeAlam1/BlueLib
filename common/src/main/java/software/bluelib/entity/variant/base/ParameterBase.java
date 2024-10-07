@@ -36,9 +36,9 @@ import java.util.Set;
 public abstract class ParameterBase {
 
     /**
-     * A {@code private final} {@link Map<String>} to store parameters as key-value pairs.
+     * A {@code private final} {@link Map} to store parameters as key-value pairs.
      * <p>
-     * This {@link Map<String>} holds parameter keys and their corresponding values.
+     * This {@link Map} holds parameter keys and their corresponding values.
      * </p>
      *
      * @since 1.0.0
@@ -97,12 +97,12 @@ public abstract class ParameterBase {
     }
 
     /**
-     * A {@code protected} {@link Map<String>} that returns all parameters in {@link #parameters}.
+     * A {@code protected} {@link Map} that returns all parameters in {@link #parameters}.
      * <p>
-     * This method returns a new {@link Map<String>} containing all parameters stored in {@link #parameters}.
+     * This method returns a new {@link Map} containing all parameters stored in {@link #parameters}.
      * </p>
      *
-     * @return {@link Map<String>} - A {@link Map<String>} containing all parameters.
+     * @return {@link Map} - A {@link Map} containing all parameters.
      * @author MeAlam
      * @since 1.0.0
      */

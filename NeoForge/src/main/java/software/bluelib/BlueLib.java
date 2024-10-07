@@ -22,7 +22,6 @@ import org.spongepowered.asm.launch.MixinBootstrap;
  *   <li>{@link #BlueLib(IEventBus, ModContainer)} - Constructs the {@code BlueLib} instance and registers the mod event bus.</li>
  *   <li>{@link #onLoadComplete(FMLLoadCompleteEvent)} - Handles the event when the mod loading is complete.</li>
  * </ul>
- * </p>
  *
  * @author MeAlam, Dan and All Contributors of BlueLib!
  * @see <a href="https://github.com/MeAlam1/BlueLib/wiki">BlueLib Wiki</a>

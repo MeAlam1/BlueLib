@@ -1,8 +1,27 @@
+// Copyright (c) BlueLib. Licensed under the MIT License.
+
 package software.bluelib;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
+/**
+ * A {@code public class} that defines common constants used across the BlueLib mod.
+ * <p>
+ * This class contains constants such as the mod's {@link #MOD_ID}, {@link #MOD_NAME}, and a
+ * {@link ScheduledExecutorService} for scheduling tasks.
+ * </p>
+ * <p>
+ * Key Fields:
+ * <ul>
+ *   <li>{@link #SCHEDULER} - Executor for scheduling delayed tasks.</li>
+ *   <li>{@link #MOD_ID} - Unique identifier for the mod.</li>
+ *   <li>{@link #MOD_NAME} - Display name of the mod.</li>
+ * </ul>
+ *
+ * @author MeAlam
+ * @since 1.0.0
+ */
 public class BlueLibConstants {
 
     /**

@@ -20,7 +20,6 @@ import java.util.List;
  * <ul>
  *   <li>{@link #getRandomVariant(List, String)} - Retrieves a random variant name from a provided list or defaults if the list is empty.</li>
  * </ul>
- * </p>
  *
  * @author MeAlam
  * @since 1.0.0
