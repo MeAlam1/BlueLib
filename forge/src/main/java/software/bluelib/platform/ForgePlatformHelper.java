@@ -8,19 +8,16 @@ public class ForgePlatformHelper implements IPlatformHelper {
 
     @Override
     public String getPlatformName() {
-
         return "Forge";
     }
 
     @Override
-    public boolean isModLoaded(String modId) {
-
-        return ModList.get().isLoaded(modId);
+    public boolean isModLoaded(String pModId) {
+        return ModList.get().isLoaded(pModId);
     }
 
     @Override
     public boolean isDevelopmentEnvironment() {
-
         return !FMLLoader.isProduction();
     }
 }

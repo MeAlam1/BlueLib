@@ -19,7 +19,6 @@ import software.bluelib.utils.logging.BaseLogger;
  * <ul>
  *   <li>{@link #registerEntityVariants(String, MinecraftServer, String, String)} - Registers entity variants from specified locations.</li>
  * </ul>
- * </p>
  *
  * @author MeAlam
  * @see VariantLoader
@@ -43,7 +42,6 @@ public class ReloadEventHandler {
      *   <li>{@code pModID} {@link String} - The mod ID used to locate the entity variant resources. (Use your Mod's ID)</li>
      *   <li>{@code pEntityName} {@link String} - The entity name to load.</li>
      * </ul>
-     * </p>
      * <p>
      * Exception Handling:
      * <ul>

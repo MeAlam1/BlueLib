@@ -30,7 +30,6 @@ public interface IVariantEntity extends IVariantEntityBase {
     /**
      * A {@link RandomSource} instance used for generating random variants.
      *
-     * @co-author MeAlam, Dan
      * @since 1.0.0
      */
     RandomSource random = RandomSource.create();

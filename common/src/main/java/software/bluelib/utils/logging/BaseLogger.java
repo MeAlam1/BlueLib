@@ -30,7 +30,6 @@ public class BaseLogger {
     /**
      * A {@link Logger} instance for logging messages.
      *
-     * @co-author MeAlam
      * @since 1.0.0
      */
     private static final Logger logger = Logger.getLogger(BlueLibConstants.MOD_NAME);
@@ -39,7 +38,6 @@ public class BaseLogger {
     /**
      * A {@link Boolean} to enable or disable BlueLib specific logging.
      *
-     * @co-author MeAlam
      * @since 1.0.0
      */
     private static boolean bluelibLogging = true;
@@ -47,7 +45,6 @@ public class BaseLogger {
     /**
      * A {@link Boolean} to enable or disable general logging.
      *
-     * @co-author MeAlam
      * @since 1.0.0
      */
     private static boolean isLoggingEnabled = true;
@@ -56,7 +53,6 @@ public class BaseLogger {
      * A {@code void} to enable or disable {@code BlueLib} specific logging.
      *
      * @param pEnabled {@link boolean} - Indicates whether to enable or disable BlueLib logging.
-     * @co-author MeAlam
      * @since 1.0.0
      */
     public static void setBlueLibLoggingEnabled(boolean pEnabled) {
@@ -67,7 +63,6 @@ public class BaseLogger {
      * A {@link Boolean} method that checks if BlueLib logging is enabled.
      *
      * @return {@code true} if BlueLib logging is enabled, {@code false} otherwise.
-     * @co-author MeAlam
      * @since 1.0.0
      */
     public static boolean isBlueLibLoggingEnabled() {
@@ -78,7 +73,6 @@ public class BaseLogger {
      * A {@link Boolean} method that checks if logging is enabled.
      *
      * @return {@code true} if general logging is enabled, {@code false} otherwise.
-     * @co-author MeAlam
      * @since 1.0.0
      */
     public static boolean isLoggingEnabled() {
@@ -89,7 +83,6 @@ public class BaseLogger {
      * A {@code void} to enable or disable general logging.
      *
      * @param pEnabled {@link boolean} - Indicates whether to enable or disable general logging.
-     * @co-author MeAlam
      * @since 1.0.0
      */
     public static void setLoggingEnabled(boolean pEnabled) {
@@ -107,7 +100,6 @@ public class BaseLogger {
      * @param pMessage   {@link String} - The message to log.
      * @param pThrowable {@link Throwable} - The throwable to log with the message.
      * @param pIsBlueLib {@link boolean} - Indicates if the message is {@code BlueLib} specific.
-     * @co-author MeAlam
      * @since 1.0.0
      */
     public static void log(Level pLogLevel, String pMessage, Throwable pThrowable, boolean pIsBlueLib) {
@@ -122,7 +114,6 @@ public class BaseLogger {
      * @param pLogLevel  {@link Level} - The logging level to use.
      * @param pMessage   {@link String} - The message to log.
      * @param pIsBlueLib {@link boolean} - Indicates if the message is {@code BlueLib} specific.
-     * @co-author MeAlam
      * @since 1.0.0
      */
     public static void log(Level pLogLevel, String pMessage, boolean pIsBlueLib) {
@@ -137,7 +128,6 @@ public class BaseLogger {
      * @param pLogLevel  {@link Level} - The logging level to use.
      * @param pMessage   {@link String} - The message to log.
      * @param pThrowable {@link Throwable} - The throwable to log with the message.
-     * @co-author MeAlam
      * @since 1.0.0
      */
     public static void log(Level pLogLevel, String pMessage, Throwable pThrowable) {
@@ -151,7 +141,6 @@ public class BaseLogger {
      *
      * @param pLogLevel {@link Level} - The logging level to use.
      * @param pMessage  {@link String} - The message to log.
-     * @co-author MeAlam
      * @since 1.0.0
      */
     public static void log(Level pLogLevel, String pMessage) {
@@ -164,7 +153,6 @@ public class BaseLogger {
      * A {@code void} that logs a {@code BlueLib} specific message at the {@code BlueLib} log level.
      *
      * @param pMessage {@link String} - The {@code BlueLib} message to log.
-     * @co-author MeAlam
      * @since 1.0.0
      */
     public static void logBlueLib(String pMessage) {

@@ -22,13 +22,11 @@ import java.util.NoSuchElementException;
  * <ul>
  *   <li>{@link #getParameter(String, String)} - Retrieves the value of a custom parameter for a specific variant.</li>
  * </ul>
- * </p>
  * <p>
  * <strong>Nested Classes:</strong>
  * <ul>
  *   <li>{@link ParameterBuilder} - Builder class for creating and associating custom parameters with variants.</li>
  * </ul>
- * </p>
  *
  * @author MeAlam
  * @version 1.0.0
@@ -44,7 +42,6 @@ public class ParameterUtils {
      * representing custom parameters for that variant.
      * </p>
      *
-     * @co-author MeAlam, Dan
      * @since 1.0.0
      */
     private static final Map<String, Map<String, String>> variantParametersMap = new HashMap<>();
@@ -77,7 +74,6 @@ public class ParameterUtils {
      *   <li>{@link #withParameter(String)} - Adds a parameter with a default value of {@code null} .</li>
      *   <li>{@link #connect()} - Connects the parameters to the variant and updates {@link VariantParameter} with the parameters.</li>
      * </ul>
-     * </p>
      *
      * @author MeAlam
      * @since 1.0.0
@@ -87,7 +83,6 @@ public class ParameterUtils {
         /**
          * The name of the variant being associated with custom parameters.
          *
-         * @co-author MeAlam, Dan
          * @since 1.0.0
          */
         private final String variantName;
@@ -95,7 +90,6 @@ public class ParameterUtils {
         /**
          * The name of the entity being associated with custom parameters.
          *
-         * @co-author MeAlam, Dan
          * @since 1.0.0
          */
         private final String entityName;
@@ -103,7 +97,6 @@ public class ParameterUtils {
         /**
          * Stores custom parameters being built for the variant.
          *
-         * @co-author MeAlam, Dan
          * @since 1.0.0
          */
         private final Map<String, String> parameters = new HashMap<>();

@@ -21,7 +21,6 @@ import software.bluelib.utils.logging.BaseLogger;
  *   <li>{@link #generateRandomString(int)} - Generates a random alphanumeric string of a specified length.</li>
  *   <li>{@link #generateRandomStringWithPrefix(String, int)} - Generates a random alphanumeric string with a specified prefix and length.</li>
  * </ul>
- * </p>
  * <p>
  * Each method logs errors using {@link BaseLogger} when invalid parameters are provided (e.g., negative lengths
  * or minimum values greater than maximum values) and returns default values (e.g., `0` for integers and `"unknown"` for strings)

@@ -22,7 +22,6 @@ import java.util.Map;
  * <ul>
  *   <li>{@link #mergeJsonObjects(JsonObject, JsonObject)} - Merges the data from the source JSON object into the target JSON object.</li>
  * </ul>
- * </p>
  *
  * @author MeAlam
  * @since 1.0.0

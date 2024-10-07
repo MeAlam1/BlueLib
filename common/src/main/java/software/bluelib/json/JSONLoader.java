@@ -33,8 +33,6 @@ public class JSONLoader {
 
     /**
      * A {@code private static} {@link Gson} instance for parsing JSON data.
-     *
-     * @co-author MeAlam, Dan
      */
     private static final Gson gson = new Gson();
 

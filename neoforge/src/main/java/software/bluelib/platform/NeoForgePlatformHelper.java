@@ -8,14 +8,12 @@ public class NeoForgePlatformHelper implements IPlatformHelper {
 
     @Override
     public String getPlatformName() {
-
         return "NeoForge";
     }
 
     @Override
-    public boolean isModLoaded(String modId) {
-
-        return ModList.get().isLoaded(modId);
+    public boolean isModLoaded(String pModId) {
+        return ModList.get().isLoaded(pModId);
     }
 
     @Override

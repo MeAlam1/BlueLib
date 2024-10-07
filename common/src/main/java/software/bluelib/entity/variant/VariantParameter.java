@@ -36,7 +36,6 @@ public class VariantParameter extends ParameterBase {
      * This key is used to map the entity to its corresponding parameters within a {@link JsonObject}.
      * </p>
      *
-     * @co-author MeAlam, Dan
      * @since 1.0.0
      */
     private final String jsonKey;

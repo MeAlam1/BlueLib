@@ -31,7 +31,6 @@ import java.util.stream.Collectors;
  *   <li>{@link #getChunkTileEntitiesSimpleNames(Level, ChunkPos)} - Retrieves the simple names of tile entities in the specified chunk.</li>
  *   <li>{@link #getChunkBlockCount(Level, ChunkPos)} - Counts the number of non-air blocks in the specified chunk.</li>
  * </ul>
- * </p>
  *
  * @author MeAlam
  * @since 1.0.0

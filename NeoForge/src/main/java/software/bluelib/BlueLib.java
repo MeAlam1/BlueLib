@@ -15,6 +15,7 @@ import org.spongepowered.asm.launch.MixinBootstrap;
  * This class serves as the entry point for the {@code BlueLib} mod, handling initialization by registering event handlers
  * and setting up necessary configurations. For more details, refer to the <a href="https://github.com/MeAlam1/BlueLib/wiki">BlueLib Wiki</a>.
  * </p>
+ *
  * <p>
  * Key Methods:
  * <ul>

@@ -41,7 +41,6 @@ public abstract class ParameterBase {
      * This {@link Map<String>} holds parameter keys and their corresponding values.
      * </p>
      *
-     * @co-author MeAlam, Dan
      * @since 1.0.0
      */
     private final Map<String, Object> parameters = new HashMap<>();

@@ -41,7 +41,6 @@ public class VariantLoader implements IVariantEntityBase {
      * This {@link Map<String>} holds entity names and their corresponding list of {@link VariantParameter} instances.
      * </p>
      *
-     * @co-author MeAlam, Dan
      * @since 1.0.0
      */
     private static final Map<String, List<VariantParameter>> entityVariantsMap = new HashMap<>();
@@ -49,7 +48,6 @@ public class VariantLoader implements IVariantEntityBase {
     /**
      * A {@code private static final} {@link JSONLoader} to load JSON data from resources.
      *
-     * @co-author MeAlam, Dan
      * @since 1.0.0
      */
     private static final JSONLoader jsonLoader = new JSONLoader();
@@ -60,7 +58,6 @@ public class VariantLoader implements IVariantEntityBase {
      * This {@link JSONMerger} instance is used to merge JSON data into a single {@link JsonObject}.
      * </p>
      *
-     * @co-author MeAlam, Dan
      * @since 1.0.0
      */
     private static final JSONMerger jsonMerger = new JSONMerger();

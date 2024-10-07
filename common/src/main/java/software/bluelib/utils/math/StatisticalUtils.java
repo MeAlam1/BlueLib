@@ -27,7 +27,6 @@ import java.util.Map;
  *   <li>{@link #calculateRange(double[])} - Determines the range (difference between maximum and minimum) of an array of values.</li>
  *   <li>{@link #calculateCoefficientOfVariation(double[])} - Calculates the coefficient of variation (CV) of an array of values.</li>
  * </ul>
- * </p>
  * <p>
  * Each method logs a success message with the computed value or a warning if the input array is empty.
  * The logging is done via {@link BaseLogger}, ensuring that any issues or results are recorded appropriately.

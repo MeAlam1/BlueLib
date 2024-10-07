@@ -24,7 +24,6 @@ public class BaseLogLevel {
     /**
      * Standard informational log level.
      *
-     * @co-author MeAlam
      * @since 1.0.0
      */
     public static final Level INFO = new Level("INFO", Level.INFO.intValue()) {
@@ -32,7 +31,6 @@ public class BaseLogLevel {
     /**
      * Log level for error messages.
      *
-     * @co-author MeAlam
      * @since 1.0.0
      */
     public static final Level ERROR = new Level("ERROR", Level.SEVERE.intValue()) {
@@ -40,7 +38,6 @@ public class BaseLogLevel {
     /**
      * Log level for warning messages.
      *
-     * @co-author MeAlam
      * @since 1.0.0
      */
     public static final Level WARNING = new Level("WARNING", Level.WARNING.intValue()) {
@@ -49,7 +46,6 @@ public class BaseLogLevel {
     /**
      * Custom log level for indicating successful operations.
      *
-     * @co-author MeAlam
      * @since 1.0.0
      */
     public static final Level SUCCESS = new Level("SUCCESS", Level.INFO.intValue() + 50) {
@@ -58,7 +54,6 @@ public class BaseLogLevel {
     /**
      * Custom log level specific to BlueLib.
      *
-     * @co-author MeAlam
      * @since 1.0.0
      */
     public static final Level BLUELIB = new Level("BlueLib Developer", Level.INFO.intValue() + 50) {
