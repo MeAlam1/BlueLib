@@ -12,6 +12,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE20: true
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -21,6 +24,11 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '21'
+
+      - name: Set up Node.js 20
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
 
       - name: Cache Gradle packages
         uses: actions/cache@v3
@@ -32,7 +40,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
-      # Set up a single Gradle wrapper in a common directory
       - name: Generate Gradle wrapper if not present
         run: |
           if [ ! -f "./gradlew" ]; then
