@@ -18,6 +18,7 @@ import java.util.logging.Level;
  *   <li>{@link BaseLogLevel#SUCCESS} - Green color.</li>
  *   <li>{@link BaseLogLevel#BLUELIB} - Green color.</li>
  * </ul>
+ *
  * @author MeAlam
  * @since 1.0.0
  */

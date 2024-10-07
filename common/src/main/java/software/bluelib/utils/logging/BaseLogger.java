@@ -23,13 +23,13 @@ import java.util.logging.Logger;
  * </ul>
  *
  * @author MeAlam
- * @co-author Dan
  * @since 1.0.0
  */
 public class BaseLogger {
 
     /**
      * A {@link Logger} instance for logging messages.
+     *
      * @co-author MeAlam
      * @since 1.0.0
      */
@@ -38,6 +38,7 @@ public class BaseLogger {
     //FIXME: Set to false before release
     /**
      * A {@link Boolean} to enable or disable BlueLib specific logging.
+     *
      * @co-author MeAlam
      * @since 1.0.0
      */
@@ -45,6 +46,7 @@ public class BaseLogger {
 
     /**
      * A {@link Boolean} to enable or disable general logging.
+     *
      * @co-author MeAlam
      * @since 1.0.0
      */
@@ -101,8 +103,8 @@ public class BaseLogger {
     /**
      * A {@code void} that logs a message with an associated {@link Throwable} if {@code BlueLib} logging is enabled.
      *
-     * @param pLogLevel {@link Level} - The logging level to use.
-     * @param pMessage {@link String} - The message to log.
+     * @param pLogLevel  {@link Level} - The logging level to use.
+     * @param pMessage   {@link String} - The message to log.
      * @param pThrowable {@link Throwable} - The throwable to log with the message.
      * @param pIsBlueLib {@link boolean} - Indicates if the message is {@code BlueLib} specific.
      * @co-author MeAlam
@@ -117,8 +119,8 @@ public class BaseLogger {
     /**
      * A {@code void} that logs a message if BlueLib logging is enabled.
      *
-     * @param pLogLevel {@link Level} - The logging level to use.
-     * @param pMessage {@link String} - The message to log.
+     * @param pLogLevel  {@link Level} - The logging level to use.
+     * @param pMessage   {@link String} - The message to log.
      * @param pIsBlueLib {@link boolean} - Indicates if the message is {@code BlueLib} specific.
      * @co-author MeAlam
      * @since 1.0.0
@@ -132,8 +134,8 @@ public class BaseLogger {
     /**
      * A {@code void} that logs a message with an associated {@link Throwable} if general logging is enabled.
      *
-     * @param pLogLevel {@link Level} - The logging level to use.
-     * @param pMessage {@link String} - The message to log.
+     * @param pLogLevel  {@link Level} - The logging level to use.
+     * @param pMessage   {@link String} - The message to log.
      * @param pThrowable {@link Throwable} - The throwable to log with the message.
      * @co-author MeAlam
      * @since 1.0.0
@@ -148,7 +150,7 @@ public class BaseLogger {
      * A {@code void} that logs a message if general logging is enabled.
      *
      * @param pLogLevel {@link Level} - The logging level to use.
-     * @param pMessage {@link String} - The message to log.
+     * @param pMessage  {@link String} - The message to log.
      * @co-author MeAlam
      * @since 1.0.0
      */

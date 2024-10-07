@@ -7,14 +7,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent;
-import net.neoforged.fml.loading.FMLEnvironment;
 import org.spongepowered.asm.launch.MixinBootstrap;
-import software.bluelib.utils.logging.BaseLogLevel;
-import software.bluelib.utils.logging.BaseLogger;
-
-import java.util.concurrent.TimeUnit;
-
-import static software.bluelib.BlueLibConstants.SCHEDULER;
 
 /**
  * The main class of the {@code BlueLib} mod.
@@ -30,9 +23,8 @@ import static software.bluelib.BlueLibConstants.SCHEDULER;
  * </ul>
  * </p>
  *
+ * @author MeAlam, Dan and All Contributors of BlueLib!
  * @see <a href="https://github.com/MeAlam1/BlueLib/wiki">BlueLib Wiki</a>
- * @author MeAlam, Dan
- * @co-author All Contributors of BlueLib!
  * @since 1.0.0
  */
 @Mod(BlueLibConstants.MOD_ID)
@@ -44,10 +36,9 @@ public class BlueLib {
      * Registers necessary mod event listeners, and if in developer mode, additional client-side listeners for rendering and attributes.
      * </p>
      *
-     * @param pModEventBus {@link IEventBus} - The event bus where the mod registers its handlers.
+     * @param pModEventBus  {@link IEventBus} - The event bus where the mod registers its handlers.
      * @param pModContainer {@link ModContainer} - The mod container that holds the instance of the mod.
      * @author MeAlam
-     * @co-author Dan
      * @since 1.0.0
      */
     public BlueLib(IEventBus pModEventBus, ModContainer pModContainer) {
@@ -60,7 +51,6 @@ public class BlueLib {
      *
      * @param pEvent {@link FMLLoadCompleteEvent} - The event fired after the mod loading process completes.
      * @author MeAlam
-     * @co-author Dan
      * @since 1.0.0
      */
     @SubscribeEvent

@@ -25,14 +25,15 @@ import java.util.Optional;
  * <ul>
  *   <li>{@link #loadJson(ResourceLocation, ResourceManager)} - Loads a JSON resource from the specified location.</li>
  * </ul>
+ *
  * @author MeAlam
- * @co-author Dan
  * @since 1.0.0
  */
 public class JSONLoader {
 
     /**
      * A {@code private static} {@link Gson} instance for parsing JSON data.
+     *
      * @co-author MeAlam, Dan
      */
     private static final Gson gson = new Gson();
@@ -42,22 +43,22 @@ public class JSONLoader {
      * This method is typically used to load configuration files or other JSON-based resources
      * in a Minecraft mod environment.
      * <p>
+     *
      * @param pResourceLocation {@link ResourceLocation} - The {@link ResourceLocation} of the JSON resource.
-     * @param pResourceManager {@link ResourceManager} - The {@link ResourceManager} used to load the resource.
+     * @param pResourceManager  {@link ResourceManager} - The {@link ResourceManager} used to load the resource.
      * @return The loaded {@link JsonObject}. Returns an empty {@link JsonObject} if the resource is not found.
      * @throws RuntimeException if there is an error reading the resource.
      * @author MeAlam
-     * @co-author Dan
      * @since 1.0.0
      */
     public JsonObject loadJson(ResourceLocation pResourceLocation, ResourceManager pResourceManager) {
-        BaseLogger.log(BaseLogLevel.INFO,"Attempting to load JSON resource: " + pResourceLocation);
+        BaseLogger.log(BaseLogLevel.INFO, "Attempting to load JSON resource: " + pResourceLocation);
 
         try {
             Optional<Resource> resource = pResourceManager.getResource(pResourceLocation);
 
             if (resource.isEmpty()) {
-                BaseLogger.log(BaseLogLevel.ERROR,"Resource not found: " + pResourceLocation);
+                BaseLogger.log(BaseLogLevel.ERROR, "Resource not found: " + pResourceLocation);
                 return new JsonObject();
             }
 
@@ -65,12 +66,12 @@ public class JSONLoader {
                  InputStreamReader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8)) {
 
                 JsonObject jsonObject = gson.fromJson(reader, JsonObject.class);
-                BaseLogger.log(BaseLogLevel.SUCCESS,"Successfully loaded JSON resource: " + pResourceLocation);
+                BaseLogger.log(BaseLogLevel.SUCCESS, "Successfully loaded JSON resource: " + pResourceLocation);
                 return jsonObject;
             }
         } catch (IOException pException) {
             RuntimeException exception = new RuntimeException("Failed to load JSON resource: " + pResourceLocation, pException);
-            BaseLogger.log(BaseLogLevel.ERROR,"Failed to load JSON resource: " + pResourceLocation, exception);
+            BaseLogger.log(BaseLogLevel.ERROR, "Failed to load JSON resource: " + pResourceLocation, exception);
             throw exception;
         }
     }

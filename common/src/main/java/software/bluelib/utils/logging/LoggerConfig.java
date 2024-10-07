@@ -28,6 +28,7 @@ public abstract class LoggerConfig {
 
     /**
      * ANSI color codes for console output.
+     *
      * @co-author MeAlam
      * @since 1.0.0
      */
@@ -35,6 +36,7 @@ public abstract class LoggerConfig {
 
     /**
      * ANSI color codes for console output.
+     *
      * @co-author MeAlam
      * @since 1.0.0
      */
@@ -42,6 +44,7 @@ public abstract class LoggerConfig {
 
     /**
      * ANSI color codes for console output.
+     *
      * @co-author MeAlam
      * @since 1.0.0
      */
@@ -49,6 +52,7 @@ public abstract class LoggerConfig {
 
     /**
      * ANSI color codes for console output.
+     *
      * @co-author MeAlam
      * @since 1.0.0
      */
@@ -56,6 +60,7 @@ public abstract class LoggerConfig {
 
     /**
      * ANSI color codes for console output.
+     *
      * @co-author MeAlam
      * @since 1.0.0
      */
@@ -65,7 +70,7 @@ public abstract class LoggerConfig {
      * A {@link Logger} configuration method that sets up a {@link ConsoleHandler}
      * with custom color formatting based on log level using the provided {@link ILogColorProvider}.
      *
-     * @param pLogger {@link Logger} - The logger instance to be configured.
+     * @param pLogger        {@link Logger} - The logger instance to be configured.
      * @param pColorProvider {@link ILogColorProvider} - Provides color codes for different log levels.
      * @author MeAlam
      * @since 1.0.0

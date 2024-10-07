@@ -15,6 +15,7 @@ import software.bluelib.utils.logging.BaseLogger;
  *   <li>{@link #calculateLevenshteinDistance(String, String)} - Calculates the Levenshtein distance between two strings.</li>
  *   <li>{@link #hexToRGB(String)} - Converts a hexadecimal color code to an RGB array.</li>
  * </ul>
+ *
  * @author MeAlam
  * @since 1.0.0
  */
@@ -36,7 +37,7 @@ public class MiscUtils {
     /**
      * A {@link Integer} that converts a string to an integer, returning a default value if the string is not a valid integer.
      *
-     * @param pString {@link String} - The string to be converted.
+     * @param pString       {@link String} - The string to be converted.
      * @param pDefaultValue {@link Integer} - The default value to return if the string is not a valid integer.
      * @return The integer value of the string, or {@code pDefaultValue} if the string is not a valid integer.
      * @author MeAlam
@@ -46,7 +47,7 @@ public class MiscUtils {
         try {
             return Integer.parseInt(pString);
         } catch (NumberFormatException pException) {
-            BaseLogger.log(BaseLogLevel.ERROR,"Error converting string to integer", pException);
+            BaseLogger.log(BaseLogLevel.ERROR, "Error converting string to integer", pException);
             return pDefaultValue;
         }
     }
@@ -92,7 +93,7 @@ public class MiscUtils {
     public static int[] hexToRGB(String pHex) {
         if (pHex == null || pHex.isEmpty()) {
             Throwable throwable = new IllegalArgumentException("Hex color code cannot be null or empty.");
-            BaseLogger.log(BaseLogLevel.ERROR,"Error converting hex to RGB", throwable);
+            BaseLogger.log(BaseLogLevel.ERROR, "Error converting hex to RGB", throwable);
             return new int[]{0, 0, 0};
         }
         if (pHex.charAt(0) == '#') {
@@ -100,7 +101,7 @@ public class MiscUtils {
         }
         if (pHex.length() != 6) {
             Throwable throwable = new IllegalArgumentException("Invalid hex color code.");
-            BaseLogger.log(BaseLogLevel.ERROR,"Error converting hex to RGB", throwable);
+            BaseLogger.log(BaseLogLevel.ERROR, "Error converting hex to RGB", throwable);
             return new int[]{0, 0, 0};
         }
         try {
@@ -109,7 +110,7 @@ public class MiscUtils {
             int b = Integer.parseInt(pHex.substring(4, 6), 16);
             return new int[]{r, g, b};
         } catch (NumberFormatException pException) {
-            BaseLogger.log(BaseLogLevel.ERROR,"Error parsing hex color code to RGB", pException);
+            BaseLogger.log(BaseLogLevel.ERROR, "Error parsing hex color code to RGB", pException);
             return new int[]{0, 0, 0};
         }
     }

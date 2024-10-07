@@ -43,15 +43,14 @@ public class BlueLibCommon {
      *
      * @return {@code true} if running in developer mode, {@code false} otherwise.
      * @author MeAlam
-     * @co-author Dan
      * @since 1.0.0
      */
     static boolean isDeveloperMode() {
         boolean isDevMode = PLATFORM.isDevelopmentEnvironment();
         if (isDevMode) {
-            BaseLogger.log(BaseLogLevel.INFO ,"Running in Developer mode.", true);
+            BaseLogger.log(BaseLogLevel.INFO, "Running in Developer mode.", true);
         } else {
-            BaseLogger.log(BaseLogLevel.INFO ,"Running in Production mode.", true);
+            BaseLogger.log(BaseLogLevel.INFO, "Running in Production mode.", true);
         }
         return isDevMode;
     }

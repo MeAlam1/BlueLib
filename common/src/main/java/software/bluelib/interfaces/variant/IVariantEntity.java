@@ -21,14 +21,15 @@ import java.util.List;
  *   <li>{@link #getRandomVariant(List, String)} - Retrieves a random variant name from a provided list or defaults if the list is empty.</li>
  * </ul>
  * </p>
+ *
  * @author MeAlam
- * @co-author Dan
  * @since 1.0.0
  */
 public interface IVariantEntity extends IVariantEntityBase {
 
     /**
      * A {@link RandomSource} instance used for generating random variants.
+     *
      * @co-author MeAlam, Dan
      * @since 1.0.0
      */
@@ -42,20 +43,19 @@ public interface IVariantEntity extends IVariantEntityBase {
      * </p>
      *
      * @param pVariantNamesList {@link List<String>} - A {@link List<String>} of variant names available for the entity.
-     * @param pDefaultVariant {@link String} - The default variant name to return if {@code pVariantNamesList} is empty.
+     * @param pDefaultVariant   {@link String} - The default variant name to return if {@code pVariantNamesList} is empty.
      * @return A random variant name from the list, or the default variant if the list is empty.
      * @author MeAlam
-     * @co-author Dan
      * @since 1.0.0
      */
     default String getRandomVariant(List<String> pVariantNamesList, String pDefaultVariant) {
         if (pVariantNamesList.isEmpty()) {
-            BaseLogger.log(BaseLogLevel.INFO,"Variant names list is empty. Returning default variant: " + pDefaultVariant);
+            BaseLogger.log(BaseLogLevel.INFO, "Variant names list is empty. Returning default variant: " + pDefaultVariant);
             return pDefaultVariant;
         }
         int index = random.nextInt(pVariantNamesList.size());
         String selectedVariant = pVariantNamesList.get(index);
-        BaseLogger.log(BaseLogLevel.SUCCESS,"Selected random variant: " + selectedVariant + " from list of size: " + pVariantNamesList.size());
+        BaseLogger.log(BaseLogLevel.SUCCESS, "Selected random variant: " + selectedVariant + " from list of size: " + pVariantNamesList.size());
         return selectedVariant;
     }
 }

@@ -23,8 +23,8 @@ import java.util.Map;
  *   <li>{@link #mergeJsonObjects(JsonObject, JsonObject)} - Merges the data from the source JSON object into the target JSON object.</li>
  * </ul>
  * </p>
+ *
  * @author MeAlam
- * @co-author Dan
  * @since 1.0.0
  */
 public class JSONMerger {
@@ -40,7 +40,7 @@ public class JSONMerger {
      * @param pSource {@link JsonObject} - The source {@link JsonObject} to merge data from. This object is not modified by the operation.
      */
     public void mergeJsonObjects(JsonObject pTarget, JsonObject pSource) {
-        BaseLogger.log(BaseLogLevel.INFO,"Starting JSON merge operation.");
+        BaseLogger.log(BaseLogLevel.INFO, "Starting JSON merge operation.");
 
         for (Map.Entry<String, JsonElement> entry : pSource.entrySet()) {
             String key = entry.getKey();
@@ -57,17 +57,17 @@ public class JSONMerger {
                         targetArray.add(element);
                     }
 
-                    BaseLogger.log(BaseLogLevel.ERROR,"Merged array for key: " + key);
+                    BaseLogger.log(BaseLogLevel.ERROR, "Merged array for key: " + key);
                 } else {
                     pTarget.add(key, sourceElement);
-                    BaseLogger.log(BaseLogLevel.WARNING,"Overwriting value for key: " + key);
+                    BaseLogger.log(BaseLogLevel.WARNING, "Overwriting value for key: " + key);
                 }
             } else {
                 pTarget.add(key, sourceElement);
-                BaseLogger.log(BaseLogLevel.SUCCESS,"Added new key: " + key);
+                BaseLogger.log(BaseLogLevel.SUCCESS, "Added new key: " + key);
             }
         }
 
-        BaseLogger.log(BaseLogLevel.SUCCESS,"JSON merge operation completed.");
+        BaseLogger.log(BaseLogLevel.SUCCESS, "JSON merge operation completed.");
     }
 }

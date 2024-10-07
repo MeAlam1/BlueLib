@@ -30,11 +30,10 @@ import java.util.NoSuchElementException;
  * </ul>
  * </p>
  *
- * @since 1.0.0
  * @author MeAlam
- * @co-author Dan
  * @version 1.0.0
- * @see software.bluelib.entity.variant.VariantParameter
+ * @see VariantParameter
+ * @since 1.0.0
  */
 public class ParameterUtils {
 
@@ -45,8 +44,8 @@ public class ParameterUtils {
      * representing custom parameters for that variant.
      * </p>
      *
-     * @since 1.0.0
      * @co-author MeAlam, Dan
+     * @since 1.0.0
      */
     private static final Map<String, Map<String, String>> variantParametersMap = new HashMap<>();
 
@@ -56,12 +55,11 @@ public class ParameterUtils {
      * If the parameter is not found, {@code null} is returned.
      * </p>
      *
-     * @param pVariantName {@link String} The name of the variant.
+     * @param pVariantName  {@link String} The name of the variant.
      * @param pParameterKey {@link String} The key of the parameter to retrieve.
      * @return {@link String} The value of the custom parameter for the specified variant or {@code null}  if not found.
-     * @since 1.0.0
      * @author MeAlam
-     * @co-author Dan
+     * @since 1.0.0
      */
     public static String getParameter(String pVariantName, String pParameterKey) {
         return variantParametersMap.getOrDefault(pVariantName, new HashMap<>()).getOrDefault(pParameterKey, "null");
@@ -81,44 +79,42 @@ public class ParameterUtils {
      * </ul>
      * </p>
      *
-     * @since 1.0.0
      * @author MeAlam
-     * @co-author Dan
+     * @since 1.0.0
      */
     public static class ParameterBuilder {
 
         /**
          * The name of the variant being associated with custom parameters.
          *
-         * @since 1.0.0
          * @co-author MeAlam, Dan
+         * @since 1.0.0
          */
         private final String variantName;
 
         /**
          * The name of the entity being associated with custom parameters.
          *
-         * @since 1.0.0
          * @co-author MeAlam, Dan
+         * @since 1.0.0
          */
         private final String entityName;
 
         /**
          * Stores custom parameters being built for the variant.
          *
-         * @since 1.0.0
          * @co-author MeAlam, Dan
+         * @since 1.0.0
          */
         private final Map<String, String> parameters = new HashMap<>();
 
         /**
          * Constructor to initialize the builder for a specific entity and variant.
          *
-         * @param pEntityName {@link String} The name of the entity.
+         * @param pEntityName  {@link String} The name of the entity.
          * @param pVariantName {@link String} The name of the variant.
-         * @since 1.0.0
          * @author MeAlam
-         * @co-author Dan
+         * @since 1.0.0
          */
         private ParameterBuilder(String pEntityName, String pVariantName) {
             this.variantName = pVariantName;
@@ -128,12 +124,11 @@ public class ParameterUtils {
         /**
          * A {@link ParameterBuilder} that creates a new instance of {@link ParameterBuilder} for the specified entity and variant.
          *
-         * @param pEntityName {@link String} The name of the entity.
+         * @param pEntityName  {@link String} The name of the entity.
          * @param pVariantName {@link String} The name of the variant.
          * @return {@link ParameterBuilder} A new instance for chaining.
-         * @since 1.0.0
          * @author MeAlam
-         * @co-author Dan
+         * @since 1.0.0
          */
         public static ParameterBuilder forVariant(String pEntityName, String pVariantName) {
             return new ParameterBuilder(pEntityName, pVariantName);
@@ -147,9 +142,8 @@ public class ParameterUtils {
          *
          * @param pParameter {@link String} The parameter key.
          * @return {@link ParameterBuilder} The builder instance for chaining.
-         * @since 1.0.0
          * @author MeAlam
-         * @co-author Dan
+         * @since 1.0.0
          */
         public ParameterBuilder withParameter(String pParameter) {
             parameters.put(pParameter, "null");
@@ -164,9 +158,8 @@ public class ParameterUtils {
          *
          * @return {@link ParameterBuilder} The builder instance for chaining.
          * @throws NoSuchElementException if the variant or entity is not found in the database.
-         * @since 1.0.0
          * @author MeAlam
-         * @co-author Dan
+         * @since 1.0.0
          */
         public ParameterBuilder connect() {
             VariantParameter variant = VariantLoader.getVariantByName(entityName, variantName);

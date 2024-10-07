@@ -29,8 +29,8 @@ import java.util.*;
  *   <li>{@link #getVariantsFromEntity(String)} - Retrieves the list of loaded {@link VariantParameter} for a specific entity.</li>
  *   <li>{@link #getVariantByName(String, String)} - Retrieves a specific {@link VariantParameter} by its name for a given entity.</li>
  * </ul>
+ *
  * @author MeAlam
- * @co-author Dan
  * @since 1.0.0
  */
 public class VariantLoader implements IVariantEntityBase {
@@ -40,6 +40,7 @@ public class VariantLoader implements IVariantEntityBase {
      * <p>
      * This {@link Map<String>} holds entity names and their corresponding list of {@link VariantParameter} instances.
      * </p>
+     *
      * @co-author MeAlam, Dan
      * @since 1.0.0
      */
@@ -47,6 +48,7 @@ public class VariantLoader implements IVariantEntityBase {
 
     /**
      * A {@code private static final} {@link JSONLoader} to load JSON data from resources.
+     *
      * @co-author MeAlam, Dan
      * @since 1.0.0
      */
@@ -57,6 +59,7 @@ public class VariantLoader implements IVariantEntityBase {
      * <p>
      * This {@link JSONMerger} instance is used to merge JSON data into a single {@link JsonObject}.
      * </p>
+     *
      * @co-author MeAlam, Dan
      * @since 1.0.0
      */
@@ -68,12 +71,13 @@ public class VariantLoader implements IVariantEntityBase {
      * The method loops through all resources in the folder and merges them into a single {@link JsonObject}. <br>
      * The merged JSON data is then parsed into {@link VariantParameter} instances and stored in {@link #entityVariantsMap}.
      * </p>
-     * @param folderPath {@link String} - The path to the folder containing JSON resources.
-     * @param pServer {@link MinecraftServer} - The {@link MinecraftServer} instance used to access resources.
+     *
+     * @param folderPath  {@link String} - The path to the folder containing JSON resources.
+     * @param pServer     {@link MinecraftServer} - The {@link MinecraftServer} instance used to access resources.
      * @param pEntityName {@link String} - The name of the entity whose variants should be cleared before loading new ones.
      */
     public static void loadVariants(String folderPath, MinecraftServer pServer, String pEntityName) {
-        BaseLogger.log(BaseLogLevel.INFO,"Starting to load variants for entity: " + pEntityName);
+        BaseLogger.log(BaseLogLevel.INFO, "Starting to load variants for entity: " + pEntityName);
 
         clearVariantsForEntity(pEntityName);
 
@@ -82,19 +86,19 @@ public class VariantLoader implements IVariantEntityBase {
 
         Collection<ResourceLocation> collection = resourceManager.listResources(folderPath, pFiles -> pFiles.getPath().endsWith(".json")).keySet();
 
-        BaseLogger.log(BaseLogLevel.INFO,"Found resources: " + collection);
+        BaseLogger.log(BaseLogLevel.INFO, "Found resources: " + collection);
 
         for (ResourceLocation resourceLocation : collection) {
             try {
-                BaseLogger.log(BaseLogLevel.INFO,"Loading JSON data from resource: " + resourceLocation.toString());
+                BaseLogger.log(BaseLogLevel.INFO, "Loading JSON data from resource: " + resourceLocation.toString());
                 JsonObject jsonObject = jsonLoader.loadJson(resourceLocation, resourceManager);
                 jsonMerger.mergeJsonObjects(mergedJsonObject, jsonObject);
             } catch (Exception pException) {
-                BaseLogger.log(BaseLogLevel.ERROR,"Failed to load JSON data from resource: " + resourceLocation.toString(), pException);
+                BaseLogger.log(BaseLogLevel.ERROR, "Failed to load JSON data from resource: " + resourceLocation.toString(), pException);
             }
         }
 
-        BaseLogger.log(BaseLogLevel.INFO,"Successfully loaded and merged JSON data for entity: " + pEntityName);
+        BaseLogger.log(BaseLogLevel.INFO, "Successfully loaded and merged JSON data for entity: " + pEntityName);
         parseVariants(mergedJsonObject);
     }
 
@@ -103,10 +107,11 @@ public class VariantLoader implements IVariantEntityBase {
      * <p>
      * This method removes all variants associated with the given entity name.
      * </p>
+     *
      * @param pEntityName {@link String} - The name of the entity whose variants should be cleared.
      */
     private static void clearVariantsForEntity(String pEntityName) {
-        BaseLogger.log(BaseLogLevel.INFO,"Clearing variants for entity: " + pEntityName);
+        BaseLogger.log(BaseLogLevel.INFO, "Clearing variants for entity: " + pEntityName);
         entityVariantsMap.remove(pEntityName);
     }
 
@@ -115,6 +120,7 @@ public class VariantLoader implements IVariantEntityBase {
      * <p>
      * This method processes each entry in the JSON object and stores the created {@link VariantParameter} instances in {@link #entityVariantsMap}.
      * </p>
+     *
      * @param pJsonObject {@link JsonObject} - The merged {@link JsonObject} containing variant data.
      */
     private static void parseVariants(JsonObject pJsonObject) {
@@ -122,7 +128,7 @@ public class VariantLoader implements IVariantEntityBase {
             String entityName = entry.getKey();
             JsonArray textureArray = entry.getValue().getAsJsonArray();
 
-            BaseLogger.log(BaseLogLevel.INFO,"Parsing variants for entity: " + entityName);
+            BaseLogger.log(BaseLogLevel.INFO, "Parsing variants for entity: " + entityName);
             List<VariantParameter> variantList = entityVariantsMap.computeIfAbsent(entityName, k -> new ArrayList<>());
 
             for (JsonElement variant : textureArray) {
@@ -143,7 +149,8 @@ public class VariantLoader implements IVariantEntityBase {
      * <p>
      * This method wraps the creation of {@link VariantParameter} instances for easier management and potential modification.
      * </p>
-     * @param pJsonKey {@link String} - The key associated with this variant.
+     *
+     * @param pJsonKey    {@link String} - The key associated with this variant.
      * @param pJsonObject {@link JsonObject} - The {@link JsonObject} containing the variant data.
      * @return {@link VariantParameter} - A {@link VariantParameter} instance.
      */
@@ -156,11 +163,12 @@ public class VariantLoader implements IVariantEntityBase {
      * <p>
      * This method returns a list of variants for the given entity name. If no variants are found, an empty list is returned.
      * </p>
+     *
      * @param pEntityName {@link String} - The name of the entity to retrieve variants for.
      * @return {@link List<VariantParameter>} - A {@link List<VariantParameter>} of {@link VariantParameter} instances for the specified entity.
      */
     public static List<VariantParameter> getVariantsFromEntity(String pEntityName) {
-        BaseLogger.log(BaseLogLevel.INFO,"Retrieving variants for entity: " + pEntityName);
+        BaseLogger.log(BaseLogLevel.INFO, "Retrieving variants for entity: " + pEntityName);
         return entityVariantsMap.getOrDefault(pEntityName, new ArrayList<>());
     }
 
@@ -169,19 +177,20 @@ public class VariantLoader implements IVariantEntityBase {
      * <p>
      * This method searches for a variant with the specified name within the list of variants for the given entity.
      * </p>
-     * @param pEntityName {@link String} - The name of the entity to retrieve variants for.
+     *
+     * @param pEntityName  {@link String} - The name of the entity to retrieve variants for.
      * @param pVariantName {@link String} - The name of the variant to retrieve.
      * @return {@link VariantParameter} - The {@link VariantParameter} with the specified name, or {@code null} if not found.
      */
     public static VariantParameter getVariantByName(String pEntityName, String pVariantName) {
-        BaseLogger.log(BaseLogLevel.INFO,"Retrieving variant by name: " + pVariantName + " for entity: " + pEntityName);
+        BaseLogger.log(BaseLogLevel.INFO, "Retrieving variant by name: " + pVariantName + " for entity: " + pEntityName);
         List<VariantParameter> variants = getVariantsFromEntity(pEntityName);
         for (VariantParameter variant : variants) {
             if (variant.getVariantName().equals(pVariantName)) {
                 return variant;
             }
         }
-        BaseLogger.log(BaseLogLevel.INFO,"Variant with name: " + pVariantName + " not found for entity: " + pEntityName);
+        BaseLogger.log(BaseLogLevel.INFO, "Variant with name: " + pVariantName + " not found for entity: " + pEntityName);
         return null;
     }
 }

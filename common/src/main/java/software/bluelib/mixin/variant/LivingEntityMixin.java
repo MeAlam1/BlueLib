@@ -39,6 +39,7 @@ public class LivingEntityMixin implements IVariantAccessor {
     /**
      * A {@link EntityDataAccessor} to hold the entity's variant name, which is synchronized
      * across clients and servers using {@link SynchedEntityData}.
+     *
      * @co-author MeAlam
      * @since 1.0.0
      */
@@ -51,7 +52,7 @@ public class LivingEntityMixin implements IVariantAccessor {
      * the synchronized data that will hold the entity's variant information.
      *
      * @param pBuilder {@link SynchedEntityData.Builder} - The builder to define entity data.
-     * @param pCi {@link CallbackInfo} - Callback information for the injection process.
+     * @param pCi      {@link CallbackInfo} - Callback information for the injection process.
      * @author MeAlam
      * @since 1.0.0
      */
@@ -65,7 +66,7 @@ public class LivingEntityMixin implements IVariantAccessor {
      * the entity's variant in NBT data when saving the entity.
      *
      * @param pCompound {@link CompoundTag} - The NBT tag to save the entity's variant information.
-     * @param pCi {@link CallbackInfo} - Callback information for the injection process.
+     * @param pCi       {@link CallbackInfo} - Callback information for the injection process.
      * @author MeAlam
      * @since 1.0.0
      */
@@ -79,7 +80,7 @@ public class LivingEntityMixin implements IVariantAccessor {
      * the entity's variant from NBT data when loading the entity.
      *
      * @param pCompound {@link CompoundTag} - The NBT tag containing the entity's variant information.
-     * @param pCi {@link CallbackInfo} - Callback information for the injection process.
+     * @param pCi       {@link CallbackInfo} - Callback information for the injection process.
      * @author MeAlam
      * @since 1.0.0
      */

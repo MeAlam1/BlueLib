@@ -31,7 +31,7 @@
            *   <li>{@link #loadJson(ResourceLocation, ResourceManager)} - Loads a JSON resource.</li>
            * </ul>
            * @author MeAlam
-           * @co-author Dan
+           
            * @since 1.0.0
            */
           public class JSONLoader {
@@ -48,7 +48,7 @@
              * @return The value of the custom parameter identified by {@code pParameterKey}
              * for the variant specified by {@code pVariantName}.
              * @author MeAlam
-             * @co-author Dan
+             
              * @since 1.0.0
                */
               public String getCustomParameter(String pVariantName, String pParameterKey) {
@@ -67,7 +67,7 @@
              * @return The value of the custom parameter identified by {@code pParameterKey}
              * for the variant specified by {@code pVariantName}.
              * @author MeAlam
-             * @co-author Dan
+             
              * @since 1.0.0
              */
              public String getCustomParameter(String pVariantName, String pParameterKey) {
@@ -101,7 +101,7 @@
    * <strong>TODO: Testing with Multiple Entities and Datapacks required before Deletion/Refactoring.</strong><br>
    * @return A map containing the parameters added to this builder.
    * @author MeAlam
-   * @co-author Dan
+   
    * @since 1.0.0
    * @see #newMethod()
    */

@@ -23,8 +23,8 @@ import java.util.stream.Collectors;
  *   <li>{@link #getEntityVariants(String)} - Retrieves a {@link List<String>} of variant names for a specified entity.</li>
  * </ul>
  * </p>
+ *
  * @author MeAlam
- * @co-author Dan
  * @since 1.0.0
  */
 public interface IVariantEntityBase {
@@ -36,10 +36,9 @@ public interface IVariantEntityBase {
      * </p>
      *
      * @param pModId {@link String} - The mod ID used to locate the texture.
-     * @param pPath {@link String} - The path to the texture within the mod.
+     * @param pPath  {@link String} - The path to the texture within the mod.
      * @return A {@link ResourceLocation} pointing to the specified texture.
      * @author MeAlam
-     * @co-author Dan
      * @since 1.0.0
      */
     default ResourceLocation getTextureLocation(String pModId, String pPath) {
@@ -55,7 +54,6 @@ public interface IVariantEntityBase {
      * @param pEntityName {@link String} - The name of the entity whose variant names are to be retrieved.
      * @return A {@link List<String>} containing the names of variants associated with the specified entity.
      * @author MeAlam
-     * @co-author Dan
      * @since 1.0.0
      */
     default List<String> getEntityVariants(String pEntityName) {
@@ -63,7 +61,7 @@ public interface IVariantEntityBase {
         List<String> variantNames = variants.stream()
                 .map(VariantParameter::getVariantName)
                 .collect(Collectors.toList());
-        BaseLogger.log(BaseLogLevel.SUCCESS,"Retrieved " + variantNames.size() + " variants for entity: " + pEntityName);
+        BaseLogger.log(BaseLogLevel.SUCCESS, "Retrieved " + variantNames.size() + " variants for entity: " + pEntityName);
         return variantNames;
     }
 }

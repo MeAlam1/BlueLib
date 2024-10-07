@@ -32,8 +32,9 @@ import java.util.stream.Collectors;
  *   <li>{@link #getChunkBlockCount(Level, ChunkPos)} - Counts the number of non-air blocks in the specified chunk.</li>
  * </ul>
  * </p>
- * @since 1.0.0
+ *
  * @author MeAlam
+ * @since 1.0.0
  */
 public class ChunkUtils {
 
@@ -44,7 +45,7 @@ public class ChunkUtils {
      * and an error message if an exception occurs.
      * </p>
      *
-     * @param pLevel {@link Level} - The game world level.
+     * @param pLevel    {@link Level} - The game world level.
      * @param pChunkPos {@link ChunkPos} - The position of the chunk.
      * @return The {@link Biome} associated with the specified chunk.
      * @throws RuntimeException if there is an error retrieving the biome.
@@ -52,10 +53,10 @@ public class ChunkUtils {
     public static Biome getBiomeOfChunk(Level pLevel, ChunkPos pChunkPos) {
         try {
             Biome biome = pLevel.getBiome(pChunkPos.getWorldPosition()).value();
-            BaseLogger.log(BaseLogLevel.INFO,"Retrieved biome for chunk at position " + pChunkPos + ": " + biome);
+            BaseLogger.log(BaseLogLevel.INFO, "Retrieved biome for chunk at position " + pChunkPos + ": " + biome);
             return biome;
         } catch (Exception pException) {
-            BaseLogger.log(BaseLogLevel.ERROR,"Error retrieving biome for chunk at position " + pChunkPos, pException);
+            BaseLogger.log(BaseLogLevel.ERROR, "Error retrieving biome for chunk at position " + pChunkPos, pException);
             throw pException;
         }
     }
@@ -67,7 +68,7 @@ public class ChunkUtils {
      * Example: "minecraft:plains", "minecraft:desert"
      * </p>
      *
-     * @param pLevel {@link Level} - The game world level.
+     * @param pLevel    {@link Level} - The game world level.
      * @param pChunkPos {@link ChunkPos} - The position of the chunk.
      * @return The registry name of the chunk's biome as a {@link String}.
      * @throws RuntimeException if there is an error retrieving the biome registry name.
@@ -79,11 +80,11 @@ public class ChunkUtils {
 
         if (biomeKey == null) {
             NullPointerException exception = new NullPointerException("Biome at chunk position " + pChunkPos + " is null");
-            BaseLogger.log(BaseLogLevel.ERROR,"Error retrieving biome registry name of chunk at " + pChunkPos, exception);
+            BaseLogger.log(BaseLogLevel.ERROR, "Error retrieving biome registry name of chunk at " + pChunkPos, exception);
             return exception.getMessage();
         }
 
-        BaseLogger.log(BaseLogLevel.SUCCESS,"Retrieved biome registry name for chunk at position " + pChunkPos + ": " + biomeKey);
+        BaseLogger.log(BaseLogLevel.SUCCESS, "Retrieved biome registry name for chunk at position " + pChunkPos + ": " + biomeKey);
         return biomeKey.toString();
     }
 
@@ -94,7 +95,7 @@ public class ChunkUtils {
      * Example: "plains", "desert"
      * </p>
      *
-     * @param pLevel {@link Level} - The game world level.
+     * @param pLevel    {@link Level} - The game world level.
      * @param pChunkPos {@link ChunkPos} - The position of the chunk.
      * @return The simple name of the chunk's biome.
      */
@@ -110,7 +111,7 @@ public class ChunkUtils {
      * and an error message if an exception occurs.
      * </p>
      *
-     * @param pLevel {@link Level} - The game world level.
+     * @param pLevel    {@link Level} - The game world level.
      * @param pChunkPos {@link ChunkPos} - The position of the chunk.
      * @return A collection of tile entities present in the specified chunk.
      * @throws RuntimeException if there is an error retrieving tile entities.
@@ -119,10 +120,10 @@ public class ChunkUtils {
         try {
             LevelChunk chunk = pLevel.getChunk(pChunkPos.x, pChunkPos.z);
             Collection<BlockEntity> tileEntities = chunk.getBlockEntities().values();
-            BaseLogger.log(BaseLogLevel.INFO,"Retrieved " + tileEntities.size() + " tile entities for chunk at position " + pChunkPos);
+            BaseLogger.log(BaseLogLevel.INFO, "Retrieved " + tileEntities.size() + " tile entities for chunk at position " + pChunkPos);
             return tileEntities;
         } catch (Exception pException) {
-            BaseLogger.log(BaseLogLevel.ERROR,"Error retrieving tile entities for chunk at position " + pChunkPos, pException);
+            BaseLogger.log(BaseLogLevel.ERROR, "Error retrieving tile entities for chunk at position " + pChunkPos, pException);
             throw pException;
         }
     }
@@ -134,7 +135,7 @@ public class ChunkUtils {
      * Example: "minecraft:chest, minecraft:furnace"
      * </p>
      *
-     * @param pLevel {@link Level} - The game world level.
+     * @param pLevel    {@link Level} - The game world level.
      * @param pChunkPos {@link ChunkPos} - The position of the chunk.
      * @return A comma-separated string of tile entity registry names in the chunk.
      * @throws RuntimeException if there is an error retrieving tile entity registry names.
@@ -152,10 +153,10 @@ public class ChunkUtils {
                     })
                     .collect(Collectors.joining(", "));
 
-            BaseLogger.log(BaseLogLevel.INFO,"Tile entities for chunk at position " + pChunkPos + ": " + registryNames);
+            BaseLogger.log(BaseLogLevel.INFO, "Tile entities for chunk at position " + pChunkPos + ": " + registryNames);
             return registryNames;
         } catch (Exception pException) {
-            BaseLogger.log(BaseLogLevel.ERROR,"Error retrieving tile entity registry names for chunk at position " + pChunkPos, pException);
+            BaseLogger.log(BaseLogLevel.ERROR, "Error retrieving tile entity registry names for chunk at position " + pChunkPos, pException);
             throw pException;
         }
     }
@@ -166,7 +167,7 @@ public class ChunkUtils {
      * Example: "chest, furnace"
      * </p>
      *
-     * @param pLevel {@link Level} - The game world level.
+     * @param pLevel    {@link Level} - The game world level.
      * @param pChunkPos {@link ChunkPos} - The position of the chunk.
      * @return A comma-separated string of tile entity simple names in the chunk.
      */
@@ -185,7 +186,7 @@ public class ChunkUtils {
      * and an error message if an exception occurs.
      * </p>
      *
-     * @param pLevel {@link Level} - The game world level.
+     * @param pLevel    {@link Level} - The game world level.
      * @param pChunkPos {@link ChunkPos} - The position of the chunk.
      * @return The number of non-air blocks in the specified chunk.
      * @throws RuntimeException if there is an error counting blocks.
@@ -206,25 +207,25 @@ public class ChunkUtils {
                 }
             }
 
-            BaseLogger.log(BaseLogLevel.INFO,"Non-air block count for chunk at position " + pChunkPos + ": " + blockCount);
+            BaseLogger.log(BaseLogLevel.INFO, "Non-air block count for chunk at position " + pChunkPos + ": " + blockCount);
             return blockCount;
         } catch (Exception pException) {
-            BaseLogger.log(BaseLogLevel.ERROR,"Error counting blocks for chunk at position " + pChunkPos, pException);
+            BaseLogger.log(BaseLogLevel.ERROR, "Error counting blocks for chunk at position " + pChunkPos, pException);
             throw pException;
         }
     }
 
     /** FIXME: This method is not working as expected. It is not returning correctly.
-        public static boolean isChunkLoaded(final LevelAccessor pWorld, final int pX, final int pZ) {
-            try {
-                boolean isLoaded = pWorld.getChunk(pX, pZ, ChunkStatus.FULL, false) != null;
-                BaseLogger.bluelibLogSuccess("Chunk at (" + pX + ", " + pZ + ") is loaded: " + isLoaded);
-                return isLoaded;
-            } catch (Exception e) {
-                BaseLogger.logError("Error checking if chunk at (" + pX + ", " + pZ + ") is loaded", e);
-                return false;
-            }
-        }
+     public static boolean isChunkLoaded(final LevelAccessor pWorld, final int pX, final int pZ) {
+     try {
+     boolean isLoaded = pWorld.getChunk(pX, pZ, ChunkStatus.FULL, false) != null;
+     BaseLogger.bluelibLogSuccess("Chunk at (" + pX + ", " + pZ + ") is loaded: " + isLoaded);
+     return isLoaded;
+     } catch (Exception e) {
+     BaseLogger.logError("Error checking if chunk at (" + pX + ", " + pZ + ") is loaded", e);
+     return false;
+     }
+     }
      */
 
 

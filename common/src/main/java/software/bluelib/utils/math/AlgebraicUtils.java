@@ -20,6 +20,7 @@ import java.util.Set;
  *   <li>{@link #calculateGCD(int, int)} - Calculates the greatest common divisor of two integers.</li>
  *   <li>{@link #generatePowerSet(Set)} - Generates the power set of a given set.</li>
  * </ul>
+ *
  * @author MeAlam
  * @since 1.0.0
  */
@@ -40,7 +41,7 @@ public class AlgebraicUtils {
 
         double discriminant = pB * pB - 4 * pA * pC;
         if (discriminant < 0) {
-            BaseLogger.log(BaseLogLevel.WARNING,"No real roots found for the quadratic equation.");
+            BaseLogger.log(BaseLogLevel.WARNING, "No real roots found for the quadratic equation.");
             return new double[0];
         }
 
@@ -48,8 +49,8 @@ public class AlgebraicUtils {
         double root1 = (-pB + sqrtDiscriminant) / (2 * pA);
         double root2 = (-pB - sqrtDiscriminant) / (2 * pA);
 
-        BaseLogger.log(BaseLogLevel.INFO,"Roots found: root1=" + root1 + ", root2=" + root2);
-        return new double[] { root1, root2 };
+        BaseLogger.log(BaseLogLevel.INFO, "Roots found: root1=" + root1 + ", root2=" + root2);
+        return new double[]{root1, root2};
     }
 
     /**
@@ -64,7 +65,7 @@ public class AlgebraicUtils {
     public static long factorial(int pNumber) {
         if (pNumber < 0) {
             IllegalArgumentException exception = new IllegalArgumentException("Number must be non-negative.");
-            BaseLogger.log(BaseLogLevel.INFO,"Attempted to calculate factorial of a negative number: " + pNumber, exception);
+            BaseLogger.log(BaseLogLevel.INFO, "Attempted to calculate factorial of a negative number: " + pNumber, exception);
             throw exception;
         }
 
@@ -73,7 +74,7 @@ public class AlgebraicUtils {
             result *= i;
         }
 
-        BaseLogger.log(BaseLogLevel.SUCCESS,"Factorial of " + pNumber + " is " + result);
+        BaseLogger.log(BaseLogLevel.SUCCESS, "Factorial of " + pNumber + " is " + result);
         return result;
     }
 
@@ -94,7 +95,7 @@ public class AlgebraicUtils {
             pA = temp;
         }
 
-        BaseLogger.log(BaseLogLevel.SUCCESS,"GCD found: " + pA);
+        BaseLogger.log(BaseLogLevel.SUCCESS, "GCD found: " + pA);
         return pA;
     }
 
@@ -102,7 +103,7 @@ public class AlgebraicUtils {
      * A {@link List<Set>} that generates the power set (all subsets) of a given set.
      *
      * @param pSet {@link Set<T>} - The input set.
-     * @param <T> The type of elements in the set.
+     * @param <T>  The type of elements in the set.
      * @return A list of all subsets of the input set.
      * @author MeAlam
      * @since 1.0.0
@@ -121,7 +122,7 @@ public class AlgebraicUtils {
             powerSet.addAll(newSubsets);
         }
 
-        BaseLogger.log(BaseLogLevel.SUCCESS,"Power set generated with " + powerSet.size() + " subsets.");
+        BaseLogger.log(BaseLogLevel.SUCCESS, "Power set generated with " + powerSet.size() + " subsets.");
         return powerSet;
     }
 }

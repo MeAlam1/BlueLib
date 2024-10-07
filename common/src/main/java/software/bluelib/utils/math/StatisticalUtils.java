@@ -32,6 +32,7 @@ import java.util.Map;
  * Each method logs a success message with the computed value or a warning if the input array is empty.
  * The logging is done via {@link BaseLogger}, ensuring that any issues or results are recorded appropriately.
  * </p>
+ *
  * @author MeAlam
  * @since 1.0.0
  */
@@ -50,7 +51,7 @@ public class StatisticalUtils {
      */
     public static double calculateMean(double[] pValues) {
         if (pValues.length == 0) {
-            BaseLogger.log(BaseLogLevel.WARNING,"Array is empty, mean calculation might fail.");
+            BaseLogger.log(BaseLogLevel.WARNING, "Array is empty, mean calculation might fail.");
             return 0;
         }
 
@@ -59,7 +60,7 @@ public class StatisticalUtils {
             sum += value;
         }
         double mean = sum / pValues.length;
-        BaseLogger.log(BaseLogLevel.SUCCESS,"Mean successfully calculated: " + mean);
+        BaseLogger.log(BaseLogLevel.SUCCESS, "Mean successfully calculated: " + mean);
         return mean;
     }
 
@@ -76,7 +77,7 @@ public class StatisticalUtils {
      */
     public static double calculateMedian(double[] pValues) {
         if (pValues.length == 0) {
-            BaseLogger.log(BaseLogLevel.WARNING,"Array is empty, median calculation might fail.");
+            BaseLogger.log(BaseLogLevel.WARNING, "Array is empty, median calculation might fail.");
             return 0;
         }
 
@@ -87,7 +88,7 @@ public class StatisticalUtils {
                 (sorted[middle - 1] + sorted[middle]) / 2.0 :
                 sorted[middle];
 
-        BaseLogger.log(BaseLogLevel.SUCCESS,"Median successfully calculated: " + median);
+        BaseLogger.log(BaseLogLevel.SUCCESS, "Median successfully calculated: " + median);
         return median;
     }
 
@@ -104,7 +105,7 @@ public class StatisticalUtils {
      */
     public static double calculateMode(double[] pValues) {
         if (pValues.length == 0) {
-            BaseLogger.log(BaseLogLevel.WARNING,"Array is empty, mode calculation might fail.");
+            BaseLogger.log(BaseLogLevel.WARNING, "Array is empty, mode calculation might fail.");
             return 0;
         }
 
@@ -122,7 +123,7 @@ public class StatisticalUtils {
             }
         }
 
-        BaseLogger.log(BaseLogLevel.SUCCESS,"Mode successfully calculated: " + mode);
+        BaseLogger.log(BaseLogLevel.SUCCESS, "Mode successfully calculated: " + mode);
         return mode;
     }
 
@@ -139,7 +140,7 @@ public class StatisticalUtils {
      */
     public static double calculateStandardDeviation(double[] pValues) {
         if (pValues.length == 0) {
-            BaseLogger.log(BaseLogLevel.WARNING,"Array is empty, standard deviation calculation might fail.");
+            BaseLogger.log(BaseLogLevel.WARNING, "Array is empty, standard deviation calculation might fail.");
             return 0;
         }
 
@@ -149,7 +150,7 @@ public class StatisticalUtils {
             sumSquaredDifferences += Math.pow(value - mean, 2);
         }
         double stdDev = Math.sqrt(sumSquaredDifferences / pValues.length);
-        BaseLogger.log(BaseLogLevel.SUCCESS,"Standard deviation successfully calculated: " + stdDev);
+        BaseLogger.log(BaseLogLevel.SUCCESS, "Standard deviation successfully calculated: " + stdDev);
         return stdDev;
     }
 
@@ -166,7 +167,7 @@ public class StatisticalUtils {
      */
     public static double calculateVariance(double[] pValues) {
         if (pValues.length == 0) {
-            BaseLogger.log(BaseLogLevel.WARNING,"Array is empty, variance calculation might fail.");
+            BaseLogger.log(BaseLogLevel.WARNING, "Array is empty, variance calculation might fail.");
             return 0;
         }
 
@@ -176,7 +177,7 @@ public class StatisticalUtils {
             sumSquaredDifferences += Math.pow(value - mean, 2);
         }
         double variance = sumSquaredDifferences / pValues.length;
-        BaseLogger.log(BaseLogLevel.SUCCESS,"Variance successfully calculated: " + variance);
+        BaseLogger.log(BaseLogLevel.SUCCESS, "Variance successfully calculated: " + variance);
         return variance;
     }
 
@@ -193,14 +194,14 @@ public class StatisticalUtils {
      */
     public static double calculateRange(double[] pValues) {
         if (pValues.length == 0) {
-            BaseLogger.log(BaseLogLevel.WARNING,"Array is empty, range calculation might fail.");
+            BaseLogger.log(BaseLogLevel.WARNING, "Array is empty, range calculation might fail.");
             return 0;
         }
 
         double max = Arrays.stream(pValues).max().orElseThrow();
         double min = Arrays.stream(pValues).min().orElseThrow();
         double range = max - min;
-        BaseLogger.log(BaseLogLevel.SUCCESS,"Range successfully calculated: " + range);
+        BaseLogger.log(BaseLogLevel.SUCCESS, "Range successfully calculated: " + range);
         return range;
     }
 
@@ -217,14 +218,14 @@ public class StatisticalUtils {
      */
     public static double calculateCoefficientOfVariation(double[] pValues) {
         if (pValues.length == 0) {
-            BaseLogger.log(BaseLogLevel.WARNING,"Array is empty, coefficient of variation calculation might fail.");
+            BaseLogger.log(BaseLogLevel.WARNING, "Array is empty, coefficient of variation calculation might fail.");
             return 0;
         }
 
         double mean = calculateMean(pValues);
         double stdDev = calculateStandardDeviation(pValues);
         double coefficient = (stdDev / mean) * 100;
-        BaseLogger.log(BaseLogLevel.SUCCESS,"Coefficient of variation successfully calculated: " + coefficient);
+        BaseLogger.log(BaseLogLevel.SUCCESS, "Coefficient of variation successfully calculated: " + coefficient);
         return coefficient;
     }
 }
