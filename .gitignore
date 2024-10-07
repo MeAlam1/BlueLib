@@ -24,6 +24,7 @@ replay_pid*
 
 # Default ignored files
 .idea/*
+.gradle/*
 
 # BuildSrc
 buildSrc/build/*
