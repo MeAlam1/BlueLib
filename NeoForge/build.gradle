@@ -36,4 +36,9 @@ neoForge {
     }
 }
 
+dependencies {
+    compileOnly("curse.maven:geckolib-388172:5605715")
+    runtimeOnly("curse.maven:geckolib-388172:5605715")
+}
+
 sourceSets.main.resources { srcDir 'src/generated/resources' }

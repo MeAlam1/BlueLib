@@ -4,7 +4,7 @@ plugins {
 }
 
 base {
-    archivesName = "${mod_id}-${minecraft_version}-${version}"
+    archivesName = "${mod_id}-${minecraft_version}"
 }
 
 java {
@@ -37,6 +37,16 @@ repositories {
                 }
         )
         filter { includeGroup('org.parchmentmc.data') }
+    }
+    exclusiveContent {
+        forRepository {
+            maven {
+                url "https://cursemaven.com"
+            }
+        }
+        filter {
+            includeGroup "curse.maven"
+        }
     }
     maven {
         name = 'BlameJared'
