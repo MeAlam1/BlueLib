@@ -107,15 +107,14 @@ public class BaseLogger {
      */
     public static void log(Level pLogLevel, String pMessage, Throwable pThrowable, boolean pIsBlueLib) {
         try {
-            if (pLogLevel == BaseLogLevel.ERROR || pLogLevel == BaseLogLevel.WARNING || pLogLevel == BaseLogLevel.BLUELIB) {
-                logger.log(pLogLevel, pMessage, pThrowable);
-            } else if (pIsBlueLib && bluelibLogging) {
-                logger.log(pLogLevel, pMessage, pThrowable);
-            } else if (!pIsBlueLib && isLoggingEnabled) {
+            if (pLogLevel == BaseLogLevel.ERROR ||
+                pLogLevel == BaseLogLevel.WARNING ||
+                pLogLevel == BaseLogLevel.BLUELIB ||
+                pIsBlueLib && bluelibLogging ||
+                !pIsBlueLib && isLoggingEnabled) {
                 logger.log(pLogLevel, pMessage, pThrowable);
             }
-        } catch (Exception pException) {
-            logger.log(Level.SEVERE, "Failed to log message.", pException);
+        } catch (Exception ignored) {
         }
     }
 
@@ -129,15 +128,14 @@ public class BaseLogger {
      */
     public static void log(Level pLogLevel, String pMessage, boolean pIsBlueLib) {
         try {
-            if (pLogLevel == BaseLogLevel.ERROR || pLogLevel == BaseLogLevel.WARNING || pLogLevel == BaseLogLevel.BLUELIB) {
-                logger.log(pLogLevel, pMessage);
-            } else if (pIsBlueLib && bluelibLogging) {
-                logger.log(pLogLevel, pMessage);
-            } else if (!pIsBlueLib && isLoggingEnabled) {
+            if (pLogLevel == BaseLogLevel.ERROR ||
+                pLogLevel == BaseLogLevel.WARNING ||
+                pLogLevel == BaseLogLevel.BLUELIB ||
+                pIsBlueLib && bluelibLogging ||
+                !pIsBlueLib && isLoggingEnabled) {
                 logger.log(pLogLevel, pMessage);
             }
-        } catch (Exception pException) {
-            logger.log(Level.SEVERE, "Failed to log message.", pException);
+        } catch (Exception ignored) {
         }
     }
 
@@ -152,25 +150,24 @@ public class BaseLogger {
      */
     public static void log(Level pLogLevel, String pMessage, Throwable pThrowable) {
         try {
-            if (pLogLevel == BaseLogLevel.ERROR || pLogLevel == BaseLogLevel.WARNING || pLogLevel == BaseLogLevel.BLUELIB) {
+            if (pLogLevel == BaseLogLevel.ERROR ||
+                pLogLevel == BaseLogLevel.WARNING ||
+                pLogLevel == BaseLogLevel.BLUELIB ||
+                isLoggingEnabled) {
                 logger.log(pLogLevel, pMessage, pThrowable);
-            } else if (isLoggingEnabled) {
-                logger.log(pLogLevel, pMessage, pThrowable);
-            } else {
+                return;
+            }
                 StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
                 if (stackTrace.length > 3) {
                     Class<?> callingClass = Class.forName(stackTrace[3].getClassName());
                     Method callingMethod = callingClass.getMethod(stackTrace[3].getMethodName());
 
-                    if (callingClass.isAnnotationPresent(EnableLogging.class)) {
-                        logger.log(pLogLevel, pMessage, pThrowable);
-                    } else if (callingMethod.isAnnotationPresent(EnableLogging.class)) {
+                    if (callingClass.isAnnotationPresent(EnableLogging.class) ||
+                        callingMethod.isAnnotationPresent(EnableLogging.class)) {
                         logger.log(pLogLevel, pMessage, pThrowable);
                     }
                 }
-            }
-        } catch (Exception pException) {
-            logger.log(Level.SEVERE, "Failed to log message.", pException);
+        } catch (Exception ignored) {
         }
     }
 
@@ -183,25 +180,24 @@ public class BaseLogger {
      */
     public static void log(Level pLogLevel, String pMessage) {
         try {
-            if (pLogLevel == BaseLogLevel.ERROR || pLogLevel == BaseLogLevel.WARNING || pLogLevel == BaseLogLevel.BLUELIB) {
+            if (pLogLevel == BaseLogLevel.ERROR ||
+                pLogLevel == BaseLogLevel.WARNING ||
+                pLogLevel == BaseLogLevel.BLUELIB ||
+                isLoggingEnabled) {
                 logger.log(pLogLevel, pMessage);
-            } else if (isLoggingEnabled) {
-                logger.log(pLogLevel, pMessage);
-            } else {
-                StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
-                if (stackTrace.length > 3) {
-                    Class<?> callingClass = Class.forName(stackTrace[3].getClassName());
-                    Method callingMethod = callingClass.getMethod(stackTrace[3].getMethodName());
+                return;
+            }
+            StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+            if (stackTrace.length > 3) {
+                Class<?> callingClass = Class.forName(stackTrace[3].getClassName());
+                Method callingMethod = callingClass.getMethod(stackTrace[3].getMethodName());
 
-                    if (callingClass.isAnnotationPresent(EnableLogging.class)) {
-                        logger.log(pLogLevel, pMessage);
-                    } else if (callingMethod.isAnnotationPresent(EnableLogging.class)) {
-                        logger.log(pLogLevel, pMessage);
-                    }
+                if (callingClass.isAnnotationPresent(EnableLogging.class) ||
+                    callingMethod.isAnnotationPresent(EnableLogging.class)) {
+                    logger.log(pLogLevel, pMessage);
                 }
             }
-        } catch (Exception pException) {
-            logger.log(Level.SEVERE, "Failed to log message.", pException);
+        } catch (Exception ignored) {
         }
     }
 
