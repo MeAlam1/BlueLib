@@ -17,63 +17,96 @@
 
   - **Structure**:
       - **Class Descriptions**: 
+        - **Start with:** Start the Comment with A(n) {@code privacy/static/final} {@code/link Class/MethodType} [Description of the Class/Method].
         - **Key Methods:** List key methods provided by the class, using bullet points for easy readability.
-        - **Author:** If you have contributed to a Method/Class, put yourself as Co-author, if you have created an Method/Class, put yourself as Author.
-        - **Since Version:** Use the `@since` tag to indicate the version since which the class has been available.
+        - **Author:** If you have contributed to a Method/Class, feel free to add yourself to the author tag.
+        - **Since Version:** Use the `@since` tag to indicate the version since which the Method/Class has been available.
+        - **Version:** Use the `@version` tag to indicate the version since when the class has last been updated.
             **Example:**
           ```java
-          /**
-           * A {@code JSONLoader} class responsible for loading and parsing JSON data from resources
-           * defined by {@link ResourceLocation} within a Minecraft mod environment.
-           * <p> 
-           * Key Methods:
-           * <ul>
-           *   <li>{@link #loadJson(ResourceLocation, ResourceManager)} - Loads a JSON resource.</li>
-           * </ul>
-           * @author MeAlam
-           
-           * @since 1.0.0
-           */
-          public class JSONLoader {
-          }
-          ```
-      - **Method Descriptions**: Begin each comment with a brief description that typically starts with `A ...`, where the `...` represents a link to the relevant class or object using `{@link ClassName}`. If the method is `void`, use `{@code}` to refer to the method name instead.
-          - **Example for a Method**:
-            ```java
             /**
-             * A {@link String} that retrieves the value of a custom parameter for a specific variant.
-             *
-             * @param pVariantName {@link String} - The variant name you want to see the custom parameter of.
-             * @param pParameterKey {@link String} - The parameter you want to see.
-             * @return The value of the custom parameter identified by {@code pParameterKey}
-             * for the variant specified by {@code pVariantName}.
-             * @author MeAlam
-             
-             * @since 1.0.0
-               */
-              public String getCustomParameter(String pVariantName, String pParameterKey) {
-                  // Method implementation
-              }
-              ```
+            * A {@code public abstract base class} for managing a collection of {@link #parameters}.
+            * <p>
+            * This {@code class} provides methods to add, retrieve, remove, and manipulate {@link #parameters} stored as key-value pairs.
+            * </p>
+            * Key Methods:
+            * <ul>
+            *   <li>{@link #addParameter(String, Object)} - Adds a parameter to {@link #parameters}.</li>
+            *   <li>{@link #getParameter(String)} - Retrieves a parameter from {@link #parameters}.</li>
+            *   <li>{@link #removeParameter(String)} - Removes a parameter from {@link #parameters}.</li>
+            *   <li>{@link #getAllParameters()} - Returns all parameters in {@link #parameters}.</li>
+            *   <li>{@link #containsParameter(String)} - Checks if a parameter exists by its key from {@link #parameters}.</li>
+            *   <li>{@link #isEmpty()} - Checks if {@link #parameters} is empty.</li>
+            *   <li>{@link #clearParameters()} - Clears all parameters from {@link #parameters}.</li>
+            *   <li>{@link #getParameterCount()} - Returns the number of parameters in {@link #parameters}.</li>
+            *   <li>{@link #getParameterKeys()} - Returns a set of all parameter keys from {@link #parameters}.</li>
+            *   <li>{@link #getParameterValues()} - Returns a collection of all parameter values from {@link #parameters}.</li>
+            *   <li>{@link #updateParameter(String, Object)} - Updates the value of an existing parameter in {@link #parameters}.</li>
+            * </ul>
+            *
+            * @author MeAlam
+            * @since 1.0.0
+            * @version 1.0.0
+              */
+            ```
+        - **Start with:** Start the Comment with A(n) {@code privacy/static/final} {@code/link Class/MethodType} [Description of the Class/Method].
+            - **Example for a Method**:
+              ```java
+              /**
+                * A {@code protected static void} that registers entity variants from specified locations.
+                * <p>
+                * This method attempts to load variants from both mod and datapack locations. It logs status information and
+                * handles exceptions that occur during the loading process.
+                * </p>
+                * <p>
+                * Parameters:
+                * <ul>
+                *   <li>{@code pFolderPath} {@link String} - The folder path location within the mod or datapack where variants are stored.</li>
+                *   <li>{@code pServer} {@link MinecraftServer} - The server instance of the current world.</li>
+                *   <li>{@code pModID} {@link String} - The mod ID used to locate the entity variant resources. (Use your Mod's ID)</li>
+                *   <li>{@code pEntityName} {@link String} - The entity name to load.</li>
+                * </ul>
+                *
+                * Exception Handling:
+                * <ul>
+                *   <li>{@link JsonParseException} - Thrown when there is an error parsing the JSON files.</li>
+                *   <li>{@link RuntimeException} - Thrown for unexpected errors during the registration process.</li>
+                * </ul>
+                *
+                * @param pFolderPath {@link String} - The folder path location within the mod or datapack where variants are stored.
+                * @param pServer     {@link MinecraftServer} - The server instance of the current world.
+                * @param pModID      {@link String} - The mod ID used to locate the entity variant resources. (Use your Mod's ID)
+                * @param pEntityName {@link String} - The entity name to load.
+                * @throws JsonParseException if there is an error parsing the JSON files.
+                * @throws RuntimeException   if an unexpected error occurs during the registration process.
+                * @author MeAlam
+                * @see MinecraftServer
+                * @see ResourceLocation
+                * @see VariantLoader
+                * @since 1.0.0
+                */
+                  protected static void registerEntityVariants(String pFolderPath, MinecraftServer pServer, String pModID, String pEntityName) {
+                }
+                ```
 
-      - **Parameters**: Start each parameter description with `{@link TypeOfParameter} - [Comment]`. If the parameter is referenced within the comment, enclose it in a code block using `{@code}`.
-          - **Example for Parameters**:
-            ```java
-            /**
-             * A {@link String} that retrieves the value of a custom parameter for a specific variant.
-             *
-             * @param pVariantName {@link String} - The variant name you want to see the custom parameter of.
-             * @param pParameterKey {@link String} - The parameter you want to see.
-             * @return The value of the custom parameter identified by {@code pParameterKey}
-             * for the variant specified by {@code pVariantName}.
-             * @author MeAlam
+        - **Parameters**: Start each parameter description with `{@link TypeOfParameter} - [Comment]`. If the parameter is referenced within the comment, enclose it in a code block using `{@code}`.
+            - **Example for Parameters**:
+              ```java
+              /**
+               * A {@link String} that retrieves the value of a custom parameter for a specific variant.
+               *
+               * @param pVariantName {@link String} - The variant name you want to see the custom parameter of.
+               * @param pParameterKey {@link String} - The parameter you want to see.
+               * @return The value of the custom parameter identified by {@code pParameterKey}
+               * for the variant specified by {@code pVariantName}.
+               * @author MeAlam
              
-             * @since 1.0.0
-             */
-             public String getCustomParameter(String pVariantName, String pParameterKey) {
-                  // Method implementation
-             }
-             ```
+               * @since 1.0.0
+               */
+               public String getCustomParameter(String pVariantName, String pParameterKey) {
+                    // Method implementation
+               }
+               ```
 
 - **General Guidelines**:
     - Always ensure that comments are clear, concise, and provide sufficient information to understand the code.
@@ -81,9 +114,9 @@
     - Use `{@link}` to refer to classes, methods, or any other Java elements where appropriate.
     - Key Methods: In class-level comments, list out key methods provided by the class, which can help users quickly understand the main functionalities. 
     - Versioning: Include the `@since` tag in both class-level and method-level comments to indicate the version since which the class or method has been available.
-      - If you update a Class/Method, please add/update the `@version` to indicate it has been changed.
+    - If you update a Class, please add/update the `@version` to indicate it has been changed.
     - Copyright: Each file should start with `// Copyright (c) BlueLib. Licensed under the MIT License.`
-    - Tags: Use `@see` to link to the correct Wiki/Api Documentation page if it exists.
+    - Tags: Use `@see` to link to the correct Wiki Documentation page if it exists.
     - Logging: Log every step using `BaseLogger.logError`, `BaseLogger.logWarning`, `BaseLogger.bluelibLogInfo`, or `BaseLogger.bluelibLogSuccess`, depending on the step.
     - Error Handling: Always ensure that errors and warnings are logged using appropriate logging levels. Critical steps must be logged at least with `BaseLogger.bluelibLogInfo` to keep a trail of execution.
 
