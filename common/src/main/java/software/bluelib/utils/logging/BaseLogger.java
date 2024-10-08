@@ -107,7 +107,9 @@ public class BaseLogger {
      */
     public static void log(Level pLogLevel, String pMessage, Throwable pThrowable, boolean pIsBlueLib) {
         try {
-            if (pIsBlueLib && bluelibLogging) {
+            if (pLogLevel == BaseLogLevel.ERROR || pLogLevel == BaseLogLevel.WARNING || pLogLevel == BaseLogLevel.BLUELIB) {
+                logger.log(pLogLevel, pMessage, pThrowable);
+            } else if (pIsBlueLib && bluelibLogging) {
                 logger.log(pLogLevel, pMessage, pThrowable);
             } else if (!pIsBlueLib && isLoggingEnabled) {
                 logger.log(pLogLevel, pMessage, pThrowable);
@@ -127,7 +129,9 @@ public class BaseLogger {
      */
     public static void log(Level pLogLevel, String pMessage, boolean pIsBlueLib) {
         try {
-            if (pIsBlueLib && bluelibLogging) {
+            if (pLogLevel == BaseLogLevel.ERROR || pLogLevel == BaseLogLevel.WARNING || pLogLevel == BaseLogLevel.BLUELIB) {
+                logger.log(pLogLevel, pMessage);
+            } else if (pIsBlueLib && bluelibLogging) {
                 logger.log(pLogLevel, pMessage);
             } else if (!pIsBlueLib && isLoggingEnabled) {
                 logger.log(pLogLevel, pMessage);
@@ -148,7 +152,9 @@ public class BaseLogger {
      */
     public static void log(Level pLogLevel, String pMessage, Throwable pThrowable) {
         try {
-            if (isLoggingEnabled) {
+            if (pLogLevel == BaseLogLevel.ERROR || pLogLevel == BaseLogLevel.WARNING || pLogLevel == BaseLogLevel.BLUELIB) {
+                logger.log(pLogLevel, pMessage, pThrowable);
+            } else if (isLoggingEnabled) {
                 logger.log(pLogLevel, pMessage, pThrowable);
             } else {
                 StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
@@ -177,7 +183,9 @@ public class BaseLogger {
      */
     public static void log(Level pLogLevel, String pMessage) {
         try {
-            if (isLoggingEnabled) {
+            if (pLogLevel == BaseLogLevel.ERROR || pLogLevel == BaseLogLevel.WARNING || pLogLevel == BaseLogLevel.BLUELIB) {
+                logger.log(pLogLevel, pMessage);
+            } else if (isLoggingEnabled) {
                 logger.log(pLogLevel, pMessage);
             } else {
                 StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();

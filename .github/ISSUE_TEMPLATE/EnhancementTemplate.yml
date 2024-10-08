@@ -12,7 +12,7 @@ body:
     attributes:
       label: What do you want to have added?
       description: |
-        Please tell us as detailed as possible what you want to have added to the mod!
+        Please tell us as detailed as possible what you want to have added to the library!
         Feel free to also add Examples if they exist!
     validations:
       required: true

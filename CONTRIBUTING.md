@@ -100,7 +100,6 @@
                * @return The value of the custom parameter identified by {@code pParameterKey}
                * for the variant specified by {@code pVariantName}.
                * @author MeAlam
-             
                * @since 1.0.0
                */
                public String getCustomParameter(String pVariantName, String pParameterKey) {
@@ -117,13 +116,12 @@
     - If you update a Class, please add/update the `@version` to indicate it has been changed.
     - Copyright: Each file should start with `// Copyright (c) BlueLib. Licensed under the MIT License.`
     - Tags: Use `@see` to link to the correct Wiki Documentation page if it exists.
-    - Logging: Log every step using `BaseLogger.logError`, `BaseLogger.logWarning`, `BaseLogger.bluelibLogInfo`, or `BaseLogger.bluelibLogSuccess`, depending on the step.
-    - Error Handling: Always ensure that errors and warnings are logged using appropriate logging levels. Critical steps must be logged at least with `BaseLogger.bluelibLogInfo` to keep a trail of execution.
+    - Logging: Log every step using `BaseLogger.log`, Always remove the `@EnableLogging` annotation/disable the logging before committing.
+    - Error Handling: Always ensure that errors and warnings are logged using appropriate logging levels. Critical steps must be logged at least with `BaseLogger.log(BaseLogLevel.Error)` to keep a trail of execution.
 
 ### Deprecation
 
 - If you optimize a method, variable, or class and determine that it is no longer necessary for the library, mark it as `@Deprecated` instead of removing it. This only applies to elements that have been included in previous released versions of the library.
-
 - Include a **strong TODO comment** explaining why it is deprecated and any further action required, such as testing or eventual removal.
 - Include an **`@see`** that links to the New Method
 - **Example**:
@@ -134,7 +132,6 @@
    * <strong>TODO: Testing with Multiple Entities and Datapacks required before Deletion/Refactoring.</strong><br>
    * @return A map containing the parameters added to this builder.
    * @author MeAlam
-   
    * @since 1.0.0
    * @see #newMethod()
    */
@@ -172,41 +169,32 @@
         - Visual Studio Code (VSC)
         - Eclipse (Recommended)
 
-5. **Publish to Local Maven Repository**
-    - Run the following command from the library folder (e.g., `NeoForge`, `Forge`, `Fabric`) to publish the library to your local Maven repository.
-    - **Example**:
-      ```bash
-      ./gradlew publishToMavenLocal
-      ```
-    - This allows you to test the library locally.
-
-6. **Modify the Library**
+5. **Modify the Library**
     - Make the necessary changes to the respective library folder you are working on. Ensure you adhere to the coding conventions described above.
 
-7. **Test Your Changes**
-    - Before committing, test your changes by running the game using the appropriate test mod loader folder:
-        - `TestMods/TestNeoForge`
-        - `TestMods/TestForge`
-        - `TestMods/TestFabric`
+6. **Test Your Changes**
+    - Before committing, test your changes by running the game using the appropriate test mod loader folder.
+      - Use the `example` package to test your changes.
+      - If no code is available to test, create new test code in the `example` package.
     - Ensure that your changes do not introduce any issues or regressions.
 
-8. **Commit Your Changes**
-    - Once you are satisfied with your changes, commit them from the root folder (`BlueLib`).
+7. **Commit Your Changes**
+    - Once you are satisfied with your changes, commit them to your branch.
     - Write clear and concise commit messages explaining the changes made.
     - **Example**:
       ```bash
       git commit -am "Improved logging functionality and deprecated old log method"
       ```
 
-9. **Push to Your Fork**
+8. **Push to Your Fork**
     - Push your branch to your fork on GitHub.
     - **Example**:
       ```bash
       git push origin feature/improve-logging
       ```
 
-10. **Create a Pull Request (PR)**
-    - Navigate to your fork on GitHub and create a Pull Request to the main repository. Provide a detailed description of the changes made and why they are necessary.
+9. **Create a Pull Request (PR)**
+   - Navigate to your fork on GitHub and create a Pull Request to the main repository. Provide a detailed description of the changes made and why they are necessary.
 
 ## Contributor License Agreement (CLA)
 
