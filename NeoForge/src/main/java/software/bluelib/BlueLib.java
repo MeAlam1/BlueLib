@@ -7,7 +7,10 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent;
+import net.neoforged.fml.loading.FMLEnvironment;
 import org.spongepowered.asm.launch.MixinBootstrap;
+import software.bluelib.example.event.ClientEvents;
+import software.bluelib.example.init.ModEntities;
 
 /**
  * The main class of the {@code BlueLib} mod.
@@ -44,6 +47,13 @@ public class BlueLib {
     public BlueLib(IEventBus pModEventBus, ModContainer pModContainer) {
         pModEventBus.register(this);
         MixinBootstrap.init();
+        if (BlueLibCommon.isDeveloperMode() && BlueLibCommon.PLATFORM.isModLoaded("geckolib") && BlueLibConstants.isExampleEnabled) {
+            ModEntities.REGISTRY.register(pModEventBus);
+            if (FMLEnvironment.dist.isClient()) {
+                pModEventBus.addListener(ClientEvents::registerAttributes);
+                pModEventBus.addListener(ClientEvents::registerRenderers);
+            }
+        }
     }
 
     /**

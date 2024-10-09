@@ -2,11 +2,18 @@
 
 package software.bluelib;
 
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import software.bluelib.example.event.ReloadHandler;
+import software.bluelib.example.init.ModEntities;
+import software.bluelib.example.proxy.ClientProxy;
+import software.bluelib.example.proxy.CommonProxy;
 
 /**
  * The main class of the {@link BlueLib} mod.
@@ -29,18 +36,49 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 public class BlueLib {
 
     /**
+     * A {@code public static} {@link CommonProxy} instance that handles the mod's initialization and event handling.
+     */
+    public static CommonProxy PROXY = DistExecutor.safeRunForDist(() -> ClientProxy::new, () -> CommonProxy::new);
+
+    /**
      * Constructs a new {@link BlueLib} instance and registers the mod event bus.
-     * <p>
-     * This constructor sets up the mod's event handling by registering the current instance
-     * with the Forge mod event bus.
-     * </p>
      *
      * @author MeAlam
+     * @Co-author Dan
      * @since 1.0.0
      */
     public BlueLib() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         modEventBus.register(this);
+
+        if (BlueLibCommon.isDeveloperMode() && BlueLibCommon.PLATFORM.isModLoaded("geckolib") && BlueLibConstants.isExampleEnabled) {
+            ModEntities.register(modEventBus);
+            MinecraftForge.EVENT_BUS.register(ReloadHandler.class);
+            modEventBus.addListener(this::setupComplete);
+            modEventBus.addListener(this::setupClient);
+        }
+    }
+
+    /**
+     * A {@code private void} that handles the {@link FMLClientSetupEvent}. <br>
+     * Once the client setup process is complete, this method calls {@link ClientProxy#clientInit()} to perform additional client-side initialization.
+     *
+     * @param pEvent {@link FMLClientSetupEvent} - The event fired after the client setup process completes.
+     */
+    private void setupClient(final FMLClientSetupEvent pEvent) {
+        pEvent.enqueueWork(() -> {
+            PROXY.clientInit();
+        });
+    }
+
+    /**
+     * A {@code private void} that handles the {@link FMLLoadCompleteEvent}. <br>
+     * Once the mod loading process is complete, this method calls {@link CommonProxy#postInit()} to perform additional initialization.
+     *
+     * @param pEvent {@link FMLLoadCompleteEvent} - The event fired after the mod loading process completes.
+     */
+    private void setupComplete(final FMLLoadCompleteEvent pEvent) {
+        PROXY.postInit();
     }
 
     /**
