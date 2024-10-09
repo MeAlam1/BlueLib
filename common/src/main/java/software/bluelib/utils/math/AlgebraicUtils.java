@@ -41,7 +41,7 @@ public class AlgebraicUtils {
 
         double discriminant = pB * pB - 4 * pA * pC;
         if (discriminant < 0) {
-            BaseLogger.log(BaseLogLevel.WARNING, "No real roots found for the quadratic equation.");
+            BaseLogger.log(BaseLogLevel.WARNING, "No real roots found for the quadratic equation.", true);
             return new double[0];
         }
 
@@ -49,7 +49,7 @@ public class AlgebraicUtils {
         double root1 = (-pB + sqrtDiscriminant) / (2 * pA);
         double root2 = (-pB - sqrtDiscriminant) / (2 * pA);
 
-        BaseLogger.log(BaseLogLevel.INFO, "Roots found: root1=" + root1 + ", root2=" + root2);
+        BaseLogger.log(BaseLogLevel.INFO, "Roots found: root1=" + root1 + ", root2=" + root2, true);
         return new double[]{root1, root2};
     }
 
@@ -65,7 +65,7 @@ public class AlgebraicUtils {
     public static long factorial(int pNumber) {
         if (pNumber < 0) {
             IllegalArgumentException exception = new IllegalArgumentException("Number must be non-negative.");
-            BaseLogger.log(BaseLogLevel.INFO, "Attempted to calculate factorial of a negative number: " + pNumber, exception);
+            BaseLogger.log(BaseLogLevel.ERROR, "Attempted to calculate factorial of a negative number: " + pNumber, exception, true);
             throw exception;
         }
 
@@ -74,7 +74,6 @@ public class AlgebraicUtils {
             result *= i;
         }
 
-        BaseLogger.log(BaseLogLevel.SUCCESS, "Factorial of " + pNumber + " is " + result);
         return result;
     }
 
@@ -95,7 +94,6 @@ public class AlgebraicUtils {
             pA = temp;
         }
 
-        BaseLogger.log(BaseLogLevel.SUCCESS, "GCD found: " + pA);
         return pA;
     }
 
@@ -122,7 +120,6 @@ public class AlgebraicUtils {
             powerSet.addAll(newSubsets);
         }
 
-        BaseLogger.log(BaseLogLevel.SUCCESS, "Power set generated with " + powerSet.size() + " subsets.");
         return powerSet;
     }
 }

@@ -63,16 +63,16 @@ public class ReloadEventHandler {
      */
     protected static void registerEntityVariants(String pFolderPath, MinecraftServer pServer, String pModID, String pEntityName) {
 
-        BaseLogger.log(BaseLogLevel.INFO, "Attempting to register entity variants for " + pEntityName + " with ModID: " + pModID);
+        BaseLogger.log(BaseLogLevel.INFO, "Attempting to register entity variants for " + pEntityName + " with ModID: " + pModID, true);
 
         try {
             VariantLoader.loadVariants(pFolderPath, pServer, pEntityName);
-            BaseLogger.log(BaseLogLevel.SUCCESS, "Successfully registered entity variants for " + pEntityName + " from ModID: " + pModID);
+            BaseLogger.log(BaseLogLevel.SUCCESS, "Successfully registered entity variants for " + pEntityName + " from ModID: " + pModID, true);
         } catch (JsonParseException pException) {
-            BaseLogger.log(BaseLogLevel.ERROR, "Failed to parse JSON(s) while registering entity variants for " + pEntityName + " from ModID: " + pModID, pException);
+            BaseLogger.log(BaseLogLevel.ERROR, "Failed to parse JSON(s) while registering entity variants for " + pEntityName + " from ModID: " + pModID, pException, true);
             throw pException;
         } catch (Exception pException) {
-            BaseLogger.log(BaseLogLevel.ERROR, "Unexpected error occurred while registering entity variants for " + pEntityName + " from ModID: " + pModID, pException);
+            BaseLogger.log(BaseLogLevel.ERROR, "Unexpected error occurred while registering entity variants for " + pEntityName + " from ModID: " + pModID, pException, true);
             throw pException;
         }
     }

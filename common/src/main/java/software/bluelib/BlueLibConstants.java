@@ -48,4 +48,12 @@ public class BlueLibConstants {
      * @since 1.0.0
      */
     public static final String MOD_NAME = "BlueLib";
+
+    /**
+     * A {@code public static final} {@link Boolean} indicating whether the example features should be enabled. <br>
+     * Should always be false in production.
+     *
+     * @since 1.0.0
+     */
+    public static final Boolean isExampleEnabled = true;
 }

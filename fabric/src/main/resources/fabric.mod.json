@@ -8,8 +8,9 @@
         "${mod_author}"
     ],
     "contact": {
-        "homepage": "https://fabricmc.net/",
-        "sources": "https://github.com/FabricMC/fabric-example-mod"
+        "homepage": "https://www.curseforge.com/minecraft/mc-mods/bluelib",
+        "issues": "https://github.com/MeAlam1/BlueLib/issues",
+        "sources": "https://github.com/MeAlam1/BlueLib"
     },
     "license": "${license}",
     "icon": "bluelib.png",
@@ -17,6 +18,9 @@
     "entrypoints": {
         "main": [
           "software.bluelib.BlueLib"
+        ],
+        "client": [
+            "software.bluelib.example.init.ClientInit"
         ]
     },
     "mixins": [

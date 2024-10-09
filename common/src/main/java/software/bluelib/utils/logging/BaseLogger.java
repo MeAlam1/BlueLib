@@ -3,9 +3,7 @@
 package software.bluelib.utils.logging;
 
 import software.bluelib.BlueLibConstants;
-import software.bluelib.annotations.EnableLogging;
 
-import java.lang.reflect.Method;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -42,14 +40,14 @@ public class BaseLogger {
      *
      * @since 1.0.0
      */
-    private static boolean bluelibLogging = false;
+    private static boolean bluelibLogging = true;
 
     /**
      * A {@link Boolean} to enable or disable general logging.
      *
      * @since 1.0.0
      */
-    private static boolean isLoggingEnabled = false;
+    private static boolean isLoggingEnabled = true;
 
     /**
      * A {@code void} to enable or disable {@code BlueLib} specific logging.
@@ -106,15 +104,12 @@ public class BaseLogger {
      * @since 1.0.0
      */
     public static void log(Level pLogLevel, String pMessage, Throwable pThrowable, boolean pIsBlueLib) {
-        try {
-            if (pLogLevel == BaseLogLevel.ERROR ||
+        if (pLogLevel == BaseLogLevel.ERROR ||
                 pLogLevel == BaseLogLevel.WARNING ||
                 pLogLevel == BaseLogLevel.BLUELIB ||
                 pIsBlueLib && bluelibLogging ||
                 !pIsBlueLib && isLoggingEnabled) {
-                logger.log(pLogLevel, pMessage, pThrowable);
-            }
-        } catch (Exception ignored) {
+            logger.log(pLogLevel, pMessage, pThrowable);
         }
     }
 
@@ -127,15 +122,12 @@ public class BaseLogger {
      * @since 1.0.0
      */
     public static void log(Level pLogLevel, String pMessage, boolean pIsBlueLib) {
-        try {
-            if (pLogLevel == BaseLogLevel.ERROR ||
+        if (pLogLevel == BaseLogLevel.ERROR ||
                 pLogLevel == BaseLogLevel.WARNING ||
                 pLogLevel == BaseLogLevel.BLUELIB ||
                 pIsBlueLib && bluelibLogging ||
                 !pIsBlueLib && isLoggingEnabled) {
-                logger.log(pLogLevel, pMessage);
-            }
-        } catch (Exception ignored) {
+            logger.log(pLogLevel, pMessage);
         }
     }
 
@@ -149,25 +141,11 @@ public class BaseLogger {
      * @since 1.0.0
      */
     public static void log(Level pLogLevel, String pMessage, Throwable pThrowable) {
-        try {
-            if (pLogLevel == BaseLogLevel.ERROR ||
+        if (pLogLevel == BaseLogLevel.ERROR ||
                 pLogLevel == BaseLogLevel.WARNING ||
                 pLogLevel == BaseLogLevel.BLUELIB ||
                 isLoggingEnabled) {
-                logger.log(pLogLevel, pMessage, pThrowable);
-                return;
-            }
-                StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
-                if (stackTrace.length > 3) {
-                    Class<?> callingClass = Class.forName(stackTrace[3].getClassName());
-                    Method callingMethod = callingClass.getMethod(stackTrace[3].getMethodName());
-
-                    if (callingClass.isAnnotationPresent(EnableLogging.class) ||
-                        callingMethod.isAnnotationPresent(EnableLogging.class)) {
-                        logger.log(pLogLevel, pMessage, pThrowable);
-                    }
-                }
-        } catch (Exception ignored) {
+            logger.log(pLogLevel, pMessage, pThrowable);
         }
     }
 
@@ -179,25 +157,11 @@ public class BaseLogger {
      * @since 1.0.0
      */
     public static void log(Level pLogLevel, String pMessage) {
-        try {
-            if (pLogLevel == BaseLogLevel.ERROR ||
+        if (pLogLevel == BaseLogLevel.ERROR ||
                 pLogLevel == BaseLogLevel.WARNING ||
                 pLogLevel == BaseLogLevel.BLUELIB ||
                 isLoggingEnabled) {
-                logger.log(pLogLevel, pMessage);
-                return;
-            }
-            StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
-            if (stackTrace.length > 3) {
-                Class<?> callingClass = Class.forName(stackTrace[3].getClassName());
-                Method callingMethod = callingClass.getMethod(stackTrace[3].getMethodName());
-
-                if (callingClass.isAnnotationPresent(EnableLogging.class) ||
-                    callingMethod.isAnnotationPresent(EnableLogging.class)) {
-                    logger.log(pLogLevel, pMessage);
-                }
-            }
-        } catch (Exception ignored) {
+            logger.log(pLogLevel, pMessage);
         }
     }
 

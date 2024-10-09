@@ -58,7 +58,6 @@ public abstract class ParameterBase {
      */
     protected void addParameter(String pKey, Object pValue) {
         parameters.put(pKey, pValue);
-        BaseLogger.log(BaseLogLevel.SUCCESS, String.format("Parameter added: Key = %s, Value = %s", pKey, pValue), true);
     }
 
     /**
@@ -73,9 +72,7 @@ public abstract class ParameterBase {
      * @since 1.0.0
      */
     protected Object getParameter(String pKey) {
-        Object value = parameters.get(pKey);
-        BaseLogger.log(BaseLogLevel.INFO, String.format("Parameter retrieved: Key = %s, Value = %s", pKey, value), true);
-        return value;
+        return parameters.get(pKey);
     }
 
     /**
@@ -107,7 +104,6 @@ public abstract class ParameterBase {
      * @since 1.0.0
      */
     protected Map<String, Object> getAllParameters() {
-        BaseLogger.log(BaseLogLevel.INFO, "Retrieved all parameters.", true);
         return new HashMap<>(parameters);
     }
 
@@ -123,9 +119,7 @@ public abstract class ParameterBase {
      * @since 1.0.0
      */
     protected boolean containsParameter(String pKey) {
-        boolean exists = parameters.containsKey(pKey);
-        BaseLogger.log(BaseLogLevel.INFO, String.format("Parameter existence check: Key = %s, Exists = %b", pKey, exists), true);
-        return exists;
+        return parameters.containsKey(pKey);
     }
 
     /**
@@ -139,9 +133,7 @@ public abstract class ParameterBase {
      * @since 1.0.0
      */
     protected boolean isEmpty() {
-        boolean empty = parameters.isEmpty();
-        BaseLogger.log(BaseLogLevel.INFO, "Checked if parameters are empty: " + empty, true);
-        return empty;
+        return parameters.isEmpty();
     }
 
     /**
@@ -152,7 +144,6 @@ public abstract class ParameterBase {
      */
     protected void clearParameters() {
         parameters.clear();
-        BaseLogger.log(BaseLogLevel.SUCCESS, "Cleared all parameters.", true);
     }
 
     /**
@@ -163,9 +154,7 @@ public abstract class ParameterBase {
      * @since 1.0.0
      */
     protected int getParameterCount() {
-        int count = parameters.size();
-        BaseLogger.log(BaseLogLevel.INFO, "Retrieved parameter count: " + count, true);
-        return count;
+        return parameters.size();
     }
 
     /**
@@ -179,7 +168,6 @@ public abstract class ParameterBase {
      * @since 1.0.0
      */
     protected Set<String> getParameterKeys() {
-        BaseLogger.log(BaseLogLevel.INFO, "Retrieved parameter keys.", true);
         return parameters.keySet();
     }
 
@@ -194,7 +182,6 @@ public abstract class ParameterBase {
      * @since 1.0.0
      */
     protected Collection<Object> getParameterValues() {
-        BaseLogger.log(BaseLogLevel.INFO, "Retrieved parameter values.", true);
         return parameters.values();
     }
 

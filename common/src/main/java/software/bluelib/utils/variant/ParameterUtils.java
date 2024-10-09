@@ -163,8 +163,8 @@ public class ParameterUtils {
                 }
                 variantParametersMap.put(variantName, updatedParameters);
             } else {
-                Throwable cause = new Throwable("Variant or entity not found in the database");
-                BaseLogger.log(BaseLogLevel.ERROR, "Variant '" + variantName + "' not found for entity '" + entityName + "'", cause);
+                Throwable throwable = new Throwable("Variant or entity not found in the database");
+                BaseLogger.log(BaseLogLevel.ERROR, "Variant '" + variantName + "' not found for entity '" + entityName + "'", throwable, true);
             }
             return this;
         }

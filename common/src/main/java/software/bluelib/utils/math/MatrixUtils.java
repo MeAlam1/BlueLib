@@ -37,7 +37,7 @@ public class MatrixUtils {
         int colsB = pMatrixB[0].length;
         if (colsA != pMatrixB.length) {
             Throwable throwable = new IllegalArgumentException("Number of columns in the first matrix must be equal to the number of rows in the second matrix.");
-            BaseLogger.log(BaseLogLevel.ERROR, "Error performing matrix multiplication", throwable);
+            BaseLogger.log(BaseLogLevel.ERROR, "Error performing matrix multiplication", throwable, true);
             return new double[0][0];
         }
         double[][] result = new double[rowsA][colsB];
@@ -83,7 +83,7 @@ public class MatrixUtils {
     public static double calculate2x2MatrixDeterminant(double[][] pMatrix) {
         if (pMatrix.length != 2 || pMatrix[0].length != 2) {
             Throwable throwable = new IllegalArgumentException("Matrix must be 2x2.");
-            BaseLogger.log(BaseLogLevel.ERROR, "Error calculating 2x2 matrix determinant", throwable);
+            BaseLogger.log(BaseLogLevel.ERROR, "Error calculating 2x2 matrix determinant", throwable, true);
             return Double.NaN;
         }
         return pMatrix[0][0] * pMatrix[1][1] - pMatrix[0][1] * pMatrix[1][0];
@@ -101,13 +101,13 @@ public class MatrixUtils {
     public static double[][] invert2x2Matrix(double[][] pMatrix) {
         if (pMatrix.length != 2 || pMatrix[0].length != 2) {
             Throwable throwable = new IllegalArgumentException("Matrix must be 2x2.");
-            BaseLogger.log(BaseLogLevel.ERROR, "Error inverting 2x2 matrix", throwable);
+            BaseLogger.log(BaseLogLevel.ERROR, "Error inverting 2x2 matrix", throwable, true);
             return new double[0][0];
         }
         double determinant = calculate2x2MatrixDeterminant(pMatrix);
         if (determinant == 0) {
             Throwable throwable = new IllegalArgumentException("Matrix is not invertible.");
-            BaseLogger.log(BaseLogLevel.ERROR, "Error inverting 2x2 matrix", throwable);
+            BaseLogger.log(BaseLogLevel.ERROR, "Error inverting 2x2 matrix", throwable, true);
             return new double[0][0];
         }
         double[][] inverse = new double[2][2];

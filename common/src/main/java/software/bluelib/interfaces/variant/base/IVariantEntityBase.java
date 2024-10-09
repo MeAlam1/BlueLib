@@ -60,7 +60,7 @@ public interface IVariantEntityBase {
         List<String> variantNames = variants.stream()
                 .map(VariantParameter::getVariantParameter)
                 .collect(Collectors.toList());
-        BaseLogger.log(BaseLogLevel.SUCCESS, "Retrieved " + variantNames.size() + " variants for entity: " + pEntityName);
+        BaseLogger.log(BaseLogLevel.SUCCESS, "Retrieved " + variantNames.size() + " variants for entity: " + pEntityName, true);
         return variantNames;
     }
 }

@@ -2,6 +2,9 @@
 
 package software.bluelib.interfaces.platform;
 
+import software.bluelib.utils.logging.BaseLogLevel;
+import software.bluelib.utils.logging.BaseLogger;
+
 /**
  * A {@code public interface} that defines platform-specific functionality for the BlueLib mod.
  * <p>

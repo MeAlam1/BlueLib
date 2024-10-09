@@ -4,6 +4,11 @@ package software.bluelib;
 
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
+import software.bluelib.example.entity.dragon.DragonEntity;
+import software.bluelib.example.entity.rex.RexEntity;
+import software.bluelib.example.event.ReloadHandler;
+import software.bluelib.example.init.ModEntities;
 
 /**
  * A {@code public class} that implements {@link ModInitializer} to initialize the BlueLib mod on the Fabric platform.
@@ -44,6 +49,12 @@ public class BlueLib implements ModInitializer {
      */
     @Override
     public void onInitialize() {
+        if (BlueLibCommon.isDeveloperMode() && BlueLibCommon.PLATFORM.isModLoaded("geckolib") && BlueLibConstants.isExampleEnabled) {
+            ModEntities.initializeEntities();
+            ReloadHandler.registerEventListeners();
+            FabricDefaultAttributeRegistry.register(ModEntities.EXAMPLE_ONE, DragonEntity.createMobAttributes());
+            FabricDefaultAttributeRegistry.register(ModEntities.EXAMPLE_TWO, RexEntity.createMobAttributes());
+        }
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (!hasInitialized) {
                 hasInitialized = true;
