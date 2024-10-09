@@ -13,16 +13,41 @@ import software.bluelib.example.init.ModEntities;
 import software.bluelib.utils.logging.BaseLogLevel;
 import software.bluelib.utils.logging.BaseLogger;
 
+/**
+ * A {@code public class} that contains the events that are fired on the client side.
+ * <p>
+ * Key Methods:
+ * <ul>
+ *   <li>{@link #registerRenderers(EntityRenderersEvent.RegisterRenderers)} - Registers the renderers for the entities.</li>
+ *   <li>{@link #registerAttributes(EntityAttributeCreationEvent)} - Registers the attributes for the entities.</li>
+ * </ul>
+ *
+ * @author MeAlam
+ * @since 1.0.0
+ */
 public class ClientEvents {
+
+    /**
+     * A {@code public static void} that registers the renderers for the entities.
+     *
+     * @param pEvent {@link EntityRenderersEvent} - The event that is fired when the renderers are being registered.
+     * @author MeAlam
+     * @since 1.0.0
+     */
     @SubscribeEvent
     public static void registerRenderers(final EntityRenderersEvent.RegisterRenderers pEvent) {
-        // Register the renderer for all the Entities
         pEvent.registerEntityRenderer(ModEntities.DRAGON.get(), DragonRender::new);
         pEvent.registerEntityRenderer(ModEntities.REX.get(), RexRender::new);
         BaseLogger.log(BaseLogLevel.INFO, "Registered Renderers for Entities", true);
     }
 
-    // Register the Attributes
+    /**
+     * A {@code public static void} that registers the attributes for the entities.
+     *
+     * @param pEvent {@link EntityAttributeCreationEvent} - The event that is fired when the attributes are being registered.
+     * @author MeAlam
+     * @since 1.0.0
+     */
     @SubscribeEvent
     public static void registerAttributes(EntityAttributeCreationEvent pEvent) {
         pEvent.put(ModEntities.DRAGON.get(), DragonEntity.createAttributes().build());

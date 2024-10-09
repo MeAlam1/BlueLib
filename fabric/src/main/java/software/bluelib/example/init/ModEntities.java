@@ -1,3 +1,5 @@
+// Copyright (c) BlueLib. Licensed under the MIT License.
+
 package software.bluelib.example.init;
 
 import net.minecraft.core.Registry;
@@ -10,11 +12,35 @@ import software.bluelib.example.entity.rex.RexEntity;
 
 import static net.minecraft.world.entity.MobCategory.CREATURE;
 
+/**
+ * A {@code public class} that contains the entities for the mod.
+ * <p>
+ * Key Methods:
+ * <ul>
+ *     <li>{@link #initializeEntities()} - Initializes the entities.</li>
+ * </ul>
+ *
+ * @author MeAlam
+ * @since 1.0.0
+ */
 public class ModEntities {
 
+    /**
+     * The {@code public static} field that stores Example One.
+     */
     public static EntityType<DragonEntity> EXAMPLE_ONE;
+
+    /**
+     * The {@code public static} field that stores Example Two.
+     */
     public static EntityType<RexEntity> EXAMPLE_TWO;
 
+    /**
+     * A {@code public static void} that initializes the entities.
+     *
+     * @author MeAlam
+     * @since 1.0.0
+     */
     public static void initializeEntities() {
         EXAMPLE_ONE = Registry.register(
                 BuiltInRegistries.ENTITY_TYPE,

@@ -40,6 +40,10 @@ public class BlueLib implements ModInitializer {
     /**
      * A {@code public void} that registers a client tick event to initialize the BlueLib mod.
      * <p>
+     * This method checks if the mod is being run in developer mode and if the Geckolib mod is loaded. If both conditions
+     * are met, it initializes the entities and registers the event listeners for the reload handler.
+     * </p>
+     * <p>
      * This method uses {@link ClientTickEvents#END_CLIENT_TICK} to register a callback that checks
      * whether the mod has already been initialized and calls {@link BlueLibCommon#init()} if necessary.
      * </p>

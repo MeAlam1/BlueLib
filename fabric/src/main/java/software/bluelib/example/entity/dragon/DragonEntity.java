@@ -7,8 +7,6 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -31,7 +29,6 @@ import software.bluelib.utils.variant.ParameterUtils;
  * This class manages the dragon's variant system, its data synchronization, and integrates with the GeckoLib
  * animation system.
  * </p>
- *
  * <p>
  * Key Methods:
  * <ul>
@@ -40,7 +37,6 @@ import software.bluelib.utils.variant.ParameterUtils;
  *   <li>{@link #readAdditionalSaveData(CompoundTag)} - Reads custom data from the entity's NBT for loading.</li>
  *   <li>{@link #finalizeSpawn(ServerLevelAccessor, DifficultyInstance, MobSpawnType, SpawnGroupData)} - Finalizes the spawning process and sets up parameters.</li>
  * </ul>
- * </p>
  *
  * @author MeAlam
  * @since 1.0.0
@@ -65,10 +61,24 @@ public class DragonEntity extends TamableAnimal implements IVariantEntity, GeoEn
         super(pEntityType, pLevel);
     }
 
+    /**
+     * A {@code public void} that defines the Variant data for the dragon entity.
+     *
+     * @param pVariantName {@link String} - The variant name of the dragon entity.
+     * @author MeAlam
+     * @since 1.0.0
+     */
     public void setVariantName(String pVariantName) {
         ((IVariantAccessor) this).setEntityVariantName(pVariantName);
     }
 
+    /**
+     * A {@code public} {@link String} that retrieves the Variant data for the dragon entity.
+     *
+     * @return {@link String} - The variant name of the dragon entity.
+     * @author MeAlam
+     * @since 1.0.0
+     */
     public String getVariantName() {
         return ((IVariantAccessor) this).getEntityVariantName();
     }
@@ -103,37 +113,62 @@ public class DragonEntity extends TamableAnimal implements IVariantEntity, GeoEn
     }
 
 
-    /**
-     * All Code below this Fragment is not Library Related!!!
-     */
 
+    /* All Code below this Fragment is not Library Related!!! */
+
+    /**
+     * The cache for the animatable instance.
+     *
+     * @since 1.0.0
+     */
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
-    public static AttributeSupplier.Builder createAttributes() {
-        return Mob.createMobAttributes()
-                .add(Attributes.MOVEMENT_SPEED, 0.3)
-                .add(Attributes.MAX_HEALTH, 10)
-                .add(Attributes.ARMOR, 0)
-                .add(Attributes.ATTACK_DAMAGE, 3)
-                .add(Attributes.FOLLOW_RANGE, 16)
-                .add(Attributes.FLYING_SPEED, 0.3);
-    }
-
+    /**
+     * Adds custom data to the entity's NBT for saving.
+     *
+     * @param pControllerRegistrar {@link CompoundTag} - The tag to add the data to.
+     * @author MeAlam
+     * @since 1.0.0
+     */
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar pControllerRegistrar) {
     }
 
+    /**
+     * Adds custom data to the entity's NBT for saving.
+     *
+     * @return {@link CompoundTag} - The tag with the custom data.
+     * @author MeAlam
+     * @since 1.0.0
+     */
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {
         return cache;
     }
 
+    /**
+     * Adds custom data to the entity's NBT for saving.
+     *
+     * @param pLevel       {@link CompoundTag} - The tag to add the data to.
+     * @param pOtherParent {@link CompoundTag} - The other tag to add the data from.
+     * @return {@link CompoundTag} - The tag with the custom data.
+     * @author MeAlam
+     * @since 1.0.0
+     */
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(@NotNull ServerLevel pLevel, @NotNull AgeableMob pOtherParent) {
         return null;
     }
 
+    /**
+     * Adds custom data to the entity's NBT for saving.
+     *
+     * @param pItemStack {@link ItemStack} - The item stack to check.
+     * @return {@link boolean} - Whether the item is food or not.
+     * @author MeAlam
+     * @since 1.0.0
+     */
     @Override
     public boolean isFood(@NotNull ItemStack pItemStack) {
         return false;

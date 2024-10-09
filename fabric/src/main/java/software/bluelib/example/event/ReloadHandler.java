@@ -3,10 +3,7 @@
 package software.bluelib.example.event;
 
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
-import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
-import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.packs.PackType;
 import software.bluelib.BlueLibConstants;
 import software.bluelib.event.ReloadEventHandler;
 import software.bluelib.utils.logging.BaseLogLevel;
@@ -14,7 +11,6 @@ import software.bluelib.utils.logging.BaseLogger;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
 /**

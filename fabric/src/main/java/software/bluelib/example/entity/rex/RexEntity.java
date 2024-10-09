@@ -67,10 +67,24 @@ public class RexEntity extends TamableAnimal implements IVariantEntity, GeoEntit
         super(pEntityType, pLevel);
     }
 
+    /**
+     * A {@code public void} that defines the Variant data for the rex entity.
+     *
+     * @param pVariantName {@link String} - The variant name of the rex entity.
+     * @author MeAlam
+     * @since 1.0.0
+     */
     public void setVariantName(String pVariantName) {
         ((IVariantAccessor) this).setEntityVariantName(pVariantName);
     }
 
+    /**
+     * A {@code public} {@link String} that retrieves the Variant data for the rex entity.
+     *
+     * @return {@link String} - The variant name of the rex entity.
+     * @author MeAlam
+     * @since 1.0.0
+     */
     public String getVariantName() {
         return ((IVariantAccessor) this).getEntityVariantName();
     }
@@ -104,37 +118,61 @@ public class RexEntity extends TamableAnimal implements IVariantEntity, GeoEntit
         return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData);
     }
 
-    /**
-     * All Code below this Fragment is not Library Related!!!
-     */
+    /* All Code below this Fragment is not Library Related!!! */
 
+    /**
+     * The cache for the animatable instance.
+     *
+     * @since 1.0.0
+     */
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
-    public static AttributeSupplier.Builder createAttributes() {
-        return Mob.createMobAttributes()
-                .add(Attributes.MOVEMENT_SPEED, 0.3)
-                .add(Attributes.MAX_HEALTH, 10)
-                .add(Attributes.ARMOR, 0)
-                .add(Attributes.ATTACK_DAMAGE, 3)
-                .add(Attributes.FOLLOW_RANGE, 16)
-                .add(Attributes.FLYING_SPEED, 0.3);
-    }
-
+    /**
+     * Adds custom data to the entity's NBT for saving.
+     *
+     * @param pControllerRegistrar {@link CompoundTag} - The tag to add the data to.
+     * @author MeAlam
+     * @since 1.0.0
+     */
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar pControllerRegistrar) {
     }
 
+    /**
+     * Adds custom data to the entity's NBT for saving.
+     *
+     * @return {@link CompoundTag} - The tag with the custom data.
+     * @author MeAlam
+     * @since 1.0.0
+     */
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {
         return cache;
     }
 
+    /**
+     * Adds custom data to the entity's NBT for saving.
+     *
+     * @param pLevel       {@link CompoundTag} - The tag to add the data to.
+     * @param pOtherParent {@link CompoundTag} - The other tag to add the data from.
+     * @return {@link CompoundTag} - The tag with the custom data.
+     * @author MeAlam
+     * @since 1.0.0
+     */
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(@NotNull ServerLevel pLevel, @NotNull AgeableMob pOtherParent) {
         return null;
     }
 
+    /**
+     * Adds custom data to the entity's NBT for saving.
+     *
+     * @param pItemStack {@link ItemStack} - The item stack to check.
+     * @return {@link boolean} - Whether the item is food or not.
+     * @author MeAlam
+     * @since 1.0.0
+     */
     @Override
     public boolean isFood(@NotNull ItemStack pItemStack) {
         return false;
