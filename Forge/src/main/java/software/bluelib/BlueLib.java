@@ -44,7 +44,6 @@ public class BlueLib {
      * Constructs a new {@link BlueLib} instance and registers the mod event bus.
      *
      * @author MeAlam
-     * @Co-author Dan
      * @since 1.0.0
      */
     public BlueLib() {
