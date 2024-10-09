@@ -33,9 +33,6 @@ import software.bluelib.utils.variant.ParameterUtils;
  * </p>
  * Key Methods:
  * <ul>
- *   <li>{@link #defineSynchedData(SynchedEntityData.Builder)} - Defines the synchronized data for the Rex entity, including its variant.</li>
- *   <li>{@link #addAdditionalSaveData(CompoundTag)} - Adds custom data to the entity's NBT for saving.</li>
- *   <li>{@link #readAdditionalSaveData(CompoundTag)} - Reads custom data from the entity's NBT for loading.</li>
  *   <li>{@link #finalizeSpawn(ServerLevelAccessor, DifficultyInstance, MobSpawnType, SpawnGroupData)} - Finalizes the spawning process and sets up parameters.</li>
  *   <li>{@link #setVariantName(String)} - Sets the variant name of the Rex.</li>
  *   <li>{@link #getVariantName()} - Retrieves the current variant name of the Rex.</li>
