@@ -31,7 +31,6 @@ import software.bluelib.utils.variant.ParameterUtils;
  * This class manages the Rex's variant system, its data synchronization, and integrates with the GeckoLib
  * animation system.
  * </p>
- *
  * Key Methods:
  * <ul>
  *   <li>{@link #defineSynchedData(SynchedEntityData.Builder)} - Defines the synchronized data for the Rex entity, including its variant.</li>

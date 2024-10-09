@@ -38,6 +38,18 @@ import java.util.stream.Collectors;
 public class ChunkUtils {
 
     /**
+     * Private constructor to prevent instantiation.
+     * <p>
+     * This constructor is intentionally empty to prevent creating instances of this utility class.
+     * </p>
+     *
+     * @author MeAlam
+     * @since 1.0.0
+     */
+    private ChunkUtils() {
+    }
+
+    /**
      * A {@link Biome} that retrieves the {@link Biome} of the specified chunk.
      * <p>
      * Logs a success message if the biome is retrieved successfully,

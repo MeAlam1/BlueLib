@@ -36,6 +36,18 @@ import java.util.NoSuchElementException;
 public class ParameterUtils {
 
     /**
+     * Private constructor to prevent instantiation.
+     * <p>
+     * This constructor is intentionally empty to prevent creating instances of this utility class.
+     * </p>
+     *
+     * @author MeAlam
+     * @since 1.0.0
+     */
+    private ParameterUtils() {
+    }
+
+    /**
      * Holds custom parameters for each variant.
      * <p>
      * The outer map's key is the variant name, and the inner map contains key-value pairs

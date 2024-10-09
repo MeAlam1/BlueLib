@@ -4,6 +4,7 @@ package software.bluelib;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.logging.Logger;
 
 /**
  * A {@code public class} that defines common constants used across the BlueLib mod.
@@ -23,6 +24,25 @@ import java.util.concurrent.ScheduledExecutorService;
  * @since 1.0.0
  */
 public class BlueLibConstants {
+
+    /**
+     * Private constructor to prevent instantiation.
+     * <p>
+     * This constructor is intentionally empty to prevent creating instances of this class.
+     * </p>
+     *
+     * @author MeAlam
+     * @since 1.0.0
+     */
+    private BlueLibConstants() {
+    }
+
+    /**
+     * A {@link Logger} instance for logging messages.
+     *
+     * @since 1.0.0
+     */
+    public static final Logger LOGGER = Logger.getLogger(BlueLibConstants.MOD_NAME);
 
     /**
      * A {@code public static final} {@link ScheduledExecutorService} used to schedule tasks, such as printing messages after a delay.

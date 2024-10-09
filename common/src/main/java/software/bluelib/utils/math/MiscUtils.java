@@ -22,6 +22,18 @@ import software.bluelib.utils.logging.BaseLogger;
 public class MiscUtils {
 
     /**
+     * Private constructor to prevent instantiation.
+     * <p>
+     * This constructor is intentionally empty to prevent creating instances of this utility class.
+     * </p>
+     *
+     * @author MeAlam
+     * @since 1.0.0
+     */
+    private MiscUtils() {
+    }
+
+    /**
      * A {@link Boolean} that checks if a string is a valid email address.
      *
      * @param pEmail {@link String} - The string to be checked.

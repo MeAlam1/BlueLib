@@ -40,7 +40,6 @@ public class JSONLoader {
      * A {@code public} {@link JsonObject} that loads JSON data from a {@link ResourceLocation}. <br>
      * This method is typically used to load configuration files or other JSON-based resources
      * in a Minecraft mod environment.
-     * <p>
      *
      * @param pResourceLocation {@link ResourceLocation} - The {@link ResourceLocation} of the JSON resource.
      * @param pResourceManager  {@link ResourceManager} - The {@link ResourceManager} used to load the resource.

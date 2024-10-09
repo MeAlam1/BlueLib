@@ -23,15 +23,12 @@ import java.util.concurrent.TimeUnit;
  * This class extends {@link ReloadEventHandler} and implements event handling for server starting and reloading,
  * ensuring that entity variant data is properly loaded and refreshed.
  * </p>
- *
- * <p>
  * Key Methods:
  * <ul>
  *   <li>{@link #onServerStart(ServerStartingEvent)} - Handles server starting events to initialize entity variants.</li>
  *   <li>{@link #onReload(AddReloadListenerEvent)} - Handles reload events to refresh entity variants.</li>
  *   <li>{@link #LoadEntityVariants(MinecraftServer)} - Loads entity variants from JSON files into the server.</li>
  * </ul>
- * </p>
  *
  * @author MeAlam
  * @since 1.0.0

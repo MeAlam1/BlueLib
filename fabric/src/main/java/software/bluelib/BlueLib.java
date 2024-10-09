@@ -28,6 +28,17 @@ import software.bluelib.example.init.ModEntities;
 public class BlueLib implements ModInitializer {
 
     /**
+     * Private constructor to prevent instantiation.
+     * <p>
+     * This constructor is intentionally empty to prevent creating instances of this class.
+     * </p>
+     *
+     * @author MeAlam
+     * @since 1.0.0
+     */
+    private BlueLib() {}
+
+    /**
      * A {@code private} {@link Boolean} flag indicating whether the mod has been initialized.
      * <p>
      * This ensures that the {@link BlueLibCommon#init()} method is called only once during the game's lifecycle.

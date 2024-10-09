@@ -22,6 +22,18 @@ import software.bluelib.utils.logging.BaseLogger;
 public class MatrixUtils {
 
     /**
+     * Private constructor to prevent instantiation.
+     * <p>
+     * This constructor is intentionally empty to prevent creating instances of this utility class.
+     * </p>
+     *
+     * @author MeAlam
+     * @since 1.0.0
+     */
+    private MatrixUtils() {
+    }
+
+    /**
      * A {@link Double}{@code [][]} that performs matrix multiplication on two matrices.
      *
      * @param pMatrixA {@link Double}{@code [][]} - The first matrix to be multiplied.

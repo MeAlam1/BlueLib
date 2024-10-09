@@ -29,7 +29,6 @@ import software.bluelib.utils.variant.ParameterUtils;
  * This class manages the dragon's variant system, its data synchronization, and integrates with the GeckoLib
  * animation system.
  * </p>
- * <p>
  * Key Methods:
  * <ul>
  *   <li>{@link #defineSynchedData(SynchedEntityData.Builder)} - Defines the synchronized data for the dragon entity, including its variant.</li>

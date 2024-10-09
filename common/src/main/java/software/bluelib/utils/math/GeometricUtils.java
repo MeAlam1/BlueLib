@@ -30,6 +30,18 @@ import software.bluelib.utils.logging.BaseLogger;
 public class GeometricUtils {
 
     /**
+     * Private constructor to prevent instantiation.
+     * <p>
+     * This constructor is intentionally empty to prevent creating instances of this utility class.
+     * </p>
+     *
+     * @author MeAlam
+     * @since 1.0.0
+     */
+    private GeometricUtils() {
+    }
+
+    /**
      * A {@link Double} that calculates the Euclidean distance between two points in 2D space.
      *
      * @param pX1 {@link double} - The x-coordinate of the first point.

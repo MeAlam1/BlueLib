@@ -28,11 +28,16 @@ import java.util.logging.Logger;
 public class BaseLogger {
 
     /**
-     * A {@link Logger} instance for logging messages.
+     * Private constructor to prevent instantiation.
+     * <p>
+     * This constructor is intentionally empty to prevent creating instances of this class.
+     * </p>
      *
+     * @author MeAlam
      * @since 1.0.0
      */
-    private static final Logger logger = Logger.getLogger(BlueLibConstants.MOD_NAME);
+    private BaseLogger() {
+    }
 
     /**
      * A {@code void} to enable or disable {@code BlueLib} specific logging.
@@ -75,7 +80,7 @@ public class BaseLogger {
     }
 
     static {
-        LoggerConfig.configureLogger(logger, new DefaultLogColorProvider());
+        LoggerConfig.configureLogger(BlueLibConstants.LOGGER, new DefaultLogColorProvider());
     }
 
     /**
@@ -94,7 +99,7 @@ public class BaseLogger {
                 pLogLevel == BaseLogLevel.BLUELIB ||
                 pIsBlueLib && BlueLibConstants.isBlueLibLoggingEnabled ||
                 !pIsBlueLib && BlueLibConstants.isLoggingEnabled) {
-            logger.log(pLogLevel, pMessage, pThrowable);
+            BlueLibConstants.LOGGER.log(pLogLevel, pMessage, pThrowable);
         }
     }
 
@@ -112,7 +117,7 @@ public class BaseLogger {
                 pLogLevel == BaseLogLevel.BLUELIB ||
                 pIsBlueLib && BlueLibConstants.isBlueLibLoggingEnabled ||
                 !pIsBlueLib && BlueLibConstants.isLoggingEnabled) {
-            logger.log(pLogLevel, pMessage);
+            BlueLibConstants.LOGGER.log(pLogLevel, pMessage);
         }
     }
 
@@ -130,7 +135,7 @@ public class BaseLogger {
                 pLogLevel == BaseLogLevel.WARNING ||
                 pLogLevel == BaseLogLevel.BLUELIB ||
                 BlueLibConstants.isLoggingEnabled) {
-            logger.log(pLogLevel, pMessage, pThrowable);
+            BlueLibConstants.LOGGER.log(pLogLevel, pMessage, pThrowable);
         }
     }
 
@@ -146,7 +151,7 @@ public class BaseLogger {
                 pLogLevel == BaseLogLevel.WARNING ||
                 pLogLevel == BaseLogLevel.BLUELIB ||
                 BlueLibConstants.isLoggingEnabled) {
-            logger.log(pLogLevel, pMessage);
+            BlueLibConstants.LOGGER.log(pLogLevel, pMessage);
         }
     }
 
@@ -157,6 +162,6 @@ public class BaseLogger {
      * @since 1.0.0
      */
     public static void logBlueLib(String pMessage) {
-        logger.log(BaseLogLevel.BLUELIB, pMessage);
+        BlueLibConstants.LOGGER.log(BaseLogLevel.BLUELIB, pMessage);
     }
 }

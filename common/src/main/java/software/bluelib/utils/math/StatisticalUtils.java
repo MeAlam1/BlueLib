@@ -38,6 +38,18 @@ import java.util.Map;
 public class StatisticalUtils {
 
     /**
+     * Private constructor to prevent instantiation.
+     * <p>
+     * This constructor is intentionally empty to prevent creating instances of this utility class.
+     * </p>
+     *
+     * @author MeAlam
+     * @since 1.0.0
+     */
+    private StatisticalUtils() {
+    }
+
+    /**
      * A {@link Double} that calculates the mean (average) of an array of values.
      * <p>
      * Logs a warning if the array is empty and a success message with the calculated mean.

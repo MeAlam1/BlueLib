@@ -27,6 +27,18 @@ import software.bluelib.utils.logging.BaseLogger;
 public class CaseConverterUtils {
 
     /**
+     * Private constructor to prevent instantiation.
+     * <p>
+     * This constructor is intentionally empty to prevent creating instances of this utility class.
+     * </p>
+     *
+     * @author MeAlam
+     * @since 1.0.0
+     */
+    private CaseConverterUtils() {
+    }
+
+    /**
      * A {@link String} that converts a given {@link String} to camelCase.
      * <p>
      * If the input is in PascalCase, snake_case, or kebab-case, it will be converted accordingly.

@@ -30,6 +30,18 @@ import static software.bluelib.BlueLibConstants.SCHEDULER;
 public class BlueLibCommon {
 
     /**
+     * Private constructor to prevent instantiation.
+     * <p>
+     * This constructor is intentionally empty to prevent creating instances of this class.
+     * </p>
+     *
+     * @author MeAlam
+     * @since 1.0.0
+     */
+    private BlueLibCommon() {
+    }
+
+    /**
      * A {@code public static final} {@link IPlatformHelper} instance that represents the current platform helper loaded for the mod.
      * This is used to identify platform-specific functionalities.
      *
