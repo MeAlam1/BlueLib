@@ -49,11 +49,25 @@ public class BlueLibConstants {
      */
     public static final String MOD_NAME = "BlueLib";
 
-    /**
+    /** TODO: Always have on False when pushing to production
      * A {@code public static final} {@link Boolean} indicating whether the example features should be enabled. <br>
      * Should always be false in production.
      *
      * @since 1.0.0
      */
     public static final Boolean isExampleEnabled = true;
+
+    /** TODO: Always have on False when pushing to production
+     * A {@link Boolean} to enable or disable BlueLib specific logging.
+     *
+     * @since 1.0.0
+     */
+    public static boolean isBlueLibLoggingEnabled = true;
+
+    /** TODO: Always have on False when pushing to production
+     * A {@link Boolean} to enable or disable general logging.
+     *
+     * @since 1.0.0
+     */
+    public static boolean isLoggingEnabled = true;
 }

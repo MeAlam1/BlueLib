@@ -34,21 +34,6 @@ public class BaseLogger {
      */
     private static final Logger logger = Logger.getLogger(BlueLibConstants.MOD_NAME);
 
-    //FIXME: Set to false before release
-    /**
-     * A {@link Boolean} to enable or disable BlueLib specific logging.
-     *
-     * @since 1.0.0
-     */
-    private static boolean bluelibLogging = true;
-
-    /**
-     * A {@link Boolean} to enable or disable general logging.
-     *
-     * @since 1.0.0
-     */
-    private static boolean isLoggingEnabled = true;
-
     /**
      * A {@code void} to enable or disable {@code BlueLib} specific logging.
      *
@@ -56,7 +41,7 @@ public class BaseLogger {
      * @since 1.0.0
      */
     public static void setBlueLibLoggingEnabled(boolean pEnabled) {
-        bluelibLogging = pEnabled;
+        BlueLibConstants.isBlueLibLoggingEnabled = pEnabled;
     }
 
     /**
@@ -66,7 +51,7 @@ public class BaseLogger {
      * @since 1.0.0
      */
     public static boolean isBlueLibLoggingEnabled() {
-        return bluelibLogging;
+        return BlueLibConstants.isBlueLibLoggingEnabled;
     }
 
     /**
@@ -76,7 +61,7 @@ public class BaseLogger {
      * @since 1.0.0
      */
     public static boolean isLoggingEnabled() {
-        return isLoggingEnabled;
+        return BlueLibConstants.isLoggingEnabled;
     }
 
     /**
@@ -86,7 +71,7 @@ public class BaseLogger {
      * @since 1.0.0
      */
     public static void setLoggingEnabled(boolean pEnabled) {
-        isLoggingEnabled = pEnabled;
+        BlueLibConstants.isLoggingEnabled = pEnabled;
     }
 
     static {
@@ -107,8 +92,8 @@ public class BaseLogger {
         if (pLogLevel == BaseLogLevel.ERROR ||
                 pLogLevel == BaseLogLevel.WARNING ||
                 pLogLevel == BaseLogLevel.BLUELIB ||
-                pIsBlueLib && bluelibLogging ||
-                !pIsBlueLib && isLoggingEnabled) {
+                pIsBlueLib && BlueLibConstants.isBlueLibLoggingEnabled ||
+                !pIsBlueLib && BlueLibConstants.isLoggingEnabled) {
             logger.log(pLogLevel, pMessage, pThrowable);
         }
     }
@@ -125,8 +110,8 @@ public class BaseLogger {
         if (pLogLevel == BaseLogLevel.ERROR ||
                 pLogLevel == BaseLogLevel.WARNING ||
                 pLogLevel == BaseLogLevel.BLUELIB ||
-                pIsBlueLib && bluelibLogging ||
-                !pIsBlueLib && isLoggingEnabled) {
+                pIsBlueLib && BlueLibConstants.isBlueLibLoggingEnabled ||
+                !pIsBlueLib && BlueLibConstants.isLoggingEnabled) {
             logger.log(pLogLevel, pMessage);
         }
     }
@@ -144,7 +129,7 @@ public class BaseLogger {
         if (pLogLevel == BaseLogLevel.ERROR ||
                 pLogLevel == BaseLogLevel.WARNING ||
                 pLogLevel == BaseLogLevel.BLUELIB ||
-                isLoggingEnabled) {
+                BlueLibConstants.isLoggingEnabled) {
             logger.log(pLogLevel, pMessage, pThrowable);
         }
     }
@@ -160,7 +145,7 @@ public class BaseLogger {
         if (pLogLevel == BaseLogLevel.ERROR ||
                 pLogLevel == BaseLogLevel.WARNING ||
                 pLogLevel == BaseLogLevel.BLUELIB ||
-                isLoggingEnabled) {
+                BlueLibConstants.isLoggingEnabled) {
             logger.log(pLogLevel, pMessage);
         }
     }
