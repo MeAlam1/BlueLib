@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "minVersion": "0.8.0",
+  "package": "software.bluelib.mixin",
+  "refmap": "bluelib.refmap.json",
+  "mixins": [
+    "variant.LivingEntityMixin"
+  ],
+  "client": [],
+  "server": [],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
