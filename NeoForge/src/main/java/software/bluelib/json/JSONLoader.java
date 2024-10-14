@@ -7,7 +7,8 @@ import com.google.gson.JsonObject;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
-import software.bluelib.exception.CouldNotLoadJSON;
+import software.bluelib.utils.logging.BaseLogLevel;
+import software.bluelib.utils.logging.BaseLogger;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,54 +17,57 @@ import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
 /**
- * The {@code JSONLoader} class is responsible for loading and parsing JSON data from
+ * A {@code public class} responsible for loading and parsing JSON data from
  * resources defined by {@link ResourceLocation} within a Minecraft mod environment. <br>
  * It uses the {@link Gson} library to convert JSON strings into {@link JsonObject} instances.
  * <p>
- * Key methods:
+ * Key Methods:
  * <ul>
- *   <li>{@link #loadJson(ResourceLocation, ResourceManager)} - Loads a JSON resource.</li>
+ *   <li>{@link #loadJson(ResourceLocation, ResourceManager)} - Loads a JSON resource from the specified location.</li>
  * </ul>
+ *
  * @author MeAlam
- * @Co-author Dan
  * @since 1.0.0
  */
 public class JSONLoader {
 
     /**
-     * A {@link Gson} instance for parsing JSON data.
-     * @Co-author MeAlam, Dan
+     * A {@code private static} {@link Gson} instance for parsing JSON data.
      */
     private static final Gson gson = new Gson();
 
     /**
-     * A {@link JsonObject} that loads JSON data from a {@link ResourceLocation}. <br>
+     * A {@code public} {@link JsonObject} that loads JSON data from a {@link ResourceLocation}. <br>
      * This method is typically used to load configuration files or other JSON-based resources
      * in a Minecraft mod environment.
-     * <p>
+     *
      * @param pResourceLocation {@link ResourceLocation} - The {@link ResourceLocation} of the JSON resource.
-     * @param pResourceManager {@link ResourceManager} - The {@link ResourceManager} to load the resource.
-     * @return The loaded {@link JsonObject}.
-     * @throws CouldNotLoadJSON If the JSON could not be loaded.
+     * @param pResourceManager  {@link ResourceManager} - The {@link ResourceManager} used to load the resource.
+     * @return The loaded {@link JsonObject}. Returns an empty {@link JsonObject} if the resource is not found.
+     * @throws RuntimeException if there is an error reading the resource.
      * @author MeAlam
-     * @Co-author Dan
      * @since 1.0.0
      */
-    public JsonObject loadJson(ResourceLocation pResourceLocation, ResourceManager pResourceManager) throws CouldNotLoadJSON {
+    public JsonObject loadJson(ResourceLocation pResourceLocation, ResourceManager pResourceManager) {
         try {
             Optional<Resource> resource = pResourceManager.getResource(pResourceLocation);
 
             if (resource.isEmpty()) {
+                BaseLogger.log(BaseLogLevel.ERROR, "Resource not found: " + pResourceLocation, true);
                 return new JsonObject();
             }
 
             try (InputStream inputStream = resource.get().open();
                  InputStreamReader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8)) {
 
-                return gson.fromJson(reader, JsonObject.class);
+                JsonObject jsonObject = gson.fromJson(reader, JsonObject.class);
+                BaseLogger.log(BaseLogLevel.SUCCESS, "Successfully loaded JSON resource: " + pResourceLocation, true);
+                return jsonObject;
             }
         } catch (IOException pException) {
-            throw new CouldNotLoadJSON("Failed to load JSON from resource: " + pResourceLocation + ". Error: " + pException.getMessage(), pResourceLocation.toString());
+            RuntimeException exception = new RuntimeException("Failed to load JSON resource: " + pResourceLocation, pException);
+            BaseLogger.log(BaseLogLevel.ERROR, "Failed to load JSON resource: " + pResourceLocation, exception, true);
+            throw exception;
         }
     }
 }

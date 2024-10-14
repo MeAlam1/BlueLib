@@ -11,6 +11,7 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import org.jetbrains.annotations.NotNull;
@@ -20,7 +21,9 @@ import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.util.GeckoLibUtil;
 import software.bluelib.interfaces.variant.IVariantEntity;
-import software.bluelib.utils.ParameterUtils;
+import software.bluelib.utils.logging.BaseLogLevel;
+import software.bluelib.utils.logging.BaseLogger;
+import software.bluelib.utils.variant.ParameterUtils;
 
 /**
  * A {@code DragonEntity} class representing a dragon entity in the game, which extends {@link TamableAnimal}
@@ -29,8 +32,6 @@ import software.bluelib.utils.ParameterUtils;
  * This class manages the dragon's variant system, its data synchronization, and integrates with the GeckoLib
  * animation system.
  * </p>
- *
- * <p>
  * Key Methods:
  * <ul>
  *   <li>{@link #defineSynchedData()} - Defines the synchronized data for the dragon entity, including its variant.</li>
@@ -40,10 +41,8 @@ import software.bluelib.utils.ParameterUtils;
  *   <li>{@link #setVariantName(String)} - Sets the variant name of the dragon.</li>
  *   <li>{@link #getVariantName()} - Retrieves the current variant name of the dragon.</li>
  * </ul>
- * </p>
  *
  * @author MeAlam
- * @Co-author Dan
  * @since 1.0.0
  */
 public class DragonEntity extends TamableAnimal implements IVariantEntity, GeoEntity {
@@ -52,14 +51,14 @@ public class DragonEntity extends TamableAnimal implements IVariantEntity, GeoEn
      * <p>
      * This is used to store and retrieve the variant data for synchronization between server and client.
      * </p>
-     * @Co-author MeAlam, Dan
+     *
      * @since 1.0.0
      */
     public static final EntityDataAccessor<String> VARIANT = SynchedEntityData.defineId(DragonEntity.class, EntityDataSerializers.STRING);
 
     /**
      * The name of the entity.
-     * @Co-author MeAlam, Dan
+     *
      * @since 1.0.0
      */
     protected final String entityName = "dragon";
@@ -68,11 +67,9 @@ public class DragonEntity extends TamableAnimal implements IVariantEntity, GeoEn
      * Constructs a new {@link DragonEntity} instance with the specified entity type and level.
      *
      * @param pEntityType {@link EntityType} - The type of the entity.
-     * @param pLevel {@link Level} - The level in which the entity is created.
-     *
-     * @since 1.0.0
+     * @param pLevel      {@link Level} - The level in which the entity is created.
      * @author MeAlam
-     * @Co-author Dan
+     * @since 1.0.0
      */
     public DragonEntity(EntityType<? extends TamableAnimal> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
@@ -84,9 +81,8 @@ public class DragonEntity extends TamableAnimal implements IVariantEntity, GeoEn
      * This method initializes the {@link EntityDataAccessor} to handle the variant data.
      * </p>
      *
-     * @since 1.0.0
      * @author MeAlam
-     * @Co-author Dan
+     * @since 1.0.0
      */
     @Override
     protected void defineSynchedData() {
@@ -101,10 +97,8 @@ public class DragonEntity extends TamableAnimal implements IVariantEntity, GeoEn
      * </p>
      *
      * @param pCompound {@link CompoundTag} - The NBT tag to which data should be added.
-     *
-     * @since 1.0.0
      * @author MeAlam
-     * @Co-author Dan
+     * @since 1.0.0
      */
     @Override
     public void addAdditionalSaveData(@NotNull CompoundTag pCompound) {
@@ -119,10 +113,8 @@ public class DragonEntity extends TamableAnimal implements IVariantEntity, GeoEn
      * </p>
      *
      * @param pCompound {@link CompoundTag} - The NBT tag from which data should be read.
-     *
-     * @since 1.0.0
      * @author MeAlam
-     * @Co-author Dan
+     * @since 1.0.0
      */
     @Override
     public void readAdditionalSaveData(@NotNull CompoundTag pCompound) {
@@ -136,39 +128,35 @@ public class DragonEntity extends TamableAnimal implements IVariantEntity, GeoEn
      * This method sets up the variant for the entity and connects parameters if needed.
      * </p>
      *
-     * @param pLevel {@link ServerLevelAccessor} - The level in which the entity is spawned.
+     * @param pLevel      {@link ServerLevelAccessor} - The level in which the entity is spawned.
      * @param pDifficulty {@link DifficultyInstance} - The difficulty instance for spawning.
-     * @param pReason {@link MobSpawnType} - The reason for spawning the entity.
-     * @param pSpawnData {@link SpawnGroupData} - Data related to the spawn.
-     * @param pDataTag {@link CompoundTag} - Additional data for spawning.
+     * @param pReason     {@link MobSpawnType} - The reason for spawning the entity.
+     * @param pSpawnData  {@link SpawnGroupData} - Data related to the spawn.
      * @return {@link SpawnGroupData} - Updated spawn data.
-     *
-     * @since 1.0.0
      * @author MeAlam
-     * @Co-author Dan
+     * @since 1.0.0
      */
     @Override
-    public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor pLevel, @NotNull DifficultyInstance pDifficulty, @NotNull MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData, @Nullable CompoundTag pDataTag) {
+    public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor pLevel, @NotNull DifficultyInstance pDifficulty, @NotNull MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData, @Nullable CompoundTag pSpawnTag) {
         if (getVariantName() == null || getVariantName().isEmpty()) {
             this.setVariantName(getRandomVariant(getEntityVariants(entityName), "normal"));
-            ParameterUtils.ParameterBuilder.forVariant(entityName,this.getVariantName())
+            ParameterUtils.ParameterBuilder.forVariant(entityName, this.getVariantName())
                     .withParameter("customParameter")
                     .withParameter("int")
                     .withParameter("bool")
                     .withParameter("array")
                     .connect();
         }
-        return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
+        BaseLogger.log(BaseLogLevel.SUCCESS, "Dragon Spawned with Variant: " + getVariantName(), true);
+        return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pSpawnTag);
     }
 
     /**
      * Sets the variant name for the dragon entity.
      *
      * @param pName {@link String} - The name of the variant to set.
-     *
-     * @since 1.0.0
      * @author MeAlam
-     * @Co-author Dan
+     * @since 1.0.0
      */
     public void setVariantName(String pName) {
         this.entityData.set(VARIANT, pName);
@@ -178,21 +166,28 @@ public class DragonEntity extends TamableAnimal implements IVariantEntity, GeoEn
      * Retrieves the current variant name of the dragon entity.
      *
      * @return {@link String} - The current variant name.
-     *
-     * @since 1.0.0
      * @author MeAlam
-     * @Co-author Dan
+     * @since 1.0.0
      */
     public String getVariantName() {
         return this.entityData.get(VARIANT);
     }
+    /* All Code below this Fragment is not Library Related!!! */
 
     /**
-     * All Code below this Fragment is not Library Related!!!
+     * The cache for the animatable instance.
+     *
+     * @since 1.0.0
      */
-
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
+    /**
+     * Defines the synchronized data for the dragon entity.
+     *
+     * @return {@link SynchedEntityData} - The builder for the synchronized data.
+     * @author MeAlam
+     * @since 1.0.0
+     */
     public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes()
                 .add(Attributes.MOVEMENT_SPEED, 0.3)
@@ -203,18 +198,54 @@ public class DragonEntity extends TamableAnimal implements IVariantEntity, GeoEn
                 .add(Attributes.FLYING_SPEED, 0.3);
     }
 
+    /**
+     * Adds custom data to the entity's NBT for saving.
+     *
+     * @param pControllerRegistrar {@link CompoundTag} - The tag to add the data to.
+     * @author MeAlam
+     * @since 1.0.0
+     */
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar pControllerRegistrar) {
     }
 
+    /**
+     * Adds custom data to the entity's NBT for saving.
+     *
+     * @return {@link CompoundTag} - The tag with the custom data.
+     * @author MeAlam
+     * @since 1.0.0
+     */
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {
         return cache;
     }
 
+    /**
+     * Adds custom data to the entity's NBT for saving.
+     *
+     * @param pLevel       {@link CompoundTag} - The tag to add the data to.
+     * @param pOtherParent {@link CompoundTag} - The other tag to add the data from.
+     * @return {@link CompoundTag} - The tag with the custom data.
+     * @author MeAlam
+     * @since 1.0.0
+     */
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(@NotNull ServerLevel pLevel, @NotNull AgeableMob pOtherParent) {
         return null;
+    }
+
+    /**
+     * Adds custom data to the entity's NBT for saving.
+     *
+     * @param pItemStack {@link ItemStack} - The item stack to check.
+     * @return {@link boolean} - Whether the item is food or not.
+     * @author MeAlam
+     * @since 1.0.0
+     */
+    @Override
+    public boolean isFood(@NotNull ItemStack pItemStack) {
+        return false;
     }
 }

@@ -4,118 +4,67 @@ package software.bluelib;
 
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.neoforged.fml.loading.FMLEnvironment;
+import org.spongepowered.asm.launch.MixinBootstrap;
 import software.bluelib.example.event.ClientEvents;
 import software.bluelib.example.init.ModEntities;
 
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
-
 /**
- * The main class of the {@link BlueLib} mod.
+ * The main class of the {@code BlueLib} mod.
  * <p>
- * This class serves as the entry point for the {@link BlueLib} mod, handling initialization by registering event handlers
+ * This class serves as the entry point for the {@code BlueLib} mod, handling initialization by registering event handlers
  * and setting up necessary configurations. For more details, refer to the <a href="https://github.com/MeAlam1/BlueLib/wiki">BlueLib Wiki</a>.
  * </p>
  *
  * <p>
  * Key Methods:
  * <ul>
- *   <li>{@link #BlueLib(IEventBus)} - Constructs the {@link BlueLib} instance and registers the mod event bus.</li>
- *   <li>{@link #onLoadComplete(FMLLoadCompleteEvent)} - Handles the event when the mod loading is complete and prints a thank-you message if in developer mode.</li>
- *   <li>{@link #isDeveloperMode()} - Determines if the mod is running in developer mode.</li>
+ *   <li>{@link #BlueLib(IEventBus, ModContainer)} - Constructs the {@code BlueLib} instance and registers the mod event bus.</li>
+ *   <li>{@link #onLoadComplete(FMLLoadCompleteEvent)} - Handles the event when the mod loading is complete.</li>
  * </ul>
- * </p>
  *
+ * @author MeAlam, Dan and All Contributors of BlueLib!
  * @see <a href="https://github.com/MeAlam1/BlueLib/wiki">BlueLib Wiki</a>
- * @author MeAlam, Dan
- * @Co-author All Contributors of BlueLib!
  * @since 1.0.0
  */
-@Mod(BlueLib.MODID)
+@Mod(BlueLibConstants.MOD_ID)
 public class BlueLib {
 
     /**
-     * A {@link ScheduledExecutorService} used for scheduling tasks, such as printing messages after a delay.
+     * Constructs a new {@code BlueLib} instance and registers the mod event bus.
      * <p>
-     * This is initialized with a single-threaded pool to handle delayed tasks in a separate thread.
+     * Registers necessary mod event listeners, and if in developer mode, additional client-side listeners for rendering and attributes.
      * </p>
-     * @Co-author MeAlam, Dan
-     * @since 1.0.0
-     */
-    private static final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-
-    /**
-     * The Mod ID for {@link BlueLib}. This serves as a unique identifier for the mod.
-     * @Co-author MeAlam, Dan
-     * @since 1.0.0
-     */
-    public static final String MODID = "bluelib";
-
-    // public static final Logger LOGGER = LogUtils.getLogger();
-
-    /**
-     * Constructs a new {@link BlueLib} instance and registers the mod event bus.
      *
-     * @param pModEventBus {@link IEventBus} - The event bus to which the mod will register its event handlers.
+     * @param pModEventBus  {@link IEventBus} - The event bus where the mod registers its handlers.
+     * @param pModContainer {@link ModContainer} - The mod container that holds the instance of the mod.
      * @author MeAlam
-     * @Co-author Dan
      * @since 1.0.0
      */
-    public BlueLib(IEventBus pModEventBus) {
+    public BlueLib(IEventBus pModEventBus, ModContainer pModContainer) {
         pModEventBus.register(this);
-        if (isDeveloperMode()) {
+        MixinBootstrap.init();
+        if (BlueLibCommon.isDeveloperMode() && BlueLibCommon.PLATFORM.isModLoaded("geckolib") && BlueLibConstants.isExampleEnabled) {
             ModEntities.REGISTRY.register(pModEventBus);
-
-            pModEventBus.addListener(ClientEvents::registerAttributes);
-            pModEventBus.addListener(ClientEvents::registerRenderers);
+            if (FMLEnvironment.dist.isClient()) {
+                pModEventBus.addListener(ClientEvents::registerAttributes);
+                pModEventBus.addListener(ClientEvents::registerRenderers);
+            }
         }
     }
 
     /**
-     * Handles the {@link FMLLoadCompleteEvent}, which is triggered when the mod loading process is complete.
-     * <p>
-     * If the mod is running in developer mode, it schedules a task to print a thank-you message to the console after a short delay.
-     * </p>
+     * A {@code public void} that handles the {@link FMLLoadCompleteEvent}, which occurs when the mod finishes loading.
      *
-     * @param pEvent {@link FMLLoadCompleteEvent} - The event triggered upon the completion of the mod loading process.
+     * @param pEvent {@link FMLLoadCompleteEvent} - The event fired after the mod loading process completes.
      * @author MeAlam
-     * @Co-author Dan
      * @since 1.0.0
      */
     @SubscribeEvent
     public void onLoadComplete(FMLLoadCompleteEvent pEvent) {
-        if (isDeveloperMode()) {
-            scheduler.schedule(() -> {
-                System.out.println("""
-
-                        **************************************************
-                        *                                                *
-                        *    Thank you for using BlueLib!                *
-                        *    We appreciate your support.                 *
-                        *                                                *
-                        **************************************************
-                        """);
-                scheduler.shutdown();
-            }, 3, TimeUnit.SECONDS);
-        }
-    }
-
-    /**
-     * Checks if the mod is running in developer mode.
-     * <p>
-     * Developer mode is determined by checking if the mod is not running in a production environment.
-     * </p>
-     *
-     * @return {@code true} if the mod is running in developer mode, {@code false} otherwise.
-     * @author MeAlam
-     * @Co-author Dan
-     * @since 1.0.0
-     */
-    static boolean isDeveloperMode() {
-        return !FMLEnvironment.production;
+        BlueLibCommon.init();
     }
 }
