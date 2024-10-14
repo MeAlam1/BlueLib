@@ -1,31 +1,29 @@
 modLoader="javafml"
-loaderVersion="${loader_version_range}"
-license="${mod_license}"
+loaderVersion="${neoforge_loader_version_range}"
+license="${license}"
 issueTrackerURL="https://github.com/MeAlam1/BlueLib/issues"
+
 [[mods]]
 modId="${mod_id}"
-version="${mod_version}"
+version="${version}"
 displayName="${mod_name}"
-
 # A URL to query for updates for this mod. See the JSON update specification https://docs.neoforged.net/docs/misc/updatechecker/
 #updateJSONURL="https://change.me.example.invalid/updates.json" #optional
 displayURL="https://mealam1.github.io/BlueLib/"
 logoFile="bluelib.png"
 credits="Anyone who contributed to the Source Code of BlueLib!"
-authors="${mod_authors}"
+authors="${mod_author}"
+description='''${description}'''
 
-
-description='''${mod_description}'''
-[[dependencies.${mod_id}]]
-    modId="neoforge"
-    type="required"
-    versionRange="${neo_version_range}"
-    ordering="NONE"
-    side="BOTH"
-
-[[dependencies.${mod_id}]]
-    modId="minecraft"
-    type="required"
-    versionRange="${minecraft_version_range}"
-    ordering="NONE"
-    side="BOTH"
+[[dependencies.bluelib]]
+modId = "neoforge"
+mandatory = true
+versionRange = "${neoforge_loader_version_range}"
+ordering = "NONE"
+side = "BOTH"
+[[dependencies.bluelib]]
+modId = "minecraft"
+mandatory = true
+versionRange = "${minecraft_version_range}"
+ordering = "NONE"
+side = "BOTH"

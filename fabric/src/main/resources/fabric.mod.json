@@ -1,0 +1,36 @@
+{
+    "schemaVersion": 1,
+    "id": "${mod_id}",
+    "version": "${version}",
+    "name": "${mod_name}",
+    "description": "${description}",
+    "authors": [
+        "${mod_author}"
+    ],
+    "contact": {
+        "homepage": "https://www.curseforge.com/minecraft/mc-mods/bluelib",
+        "issues": "https://github.com/MeAlam1/BlueLib/issues",
+        "sources": "https://github.com/MeAlam1/BlueLib"
+    },
+    "license": "${license}",
+    "icon": "bluelib.png",
+    "environment": "*",
+    "entrypoints": {
+        "main": [
+          "software.bluelib.BlueLib"
+        ],
+        "client": [
+            "software.bluelib.example.init.ClientInit"
+        ]
+    },
+    "depends": {
+        "fabricloader": ">=${fabric_loader_version}",
+        "fabric-api": "*",
+        "minecraft": "${minecraft_version}",
+        "java": ">=17"
+    },
+    "suggests": {
+        "another-mod": "*"
+    }
+}
+  
