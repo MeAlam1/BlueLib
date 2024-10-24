@@ -40,14 +40,6 @@
         </thead>
         <tbody>
           <tr>
-            <td>1.16.5</td>
-            <td>Active</td>
-          </tr>
-          <tr>
-            <td>1.18.2</td>
-            <td>Active</td>
-          </tr>
-          <tr>
             <td>1.20.x</td>
             <td>Active</td>
           </tr>
@@ -67,14 +59,6 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>1.16.5</td>
-            <td>Active</td>
-          </tr>
-          <tr>
-            <td>1.18.2</td>
-            <td>Active</td>
-          </tr>
           <tr>
             <td>1.20.x</td>
             <td>Active</td>
