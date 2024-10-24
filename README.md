@@ -40,14 +40,6 @@
         </thead>
         <tbody>
           <tr>
-            <td>1.16.5</td>
-            <td>Active</td>
-          </tr>
-          <tr>
-            <td>1.18.2</td>
-            <td>Active</td>
-          </tr>
-          <tr>
             <td>1.20.x</td>
             <td>Active</td>
           </tr>
@@ -67,14 +59,6 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>1.16.5</td>
-            <td>Active</td>
-          </tr>
-          <tr>
-            <td>1.18.2</td>
-            <td>Active</td>
-          </tr>
           <tr>
             <td>1.20.x</td>
             <td>Active</td>
@@ -99,4 +83,3 @@
     <a href="https://github.com/MeAlam1/BlueLib/pkgs/container/permify" target="_blank"><img src="https://img.shields.io/github/v/release/MeAlam1/BlueLib?include_prereleases&style=for-the-badge" alt="BlueLib Release" /></a>&nbsp;
     <a href="https://img.shields.io/github/commit-activity/m/MeAlam1/BlueLib?style=for-the-badge" target="_blank"><img src="https://img.shields.io/github/commit-activity/m/MeAlam1/BlueLib?style=for-the-badge" alt="BlueLib Commit Activity" /></a>&nbsp;
 </p>        
-
