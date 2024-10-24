@@ -65,4 +65,10 @@
 <p align="center">
   <a href="https://discord.gg/WMpmqMbJsH"><img src="https://img.shields.io/discord/1272923738895286457?color=blue&label=Discord&logo=Discord&logoColor=blue&style=for-the-badge" alt="Discord"/></a>
 </p>
+<p align="center">
+    <a href="https://github.com/MeAlam1/BlueLib" target="_blank"><img src="https://img.shields.io/github/license/MeAlam1/BlueLib?style=for-the-badge" alt="BlueLib Licence" /></a>&nbsp;
+    <a href="https://github.com/MeAlam1/BlueLib/pkgs/container/permify" target="_blank"><img src="https://img.shields.io/github/v/release/MeAlam1/BlueLib?include_prereleases&style=for-the-badge" alt="BlueLib Release" /></a>&nbsp;
+    <a href="https://img.shields.io/github/commit-activity/m/MeAlam1/BlueLib?style=for-the-badge" target="_blank"><img src="https://img.shields.io/github/commit-activity/m/MeAlam1/BlueLib?style=for-the-badge" alt="BlueLib Commit Activity" /></a>&nbsp;
+</p>        
+
 
