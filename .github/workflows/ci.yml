@@ -50,10 +50,10 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Build for NeoForge
-        run: ./gradlew build -p neoforge --stacktrace
+        run: ./gradlew build -p NeoForge
 
       - name: Build for Forge
-        run: ./gradlew build -p forge
+        run: ./gradlew build -p Forge
 
       - name: Build for Fabric
         run: ./gradlew build -p fabric
