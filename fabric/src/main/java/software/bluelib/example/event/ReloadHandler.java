@@ -11,6 +11,7 @@ import software.bluelib.utils.logging.BaseLogger;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -50,6 +51,7 @@ public class ReloadHandler extends ReloadEventHandler {
      * @since 1.0.0
      */
     public static void onServerStart(MinecraftServer pServer) {
+        BlueLibConstants.SCHEDULER = new ScheduledThreadPoolExecutor(1);
         server = pServer;
         ReloadHandler.LoadEntityVariants(server);
         BaseLogger.log(BaseLogLevel.INFO, "Entity variants loaded.", true);

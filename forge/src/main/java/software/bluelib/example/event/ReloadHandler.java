@@ -13,6 +13,7 @@ import software.bluelib.utils.logging.BaseLogger;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -53,6 +54,7 @@ public class ReloadHandler extends ReloadEventHandler {
      */
     @SubscribeEvent
     public static void onServerStart(ServerStartingEvent pEvent) {
+        BlueLibConstants.SCHEDULER = new ScheduledThreadPoolExecutor(1);
         server = pEvent.getServer();
         ReloadHandler.LoadEntityVariants(server);
         BaseLogger.log(BaseLogLevel.INFO, "Entity variants loaded.", true);
