@@ -45,14 +45,14 @@ public class BlueLibConstants {
     public static final Logger LOGGER = Logger.getLogger(BlueLibConstants.MOD_NAME);
 
     /**
-     * A {@code public static final} {@link ScheduledExecutorService} used to schedule tasks, such as printing messages after a delay.
+     * A {@code public static} {@link ScheduledExecutorService} used to schedule tasks, such as printing messages after a delay.
      * <p>
      * This executor runs tasks on a single thread to ensure delayed tasks run in a separate thread from the main thread.
      * </p>
      *
      * @since 1.0.0
      */
-    public static final ScheduledExecutorService SCHEDULER = Executors.newScheduledThreadPool(1);
+    public static ScheduledExecutorService SCHEDULER = Executors.newScheduledThreadPool(1);
 
     /**
      * A {@code public static final} {@link String} representing the Mod ID for the {@code BlueLib} mod.
