@@ -116,14 +116,4 @@ public class ReloadHandler extends ReloadEventHandler {
             BaseLogger.log(BaseLogLevel.INFO, "Entity variants loaded for " + entityName + ".", true);
         }
     }
-
-    /**
-     * Registers the server start and reload event listeners.
-     *
-     * @author MeAlam
-     * @since 1.0.0
-     */
-    public static void registerEventListeners() {
-        ServerLifecycleEvents.SERVER_STARTING.register(ReloadHandler::onServerStart);
-    }
 }
