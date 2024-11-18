@@ -21,6 +21,7 @@ import software.bluelib.utils.logging.BaseLogger;
  * </ul>
  *
  * @author MeAlam
+ * @version 1.0.0
  * @see VariantLoader
  * @see MinecraftServer
  * @see ResourceLocation
@@ -42,7 +43,7 @@ public class ReloadEventHandler {
      *   <li>{@code pModID} {@link String} - The mod ID used to locate the entity variant resources. (Use your Mod's ID)</li>
      *   <li>{@code pEntityName} {@link String} - The entity name to load.</li>
      * </ul>
-     *
+     * <p>
      * Exception Handling:
      * <ul>
      *   <li>{@link JsonParseException} - Thrown when there is an error parsing the JSON files.</li>

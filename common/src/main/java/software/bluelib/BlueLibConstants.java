@@ -21,6 +21,7 @@ import java.util.logging.Logger;
  * </ul>
  *
  * @author MeAlam
+ * @version 1.0.0
  * @since 1.0.0
  */
 public class BlueLibConstants {
@@ -38,7 +39,7 @@ public class BlueLibConstants {
     }
 
     /**
-     * A {@link Logger} instance for logging messages.
+     * A {@code public static final} {@link Logger} instance for logging messages.
      *
      * @since 1.0.0
      */

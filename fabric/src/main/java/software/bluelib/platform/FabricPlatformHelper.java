@@ -21,6 +21,7 @@ import software.bluelib.interfaces.platform.IPlatformHelper;
  * </ul>
  *
  * @author MeAlam
+ * @version 1.0.0
  * @since 1.0.0
  */
 public class FabricPlatformHelper implements IPlatformHelper {

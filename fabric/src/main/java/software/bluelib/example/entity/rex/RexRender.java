@@ -9,6 +9,7 @@ import software.bernie.geckolib.renderer.GeoEntityRenderer;
  * A {@code public class} that extends {@link GeoEntityRenderer} for rendering the rex entity.
  *
  * @author MeAlam
+ * @version 1.0.0
  * @since 1.0.0
  */
 public class RexRender extends GeoEntityRenderer<RexEntity> {

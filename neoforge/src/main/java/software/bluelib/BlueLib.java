@@ -6,14 +6,11 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
-import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.neoforged.fml.loading.FMLEnvironment;
 import org.spongepowered.asm.launch.MixinBootstrap;
 import software.bluelib.example.event.ClientEvents;
 import software.bluelib.example.init.ModEntities;
-
-import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 /**
  * The main class of the {@code BlueLib} mod.
@@ -30,6 +27,7 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
  * </ul>
  *
  * @author MeAlam, Dan and All Contributors of BlueLib!
+ * @version 1.0.0
  * @see <a href="https://github.com/MeAlam1/BlueLib/wiki">BlueLib Wiki</a>
  * @since 1.0.0
  */

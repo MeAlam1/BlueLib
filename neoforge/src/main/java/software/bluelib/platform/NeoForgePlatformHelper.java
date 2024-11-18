@@ -13,7 +13,7 @@ import software.bluelib.interfaces.platform.IPlatformHelper;
  * retrieving the platform name, checking if a mod is loaded, and determining if the game is running
  * in a development environment.
  * </p>
- *
+ * <p>
  * Key Methods:
  * <ul>
  *   <li>{@link #getPlatformName()} - Returns the platform name for NeoForge.</li>
@@ -22,6 +22,7 @@ import software.bluelib.interfaces.platform.IPlatformHelper;
  * </ul>
  *
  * @author MeAlam
+ * @version 1.0.0
  * @since 1.0.0
  */
 public class NeoForgePlatformHelper implements IPlatformHelper {

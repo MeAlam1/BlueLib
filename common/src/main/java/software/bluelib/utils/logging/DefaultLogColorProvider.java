@@ -20,6 +20,7 @@ import java.util.logging.Level;
  * </ul>
  *
  * @author MeAlam
+ * @version 1.0.0
  * @since 1.0.0
  */
 public class DefaultLogColorProvider implements ILogColorProvider {

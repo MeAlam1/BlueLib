@@ -17,6 +17,10 @@ import javax.annotation.Nullable;
  *   <li>{@link #getTextureResource(RexEntity, GeoRenderer)} - Get the Texture Location.</li>
  *   <li>{@link #getAnimationResource(RexEntity)} - Get the Animation Location.</li>
  * </ul>
+ *
+ * @author MeAlam
+ * @version 1.0.0
+ * @since 1.0.0
  */
 public class RexModel extends GeoModel<RexEntity> {
 
@@ -24,7 +28,7 @@ public class RexModel extends GeoModel<RexEntity> {
     /**
      * A {@code public} {@link ResourceLocation} method that returns the location of the model.
      *
-     * @param pObject {@link RexEntity} - The entity to get the model for.
+     * @param pObject      {@link RexEntity} - The entity to get the model for.
      * @param pGeoRenderer {@link GeoRenderer} - The renderer for the entity.
      * @return {@link ResourceLocation} - The location of the model.
      * @author MeAlam
@@ -38,7 +42,7 @@ public class RexModel extends GeoModel<RexEntity> {
     /**
      * A {@code public} {@link ResourceLocation} method that returns the location of the texture.
      *
-     * @param pObject {@link RexEntity} - The entity to get the texture for.
+     * @param pObject      {@link RexEntity} - The entity to get the texture for.
      * @param pGeoRenderer {@link GeoRenderer} - The renderer for the entity.
      * @return {@link ResourceLocation} - The location of the texture.
      * @author MeAlam

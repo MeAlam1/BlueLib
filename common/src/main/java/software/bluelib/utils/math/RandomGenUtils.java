@@ -28,6 +28,7 @@ import software.bluelib.utils.logging.BaseLogger;
  * </p>
  *
  * @author MeAlam
+ * @version 1.0.0
  * @since 1.0.0
  */
 public class RandomGenUtils {
@@ -122,6 +123,7 @@ public class RandomGenUtils {
      * @param pLength {@link Integer} - The length of the string to be generated.
      * @return A random alphanumeric string of the specified length with the specified prefix.
      * @throws IllegalArgumentException if {@code pLength} is negative.
+     * @author MeAlam
      * @since 1.0.0
      */
     public static String generateRandomStringWithPrefix(String pPrefix, int pLength) {

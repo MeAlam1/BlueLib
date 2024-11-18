@@ -24,6 +24,7 @@ import java.util.Map;
  * </ul>
  *
  * @author MeAlam
+ * @version 1.0.0
  * @since 1.0.0
  */
 public class JSONMerger {
@@ -37,6 +38,8 @@ public class JSONMerger {
      *
      * @param pTarget {@link JsonObject} - The target {@link JsonObject} to merge data into. This object will be modified by adding or updating its values.
      * @param pSource {@link JsonObject} - The source {@link JsonObject} to merge data from. This object is not modified by the operation.
+     * @author MeAlam
+     * @since 1.0.0
      */
     public void mergeJsonObjects(JsonObject pTarget, JsonObject pSource) {
 

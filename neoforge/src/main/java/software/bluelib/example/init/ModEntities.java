@@ -21,6 +21,10 @@ import software.bluelib.example.entity.rex.RexEntity;
  * <ul>
  *   <li>{@link #register(String, EntityType.Builder)} - Registers an {@link EntityType} with the specified {@code pRegistryName} and {@code pEntityTypeBuilder}. </li>
  * </ul>
+ *
+ * @author MeAlam
+ * @version 1.0.0
+ * @since 1.0.0
  */
 public class ModEntities {
 

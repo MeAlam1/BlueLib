@@ -14,8 +14,6 @@ import software.bluelib.utils.logging.BaseLogger;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
@@ -25,7 +23,7 @@ import java.util.concurrent.TimeUnit;
  * This class extends {@link ReloadEventHandler} and implements event handling for server starting and reloading,
  * ensuring that entity variant data is properly loaded and refreshed.
  * </p>
- *
+ * <p>
  * Key Methods:
  * <ul>
  *   <li>{@link #onServerStart(ServerStartingEvent)} - Handles server starting events to initialize entity variants.</li>
@@ -34,6 +32,7 @@ import java.util.concurrent.TimeUnit;
  * </ul>
  *
  * @author MeAlam
+ * @version 1.0.0
  * @since 1.0.0
  */
 @EventBusSubscriber

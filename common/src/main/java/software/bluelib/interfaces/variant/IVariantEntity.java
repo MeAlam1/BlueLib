@@ -22,6 +22,7 @@ import java.util.List;
  * </ul>
  *
  * @author MeAlam
+ * @version 1.0.0
  * @since 1.0.0
  */
 public interface IVariantEntity extends IVariantEntityBase {

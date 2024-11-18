@@ -25,6 +25,7 @@ import software.bluelib.utils.logging.BaseLogger;
  * </ul>
  *
  * @author MeAlam
+ * @version 1.0.0
  * @since 1.0.0
  */
 public class GeometricUtils {
@@ -154,6 +155,7 @@ public class GeometricUtils {
      * @param pBase   {@link Double} - The base of the triangle.
      * @param pHeight {@link Double} - The height of the triangle.
      * @return The area of the triangle.
+     * @author MeAlam
      * @since 1.0.0
      */
     public static double calculateTriangleArea(double pBase, double pHeight) {
@@ -172,6 +174,7 @@ public class GeometricUtils {
      * @param pSide2 {@link Double} - The second side of the triangle.
      * @param pSide3 {@link Double} - The third side of the triangle.
      * @return The perimeter of the triangle.
+     * @author MeAlam
      * @since 1.0.0
      */
     public static double calculateTrianglePerimeter(double pSide1, double pSide2, double pSide3) {

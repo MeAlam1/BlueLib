@@ -24,6 +24,7 @@ import java.util.logging.Logger;
  *
  * @author MeAlam
  * @since 1.0.0
+ * @version 1.0.0
  */
 public class BaseLogger {
 
@@ -53,6 +54,7 @@ public class BaseLogger {
      * A {@link Boolean} method that checks if BlueLib logging is enabled.
      *
      * @return {@code true} if BlueLib logging is enabled, {@code false} otherwise.
+     * @author MeAlam
      * @since 1.0.0
      */
     public static boolean isBlueLibLoggingEnabled() {
@@ -63,6 +65,7 @@ public class BaseLogger {
      * A {@link Boolean} method that checks if logging is enabled.
      *
      * @return {@code true} if general logging is enabled, {@code false} otherwise.
+     * @author MeAlam
      * @since 1.0.0
      */
     public static boolean isLoggingEnabled() {
@@ -73,6 +76,7 @@ public class BaseLogger {
      * A {@code void} to enable or disable general logging.
      *
      * @param pEnabled {@link Boolean} - Indicates whether to enable or disable general logging.
+     * @author MeAlam
      * @since 1.0.0
      */
     public static void setLoggingEnabled(boolean pEnabled) {
@@ -91,6 +95,7 @@ public class BaseLogger {
      * @param pMessage   {@link String} - The message to log.
      * @param pThrowable {@link Throwable} - The throwable to log with the message.
      * @param pIsBlueLib {@link Boolean} - Indicates if the message is {@code BlueLib} specific.
+     * @author MeAlam
      * @since 1.0.0
      */
     public static void log(Level pLogLevel, String pMessage, Throwable pThrowable, boolean pIsBlueLib) {
@@ -109,6 +114,7 @@ public class BaseLogger {
      * @param pLogLevel  {@link Level} - The logging level to use.
      * @param pMessage   {@link String} - The message to log.
      * @param pIsBlueLib {@link Boolean} - Indicates if the message is {@code BlueLib} specific.
+     * @author MeAlam
      * @since 1.0.0
      */
     public static void log(Level pLogLevel, String pMessage, boolean pIsBlueLib) {
@@ -128,6 +134,7 @@ public class BaseLogger {
      * @param pLogLevel  {@link Level} - The logging level to use.
      * @param pMessage   {@link String} - The message to log.
      * @param pThrowable {@link Throwable} - The throwable to log with the message.
+     * @author MeAlam
      * @since 1.0.0
      */
     public static void log(Level pLogLevel, String pMessage, Throwable pThrowable) {
@@ -144,6 +151,7 @@ public class BaseLogger {
      *
      * @param pLogLevel {@link Level} - The logging level to use.
      * @param pMessage  {@link String} - The message to log.
+     * @author MeAlam
      * @since 1.0.0
      */
     public static void log(Level pLogLevel, String pMessage) {
@@ -159,6 +167,7 @@ public class BaseLogger {
      * A {@code public static void} that logs a {@code BlueLib} specific message at the {@code BlueLib} log level.
      *
      * @param pMessage {@link String} - The {@code BlueLib} message to log.
+     * @author MeAlam
      * @since 1.0.0
      */
     public static void logBlueLib(String pMessage) {

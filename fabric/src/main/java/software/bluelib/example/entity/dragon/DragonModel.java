@@ -16,6 +16,10 @@ import software.bluelib.BlueLibConstants;
  *   <li>{@link #getTextureResource(DragonEntity, GeoRenderer)} - Get the Texture Location.</li>
  *   <li>{@link #getAnimationResource(DragonEntity)} - Get the Animation Location.</li>
  * </ul>
+ *
+ * @author MeAlam
+ * @version 1.0.0
+ * @since 1.0.0
  */
 public class DragonModel extends GeoModel<DragonEntity> {
 
@@ -23,7 +27,7 @@ public class DragonModel extends GeoModel<DragonEntity> {
     /**
      * A {@code public} {@link ResourceLocation} method that returns the location of the model.
      *
-     * @param pObject {@link DragonEntity} - The entity to get the model for.
+     * @param pObject      {@link DragonEntity} - The entity to get the model for.
      * @param pGeoRenderer {@link GeoRenderer} - The renderer for the entity.
      * @return {@link ResourceLocation} - The location of the model.
      * @author MeAlam
@@ -37,7 +41,7 @@ public class DragonModel extends GeoModel<DragonEntity> {
     /**
      * A {@code public} {@link ResourceLocation} method that returns the location of the texture.
      *
-     * @param pObject {@link DragonEntity} - The entity to get the texture for.
+     * @param pObject      {@link DragonEntity} - The entity to get the texture for.
      * @param pGeoRenderer {@link GeoRenderer} - The renderer for the entity.
      * @return {@link ResourceLocation} - The location of the texture.
      * @author MeAlam

@@ -31,6 +31,7 @@ import java.util.*;
  * </ul>
  *
  * @author MeAlam
+ * @version 1.0.0
  * @since 1.0.0
  */
 public class VariantLoader implements IVariantEntityBase {
@@ -69,9 +70,11 @@ public class VariantLoader implements IVariantEntityBase {
      * The merged JSON data is then parsed into {@link VariantParameter} instances and stored in {@link #entityVariantsMap}.
      * </p>
      *
-     * @param pFolderPath  {@link String} - The path to the folder containing JSON resources.
+     * @param pFolderPath {@link String} - The path to the folder containing JSON resources.
      * @param pServer     {@link MinecraftServer} - The {@link MinecraftServer} instance used to access resources.
      * @param pEntityName {@link String} - The name of the entity whose variants should be cleared before loading new ones.
+     * @author MeAlam
+     * @since 1.0.0
      */
     public static void loadVariants(String pFolderPath, MinecraftServer pServer, String pEntityName) {
 
@@ -103,6 +106,8 @@ public class VariantLoader implements IVariantEntityBase {
      * </p>
      *
      * @param pEntityName {@link String} - The name of the entity whose variants should be cleared.
+     * @author MeAlam
+     * @since 1.0.0
      */
     private static void clearVariantsForEntity(String pEntityName) {
         entityVariantsMap.remove(pEntityName);
@@ -115,6 +120,8 @@ public class VariantLoader implements IVariantEntityBase {
      * </p>
      *
      * @param pJsonObject {@link JsonObject} - The merged {@link JsonObject} containing variant data.
+     * @author MeAlam
+     * @since 1.0.0
      */
     private static void parseVariants(JsonObject pJsonObject) {
         for (Map.Entry<String, JsonElement> entry : pJsonObject.entrySet()) {
@@ -146,6 +153,8 @@ public class VariantLoader implements IVariantEntityBase {
      * @param pJsonKey    {@link String} - The key associated with this variant.
      * @param pJsonObject {@link JsonObject} - The {@link JsonObject} containing the variant data.
      * @return {@link VariantParameter} - A {@link VariantParameter} instance.
+     * @author MeAlam
+     * @since 1.0.0
      */
     private static VariantParameter getEntityVariant(String pJsonKey, JsonObject pJsonObject) {
         return new VariantParameter(pJsonKey, pJsonObject);
@@ -159,6 +168,8 @@ public class VariantLoader implements IVariantEntityBase {
      *
      * @param pEntityName {@link String} - The name of the entity to retrieve variants for.
      * @return {@link List<VariantParameter>} - A {@link List<VariantParameter>} of {@link VariantParameter} instances for the specified entity.
+     * @author MeAlam
+     * @since 1.0.0
      */
     public static List<VariantParameter> getVariantsFromEntity(String pEntityName) {
         BaseLogger.log(BaseLogLevel.INFO, "Retrieving variants for entity: " + pEntityName, true);
@@ -174,6 +185,8 @@ public class VariantLoader implements IVariantEntityBase {
      * @param pEntityName  {@link String} - The name of the entity to retrieve variants for.
      * @param pVariantName {@link String} - The name of the variant to retrieve.
      * @return {@link VariantParameter} - The {@link VariantParameter} with the specified name, or {@code null} if not found.
+     * @author MeAlam
+     * @since 1.0.0
      */
     public static VariantParameter getVariantByName(String pEntityName, String pVariantName) {
         BaseLogger.log(BaseLogLevel.INFO, "Retrieving variant by name: " + pVariantName + " for entity: " + pEntityName, true);

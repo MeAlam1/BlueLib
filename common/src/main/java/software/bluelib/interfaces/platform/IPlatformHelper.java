@@ -2,9 +2,6 @@
 
 package software.bluelib.interfaces.platform;
 
-import software.bluelib.utils.logging.BaseLogLevel;
-import software.bluelib.utils.logging.BaseLogger;
-
 /**
  * A {@code public interface} that defines platform-specific functionality for the BlueLib mod.
  * <p>
@@ -21,6 +18,7 @@ import software.bluelib.utils.logging.BaseLogger;
  * </ul>
  *
  * @author MeAlam
+ * @version 1.0.0
  * @since 1.0.0
  */
 public interface IPlatformHelper {
@@ -29,6 +27,7 @@ public interface IPlatformHelper {
      * A {@link String} method that retrieves the name of the current platform.
      *
      * @return The name of the current platform as a {@link String}.
+     * @author MeAlam
      * @since 1.0.0
      */
     String getPlatformName();
@@ -38,6 +37,7 @@ public interface IPlatformHelper {
      *
      * @param pModId {@link String} - The ID of the mod to check.
      * @return {@code true} if the mod is loaded, {@code false} if it isn't.
+     * @author MeAlam
      * @since 1.0.0
      */
     boolean isModLoaded(String pModId);

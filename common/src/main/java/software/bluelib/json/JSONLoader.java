@@ -27,12 +27,15 @@ import java.util.Optional;
  * </ul>
  *
  * @author MeAlam
+ * @version 1.0.0
  * @since 1.0.0
  */
 public class JSONLoader {
 
     /**
      * A {@code private static} {@link Gson} instance for parsing JSON data.
+     *
+     * @since 1.0.0
      */
     private static final Gson gson = new Gson();
 

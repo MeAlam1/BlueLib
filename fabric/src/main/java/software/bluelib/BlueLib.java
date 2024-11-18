@@ -23,6 +23,7 @@ import software.bluelib.example.init.ModEntities;
  * </ul>
  *
  * @author MeAlam
+ * @version 1.0.0
  * @since 1.0.0
  */
 public class BlueLib implements ModInitializer {

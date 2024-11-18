@@ -31,6 +31,7 @@ import software.bluelib.interfaces.variant.IVariantAccessor;
  * </ul>
  *
  * @author MeAlam
+ * @version 1.0.0
  * @since 1.0.0
  */
 @Mixin(LivingEntity.class)
