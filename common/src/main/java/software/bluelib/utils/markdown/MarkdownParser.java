@@ -19,7 +19,6 @@ public class MarkdownParser {
         text = new Italic().apply(text);
         text = new Strikethrough().apply(text);
         text = new Underline().apply(text);
-        text = new Hyperlink().apply(text);
         return Component.literal(text);
     }
 
@@ -59,11 +58,6 @@ public class MarkdownParser {
             new Underline().enable();
             return this;
         }
-
-        public EnableMarkdownFor hyperlink() {
-            new Hyperlink().enable();
-            return this;
-        }
     }
 
     public static class DisableMarkdownFor {
@@ -84,11 +78,6 @@ public class MarkdownParser {
 
         public DisableMarkdownFor underline() {
             new Underline().disable();
-            return this;
-        }
-
-        public DisableMarkdownFor hyperlink() {
-            new Hyperlink().disable();
             return this;
         }
     }
