@@ -73,13 +73,13 @@ public class BlueLib implements ModInitializer {
     }
 
     /**
-     * Registers the server start and reload event listeners.
+     * Registers the event listeners.
      *
      * @author MeAlam
      * @since 1.0.0
      */
     public static void registerEventListeners() {
         ServerLifecycleEvents.SERVER_STARTING.register(ReloadHandler::onServerStart);
-        ServerMessageEvents.CHAT_MESSAGE.register(ChatHandler::onServerChat);
+        ServerMessageEvents.ALLOW_CHAT_MESSAGE.register(ChatHandler::onAllowChat);
     }
 }

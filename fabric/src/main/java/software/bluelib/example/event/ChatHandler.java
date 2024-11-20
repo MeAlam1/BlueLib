@@ -19,27 +19,33 @@ import java.util.Objects;
 public class ChatHandler {
 
     /**
-     * A {@code public static} method that handles server chat events and formats the message using Markdown.
+     * A {@code public static} {@link Boolean} that handles the chat message event and formats the message using Markdown.
      * <p>
-     * This method checks when a message gets sent and applies Markdown formatting to the message using
-     * the {@link MarkdownParser}. The formatted message is then set as the new message.
+     * This method checks if the message is being formatted. If it is, the original message is not allowed.
      * </p>
      *
-     * @param pPlayerChatMessage The original chat message.
-     * @param pServerPlayer      The player who sent the message.
-     * @param pBound             The chat type bound.
+     * @param pPlayerChatMessage {@link PlayerChatMessage} - The chat message to be formatted.
+     * @param pServerPlayer      {@link ServerPlayer} - The player sending the chat message.
+     * @param pBound             {@link ChatType.Bound} - The chat type bound to the message.
+     * @return {@code true} if the original message is allowed; {@code false} otherwise.
+     * @author MeAlam
+     * @since 1.1.0
      */
-    public static void onServerChat(PlayerChatMessage pPlayerChatMessage, ServerPlayer pServerPlayer, ChatType.Bound pBound) {
+    public static boolean onAllowChat(PlayerChatMessage pPlayerChatMessage, ServerPlayer pServerPlayer, ChatType.Bound pBound) {
         Component originalMessage = pPlayerChatMessage.decoratedContent();
         Component formattedMessage = MarkdownParser.parseMarkdown(originalMessage);
-        PlayerChatMessage newPlayerChatMessage = new PlayerChatMessage(
-                pPlayerChatMessage.link(),
-                pPlayerChatMessage.signature(),
-                pPlayerChatMessage.signedBody(),
-                formattedMessage,
-                pPlayerChatMessage.filterMask()
-        );
+        if (!formattedMessage.equals(originalMessage)) {
+            PlayerChatMessage newPlayerChatMessage = new PlayerChatMessage(
+                    pPlayerChatMessage.link(),
+                    pPlayerChatMessage.signature(),
+                    pPlayerChatMessage.signedBody(),
+                    formattedMessage,
+                    pPlayerChatMessage.filterMask()
+            );
 
-        pServerPlayer.sendChatMessage(OutgoingChatMessage.create(newPlayerChatMessage), false, pBound.withTargetName(Objects.requireNonNull(pServerPlayer.getDisplayName())));
+            pServerPlayer.sendChatMessage(OutgoingChatMessage.create(newPlayerChatMessage), false,
+                    pBound.withTargetName(Objects.requireNonNull(pServerPlayer.getDisplayName())));
+        }
+        return formattedMessage.equals(originalMessage);
     }
 }
