@@ -135,8 +135,25 @@ public class VariantParameter extends ParameterBase {
      * @author MeAlam
      * @since 1.0.0
      */
-    public String getVariantParameter() {
-        String variantName = getParameter(variantParameterName);
+    public static String getVariantParameter() {
+        String variantName = variantParameterName;
+        BaseLogger.log(BaseLogLevel.INFO, "Retrieved parameter name: " + variantName, true);
+        return variantName;
+    }
+
+    /**
+     * A {@link String} method that retrieves the name of the variant parameter.
+     * <p>
+     * The variant name is, by default, stored under the key {@code "variantName"} in the parameters/JSON files.
+     * Otherwise, the key is stored in the {@link #variantParameterName} field.
+     * </p>
+     *
+     * @return The name of the variant, or {@code null} if the variant name is not found.
+     * @author MeAlam
+     * @since 1.0.0
+     */
+    public String filterVariantParameter() {
+        String variantName = getParameter(variantParameterName); ;
         BaseLogger.log(BaseLogLevel.INFO, "Retrieved parameter name: " + variantName, true);
         return variantName;
     }
@@ -151,7 +168,7 @@ public class VariantParameter extends ParameterBase {
      * @author MeAlam
      * @since 1.0.0
      */
-    public void setVariantParameter(String pCustomVariantName) {
+    public static void setVariantParameter(String pCustomVariantName) {
         variantParameterName = pCustomVariantName;
         BaseLogger.log(BaseLogLevel.INFO, "Setting parameter name: " + variantParameterName, true);
     }
