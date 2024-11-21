@@ -10,6 +10,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import software.bluelib.BlueLibConstants;
 import software.bluelib.example.entity.dragon.DragonEntity;
+import software.bluelib.example.entity.fury.FuryEntity;
 import software.bluelib.example.entity.rex.RexEntity;
 
 import static net.minecraft.world.entity.MobCategory.CREATURE;
@@ -39,6 +40,12 @@ public class ModEntities {
     public static EntityType<RexEntity> EXAMPLE_TWO;
 
     /**
+     * The {@code public static} field that stores FURY.
+     */
+    public static EntityType<FuryEntity> FURY;
+
+
+    /**
      * A {@code public static void} that initializes the entities.
      *
      * @author MeAlam
@@ -58,5 +65,12 @@ public class ModEntities {
                 EntityType.Builder.of(RexEntity::new, CREATURE)
                         .sized(0.6F, 1.8F)
                         .build(ResourceKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(BlueLibConstants.MOD_ID, "example_two"))));
+
+        FURY = Registry.register(
+                BuiltInRegistries.ENTITY_TYPE,
+                ResourceLocation.fromNamespaceAndPath(BlueLibConstants.MOD_ID, "fury"),
+                EntityType.Builder.of(FuryEntity::new, CREATURE)
+                        .sized(0.6F, 1.8F)
+                        .build(ResourceKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(BlueLibConstants.MOD_ID, "fury"))));
     }
 }

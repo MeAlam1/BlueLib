@@ -7,6 +7,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import software.bluelib.BlueLibCommon;
 import software.bluelib.BlueLibConstants;
 import software.bluelib.example.entity.dragon.DragonRender;
+import software.bluelib.example.entity.fury.FuryRender;
 import software.bluelib.example.entity.rex.RexRender;
 
 /**
@@ -34,6 +35,7 @@ public class ClientInit implements ClientModInitializer {
         if (BlueLibCommon.isDeveloperMode() && BlueLibCommon.PLATFORM.isModLoaded("geckolib") && BlueLibConstants.isExampleEnabled) {
             EntityRendererRegistry.register(ModEntities.EXAMPLE_ONE, DragonRender::new);
             EntityRendererRegistry.register(ModEntities.EXAMPLE_TWO, RexRender::new);
+            EntityRendererRegistry.register(ModEntities.FURY, FuryRender::new);
         }
     }
 }

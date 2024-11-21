@@ -9,6 +9,7 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.message.v1.ServerMessageEvents;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import software.bluelib.example.entity.dragon.DragonEntity;
+import software.bluelib.example.entity.fury.FuryEntity;
 import software.bluelib.example.entity.rex.RexEntity;
 import software.bluelib.example.event.ChatHandler;
 import software.bluelib.example.event.ReloadHandler;
@@ -64,6 +65,7 @@ public class BlueLib implements ModInitializer {
             registerModEventListeners();
             FabricDefaultAttributeRegistry.register(ModEntities.EXAMPLE_ONE, DragonEntity.createMobAttributes());
             FabricDefaultAttributeRegistry.register(ModEntities.EXAMPLE_TWO, RexEntity.createMobAttributes());
+            FabricDefaultAttributeRegistry.register(ModEntities.FURY, FuryEntity.createMobAttributes());
         }
         registerEventListeners();
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
