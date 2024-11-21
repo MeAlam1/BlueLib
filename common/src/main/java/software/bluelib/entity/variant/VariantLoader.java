@@ -192,9 +192,7 @@ public class VariantLoader implements IVariantEntityBase {
         BaseLogger.log(BaseLogLevel.INFO, "Retrieving variant by name: " + pVariantName + " for entity: " + pEntityName, true);
         List<VariantParameter> variants = getVariantsFromEntity(pEntityName);
         for (VariantParameter variant : variants) {
-            if (variant.getVariantParameter().equals(pVariantName)) {
-                return variant;
-            }
+            return variant;
         }
         BaseLogger.log(BaseLogLevel.INFO, "Variant with name: " + pVariantName + " not found for entity: " + pEntityName, true);
         return null;
