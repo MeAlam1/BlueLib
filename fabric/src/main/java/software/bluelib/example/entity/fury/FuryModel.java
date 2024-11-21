@@ -35,7 +35,7 @@ public class FuryModel extends GeoModel<FuryEntity> {
      */
     @Override
     public ResourceLocation getModelResource(FuryEntity pObject, @Nullable GeoRenderer<FuryEntity> pGeoRenderer) {
-        return ResourceLocation.fromNamespaceAndPath(BlueLibConstants.MOD_ID, "geo/nightfury.geo.json");
+        return ResourceLocation.fromNamespaceAndPath(BlueLibConstants.MOD_ID, "geo/nadder.geo.json");
     }
 
     /**
@@ -49,7 +49,7 @@ public class FuryModel extends GeoModel<FuryEntity> {
      */
     @Override
     public ResourceLocation getTextureResource(FuryEntity pObject, @Nullable GeoRenderer<FuryEntity> pGeoRenderer) {
-        return pObject.getTextureLocation(BlueLibConstants.MOD_ID, "geo/nightfury.png");
+        return pObject.getTextureLocation(BlueLibConstants.MOD_ID, "geo/stormfly.png");
     }
 
     /**
