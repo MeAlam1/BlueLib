@@ -13,6 +13,7 @@ import software.bluelib.example.entity.rex.RexEntity;
 import software.bluelib.example.event.ChatHandler;
 import software.bluelib.example.event.ReloadHandler;
 import software.bluelib.example.init.ModEntities;
+import software.bluelib.utils.markdown.Italic;
 
 /**
  * A {@code public class} that implements {@link ModInitializer} to initialize the BlueLib mod on the Fabric platform.
@@ -60,10 +61,11 @@ public class BlueLib implements ModInitializer {
     public void onInitialize() {
         if (BlueLibCommon.isDeveloperMode() && BlueLibCommon.PLATFORM.isModLoaded("geckolib") && BlueLibConstants.isExampleEnabled) {
             ModEntities.initializeEntities();
-            registerEventListeners();
+            registerModEventListeners();
             FabricDefaultAttributeRegistry.register(ModEntities.EXAMPLE_ONE, DragonEntity.createMobAttributes());
             FabricDefaultAttributeRegistry.register(ModEntities.EXAMPLE_TWO, RexEntity.createMobAttributes());
         }
+        registerEventListeners();
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (!hasInitialized) {
                 hasInitialized = true;
@@ -73,13 +75,22 @@ public class BlueLib implements ModInitializer {
     }
 
     /**
-     * Registers the event listeners.
+     * Registers the Mod Dependant event listeners.
      *
      * @author MeAlam
      * @since 1.0.0
      */
-    public static void registerEventListeners() {
+    public static void registerModEventListeners() {
         ServerLifecycleEvents.SERVER_STARTING.register(ReloadHandler::onServerStart);
+    }
+
+    /**
+     * Registers the event listeners.
+     *
+     * @author MeAlam
+     * @since 1.2.0
+     */
+    public static void registerEventListeners() {
         ServerMessageEvents.ALLOW_CHAT_MESSAGE.register(ChatHandler::onAllowChat);
     }
 }
