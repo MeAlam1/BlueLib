@@ -70,7 +70,7 @@ public class ModEntities {
                 BuiltInRegistries.ENTITY_TYPE,
                 ResourceLocation.fromNamespaceAndPath(BlueLibConstants.MOD_ID, "fury"),
                 EntityType.Builder.of(FuryEntity::new, CREATURE)
-                        .sized(0.6F, 1.8F)
+                        .sized(1.5F, 2F)
                         .build(ResourceKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(BlueLibConstants.MOD_ID, "fury"))));
     }
 }

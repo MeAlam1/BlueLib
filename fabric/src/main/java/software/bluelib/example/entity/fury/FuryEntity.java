@@ -3,23 +3,30 @@
 package software.bluelib.example.entity.fury;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.util.GeckoLibUtil;
-import software.bluelib.interfaces.variant.IVariantAccessor;
 import software.bluelib.interfaces.variant.IVariantEntity;
 import software.bluelib.utils.logging.BaseLogLevel;
 import software.bluelib.utils.logging.BaseLogger;
-import software.bluelib.utils.variant.ParameterUtils;
 
 /**
  * A {@code nightfuryEntity} class representing a nightfury entity in the game, which extends {@link TamableAnimal}
@@ -31,8 +38,6 @@ import software.bluelib.utils.variant.ParameterUtils;
  * Key Methods:
  * <ul>
  *   <li>{@link #finalizeSpawn(ServerLevelAccessor, DifficultyInstance, EntitySpawnReason, SpawnGroupData)} - Finalizes the spawning process and sets up parameters.</li>
- *   <li>{@link #setVariantName(String)} - Sets the variant name of the Rex.</li>
- *   <li>{@link #getVariantName()} - Retrieves the current variant name of the Rex.</li>
  * </ul>
  *
  * @author MeAlam
@@ -40,12 +45,6 @@ import software.bluelib.utils.variant.ParameterUtils;
  * @since 1.0.0
  */
 public class FuryEntity extends TamableAnimal implements IVariantEntity, GeoEntity {
-    /**
-     * The name of the entity.
-     *
-     * @since 1.0.0
-     */
-    protected final String entityName = "fury";
 
     /**
      * Constructs a new {@link FuryEntity} instance with the specified entity type and level.
@@ -59,59 +58,6 @@ public class FuryEntity extends TamableAnimal implements IVariantEntity, GeoEnti
         super(pEntityType, pLevel);
     }
 
-    /**
-     * A {@code public void} that defines the Variant data for the nightfury entity.
-     *
-     * @param pVariantName {@link String} - The variant name of the nightfury entity.
-     * @author MeAlam
-     * @since 1.0.0
-     */
-    public void setVariantName(String pVariantName) {
-        ((IVariantAccessor) this).setEntityVariantName(pVariantName);
-    }
-
-    /**
-     * A {@code public} {@link String} that retrieves the Variant data for the nightfury entity.
-     *
-     * @return {@link String} - The variant name of the nightfury entity.
-     * @author MeAlam
-     * @since 1.0.0
-     */
-    public String getVariantName() {
-        return ((IVariantAccessor) this).getEntityVariantName();
-    }
-
-    /**
-     * Finalizes the spawning of the nightfury entity.
-     * <p>
-     * This method sets up the variant for the entity and connects parameters if needed.
-     * </p>
-     *
-     * @param pLevel      {@link ServerLevelAccessor} - The level in which the entity is spawned.
-     * @param pDifficulty {@link DifficultyInstance} - The difficulty instance for spawning.
-     * @param pReason     {@link EntitySpawnReason} - The reason for spawning the entity.
-     * @param pSpawnData  {@link SpawnGroupData} - Data related to the spawn.
-     * @return {@link SpawnGroupData} - Updated spawn data.
-     * @author MeAlam
-     * @since 1.0.0
-     */
-    @Override
-    public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor pLevel, @NotNull DifficultyInstance pDifficulty, @NotNull EntitySpawnReason pReason, @Nullable SpawnGroupData pSpawnData) {
-        if (getVariantName() == null || getVariantName().isEmpty()) {
-            setVariantName(getRandomVariant(getEntityVariants(entityName), "normal"));
-            ParameterUtils.ParameterBuilder.forVariant(entityName, this.getVariantName())
-                    .withParameter("customParameter")
-                    .withParameter("int")
-                    .withParameter("bool")
-                    .withParameter("array")
-                    .connect();
-        }
-        BaseLogger.log(BaseLogLevel.SUCCESS, "nightfury Spawned with Variant: " + getVariantName(), true);
-        return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData);
-    }
-
-
-
     /* All Code below this Fragment is not Library Related!!! */
 
     /**
@@ -121,15 +67,84 @@ public class FuryEntity extends TamableAnimal implements IVariantEntity, GeoEnti
      */
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
-    /**
-     * Adds custom data to the entity's NBT for saving.
-     *
-     * @param pControllerRegistrar {@link CompoundTag} - The tag to add the data to.
-     * @author MeAlam
-     * @since 1.0.0
-     */
+    private boolean shouldMove = false;
+
+    private class WalkGoal extends RandomStrollGoal {
+        public WalkGoal() {
+            super(FuryEntity.this, 0.25, 10);
+        }
+
+        @Override
+        public boolean canUse() {
+            return FuryEntity.this.shouldMove && super.canUse();
+        }
+    }
+
+    private class StandStillGoal extends Goal {
+        @Override
+        public boolean canUse() {
+            return !FuryEntity.this.shouldMove;
+        }
+
+        @Override
+        public void tick() {
+            FuryEntity.this.getNavigation().stop();
+        }
+    }
+
+    private class StandStillGoal2 extends Goal {
+        @Override
+        public boolean canUse() {
+            return FuryEntity.this.shouldMove;
+        }
+
+        @Override
+        public void tick() {
+            FuryEntity.this.getNavigation().stop();
+        }
+    }
+
+    private final WalkGoal walkGoal = new WalkGoal();
+    private final StandStillGoal standStillGoal = new StandStillGoal();
+    private final StandStillGoal2 standStillGoal2 = new StandStillGoal2();
+
     @Override
-    public void registerControllers(AnimatableManager.ControllerRegistrar pControllerRegistrar) {
+    public @NotNull InteractionResult mobInteract(Player pPlayer, InteractionHand pHand) {
+        this.shouldMove = !this.shouldMove;
+
+        if (this.shouldMove) {
+            pPlayer.displayClientMessage(Component.nullToEmpty("Fury will now walk!"), true);
+            BaseLogger.log(BaseLogLevel.INFO, "Fury will now walk!");
+            this.goalSelector.addGoal(1, standStillGoal2);
+            this.goalSelector.removeGoal(standStillGoal);
+        } else {
+            pPlayer.displayClientMessage(Component.nullToEmpty("Fury will now walk!"), true);
+            BaseLogger.log(BaseLogLevel.INFO, "Fury will now stand still!");
+            this.goalSelector.addGoal(1, standStillGoal2);
+            this.goalSelector.removeGoal(walkGoal);
+        }
+
+        return InteractionResult.SUCCESS;
+    }
+
+    public boolean isShouldMove() {
+        return shouldMove;
+    }
+
+
+    public boolean isFlying() {
+        return !this.onGround();
+    }
+
+    public boolean isMoving() {
+        Vec3 velocity = this.getDeltaMovement();
+        double velocityThreshold = 0.05;
+        return velocity.lengthSqr() > velocityThreshold * velocityThreshold;
+    }
+
+    @Override
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
+
     }
 
     /**
