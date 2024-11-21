@@ -1,6 +1,7 @@
-// Copyright (c) BlueLib. Licensed under the MIT License.
-
 package software.bluelib.utils.markdown;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * A {@code public abstract class} that represents a feature for applying formatting to Markdown-style text.
@@ -12,27 +13,14 @@ package software.bluelib.utils.markdown;
  * Key Methods:
  * <ul>
  *   <li>{@link #apply(String)} - Applies formatting to the input message based on the prefix and suffix.</li>
- *   <li>{@link #setPrefixSuffix(String, String)} - Sets new prefix and suffix for identifying content to format.</li>
- *   <li>{@link #enable()} - Enables markdown, allowing formatting to be applied.</li>
- *   <li>{@link #disable()} - Disables markdown, preventing formatting from being applied.</li>
- *   <li>{@link #isEnabled()} - Checks if markdown is enabled.</li>
  *   <li>{@link #escapeRegex(String)} - Escapes special characters in the prefix and suffix for use in regular expressions.</li>
  * </ul>
  *
  * @author MeAlam
- * @version 1.1.0
- * @see java.util.logging.Logger
+ * @version 1.2.0
  * @since 1.1.0
  */
 public abstract class MarkdownFeature {
-
-    /**
-     * A {@code protected} field indicating whether markdown formatting is enabled.<br>
-     * When {@code true}, formatting will be applied to the message.
-     *
-     * @since 1.1.0
-     */
-    protected boolean enabled = true;
 
     /**
      * A {@code protected} field representing the prefix used to identify content that needs formatting. <br>
@@ -60,15 +48,31 @@ public abstract class MarkdownFeature {
      * @param pMessage {@link String} - The input message to be formatted.
      * @return The formatted message with applied changes.
      * @author MeAlam
-     * @see java.util.logging.Logger
-     * @see java.util.logging.Level
      * @since 1.1.0
      */
     public String apply(String pMessage) {
-        if (!enabled) return pMessage;
+        String escapedPrefix = escapeRegex(prefix);
+        String escapedSuffix = escapeRegex(suffix);
 
-        return pMessage.replaceAll(escapeRegex(prefix) + "(.*?)" + escapeRegex(suffix), applyFormat("$1"));
+        Pattern pattern = Pattern.compile("(?<!\\\\)" + escapedPrefix + "(.*?)" + escapedSuffix);
+        Matcher matcher = pattern.matcher(pMessage);
+
+        StringBuilder result = new StringBuilder();
+
+        while (matcher.find()) {
+            String content = matcher.group(1);
+            if (content.isEmpty()) {
+                matcher.appendReplacement(result, Matcher.quoteReplacement(prefix + suffix));
+            } else {
+                String formatted = applyFormat(content);
+                matcher.appendReplacement(result, Matcher.quoteReplacement(formatted));
+            }
+        }
+
+        matcher.appendTail(result);
+        return result.toString().replaceAll("\\\\" + escapedPrefix, prefix);
     }
+
 
     /**
      * A {@code protected abstract} {@link String} that applies the specific formatting to the content between the prefix and suffix.
@@ -79,57 +83,9 @@ public abstract class MarkdownFeature {
      * @param pContent {@link String} - The content to be formatted.
      * @return The formatted content.
      * @author MeAlam
-     * @see java.util.logging.Logger
      * @since 1.1.0
      */
     protected abstract String applyFormat(String pContent);
-
-    /**
-     * A {@code public} {@code void} that sets the new prefix and suffix that will be used for identifying content to apply formatting.
-     *
-     * @param pNewPrefix The new prefix to define the start of the formatted content.
-     * @param pNewSuffix The new suffix to define the end of the formatted content.
-     * @author MeAlam
-     * @see java.util.logging.Logger
-     * @since 1.1.0
-     */
-    public void setPrefixSuffix(String pNewPrefix, String pNewSuffix) {
-        prefix = pNewPrefix;
-        suffix = pNewSuffix;
-    }
-
-    /**
-     * A {@code public} {@code void} that enables markdown, allowing formatting to be applied to messages.
-     * When enabled, the {@link #apply(String)} method will modify messages.
-     *
-     * @author MeAlam
-     * @since 1.1.0
-     */
-    public void enable() {
-        enabled = true;
-    }
-
-    /**
-     * A {@code public} {@code void} that disables markdown, preventing any formatting from being applied.
-     * When disabled, the {@link #apply(String)} method will return the original message without any changes.
-     *
-     * @author MeAlam
-     * @since 1.1.0
-     */
-    public void disable() {
-        enabled = false;
-    }
-
-    /**
-     * A {@code public} {@link boolean} method that checks if markdown is enabled.
-     *
-     * @return {@code true} if markdown is enabled; {@code false} if it is disabled.
-     * @author MeAlam
-     * @since 1.1.0
-     */
-    public boolean isEnabled() {
-        return enabled;
-    }
 
     /**
      * A {@code static} {@link String} that escapes special characters in the input string for safe use in regular expressions.
@@ -141,7 +97,6 @@ public abstract class MarkdownFeature {
      * @param pInput The input string to escape.
      * @return A string with special regex characters escaped.
      * @author MeAlam
-     * @see java.util.logging.Logger
      * @since 1.1.0
      */
     static String escapeRegex(String pInput) {

@@ -1,5 +1,3 @@
-// Copyright (c) BlueLib. Licensed under the MIT License.
-
 package software.bluelib.utils.markdown;
 
 /**
@@ -11,15 +9,28 @@ package software.bluelib.utils.markdown;
  * </p>
  *
  * @author MeAlam
- * @version 1.1.0
+ * @version 1.2.0
  * @see MarkdownFeature
- * @see #applyFormat(String)
  * @since 1.1.0
  */
 public class Bold extends MarkdownFeature {
 
     /**
-     * A {@code protected} {@link Boolean} that determines whether the bold formatting feature is enabled.
+     * A {@code protected static} field representing the default prefix for bold formatting.
+     *
+     * @since 1.2.0
+     */
+    protected static String Prefix = "**";
+
+    /**
+     * A {@code protected static} field representing the default suffix for bold formatting.
+     *
+     * @since 1.2.0
+     */
+    protected static String Suffix = "**";
+
+    /**
+     * A {@code protected static} field that determines whether bold formatting is enabled.
      *
      * @since 1.1.0
      */
@@ -28,15 +39,15 @@ public class Bold extends MarkdownFeature {
     /**
      * A {@code public} constructor that initializes the prefix and suffix for the bold formatting feature.
      * <p>
-     * The constructor sets the prefix and suffix to double asterisks (**) for identifying content to be made bold.
+     * The constructor sets the instance prefix and suffix to match the static Prefix and Suffix values.
      * </p>
      *
      * @author MeAlam
      * @since 1.1.0
      */
     public Bold() {
-        prefix = "**";
-        suffix = "**";
+        prefix = Prefix;
+        suffix = Suffix;
     }
 
     /**
@@ -59,5 +70,73 @@ public class Bold extends MarkdownFeature {
             return prefix + pContent + suffix;
         }
         return "§l" + pContent + "§r";
+    }
+
+    /**
+     * A {@code public static void} to update the prefix and suffix used for bold formatting.
+     *
+     * @param pPrefix {@link String} - The new prefix for bold formatting.
+     * @param pSuffix {@link String} - The new suffix for bold formatting.
+     * @author MeAlam
+     * @since 1.2.0
+     */
+    public static void setPrefixSuffix(String pPrefix, String pSuffix) {
+        Prefix = pPrefix;
+        Suffix = pSuffix;
+    }
+
+    /**
+     * A {@code public static void} to update the prefix used for bold formatting.
+     *
+     * @param pPrefix {@link String} - The new prefix for bold formatting.
+     * @author MeAlam
+     * @since 1.2.0
+     */
+    public static void setPrefix(String pPrefix) {
+        Prefix = pPrefix;
+    }
+
+    /**
+     * A {@code public static void} to update the suffix used for bold formatting.
+     *
+     * @param pSuffix {@link String} - The new suffix for bold formatting.
+     * @author MeAlam
+     * @since 1.2.0
+     */
+    public static void setSuffix(String pSuffix) {
+        Suffix = pSuffix;
+    }
+
+    /**
+     * A {@code public static} {@link String} that retrieves the current prefix used for bold formatting.
+     *
+     * @return The current prefix for bold formatting.
+     * @author MeAlam
+     * @since 1.2.0
+     */
+    public static String getPrefix() {
+        return Prefix;
+    }
+
+    /**
+     * A {@code public static} {@link String} that retrieves the current suffix used for bold formatting.
+     *
+     * @return The current suffix for bold formatting.
+     * @author MeAlam
+     * @since 1.2.0
+     */
+    public static String getSuffix() {
+        return Suffix;
+    }
+
+    /**
+     * A {@code public static} {@link Boolean} that retrieves whether bold formatting is enabled.
+     *
+     * @return {@code true} if bold formatting is enabled, {@code false} otherwise.
+     * @author MeAlam
+     * @since 1.2.0
+     */
+    public static Boolean isBoldEnabled() {
+        return isBoldEnabled;
     }
 }
