@@ -19,6 +19,20 @@ package software.bluelib.utils.markdown;
 public class Italic extends MarkdownFeature {
 
     /**
+     * A {@code protected static} field representing the default prefix for Italic formatting.
+     *
+     * @since 1.2.0
+     */
+    protected static String Prefix = "*";
+
+    /**
+     * A {@code protected static} field representing the default suffix for Italic formatting.
+     *
+     * @since 1.2.0
+     */
+    protected static String Suffix = "*";
+
+    /**
      * A {@code protected} {@link Boolean} that determines whether the italic formatting feature is enabled.
      *
      * @since 1.1.0
@@ -35,8 +49,8 @@ public class Italic extends MarkdownFeature {
      * @since 1.1.0
      */
     public Italic() {
-        prefix = "*";
-        suffix = "*";
+        prefix = Prefix;
+        suffix = Suffix;
     }
 
     /**
@@ -59,5 +73,74 @@ public class Italic extends MarkdownFeature {
             return prefix + pContent + suffix;
         }
         return "§o" + pContent + "§r";
+    }
+
+
+    /**
+     * A {@code public static void} to update the prefix and suffix used for Italic formatting.
+     *
+     * @param pPrefix {@link String} - The new prefix for Italic formatting.
+     * @param pSuffix {@link String} - The new suffix for Italic formatting.
+     * @author MeAlam
+     * @since 1.2.0
+     */
+    public static void setPrefixSuffix(String pPrefix, String pSuffix) {
+        Prefix = pPrefix;
+        Suffix = pSuffix;
+    }
+
+    /**
+     * A {@code public static void} to update the prefix used for Italic formatting.
+     *
+     * @param pPrefix {@link String} - The new prefix for Italic formatting.
+     * @author MeAlam
+     * @since 1.2.0
+     */
+    public static void setPrefix(String pPrefix) {
+        Prefix = pPrefix;
+    }
+
+    /**
+     * A {@code public static void} to update the suffix used for Italic formatting.
+     *
+     * @param pSuffix {@link String} - The new suffix for Italic formatting.
+     * @author MeAlam
+     * @since 1.2.0
+     */
+    public static void setSuffix(String pSuffix) {
+        Suffix = pSuffix;
+    }
+
+    /**
+     * A {@code public static} {@link String} that retrieves the current prefix used for Italic formatting.
+     *
+     * @return The current prefix for Italic formatting.
+     * @author MeAlam
+     * @since 1.2.0
+     */
+    public static String getPrefix() {
+        return Prefix;
+    }
+
+    /**
+     * A {@code public static} {@link String} that retrieves the current suffix used for Italic formatting.
+     *
+     * @return The current suffix for Italic formatting.
+     * @author MeAlam
+     * @since 1.2.0
+     */
+    public static String getSuffix() {
+        return Suffix;
+    }
+
+    /**
+     * A {@code public static} {@link Boolean} that retrieves whether italic formatting is enabled.
+     *
+     * @return {@code true} if italic formatting is enabled, {@code false} otherwise.
+     * @author MeAlam
+     * @since 1.2.0
+     */
+    public static Boolean isItalicEnabled() {
+        return isItalicEnabled;
     }
 }

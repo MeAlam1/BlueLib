@@ -19,6 +19,20 @@ package software.bluelib.utils.markdown;
 public class Strikethrough extends MarkdownFeature {
 
     /**
+     * A {@code protected static} field representing the default prefix for Strikethrough formatting.
+     *
+     * @since 1.2.0
+     */
+    protected static String Prefix = "~~";
+
+    /**
+     * A {@code protected static} field representing the default suffix for Strikethrough formatting.
+     *
+     * @since 1.2.0
+     */
+    protected static String Suffix = "~~";
+
+    /**
      * A {@code protected} {@link Boolean} that determines whether the strikethrough formatting feature is enabled.
      *
      * @since 1.1.0
@@ -35,8 +49,8 @@ public class Strikethrough extends MarkdownFeature {
      * @since 1.1.0
      */
     public Strikethrough() {
-        prefix = "~~";
-        suffix = "~~";
+        prefix = Prefix;
+        suffix = Suffix;
     }
 
     /**
@@ -59,5 +73,74 @@ public class Strikethrough extends MarkdownFeature {
             return prefix + pContent + suffix;
         }
         return "§m" + pContent + "§r";
+    }
+
+
+    /**
+     * A {@code public static void} to update the prefix and suffix used for Strikethrough formatting.
+     *
+     * @param pPrefix {@link String} - The new prefix for Strikethrough formatting.
+     * @param pSuffix {@link String} - The new suffix for Strikethrough formatting.
+     * @author MeAlam
+     * @since 1.2.0
+     */
+    public static void setPrefixSuffix(String pPrefix, String pSuffix) {
+        Prefix = pPrefix;
+        Suffix = pSuffix;
+    }
+
+    /**
+     * A {@code public static void} to update the prefix used for Strikethrough formatting.
+     *
+     * @param pPrefix {@link String} - The new prefix for Strikethrough formatting.
+     * @author MeAlam
+     * @since 1.2.0
+     */
+    public static void setPrefix(String pPrefix) {
+        Prefix = pPrefix;
+    }
+
+    /**
+     * A {@code public static void} to update the suffix used for Strikethrough formatting.
+     *
+     * @param pSuffix {@link String} - The new suffix for Strikethrough formatting.
+     * @author MeAlam
+     * @since 1.2.0
+     */
+    public static void setSuffix(String pSuffix) {
+        Suffix = pSuffix;
+    }
+
+    /**
+     * A {@code public static} {@link String} that retrieves the current prefix used for Strikethrough formatting.
+     *
+     * @return The current prefix for Strikethrough formatting.
+     * @author MeAlam
+     * @since 1.2.0
+     */
+    public static String getPrefix() {
+        return Prefix;
+    }
+
+    /**
+     * A {@code public static} {@link String} that retrieves the current suffix used for Strikethrough formatting.
+     *
+     * @return The current suffix for Strikethrough formatting.
+     * @author MeAlam
+     * @since 1.2.0
+     */
+    public static String getSuffix() {
+        return Suffix;
+    }
+
+    /**
+     * A {@code public static} {@link Boolean} that retrieves whether Strikethrough formatting is enabled.
+     *
+     * @return {@code true} if Strikethrough formatting is enabled, {@code false} otherwise.
+     * @author MeAlam
+     * @since 1.2.0
+     */
+    public static Boolean isStrikethroughEnabled() {
+        return isStrikethroughEnabled;
     }
 }

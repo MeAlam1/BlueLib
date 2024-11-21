@@ -19,6 +19,20 @@ package software.bluelib.utils.markdown;
 public class Underline extends MarkdownFeature {
 
     /**
+     * A {@code protected static} field representing the default prefix for Underline formatting.
+     *
+     * @since 1.2.0
+     */
+    protected static String Prefix = "__";
+
+    /**
+     * A {@code protected static} field representing the default suffix for Underline formatting.
+     *
+     * @since 1.2.0
+     */
+    protected static String Suffix = "__";
+
+    /**
      * A {@code protected} {@link Boolean} that determines whether the underline formatting feature is enabled.
      *
      * @since 1.1.0
@@ -35,8 +49,8 @@ public class Underline extends MarkdownFeature {
      * @since 1.1.0
      */
     public Underline() {
-        prefix = "__";
-        suffix = "__";
+        prefix = Prefix;
+        suffix = Suffix;
     }
 
     /**
@@ -59,5 +73,74 @@ public class Underline extends MarkdownFeature {
             return prefix + pContent + suffix;
         }
         return "§n" + pContent + "§r";
+    }
+
+
+    /**
+     * A {@code public static void} to update the prefix and suffix used for Underline formatting.
+     *
+     * @param pPrefix {@link String} - The new prefix for Underline formatting.
+     * @param pSuffix {@link String} - The new suffix for Underline formatting.
+     * @author MeAlam
+     * @since 1.2.0
+     */
+    public static void setPrefixSuffix(String pPrefix, String pSuffix) {
+        Prefix = pPrefix;
+        Suffix = pSuffix;
+    }
+
+    /**
+     * A {@code public static void} to update the prefix used for Underline formatting.
+     *
+     * @param pPrefix {@link String} - The new prefix for Underline formatting.
+     * @author MeAlam
+     * @since 1.2.0
+     */
+    public static void setPrefix(String pPrefix) {
+        Prefix = pPrefix;
+    }
+
+    /**
+     * A {@code public static void} to update the suffix used for Underline formatting.
+     *
+     * @param pSuffix {@link String} - The new suffix for Underline formatting.
+     * @author MeAlam
+     * @since 1.2.0
+     */
+    public static void setSuffix(String pSuffix) {
+        Suffix = pSuffix;
+    }
+
+    /**
+     * A {@code public static} {@link String} that retrieves the current prefix used for Underline formatting.
+     *
+     * @return The current prefix for Underline formatting.
+     * @author MeAlam
+     * @since 1.2.0
+     */
+    public static String getPrefix() {
+        return Prefix;
+    }
+
+    /**
+     * A {@code public static} {@link String} that retrieves the current suffix used for Underline formatting.
+     *
+     * @return The current suffix for Underline formatting.
+     * @author MeAlam
+     * @since 1.2.0
+     */
+    public static String getSuffix() {
+        return Suffix;
+    }
+
+    /**
+     * A {@code public static} {@link Boolean} that retrieves whether Underline formatting is enabled.
+     *
+     * @return {@code true} if Underline formatting is enabled, {@code false} otherwise.
+     * @author MeAlam
+     * @since 1.2.0
+     */
+    public static Boolean isUnderlineEnabled() {
+        return isUnderlineEnabled;
     }
 }
