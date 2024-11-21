@@ -184,7 +184,7 @@ public class FuryRender extends GeoEntityRenderer<FuryEntity> {
             // Update last update time
             lastUpdateTime = currentTime;
         }
-
+    }
 
     @Override
     public void preRender(PoseStack poseStack, FuryEntity animatable, BakedGeoModel model, @Nullable MultiBufferSource bufferSource, @Nullable VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, int renderColor) {
