@@ -56,7 +56,6 @@ public abstract class MarkdownFeature {
      * @since 1.1.0
      */
     public String apply(String pMessage) {
-        BaseLogger.log(BaseLogLevel.INFO, "Applying markdown format to message", true);
 
         String escapedPrefix = escapeRegex(prefix);
         String escapedSuffix = escapeRegex(suffix);
@@ -69,7 +68,7 @@ public abstract class MarkdownFeature {
         while (matcher.find()) {
             String content = matcher.group(1);
             if (content.isEmpty()) {
-                BaseLogger.log(BaseLogLevel.WARNING, "Empty content found between prefix and suffix", true);
+                BaseLogger.log(BaseLogLevel.INFO, "Empty content found between prefix and suffix", true);
                 matcher.appendReplacement(result, Matcher.quoteReplacement(prefix + suffix));
             } else {
                 String formatted = applyFormat(content);
@@ -78,7 +77,6 @@ public abstract class MarkdownFeature {
         }
 
         matcher.appendTail(result);
-        BaseLogger.log(BaseLogLevel.INFO, "Formatted message: " + result, true);
         return result.toString().replaceAll("\\\\" + escapedPrefix, prefix);
     }
 

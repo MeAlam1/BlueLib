@@ -1,9 +1,6 @@
 package software.bluelib.example.event;
 
-import net.minecraft.network.chat.ChatType;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.OutgoingChatMessage;
-import net.minecraft.network.chat.PlayerChatMessage;
+import net.minecraft.network.chat.*;
 import net.minecraft.server.level.ServerPlayer;
 import software.bluelib.utils.markdown.MarkdownParser;
 
@@ -37,7 +34,7 @@ public class ChatHandler {
      */
     public static boolean onAllowChat(PlayerChatMessage pPlayerChatMessage, ServerPlayer pServerPlayer, ChatType.Bound pBound) {
         Component originalMessage = pPlayerChatMessage.decoratedContent();
-        Component formattedMessage = MarkdownParser.parseMarkdown(originalMessage);
+        MutableComponent formattedMessage = MarkdownParser.parseMarkdown(originalMessage, pServerPlayer);
         if (!formattedMessage.equals(originalMessage)) {
             PlayerChatMessage newPlayerChatMessage = new PlayerChatMessage(
                     pPlayerChatMessage.link(),
