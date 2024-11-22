@@ -100,28 +100,26 @@ public class ParameterUtils {
      */
     public static String getCustomParameterForVariant(String pEntityName, String pVariantName, String pParameter) {
         JsonObject entityData = VariantLoader.AllVariants.get(pEntityName);
-        if (entityData != null) {
-            JsonArray variants = entityData.getAsJsonArray(pVariantName);
+        if (entityData == null) {
+            BaseLogger.log(BaseLogLevel.WARNING, "Entity data not found for: " + pEntityName, true);
+            return null;
+        }
 
-            if (variants != null && !variants.isEmpty()) {
-                for (int i = 0; i < variants.size(); i++) {
-                    JsonElement variantElement = variants.get(i);
-                    if (variantElement.isJsonObject()) {
-                        JsonObject variant = variantElement.getAsJsonObject();
-                        if (variant.has(pParameter)) {
-                            JsonElement parameterElement = variant.get(pParameter);
-                            if (parameterElement.isJsonPrimitive()) {
-                                String value = parameterElement.getAsString();
-                                BaseLogger.log(BaseLogLevel.INFO, "Found custom parameter: " + pParameter + " with value: " + value
-                                        + " for: " + pEntityName, true);
-                                return value;
-                            } else if (parameterElement.isJsonObject()) {
-                                String value = parameterElement.getAsString();
-                                BaseLogger.log(BaseLogLevel.INFO, "Found custom parameter: " + pParameter + " with value: " + value
-                                        + " for: " + pEntityName, true);
-                                return value;
-                            }
-                        }
+        JsonArray variants = entityData.getAsJsonArray(pVariantName);
+        if (variants == null || variants.isEmpty()) {
+            BaseLogger.log(BaseLogLevel.WARNING, "Variants not found or empty for: " + pVariantName + " in entity: " + pEntityName, true);
+            return null;
+        }
+
+        for (JsonElement variantElement : variants) {
+            if (variantElement.isJsonObject()) {
+                JsonObject variant = variantElement.getAsJsonObject();
+                if (variant.has(pParameter)) {
+                    JsonElement parameterElement = variant.get(pParameter);
+                    if (parameterElement.isJsonPrimitive()) {
+                        String value = parameterElement.getAsString();
+                        BaseLogger.log(BaseLogLevel.INFO, "Found custom parameter: " + pParameter + " with value: " + value + " for: " + pEntityName, true);
+                        return value;
                     }
                 }
             }
@@ -129,4 +127,5 @@ public class ParameterUtils {
         BaseLogger.log(BaseLogLevel.WARNING, "Custom parameter: " + pParameter + " not found for: " + pEntityName, true);
         return null;
     }
+
 }
