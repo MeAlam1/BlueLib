@@ -22,7 +22,6 @@ import software.bluelib.interfaces.variant.IVariantAccessor;
 import software.bluelib.interfaces.variant.IVariantEntity;
 import software.bluelib.utils.logging.BaseLogLevel;
 import software.bluelib.utils.logging.BaseLogger;
-import software.bluelib.utils.variant.ParameterUtils;
 
 /**
  * A {@code DragonEntity} class representing a dragon entity in the game, which extends {@link TamableAnimal}
@@ -103,12 +102,6 @@ public class DragonEntity extends TamableAnimal implements IVariantEntity, GeoEn
     public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor pLevel, @NotNull DifficultyInstance pDifficulty, @NotNull EntitySpawnReason pReason, @Nullable SpawnGroupData pSpawnData) {
         if (getVariantName() == null || getVariantName().isEmpty()) {
             setVariantName(getRandomVariant(getEntityVariants(entityName), "normal"));
-            ParameterUtils.ParameterBuilder.forVariant(entityName, this.getVariantName())
-                    .withParameter("customParameter")
-                    .withParameter("int")
-                    .withParameter("bool")
-                    .withParameter("array")
-                    .connect();
         }
         BaseLogger.log(BaseLogLevel.SUCCESS, "Dragon Spawned with Variant: " + getVariantName(), true);
         return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData);

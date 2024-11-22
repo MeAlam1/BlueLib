@@ -102,12 +102,6 @@ public class DragonEntity extends TamableAnimal implements IVariantEntity, GeoEn
     public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor pLevel, @NotNull DifficultyInstance pDifficulty, @NotNull EntitySpawnReason pReason, @Nullable SpawnGroupData pSpawnData) {
         if (getVariantName() == null || getVariantName().isEmpty()) {
             setVariantName(getRandomVariant(getEntityVariants(entityName), "normal"));
-            ParameterUtils.ParameterBuilder.forVariant(entityName, this.getVariantName())
-                    .withParameter("customParameter")
-                    .withParameter("int")
-                    .withParameter("bool")
-                    .withParameter("array")
-                    .connect();
         }
         BaseLogger.log(BaseLogLevel.SUCCESS, "Dragon Spawned with Variant: " + getVariantName(), true);
         return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData);
