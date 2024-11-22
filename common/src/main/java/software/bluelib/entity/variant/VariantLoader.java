@@ -59,7 +59,7 @@ public class VariantLoader implements IVariantEntityBase {
      * A {@code public static void} that loads and merges variant data from JSON resources in the specified folder path.
      * <p>
      * The method loops through all resources in the folder and merges them into a single {@link JsonObject}. <br>
-     * The merged JSON data is then parsed into {} instances and stored in {@link #AllVariants}. <br>
+     * The merged JSON data is then parsed into {@link JsonObject} instances and stored in {@link #AllVariants}. <br>
      * </p>
      *
      * @param pFolderPath {@link String} - The path to the folder containing JSON resources.
@@ -89,9 +89,10 @@ public class VariantLoader implements IVariantEntityBase {
     }
 
     /**
-     * A {@code private static void} that parses the merged JSON data and converts it into {} instances.
+     * A {@code private static void} that parses the merged {@link JsonObject} containing variant data.
      * <p>
-     * This method processes each entry in the JSON object and stores the created {} instances in {@link #AllVariants}.
+     * The method parses the merged {@link JsonObject} and stores the data in the {@link #AllVariants} map.
+     * The map is used to store all variants of an entity.
      * </p>
      *
      * @param pJsonObject {@link JsonObject} - The merged {@link JsonObject} containing variant data.
@@ -101,9 +102,8 @@ public class VariantLoader implements IVariantEntityBase {
     private static void parseVariants(String pEntityName, JsonObject pJsonObject) {
         for (Map.Entry<String, JsonElement> ignored : pJsonObject.entrySet()) {
             AllVariants.putIfAbsent(pEntityName, pJsonObject);
-
-            BaseLogger.log(BaseLogLevel.INFO, "All Entities: " + ParameterUtils.getAllEntities(), true);
-            BaseLogger.log(BaseLogLevel.INFO, "Variants of " + pEntityName + ": " + ParameterUtils.getVariantsOfEntity(pEntityName), true);
         }
+        BaseLogger.log(BaseLogLevel.INFO, "All Entities: " + ParameterUtils.getAllEntities(), true);
+        BaseLogger.log(BaseLogLevel.INFO, "Variants of " + pEntityName + ": " + ParameterUtils.getVariantsOfEntity(pEntityName), true);
     }
 }
