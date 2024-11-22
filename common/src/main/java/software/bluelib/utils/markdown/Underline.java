@@ -2,6 +2,9 @@
 
 package software.bluelib.utils.markdown;
 
+import software.bluelib.utils.logging.BaseLogLevel;
+import software.bluelib.utils.logging.BaseLogger;
+
 /**
  * A {@code public class} representing the underline Markdown formatting feature.
  * <p>
@@ -11,7 +14,7 @@ package software.bluelib.utils.markdown;
  * </p>
  *
  * @author MeAlam
- * @version 1.1.0
+ * @version 1.3.0
  * @see MarkdownFeature
  * @see #applyFormat(String)
  * @since 1.1.0
@@ -70,6 +73,7 @@ public class Underline extends MarkdownFeature {
     @Override
     protected String applyFormat(String pContent) {
         if (!isUnderlineEnabled) {
+            BaseLogger.log(BaseLogLevel.WARNING, "Underline is disabled. Returning original content.", true);
             return prefix + pContent + suffix;
         }
         return "§n" + pContent + "§r";
@@ -87,6 +91,7 @@ public class Underline extends MarkdownFeature {
     public static void setPrefixSuffix(String pPrefix, String pSuffix) {
         Prefix = pPrefix;
         Suffix = pSuffix;
+        BaseLogger.log(BaseLogLevel.SUCCESS, "Underline prefix and suffix updated to: " + Prefix + " and " + Suffix, true);
     }
 
     /**
@@ -98,6 +103,7 @@ public class Underline extends MarkdownFeature {
      */
     public static void setPrefix(String pPrefix) {
         Prefix = pPrefix;
+        BaseLogger.log(BaseLogLevel.SUCCESS, "Underline prefix updated to: " + Prefix, true);
     }
 
     /**
@@ -109,6 +115,7 @@ public class Underline extends MarkdownFeature {
      */
     public static void setSuffix(String pSuffix) {
         Suffix = pSuffix;
+        BaseLogger.log(BaseLogLevel.SUCCESS, "Underline suffix updated to: " + Suffix, true);
     }
 
     /**
@@ -119,6 +126,7 @@ public class Underline extends MarkdownFeature {
      * @since 1.2.0
      */
     public static String getPrefix() {
+        BaseLogger.log(BaseLogLevel.SUCCESS, "Retrieved Underline prefix: " + Prefix, true);
         return Prefix;
     }
 
@@ -130,6 +138,7 @@ public class Underline extends MarkdownFeature {
      * @since 1.2.0
      */
     public static String getSuffix() {
+        BaseLogger.log(BaseLogLevel.SUCCESS, "Retrieved Underline suffix: " + Suffix, true);
         return Suffix;
     }
 
@@ -141,6 +150,7 @@ public class Underline extends MarkdownFeature {
      * @since 1.2.0
      */
     public static Boolean isUnderlineEnabled() {
+        BaseLogger.log(BaseLogLevel.SUCCESS, "Retrieved Underline enabled status: " + isUnderlineEnabled, true);
         return isUnderlineEnabled;
     }
 }

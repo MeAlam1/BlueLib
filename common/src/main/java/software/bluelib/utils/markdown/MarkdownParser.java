@@ -3,6 +3,8 @@
 package software.bluelib.utils.markdown;
 
 import net.minecraft.network.chat.Component;
+import software.bluelib.utils.logging.BaseLogLevel;
+import software.bluelib.utils.logging.BaseLogger;
 
 /**
  * A {@code public class} responsible for parsing and formatting Markdown into Minecraft's {@link Component}.
@@ -45,6 +47,7 @@ public class MarkdownParser {
      * @since 1.1.0
      */
     private static String escapeRegex(String pInput) {
+        BaseLogger.log(BaseLogLevel.INFO, "Escaping special characters for regex", true);
         return pInput.replaceAll("([\\\\*+\\[\\](){}|.^$?])", "\\\\$1");
     }
 
@@ -62,6 +65,7 @@ public class MarkdownParser {
      */
     public static Component parseMarkdown(Component pMessage) {
         if (!globalMarkdownEnabled) {
+            BaseLogger.log(BaseLogLevel.INFO, "Global markdown is disabled, returning original message", true);
             return pMessage;
         }
 
@@ -70,6 +74,7 @@ public class MarkdownParser {
         text = new Italic().apply(text);
         text = new Strikethrough().apply(text);
         text = new Underline().apply(text);
+        BaseLogger.log(BaseLogLevel.INFO, "Markdown applied to message: " + text, true);
         return Component.literal(text);
     }
 
@@ -83,6 +88,7 @@ public class MarkdownParser {
      */
     public static void enableMarkdown() {
         globalMarkdownEnabled = true;
+        BaseLogger.log(BaseLogLevel.INFO, "Global markdown enabled", true);
     }
 
     /**
@@ -95,6 +101,7 @@ public class MarkdownParser {
      */
     public static void disableMarkdown() {
         globalMarkdownEnabled = false;
+        BaseLogger.log(BaseLogLevel.INFO, "Global markdown disabled", true);
     }
 
     /**
@@ -108,6 +115,7 @@ public class MarkdownParser {
      * @since 1.1.0
      */
     public static EnableMarkdownFor enableMarkdownFor() {
+        BaseLogger.log(BaseLogLevel.INFO, "Returning EnableMarkdownFor instance", true);
         return new EnableMarkdownFor();
     }
 
@@ -122,6 +130,7 @@ public class MarkdownParser {
      * @since 1.1.0
      */
     public static DisableMarkdownFor disableMarkdownFor() {
+        BaseLogger.log(BaseLogLevel.INFO, "Returning DisableMarkdownFor instance", true);
         return new DisableMarkdownFor();
     }
 
@@ -146,6 +155,7 @@ public class MarkdownParser {
          */
         public EnableMarkdownFor bold() {
             Bold.isBoldEnabled = true;
+            BaseLogger.log(BaseLogLevel.INFO, "Enabled bold markdown", true);
             return this;
         }
 
@@ -158,6 +168,7 @@ public class MarkdownParser {
          */
         public EnableMarkdownFor italic() {
             Italic.isItalicEnabled = true;
+            BaseLogger.log(BaseLogLevel.INFO, "Enabled italic markdown", true);
             return this;
         }
 
@@ -170,6 +181,7 @@ public class MarkdownParser {
          */
         public EnableMarkdownFor strikethrough() {
             Strikethrough.isStrikethroughEnabled = true;
+            BaseLogger.log(BaseLogLevel.INFO, "Enabled strikethrough markdown", true);
             return this;
         }
 
@@ -182,6 +194,7 @@ public class MarkdownParser {
          */
         public EnableMarkdownFor underline() {
             Underline.isUnderlineEnabled = true;
+            BaseLogger.log(BaseLogLevel.INFO, "Enabled underline markdown", true);
             return this;
         }
     }
@@ -207,6 +220,7 @@ public class MarkdownParser {
          */
         public DisableMarkdownFor bold() {
             Bold.isBoldEnabled = false;
+            BaseLogger.log(BaseLogLevel.INFO, "Disabled bold markdown", true);
             return this;
         }
 
@@ -219,6 +233,7 @@ public class MarkdownParser {
          */
         public DisableMarkdownFor italic() {
             Italic.isItalicEnabled = false;
+            BaseLogger.log(BaseLogLevel.INFO, "Disabled italic markdown", true);
             return this;
         }
 
@@ -231,6 +246,7 @@ public class MarkdownParser {
          */
         public DisableMarkdownFor strikethrough() {
             Strikethrough.isStrikethroughEnabled = false;
+            BaseLogger.log(BaseLogLevel.INFO, "Disabled strikethrough markdown", true);
             return this;
         }
 
@@ -243,6 +259,7 @@ public class MarkdownParser {
          */
         public DisableMarkdownFor underline() {
             Underline.isUnderlineEnabled = false;
+            BaseLogger.log(BaseLogLevel.INFO, "Disabled underline markdown", true);
             return this;
         }
     }

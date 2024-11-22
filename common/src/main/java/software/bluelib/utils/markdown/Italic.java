@@ -2,6 +2,9 @@
 
 package software.bluelib.utils.markdown;
 
+import software.bluelib.utils.logging.BaseLogLevel;
+import software.bluelib.utils.logging.BaseLogger;
+
 /**
  * A {@code public class} representing the italic Markdown formatting feature.
  * <p>
@@ -11,7 +14,7 @@ package software.bluelib.utils.markdown;
  * </p>
  *
  * @author MeAlam
- * @version 1.1.0
+ * @version 1.3.0
  * @see MarkdownFeature
  * @see #applyFormat(String)
  * @since 1.1.0
@@ -70,11 +73,11 @@ public class Italic extends MarkdownFeature {
     @Override
     protected String applyFormat(String pContent) {
         if (!isItalicEnabled) {
+            BaseLogger.log(BaseLogLevel.WARNING, "Italic is disabled. Returning original content.", true);
             return prefix + pContent + suffix;
         }
         return "§o" + pContent + "§r";
     }
-
 
     /**
      * A {@code public static void} to update the prefix and suffix used for Italic formatting.
@@ -87,6 +90,7 @@ public class Italic extends MarkdownFeature {
     public static void setPrefixSuffix(String pPrefix, String pSuffix) {
         Prefix = pPrefix;
         Suffix = pSuffix;
+        BaseLogger.log(BaseLogLevel.SUCCESS, "Italic prefix and suffix updated to: " + Prefix + " and " + Suffix, true);
     }
 
     /**
@@ -98,6 +102,7 @@ public class Italic extends MarkdownFeature {
      */
     public static void setPrefix(String pPrefix) {
         Prefix = pPrefix;
+        BaseLogger.log(BaseLogLevel.SUCCESS, "Italic prefix updated to: " + Prefix, true);
     }
 
     /**
@@ -109,6 +114,7 @@ public class Italic extends MarkdownFeature {
      */
     public static void setSuffix(String pSuffix) {
         Suffix = pSuffix;
+        BaseLogger.log(BaseLogLevel.SUCCESS, "Italic suffix updated to: " + Suffix, true);
     }
 
     /**
@@ -119,6 +125,7 @@ public class Italic extends MarkdownFeature {
      * @since 1.2.0
      */
     public static String getPrefix() {
+        BaseLogger.log(BaseLogLevel.SUCCESS, "Retrieved Italic prefix: " + Prefix, true);
         return Prefix;
     }
 
@@ -130,6 +137,7 @@ public class Italic extends MarkdownFeature {
      * @since 1.2.0
      */
     public static String getSuffix() {
+        BaseLogger.log(BaseLogLevel.SUCCESS, "Retrieved Italic suffix: " + Suffix, true);
         return Suffix;
     }
 
@@ -141,6 +149,7 @@ public class Italic extends MarkdownFeature {
      * @since 1.2.0
      */
     public static Boolean isItalicEnabled() {
+        BaseLogger.log(BaseLogLevel.SUCCESS, "Retrieved Italic enabled status: " + isItalicEnabled, true);
         return isItalicEnabled;
     }
 }

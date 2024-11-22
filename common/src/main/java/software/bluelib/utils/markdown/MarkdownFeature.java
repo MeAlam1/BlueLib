@@ -2,6 +2,9 @@
 
 package software.bluelib.utils.markdown;
 
+import software.bluelib.utils.logging.BaseLogLevel;
+import software.bluelib.utils.logging.BaseLogger;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -19,7 +22,7 @@ import java.util.regex.Pattern;
  * </ul>
  *
  * @author MeAlam
- * @version 1.2.0
+ * @version 1.3.0
  * @since 1.1.0
  */
 public abstract class MarkdownFeature {
@@ -53,6 +56,8 @@ public abstract class MarkdownFeature {
      * @since 1.1.0
      */
     public String apply(String pMessage) {
+        BaseLogger.log(BaseLogLevel.INFO, "Applying markdown format to message", true);
+
         String escapedPrefix = escapeRegex(prefix);
         String escapedSuffix = escapeRegex(suffix);
 
@@ -64,6 +69,7 @@ public abstract class MarkdownFeature {
         while (matcher.find()) {
             String content = matcher.group(1);
             if (content.isEmpty()) {
+                BaseLogger.log(BaseLogLevel.WARNING, "Empty content found between prefix and suffix", true);
                 matcher.appendReplacement(result, Matcher.quoteReplacement(prefix + suffix));
             } else {
                 String formatted = applyFormat(content);
@@ -72,9 +78,9 @@ public abstract class MarkdownFeature {
         }
 
         matcher.appendTail(result);
+        BaseLogger.log(BaseLogLevel.INFO, "Formatted message: " + result, true);
         return result.toString().replaceAll("\\\\" + escapedPrefix, prefix);
     }
-
 
     /**
      * A {@code protected abstract} {@link String} that applies the specific formatting to the content between the prefix and suffix.
