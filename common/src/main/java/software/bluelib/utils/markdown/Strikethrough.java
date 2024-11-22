@@ -73,7 +73,7 @@ public class Strikethrough extends MarkdownFeature {
     @Override
     protected String applyFormat(String pContent) {
         if (!isStrikethroughEnabled) {
-            BaseLogger.log(BaseLogLevel.WARNING, "Strikethrough is disabled. Returning original content.", true);
+            BaseLogger.log(BaseLogLevel.INFO, "Strikethrough is disabled. Returning original content.", true);
             return prefix + pContent + suffix;
         }
         return "§m" + pContent + "§r";

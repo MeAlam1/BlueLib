@@ -72,7 +72,7 @@ public class Bold extends MarkdownFeature {
     @Override
     protected String applyFormat(String pContent) {
         if (!isBoldEnabled) {
-            BaseLogger.log(BaseLogLevel.WARNING, "Bold formatting is disabled. Returning original content.", true);
+            BaseLogger.log(BaseLogLevel.INFO, "Bold formatting is disabled. Returning original content.", true);
             return prefix + pContent + suffix;
         }
         return "§l" + pContent + "§r";

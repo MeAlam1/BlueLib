@@ -73,7 +73,7 @@ public class Underline extends MarkdownFeature {
     @Override
     protected String applyFormat(String pContent) {
         if (!isUnderlineEnabled) {
-            BaseLogger.log(BaseLogLevel.WARNING, "Underline is disabled. Returning original content.", true);
+            BaseLogger.log(BaseLogLevel.INFO, "Underline is disabled. Returning original content.", true);
             return prefix + pContent + suffix;
         }
         return "§n" + pContent + "§r";
