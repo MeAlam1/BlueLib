@@ -24,7 +24,6 @@ import java.util.Set;
  *   <li>{@link #getVariantsOfEntity(String)} - Retrieves the variants of a specific entity.</li>
  *   <li>{@link #getCustomParameterForVariant(String, String, String)} - Retrieves the value of a custom parameter for a given variant.</li>
  * </ul>
- * </p>
  *
  * @author MeAlam
  * @version 1.3.0
@@ -76,7 +75,7 @@ public class ParameterUtils {
         JsonObject entityData = VariantLoader.AllVariants.get(pEntityName);
         if (entityData != null) {
             Set<String> variants = entityData.keySet();
-            BaseLogger.log(BaseLogLevel.INFO, "Found Variants: " + variants,true);
+            BaseLogger.log(BaseLogLevel.INFO, "Found Variants: " + variants, true);
             return variants;
         }
         BaseLogger.log(BaseLogLevel.WARNING, "No variants found for: " + pEntityName, true);
