@@ -34,7 +34,7 @@ import java.util.concurrent.TimeUnit;
  * </ul>
  *
  * @author MeAlam
- * @version 1.0.0
+ * @version 1.3.0
  * @since 1.0.0
  */
 @EventBusSubscriber
@@ -100,17 +100,11 @@ public class ReloadHandler extends ReloadEventHandler {
 
 
     /**
-     * The entities with their variants.
-     * <p>
-     * This map contains the entity names and their respective variants.
-     * </p>
+     * The entities. This list contains the names of the entities for which variants are loaded.
      *
      * @since 1.0.0
      */
-    private static final Map<String, List<String>> entityVariants = Map.of(
-            "dragon", List.of("dark", "bright", "blue", "pink"),
-            "rex", List.of("green", "brown")
-    );
+    private static final List<String> ENTITY_NAMES = Arrays.asList("dragon", "rex");
 
     /**
      * Loads entity variants from JSON files into the {@link MinecraftServer}.
@@ -124,21 +118,9 @@ public class ReloadHandler extends ReloadEventHandler {
      * @author MeAlam
      */
     public static void LoadEntityVariants(MinecraftServer pServer) {
-        for (Map.Entry<String, List<String>> entry : entityVariants.entrySet()) {
-            String entityName = entry.getKey();
-            List<String> variants = entry.getValue();
-
+        for (String entityName : ENTITY_NAMES) {
             String folderPath = basePath + entityName;
             ReloadEventHandler.registerEntityVariants(folderPath, pServer, BlueLibConstants.MOD_ID, entityName);
-
-            for (String variantName : variants) {
-                ParameterUtils.ParameterBuilder.forVariant(entityName, variantName)
-                        .withParameter("customParameter")
-                        .withParameter("int")
-                        .withParameter("bool")
-                        .withParameter("array")
-                        .connect();
-            }
             BaseLogger.log(BaseLogLevel.INFO, "Entity variants loaded for " + entityName + ".", true);
         }
     }

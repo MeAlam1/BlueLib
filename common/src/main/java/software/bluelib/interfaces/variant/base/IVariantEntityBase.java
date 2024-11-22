@@ -4,12 +4,12 @@ package software.bluelib.interfaces.variant.base;
 
 import net.minecraft.resources.ResourceLocation;
 import software.bluelib.entity.variant.VariantLoader;
-import software.bluelib.entity.variant.VariantParameter;
-import software.bluelib.utils.logging.BaseLogLevel;
-import software.bluelib.utils.logging.BaseLogger;
+import software.bluelib.utils.variant.ParameterUtils;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Objects;
+import java.util.Set;
 
 /**
  * A {@code public base Interface} providing fundamental methods for handling entity variants.
@@ -57,11 +57,6 @@ public interface IVariantEntityBase {
      * @since 1.0.0
      */
     default List<String> getEntityVariants(String pEntityName) {
-        List<VariantParameter> variants = VariantLoader.getVariantsFromEntity(pEntityName);
-        List<String> variantNames = variants.stream()
-                .map(VariantParameter::filterVariantParameter)
-                .collect(Collectors.toList());
-        BaseLogger.log(BaseLogLevel.SUCCESS, "Retrieved " + variantNames.size() + " variants for entity: " + pEntityName, true);
-        return variantNames;
+        return new ArrayList<>(Objects.requireNonNull(ParameterUtils.getVariantsOfEntity(pEntityName)));
     }
 }

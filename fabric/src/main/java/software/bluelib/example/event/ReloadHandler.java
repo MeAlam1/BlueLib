@@ -9,6 +9,7 @@ import software.bluelib.utils.logging.BaseLogLevel;
 import software.bluelib.utils.logging.BaseLogger;
 import software.bluelib.utils.variant.ParameterUtils;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
@@ -89,17 +90,11 @@ public class ReloadHandler extends ReloadEventHandler {
     private static final String basePath = "variant/entity/";
 
     /**
-     * The entities with their variants.
-     * <p>
-     * This map contains the entity names and their respective variants.
-     * </p>
+     * The entities. This list contains the names of the entities for which variants are loaded.
      *
      * @since 1.0.0
      */
-    private static final Map<String, List<String>> entityVariants = Map.of(
-            "dragon", List.of("dark", "bright", "blue", "pink"),
-            "rex", List.of("green", "brown")
-    );
+    private static final List<String> ENTITY_NAMES = Arrays.asList("dragon", "rex");
 
     /**
      * Loads entity variants from JSON files into the {@link MinecraftServer}.
@@ -109,25 +104,13 @@ public class ReloadHandler extends ReloadEventHandler {
      * </p>
      *
      * @param pServer {@link MinecraftServer} - The server on which the entity variants will be loaded.
-     * @author MeAlam
      * @since 1.0.0
+     * @author MeAlam
      */
     public static void LoadEntityVariants(MinecraftServer pServer) {
-        for (Map.Entry<String, List<String>> entry : entityVariants.entrySet()) {
-            String entityName = entry.getKey();
-            List<String> variants = entry.getValue();
-
+        for (String entityName : ENTITY_NAMES) {
             String folderPath = basePath + entityName;
             ReloadEventHandler.registerEntityVariants(folderPath, pServer, BlueLibConstants.MOD_ID, entityName);
-
-            for (String variantName : variants) {
-                ParameterUtils.ParameterBuilder.forVariant(entityName, variantName)
-                        .withParameter("customParameter")
-                        .withParameter("int")
-                        .withParameter("bool")
-                        .withParameter("array")
-                        .connect();
-            }
             BaseLogger.log(BaseLogLevel.INFO, "Entity variants loaded for " + entityName + ".", true);
         }
     }

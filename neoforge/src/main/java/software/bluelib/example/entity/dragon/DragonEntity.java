@@ -115,7 +115,7 @@ public class DragonEntity extends TamableAnimal implements IVariantEntity, GeoEn
 
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
-        BaseLogger.log(BaseLogLevel.INFO, "customParameter: " + ParameterUtils.getParameter(getVariantName(), "customParameter"), true);
+        BaseLogger.log(BaseLogLevel.INFO, "customParameter: " + ParameterUtils.getCustomParameterForVariant(entityName ,getVariantName(), "customParameter"), true);
         return super.mobInteract(player, hand);
     }
 

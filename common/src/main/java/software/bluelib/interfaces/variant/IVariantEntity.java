@@ -8,6 +8,7 @@ import software.bluelib.utils.logging.BaseLogLevel;
 import software.bluelib.utils.logging.BaseLogger;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * A {@code public Interface} representing an entity that supports multiple variants.
