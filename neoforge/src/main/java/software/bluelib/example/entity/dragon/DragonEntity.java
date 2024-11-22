@@ -22,6 +22,7 @@ import software.bluelib.interfaces.variant.IVariantAccessor;
 import software.bluelib.interfaces.variant.IVariantEntity;
 import software.bluelib.utils.logging.BaseLogLevel;
 import software.bluelib.utils.logging.BaseLogger;
+import software.bluelib.utils.variant.ParameterUtils;
 
 /**
  * A {@code DragonEntity} class representing a dragon entity in the game, which extends {@link TamableAnimal}

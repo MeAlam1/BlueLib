@@ -2,7 +2,6 @@
 
 package software.bluelib.example.event;
 
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.server.MinecraftServer;
 import software.bluelib.BlueLibConstants;
 import software.bluelib.event.ReloadEventHandler;
@@ -10,7 +9,6 @@ import software.bluelib.utils.logging.BaseLogLevel;
 import software.bluelib.utils.logging.BaseLogger;
 import software.bluelib.utils.variant.ParameterUtils;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
@@ -111,8 +109,8 @@ public class ReloadHandler extends ReloadEventHandler {
      * </p>
      *
      * @param pServer {@link MinecraftServer} - The server on which the entity variants will be loaded.
-     * @since 1.0.0
      * @author MeAlam
+     * @since 1.0.0
      */
     public static void LoadEntityVariants(MinecraftServer pServer) {
         for (Map.Entry<String, List<String>> entry : entityVariants.entrySet()) {
