@@ -36,6 +36,11 @@ import java.util.Map;
  */
 public class VariantLoader implements IVariantEntityBase {
 
+    /**
+     * A {@code public static} {@link Map} that stores all variants of an entity.
+     *
+     * @since 1.3.0
+     */
     public static Map<String, JsonObject> AllVariants = new HashMap<>();
 
     /**
