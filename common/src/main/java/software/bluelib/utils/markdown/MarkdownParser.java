@@ -4,7 +4,6 @@ package software.bluelib.utils.markdown;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.server.level.ServerPlayer;
 import software.bluelib.utils.logging.BaseLogLevel;
 import software.bluelib.utils.logging.BaseLogger;
 
