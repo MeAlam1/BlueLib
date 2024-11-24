@@ -31,13 +31,18 @@ import java.util.Map;
  * </ul>
  *
  * @author MeAlam
- * @version 1.3.0
+ * @version 1.4.0
  * @since 1.0.0
  */
 public class VariantLoader implements IVariantEntityBase {
 
     /**
      * A {@code public static} {@link Map} that stores all variants of an entity.
+     * <p>
+     * The field is used to store all variants of an entity and is accessed by the {@link ParameterUtils} class.
+     * </p>
+     * <br>
+     * <strong>We don't recommend using this field directly unless you know what you are doing.</strong>
      *
      * @since 1.3.0
      */
