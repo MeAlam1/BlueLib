@@ -68,6 +68,12 @@ public class Hyperlink extends MarkdownFeature {
 
         String[] splitMessage = splitMessage(pMessage);
 
+        if (splitMessage[0].endsWith("\\")) {
+            String modifiedMessage = pMessage.substring(0, pMessage.lastIndexOf("\\"))
+                    + pMessage.substring(pMessage.lastIndexOf("\\") + 1);
+            return Component.literal(modifiedMessage);
+        }
+
         if (!MiscUtils.isValidURL(splitMessage[2])) {
             return Component.literal(pMessage);
         }
