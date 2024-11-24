@@ -178,7 +178,18 @@
       - If no code is available to test, create new test code in the `example` package.
     - Ensure that your changes do not introduce any issues or regressions.
 
-7. **Commit Your Changes**
+7. **Run gradle tasks**
+    - To ensure everything is clean, run the gradle spotless tasks
+    - **Required**:
+      ```bash
+        gradlew spotlessApply
+      ```
+    - **Optional**:
+      ```bash
+        gradlew spotlessCheck
+      ```
+
+8. **Commit Your Changes**
     - Once you are satisfied with your changes, commit them to your branch.
     - Write clear and concise commit messages explaining the changes made.
     - **Example**:
@@ -186,14 +197,14 @@
       git commit -am "Improved logging functionality and deprecated old log method"
       ```
 
-8. **Push to Your Fork**
+9. **Push to Your Fork**
     - Push your branch to your fork on GitHub.
     - **Example**:
       ```bash
       git push origin feature/improve-logging
       ```
 
-9. **Create a Pull Request (PR)**
+10. **Create a Pull Request (PR)**
    - Navigate to your fork on GitHub and create a Pull Request to the main repository. Provide a detailed description of the changes made and why they are necessary.
 
 ## Contributor License Agreement (CLA)
