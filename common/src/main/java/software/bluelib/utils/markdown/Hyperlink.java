@@ -7,9 +7,6 @@ import software.bluelib.utils.MiscUtils;
 import software.bluelib.utils.logging.BaseLogLevel;
 import software.bluelib.utils.logging.BaseLogger;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 /**
  * A {@code public class} representing the Hyperlink Markdown formatting feature.
  * <p>
@@ -60,6 +57,19 @@ public class Hyperlink extends MarkdownFeature {
         suffix = Suffix;
     }
 
+    /**
+     * A {@code public} {@link MutableComponent} that applies Hyperlink formatting to the provided message.
+     * <p>
+     * This method applies Hyperlink formatting to the provided message, <br>
+     * if the message contains a valid URL surrounded by the prefix and suffix. <br>
+     * The method returns the formatted message with the Hyperlink applied, or the original message if no valid URL is found.
+     * </p>
+     *
+     * @param pMessage {@link String} - The message to format.
+     * @return {@link MutableComponent} - The formatted message with Hyperlink Markdown applied, or the original message.
+     * @author MeAlam
+     * @since 1.4.0
+     */
     public MutableComponent applyLast(String pMessage) {
         if (!isHyperlinkEnabled) {
             BaseLogger.log(BaseLogLevel.INFO, "Hyperlink formatting is disabled. Returning original content.", true);
@@ -92,11 +102,39 @@ public class Hyperlink extends MarkdownFeature {
     }
 
 
+    /**
+     * Overrides the {@link MarkdownFeature#applyFormat(String)} method to apply the formatting logic.
+     * <p>
+     * Currently, this method does not modify the provided content and simply returns it unchanged.
+     * </p>
+     *
+     * @param pContent {@link String} - The content to format.
+     * @return {@link String} - The content unchanged.
+     * @author MeAlam
+     * @since 1.4.0
+     */
     @Override
     protected String applyFormat(String pContent) {
         return pContent;
     }
 
+    /**
+     * A {@code static} {@link String}{@code []} that splits the provided message into parts.
+     * <p>
+     * The method identifies the text before the hyperlink, the link text, the URL, and the text after the hyperlink.
+     * </p>
+     *
+     * @param pMessage {@link String} - The message to split.
+     * @return {@link String}{@code []} - An array containing:
+     * <ul>
+     *   <li>Text before the hyperlink</li>
+     *   <li>Link text</li>
+     *   <li>URL</li>
+     *   <li>Text after the hyperlink</li>
+     * </ul>
+     * @author MeAlam
+     * @since 1.4.0
+     */
     static String[] splitMessage(String pMessage) {
         int openBracketIndex = pMessage.indexOf("[");
         int closeBracketIndex = pMessage.indexOf("]", openBracketIndex);
