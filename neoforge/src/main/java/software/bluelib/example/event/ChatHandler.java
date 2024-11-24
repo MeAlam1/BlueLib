@@ -2,8 +2,7 @@
 
 package software.bluelib.example.event;
 
-import net.minecraft.network.chat.*;
-import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.network.chat.Component;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.ServerChatEvent;
@@ -37,16 +36,7 @@ public class ChatHandler {
     @SubscribeEvent
     public static void onServerChat(ServerChatEvent pEvent) {
         Component originalMessage = pEvent.getMessage();
-        MutableComponent formattedMessage = MarkdownParser.parseMarkdown(originalMessage, pEvent.getPlayer());
+        Component formattedMessage = MarkdownParser.parseMarkdown(originalMessage, pEvent.getPlayer());
         pEvent.setMessage(formattedMessage);
-    }
-
-    public static void sendClickableText(ServerPlayer player, String displayText, String command) {
-        Component clickablePart = Component.literal(displayText)
-                .setStyle(Style.EMPTY.withColor(TextColor.fromRgb(250)).withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, command)));
-
-        MutableComponent nonClickablePart = Component.literal("This part is not clickable. ");
-
-        player.sendSystemMessage(nonClickablePart.append(clickablePart));
     }
 }

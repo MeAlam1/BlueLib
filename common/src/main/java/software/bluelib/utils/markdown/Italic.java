@@ -14,7 +14,7 @@ import software.bluelib.utils.logging.BaseLogger;
  * </p>
  *
  * @author MeAlam
- * @version 1.3.0
+ * @version 1.4.0
  * @see MarkdownFeature
  * @see #applyFormat(String)
  * @since 1.1.0

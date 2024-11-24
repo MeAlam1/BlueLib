@@ -4,13 +4,9 @@ package software.bluelib.utils.markdown;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.OutgoingChatMessage;
-import net.minecraft.network.chat.PlayerChatMessage;
 import net.minecraft.server.level.ServerPlayer;
 import software.bluelib.utils.logging.BaseLogLevel;
 import software.bluelib.utils.logging.BaseLogger;
-
-import java.util.Objects;
 
 /**
  * A {@code public class} responsible for parsing and formatting Markdown into Minecraft's {@link Component}.
@@ -18,7 +14,7 @@ import java.util.Objects;
  * This class processes text components and applies Markdown-style formatting (bold, italic, strikethrough, and underline) to
  * the text. The formatting is controlled globally or individually through the {@link EnableMarkdownFor} and {@link DisableMarkdownFor} inner classes.
  * </p>
- *
+ * <p>
  * Key Methods:
  * <ul>
  *     <li>{@link #parseMarkdown(Component, ServerPlayer)} - Parses and applies Markdown formatting to a given message component.</li>
@@ -29,7 +25,7 @@ import java.util.Objects;
  * </ul>
  *
  * @author MeAlam
- * @version 1.3.0
+ * @version 1.4.0
  * @since 1.1.0
  */
 public class MarkdownParser {

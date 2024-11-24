@@ -26,7 +26,7 @@ import java.util.Set;
  * </ul>
  *
  * @author MeAlam
- * @version 1.3.0
+ * @version 1.4.0
  * @see VariantLoader
  * @since 1.0.0
  */
