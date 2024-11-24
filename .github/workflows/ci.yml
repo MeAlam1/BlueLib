@@ -52,8 +52,5 @@ jobs:
       - name: Build for NeoForge
         run: ./gradlew build -p neoforge
 
-      - name: Build for Forge
-        run: ./gradlew build -p forge
-
       - name: Build for Fabric
         run: ./gradlew build -p fabric
