@@ -2,9 +2,8 @@
 
 package software.bluelib.utils.logging;
 
-import software.bluelib.interfaces.logging.ILogColorProvider;
-
 import java.util.logging.Level;
+import software.bluelib.interfaces.logging.ILogColorProvider;
 
 /**
  * A {@code class} that implements the {@link ILogColorProvider} interface
@@ -12,11 +11,11 @@ import java.util.logging.Level;
  * <p>
  * This implementation uses predefined colors for various log levels, including:
  * <ul>
- *   <li>{@link BaseLogLevel#ERROR} - Red color.</li>
- *   <li>{@link BaseLogLevel#WARNING} - Orange color.</li>
- *   <li>{@link BaseLogLevel#INFO} - Blue color.</li>
- *   <li>{@link BaseLogLevel#SUCCESS} - Green color.</li>
- *   <li>{@link BaseLogLevel#BLUELIB} - Green color.</li>
+ * <li>{@link BaseLogLevel#ERROR} - Red color.</li>
+ * <li>{@link BaseLogLevel#WARNING} - Orange color.</li>
+ * <li>{@link BaseLogLevel#INFO} - Blue color.</li>
+ * <li>{@link BaseLogLevel#SUCCESS} - Green color.</li>
+ * <li>{@link BaseLogLevel#BLUELIB} - Green color.</li>
  * </ul>
  *
  * @author MeAlam

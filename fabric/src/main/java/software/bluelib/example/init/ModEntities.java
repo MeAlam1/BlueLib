@@ -2,6 +2,8 @@
 
 package software.bluelib.example.init;
 
+import static net.minecraft.world.entity.MobCategory.CREATURE;
+
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -12,14 +14,12 @@ import software.bluelib.BlueLibConstants;
 import software.bluelib.example.entity.dragon.DragonEntity;
 import software.bluelib.example.entity.rex.RexEntity;
 
-import static net.minecraft.world.entity.MobCategory.CREATURE;
-
 /**
  * A {@code public class} that contains the entities for the mod.
  * <p>
  * Key Methods:
  * <ul>
- *     <li>{@link #initializeEntities()} - Initializes the entities.</li>
+ * <li>{@link #initializeEntities()} - Initializes the entities.</li>
  * </ul>
  *
  * @author MeAlam

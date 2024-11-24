@@ -10,18 +10,18 @@ import software.bluelib.utils.logging.BaseLogger;
  * <p>
  * Key Methods:
  * <ul>
- *   <li>{@link #calculateDistance2D(double, double, double, double)} - Calculates the Euclidean distance between two points in 2D space.</li>
- *   <li>{@link #calculateDistance3D(double, double, double, double, double, double)} - Calculates the Euclidean distance between two points in 3D space.</li>
- *   <li>{@link #calculateCircleArea(double)} - Calculates the area of a circle given its radius.</li>
- *   <li>{@link #calculateCircleCircumference(double)} - Calculates the circumference of a circle given its radius.</li>
- *   <li>{@link #calculateRectangleArea(double, double)} - Calculates the area of a rectangle given its width and height.</li>
- *   <li>{@link #calculateRectanglePerimeter(double, double)} - Calculates the perimeter of a rectangle given its width and height.</li>
- *   <li>{@link #calculateTriangleArea(double, double)} - Calculates the area of a triangle given its base and height.</li>
- *   <li>{@link #calculateTrianglePerimeter(double, double, double)} - Calculates the perimeter of a triangle given its three sides.</li>
- *   <li>{@link #calculateSphereVolume(double)} - Calculates the volume of a sphere given its radius.</li>
- *   <li>{@link #calculateCubeSurfaceArea(double)} - Calculates the surface area of a cube given its side length.</li>
- *   <li>{@link #calculateCylinderVolume(double, double)} - Calculates the volume of a cylinder given its radius and height.</li>
- *   <li>{@link #calculateConeSurfaceArea(double, double)} - Calculates the surface area of a cone given its radius and slant height.</li>
+ * <li>{@link #calculateDistance2D(double, double, double, double)} - Calculates the Euclidean distance between two points in 2D space.</li>
+ * <li>{@link #calculateDistance3D(double, double, double, double, double, double)} - Calculates the Euclidean distance between two points in 3D space.</li>
+ * <li>{@link #calculateCircleArea(double)} - Calculates the area of a circle given its radius.</li>
+ * <li>{@link #calculateCircleCircumference(double)} - Calculates the circumference of a circle given its radius.</li>
+ * <li>{@link #calculateRectangleArea(double, double)} - Calculates the area of a rectangle given its width and height.</li>
+ * <li>{@link #calculateRectanglePerimeter(double, double)} - Calculates the perimeter of a rectangle given its width and height.</li>
+ * <li>{@link #calculateTriangleArea(double, double)} - Calculates the area of a triangle given its base and height.</li>
+ * <li>{@link #calculateTrianglePerimeter(double, double, double)} - Calculates the perimeter of a triangle given its three sides.</li>
+ * <li>{@link #calculateSphereVolume(double)} - Calculates the volume of a sphere given its radius.</li>
+ * <li>{@link #calculateCubeSurfaceArea(double)} - Calculates the surface area of a cube given its side length.</li>
+ * <li>{@link #calculateCylinderVolume(double, double)} - Calculates the volume of a cylinder given its radius and height.</li>
+ * <li>{@link #calculateConeSurfaceArea(double, double)} - Calculates the surface area of a cone given its radius and slant height.</li>
  * </ul>
  *
  * @author MeAlam
@@ -39,8 +39,7 @@ public class GeometricUtils {
      * @author MeAlam
      * @since 1.0.0
      */
-    private GeometricUtils() {
-    }
+    private GeometricUtils() {}
 
     /**
      * A {@link Double} that calculates the Euclidean distance between two points in 2D space.

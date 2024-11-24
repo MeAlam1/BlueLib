@@ -18,8 +18,8 @@ import software.bluelib.utils.logging.BaseLogger;
  * <p>
  * Key Methods:
  * <ul>
- *   <li>{@link #registerRenderers(EntityRenderersEvent.RegisterRenderers)} - Registers the renderers for the entities.</li>
- *   <li>{@link #registerAttributes(EntityAttributeCreationEvent)} - Registers the attributes for the entities.</li>
+ * <li>{@link #registerRenderers(EntityRenderersEvent.RegisterRenderers)} - Registers the renderers for the entities.</li>
+ * <li>{@link #registerAttributes(EntityAttributeCreationEvent)} - Registers the attributes for the entities.</li>
  * </ul>
  *
  * @author MeAlam

@@ -16,9 +16,9 @@ import software.bluelib.interfaces.platform.IPlatformHelper;
  * <p>
  * Key Methods:
  * <ul>
- *   <li>{@link #getPlatformName()} - Returns the platform name for NeoForge.</li>
- *   <li>{@link #isModLoaded(String)} - Checks if a mod is loaded using NeoForge's {@link ModList}.</li>
- *   <li>{@link #isDevelopmentEnvironment()} - Checks if NeoForge is running in a development environment.</li>
+ * <li>{@link #getPlatformName()} - Returns the platform name for NeoForge.</li>
+ * <li>{@link #isModLoaded(String)} - Checks if a mod is loaded using NeoForge's {@link ModList}.</li>
+ * <li>{@link #isDevelopmentEnvironment()} - Checks if NeoForge is running in a development environment.</li>
  * </ul>
  *
  * @author MeAlam

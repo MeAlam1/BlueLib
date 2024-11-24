@@ -11,10 +11,10 @@ package software.bluelib.interfaces.platform;
  * <p>
  * Key Methods:
  * <ul>
- *   <li>{@link #getPlatformName()} - Retrieves the name of the current platform.</li>
- *   <li>{@link #isModLoaded(String)} - Checks if a mod is loaded based on its ID.</li>
- *   <li>{@link #isDevelopmentEnvironment()} - Determines if the environment is for development.</li>
- *   <li>{@link #getEnvironmentName()} - Retrieves the name of the environment type.</li>
+ * <li>{@link #getPlatformName()} - Retrieves the name of the current platform.</li>
+ * <li>{@link #isModLoaded(String)} - Checks if a mod is loaded based on its ID.</li>
+ * <li>{@link #isDevelopmentEnvironment()} - Determines if the environment is for development.</li>
+ * <li>{@link #getEnvironmentName()} - Retrieves the name of the environment type.</li>
  * </ul>
  *
  * @author MeAlam

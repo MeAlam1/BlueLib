@@ -26,8 +26,8 @@ import software.bluelib.interfaces.variant.IVariantAccessor;
  * <p>
  * Key Methods:
  * <ul>
- *   <li>{@link #bluelib$setVariantName(String)} - Sets the variant name of the entity.</li>
- *   <li>{@link #bluelib$getVariantName()} - Retrieves the variant name of the entity.</li>
+ * <li>{@link #bluelib$setVariantName(String)} - Sets the variant name of the entity.</li>
+ * <li>{@link #bluelib$getVariantName()} - Retrieves the variant name of the entity.</li>
  * </ul>
  *
  * @author MeAlam
@@ -44,8 +44,7 @@ public class LivingEntityMixin implements IVariantAccessor {
      * @since 1.0.0
      */
     @Unique
-    private static final EntityDataAccessor<String> bluelib$VARIANT =
-            SynchedEntityData.defineId(LivingEntity.class, EntityDataSerializers.STRING);
+    private static final EntityDataAccessor<String> bluelib$VARIANT = SynchedEntityData.defineId(LivingEntity.class, EntityDataSerializers.STRING);
 
     /**
      * A {@code public void} that injects into the {@code defineSynchedData} method of {@link LivingEntity} to define

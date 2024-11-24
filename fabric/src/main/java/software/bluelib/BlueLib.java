@@ -4,7 +4,6 @@ package software.bluelib;
 
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.message.v1.ServerMessageEvents;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
@@ -13,7 +12,6 @@ import software.bluelib.example.entity.rex.RexEntity;
 import software.bluelib.example.event.ChatHandler;
 import software.bluelib.example.event.ReloadHandler;
 import software.bluelib.example.init.ModEntities;
-import software.bluelib.utils.markdown.Italic;
 
 /**
  * A {@code public class} that implements {@link ModInitializer} to initialize the BlueLib mod on the Fabric platform.
@@ -24,7 +22,7 @@ import software.bluelib.utils.markdown.Italic;
  * <p>
  * Key Methods:
  * <ul>
- *   <li>{@link #onInitialize()} - Registers the client tick event to initialize BlueLib.</li>
+ * <li>{@link #onInitialize()} - Registers the client tick event to initialize BlueLib.</li>
  * </ul>
  *
  * @author MeAlam

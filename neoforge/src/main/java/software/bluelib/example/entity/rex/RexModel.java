@@ -3,19 +3,18 @@
 package software.bluelib.example.entity.rex;
 
 import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.model.GeoModel;
 import software.bernie.geckolib.renderer.GeoRenderer;
 import software.bluelib.BlueLibConstants;
-
-import javax.annotation.Nullable;
 
 /**
  * A {@code public class} that extends {@link GeoModel} for the {@link RexEntity} entity.
  * Key Methods:
  * <ul>
- *   <li>{@link #getModelResource(RexEntity, GeoRenderer)} - Get the Model Location.</li>
- *   <li>{@link #getTextureResource(RexEntity, GeoRenderer)} - Get the Texture Location.</li>
- *   <li>{@link #getAnimationResource(RexEntity)} - Get the Animation Location.</li>
+ * <li>{@link #getModelResource(RexEntity, GeoRenderer)} - Get the Model Location.</li>
+ * <li>{@link #getTextureResource(RexEntity, GeoRenderer)} - Get the Texture Location.</li>
+ * <li>{@link #getAnimationResource(RexEntity)} - Get the Animation Location.</li>
  * </ul>
  *
  * @author MeAlam
@@ -23,7 +22,6 @@ import javax.annotation.Nullable;
  * @since 1.0.0
  */
 public class RexModel extends GeoModel<RexEntity> {
-
 
     /**
      * A {@code public} {@link ResourceLocation} method that returns the location of the model.

@@ -2,13 +2,11 @@
 
 package software.bluelib.interfaces.variant;
 
+import java.util.List;
 import net.minecraft.util.RandomSource;
 import software.bluelib.interfaces.variant.base.IVariantEntityBase;
 import software.bluelib.utils.logging.BaseLogLevel;
 import software.bluelib.utils.logging.BaseLogger;
-
-import java.util.List;
-import java.util.Set;
 
 /**
  * A {@code public Interface} representing an entity that supports multiple variants.
@@ -19,7 +17,7 @@ import java.util.Set;
  * <p>
  * Key Methods:
  * <ul>
- *   <li>{@link #getRandomVariant(List, String)} - Retrieves a random variant name from a provided list or defaults if the list is empty.</li>
+ * <li>{@link #getRandomVariant(List, String)} - Retrieves a random variant name from a provided list or defaults if the list is empty.</li>
  * </ul>
  *
  * @author MeAlam

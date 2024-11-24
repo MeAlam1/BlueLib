@@ -19,7 +19,7 @@ import software.bluelib.example.entity.rex.RexEntity;
  * <p>
  * Key Methods:
  * <ul>
- *   <li>{@link #register(String, EntityType.Builder)} - Registers an {@link EntityType} with the specified {@code pRegistryName} and {@code pEntityTypeBuilder}. </li>
+ * <li>{@link #register(String, EntityType.Builder)} - Registers an {@link EntityType} with the specified {@code pRegistryName} and {@code pEntityTypeBuilder}. </li>
  * </ul>
  *
  * @author MeAlam

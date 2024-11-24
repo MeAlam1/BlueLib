@@ -79,7 +79,6 @@ public class Underline extends MarkdownFeature {
         return "§n" + pContent + "§r";
     }
 
-
     /**
      * A {@code public static void} to update the prefix and suffix used for Underline formatting.
      *

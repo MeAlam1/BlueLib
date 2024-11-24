@@ -17,11 +17,11 @@ import software.bluelib.utils.logging.BaseLogger;
  * <p>
  * Key Methods:
  * <ul>
- *     <li>{@link #parseMarkdown(Component, ServerPlayer)} - Parses and applies Markdown formatting to a given message component.</li>
- *     <li>{@link #enableMarkdown()} - Enables global Markdown formatting.</li>
- *     <li>{@link #disableMarkdown()} - Disables global Markdown formatting.</li>
- *     <li>{@link #enableMarkdownFor()} - Returns an instance of {@link EnableMarkdownFor} to enable specific Markdown features.</li>
- *     <li>{@link #disableMarkdownFor()} - Returns an instance of {@link DisableMarkdownFor} to disable specific Markdown features.</li>
+ * <li>{@link #parseMarkdown(Component, ServerPlayer)} - Parses and applies Markdown formatting to a given message component.</li>
+ * <li>{@link #enableMarkdown()} - Enables global Markdown formatting.</li>
+ * <li>{@link #disableMarkdown()} - Disables global Markdown formatting.</li>
+ * <li>{@link #enableMarkdownFor()} - Returns an instance of {@link EnableMarkdownFor} to enable specific Markdown features.</li>
+ * <li>{@link #disableMarkdownFor()} - Returns an instance of {@link DisableMarkdownFor} to disable specific Markdown features.</li>
  * </ul>
  *
  * @author MeAlam

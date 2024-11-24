@@ -2,6 +2,10 @@
 
 package software.bluelib.example.event;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 import net.minecraft.server.MinecraftServer;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -11,13 +15,6 @@ import software.bluelib.BlueLibConstants;
 import software.bluelib.event.ReloadEventHandler;
 import software.bluelib.utils.logging.BaseLogLevel;
 import software.bluelib.utils.logging.BaseLogger;
-import software.bluelib.utils.variant.ParameterUtils;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 /**
  * A {@code ReloadHandler} class that handles server start and reload events related to entity variants.
@@ -28,9 +25,9 @@ import java.util.concurrent.TimeUnit;
  * <p>
  * Key Methods:
  * <ul>
- *   <li>{@link #onServerStart(ServerStartingEvent)} - Handles server starting events to initialize entity variants.</li>
- *   <li>{@link #onReload(AddReloadListenerEvent)} - Handles reload events to refresh entity variants.</li>
- *   <li>{@link #LoadEntityVariants(MinecraftServer)} - Loads entity variants from JSON files into the server.</li>
+ * <li>{@link #onServerStart(ServerStartingEvent)} - Handles server starting events to initialize entity variants.</li>
+ * <li>{@link #onReload(AddReloadListenerEvent)} - Handles reload events to refresh entity variants.</li>
+ * <li>{@link #LoadEntityVariants(MinecraftServer)} - Loads entity variants from JSON files into the server.</li>
  * </ul>
  *
  * @author MeAlam
@@ -98,7 +95,6 @@ public class ReloadHandler extends ReloadEventHandler {
      */
     private static final String basePath = "variant/entity/";
 
-
     /**
      * The entities. This list contains the names of the entities for which variants are loaded.
      *
@@ -124,5 +120,4 @@ public class ReloadHandler extends ReloadEventHandler {
             BaseLogger.log(BaseLogLevel.INFO, "Entity variants loaded for " + entityName + ".", true);
         }
     }
-
 }

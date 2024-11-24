@@ -1,4 +1,4 @@
-name: CI for Minecraft Mod
+name: Build Fabric
 
 on:
   pull_request:
@@ -9,7 +9,7 @@ on:
       - 1.21
 
 jobs:
-  build:
+  build-fabric:
     runs-on: ubuntu-latest
 
     env:
@@ -48,9 +48,6 @@ jobs:
 
       - name: Grant execute permission for Gradle wrapper
         run: chmod +x ./gradlew
-
-      - name: Build for NeoForge
-        run: ./gradlew build -p neoforge
 
       - name: Build for Fabric
         run: ./gradlew build -p fabric

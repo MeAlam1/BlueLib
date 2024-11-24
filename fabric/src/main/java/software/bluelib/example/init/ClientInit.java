@@ -14,7 +14,7 @@ import software.bluelib.example.entity.rex.RexRender;
  * <p>
  * Key Methods:
  * <ul>
- *     <li>{@link #onInitializeClient()} - Registers the renderers for the entities.</li>
+ * <li>{@link #onInitializeClient()} - Registers the renderers for the entities.</li>
  * </ul>
  *
  * @author MeAlam

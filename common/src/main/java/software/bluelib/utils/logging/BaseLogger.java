@@ -2,10 +2,8 @@
 
 package software.bluelib.utils.logging;
 
-import software.bluelib.BlueLibConstants;
-
 import java.util.logging.Level;
-import java.util.logging.Logger;
+import software.bluelib.BlueLibConstants;
 
 /**
  * A {@code public class} responsible for logging messages
@@ -13,13 +11,13 @@ import java.util.logging.Logger;
  * <p>
  * Key Methods:
  * <ul>
- *   <li>{@link #setBlueLibLoggingEnabled(boolean)} - Enables or disables {@code BlueLib} specific logging.</li>
- *   <li>{@link #isBlueLibLoggingEnabled()} - Checks if {@code BlueLib} logging is enabled.</li>
- *   <li>{@link #log(Level, String, Throwable, boolean)} - Logs a message with an associated {@link Throwable}.</li>
- *   <li>{@link #log(Level, String, boolean)} - Logs a message with a specified logging level.</li>
- *   <li>{@link #log(Level, String, Throwable)} - Logs a message with an associated {@link Throwable}, if logging is enabled.</li>
- *   <li>{@link #log(Level, String)} - Logs a message with a specified logging level, if logging is enabled.</li>
- *   <li>{@link #logBlueLib(String)} - Logs a {@code BlueLib} specific message.</li>
+ * <li>{@link #setBlueLibLoggingEnabled(boolean)} - Enables or disables {@code BlueLib} specific logging.</li>
+ * <li>{@link #isBlueLibLoggingEnabled()} - Checks if {@code BlueLib} logging is enabled.</li>
+ * <li>{@link #log(Level, String, Throwable, boolean)} - Logs a message with an associated {@link Throwable}.</li>
+ * <li>{@link #log(Level, String, boolean)} - Logs a message with a specified logging level.</li>
+ * <li>{@link #log(Level, String, Throwable)} - Logs a message with an associated {@link Throwable}, if logging is enabled.</li>
+ * <li>{@link #log(Level, String)} - Logs a message with a specified logging level, if logging is enabled.</li>
+ * <li>{@link #logBlueLib(String)} - Logs a {@code BlueLib} specific message.</li>
  * </ul>
  *
  * @author MeAlam
@@ -37,8 +35,7 @@ public class BaseLogger {
      * @author MeAlam
      * @since 1.0.0
      */
-    private BaseLogger() {
-    }
+    private BaseLogger() {}
 
     /**
      * A {@code void} to enable or disable {@code BlueLib} specific logging.

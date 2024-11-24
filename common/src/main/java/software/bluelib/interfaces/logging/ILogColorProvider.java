@@ -13,7 +13,7 @@ import java.util.logging.Level;
  * <p>
  * Key Methods:
  * <ul>
- *   <li>{@link #getColor(Level)} - Retrieves the color code associated with a specific {@link Level} of logging.</li>
+ * <li>{@link #getColor(Level)} - Retrieves the color code associated with a specific {@link Level} of logging.</li>
  * </ul>
  *
  * @author MeAlam

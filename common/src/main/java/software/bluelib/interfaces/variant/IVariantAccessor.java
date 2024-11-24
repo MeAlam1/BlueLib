@@ -8,8 +8,8 @@ package software.bluelib.interfaces.variant;
  * <p>
  * Key Methods:
  * <ul>
- *   <li>{@link #setEntityVariantName(String)} - Sets the variant name for an entity.</li>
- *   <li>{@link #getEntityVariantName()} - Retrieves the variant name of an entity.</li>
+ * <li>{@link #setEntityVariantName(String)} - Sets the variant name for an entity.</li>
+ * <li>{@link #getEntityVariantName()} - Retrieves the variant name of an entity.</li>
  * </ul>
  *
  * @author MeAlam

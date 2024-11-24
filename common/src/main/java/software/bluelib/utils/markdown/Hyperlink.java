@@ -3,9 +3,9 @@
 package software.bluelib.utils.markdown;
 
 import net.minecraft.network.chat.*;
-import software.bluelib.utils.MiscUtils;
 import software.bluelib.utils.logging.BaseLogLevel;
 import software.bluelib.utils.logging.BaseLogger;
+import software.bluelib.utils.math.MiscUtils;
 
 /**
  * A {@code public class} representing the Hyperlink Markdown formatting feature.
@@ -98,9 +98,7 @@ public class Hyperlink extends MarkdownFeature {
                 .append(link)
                 .append(Component.literal(" "))
                 .append(partTwo);
-
     }
-
 
     /**
      * Overrides the {@link MarkdownFeature#applyFormat(String)} method to apply the formatting logic.
@@ -126,12 +124,12 @@ public class Hyperlink extends MarkdownFeature {
      *
      * @param pMessage {@link String} - The message to split.
      * @return {@link String}{@code []} - An array containing:
-     * <ul>
-     *   <li>Text before the hyperlink</li>
-     *   <li>Link text</li>
-     *   <li>URL</li>
-     *   <li>Text after the hyperlink</li>
-     * </ul>
+     *         <ul>
+     *         <li>Text before the hyperlink</li>
+     *         <li>Link text</li>
+     *         <li>URL</li>
+     *         <li>Text after the hyperlink</li>
+     *         </ul>
      * @author MeAlam
      * @since 1.4.0
      */
@@ -154,9 +152,8 @@ public class Hyperlink extends MarkdownFeature {
             linkText = url;
         }
 
-        return new String[]{beforeLink, linkText, url, afterLink};
+        return new String[] { beforeLink, linkText, url, afterLink };
     }
-
 
     /**
      * A {@code public static void} to update the prefix and suffix used for Hyperlink formatting.
@@ -231,5 +228,4 @@ public class Hyperlink extends MarkdownFeature {
         BaseLogger.log(BaseLogLevel.SUCCESS, "Retrieved Hyperlink enabled status: " + isHyperlinkEnabled, true);
         return isHyperlinkEnabled;
     }
-
 }

@@ -19,7 +19,6 @@ import software.bluelib.interfaces.variant.IVariantAccessor;
 import software.bluelib.interfaces.variant.IVariantEntity;
 import software.bluelib.utils.logging.BaseLogLevel;
 import software.bluelib.utils.logging.BaseLogger;
-import software.bluelib.utils.variant.ParameterUtils;
 
 /**
  * A {@code DragonEntity} class representing a dragon entity in the game, which extends {@link TamableAnimal}
@@ -30,9 +29,9 @@ import software.bluelib.utils.variant.ParameterUtils;
  * </p>
  * Key Methods:
  * <ul>
- *   <li>{@link #finalizeSpawn(ServerLevelAccessor, DifficultyInstance, EntitySpawnReason, SpawnGroupData)} - Finalizes the spawning process and sets up parameters.</li>
- *   <li>{@link #setVariantName(String)} - Sets the variant name of the Rex.</li>
- *   <li>{@link #getVariantName()} - Retrieves the current variant name of the Rex.</li>
+ * <li>{@link #finalizeSpawn(ServerLevelAccessor, DifficultyInstance, EntitySpawnReason, SpawnGroupData)} - Finalizes the spawning process and sets up parameters.</li>
+ * <li>{@link #setVariantName(String)} - Sets the variant name of the Rex.</li>
+ * <li>{@link #getVariantName()} - Retrieves the current variant name of the Rex.</li>
  * </ul>
  *
  * @author MeAlam
@@ -40,6 +39,7 @@ import software.bluelib.utils.variant.ParameterUtils;
  * @since 1.0.0
  */
 public class DragonEntity extends TamableAnimal implements IVariantEntity, GeoEntity {
+
     /**
      * The name of the entity.
      *
@@ -104,8 +104,6 @@ public class DragonEntity extends TamableAnimal implements IVariantEntity, GeoEn
         return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData);
     }
 
-
-
     /* All Code below this Fragment is not Library Related!!! */
 
     /**
@@ -123,8 +121,7 @@ public class DragonEntity extends TamableAnimal implements IVariantEntity, GeoEn
      * @since 1.0.0
      */
     @Override
-    public void registerControllers(AnimatableManager.ControllerRegistrar pControllerRegistrar) {
-    }
+    public void registerControllers(AnimatableManager.ControllerRegistrar pControllerRegistrar) {}
 
     /**
      * Adds custom data to the entity's NBT for saving.

@@ -11,8 +11,6 @@ import net.neoforged.fml.loading.FMLEnvironment;
 import org.spongepowered.asm.launch.MixinBootstrap;
 import software.bluelib.example.event.ClientEvents;
 import software.bluelib.example.init.ModEntities;
-import software.bluelib.utils.markdown.MarkdownFeature;
-import software.bluelib.utils.markdown.MarkdownParser;
 
 /**
  * The main class of the {@code BlueLib} mod.
@@ -24,8 +22,8 @@ import software.bluelib.utils.markdown.MarkdownParser;
  * <p>
  * Key Methods:
  * <ul>
- *   <li>{@link #BlueLib(IEventBus, ModContainer)} - Constructs the {@code BlueLib} instance and registers the mod event bus.</li>
- *   <li>{@link #onLoadComplete(FMLLoadCompleteEvent)} - Handles the event when the mod loading is complete.</li>
+ * <li>{@link #BlueLib(IEventBus, ModContainer)} - Constructs the {@code BlueLib} instance and registers the mod event bus.</li>
+ * <li>{@link #onLoadComplete(FMLLoadCompleteEvent)} - Handles the event when the mod loading is complete.</li>
  * </ul>
  *
  * @author MeAlam, Dan and All Contributors of BlueLib!

@@ -2,14 +2,13 @@
 
 package software.bluelib;
 
-import software.bluelib.interfaces.platform.IPlatformHelper;
-import software.bluelib.utils.logging.BaseLogLevel;
-import software.bluelib.utils.logging.BaseLogger;
+import static software.bluelib.BlueLibConstants.SCHEDULER;
 
 import java.util.ServiceLoader;
 import java.util.concurrent.TimeUnit;
-
-import static software.bluelib.BlueLibConstants.SCHEDULER;
+import software.bluelib.interfaces.platform.IPlatformHelper;
+import software.bluelib.utils.logging.BaseLogLevel;
+import software.bluelib.utils.logging.BaseLogger;
 
 /**
  * A {@code public class} responsible for common initialization logic and platform detection.
@@ -20,8 +19,8 @@ import static software.bluelib.BlueLibConstants.SCHEDULER;
  * <p>
  * Key Methods:
  * <ul>
- *   <li>{@link #init()} - Initializes BlueLib and logs welcome messages if in developer mode.</li>
- *   <li>{@link #isDeveloperMode()} - Checks if the mod is running in developer mode.</li>
+ * <li>{@link #init()} - Initializes BlueLib and logs welcome messages if in developer mode.</li>
+ * <li>{@link #isDeveloperMode()} - Checks if the mod is running in developer mode.</li>
  * </ul>
  *
  * @author MeAlam
@@ -39,8 +38,7 @@ public class BlueLibCommon {
      * @author MeAlam
      * @since 1.0.0
      */
-    private BlueLibCommon() {
-    }
+    private BlueLibCommon() {}
 
     /**
      * A {@code public static final} {@link IPlatformHelper} instance that represents the current platform helper loaded for the mod.

@@ -10,14 +10,15 @@ import software.bluelib.utils.logging.BaseLogger;
  * <p>
  * Key Methods:
  * <ul>
- *   <li>{@link #isValidEmail(String)} - Checks if a string is a valid email address.</li>
- *   <li>{@link #stringToIntWithDefault(String, int)} - Converts a string to an integer with a default value if conversion fails.</li>
- *   <li>{@link #calculateLevenshteinDistance(String, String)} - Calculates the Levenshtein distance between two strings.</li>
- *   <li>{@link #hexToRGB(String)} - Converts a hexadecimal color code to an RGB array.</li>
+ * <li>{@link #isValidURL(String)} - Checks if a string is a valid URL.</li>
+ * <li>{@link #isValidEmail(String)} - Checks if a string is a valid email address.</li>
+ * <li>{@link #stringToIntWithDefault(String, int)} - Converts a string to an integer with a default value if conversion fails.</li>
+ * <li>{@link #calculateLevenshteinDistance(String, String)} - Calculates the Levenshtein distance between two strings.</li>
+ * <li>{@link #hexToRGB(String)} - Converts a hexadecimal color code to an RGB array.</li>
  * </ul>
  *
  * @author MeAlam
- * @version 1.0.0
+ * @version 1.4.0
  * @since 1.0.0
  */
 public class MiscUtils {
@@ -31,7 +32,40 @@ public class MiscUtils {
      * @author MeAlam
      * @since 1.0.0
      */
-    private MiscUtils() {
+    private MiscUtils() {}
+
+    /**
+     * A {@code public static} {@link Boolean} to check if a string is a valid URL.
+     * <p>
+     * This method checks if a string is a well-formed URL. It supports both `http` and `https` schemes
+     * and automatically adds `https://` if the URL starts with "www.".
+     * </p>
+     *
+     * <p>
+     * Example Input:
+     * <ul>
+     * <li>"www.example.com" - Valid URL, will be prefixed with "https://".</li>
+     * <li>"<a href="https://modrinth.com/mod/bluelib">https://modrinth.com/mod/bluelib</a>" - Valid URL.</li>
+     * <li>"invalid-url" - Not a valid URL.</li>
+     * </ul>
+     *
+     * @param pUrl {@link String} - The URL string to validate.
+     * @return {@code true} if the string is a valid URL, {@code false} otherwise.
+     * @author MeAlam
+     * @since 1.4.0
+     */
+    public static boolean isValidURL(String pUrl) {
+        try {
+            if (pUrl.startsWith("www.")) {
+                pUrl = "https://" + pUrl;
+            }
+            java.net.URI uri = new java.net.URI(pUrl);
+
+            return uri.isAbsolute() && (uri.getScheme().equals("http") || uri.getScheme().equals("https"));
+        } catch (Exception pException) {
+            BaseLogger.log(BaseLogLevel.ERROR, "Invalid URL: " + pUrl, pException, true);
+            return false;
+        }
     }
 
     /**
@@ -86,8 +120,7 @@ public class MiscUtils {
                     int cost = (pStr1.charAt(i - 1) == pStr2.charAt(j - 1)) ? 0 : 1;
                     dp[i][j] = Math.min(
                             Math.min(dp[i - 1][j] + 1, dp[i][j - 1] + 1),
-                            dp[i - 1][j - 1] + cost
-                    );
+                            dp[i - 1][j - 1] + cost);
                 }
             }
         }
@@ -107,7 +140,7 @@ public class MiscUtils {
         if (pHex == null || pHex.isEmpty()) {
             Throwable throwable = new IllegalArgumentException("Hex color code cannot be null or empty.");
             BaseLogger.log(BaseLogLevel.ERROR, "Error converting hex to RGB", throwable, true);
-            return new int[]{0, 0, 0};
+            return new int[] { 0, 0, 0 };
         }
         if (pHex.charAt(0) == '#') {
             pHex = pHex.substring(1);
@@ -115,16 +148,16 @@ public class MiscUtils {
         if (pHex.length() != 6) {
             Throwable throwable = new IllegalArgumentException("Invalid hex color code.");
             BaseLogger.log(BaseLogLevel.ERROR, "Error converting hex to RGB", throwable, true);
-            return new int[]{0, 0, 0};
+            return new int[] { 0, 0, 0 };
         }
         try {
             int r = Integer.parseInt(pHex.substring(0, 2), 16);
             int g = Integer.parseInt(pHex.substring(2, 4), 16);
             int b = Integer.parseInt(pHex.substring(4, 6), 16);
-            return new int[]{r, g, b};
+            return new int[] { r, g, b };
         } catch (NumberFormatException pException) {
             BaseLogger.log(BaseLogLevel.ERROR, "Error parsing hex color code to RGB", pException, true);
-            return new int[]{0, 0, 0};
+            return new int[] { 0, 0, 0 };
         }
     }
 }

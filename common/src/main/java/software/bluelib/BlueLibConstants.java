@@ -15,9 +15,9 @@ import java.util.logging.Logger;
  * <p>
  * Key Fields:
  * <ul>
- *   <li>{@link #SCHEDULER} - Executor for scheduling delayed tasks.</li>
- *   <li>{@link #MOD_ID} - Unique identifier for the mod.</li>
- *   <li>{@link #MOD_NAME} - Display name of the mod.</li>
+ * <li>{@link #SCHEDULER} - Executor for scheduling delayed tasks.</li>
+ * <li>{@link #MOD_ID} - Unique identifier for the mod.</li>
+ * <li>{@link #MOD_NAME} - Display name of the mod.</li>
  * </ul>
  *
  * @author MeAlam
@@ -35,8 +35,7 @@ public class BlueLibConstants {
      * @author MeAlam
      * @since 1.0.0
      */
-    private BlueLibConstants() {
-    }
+    private BlueLibConstants() {}
 
     /**
      * A {@code public static final} {@link Logger} instance for logging messages.
@@ -70,7 +69,8 @@ public class BlueLibConstants {
      */
     public static final String MOD_NAME = "BlueLib";
 
-    /** TODO: Always have on False when pushing to production
+    /**
+     * TODO: Always have on False when pushing to production
      * A {@code public static final} {@link Boolean} indicating whether the example features should be enabled. <br>
      * Should always be false in production.
      *
@@ -78,7 +78,8 @@ public class BlueLibConstants {
      */
     public static final Boolean isExampleEnabled = true;
 
-    /** TODO: Always have on False when pushing to production
+    /**
+     * TODO: Always have on False when pushing to production
      * A {@link Boolean} to enable or disable BlueLib specific logging.
      *
      * @since 1.0.0

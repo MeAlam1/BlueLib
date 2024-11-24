@@ -2,14 +2,13 @@
 
 package software.bluelib.utils.logging;
 
-import software.bluelib.interfaces.logging.ILogColorProvider;
-
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
+import software.bluelib.interfaces.logging.ILogColorProvider;
 
 /**
  * A {@code public abstract class} responsible for configuring logging settings,
@@ -17,8 +16,8 @@ import java.util.logging.SimpleFormatter;
  * <p>
  * Key Methods:
  * <ul>
- *   <li>{@link #configureLogger(Logger, ILogColorProvider)} - Configures a {@link Logger}
- *   to use custom colors for log levels.</li>
+ * <li>{@link #configureLogger(Logger, ILogColorProvider)} - Configures a {@link Logger}
+ * to use custom colors for log levels.</li>
  * </ul>
  *
  * @author MeAlam
@@ -74,6 +73,7 @@ public abstract class LoggerConfig {
     public static void configureLogger(Logger pLogger, ILogColorProvider pColorProvider) {
         ConsoleHandler handler = new ConsoleHandler();
         handler.setFormatter(new SimpleFormatter() {
+
             @Override
             public synchronized String format(LogRecord pRecord) {
                 String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));

@@ -15,9 +15,9 @@ import software.bluelib.interfaces.platform.IPlatformHelper;
  * <p>
  * Key Methods:
  * <ul>
- *   <li>{@link #getPlatformName()} - Returns the platform name for Fabric.</li>
- *   <li>{@link #isModLoaded(String)} - Checks if a mod is loaded using Fabric's mod loader.</li>
- *   <li>{@link #isDevelopmentEnvironment()} - Checks if Fabric is running in a development environment.</li>
+ * <li>{@link #getPlatformName()} - Returns the platform name for Fabric.</li>
+ * <li>{@link #isModLoaded(String)} - Checks if a mod is loaded using Fabric's mod loader.</li>
+ * <li>{@link #isDevelopmentEnvironment()} - Checks if Fabric is running in a development environment.</li>
  * </ul>
  *
  * @author MeAlam

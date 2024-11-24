@@ -2,14 +2,12 @@
 
 package software.bluelib.interfaces.variant.base;
 
-import net.minecraft.resources.ResourceLocation;
-import software.bluelib.entity.variant.VariantLoader;
-import software.bluelib.utils.variant.ParameterUtils;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
+import net.minecraft.resources.ResourceLocation;
+import software.bluelib.entity.variant.VariantLoader;
+import software.bluelib.utils.variant.ParameterUtils;
 
 /**
  * A {@code public base Interface} providing fundamental methods for handling entity variants.
@@ -19,8 +17,8 @@ import java.util.Set;
  * <p>
  * Key Methods:
  * <ul>
- *   <li>{@link #getTextureLocation(String, String)} - Retrieves the {@link ResourceLocation} for the entity texture.</li>
- *   <li>{@link #getEntityVariants(String)} - Retrieves a {@link List<String>} of variant names for a specified entity.</li>
+ * <li>{@link #getTextureLocation(String, String)} - Retrieves the {@link ResourceLocation} for the entity texture.</li>
+ * <li>{@link #getEntityVariants(String)} - Retrieves a {@link List<String>} of variant names for a specified entity.</li>
  * </ul>
  *
  * @author MeAlam

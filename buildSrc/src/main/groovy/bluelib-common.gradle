@@ -3,6 +3,8 @@ plugins {
     id 'maven-publish'
 }
 
+project.plugins.apply('com.diffplug.spotless')
+
 base {
     archivesName = "${mod_id}-${minecraft_version}"
 }
@@ -128,5 +130,23 @@ publishing {
         maven {
             url System.getenv('local_maven_url')
         }
+    }
+}
+
+
+spotless {
+    java {
+        endWithNewline()
+        indentWithSpaces()
+        removeUnusedImports()
+        toggleOffOn()
+        // Pin version to 4.31 because of a Spotless bug https://github.com/diffplug/spotless/issues/1992
+        eclipse('4.31').configFile rootProject.file('codeformat/formatter-config.xml')
+        importOrder()
+
+        custom 'jetbrainsNullable', { String fileContents ->
+            fileContents.replace('javax.annotation.Nullable', 'org.jetbrains.annotations.Nullable')
+        }
+        bumpThisNumberIfACustomStepChanges(2)
     }
 }

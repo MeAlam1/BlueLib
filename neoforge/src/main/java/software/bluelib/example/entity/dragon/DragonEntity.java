@@ -37,9 +37,9 @@ import software.bluelib.utils.variant.ParameterUtils;
  * <p>
  * Key Methods:
  * <ul>
- *   <li>{@link #finalizeSpawn(ServerLevelAccessor, DifficultyInstance, EntitySpawnReason, SpawnGroupData)} - Finalizes the spawning process and sets up parameters.</li>
- *   <li>{@link #setVariantName(String)} - Sets the variant name of the Rex.</li>
- *   <li>{@link #getVariantName()} - Retrieves the current variant name of the Rex.</li>
+ * <li>{@link #finalizeSpawn(ServerLevelAccessor, DifficultyInstance, EntitySpawnReason, SpawnGroupData)} - Finalizes the spawning process and sets up parameters.</li>
+ * <li>{@link #setVariantName(String)} - Sets the variant name of the Rex.</li>
+ * <li>{@link #getVariantName()} - Retrieves the current variant name of the Rex.</li>
  * </ul>
  *
  * @author MeAlam
@@ -47,6 +47,7 @@ import software.bluelib.utils.variant.ParameterUtils;
  * @since 1.0.0
  */
 public class DragonEntity extends TamableAnimal implements IVariantEntity, GeoEntity {
+
     /**
      * The name of the entity.
      *
@@ -105,7 +106,7 @@ public class DragonEntity extends TamableAnimal implements IVariantEntity, GeoEn
     @Override
     public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor pLevel, @NotNull DifficultyInstance pDifficulty, @NotNull EntitySpawnReason pReason, @Nullable SpawnGroupData pSpawnData) {
         String randomVariant = getRandomVariant(getEntityVariants(entityName), "normal");
-        BaseLogger.log(BaseLogLevel.INFO, "customParameter: " + ParameterUtils.getCustomParameterForVariant(entityName ,randomVariant, "customParameter"), true);
+        BaseLogger.log(BaseLogLevel.INFO, "customParameter: " + ParameterUtils.getCustomParameterForVariant(entityName, randomVariant, "customParameter"), true);
 
         if (getVariantName() == null || getVariantName().isEmpty()) {
             setVariantName(randomVariant);
@@ -118,7 +119,7 @@ public class DragonEntity extends TamableAnimal implements IVariantEntity, GeoEn
 
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
-        BaseLogger.log(BaseLogLevel.INFO, "customParameter: " + ParameterUtils.getCustomParameterForVariant(entityName ,getVariantName(), "customParameter"), true);
+        BaseLogger.log(BaseLogLevel.INFO, "customParameter: " + ParameterUtils.getCustomParameterForVariant(entityName, getVariantName(), "customParameter"), true);
         return super.mobInteract(player, hand);
     }
 
@@ -154,8 +155,7 @@ public class DragonEntity extends TamableAnimal implements IVariantEntity, GeoEn
      * @since 1.0.0
      */
     @Override
-    public void registerControllers(AnimatableManager.ControllerRegistrar pControllerRegistrar) {
-    }
+    public void registerControllers(AnimatableManager.ControllerRegistrar pControllerRegistrar) {}
 
     /**
      * Adds custom data to the entity's NBT for saving.

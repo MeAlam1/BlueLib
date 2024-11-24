@@ -17,7 +17,7 @@ import software.bluelib.utils.logging.BaseLogger;
  * <p>
  * Key Features:
  * <ul>
- *   <li>{@link #registerEntityVariants(String, MinecraftServer, String, String)} - Registers entity variants from specified locations.</li>
+ * <li>{@link #registerEntityVariants(String, MinecraftServer, String, String)} - Registers entity variants from specified locations.</li>
  * </ul>
  *
  * @author MeAlam
@@ -38,16 +38,16 @@ public class ReloadEventHandler {
      * <p>
      * Parameters:
      * <ul>
-     *   <li>{@code pFolderPath} {@link String} - The folder path location within the mod or datapack where variants are stored.</li>
-     *   <li>{@code pServer} {@link MinecraftServer} - The server instance of the current world.</li>
-     *   <li>{@code pModID} {@link String} - The mod ID used to locate the entity variant resources. (Use your Mod's ID)</li>
-     *   <li>{@code pEntityName} {@link String} - The entity name to load.</li>
+     * <li>{@code pFolderPath} {@link String} - The folder path location within the mod or datapack where variants are stored.</li>
+     * <li>{@code pServer} {@link MinecraftServer} - The server instance of the current world.</li>
+     * <li>{@code pModID} {@link String} - The mod ID used to locate the entity variant resources. (Use your Mod's ID)</li>
+     * <li>{@code pEntityName} {@link String} - The entity name to load.</li>
      * </ul>
      * <p>
      * Exception Handling:
      * <ul>
-     *   <li>{@link JsonParseException} - Thrown when there is an error parsing the JSON files.</li>
-     *   <li>{@link RuntimeException} - Thrown for unexpected errors during the registration process.</li>
+     * <li>{@link JsonParseException} - Thrown when there is an error parsing the JSON files.</li>
+     * <li>{@link RuntimeException} - Thrown for unexpected errors during the registration process.</li>
      * </ul>
      *
      * @param pFolderPath {@link String} - The folder path location within the mod or datapack where variants are stored.
@@ -63,7 +63,6 @@ public class ReloadEventHandler {
      * @since 1.0.0
      */
     protected static void registerEntityVariants(String pFolderPath, MinecraftServer pServer, String pModID, String pEntityName) {
-
         BaseLogger.log(BaseLogLevel.INFO, "Attempting to register entity variants for " + pEntityName + " with ModID: " + pModID, true);
 
         try {

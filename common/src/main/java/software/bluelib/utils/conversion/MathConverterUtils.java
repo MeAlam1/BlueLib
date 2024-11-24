@@ -2,26 +2,25 @@
 
 package software.bluelib.utils.conversion;
 
-import software.bluelib.utils.logging.BaseLogLevel;
-import software.bluelib.utils.logging.BaseLogger;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import software.bluelib.utils.logging.BaseLogLevel;
+import software.bluelib.utils.logging.BaseLogger;
 
 /**
  * A {@code class} providing methods for common unit and date conversions.
  * <p>
  * Key Methods:
  * <ul>
- *   <li>{@link #inchesToCentimeters(double)} - Converts inches to centimeters.</li>
- *   <li>{@link #centimetersToInches(double)} - Converts centimeters to inches.</li>
- *   <li>{@link #celsiusToFahrenheit(double)} - Converts Celsius to Fahrenheit.</li>
- *   <li>{@link #fahrenheitToCelsius(double)} - Converts Fahrenheit to Celsius.</li>
- *   <li>{@link #kilometersToMiles(double)} - Converts kilometers to miles.</li>
- *   <li>{@link #milesToKilometers(double)} - Converts miles to kilometers.</li>
- *   <li>{@link #stringToDate(String, String)} - Converts a string to a {@link Date} object.</li>
- *   <li>{@link #dateToString(Date, String)} - Converts a {@link Date} object to a string.</li>
+ * <li>{@link #inchesToCentimeters(double)} - Converts inches to centimeters.</li>
+ * <li>{@link #centimetersToInches(double)} - Converts centimeters to inches.</li>
+ * <li>{@link #celsiusToFahrenheit(double)} - Converts Celsius to Fahrenheit.</li>
+ * <li>{@link #fahrenheitToCelsius(double)} - Converts Fahrenheit to Celsius.</li>
+ * <li>{@link #kilometersToMiles(double)} - Converts kilometers to miles.</li>
+ * <li>{@link #milesToKilometers(double)} - Converts miles to kilometers.</li>
+ * <li>{@link #stringToDate(String, String)} - Converts a string to a {@link Date} object.</li>
+ * <li>{@link #dateToString(Date, String)} - Converts a {@link Date} object to a string.</li>
  * </ul>
  *
  * @author MeAlam
@@ -39,8 +38,7 @@ public class MathConverterUtils {
      * @author MeAlam
      * @since 1.0.0
      */
-    private MathConverterUtils() {
-    }
+    private MathConverterUtils() {}
 
     /**
      * A {@link Double} that converts a length from inches to centimeters.

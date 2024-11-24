@@ -2,11 +2,10 @@
 
 package software.bluelib.utils.markdown;
 
-import software.bluelib.utils.logging.BaseLogLevel;
-import software.bluelib.utils.logging.BaseLogger;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import software.bluelib.utils.logging.BaseLogLevel;
+import software.bluelib.utils.logging.BaseLogger;
 
 /**
  * A {@code public abstract class} that represents a feature for applying formatting to Markdown-style text.
@@ -17,8 +16,8 @@ import java.util.regex.Pattern;
  * </p>
  * Key Methods:
  * <ul>
- *   <li>{@link #apply(String)} - Applies formatting to the input message based on the prefix and suffix.</li>
- *   <li>{@link #escapeRegex(String)} - Escapes special characters in the prefix and suffix for use in regular expressions.</li>
+ * <li>{@link #apply(String)} - Applies formatting to the input message based on the prefix and suffix.</li>
+ * <li>{@link #escapeRegex(String)} - Escapes special characters in the prefix and suffix for use in regular expressions.</li>
  * </ul>
  *
  * @author MeAlam
@@ -56,7 +55,6 @@ public abstract class MarkdownFeature {
      * @since 1.1.0
      */
     public String apply(String pMessage) {
-
         String escapedPrefix = escapeRegex(prefix);
         String escapedSuffix = escapeRegex(suffix);
 

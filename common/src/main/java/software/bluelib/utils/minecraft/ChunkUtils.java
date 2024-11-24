@@ -2,6 +2,9 @@
 
 package software.bluelib.utils.minecraft;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.stream.Collectors;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
@@ -13,23 +16,19 @@ import net.minecraft.world.level.chunk.LevelChunk;
 import software.bluelib.utils.logging.BaseLogLevel;
 import software.bluelib.utils.logging.BaseLogger;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.stream.Collectors;
-
 /**
  * A {@code class} providing methods to interact with Minecraft chunks,
  * specifically for retrieving biome and tile entity information.
  * <p>
  * Key Methods:
  * <ul>
- *   <li>{@link #getBiomeOfChunk(Level, ChunkPos)} - Retrieves the {@link Biome} of the specified chunk.</li>
- *   <li>{@link #getBiomeRegistryNameOfChunk(Level, ChunkPos)} - Retrieves the biome registry name of the specified chunk.</li>
- *   <li>{@link #getBiomeSimpleNameOfChunk(Level, ChunkPos)} - Retrieves the simple name of the biome in the specified chunk.</li>
- *   <li>{@link #getChunkTileEntities(Level, ChunkPos)} - Retrieves the tile entities within the specified chunk.</li>
- *   <li>{@link #getChunkTileEntitiesRegistryNames(Level, ChunkPos)} - Retrieves the registry names of tile entities in the specified chunk.</li>
- *   <li>{@link #getChunkTileEntitiesSimpleNames(Level, ChunkPos)} - Retrieves the simple names of tile entities in the specified chunk.</li>
- *   <li>{@link #getChunkBlockCount(Level, ChunkPos)} - Counts the number of non-air blocks in the specified chunk.</li>
+ * <li>{@link #getBiomeOfChunk(Level, ChunkPos)} - Retrieves the {@link Biome} of the specified chunk.</li>
+ * <li>{@link #getBiomeRegistryNameOfChunk(Level, ChunkPos)} - Retrieves the biome registry name of the specified chunk.</li>
+ * <li>{@link #getBiomeSimpleNameOfChunk(Level, ChunkPos)} - Retrieves the simple name of the biome in the specified chunk.</li>
+ * <li>{@link #getChunkTileEntities(Level, ChunkPos)} - Retrieves the tile entities within the specified chunk.</li>
+ * <li>{@link #getChunkTileEntitiesRegistryNames(Level, ChunkPos)} - Retrieves the registry names of tile entities in the specified chunk.</li>
+ * <li>{@link #getChunkTileEntitiesSimpleNames(Level, ChunkPos)} - Retrieves the simple names of tile entities in the specified chunk.</li>
+ * <li>{@link #getChunkBlockCount(Level, ChunkPos)} - Counts the number of non-air blocks in the specified chunk.</li>
  * </ul>
  *
  * @author MeAlam
@@ -47,8 +46,7 @@ public class ChunkUtils {
      * @author MeAlam
      * @since 1.0.0
      */
-    private ChunkUtils() {
-    }
+    private ChunkUtils() {}
 
     /**
      * A {@link Biome} that retrieves the {@link Biome} of the specified chunk.
@@ -72,7 +70,6 @@ public class ChunkUtils {
             throw pException;
         }
     }
-
 
     /**
      * A {@link String} that retrieves the biome registry name of the specified chunk.
@@ -99,7 +96,6 @@ public class ChunkUtils {
         }
         return biomeKey.toString();
     }
-
 
     /**
      * A {@link String} that retrieves the simple name of the biome in the specified chunk.
@@ -141,7 +137,6 @@ public class ChunkUtils {
             throw pException;
         }
     }
-
 
     /**
      * A {@link String} that retrieves the registry names of tile entities in the specified chunk.
@@ -231,18 +226,16 @@ public class ChunkUtils {
         }
     }
 
-     /* FIXME: This method is not working as expected. It is not returning correctly.
-     public static boolean isChunkLoaded(final LevelAccessor pWorld, final int pX, final int pZ) {
-     try {
-     boolean isLoaded = pWorld.getChunk(pX, pZ, ChunkStatus.FULL, false) != null;
-     BaseLogger.bluelibLogSuccess("Chunk at (" + pX + ", " + pZ + ") is loaded: " + isLoaded);
-     return isLoaded;
-     } catch (Exception e) {
-     BaseLogger.logError("Error checking if chunk at (" + pX + ", " + pZ + ") is loaded", e);
-     return false;
-     }
-     }
-     */
-
-
+    /* FIXME: This method is not working as expected. It is not returning correctly.
+    public static boolean isChunkLoaded(final LevelAccessor pWorld, final int pX, final int pZ) {
+    try {
+    boolean isLoaded = pWorld.getChunk(pX, pZ, ChunkStatus.FULL, false) != null;
+    BaseLogger.bluelibLogSuccess("Chunk at (" + pX + ", " + pZ + ") is loaded: " + isLoaded);
+    return isLoaded;
+    } catch (Exception e) {
+    BaseLogger.logError("Error checking if chunk at (" + pX + ", " + pZ + ") is loaded", e);
+    return false;
+    }
+    }
+    */
 }

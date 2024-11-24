@@ -1,13 +1,12 @@
 package software.bluelib.example.event;
 
+import java.util.Objects;
 import net.minecraft.network.chat.ChatType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.OutgoingChatMessage;
 import net.minecraft.network.chat.PlayerChatMessage;
 import net.minecraft.server.level.ServerPlayer;
 import software.bluelib.utils.markdown.MarkdownParser;
-
-import java.util.Objects;
 
 /**
  * A {@code public class} responsible for handling server chat events and formatting chat messages using Markdown.
@@ -44,8 +43,7 @@ public class ChatHandler {
                     pPlayerChatMessage.signature(),
                     pPlayerChatMessage.signedBody(),
                     formattedMessage,
-                    pPlayerChatMessage.filterMask()
-            );
+                    pPlayerChatMessage.filterMask());
 
             pServerPlayer.sendChatMessage(OutgoingChatMessage.create(newPlayerChatMessage), false,
                     pBound.withTargetName(Objects.requireNonNull(pServerPlayer.getDisplayName())));

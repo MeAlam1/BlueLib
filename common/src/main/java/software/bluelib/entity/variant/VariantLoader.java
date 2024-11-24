@@ -4,6 +4,9 @@ package software.bluelib.entity.variant;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -14,10 +17,6 @@ import software.bluelib.utils.logging.BaseLogLevel;
 import software.bluelib.utils.logging.BaseLogger;
 import software.bluelib.utils.variant.ParameterUtils;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * A {@code public class} that implements the {@link IVariantEntityBase} {@code interface} that manages the loading and storage of entity variants.
  * <p>
@@ -27,7 +26,7 @@ import java.util.Map;
  * </p>
  * Key Methods:
  * <ul>
- *   <li>{@link #loadVariants(String, MinecraftServer, String)} - Loads and merges variant data by looping thru all resources in a folder.</li>
+ * <li>{@link #loadVariants(String, MinecraftServer, String)} - Loads and merges variant data by looping thru all resources in a folder.</li>
  * </ul>
  *
  * @author MeAlam

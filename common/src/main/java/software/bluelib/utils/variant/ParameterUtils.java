@@ -5,11 +5,10 @@ package software.bluelib.utils.variant;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import java.util.Set;
 import software.bluelib.entity.variant.VariantLoader;
 import software.bluelib.utils.logging.BaseLogLevel;
 import software.bluelib.utils.logging.BaseLogger;
-
-import java.util.Set;
 
 /**
  * A {@code public final class} that provides utility methods for managing custom parameters associated with entity variants.
@@ -20,9 +19,9 @@ import java.util.Set;
  * <p>
  * <strong>Key Methods:</strong>
  * <ul>
- *   <li>{@link #getAllEntities()} - Retrieves all entities present in the variant loader.</li>
- *   <li>{@link #getVariantsOfEntity(String)} - Retrieves the variants of a specific entity.</li>
- *   <li>{@link #getCustomParameterForVariant(String, String, String)} - Retrieves the value of a custom parameter for a given variant.</li>
+ * <li>{@link #getAllEntities()} - Retrieves all entities present in the variant loader.</li>
+ * <li>{@link #getVariantsOfEntity(String)} - Retrieves the variants of a specific entity.</li>
+ * <li>{@link #getCustomParameterForVariant(String, String, String)} - Retrieves the value of a custom parameter for a given variant.</li>
  * </ul>
  *
  * @author MeAlam
@@ -41,8 +40,7 @@ public class ParameterUtils {
      * @author MeAlam
      * @since 1.0.0
      */
-    private ParameterUtils() {
-    }
+    private ParameterUtils() {}
 
     /**
      * A {@code public static} {@link Set<String>} that retrieves all entities from the variant loader.
@@ -61,7 +59,7 @@ public class ParameterUtils {
     }
 
     /**
-     * A {@code public static} {@link Set<String>}  that retrieves all variants for a specific entity.
+     * A {@code public static} {@link Set<String>} that retrieves all variants for a specific entity.
      * <p>
      * This method checks the provided {@code pEntityName} and returns the corresponding variants from the variant data.
      * </p>
@@ -127,5 +125,4 @@ public class ParameterUtils {
         BaseLogger.log(BaseLogLevel.INFO, "Custom parameter: " + pParameter + " not found for: " + pEntityName, true);
         return null;
     }
-
 }

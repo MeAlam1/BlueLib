@@ -5,10 +5,9 @@ package software.bluelib.json;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import java.util.Map;
 import software.bluelib.utils.logging.BaseLogLevel;
 import software.bluelib.utils.logging.BaseLogger;
-
-import java.util.Map;
 
 /**
  * A {@code public class} responsible for merging JSON data from a source {@link JsonObject} into a target {@link JsonObject}.
@@ -20,7 +19,7 @@ import java.util.Map;
  * <p>
  * Key Methods:
  * <ul>
- *   <li>{@link #mergeJsonObjects(JsonObject, JsonObject)} - Merges the data from the source JSON object into the target JSON object.</li>
+ * <li>{@link #mergeJsonObjects(JsonObject, JsonObject)} - Merges the data from the source JSON object into the target JSON object.</li>
  * </ul>
  *
  * @author MeAlam
@@ -42,7 +41,6 @@ public class JSONMerger {
      * @since 1.0.0
      */
     public void mergeJsonObjects(JsonObject pTarget, JsonObject pSource) {
-
         for (Map.Entry<String, JsonElement> entry : pSource.entrySet()) {
             String key = entry.getKey();
             JsonElement sourceElement = entry.getValue();

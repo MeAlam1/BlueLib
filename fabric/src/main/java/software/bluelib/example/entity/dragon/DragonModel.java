@@ -12,9 +12,9 @@ import software.bluelib.BlueLibConstants;
  * A {@code public class} that extends {@link GeoModel} for the {@link DragonEntity} entity.
  * Key Methods:
  * <ul>
- *   <li>{@link #getModelResource(DragonEntity, GeoRenderer)} - Get the Model Location.</li>
- *   <li>{@link #getTextureResource(DragonEntity, GeoRenderer)} - Get the Texture Location.</li>
- *   <li>{@link #getAnimationResource(DragonEntity)} - Get the Animation Location.</li>
+ * <li>{@link #getModelResource(DragonEntity, GeoRenderer)} - Get the Model Location.</li>
+ * <li>{@link #getTextureResource(DragonEntity, GeoRenderer)} - Get the Texture Location.</li>
+ * <li>{@link #getAnimationResource(DragonEntity)} - Get the Animation Location.</li>
  * </ul>
  *
  * @author MeAlam
@@ -22,7 +22,6 @@ import software.bluelib.BlueLibConstants;
  * @since 1.0.0
  */
 public class DragonModel extends GeoModel<DragonEntity> {
-
 
     /**
      * A {@code public} {@link ResourceLocation} method that returns the location of the model.

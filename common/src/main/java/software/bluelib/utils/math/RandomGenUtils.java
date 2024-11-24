@@ -15,11 +15,11 @@ import software.bluelib.utils.logging.BaseLogger;
  * <p>
  * Key Methods:
  * <ul>
- *   <li>{@link #generateRandomInt(int, int)} - Generates a random integer between a specified minimum and maximum value (inclusive).</li>
- *   <li>{@link #generateRandomDouble(double, double)} - Generates a random double between a specified minimum and maximum value (inclusive).</li>
- *   <li>{@link #generateRandomBoolean()} - Generates a random boolean value.</li>
- *   <li>{@link #generateRandomString(int)} - Generates a random alphanumeric string of a specified length.</li>
- *   <li>{@link #generateRandomStringWithPrefix(String, int)} - Generates a random alphanumeric string with a specified prefix and length.</li>
+ * <li>{@link #generateRandomInt(int, int)} - Generates a random integer between a specified minimum and maximum value (inclusive).</li>
+ * <li>{@link #generateRandomDouble(double, double)} - Generates a random double between a specified minimum and maximum value (inclusive).</li>
+ * <li>{@link #generateRandomBoolean()} - Generates a random boolean value.</li>
+ * <li>{@link #generateRandomString(int)} - Generates a random alphanumeric string of a specified length.</li>
+ * <li>{@link #generateRandomStringWithPrefix(String, int)} - Generates a random alphanumeric string with a specified prefix and length.</li>
  * </ul>
  * <p>
  * Each method logs errors using {@link BaseLogger} when invalid parameters are provided (e.g., negative lengths
@@ -42,8 +42,7 @@ public class RandomGenUtils {
      * @author MeAlam
      * @since 1.0.0
      */
-    private RandomGenUtils() {
-    }
+    private RandomGenUtils() {}
 
     /**
      * A {@link Integer} that generates a random integer between a specified minimum and maximum value (inclusive).
