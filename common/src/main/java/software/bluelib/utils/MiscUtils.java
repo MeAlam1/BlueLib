@@ -48,7 +48,6 @@ public class MiscUtils {
      *     <li>"<a href="https://modrinth.com/mod/bluelib">https://modrinth.com/mod/bluelib</a>" - Valid URL.</li>
      *     <li>"invalid-url" - Not a valid URL.</li>
      * </ul>
-     * </p>
      *
      * @param pUrl {@link String} - The URL string to validate.
      * @return {@code true} if the string is a valid URL, {@code false} otherwise.
