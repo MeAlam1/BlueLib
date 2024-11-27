@@ -1,6 +1,6 @@
 // Copyright (c) BlueLib. Licensed under the MIT License.
 
-package software.bluelib.utils.markdown;
+package software.bluelib.markdown;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

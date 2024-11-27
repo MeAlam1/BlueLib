@@ -1,8 +1,9 @@
 // Copyright (c) BlueLib. Licensed under the MIT License.
 
-package software.bluelib.utils.markdown;
+package software.bluelib.markdown.syntax;
 
 import net.minecraft.network.chat.*;
+import software.bluelib.markdown.MarkdownFeature;
 import software.bluelib.utils.logging.BaseLogLevel;
 import software.bluelib.utils.logging.BaseLogger;
 import software.bluelib.utils.math.MiscUtils;

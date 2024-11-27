@@ -6,7 +6,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.OutgoingChatMessage;
 import net.minecraft.network.chat.PlayerChatMessage;
 import net.minecraft.server.level.ServerPlayer;
-import software.bluelib.utils.markdown.MarkdownParser;
+import software.bluelib.markdown.MarkdownParser;
 
 /**
  * A {@code public class} responsible for handling server chat events and formatting chat messages using Markdown.
