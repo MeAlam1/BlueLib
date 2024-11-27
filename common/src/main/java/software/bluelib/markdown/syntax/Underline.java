@@ -41,7 +41,7 @@ public class Underline extends MarkdownFeature {
      *
      * @since 1.1.0
      */
-    protected static Boolean isUnderlineEnabled = true;
+    public static Boolean isUnderlineEnabled = true;
 
     /**
      * A {@code public} constructor that initializes the prefix and suffix for the underline formatting feature.

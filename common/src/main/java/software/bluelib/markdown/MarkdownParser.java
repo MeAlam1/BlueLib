@@ -199,6 +199,19 @@ public class MarkdownParser {
             BaseLogger.log(BaseLogLevel.INFO, "Enabled underline markdown", true);
             return this;
         }
+
+        /**
+         * A {@code public} method that enables hyperlink Markdown formatting.
+         *
+         * @return The {@link EnableMarkdownFor} instance to allow method chaining.
+         * @author MeAlam
+         * @since 1.4.0
+         */
+        public EnableMarkdownFor hyperlink() {
+            Hyperlink.isHyperlinkEnabled = true;
+            BaseLogger.log(BaseLogLevel.INFO, "Enabled hyperlink markdown", true);
+            return this;
+        }
     }
 
     /**
@@ -262,6 +275,19 @@ public class MarkdownParser {
         public DisableMarkdownFor underline() {
             Underline.isUnderlineEnabled = false;
             BaseLogger.log(BaseLogLevel.INFO, "Disabled underline markdown", true);
+            return this;
+        }
+
+        /**
+         * A {@code public} method that disables hyperlink Markdown formatting.
+         *
+         * @return The {@link DisableMarkdownFor} instance to allow method chaining.
+         * @author MeAlam
+         * @since 1.4.0
+         */
+        public DisableMarkdownFor hyperlink() {
+            Hyperlink.isHyperlinkEnabled = false;
+            BaseLogger.log(BaseLogLevel.INFO, "Disabled hyperlink markdown", true);
             return this;
         }
     }

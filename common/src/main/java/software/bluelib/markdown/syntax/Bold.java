@@ -40,7 +40,7 @@ public class Bold extends MarkdownFeature {
      *
      * @since 1.1.0
      */
-    protected static Boolean isBoldEnabled = true;
+    public static Boolean isBoldEnabled = true;
 
     /**
      * A {@code public} constructor that initializes the prefix and suffix for the bold formatting feature.

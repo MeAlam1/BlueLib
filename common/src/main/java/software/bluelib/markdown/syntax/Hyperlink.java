@@ -42,7 +42,7 @@ public class Hyperlink extends MarkdownFeature {
      *
      * @since 1.4.0
      */
-    protected static Boolean isHyperlinkEnabled = true;
+    public static Boolean isHyperlinkEnabled = true;
 
     /**
      * A {@code public} constructor that initializes the prefix and suffix for the Hyperlink formatting feature.

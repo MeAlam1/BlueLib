@@ -41,7 +41,7 @@ public class Strikethrough extends MarkdownFeature {
      *
      * @since 1.1.0
      */
-    protected static Boolean isStrikethroughEnabled = true;
+    public static Boolean isStrikethroughEnabled = true;
 
     /**
      * A {@code public} constructor that initializes the prefix and suffix for the strikethrough formatting feature.

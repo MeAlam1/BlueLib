@@ -41,7 +41,7 @@ public class Italic extends MarkdownFeature {
      *
      * @since 1.1.0
      */
-    protected static Boolean isItalicEnabled = true;
+    public static Boolean isItalicEnabled = true;
 
     /**
      * A {@code public} constructor that initializes the prefix and suffix for the italic formatting feature.
