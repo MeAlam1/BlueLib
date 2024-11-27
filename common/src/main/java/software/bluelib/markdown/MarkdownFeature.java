@@ -4,6 +4,8 @@ package software.bluelib.markdown;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import software.bluelib.utils.logging.BaseLogLevel;
 import software.bluelib.utils.logging.BaseLogger;
 
@@ -12,11 +14,11 @@ import software.bluelib.utils.logging.BaseLogger;
  * <p>
  * This class provides methods to apply specific formatting to a message surrounded by a prefix and suffix.
  * The formatting is only applied if markdown is enabled.
- * The {@link #apply(String)} method uses regular expressions to identify and format content between the prefix and suffix.
+ * The {@link #applyString(String)} method uses regular expressions to identify and format content between the prefix and suffix.
  * </p>
  * Key Methods:
  * <ul>
- * <li>{@link #apply(String)} - Applies formatting to the input message based on the prefix and suffix.</li>
+ * <li>{@link #applyString(String)} - Applies formatting to the input message based on the prefix and suffix.</li>
  * <li>{@link #escapeRegex(String)} - Escapes special characters in the prefix and suffix for use in regular expressions.</li>
  * </ul>
  *
@@ -54,7 +56,7 @@ public abstract class MarkdownFeature {
      * @author MeAlam
      * @since 1.1.0
      */
-    public String apply(String pMessage) {
+    public String applyString(String pMessage) {
         String escapedPrefix = escapeRegex(prefix);
         String escapedSuffix = escapeRegex(suffix);
 
@@ -79,9 +81,25 @@ public abstract class MarkdownFeature {
     }
 
     /**
+     * A {@code public abstract} {@link Component} that applies formatting to the input message based on the prefix and suffix.
+     * <p>
+     * If markdown is disabled, it returns the original message. Otherwise, it searches for content between
+     * the prefix and suffix and applies the defined formatting.
+     * </p>
+     *
+     * @param pMessage {@link String} - The input message to be formatted.
+     * @return The formatted message with applied changes.
+     * @author MeAlam
+     * @since 1.4.0
+     */
+    public MutableComponent applyComponent(String pMessage) {
+        return Component.literal(pMessage);
+    }
+
+    /**
      * A {@code protected abstract} {@link String} that applies the specific formatting to the content between the prefix and suffix.
      * <p>
-     * This method will be used by the {@link #apply(String)} method to format the content between the prefix and suffix.
+     * This method will be used by the {@link #applyString(String)} method to format the content between the prefix and suffix.
      * </p>
      *
      * @param pContent {@link String} - The content to be formatted.
@@ -95,7 +113,7 @@ public abstract class MarkdownFeature {
      * A {@code static} {@link String} that escapes special characters in the input string for safe use in regular expressions.
      * <p>
      * This method is used to ensure that the prefix and suffix are properly treated as literal strings
-     * when used in regular expressions within the {@link #apply(String)} method.
+     * when used in regular expressions within the {@link #applyString(String)} method.
      * </p>
      *
      * @param pInput The input string to escape.

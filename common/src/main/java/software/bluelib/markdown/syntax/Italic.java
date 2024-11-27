@@ -13,6 +13,17 @@ import software.bluelib.utils.logging.BaseLogger;
  * {@link MarkdownFeature} class and overrides the {@link #applyFormat(String)} method to provide
  * the specific formatting logic for italic text.
  * </p>
+ * <p>
+ * Key Methods:
+ * <ul>
+ * <li>{@link #applyFormat(String)} - Applies italic formatting to the input content.</li>
+ * <li>{@link #setPrefixSuffix(String, String)} - Updates the prefix and suffix for italic formatting.</li>
+ * <li>{@link #setPrefix(String)} - Updates the prefix for italic formatting.</li>
+ * <li>{@link #setSuffix(String)} - Updates the suffix for italic formatting.</li>
+ * <li>{@link #getPrefix()} - Retrieves the current prefix for italic formatting.</li>
+ * <li>{@link #getSuffix()} - Retrieves the current suffix for italic formatting.</li>
+ * <li>{@link #isItalicEnabled()} - Retrieves whether italic formatting is enabled.</li>
+ * </ul>
  *
  * @author MeAlam
  * @version 1.4.0
@@ -68,7 +79,7 @@ public class Italic extends MarkdownFeature {
      * @return The content wrapped with italic formatting.
      * @author MeAlam
      * @see MarkdownFeature
-     * @see #apply(String)
+     * @see #applyString(String)
      * @since 1.1.0
      */
     @Override

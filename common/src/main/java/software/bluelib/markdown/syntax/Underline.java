@@ -13,6 +13,17 @@ import software.bluelib.utils.logging.BaseLogger;
  * {@link MarkdownFeature} class and overrides the {@link #applyFormat(String)} method to provide
  * the specific formatting logic for underlined text.
  * </p>
+ * <p>
+ * Key Methods:
+ * <ul>
+ * <li>{@link #applyFormat(String)} - Applies the specific underline formatting to the input content.</li>
+ * <li>{@link #setPrefixSuffix(String, String)} - Updates the prefix and suffix used for Underline formatting.</li>
+ * <li>{@link #setPrefix(String)} - Updates the prefix used for Underline formatting.</li>
+ * <li>{@link #setSuffix(String)} - Updates the suffix used for Underline formatting.</li>
+ * <li>{@link #getPrefix()} - Retrieves the current prefix used for Underline formatting.</li>
+ * <li>{@link #getSuffix()} - Retrieves the current suffix used for Underline formatting.</li>
+ * <li>{@link #isUnderlineEnabled()} - Retrieves whether Underline formatting is enabled.</li>
+ * </ul>
  *
  * @author MeAlam
  * @version 1.4.0
@@ -68,7 +79,7 @@ public class Underline extends MarkdownFeature {
      * @return The content wrapped with underline formatting.
      * @author MeAlam
      * @see MarkdownFeature
-     * @see #apply(String)
+     * @see #applyString(String)
      * @since 1.1.0
      */
     @Override

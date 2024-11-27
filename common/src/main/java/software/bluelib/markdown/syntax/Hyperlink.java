@@ -15,6 +15,18 @@ import software.bluelib.utils.math.MiscUtils;
  * {@link MarkdownFeature} class and overrides the {@link #applyFormat(String)} method to provide
  * the specific formatting logic for Hyperlink text.
  * </p>
+ * <p>
+ * Key Methods:
+ * <ul>
+ * <li>{@link #applyComponent(String)} - Applies Hyperlink formatting to the provided message.</li>
+ * <li>{@link #splitMessage(String)} - Splits the provided message into parts.</li>
+ * <li>{@link #setPrefixSuffix(String, String)} - Updates the prefix and suffix used for Hyperlink formatting.</li>
+ * <li>{@link #setPrefix(String)} - Updates the prefix used for Hyperlink formatting.</li>
+ * <li>{@link #setSuffix(String)} - Updates the suffix used for Hyperlink formatting.</li>
+ * <li>{@link #getPrefix()} - Retrieves the current prefix used for Hyperlink formatting.</li>
+ * <li>{@link #getSuffix()} - Retrieves the current suffix used for Hyperlink formatting.</li>
+ * <li>{@link #isHyperlinkEnabled()} - Retrieves whether Hyperlink formatting is enabled.</li>
+ * </ul>
  *
  * @author MeAlam
  * @version 1.4.0
@@ -71,7 +83,8 @@ public class Hyperlink extends MarkdownFeature {
      * @author MeAlam
      * @since 1.4.0
      */
-    public MutableComponent applyLast(String pMessage) {
+    @Override
+    public MutableComponent applyComponent(String pMessage) {
         if (!isHyperlinkEnabled) {
             BaseLogger.log(BaseLogLevel.INFO, "Hyperlink formatting is disabled. Returning original content.", true);
             return Component.literal(pMessage);
@@ -95,10 +108,26 @@ public class Hyperlink extends MarkdownFeature {
                         .withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, splitMessage[2])));
         MutableComponent partTwo = splitMessage[3].isEmpty() ? Component.empty() : Component.literal(splitMessage[3]);
 
-        return partOne.append(Component.literal(" "))
-                .append(link)
-                .append(Component.literal(" "))
-                .append(partTwo);
+        MutableComponent finalMessage = Component.empty();
+        if (!splitMessage[0].isEmpty()) {
+            finalMessage.append(partOne);
+        }
+
+        if (!splitMessage[0].isEmpty() && !splitMessage[1].isEmpty()) {
+            finalMessage.append(Component.literal(" "));
+        }
+
+        finalMessage.append(link);
+
+        if (!splitMessage[3].isEmpty() && !splitMessage[1].isEmpty()) {
+            finalMessage.append(Component.literal(" "));
+        }
+
+        if (!splitMessage[3].isEmpty()) {
+            finalMessage.append(partTwo);
+        }
+
+        return finalMessage;
     }
 
     /**

@@ -38,22 +38,6 @@ public class MarkdownParser {
     private static boolean globalMarkdownEnabled = true;
 
     /**
-     * A {@code private static} to escape special characters in the input string using regular expressions.
-     * <p>
-     * This method escapes characters that have special meaning in regex, such as asterisks, brackets, parentheses, etc.
-     * </p>
-     *
-     * @param pInput {@link String} - The input string to escape.
-     * @return A {@link String} with the special characters escaped.
-     * @author MeAlam
-     * @since 1.1.0
-     */
-    private static String escapeRegex(String pInput) {
-        BaseLogger.log(BaseLogLevel.INFO, "Escaping special characters for regex", true);
-        return pInput.replaceAll("([\\\\*+\\[\\](){}|.^$?])", "\\\\$1");
-    }
-
-    /**
      * A {@code public static} that parses and applies Markdown formatting to a given {@link Component} message.
      * <p>
      * This method checks if global markdown formatting is enabled, then applies the relevant formats (bold, italic,
@@ -71,17 +55,17 @@ public class MarkdownParser {
         }
 
         String text = pMessage.getString();
-        text = new Bold().apply(text);
-        text = new Italic().apply(text);
-        text = new Strikethrough().apply(text);
-        text = new Underline().apply(text);
-        MutableComponent formattedMessage = new Hyperlink().applyLast(text);
+        text = new Bold().applyString(text);
+        text = new Italic().applyString(text);
+        text = new Strikethrough().applyString(text);
+        text = new Underline().applyString(text);
+        MutableComponent formattedMessage = new Hyperlink().applyComponent(text);
         BaseLogger.log(BaseLogLevel.INFO, "Markdown applied to message: " + text, true);
         return formattedMessage;
     }
 
     /**
-     * A {@code public static} method that enables global markdown formatting.
+     * A {@code public static} method that enables global Markdown formatting.
      * <p>
      * This method sets the {@code globalMarkdownEnabled} flag to {@code true}, allowing markdown formatting to be applied globally.
      * </p>
@@ -94,7 +78,7 @@ public class MarkdownParser {
     }
 
     /**
-     * A {@code public static} method that disables global markdown formatting.
+     * A {@code public static} method that disables global Markdown formatting.
      * <p>
      * This method sets the {@code globalMarkdownEnabled} flag to {@code false}, preventing any markdown formatting from being applied globally.
      * </p>
@@ -137,13 +121,22 @@ public class MarkdownParser {
     }
 
     /**
-     * A {@code public static inner class} used to enable markdown formatting for specific features.
+     * A {@code public static inner class} used to enable Markdown formatting for specific features.
      * <p>
      * The methods in this class allow you to enable individual Markdown features (bold, italic, etc.) without affecting others.
      * </p>
+     * <p>
+     * Key Methods:
+     * <ul>
+     * <li>{@link #bold()} - Enables bold Markdown formatting.</li>
+     * <li>{@link #italic()} - Enables italic Markdown formatting.</li>
+     * <li>{@link #strikethrough()} - Enables strikethrough Markdown formatting.</li>
+     * <li>{@link #underline()} - Enables underline Markdown formatting.</li>
+     * <li>{@link #hyperlink()} - Enables hyperlink Markdown formatting.</li>
+     * </ul>
      *
      * @author MeAlam
-     * @version 1.1.0
+     * @version 1.4.0
      * @since 1.1.0
      */
     public static class EnableMarkdownFor {
@@ -215,13 +208,22 @@ public class MarkdownParser {
     }
 
     /**
-     * A {@code public static inner class} used to disable markdown formatting for specific features.
+     * A {@code public static inner class} used to disable Markdown formatting for specific features.
      * <p>
      * The methods in this class allow you to disable individual Markdown features (bold, italic, etc.) without affecting others.
      * </p>
+     * <p>
+     * Key Methods:
+     * <ul>
+     * <li>{@link #bold()} - Disables bold Markdown formatting.</li>
+     * <li>{@link #italic()} - Disables italic Markdown formatting.</li>
+     * <li>{@link #strikethrough()} - Disables strikethrough Markdown formatting.</li>
+     * <li>{@link #underline()} - Disables underline Markdown formatting.</li>
+     * <li>{@link #hyperlink()} - Disables hyperlink Markdown formatting.</li>
+     * </ul>
      *
      * @author MeAlam
-     * @version 1.1.0
+     * @version 1.4.0
      * @since 1.1.0
      */
     public static class DisableMarkdownFor {
