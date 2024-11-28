@@ -63,7 +63,6 @@ public class MiscUtils {
 
             return uri.isAbsolute() && (uri.getScheme().equals("http") || uri.getScheme().equals("https"));
         } catch (Exception pException) {
-            BaseLogger.log(BaseLogLevel.ERROR, "Invalid URL: " + pUrl, pException, true);
             return false;
         }
     }
