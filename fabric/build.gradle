@@ -11,8 +11,8 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
 
-    modCompileOnly("curse.maven:geckolib-388172:5872371")
-    modRuntimeOnly("curse.maven:geckolib-388172:5872371")
+    modCompileOnly("curse.maven:geckolib-388172:5876845")
+    modRuntimeOnly("curse.maven:geckolib-388172:5876845")
 }
 
 loom {

@@ -4,6 +4,7 @@
 ## Changes
 - **Change 1**: Description of what was changed.
 - **Change 2**: Description of what was changed.
+- **Change 3**: Description of what was changed.
 
 ## How has this been tested?
 <!-- Describe the tests that you ran to verify your changes. -->
@@ -14,6 +15,8 @@
 ## Type of Change
 - [ ] Bug fix
 - [ ] New feature
+- [ ] Cleanup
+- [ ] Breaking change
 - [ ] Documentation update
 
 ## Checklist
