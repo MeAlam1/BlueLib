@@ -25,17 +25,29 @@ public class ColorConverterUtils {
     private static int calculateRGB(float pHue, float pC, float pX, float pM) {
         float r, g, b;
         if (pHue < 60) {
-            r = pC; g = pX; b = 0;
+            r = pC;
+            g = pX;
+            b = 0;
         } else if (pHue < 120) {
-            r = pX; g = pC; b = 0;
+            r = pX;
+            g = pC;
+            b = 0;
         } else if (pHue < 180) {
-            r = 0; g = pC; b = pX;
+            r = 0;
+            g = pC;
+            b = pX;
         } else if (pHue < 240) {
-            r = 0; g = pX; b = pC;
+            r = 0;
+            g = pX;
+            b = pC;
         } else if (pHue < 300) {
-            r = pX; g = 0; b = pC;
+            r = pX;
+            g = 0;
+            b = pC;
         } else {
-            r = pC; g = 0; b = pX;
+            r = pC;
+            g = 0;
+            b = pX;
         }
 
         int red = Math.round((r + pM)) * 255;
