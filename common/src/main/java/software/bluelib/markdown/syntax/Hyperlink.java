@@ -19,7 +19,6 @@ import software.bluelib.utils.math.MiscUtils;
  * Key Methods:
  * <ul>
  * <li>{@link #applyComponent(String)} - Applies Hyperlink formatting to the provided message.</li>
- * <li>{@link #splitMessage(String)} - Splits the provided message into parts.</li>
  * <li>{@link #setPrefixSuffix(String, String)} - Updates the prefix and suffix used for Hyperlink formatting.</li>
  * <li>{@link #setPrefix(String)} - Updates the prefix used for Hyperlink formatting.</li>
  * <li>{@link #setSuffix(String)} - Updates the suffix used for Hyperlink formatting.</li>
@@ -90,41 +89,39 @@ public class Hyperlink extends MarkdownFeature {
             return Component.literal(pMessage);
         }
 
-        String[] splitMessage = splitMessage(pMessage);
-
-        if (splitMessage[0].endsWith("\\")) {
-            String modifiedMessage = pMessage.substring(0, pMessage.lastIndexOf("\\"))
-                    + pMessage.substring(pMessage.lastIndexOf("\\") + 1);
-            return Component.literal(modifiedMessage);
-        }
-
-        if (!MiscUtils.isValidURL(splitMessage[2])) {
-            return Component.literal(pMessage);
-        }
-
-        MutableComponent partOne = splitMessage[0].isEmpty() ? Component.empty() : Component.literal(splitMessage[0]);
-        MutableComponent link = Component.literal(splitMessage[1])
-                .setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0xFFFFFF)).withUnderlined(true)
-                        .withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, splitMessage[2])));
-        MutableComponent partTwo = splitMessage[3].isEmpty() ? Component.empty() : Component.literal(splitMessage[3]);
-
         MutableComponent finalMessage = Component.empty();
-        if (!splitMessage[0].isEmpty()) {
-            finalMessage.append(partOne);
-        }
+        int currentIndex = 0;
 
-        if (!splitMessage[0].isEmpty() && !splitMessage[1].isEmpty()) {
-            finalMessage.append(Component.literal(" "));
-        }
+        while (currentIndex < pMessage.length()) {
+            int openBracketIndex = pMessage.indexOf("[", currentIndex);
+            int closeBracketIndex = pMessage.indexOf("]", openBracketIndex);
+            int openParenIndex = pMessage.indexOf("(", closeBracketIndex);
+            int closeParenIndex = pMessage.indexOf(")", openParenIndex);
 
-        finalMessage.append(link);
+            if (openBracketIndex == -1 || closeBracketIndex == -1 || openParenIndex == -1 || closeParenIndex == -1) {
+                finalMessage.append(Component.literal(pMessage.substring(currentIndex)));
+                break;
+            }
 
-        if (!splitMessage[3].isEmpty() && !splitMessage[1].isEmpty()) {
-            finalMessage.append(Component.literal(" "));
-        }
+            if (openBracketIndex > currentIndex) {
+                finalMessage.append(Component.literal(pMessage.substring(currentIndex, openBracketIndex)));
+            }
 
-        if (!splitMessage[3].isEmpty()) {
-            finalMessage.append(partTwo);
+            String linkText = pMessage.substring(openBracketIndex + 1, closeBracketIndex).trim();
+            String url = pMessage.substring(openParenIndex + 1, closeParenIndex).trim();
+
+            if (!MiscUtils.isValidURL(url)) {
+                finalMessage.append(Component.literal(pMessage.substring(openBracketIndex, closeParenIndex + 1)));
+                currentIndex = closeParenIndex + 1;
+                continue;
+            }
+
+            MutableComponent link = Component.literal(linkText)
+                    .setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0x1F5FE1)).withUnderlined(true)
+                            .withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, url)));
+            finalMessage.append(link);
+
+            currentIndex = closeParenIndex + 1;
         }
 
         return finalMessage;
@@ -144,45 +141,6 @@ public class Hyperlink extends MarkdownFeature {
     @Override
     protected String applyFormat(String pContent) {
         return pContent;
-    }
-
-    /**
-     * A {@code static} {@link String}{@code []} that splits the provided message into parts.
-     * <p>
-     * The method identifies the text before the hyperlink, the link text, the URL, and the text after the hyperlink.
-     * </p>
-     *
-     * @param pMessage {@link String} - The message to split.
-     * @return {@link String}{@code []} - An array containing:
-     *         <ul>
-     *         <li>Text before the hyperlink</li>
-     *         <li>Link text</li>
-     *         <li>URL</li>
-     *         <li>Text after the hyperlink</li>
-     *         </ul>
-     * @author MeAlam
-     * @since 1.4.0
-     */
-    static String[] splitMessage(String pMessage) {
-        int openBracketIndex = pMessage.indexOf("[");
-        int closeBracketIndex = pMessage.indexOf("]", openBracketIndex);
-        int openParenIndex = pMessage.indexOf("(", closeBracketIndex);
-        int closeParenIndex = pMessage.indexOf(")", openParenIndex);
-
-        String beforeLink = (openBracketIndex > 0) ? pMessage.substring(0, openBracketIndex).trim() : "";
-        String linkText = (openBracketIndex != -1 && closeBracketIndex != -1)
-                ? pMessage.substring(openBracketIndex + 1, closeBracketIndex).trim()
-                : " ";
-        String url = (openParenIndex != -1 && closeParenIndex != -1)
-                ? pMessage.substring(openParenIndex + 1, closeParenIndex).trim()
-                : " ";
-        String afterLink = (closeParenIndex != -1) ? pMessage.substring(closeParenIndex + 1).trim() : "";
-
-        if (!url.isEmpty() && linkText.isEmpty()) {
-            linkText = url;
-        }
-
-        return new String[] { beforeLink, linkText, url, afterLink };
     }
 
     /**
