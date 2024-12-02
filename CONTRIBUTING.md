@@ -93,7 +93,7 @@
             - **Example for Parameters**:
               ```java
               /**
-               * A {@link String} that retrieves the value of a custom parameter for a specific variant.
+               * A {@code public} {@link String} that retrieves the value of a custom parameter for a specific variant.
                *
                * @param pVariantName {@link String} - The variant name you want to see the custom parameter of.
                * @param pParameterKey {@link String} - The parameter you want to see.
