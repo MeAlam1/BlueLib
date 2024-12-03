@@ -26,7 +26,7 @@ import software.bluelib.utils.logging.BaseLogger;
  * </ul>
  *
  * @author MeAlam
- * @version 1.3.0
+ * @version 1.4.0
  * @since 1.0.0
  */
 public class ReloadHandler extends ReloadEventHandler {
@@ -91,7 +91,7 @@ public class ReloadHandler extends ReloadEventHandler {
      *
      * @since 1.0.0
      */
-    private static final List<String> ENTITY_NAMES = Arrays.asList("dragon", "rex");
+    private static final List<String> ENTITY_NAMES = Arrays.asList("exampleone", "exampletwo");
 
     /**
      * Loads entity variants from JSON files into the {@link MinecraftServer}.

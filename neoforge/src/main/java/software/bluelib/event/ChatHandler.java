@@ -1,6 +1,6 @@
 // Copyright (c) BlueLib. Licensed under the MIT License.
 
-package software.bluelib.example.event;
+package software.bluelib.event;
 
 import net.minecraft.network.chat.Component;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -16,7 +16,7 @@ import software.bluelib.markdown.MarkdownParser;
  * </p>
  *
  * @author MeAlam
- * @version 1.1.0
+ * @version 1.4.0
  * @since 1.1.0
  */
 @EventBusSubscriber

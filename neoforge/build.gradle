@@ -22,8 +22,8 @@ neoForge {
         client {
             client()
         }
-        data {
-            data()
+        Data {
+            clientData()
         }
         server {
             server()
@@ -37,8 +37,6 @@ neoForge {
 }
 
 dependencies {
-    compileOnly("curse.maven:geckolib-388172:5876852")
-    runtimeOnly("curse.maven:geckolib-388172:5876852")
 }
 
 sourceSets.main.resources { srcDir 'src/generated/resources' }

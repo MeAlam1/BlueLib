@@ -1,8 +1,7 @@
 {
-  "dragon": [
+  "brown": [
     {
-      "variantName": "pink",
-      "customParameter": "customValue3",
+      "customParameter": "customValue11",
       "int": 1,
       "bool": true,
       "array": [

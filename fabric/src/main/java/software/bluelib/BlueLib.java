@@ -6,12 +6,8 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.message.v1.ServerMessageEvents;
-import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
-import software.bluelib.example.entity.dragon.DragonEntity;
-import software.bluelib.example.entity.rex.RexEntity;
-import software.bluelib.example.event.ChatHandler;
+import software.bluelib.event.ChatHandler;
 import software.bluelib.example.event.ReloadHandler;
-import software.bluelib.example.init.ModEntities;
 
 /**
  * A {@code public class} that implements {@link ModInitializer} to initialize the BlueLib mod on the Fabric platform.
@@ -26,7 +22,7 @@ import software.bluelib.example.init.ModEntities;
  * </ul>
  *
  * @author MeAlam
- * @version 1.2.0
+ * @version 1.4.0
  * @since 1.0.0
  */
 public class BlueLib implements ModInitializer {
@@ -57,11 +53,8 @@ public class BlueLib implements ModInitializer {
      */
     @Override
     public void onInitialize() {
-        if (BlueLibCommon.isDeveloperMode() && BlueLibCommon.PLATFORM.isModLoaded("geckolib") && BlueLibConstants.isExampleEnabled) {
-            ModEntities.initializeEntities();
+        if (BlueLibCommon.isDeveloperMode() && BlueLibConstants.isExampleEnabled) {
             registerModEventListeners();
-            FabricDefaultAttributeRegistry.register(ModEntities.EXAMPLE_ONE, DragonEntity.createMobAttributes());
-            FabricDefaultAttributeRegistry.register(ModEntities.EXAMPLE_TWO, RexEntity.createMobAttributes());
         }
         registerEventListeners();
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
@@ -91,4 +84,5 @@ public class BlueLib implements ModInitializer {
     public static void registerEventListeners() {
         ServerMessageEvents.ALLOW_CHAT_MESSAGE.register(ChatHandler::onAllowChat);
     }
+
 }

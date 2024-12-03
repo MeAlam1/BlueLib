@@ -1,0 +1,13 @@
+{
+  "bright": [
+    {
+      "customParameter": "customValue2",
+      "int": 2,
+      "bool": true,
+      "array": [
+        "bleep",
+        "booop"
+      ]
+    }
+  ]
+}

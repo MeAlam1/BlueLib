@@ -1,4 +1,4 @@
-package software.bluelib.example.event;
+package software.bluelib.event;
 
 import java.util.Objects;
 import net.minecraft.network.chat.ChatType;
@@ -16,7 +16,7 @@ import software.bluelib.markdown.MarkdownParser;
  * </p>
  *
  * @author MeAlam
- * @version 1.1.0
+ * @version 1.4.0
  * @since 1.1.0
  */
 public class ChatHandler {
