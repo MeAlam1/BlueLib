@@ -84,5 +84,4 @@ public class BlueLib implements ModInitializer {
     public static void registerEventListeners() {
         ServerMessageEvents.ALLOW_CHAT_MESSAGE.register(ChatHandler::onAllowChat);
     }
-
 }
