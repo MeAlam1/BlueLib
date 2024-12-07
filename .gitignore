@@ -54,3 +54,4 @@ neoforge/runs/*
 neoforge/run/*
 build/reports/problems/problems-report.html
 build/tmp/spotless-register-dependencies
+/build
