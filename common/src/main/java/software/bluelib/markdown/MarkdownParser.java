@@ -25,7 +25,7 @@ import software.bluelib.utils.logging.BaseLogger;
  * </ul>
  *
  * @author MeAlam
- * @version 1.4.0
+ * @version 1.5.0
  * @since 1.1.0
  */
 public class MarkdownParser {
@@ -59,6 +59,7 @@ public class MarkdownParser {
         text = new Italic().applyString(text);
         text = new Strikethrough().applyString(text);
         text = new Underline().applyString(text);
+        text = new Spoiler().applyString(text);
         MutableComponent formattedMessage = new Hyperlink().applyComponent(text);
         BaseLogger.log(BaseLogLevel.INFO, "Markdown applied to message: " + text, true);
         return formattedMessage;
@@ -133,6 +134,7 @@ public class MarkdownParser {
      * <li>{@link #strikethrough()} - Enables strikethrough Markdown formatting.</li>
      * <li>{@link #underline()} - Enables underline Markdown formatting.</li>
      * <li>{@link #hyperlink()} - Enables hyperlink Markdown formatting.</li>
+     * <li>{@link #spoiler()} - Enables spoiler Markdown formatting.</li>
      * </ul>
      *
      * @author MeAlam
@@ -203,6 +205,19 @@ public class MarkdownParser {
         public EnableMarkdownFor hyperlink() {
             Hyperlink.isHyperlinkEnabled = true;
             BaseLogger.log(BaseLogLevel.INFO, "Enabled hyperlink markdown", true);
+            return this;
+        }
+
+        /**
+         * A {@code public} method that enables spoiler Markdown formatting.
+         *
+         * @return The {@link EnableMarkdownFor} instance to allow method chaining.
+         * @author MeAlam
+         * @since 1.5.0
+         */
+        public EnableMarkdownFor spoiler() {
+            Spoiler.isSpoilerEnabled = true;
+            BaseLogger.log(BaseLogLevel.INFO, "Enabled spoiler markdown", true);
             return this;
         }
     }
@@ -290,6 +305,19 @@ public class MarkdownParser {
         public DisableMarkdownFor hyperlink() {
             Hyperlink.isHyperlinkEnabled = false;
             BaseLogger.log(BaseLogLevel.INFO, "Disabled hyperlink markdown", true);
+            return this;
+        }
+
+        /**
+         * A {@code public} method that disables spoiler Markdown formatting.
+         *
+         * @return The {@link DisableMarkdownFor} instance to allow method chaining.
+         * @author MeAlam
+         * @since 1.5.0
+         */
+        public DisableMarkdownFor spoiler() {
+            Spoiler.isSpoilerEnabled = false;
+            BaseLogger.log(BaseLogLevel.INFO, "Disabled spoiler markdown", true);
             return this;
         }
     }
