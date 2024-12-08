@@ -22,7 +22,7 @@ import software.bluelib.example.event.ReloadHandler;
  * </ul>
  *
  * @author MeAlam
- * @version 1.4.0
+ * @version 1.5.0
  * @since 1.0.0
  */
 public class BlueLib implements ModInitializer {
@@ -53,10 +53,7 @@ public class BlueLib implements ModInitializer {
      */
     @Override
     public void onInitialize() {
-        if (BlueLibCommon.isDeveloperMode() && BlueLibConstants.isExampleEnabled) {
-            registerModEventListeners();
-        }
-        registerEventListeners();
+        registerModEventListeners();
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (!hasInitialized) {
                 hasInitialized = true;
@@ -73,15 +70,6 @@ public class BlueLib implements ModInitializer {
      */
     public static void registerModEventListeners() {
         ServerLifecycleEvents.SERVER_STARTING.register(ReloadHandler::onServerStart);
-    }
-
-    /**
-     * Registers the event listeners.
-     *
-     * @author MeAlam
-     * @since 1.2.0
-     */
-    public static void registerEventListeners() {
         ServerMessageEvents.ALLOW_CHAT_MESSAGE.register(ChatHandler::onAllowChat);
     }
 }
