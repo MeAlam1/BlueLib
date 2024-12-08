@@ -71,15 +71,6 @@ public class BlueLibConstants {
 
     /**
      * TODO: Always have on False when pushing to production
-     * A {@code public static final} {@link Boolean} indicating whether the example features should be enabled. <br>
-     * Should always be false in production.
-     *
-     * @since 1.0.0
-     */
-    public static final Boolean isExampleEnabled = false;
-
-    /**
-     * TODO: Always have on False when pushing to production
      * A {@link Boolean} to enable or disable BlueLib specific logging.
      *
      * @since 1.0.0

@@ -55,13 +55,15 @@ public class MarkdownParser {
         }
 
         String text = pMessage.getString();
+        String textWithoutFormatting = pMessage.getString();
         text = new Bold().applyString(text);
         text = new Italic().applyString(text);
         text = new Strikethrough().applyString(text);
         text = new Underline().applyString(text);
         text = new Spoiler().applyString(text);
         MutableComponent formattedMessage = new Hyperlink().applyComponent(text);
-        BaseLogger.log(BaseLogLevel.INFO, "Markdown applied to message: " + text, true);
+        formattedMessage = new CopyToClipboard().applyCopyToClipboard(formattedMessage, textWithoutFormatting);
+        BaseLogger.log(BaseLogLevel.INFO, "Markdown applied to message: " + text + ". Styled message is: " + formattedMessage, true);
         return formattedMessage;
     }
 
