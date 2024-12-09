@@ -2,15 +2,13 @@
 
 package software.bluelib.markdown.syntax;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import net.minecraft.network.chat.*;
 import software.bluelib.markdown.MarkdownFeature;
 import software.bluelib.utils.conversion.ColorConversionUtils;
 import software.bluelib.utils.logging.BaseLogLevel;
 import software.bluelib.utils.logging.BaseLogger;
-import software.bluelib.utils.math.MiscUtils;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * A {@code public class} representing the Color Markdown formatting feature.
@@ -96,8 +94,7 @@ public class Color extends MarkdownFeature {
         BaseLogger.log(BaseLogLevel.INFO, "Starting to process component: " + pComponent.getString(), true);
 
         Pattern pattern = Pattern.compile(
-                prefix + "(#?[0-9A-Fa-f]{6}|\\d{1,3}(?:,\\d{1,3}){2,3})" + suffix + "\\((.*?)\\)"
-        );
+                prefix + "(#?[0-9A-Fa-f]{6}|\\d{1,3}(?:,\\d{1,3}){2,3})" + suffix + "\\((.*?)\\)");
         for (Component sibling : pComponent.getSiblings()) {
             BaseLogger.log(BaseLogLevel.INFO, "Processing sibling: " + sibling.getString(), true);
 
@@ -159,9 +156,6 @@ public class Color extends MarkdownFeature {
         BaseLogger.log(BaseLogLevel.INFO, "Final result component: " + result.getString(), true);
         return result;
     }
-
-
-
 
     /**
      * Overrides the {@link MarkdownFeature#applyFormat(String)} method to apply the formatting logic.
