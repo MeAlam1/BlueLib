@@ -69,7 +69,7 @@ public class CopyToClipboard extends MarkdownFeature {
         if (!isCopyToClipboardEnabled) {
             return pMessage;
         }
-        MutableComponent result = Component.literal("");
+        MutableComponent result = Component.empty();
 
         for (Component sibling : pMessage.getSiblings()) {
             if (sibling instanceof MutableComponent mutableSibling) {

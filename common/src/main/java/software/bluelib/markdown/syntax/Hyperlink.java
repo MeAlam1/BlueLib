@@ -93,8 +93,8 @@ public class Hyperlink extends MarkdownFeature {
         int currentIndex = 0;
 
         while (currentIndex < pMessage.length()) {
-            int openBracketIndex = pMessage.indexOf("[", currentIndex);
-            int closeBracketIndex = pMessage.indexOf("]", openBracketIndex);
+            int openBracketIndex = pMessage.indexOf(prefix, currentIndex);
+            int closeBracketIndex = pMessage.indexOf(suffix, openBracketIndex);
             int openParenIndex = pMessage.indexOf("(", closeBracketIndex);
             int closeParenIndex = pMessage.indexOf(")", openParenIndex);
 
