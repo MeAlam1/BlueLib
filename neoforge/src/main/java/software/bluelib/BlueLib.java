@@ -45,9 +45,7 @@ public class BlueLib {
      */
     public BlueLib(IEventBus pModEventBus, ModContainer pModContainer) {
         pModEventBus.register(this);
-        if (BlueLibCommon.isDeveloperMode()) {
-            TestRegistry.register();
-        }
+        TestRegistry.registerTests();
         MixinBootstrap.init();
     }
 

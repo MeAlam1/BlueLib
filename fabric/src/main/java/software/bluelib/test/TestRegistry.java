@@ -4,7 +4,6 @@ import net.minecraft.gametest.framework.GameTestRegistry;
 
 public class TestRegistry {
 
-    @SuppressWarnings("deprecation")
     public static void registerTests() {
         GameTestRegistry.register(ExampleTest.class);
     }

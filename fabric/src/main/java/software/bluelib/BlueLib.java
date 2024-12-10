@@ -8,6 +8,7 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.message.v1.ServerMessageEvents;
 import software.bluelib.event.ChatHandler;
 import software.bluelib.example.event.ReloadHandler;
+import software.bluelib.test.TestRegistry;
 
 /**
  * A {@code public class} that implements {@link ModInitializer} to initialize the BlueLib mod on the Fabric platform.
@@ -54,6 +55,7 @@ public class BlueLib implements ModInitializer {
     @Override
     public void onInitialize() {
         registerModEventListeners();
+        TestRegistry.registerTests();
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (!hasInitialized) {
                 hasInitialized = true;
