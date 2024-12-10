@@ -95,6 +95,7 @@ public class Color extends MarkdownFeature {
 
         Pattern pattern = Pattern.compile(
                 prefix + "(#?[0-9A-Fa-f]{6}|\\d{1,3}(?:,\\d{1,3}){2,3})" + suffix + "\\((.*?)\\)");
+
         for (Component sibling : pComponent.getSiblings()) {
             BaseLogger.log(BaseLogLevel.INFO, "Processing sibling: " + sibling.getString(), true);
 
@@ -106,8 +107,21 @@ public class Color extends MarkdownFeature {
                 MutableComponent styledSibling = Component.empty();
 
                 int lastIndex = 0;
-                boolean foundValidMatch = false;
+
                 while (matcher.find()) {
+                    String beforeMatch = siblingText.substring(lastIndex, matcher.start());
+
+                    if (beforeMatch.endsWith("\\")) {
+                        BaseLogger.log(BaseLogLevel.INFO, "Escape sequence detected before prefix. Skipping markdown application.", true);
+
+                        styledSibling.append(Component.literal(beforeMatch.substring(0, beforeMatch.length() - 1)));
+
+                        styledSibling.append(Component.literal(matcher.group(0)));
+
+                        lastIndex = matcher.end();
+                        continue;
+                    }
+
                     String color = matcher.group(1).trim();
                     String text = matcher.group(2).trim();
 
@@ -126,27 +140,22 @@ public class Color extends MarkdownFeature {
                         BaseLogger.log(BaseLogLevel.INFO, "Appending styled text: " + text, true);
                         styledSibling.append(coloredText);
 
-                        foundValidMatch = true;
+                        lastIndex = matcher.end();
                     } else {
                         BaseLogger.log(BaseLogLevel.WARNING, "Invalid color: " + color, true);
                         BaseLogger.log(BaseLogLevel.WARNING, "Returning original component due to invalid color.", true);
                         return pComponent;
                     }
-
-                    lastIndex = matcher.end();
                 }
 
-                if (!foundValidMatch) {
-                    BaseLogger.log(BaseLogLevel.INFO, "No valid matches found. Appending sibling as-is: " + siblingText, true);
-                    result.append(sibling);
-                } else {
-                    String remainingText = siblingText.substring(lastIndex);
+                String remainingText = siblingText.substring(lastIndex);
+                if (!remainingText.isEmpty()) {
                     BaseLogger.log(BaseLogLevel.INFO, "Appending remaining text: " + remainingText, true);
                     styledSibling.append(Component.literal(remainingText));
-
-                    BaseLogger.log(BaseLogLevel.INFO, "Final styled sibling: " + styledSibling.getString(), true);
-                    result.append(styledSibling);
                 }
+
+                BaseLogger.log(BaseLogLevel.INFO, "Final styled sibling: " + styledSibling.getString(), true);
+                result.append(styledSibling);
             } else {
                 BaseLogger.log(BaseLogLevel.INFO, "Sibling is not mutable. Appending as-is: " + sibling.getString(), true);
                 result.append(sibling);
@@ -156,6 +165,7 @@ public class Color extends MarkdownFeature {
         BaseLogger.log(BaseLogLevel.INFO, "Final result component: " + result.getString(), true);
         return result;
     }
+
 
     /**
      * Overrides the {@link MarkdownFeature#applyFormat(String)} method to apply the formatting logic.
