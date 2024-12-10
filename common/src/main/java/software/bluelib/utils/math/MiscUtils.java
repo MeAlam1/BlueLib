@@ -56,16 +56,17 @@ public class MiscUtils {
      */
     public static boolean isValidURL(String pUrl) {
         try {
-            if (pUrl.startsWith("www.")) {
+            if (!pUrl.startsWith("http://") && !pUrl.startsWith("https://")) {
                 pUrl = "https://" + pUrl;
             }
-            java.net.URI uri = new java.net.URI(pUrl);
 
-            return uri.isAbsolute() && (uri.getScheme().equals("http") || uri.getScheme().equals("https"));
+            java.net.URI uri = new java.net.URI(pUrl);
+            return uri.isAbsolute() && ("http".equals(uri.getScheme()) || "https".equals(uri.getScheme()));
         } catch (Exception pException) {
             return false;
         }
     }
+
 
     /**
      * A {@link Boolean} that checks if a string is a valid email address.
