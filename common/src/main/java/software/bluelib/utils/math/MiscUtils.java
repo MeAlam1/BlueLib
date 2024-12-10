@@ -67,7 +67,6 @@ public class MiscUtils {
         }
     }
 
-
     /**
      * A {@link Boolean} that checks if a string is a valid email address.
      *

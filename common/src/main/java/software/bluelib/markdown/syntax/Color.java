@@ -166,7 +166,6 @@ public class Color extends MarkdownFeature {
         return result;
     }
 
-
     /**
      * Overrides the {@link MarkdownFeature#applyFormat(String)} method to apply the formatting logic.
      * <p>

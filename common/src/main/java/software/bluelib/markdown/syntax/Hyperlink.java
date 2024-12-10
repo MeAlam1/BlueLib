@@ -2,6 +2,8 @@
 
 package software.bluelib.markdown.syntax;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import net.minecraft.network.chat.*;
 import software.bluelib.markdown.MarkdownFeature;
 import software.bluelib.utils.logging.BaseLogLevel;
@@ -28,7 +30,7 @@ import software.bluelib.utils.math.MiscUtils;
  * </ul>
  *
  * @author MeAlam
- * @version 1.4.0
+ * @version 1.6.0
  * @see MarkdownFeature
  * @since 1.4.0
  */
@@ -77,54 +79,131 @@ public class Hyperlink extends MarkdownFeature {
      * The method returns the formatted message with the Hyperlink applied, or the original message if no valid URL is found.
      * </p>
      *
-     * @param pMessage {@link String} - The message to format.
+     * @param pComponent {@link String} - The message to format.
      * @return {@link MutableComponent} - The formatted message with Hyperlink Markdown applied, or the original message.
      * @author MeAlam
-     * @since 1.4.0
+     * @since 1.6.0
      */
-    @Override
-    public MutableComponent applyComponent(String pMessage) {
+    public MutableComponent applyHyperlink(MutableComponent pComponent) {
         if (!isHyperlinkEnabled) {
             BaseLogger.log(BaseLogLevel.INFO, "Hyperlink formatting is disabled. Returning original content.", true);
-            return Component.literal(pMessage);
+            return pComponent;
         }
 
-        MutableComponent finalMessage = Component.empty();
-        int currentIndex = 0;
+        MutableComponent result = Component.empty();
+        BaseLogger.log(BaseLogLevel.INFO, "Starting to process component: " + pComponent.getString(), true);
 
-        while (currentIndex < pMessage.length()) {
-            int openBracketIndex = pMessage.indexOf(prefix, currentIndex);
-            int closeBracketIndex = pMessage.indexOf(suffix, openBracketIndex);
-            int openParenIndex = pMessage.indexOf("(", closeBracketIndex);
-            int closeParenIndex = pMessage.indexOf(")", openParenIndex);
+        // Define regex pattern
+        Pattern pattern = Pattern.compile(Pattern.quote(prefix) + "(.*?)" + Pattern.quote(suffix) + "\\((.*?)\\)");
+        BaseLogger.log(BaseLogLevel.INFO, "Using regex pattern: " + pattern.pattern(), true);
 
-            if (openBracketIndex == -1 || closeBracketIndex == -1 || openParenIndex == -1 || closeParenIndex == -1) {
-                finalMessage.append(Component.literal(pMessage.substring(currentIndex)));
-                break;
+        // Handle components with no siblings (single-component case)
+        if (pComponent.getSiblings().isEmpty()) {
+            BaseLogger.log(BaseLogLevel.INFO, "No siblings found. Processing the component itself.", true);
+            String componentText = pComponent.getString();
+
+            Matcher matcher = pattern.matcher(componentText);
+            MutableComponent styledComponent = Component.empty();
+            int lastIndex = 0;
+
+            // Process matches in the main component
+            while (matcher.find()) {
+                String beforeMatch = componentText.substring(lastIndex, matcher.start());
+
+                // Append unstyled text before match
+                if (!beforeMatch.isEmpty()) {
+                    BaseLogger.log(BaseLogLevel.INFO, "Appending unstyled text: " + beforeMatch, true);
+                    styledComponent.append(Component.literal(beforeMatch));
+                }
+
+                String linkText = matcher.group(1).trim();
+                String url = matcher.group(2).trim();
+                BaseLogger.log(BaseLogLevel.INFO, "Matched text: " + linkText + ", URL: " + url, true);
+
+                // Validate and apply hyperlink
+                if (MiscUtils.isValidURL(url)) {
+                    MutableComponent hyperlink = Component.literal(linkText)
+                            .setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0x1F5FE1))
+                                    .withUnderlined(true)
+                                    .withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, url)));
+                    styledComponent.append(hyperlink);
+                } else {
+                    BaseLogger.log(BaseLogLevel.WARNING, "Invalid URL detected: " + url, true);
+                    styledComponent.append(Component.literal(matcher.group(0)));
+                }
+
+                lastIndex = matcher.end();
             }
 
-            if (openBracketIndex > currentIndex) {
-                finalMessage.append(Component.literal(pMessage.substring(currentIndex, openBracketIndex)));
+            // Append remaining text
+            String remainingText = componentText.substring(lastIndex);
+            if (!remainingText.isEmpty()) {
+                BaseLogger.log(BaseLogLevel.INFO, "Appending remaining text: " + remainingText, true);
+                styledComponent.append(Component.literal(remainingText));
             }
 
-            String linkText = pMessage.substring(openBracketIndex + 1, closeBracketIndex).trim();
-            String url = pMessage.substring(openParenIndex + 1, closeParenIndex).trim();
+            BaseLogger.log(BaseLogLevel.INFO, "Final styled component: " + styledComponent.getString(), true);
+            result.append(styledComponent);
 
-            if (!MiscUtils.isValidURL(url)) {
-                finalMessage.append(Component.literal(pMessage.substring(openBracketIndex, closeParenIndex + 1)));
-                currentIndex = closeParenIndex + 1;
-                continue;
+        } else { // Process siblings as in the original method
+            for (Component sibling : pComponent.getSiblings()) {
+                BaseLogger.log(BaseLogLevel.INFO, "Processing sibling: " + sibling.getString(), true);
+
+                if (sibling instanceof MutableComponent mutableSibling) {
+                    String siblingText = mutableSibling.getString();
+                    BaseLogger.log(BaseLogLevel.INFO, "Sibling text: " + siblingText, true);
+
+                    Matcher matcher = pattern.matcher(siblingText);
+                    MutableComponent styledSibling = Component.empty();
+                    int lastIndex = 0;
+
+                    // Process matches
+                    while (matcher.find()) {
+                        String beforeMatch = siblingText.substring(lastIndex, matcher.start());
+
+                        // Append unstyled text before match
+                        if (!beforeMatch.isEmpty()) {
+                            BaseLogger.log(BaseLogLevel.INFO, "Appending unstyled text: " + beforeMatch, true);
+                            styledSibling.append(Component.literal(beforeMatch));
+                        }
+
+                        String linkText = matcher.group(1).trim();
+                        String url = matcher.group(2).trim();
+                        BaseLogger.log(BaseLogLevel.INFO, "Matched text: " + linkText + ", URL: " + url, true);
+
+                        // Validate and apply hyperlink
+                        if (MiscUtils.isValidURL(url)) {
+                            MutableComponent hyperlink = Component.literal(linkText)
+                                    .setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0x1F5FE1))
+                                            .withUnderlined(true)
+                                            .withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, url)));
+                            styledSibling.append(hyperlink);
+                        } else {
+                            BaseLogger.log(BaseLogLevel.WARNING, "Invalid URL detected: " + url, true);
+                            styledSibling.append(Component.literal(matcher.group(0)));
+                        }
+
+                        lastIndex = matcher.end();
+                    }
+
+                    // Append remaining text
+                    String remainingText = siblingText.substring(lastIndex);
+                    if (!remainingText.isEmpty()) {
+                        BaseLogger.log(BaseLogLevel.INFO, "Appending remaining text: " + remainingText, true);
+                        styledSibling.append(Component.literal(remainingText));
+                    }
+
+                    BaseLogger.log(BaseLogLevel.INFO, "Final styled sibling: " + styledSibling.getString(), true);
+                    result.append(styledSibling);
+                } else {
+                    BaseLogger.log(BaseLogLevel.INFO, "Sibling is not mutable. Appending as-is: " + sibling.getString(), true);
+                    result.append(sibling);
+                }
             }
-
-            MutableComponent link = Component.literal(linkText)
-                    .setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0x1F5FE1)).withUnderlined(true)
-                            .withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, url)));
-            finalMessage.append(link);
-
-            currentIndex = closeParenIndex + 1;
         }
 
-        return finalMessage;
+        BaseLogger.log(BaseLogLevel.INFO, "Final result component: " + result.getString(), true);
+        return result;
     }
 
     /**
