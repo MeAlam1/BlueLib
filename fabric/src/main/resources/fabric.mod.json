@@ -21,7 +21,8 @@
         ],
         "client": [],
         "fabric-gametest": [
-            "software.bluelib.test.ExampleTest"
+            "software.bluelib.test.ExampleTest",
+            "software.bluelib.test.markdown.MarkdownTestRegistry"
         ]
     },
     "mixins": [
