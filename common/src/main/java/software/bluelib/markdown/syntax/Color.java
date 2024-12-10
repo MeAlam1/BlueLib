@@ -91,71 +91,22 @@ public class Color extends MarkdownFeature {
         }
 
         MutableComponent result = Component.empty();
-        BaseLogger.log(BaseLogLevel.INFO, "Starting to process component: " + pComponent.getString(), true);
+        BaseLogger.log(BaseLogLevel.INFO, "Starting to process color component: " + pComponent, true);
 
         Pattern pattern = Pattern.compile(
                 prefix + "(#?[0-9A-Fa-f]{6}|\\d{1,3}(?:,\\d{1,3}){2,3})" + suffix + "\\((.*?)\\)");
 
+        // Handle components with no siblings (single-component case)
+        if (pComponent.getSiblings().isEmpty()) {
+            return processComponentTextWithColor(pComponent, pattern);
+        }
+
+        // Process siblings
         for (Component sibling : pComponent.getSiblings()) {
             BaseLogger.log(BaseLogLevel.INFO, "Processing sibling: " + sibling.getString(), true);
 
             if (sibling instanceof MutableComponent mutableSibling) {
-                String siblingText = mutableSibling.getString();
-                BaseLogger.log(BaseLogLevel.INFO, "Sibling text: " + siblingText, true);
-
-                Matcher matcher = pattern.matcher(siblingText);
-                MutableComponent styledSibling = Component.empty();
-
-                int lastIndex = 0;
-
-                while (matcher.find()) {
-                    String beforeMatch = siblingText.substring(lastIndex, matcher.start());
-
-                    if (beforeMatch.endsWith("\\")) {
-                        BaseLogger.log(BaseLogLevel.INFO, "Escape sequence detected before prefix. Skipping markdown application.", true);
-
-                        styledSibling.append(Component.literal(beforeMatch.substring(0, beforeMatch.length() - 1)));
-
-                        styledSibling.append(Component.literal(matcher.group(0)));
-
-                        lastIndex = matcher.end();
-                        continue;
-                    }
-
-                    String color = matcher.group(1).trim();
-                    String text = matcher.group(2).trim();
-
-                    BaseLogger.log(BaseLogLevel.INFO, "Found match: color=" + color + ", text=" + text, true);
-
-                    if (ColorConversionUtils.isValidColor(color)) {
-                        int colorConverted = ColorConversionUtils.parseColorToHexString(color);
-                        BaseLogger.log(BaseLogLevel.INFO, "Color " + color + " converted to: " + colorConverted, true);
-
-                        String unstyledText = siblingText.substring(lastIndex, matcher.start());
-                        BaseLogger.log(BaseLogLevel.INFO, "Appending unstyled text: " + unstyledText, true);
-                        styledSibling.append(Component.literal(unstyledText));
-
-                        MutableComponent coloredText = Component.literal(text)
-                                .setStyle(Style.EMPTY.withColor(TextColor.fromRgb(colorConverted)));
-                        BaseLogger.log(BaseLogLevel.INFO, "Appending styled text: " + text, true);
-                        styledSibling.append(coloredText);
-
-                        lastIndex = matcher.end();
-                    } else {
-                        BaseLogger.log(BaseLogLevel.WARNING, "Invalid color: " + color, true);
-                        BaseLogger.log(BaseLogLevel.WARNING, "Returning original component due to invalid color.", true);
-                        return pComponent;
-                    }
-                }
-
-                String remainingText = siblingText.substring(lastIndex);
-                if (!remainingText.isEmpty()) {
-                    BaseLogger.log(BaseLogLevel.INFO, "Appending remaining text: " + remainingText, true);
-                    styledSibling.append(Component.literal(remainingText));
-                }
-
-                BaseLogger.log(BaseLogLevel.INFO, "Final styled sibling: " + styledSibling.getString(), true);
-                result.append(styledSibling);
+                result.append(processComponentTextWithColor(mutableSibling, pattern));
             } else {
                 BaseLogger.log(BaseLogLevel.INFO, "Sibling is not mutable. Appending as-is: " + sibling.getString(), true);
                 result.append(sibling);
@@ -164,6 +115,62 @@ public class Color extends MarkdownFeature {
 
         BaseLogger.log(BaseLogLevel.INFO, "Final result component: " + result.getString(), true);
         return result;
+    }
+
+    private MutableComponent processComponentTextWithColor(MutableComponent component, Pattern pattern) {
+        String text = component.getString();
+        BaseLogger.log(BaseLogLevel.INFO, "Processing text: " + text, true);
+
+        Matcher matcher = pattern.matcher(text);
+        MutableComponent styledComponent = Component.empty();
+
+        int lastIndex = 0;
+
+        while (matcher.find()) {
+            String beforeMatch = text.substring(lastIndex, matcher.start());
+
+            // Append unstyled text before match while preserving existing styles
+            if (!beforeMatch.isEmpty()) {
+                BaseLogger.log(BaseLogLevel.INFO, "Appending unstyled text: " + beforeMatch, true);
+                BaseLogger.log(BaseLogLevel.INFO, "Setting style to Hyperlink: " + component, true);
+                styledComponent.append(Component.literal(beforeMatch).setStyle(component.getStyle()));
+            }
+
+            String color = matcher.group(1).trim();
+            String matchedText = matcher.group(2).trim();
+
+            BaseLogger.log(BaseLogLevel.INFO, "Found match: color=" + color + ", text=" + matchedText, true);
+
+            if (ColorConversionUtils.isValidColor(color)) {
+                int colorConverted = ColorConversionUtils.parseColorToHexString(color);
+                BaseLogger.log(BaseLogLevel.INFO, "Color " + color + " converted to: " + colorConverted, true);
+
+                // Create the style with color
+                Style newStyle = component.getStyle().withColor(TextColor.fromRgb(colorConverted));
+
+                // Apply color to matched text and append
+                MutableComponent coloredText = Component.literal(matchedText).setStyle(newStyle);
+                styledComponent.append(coloredText);
+            } else {
+                BaseLogger.log(BaseLogLevel.WARNING, "Invalid color: " + color, true);
+                BaseLogger.log(BaseLogLevel.WARNING, "Returning original component due to invalid color.", true);
+
+                // If color is invalid, return the original component
+                return component;
+            }
+
+            lastIndex = matcher.end();
+        }
+
+        // Append remaining text after the last match, preserving the original style
+        String remainingText = text.substring(lastIndex);
+        if (!remainingText.isEmpty()) {
+            BaseLogger.log(BaseLogLevel.INFO, "Appending remaining text: " + remainingText, true);
+            styledComponent.append(Component.literal(remainingText).setStyle(component.getStyle()));
+        }
+
+        BaseLogger.log(BaseLogLevel.INFO, "Final styled component: " + styledComponent.getString(), true);
+        return styledComponent;
     }
 
     /**
