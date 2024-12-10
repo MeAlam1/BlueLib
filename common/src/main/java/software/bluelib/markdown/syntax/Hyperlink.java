@@ -120,8 +120,11 @@ public class Hyperlink extends MarkdownFeature {
                 String url = matcher.group(2).trim();
                 BaseLogger.log(BaseLogLevel.INFO, "Matched text: " + linkText + ", URL: " + url, true);
 
-                // Validate and apply hyperlink
                 if (MiscUtils.isValidURL(url)) {
+                    if (!url.startsWith("http://") && !url.startsWith("https://")) {
+                        url = "https://" + url;
+                    }
+
                     MutableComponent hyperlink = Component.literal(linkText)
                             .setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0x1F5FE1))
                                     .withUnderlined(true)
@@ -131,6 +134,7 @@ public class Hyperlink extends MarkdownFeature {
                     BaseLogger.log(BaseLogLevel.WARNING, "Invalid URL detected: " + url, true);
                     styledComponent.append(Component.literal(matcher.group(0)));
                 }
+
 
                 lastIndex = matcher.end();
             }
