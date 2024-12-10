@@ -103,7 +103,10 @@ public class Hyperlink extends MarkdownFeature {
             String componentText = pComponent.getString();
 
             Matcher matcher = pattern.matcher(componentText);
-            MutableComponent styledComponent = Component.empty();
+            MutableComponent beforeHyperlink = Component.empty();
+            MutableComponent hyperlink = Component.empty();
+            MutableComponent afterHyperlink = Component.empty();
+
             int lastIndex = 0;
 
             // Process matches in the main component
@@ -113,7 +116,7 @@ public class Hyperlink extends MarkdownFeature {
                 // Append unstyled text before match
                 if (!beforeMatch.isEmpty()) {
                     BaseLogger.log(BaseLogLevel.INFO, "Appending unstyled text: " + beforeMatch, true);
-                    styledComponent.append(Component.literal(beforeMatch));
+                    beforeHyperlink.append(Component.literal(beforeMatch));
                 }
 
                 String linkText = matcher.group(1).trim();
@@ -125,29 +128,31 @@ public class Hyperlink extends MarkdownFeature {
                         url = "https://" + url;
                     }
 
-                    MutableComponent hyperlink = Component.literal(linkText)
+                    hyperlink = Component.literal(linkText)
                             .setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0x1F5FE1))
                                     .withUnderlined(true)
                                     .withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, url)));
-                    styledComponent.append(hyperlink);
                 } else {
                     BaseLogger.log(BaseLogLevel.WARNING, "Invalid URL detected: " + url, true);
-                    styledComponent.append(Component.literal(matcher.group(0)));
+                    hyperlink = Component.literal(matcher.group(0));
                 }
-
 
                 lastIndex = matcher.end();
             }
 
-            // Append remaining text
+            // Append remaining text after match
             String remainingText = componentText.substring(lastIndex);
             if (!remainingText.isEmpty()) {
                 BaseLogger.log(BaseLogLevel.INFO, "Appending remaining text: " + remainingText, true);
-                styledComponent.append(Component.literal(remainingText));
+                afterHyperlink.append(Component.literal(remainingText));
             }
 
-            BaseLogger.log(BaseLogLevel.INFO, "Final styled component: " + styledComponent.getString(), true);
-            result.append(styledComponent);
+            // Ensure all three components (before, hyperlink, after) are added as siblings
+            result.append(beforeHyperlink);
+            result.append(hyperlink);
+            result.append(afterHyperlink);
+
+            BaseLogger.log(BaseLogLevel.INFO, "Final styled component: " + result.getString(), true);
 
         } else { // Process siblings as in the original method
             for (Component sibling : pComponent.getSiblings()) {
@@ -158,7 +163,10 @@ public class Hyperlink extends MarkdownFeature {
                     BaseLogger.log(BaseLogLevel.INFO, "Sibling text: " + siblingText, true);
 
                     Matcher matcher = pattern.matcher(siblingText);
-                    MutableComponent styledSibling = Component.empty();
+                    MutableComponent beforeHyperlink = Component.empty();
+                    MutableComponent hyperlink = Component.empty();
+                    MutableComponent afterHyperlink = Component.empty();
+
                     int lastIndex = 0;
 
                     // Process matches
@@ -168,7 +176,7 @@ public class Hyperlink extends MarkdownFeature {
                         // Append unstyled text before match
                         if (!beforeMatch.isEmpty()) {
                             BaseLogger.log(BaseLogLevel.INFO, "Appending unstyled text: " + beforeMatch, true);
-                            styledSibling.append(Component.literal(beforeMatch));
+                            beforeHyperlink.append(Component.literal(beforeMatch));
                         }
 
                         String linkText = matcher.group(1).trim();
@@ -177,28 +185,35 @@ public class Hyperlink extends MarkdownFeature {
 
                         // Validate and apply hyperlink
                         if (MiscUtils.isValidURL(url)) {
-                            MutableComponent hyperlink = Component.literal(linkText)
+                            if (!url.startsWith("http://") && !url.startsWith("https://")) {
+                                url = "https://" + url;
+                            }
+
+                            hyperlink = Component.literal(linkText)
                                     .setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0x1F5FE1))
                                             .withUnderlined(true)
                                             .withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, url)));
-                            styledSibling.append(hyperlink);
                         } else {
                             BaseLogger.log(BaseLogLevel.WARNING, "Invalid URL detected: " + url, true);
-                            styledSibling.append(Component.literal(matcher.group(0)));
+                            hyperlink = Component.literal(matcher.group(0));
                         }
 
                         lastIndex = matcher.end();
                     }
 
-                    // Append remaining text
+                    // Append remaining text after match
                     String remainingText = siblingText.substring(lastIndex);
                     if (!remainingText.isEmpty()) {
                         BaseLogger.log(BaseLogLevel.INFO, "Appending remaining text: " + remainingText, true);
-                        styledSibling.append(Component.literal(remainingText));
+                        afterHyperlink.append(Component.literal(remainingText));
                     }
 
-                    BaseLogger.log(BaseLogLevel.INFO, "Final styled sibling: " + styledSibling.getString(), true);
-                    result.append(styledSibling);
+                    // Ensure all three components (before, hyperlink, after) are added as siblings
+                    result.append(beforeHyperlink);
+                    result.append(hyperlink);
+                    result.append(afterHyperlink);
+
+                    BaseLogger.log(BaseLogLevel.INFO, "Final styled sibling: " + result.getString(), true);
                 } else {
                     BaseLogger.log(BaseLogLevel.INFO, "Sibling is not mutable. Appending as-is: " + sibling.getString(), true);
                     result.append(sibling);
