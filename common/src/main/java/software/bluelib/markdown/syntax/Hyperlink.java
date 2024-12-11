@@ -95,7 +95,7 @@ public class Hyperlink extends MarkdownFeature {
         MutableComponent result = Component.empty();
 
         if (pComponent.getSiblings().isEmpty()) {
-            processComponentText(pComponent.getString(), result, pattern);
+            processComponentText(pComponent.getString(), pComponent.getStyle(), result, pattern);
         } else {
             result = processSiblings(pComponent, pattern);
         }
@@ -103,22 +103,22 @@ public class Hyperlink extends MarkdownFeature {
         return result;
     }
 
-    private void processComponentText(String text, MutableComponent result, Pattern pattern) {
+    private void processComponentText(String text, Style originalStyle, MutableComponent result, Pattern pattern) {
         Matcher matcher = pattern.matcher(text);
         int lastIndex = 0;
 
         while (matcher.find()) {
             if (matcher.start() > 0 && text.charAt(matcher.start() - 1) == '\\') {
-                appendUnstyledText(text.substring(lastIndex, matcher.start() - 1), result);
-                appendUnstyledText(matcher.group(0), result);
+                appendUnstyledText(text.substring(lastIndex, matcher.start() - 1), result, originalStyle);
+                appendUnstyledText(matcher.group(0), result, originalStyle);
             } else {
-                appendUnstyledText(text.substring(lastIndex, matcher.start()), result);
-                appendHyperlink(matcher.group(1), matcher.group(2), result);
+                appendUnstyledText(text.substring(lastIndex, matcher.start()), result, originalStyle);
+                appendHyperlink(matcher.group(1), matcher.group(2), originalStyle, result);
             }
             lastIndex = matcher.end();
         }
 
-        appendUnstyledText(text.substring(lastIndex), result);
+        appendUnstyledText(text.substring(lastIndex), result, originalStyle);
     }
 
     private MutableComponent processSiblings(MutableComponent pComponent, Pattern pattern) {
@@ -126,7 +126,7 @@ public class Hyperlink extends MarkdownFeature {
 
         for (Component sibling : pComponent.getSiblings()) {
             if (sibling instanceof MutableComponent mutableSibling) {
-                processComponentText(mutableSibling.getString(), result, pattern);
+                processComponentText(mutableSibling.getString(), mutableSibling.getStyle(), result, pattern);
             } else {
                 result.append(sibling);
             }
@@ -135,15 +135,15 @@ public class Hyperlink extends MarkdownFeature {
         return result;
     }
 
-    private void appendUnstyledText(String text, MutableComponent result) {
+    private void appendUnstyledText(String text, MutableComponent result, Style originalStyle) {
         if (!text.isEmpty()) {
-            result.append(Component.literal(text));
+            result.append(Component.literal(text).setStyle(originalStyle));
         }
     }
 
-    private void appendHyperlink(String linkText, String url, MutableComponent result) {
+    private void appendHyperlink(String linkText, String url, Style originalStyle, MutableComponent result) {
         if (!MiscUtils.isValidURL(url)) {
-            result.append(Component.literal(prefix + linkText + suffix + "(" + url + ")"));
+            result.append(Component.literal(prefix + linkText + suffix + "(" + url + ")").setStyle(originalStyle));
             return;
         }
 
@@ -152,7 +152,7 @@ public class Hyperlink extends MarkdownFeature {
         }
 
         MutableComponent hyperlink = Component.literal(linkText)
-                .setStyle(Style.EMPTY
+                .setStyle(originalStyle
                         .withColor(TextColor.fromRgb(0x1F5FE1))
                         .withUnderlined(true)
                         .withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, url)));

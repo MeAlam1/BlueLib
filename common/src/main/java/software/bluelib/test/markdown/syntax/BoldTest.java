@@ -18,19 +18,19 @@ public class BoldTest {
     }
 
     public static void boldUnderline(GameTestHelper pHelper) {
-        MessageUtils.sendMessageToPlayers(pHelper, "§6 This is a bold/italic test: §r **bold** __Underline__");
+        MessageUtils.sendMessageToPlayers(pHelper, "§6 This is a bold/underline test: §r **bold** __Underline__");
     }
 
     public static void boldStrikethrough(GameTestHelper pHelper) {
-        MessageUtils.sendMessageToPlayers(pHelper, "§6 This is a bold/italic test: §r **bold** ~~Strikethrough~~");
+        MessageUtils.sendMessageToPlayers(pHelper, "§6 This is a bold/strikethrough test: §r **bold** ~~Strikethrough~~");
     }
 
     public static void boldHyperlink(GameTestHelper pHelper) {
-        MessageUtils.sendMessageToPlayers(pHelper, "§6 This is a bold/italic test: §r **bold** [Hyperlink](https://www.curseforge.com/minecraft/mc-mods/bluelib)");
+        MessageUtils.sendMessageToPlayers(pHelper, "§6 This is a bold/hyperlink test: §r **bold** [Hyperlink](https://www.curseforge.com/minecraft/mc-mods/bluelib)");
     }
 
     public static void boldColor(GameTestHelper pHelper) {
-        MessageUtils.sendMessageToPlayers(pHelper, "§6 This is a bold/italic test: §r **bold** -#" + MessageUtils.getRandomHex() + "-(Color)");
+        MessageUtils.sendMessageToPlayers(pHelper, "§6 This is a bold/color test: §r **bold** -#" + MessageUtils.getRandomHex() + "-(Color)");
     }
 
     public static void boldCancel(GameTestHelper pHelper) {
