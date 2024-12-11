@@ -3,7 +3,7 @@ package software.bluelib.test.markdown.syntax;
 import net.minecraft.gametest.framework.GameTestHelper;
 import software.bluelib.test.utils.MessageUtils;
 
-public class Hyperlink {
+public class HyperlinkTest {
 
     public static void hyperlink(GameTestHelper pHelper) {
         MessageUtils.sendMessageToPlayers(pHelper, "§6 This is a hyperlink test: §r [Hyperlink](https://www.curseforge.com/minecraft/mc-mods/bluelib)");

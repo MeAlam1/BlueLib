@@ -3,7 +3,7 @@ package software.bluelib.test.markdown.syntax;
 import net.minecraft.gametest.framework.GameTestHelper;
 import software.bluelib.test.utils.MessageUtils;
 
-public class Color {
+public class ColorTest {
 
     public static void color(GameTestHelper pHelper) {
         MessageUtils.sendMessageToPlayers(pHelper, "§6 This is a color test: §r -#" + MessageUtils.getRandomHex() + "-(Color)");

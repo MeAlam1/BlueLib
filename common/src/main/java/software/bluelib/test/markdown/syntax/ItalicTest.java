@@ -3,7 +3,7 @@ package software.bluelib.test.markdown.syntax;
 import net.minecraft.gametest.framework.GameTestHelper;
 import software.bluelib.test.utils.MessageUtils;
 
-public class Italic {
+public class ItalicTest {
 
     public static void italic(GameTestHelper pHelper) {
         MessageUtils.sendMessageToPlayers(pHelper, "§6 This is an italic test: §r *italic*");

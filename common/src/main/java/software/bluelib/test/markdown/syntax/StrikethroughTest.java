@@ -3,7 +3,7 @@ package software.bluelib.test.markdown.syntax;
 import net.minecraft.gametest.framework.GameTestHelper;
 import software.bluelib.test.utils.MessageUtils;
 
-public class Strikethrough {
+public class StrikethroughTest {
 
     public static void strikethrough(GameTestHelper pHelper) {
         MessageUtils.sendMessageToPlayers(pHelper, "§6 This is a strikethrough test: §r ~~Strikethrough~~");
