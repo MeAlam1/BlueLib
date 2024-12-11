@@ -25,7 +25,7 @@ import software.bluelib.test.TestRegistry;
  * </ul>
  *
  * @author MeAlam, Dan and All Contributors of BlueLib!
- * @version 1.4.0
+ * @version 1.6.0
  * @see <a href="https://github.com/MeAlam1/BlueLib/wiki">BlueLib Wiki</a>
  * @since 1.0.0
  */

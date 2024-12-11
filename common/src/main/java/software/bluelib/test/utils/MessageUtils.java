@@ -37,10 +37,7 @@ public class MessageUtils {
      * @since 1.6.0
      */
     public static void sendMessageToPlayers(GameTestHelper pHelper, String pMessage) {
-        // Retrieve the list of players on the server.
         List<ServerPlayer> players = pHelper.getLevel().getServer().getPlayerList().getPlayers();
-
-        // Check if there are no players available.
         if (players.isEmpty()) {
             pHelper.fail("No players found");
             return;
