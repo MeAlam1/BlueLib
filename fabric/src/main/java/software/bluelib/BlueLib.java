@@ -55,11 +55,11 @@ public class BlueLib implements ModInitializer {
     @Override
     public void onInitialize() {
         registerModEventListeners();
-        TestRegistry.registerTests();
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (!hasInitialized) {
                 hasInitialized = true;
                 BlueLibCommon.init();
+                TestRegistry.registerTests();
             }
         });
     }
