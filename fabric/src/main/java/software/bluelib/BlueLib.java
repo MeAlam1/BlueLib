@@ -8,6 +8,7 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.message.v1.ServerMessageEvents;
 import software.bluelib.event.ChatHandler;
 import software.bluelib.example.event.ReloadHandler;
+import software.bluelib.test.TestRegistry;
 
 /**
  * A {@code public class} that implements {@link ModInitializer} to initialize the BlueLib mod on the Fabric platform.
@@ -22,7 +23,7 @@ import software.bluelib.example.event.ReloadHandler;
  * </ul>
  *
  * @author MeAlam
- * @version 1.5.0
+ * @version 1.6.0
  * @since 1.0.0
  */
 public class BlueLib implements ModInitializer {
@@ -58,6 +59,7 @@ public class BlueLib implements ModInitializer {
             if (!hasInitialized) {
                 hasInitialized = true;
                 BlueLibCommon.init();
+                TestRegistry.registerTests();
             }
         });
     }

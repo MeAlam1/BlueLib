@@ -174,8 +174,9 @@
 
 6. **Test Your Changes**
     - Before committing, test your changes by running the game using the appropriate test mod loader folder.
-      - Use the `example` package to test your changes.
-      - If no code is available to test, create new test code in the `example` package.
+      - Use the `test` package to test your changes.
+      - If no code is available to test, create new test code in the `test` package.
+      - Since modifying the existing test code is not recommended, adding Javadocs to comment out the test code is excessive and unnecessary.
     - Ensure that your changes do not introduce any issues or regressions.
 
 7. **Run gradle tasks**
