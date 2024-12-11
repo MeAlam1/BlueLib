@@ -33,6 +33,10 @@ public class BoldTest {
         MessageUtils.sendMessageToPlayers(pHelper, "§6 This is a bold/color test: §r **bold** -#" + MessageUtils.getRandomHex() + "-(Color)");
     }
 
+    public static void boldSpoiler(GameTestHelper pHelper) {
+        MessageUtils.sendMessageToPlayers(pHelper, "§6 This is a bold/spoiler test: §r **bold** ||spoiler||");
+    }
+
     public static void boldCancel(GameTestHelper pHelper) {
         MessageUtils.sendMessageToPlayers(pHelper, "§6 This is a canceled bold test: §r \\**bold**");
     }

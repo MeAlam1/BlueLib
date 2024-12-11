@@ -16,6 +16,7 @@ public class Markdown {
             BoldTest.boldStrikethrough(pHelper);
             BoldTest.boldHyperlink(pHelper);
             BoldTest.boldColor(pHelper);
+            BoldTest.boldSpoiler(pHelper);
             BoldTest.boldCancel(pHelper);
         });
     }
@@ -30,6 +31,7 @@ public class Markdown {
             ItalicTest.italicStrikethrough(pHelper);
             ItalicTest.italicHyperlink(pHelper);
             ItalicTest.italicColor(pHelper);
+            ItalicTest.italicSpoiler(pHelper);
             ItalicTest.italicCancel(pHelper);
         });
     }
@@ -44,6 +46,7 @@ public class Markdown {
             UnderlineTest.underlineStrikethrough(pHelper);
             UnderlineTest.underlineHyperlink(pHelper);
             UnderlineTest.underlineColor(pHelper);
+            UnderlineTest.underlineSpoiler(pHelper);
             UnderlineTest.underlineCancel(pHelper);
         });
     }
@@ -58,6 +61,7 @@ public class Markdown {
             StrikethroughTest.strikethroughStrikethrough(pHelper);
             StrikethroughTest.strikethroughHyperlink(pHelper);
             StrikethroughTest.strikethroughColor(pHelper);
+            StrikethroughTest.strikethroughSpoiler(pHelper);
             StrikethroughTest.strikethroughCancel(pHelper);
         });
     }
@@ -72,6 +76,7 @@ public class Markdown {
             HyperlinkTest.hyperlinkStrikethrough(pHelper);
             HyperlinkTest.hyperlinkHyperlink(pHelper);
             HyperlinkTest.hyperlinkColor(pHelper);
+            HyperlinkTest.hyperlinkSpoiler(pHelper);
             HyperlinkTest.hyperlinkCancel(pHelper);
             HyperlinkTest.hyperlinkInvalid(pHelper);
         });
@@ -87,8 +92,24 @@ public class Markdown {
             ColorTest.colorStrikethrough(pHelper);
             ColorTest.colorHyperlink(pHelper);
             ColorTest.colorColor(pHelper);
+            ColorTest.colorSpoiler(pHelper);
             ColorTest.colorCancel(pHelper);
             ColorTest.colorInvalid(pHelper);
+        });
+    }
+
+    @GameTest
+    public static void spoiler(GameTestHelper pHelper) {
+        pHelper.succeedIf(() -> {
+            SpoilerTest.spoiler(pHelper);
+            SpoilerTest.spoilerBold(pHelper);
+            SpoilerTest.spoilerItalic(pHelper);
+            SpoilerTest.spoilerUnderline(pHelper);
+            SpoilerTest.spoilerStrikethrough(pHelper);
+            SpoilerTest.spoilerHyperlink(pHelper);
+            SpoilerTest.spoilerColor(pHelper);
+            SpoilerTest.spoilerSpoiler(pHelper);
+            SpoilerTest.spoilerCancel(pHelper);
         });
     }
 
@@ -103,6 +124,13 @@ public class Markdown {
     public static void allTwice(GameTestHelper pHelper) {
         pHelper.succeedIf(() -> {
             MarkdownAllTwiceTest.testAllCombinations(pHelper);
+        });
+    }
+
+    @GameTest
+    public static void allAndCancel(GameTestHelper pHelper) {
+        pHelper.succeedIf(() -> {
+            MarkdownAllAndCancelTest.testAllCombinations(pHelper);
         });
     }
 

@@ -33,6 +33,10 @@ public class HyperlinkTest {
         MessageUtils.sendMessageToPlayers(pHelper, "§6 This is a hyperlink/color test: §r [Hyperlink](https://github.com/MeAlam1/BlueLib/issues) -#" + MessageUtils.getRandomHex() + "-(Color)");
     }
 
+    public static void hyperlinkSpoiler(GameTestHelper pHelper) {
+        MessageUtils.sendMessageToPlayers(pHelper, "§6 This is a hyperlink/spoiler test: §r [Hyperlink](https://github.com/MeAlam1/BlueLib/issues) ||spoiler||");
+    }
+
     public static void hyperlinkCancel(GameTestHelper pHelper) {
         MessageUtils.sendMessageToPlayers(pHelper, "§6 This is a canceled hyperlink test: §r \\[Hyperlink](https://www.curseforge.com/minecraft/mc-mods/bluelib)");
     }

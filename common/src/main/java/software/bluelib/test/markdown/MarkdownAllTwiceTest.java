@@ -19,7 +19,9 @@ public class MarkdownAllTwiceTest {
             "[Hyperlink](https://www.curseforge.com/minecraft/mc-mods/bluelib)", // Hyperlink
             "[Hyperlink](https://modrinth.com/mod/bluelib)", // Hyperlink
             "-#" + MessageUtils.getRandomHex() + "-(Color)", // Color
-            "-#" + MessageUtils.getRandomHex() + "-(Color)" // Color
+            "-#" + MessageUtils.getRandomHex() + "-(Color)", // Color
+            "||Spoiler||", // Spoiler
+            "||Spoiler||" // Spoiler
     );
 
     public static void testAllCombinations(GameTestHelper pHelper) {

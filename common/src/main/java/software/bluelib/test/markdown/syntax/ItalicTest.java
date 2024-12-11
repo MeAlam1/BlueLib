@@ -33,6 +33,10 @@ public class ItalicTest {
         MessageUtils.sendMessageToPlayers(pHelper, "§6 This is an italic/color test: §r *italic* -#" + MessageUtils.getRandomHex() + "-(Color)");
     }
 
+    public static void italicSpoiler(GameTestHelper pHelper) {
+        MessageUtils.sendMessageToPlayers(pHelper, "§6 This is a italic/spoiler test: §r *italic* ||spoiler||");
+    }
+
     public static void italicCancel(GameTestHelper pHelper) {
         MessageUtils.sendMessageToPlayers(pHelper, "§6 This is an canceled italic test: §r \\*italic*");
     }

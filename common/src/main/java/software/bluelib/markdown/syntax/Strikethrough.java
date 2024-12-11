@@ -2,6 +2,11 @@
 
 package software.bluelib.markdown.syntax;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Style;
 import software.bluelib.markdown.MarkdownFeature;
 import software.bluelib.utils.logging.BaseLogLevel;
 import software.bluelib.utils.logging.BaseLogger;
@@ -89,6 +94,65 @@ public class Strikethrough extends MarkdownFeature {
             return prefix + pContent + suffix;
         }
         return "§m" + pContent + "§r";
+    }
+
+    public MutableComponent applyStrikethrough(MutableComponent pComponent) {
+        if (!isStrikethroughEnabled) {
+            BaseLogger.log(BaseLogLevel.INFO, "Strikethrough formatting is disabled. Returning original content.", true);
+            return pComponent;
+        }
+
+        Pattern pattern = Pattern.compile(Pattern.quote(prefix) + "(.*?)" + Pattern.quote(suffix));
+
+        MutableComponent result = Component.empty();
+
+        if (pComponent.getSiblings().isEmpty()) {
+            processComponentTextForStrikethrough(pComponent.getString(), pComponent.getStyle(), result, pattern);
+        } else {
+            result = processSiblingsForStrikethrough(pComponent, pattern);
+        }
+
+        return result;
+    }
+
+    private void processComponentTextForStrikethrough(String text, Style originalStyle, MutableComponent result, Pattern pattern) {
+        Matcher matcher = pattern.matcher(text);
+        int lastIndex = 0;
+
+        while (matcher.find()) {
+            if (matcher.group(1).isEmpty()) {
+                appendUnstyledText(text.substring(lastIndex, matcher.end()), result, originalStyle);
+            } else if (matcher.start() > 0 && text.charAt(matcher.start() - 1) == '\\') {
+                appendUnstyledText(text.substring(lastIndex, matcher.start() - 1), result, originalStyle);
+                appendUnstyledText(matcher.group(0), result, originalStyle);
+            } else {
+                appendUnstyledText(text.substring(lastIndex, matcher.start()), result, originalStyle);
+                appendStrikethrough(matcher.group(1), originalStyle, result);
+            }
+            lastIndex = matcher.end();
+        }
+
+        appendUnstyledText(text.substring(lastIndex), result, originalStyle);
+    }
+
+    private MutableComponent processSiblingsForStrikethrough(MutableComponent pComponent, Pattern pattern) {
+        MutableComponent result = Component.empty();
+
+        for (Component sibling : pComponent.getSiblings()) {
+            if (sibling instanceof MutableComponent mutableSibling) {
+                processComponentTextForStrikethrough(mutableSibling.getString(), mutableSibling.getStyle(), result, pattern);
+            } else {
+                result.append(sibling);
+            }
+        }
+
+        return result;
+    }
+
+    private void appendStrikethrough(String text, Style originalStyle, MutableComponent result) {
+        MutableComponent strikethroughText = Component.literal(text)
+                .setStyle(originalStyle.withStrikethrough(true));
+        result.append(strikethroughText);
     }
 
     /**

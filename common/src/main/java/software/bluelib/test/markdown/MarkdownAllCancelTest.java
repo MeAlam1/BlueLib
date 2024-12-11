@@ -8,18 +8,13 @@ import software.bluelib.test.utils.MessageUtils;
 public class MarkdownAllCancelTest {
 
     private static final List<String> STYLES = List.of(
-            "**bold**", // Bold
             "\\**bold**", // Bold Canceled
-            "*italic*", // Italic
             "\\*italic*", // Italic Canceled
-            "__Underline__", // Underline
             "\\__Underline__", // Underline Canceled
-            "~~Strikethrough~~", // Strikethrough
             "\\~~Strikethrough~~", // Strikethrough Canceled
-            "[Hyperlink](https://www.curseforge.com/minecraft/mc-mods/bluelib)", // Hyperlink
             "\\[Hyperlink](https://modrinth.com/mod/bluelib)", // Hyperlink Canceled
-            "-#" + MessageUtils.getRandomHex() + "-(Color)", // Color
-            "\\-#" + MessageUtils.getRandomHex() + "-(Color)" // Color Canceled
+            "\\-#" + MessageUtils.getRandomHex() + "-(Color)", // Color Canceled
+            "\\||Spoiler||" // Spoiler Canceled
     );
 
     public static void testAllCombinations(GameTestHelper pHelper) {

@@ -2,15 +2,14 @@
 
 package software.bluelib.markdown.syntax;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import software.bluelib.markdown.MarkdownFeature;
 import software.bluelib.utils.logging.BaseLogLevel;
 import software.bluelib.utils.logging.BaseLogger;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * A {@code public class} representing the bold Markdown formatting feature.
@@ -103,7 +102,6 @@ public class Bold extends MarkdownFeature {
         }
 
         Pattern pattern = Pattern.compile(Pattern.quote(prefix) + "(.*?)" + Pattern.quote(suffix));
-        BaseLogger.log(BaseLogLevel.INFO, "Applying bold formatting with pattern: " + pattern.pattern(), true);
 
         MutableComponent result = Component.empty();
 
@@ -119,18 +117,14 @@ public class Bold extends MarkdownFeature {
     private void processComponentText(String text, Style originalStyle, MutableComponent result, Pattern pattern) {
         Matcher matcher = pattern.matcher(text);
         int lastIndex = 0;
-        BaseLogger.log(BaseLogLevel.INFO, "Processing component text: " + text, true);
 
         while (matcher.find()) {
             if (matcher.group(1).isEmpty()) {
-                BaseLogger.log(BaseLogLevel.INFO, "Empty content between bold markers, skipping styling.", true);
                 appendUnstyledText(text.substring(lastIndex, matcher.end()), result, originalStyle);
             } else if (matcher.start() > 0 && text.charAt(matcher.start() - 1) == '\\') {
-                BaseLogger.log(BaseLogLevel.INFO, "Escape character found before prefix, skipping bold: " + matcher.group(0), true);
                 appendUnstyledText(text.substring(lastIndex, matcher.start() - 1), result, originalStyle);
                 appendUnstyledText(matcher.group(0), result, originalStyle);
             } else {
-                BaseLogger.log(BaseLogLevel.INFO, "Applying bold to text: " + matcher.group(1), true);
                 appendUnstyledText(text.substring(lastIndex, matcher.start()), result, originalStyle);
                 appendBold(matcher.group(1), originalStyle, result);
             }
@@ -142,11 +136,9 @@ public class Bold extends MarkdownFeature {
 
     private MutableComponent processSiblings(MutableComponent pComponent, Pattern pattern) {
         MutableComponent result = Component.empty();
-        BaseLogger.log(BaseLogLevel.INFO, "Processing component siblings.", true);
 
         for (Component sibling : pComponent.getSiblings()) {
             if (sibling instanceof MutableComponent mutableSibling) {
-                BaseLogger.log(BaseLogLevel.INFO, "Processing sibling component: " + mutableSibling.getString(), true);
                 processComponentText(mutableSibling.getString(), mutableSibling.getStyle(), result, pattern);
             } else {
                 result.append(sibling);
@@ -160,7 +152,6 @@ public class Bold extends MarkdownFeature {
         MutableComponent boldText = Component.literal(text)
                 .setStyle(originalStyle.withBold(true));
 
-        BaseLogger.log(BaseLogLevel.INFO, "Appending bold text: " + boldText, true);
         result.append(boldText);
     }
 

@@ -55,20 +55,24 @@ public class MarkdownParser {
         }
 
         String text = pMessage.getString();
-        String textWithoutFormatting = pMessage.getString();
-        text = new Strikethrough().applyString(text);
-        text = new Underline().applyString(text);
-        text = new Spoiler().applyString(text);
         MutableComponent formattedMessage = Component.literal(text);
+
         formattedMessage = new Bold().applyBold(formattedMessage);
-        BaseLogger.log(BaseLogLevel.INFO, "After Bold: " + formattedMessage, true);
+        //BaseLogger.log(BaseLogLevel.INFO, "After Bold: " + formattedMessage, true);
         formattedMessage = new Italic().applyItalic(formattedMessage);
-        BaseLogger.log(BaseLogLevel.INFO, "After Italic: " + formattedMessage, true);
+        //BaseLogger.log(BaseLogLevel.INFO, "After Italic: " + formattedMessage, true);
+        formattedMessage = new Underline().applyUnderline(formattedMessage);
+        //BaseLogger.log(BaseLogLevel.INFO, "After Underline: " + formattedMessage, true);
+        formattedMessage = new Strikethrough().applyStrikethrough(formattedMessage);
+        //BaseLogger.log(BaseLogLevel.INFO, "After Strikethrough: " + formattedMessage, true);
+        formattedMessage = new Spoiler().applySpoiler(formattedMessage);
+        //BaseLogger.log(BaseLogLevel.INFO, "After Spoiler: " + formattedMessage, true);
         formattedMessage = new Hyperlink().applyHyperlink(formattedMessage);
-        BaseLogger.log(BaseLogLevel.INFO, "After Hyperlink: " + formattedMessage, true);
+        //BaseLogger.log(BaseLogLevel.INFO, "After Hyperlink: " + formattedMessage, true);
         formattedMessage = new Color().applyColor(formattedMessage);
-        BaseLogger.log(BaseLogLevel.INFO, "After Color: " + formattedMessage, true);
-        formattedMessage = new CopyToClipboard().applyCopyToClipboard(formattedMessage, textWithoutFormatting);
+        //BaseLogger.log(BaseLogLevel.INFO, "After Color: " + formattedMessage, true);
+        formattedMessage = new CopyToClipboard().applyCopyToClipboard(formattedMessage, text);
+        BaseLogger.log(BaseLogLevel.INFO, "Completed Message: " + formattedMessage, true);
         return formattedMessage;
     }
 

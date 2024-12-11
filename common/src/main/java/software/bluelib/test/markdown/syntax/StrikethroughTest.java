@@ -33,6 +33,10 @@ public class StrikethroughTest {
         MessageUtils.sendMessageToPlayers(pHelper, "§6 This is a strikethrough/color test: §r ~~Strikethrough~~ -#" + MessageUtils.getRandomHex() + "-(Color)");
     }
 
+    public static void strikethroughSpoiler(GameTestHelper pHelper) {
+        MessageUtils.sendMessageToPlayers(pHelper, "§6 This is a strikethrough/spoiler test: §r ~~Strikethrough~~ ||spoiler||");
+    }
+
     public static void strikethroughCancel(GameTestHelper pHelper) {
         MessageUtils.sendMessageToPlayers(pHelper, "§6 This is a canceled strikethrough test: §r \\~~Strikethrough~~");
     }
