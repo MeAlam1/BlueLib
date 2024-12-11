@@ -147,7 +147,7 @@ public class Hyperlink extends MarkdownFeature {
         BaseLogger.log(BaseLogLevel.INFO, "Matched text: " + linkText + ", URL: " + url, true);
 
         if (!MiscUtils.isValidURL(url)) {
-            BaseLogger.log(BaseLogLevel.WARNING, "Invalid URL detected: " + url, true);
+            BaseLogger.log(BaseLogLevel.INFO, "Invalid URL detected: " + url, true);
             result.append(Component.literal(prefix + linkText + suffix + "(" + url + ")"));
             return;
         }
