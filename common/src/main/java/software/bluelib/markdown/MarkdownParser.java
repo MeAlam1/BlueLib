@@ -65,7 +65,6 @@ public class MarkdownParser {
         formattedMessage = new Hyperlink().applyHyperlink(formattedMessage);
         formattedMessage = new Color().applyColor(formattedMessage);
         formattedMessage = new CopyToClipboard().applyCopyToClipboard(formattedMessage, textWithoutFormatting);
-        BaseLogger.log(BaseLogLevel.INFO, "Markdown applied to message: " + text + ". Styled message is: " + formattedMessage, true);
         return formattedMessage;
     }
 

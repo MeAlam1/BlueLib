@@ -68,7 +68,6 @@ public abstract class MarkdownFeature {
         while (matcher.find()) {
             String content = matcher.group(1);
             if (content.isEmpty()) {
-                BaseLogger.log(BaseLogLevel.INFO, "Empty content found between prefix and suffix", true);
                 matcher.appendReplacement(result, Matcher.quoteReplacement(prefix + suffix));
             } else {
                 String formatted = applyFormat(content);
