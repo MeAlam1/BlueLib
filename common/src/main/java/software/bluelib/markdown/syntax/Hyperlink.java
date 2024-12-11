@@ -112,13 +112,19 @@ public class Hyperlink extends MarkdownFeature {
         int lastIndex = 0;
 
         while (matcher.find()) {
-            appendUnstyledText(text.substring(lastIndex, matcher.start()), result);
-            appendHyperlink(matcher.group(1), matcher.group(2), result);
+            if (matcher.start() > 0 && text.charAt(matcher.start() - 1) == '\\') {
+                appendUnstyledText(text.substring(lastIndex, matcher.start() - 1), result);
+                appendUnstyledText(matcher.group(0), result);
+            } else {
+                appendUnstyledText(text.substring(lastIndex, matcher.start()), result);
+                appendHyperlink(matcher.group(1), matcher.group(2), result);
+            }
             lastIndex = matcher.end();
         }
 
         appendUnstyledText(text.substring(lastIndex), result);
     }
+
 
     private MutableComponent processSiblings(MutableComponent pComponent, Pattern pattern) {
         MutableComponent result = Component.empty();
