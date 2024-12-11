@@ -32,4 +32,8 @@ public class Strikethrough {
     public static void strikethroughColor(GameTestHelper pHelper) {
         MessageUtils.sendMessageToPlayers(pHelper, "§6 This is a strikethrough/color test: §r ~~Strikethrough~~ -#" + MessageUtils.getRandomHex() + "-(Color)");
     }
+
+    public static void strikethroughCancel(GameTestHelper pHelper) {
+        MessageUtils.sendMessageToPlayers(pHelper, "§6 This is a canceled strikethrough test: §r \\~~Strikethrough~~");
+    }
 }

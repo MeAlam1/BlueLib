@@ -32,4 +32,8 @@ public class Underline {
     public static void underlineColor(GameTestHelper pHelper) {
         MessageUtils.sendMessageToPlayers(pHelper, "§6 This is an underline/color test: §r __Underline__ -#" + MessageUtils.getRandomHex() + "-(Color)");
     }
+
+    public static void underlineCancel(GameTestHelper pHelper) {
+        MessageUtils.sendMessageToPlayers(pHelper, "§6 This is a canceled underline test: §r \\__Underline__");
+    }
 }

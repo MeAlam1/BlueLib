@@ -32,4 +32,9 @@ public class Color {
     public static void colorColor(GameTestHelper pHelper) {
         MessageUtils.sendMessageToPlayers(pHelper, "§6 This is a color/color test: §r -#" + MessageUtils.getRandomHex() + "-(Color) -#" + MessageUtils.getRandomHex() + "-(Color)");
     }
+
+    public static void colorCancel(GameTestHelper pHelper) {
+        MessageUtils.sendMessageToPlayers(pHelper, "§6 This is a canceled color test: §r \\-#" + MessageUtils.getRandomHex() + "-(Color)");
+
+    }
 }

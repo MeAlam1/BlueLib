@@ -32,4 +32,8 @@ public class Bold {
     public static void boldColor(GameTestHelper pHelper) {
         MessageUtils.sendMessageToPlayers(pHelper, "§6 This is a bold/italic test: §r **bold** -#" + MessageUtils.getRandomHex() + "-(Color)");
     }
+
+    public static void boldCancel(GameTestHelper pHelper) {
+        MessageUtils.sendMessageToPlayers(pHelper, "§6 This is a canceled bold test: §r \\**bold**");
+    }
 }

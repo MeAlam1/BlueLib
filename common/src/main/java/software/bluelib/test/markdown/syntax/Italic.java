@@ -32,4 +32,8 @@ public class Italic {
     public static void italicColor(GameTestHelper pHelper) {
         MessageUtils.sendMessageToPlayers(pHelper, "§6 This is an italic/color test: §r *italic* -#" + MessageUtils.getRandomHex() + "-(Color)");
     }
+
+    public static void italicCancel(GameTestHelper pHelper) {
+        MessageUtils.sendMessageToPlayers(pHelper, "§6 This is an canceled italic test: §r \\*italic*");
+    }
 }
