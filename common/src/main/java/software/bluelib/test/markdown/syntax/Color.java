@@ -35,6 +35,9 @@ public class Color {
 
     public static void colorCancel(GameTestHelper pHelper) {
         MessageUtils.sendMessageToPlayers(pHelper, "§6 This is a canceled color test: §r \\-#" + MessageUtils.getRandomHex() + "-(Color)");
+    }
 
+    public static void colorInvalid(GameTestHelper pHelper) {
+        MessageUtils.sendMessageToPlayers(pHelper, "§6 This is an invalid color test: §r -#invalidColor-(Color)");
     }
 }

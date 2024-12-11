@@ -36,4 +36,8 @@ public class Hyperlink {
     public static void hyperlinkCancel(GameTestHelper pHelper) {
         MessageUtils.sendMessageToPlayers(pHelper, "§6 This is a canceled hyperlink test: §r \\[Hyperlink](https://www.curseforge.com/minecraft/mc-mods/bluelib)");
     }
+
+    public static void hyperlinkInvalid(GameTestHelper pHelper) {
+        MessageUtils.sendMessageToPlayers(pHelper, "§6 This is an invalid hyperlink test: §r [Hyperlink](invalidLink)");
+    }
 }

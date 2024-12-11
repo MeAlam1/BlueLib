@@ -1,10 +1,9 @@
 package software.bluelib.test.markdown;
 
-import net.minecraft.gametest.framework.GameTestHelper;
-import software.bluelib.test.utils.MessageUtils;
-
 import java.util.ArrayList;
 import java.util.List;
+import net.minecraft.gametest.framework.GameTestHelper;
+import software.bluelib.test.utils.MessageUtils;
 
 public class AllCancel {
 

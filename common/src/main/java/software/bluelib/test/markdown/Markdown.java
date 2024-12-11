@@ -73,6 +73,7 @@ public class Markdown {
             Hyperlink.hyperlinkHyperlink(pHelper);
             Hyperlink.hyperlinkColor(pHelper);
             Hyperlink.hyperlinkCancel(pHelper);
+            Hyperlink.hyperlinkInvalid(pHelper);
         });
     }
 
@@ -87,6 +88,7 @@ public class Markdown {
             Color.colorHyperlink(pHelper);
             Color.colorColor(pHelper);
             Color.colorCancel(pHelper);
+            Color.colorInvalid(pHelper);
         });
     }
 
