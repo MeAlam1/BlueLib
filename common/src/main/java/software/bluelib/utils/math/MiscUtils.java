@@ -2,6 +2,8 @@
 
 package software.bluelib.utils.math;
 
+import java.net.URI;
+import java.util.regex.Pattern;
 import software.bluelib.utils.logging.BaseLogLevel;
 import software.bluelib.utils.logging.BaseLogger;
 
@@ -18,7 +20,7 @@ import software.bluelib.utils.logging.BaseLogger;
  * </ul>
  *
  * @author MeAlam
- * @version 1.4.0
+ * @version 1.6.0
  * @since 1.0.0
  */
 public class MiscUtils {
@@ -57,11 +59,16 @@ public class MiscUtils {
     public static boolean isValidURL(String pUrl) {
         try {
             if (!pUrl.startsWith("http://") && !pUrl.startsWith("https://")) {
-                pUrl = "https://" + pUrl;
+                return false;
             }
 
-            java.net.URI uri = new java.net.URI(pUrl);
-            return uri.isAbsolute() && ("http".equals(uri.getScheme()) || "https".equals(uri.getScheme()));
+            URI uri = new URI(pUrl);
+
+            String domainRegex = "^[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
+            Pattern pattern = Pattern.compile(domainRegex);
+            String host = uri.getHost();
+
+            return uri.isAbsolute() && (pattern.matcher(host).matches());
         } catch (Exception pException) {
             return false;
         }

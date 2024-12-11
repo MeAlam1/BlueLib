@@ -26,7 +26,7 @@ public class Hyperlink {
     }
 
     public static void hyperlinkHyperlink(GameTestHelper pHelper) {
-        MessageUtils.sendMessageToPlayers(pHelper, "§6 This is a hyperlink/hyperlink test: §r [[Hyperlink](https://www.curseforge.com/minecraft/mc-mods/bluelib) [Hyperlink](https://modrinth.com/mod/bluelib)");
+        MessageUtils.sendMessageToPlayers(pHelper, "§6 This is a hyperlink/hyperlink test: §r [Hyperlink](https://www.curseforge.com/minecraft/mc-mods/bluelib) [Hyperlink](https://modrinth.com/mod/bluelib)");
     }
 
     public static void hyperlinkColor(GameTestHelper pHelper) {
