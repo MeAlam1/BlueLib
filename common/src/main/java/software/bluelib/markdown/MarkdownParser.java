@@ -56,14 +56,17 @@ public class MarkdownParser {
 
         String text = pMessage.getString();
         String textWithoutFormatting = pMessage.getString();
-        text = new Bold().applyString(text);
         text = new Italic().applyString(text);
         text = new Strikethrough().applyString(text);
         text = new Underline().applyString(text);
         text = new Spoiler().applyString(text);
         MutableComponent formattedMessage = Component.literal(text);
+        formattedMessage = new Bold().applyBold(formattedMessage);
+        BaseLogger.log(BaseLogLevel.INFO, "After Bold: " + formattedMessage, true);
         formattedMessage = new Hyperlink().applyHyperlink(formattedMessage);
+        BaseLogger.log(BaseLogLevel.INFO, "After Hyperlink: " + formattedMessage, true);
         formattedMessage = new Color().applyColor(formattedMessage);
+        BaseLogger.log(BaseLogLevel.INFO, "After Color: " + formattedMessage, true);
         formattedMessage = new CopyToClipboard().applyCopyToClipboard(formattedMessage, textWithoutFormatting);
         return formattedMessage;
     }

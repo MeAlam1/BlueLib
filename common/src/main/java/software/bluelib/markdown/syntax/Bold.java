@@ -2,9 +2,15 @@
 
 package software.bluelib.markdown.syntax;
 
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Style;
 import software.bluelib.markdown.MarkdownFeature;
 import software.bluelib.utils.logging.BaseLogLevel;
 import software.bluelib.utils.logging.BaseLogger;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * A {@code public class} representing the bold Markdown formatting feature.
@@ -89,6 +95,79 @@ public class Bold extends MarkdownFeature {
         }
         return "§l" + pContent + "§r";
     }
+
+    public MutableComponent applyBold(MutableComponent pComponent) {
+        if (!isBoldEnabled) {
+            BaseLogger.log(BaseLogLevel.INFO, "Bold formatting is disabled. Returning original content.", true);
+            return pComponent;
+        }
+
+        Pattern pattern = Pattern.compile(Pattern.quote(prefix) + "(.*?)" + Pattern.quote(suffix));
+        BaseLogger.log(BaseLogLevel.INFO, "Applying bold formatting with pattern: " + pattern.pattern(), true);
+
+        MutableComponent result = Component.empty();
+
+        if (pComponent.getSiblings().isEmpty()) {
+            processComponentText(pComponent.getString(), pComponent.getStyle(), result, pattern);
+        } else {
+            result = processSiblings(pComponent, pattern);
+        }
+
+        return result;
+    }
+
+    private void processComponentText(String text, Style originalStyle, MutableComponent result, Pattern pattern) {
+        Matcher matcher = pattern.matcher(text);
+        int lastIndex = 0;
+        BaseLogger.log(BaseLogLevel.INFO, "Processing component text: " + text, true);
+
+        while (matcher.find()) {
+            if (matcher.start() > 0 && text.charAt(matcher.start() - 1) == '\\') {
+                BaseLogger.log(BaseLogLevel.INFO, "Escape character found before prefix, skipping bold: " + matcher.group(0), true);
+                appendUnstyledText(text.substring(lastIndex, matcher.start() - 1), result, originalStyle);
+                appendUnstyledText(matcher.group(0).substring(1), result, originalStyle);
+            } else {
+                BaseLogger.log(BaseLogLevel.INFO, "Applying bold to text: " + matcher.group(1), true);
+                appendUnstyledText(text.substring(lastIndex, matcher.start()), result, originalStyle);
+                appendBold(matcher.group(1), originalStyle, result);
+            }
+            lastIndex = matcher.end();
+        }
+
+        appendUnstyledText(text.substring(lastIndex), result, originalStyle);
+    }
+
+    private MutableComponent processSiblings(MutableComponent pComponent, Pattern pattern) {
+        MutableComponent result = Component.empty();
+        BaseLogger.log(BaseLogLevel.INFO, "Processing component siblings.", true);
+
+        for (Component sibling : pComponent.getSiblings()) {
+            if (sibling instanceof MutableComponent mutableSibling) {
+                BaseLogger.log(BaseLogLevel.INFO, "Processing sibling component: " + mutableSibling.getString(), true);
+                processComponentText(mutableSibling.getString(), mutableSibling.getStyle(), result, pattern);
+            } else {
+                result.append(sibling);
+            }
+        }
+
+        return result;
+    }
+
+    private void appendUnstyledText(String text, MutableComponent result, Style originalStyle) {
+        if (!text.isEmpty()) {
+            BaseLogger.log(BaseLogLevel.INFO, "Appending unstyled text: " + text, true);
+            result.append(Component.literal(text).setStyle(originalStyle));
+        }
+    }
+
+    private void appendBold(String text, Style originalStyle, MutableComponent result) {
+        MutableComponent boldText = Component.literal(text)
+                .setStyle(originalStyle.withBold(true));
+
+        BaseLogger.log(BaseLogLevel.INFO, "Appending bold text: " + boldText, true);
+        result.append(boldText);
+    }
+
 
     /**
      * A {@code public static void} to update the prefix and suffix used for bold formatting.
