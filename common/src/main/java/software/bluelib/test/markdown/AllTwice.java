@@ -5,14 +5,20 @@ import java.util.List;
 import net.minecraft.gametest.framework.GameTestHelper;
 import software.bluelib.test.utils.MessageUtils;
 
-public class All {
+public class AllTwice {
 
     private static final List<String> STYLES = List.of(
             "**bold**", // Bold
+            "**bold**", // Bold
+            "*italic*", // Italic
             "*italic*", // Italic
             "__Underline__", // Underline
+            "__Underline__", // Underline
+            "~~Strikethrough~~", // Strikethrough
             "~~Strikethrough~~", // Strikethrough
             "[Hyperlink](https://www.curseforge.com/minecraft/mc-mods/bluelib)", // Hyperlink
+            "[Hyperlink](https://modrinth.com/mod/bluelib)", // Hyperlink
+            "-#" + MessageUtils.getRandomHex() + "-(Color)", // Color
             "-#" + MessageUtils.getRandomHex() + "-(Color)" // Color
     );
 
@@ -27,14 +33,14 @@ public class All {
 
     private static List<List<String>> generateCombinations() {
         List<List<String>> combinations = new ArrayList<>();
-        int n = All.STYLES.size();
+        int n = AllTwice.STYLES.size();
         int totalCombinations = 1 << n;
 
         for (int i = 0; i < totalCombinations; i++) {
             List<String> combination = new ArrayList<>();
             for (int j = 0; j < n; j++) {
                 if ((i & (1 << j)) != 0) {
-                    combination.add(All.STYLES.get(j));
+                    combination.add(AllTwice.STYLES.get(j));
                 }
             }
             combinations.add(combination);

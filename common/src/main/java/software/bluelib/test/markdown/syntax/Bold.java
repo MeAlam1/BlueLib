@@ -9,6 +9,10 @@ public class Bold {
         MessageUtils.sendMessageToPlayers(pHelper, "§6 This is a bold test: §r **bold**");
     }
 
+    public static void boldBold(GameTestHelper pHelper) {
+        MessageUtils.sendMessageToPlayers(pHelper, "§6 This is a bold/bold test: §r **bold** **bold**");
+    }
+
     public static void boldItalic(GameTestHelper pHelper) {
         MessageUtils.sendMessageToPlayers(pHelper, "§6 This is a bold/italic test: §r **bold** *italic*");
     }
@@ -26,6 +30,6 @@ public class Bold {
     }
 
     public static void boldColor(GameTestHelper pHelper) {
-        MessageUtils.sendMessageToPlayers(pHelper, "§6 This is a bold/italic test: §r **bold** -#" + MessageUtils.getRandomHex() + " -(Color)");
+        MessageUtils.sendMessageToPlayers(pHelper, "§6 This is a bold/italic test: §r **bold** -#" + MessageUtils.getRandomHex() + "-(Color)");
     }
 }

@@ -10,6 +10,7 @@ public class Markdown {
     public static void bold(GameTestHelper pHelper) {
         pHelper.succeedIf(() -> {
             Bold.bold(pHelper);
+            Bold.boldBold(pHelper);
             Bold.boldItalic(pHelper);
             Bold.boldUnderline(pHelper);
             Bold.boldStrikethrough(pHelper);
@@ -23,6 +24,7 @@ public class Markdown {
         pHelper.succeedIf(() -> {
             Italic.italic(pHelper);
             Italic.italicBold(pHelper);
+            Italic.italicItalic(pHelper);
             Italic.italicUnderline(pHelper);
             Italic.italicStrikethrough(pHelper);
             Italic.italicHyperlink(pHelper);
@@ -36,6 +38,7 @@ public class Markdown {
             Underline.underline(pHelper);
             Underline.underlineBold(pHelper);
             Underline.underlineItalic(pHelper);
+            Underline.underlineUnderline(pHelper);
             Underline.underlineStrikethrough(pHelper);
             Underline.underlineHyperlink(pHelper);
             Underline.underlineColor(pHelper);
@@ -49,6 +52,7 @@ public class Markdown {
             Strikethrough.strikethroughBold(pHelper);
             Strikethrough.strikethroughItalic(pHelper);
             Strikethrough.strikethroughUnderline(pHelper);
+            Strikethrough.strikethroughStrikethrough(pHelper);
             Strikethrough.strikethroughHyperlink(pHelper);
             Strikethrough.strikethroughColor(pHelper);
         });
@@ -62,6 +66,7 @@ public class Markdown {
             Hyperlink.hyperlinkItalic(pHelper);
             Hyperlink.hyperlinkUnderline(pHelper);
             Hyperlink.hyperlinkStrikethrough(pHelper);
+            Hyperlink.hyperlinkHyperlink(pHelper);
             Hyperlink.hyperlinkColor(pHelper);
         });
     }
@@ -75,6 +80,7 @@ public class Markdown {
             Color.colorUnderline(pHelper);
             Color.colorStrikethrough(pHelper);
             Color.colorHyperlink(pHelper);
+            Color.colorColor(pHelper);
         });
     }
 
@@ -82,6 +88,13 @@ public class Markdown {
     public static void all(GameTestHelper pHelper) {
         pHelper.succeedIf(() -> {
             All.testAllCombinations(pHelper);
+        });
+    }
+
+    @GameTest
+    public static void allTwice(GameTestHelper pHelper) {
+        pHelper.succeedIf(() -> {
+            AllTwice.testAllCombinations(pHelper);
         });
     }
 }

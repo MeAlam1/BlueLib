@@ -25,7 +25,11 @@ public class Hyperlink {
         MessageUtils.sendMessageToPlayers(pHelper, "§6 This is a hyperlink/strikethrough test: §r [Hyperlink](https://github.com/users/MeAlam1/projects/6) ~~Strikethrough~~");
     }
 
+    public static void hyperlinkHyperlink(GameTestHelper pHelper) {
+        MessageUtils.sendMessageToPlayers(pHelper, "§6 This is a hyperlink/hyperlink test: §r [[Hyperlink](https://www.curseforge.com/minecraft/mc-mods/bluelib) [Hyperlink](https://modrinth.com/mod/bluelib)");
+    }
+
     public static void hyperlinkColor(GameTestHelper pHelper) {
-        MessageUtils.sendMessageToPlayers(pHelper, "§6 This is a hyperlink/color test: §r [Hyperlink](https://github.com/MeAlam1/BlueLib/issues) -#" + MessageUtils.getRandomHex() + " -(Color)");
+        MessageUtils.sendMessageToPlayers(pHelper, "§6 This is a hyperlink/color test: §r [Hyperlink](https://github.com/MeAlam1/BlueLib/issues) -#" + MessageUtils.getRandomHex() + "-(Color)");
     }
 }

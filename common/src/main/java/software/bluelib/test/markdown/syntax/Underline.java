@@ -17,6 +17,10 @@ public class Underline {
         MessageUtils.sendMessageToPlayers(pHelper, "§6 This is an underline/italic test: §r __Underline__ *italic*");
     }
 
+    public static void underlineUnderline(GameTestHelper pHelper) {
+        MessageUtils.sendMessageToPlayers(pHelper, "§6 This is an underline/underline test: §r __Underline__ __Underline__");
+    }
+
     public static void underlineStrikethrough(GameTestHelper pHelper) {
         MessageUtils.sendMessageToPlayers(pHelper, "§6 This is an underline/strikethrough test: §r __Underline__ ~~Strikethrough~~");
     }
@@ -26,6 +30,6 @@ public class Underline {
     }
 
     public static void underlineColor(GameTestHelper pHelper) {
-        MessageUtils.sendMessageToPlayers(pHelper, "§6 This is an underline/color test: §r __Underline__ -#" + MessageUtils.getRandomHex() + " -(Color)");
+        MessageUtils.sendMessageToPlayers(pHelper, "§6 This is an underline/color test: §r __Underline__ -#" + MessageUtils.getRandomHex() + "-(Color)");
     }
 }

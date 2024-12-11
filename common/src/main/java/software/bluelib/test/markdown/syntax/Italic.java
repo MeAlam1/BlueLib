@@ -13,6 +13,10 @@ public class Italic {
         MessageUtils.sendMessageToPlayers(pHelper, "§6 This is a italic/bold test: §r *italic* **bold**");
     }
 
+    public static void italicItalic(GameTestHelper pHelper) {
+        MessageUtils.sendMessageToPlayers(pHelper, "§6 This is a italic/italic test: §r *italic* *italic*");
+    }
+
     public static void italicUnderline(GameTestHelper pHelper) {
         MessageUtils.sendMessageToPlayers(pHelper, "§6 This is an italic/underline test: §r *italic* __Underline__");
     }
@@ -26,6 +30,6 @@ public class Italic {
     }
 
     public static void italicColor(GameTestHelper pHelper) {
-        MessageUtils.sendMessageToPlayers(pHelper, "§6 This is an italic/color test: §r *italic* -#" + MessageUtils.getRandomHex() + " -(Color)");
+        MessageUtils.sendMessageToPlayers(pHelper, "§6 This is an italic/color test: §r *italic* -#" + MessageUtils.getRandomHex() + "-(Color)");
     }
 }
