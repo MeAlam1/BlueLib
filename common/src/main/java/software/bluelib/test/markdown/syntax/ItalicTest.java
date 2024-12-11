@@ -10,11 +10,11 @@ public class ItalicTest {
     }
 
     public static void italicBold(GameTestHelper pHelper) {
-        MessageUtils.sendMessageToPlayers(pHelper, "§6 This is a italic/bold test: §r *italic* **bold**");
+        MessageUtils.sendMessageToPlayers(pHelper, "§6 This is an italic/bold test: §r *italic* **bold**");
     }
 
     public static void italicItalic(GameTestHelper pHelper) {
-        MessageUtils.sendMessageToPlayers(pHelper, "§6 This is a italic/italic test: §r *italic* *italic*");
+        MessageUtils.sendMessageToPlayers(pHelper, "§6 This is an italic/italic test: §r *italic* *italic*");
     }
 
     public static void italicUnderline(GameTestHelper pHelper) {

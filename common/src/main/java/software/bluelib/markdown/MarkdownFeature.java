@@ -6,6 +6,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Style;
 import software.bluelib.utils.logging.BaseLogLevel;
 import software.bluelib.utils.logging.BaseLogger;
 
@@ -77,6 +78,13 @@ public abstract class MarkdownFeature {
 
         matcher.appendTail(result);
         return result.toString().replaceAll("\\\\" + escapedPrefix, prefix);
+    }
+
+    protected void appendUnstyledText(String text, MutableComponent result, Style originalStyle) {
+        if (!text.isEmpty()) {
+            BaseLogger.log(BaseLogLevel.INFO, "Appending unstyled text: " + text, true);
+            result.append(Component.literal(text).setStyle(originalStyle));
+        }
     }
 
     /**

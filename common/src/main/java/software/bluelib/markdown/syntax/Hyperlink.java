@@ -108,7 +108,9 @@ public class Hyperlink extends MarkdownFeature {
         int lastIndex = 0;
 
         while (matcher.find()) {
-            if (matcher.start() > 0 && text.charAt(matcher.start() - 1) == '\\') {
+            if (matcher.group(1).isEmpty()) {
+                appendUnstyledText(text.substring(lastIndex, matcher.end()), result, originalStyle);
+            } else if (matcher.start() > 0 && text.charAt(matcher.start() - 1) == '\\') {
                 appendUnstyledText(text.substring(lastIndex, matcher.start() - 1), result, originalStyle);
                 appendUnstyledText(matcher.group(0), result, originalStyle);
             } else {
@@ -133,12 +135,6 @@ public class Hyperlink extends MarkdownFeature {
         }
 
         return result;
-    }
-
-    private void appendUnstyledText(String text, MutableComponent result, Style originalStyle) {
-        if (!text.isEmpty()) {
-            result.append(Component.literal(text).setStyle(originalStyle));
-        }
     }
 
     private void appendHyperlink(String linkText, String url, Style originalStyle, MutableComponent result) {

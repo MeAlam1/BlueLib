@@ -122,10 +122,13 @@ public class Bold extends MarkdownFeature {
         BaseLogger.log(BaseLogLevel.INFO, "Processing component text: " + text, true);
 
         while (matcher.find()) {
-            if (matcher.start() > 0 && text.charAt(matcher.start() - 1) == '\\') {
+            if (matcher.group(1).isEmpty()) {
+                BaseLogger.log(BaseLogLevel.INFO, "Empty content between bold markers, skipping styling.", true);
+                appendUnstyledText(text.substring(lastIndex, matcher.end()), result, originalStyle);
+            } else if (matcher.start() > 0 && text.charAt(matcher.start() - 1) == '\\') {
                 BaseLogger.log(BaseLogLevel.INFO, "Escape character found before prefix, skipping bold: " + matcher.group(0), true);
                 appendUnstyledText(text.substring(lastIndex, matcher.start() - 1), result, originalStyle);
-                appendUnstyledText(matcher.group(0).substring(1), result, originalStyle);
+                appendUnstyledText(matcher.group(0), result, originalStyle);
             } else {
                 BaseLogger.log(BaseLogLevel.INFO, "Applying bold to text: " + matcher.group(1), true);
                 appendUnstyledText(text.substring(lastIndex, matcher.start()), result, originalStyle);
@@ -153,13 +156,6 @@ public class Bold extends MarkdownFeature {
         return result;
     }
 
-    private void appendUnstyledText(String text, MutableComponent result, Style originalStyle) {
-        if (!text.isEmpty()) {
-            BaseLogger.log(BaseLogLevel.INFO, "Appending unstyled text: " + text, true);
-            result.append(Component.literal(text).setStyle(originalStyle));
-        }
-    }
-
     private void appendBold(String text, Style originalStyle, MutableComponent result) {
         MutableComponent boldText = Component.literal(text)
                 .setStyle(originalStyle.withBold(true));
@@ -167,7 +163,6 @@ public class Bold extends MarkdownFeature {
         BaseLogger.log(BaseLogLevel.INFO, "Appending bold text: " + boldText, true);
         result.append(boldText);
     }
-
 
     /**
      * A {@code public static void} to update the prefix and suffix used for bold formatting.

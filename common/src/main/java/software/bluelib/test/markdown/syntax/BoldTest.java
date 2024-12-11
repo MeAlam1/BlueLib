@@ -34,6 +34,6 @@ public class BoldTest {
     }
 
     public static void boldCancel(GameTestHelper pHelper) {
-        MessageUtils.sendMessageToPlayers(pHelper, "§6 This is a canceled bold test: §r \\**bold**" + "\n" + "§b (Should become Italic with basic Prefix/Suffix) §r");
+        MessageUtils.sendMessageToPlayers(pHelper, "§6 This is a canceled bold test: §r \\**bold**");
     }
 }

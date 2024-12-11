@@ -127,7 +127,7 @@ public class Color extends MarkdownFeature {
                     styledComponent.append(Component.literal(beforeMatch).setStyle(component.getStyle()));
                 }
 
-                String matchedText = matcher.group(0).substring(1);
+                String matchedText = matcher.group(0);
                 styledComponent.append(Component.literal(matchedText).setStyle(Style.EMPTY));
             } else {
                 if (!beforeMatch.isEmpty()) {

@@ -10,7 +10,7 @@ public class UnderlineTest {
     }
 
     public static void underlineBold(GameTestHelper pHelper) {
-        MessageUtils.sendMessageToPlayers(pHelper, "§6 This is a underline/bold test: §r __Underline__ **bold**");
+        MessageUtils.sendMessageToPlayers(pHelper, "§6 This is an underline/bold test: §r __Underline__ **bold**");
     }
 
     public static void underlineItalic(GameTestHelper pHelper) {
