@@ -91,19 +91,15 @@ public class Hyperlink extends MarkdownFeature {
         }
 
         Pattern pattern = Pattern.compile(Pattern.quote(prefix) + "(.*?)" + Pattern.quote(suffix) + "\\((.*?)\\)");
-        BaseLogger.log(BaseLogLevel.INFO, "Using regex pattern: " + pattern.pattern(), true);
 
         MutableComponent result = Component.empty();
 
         if (pComponent.getSiblings().isEmpty()) {
-            BaseLogger.log(BaseLogLevel.INFO, "No siblings found. Processing the component itself.", true);
             processComponentText(pComponent.getString(), result, pattern);
         } else {
-            BaseLogger.log(BaseLogLevel.INFO, "Processing component with siblings.", true);
             result = processSiblings(pComponent, pattern);
         }
 
-        BaseLogger.log(BaseLogLevel.INFO, "Final result component: " + result.getString(), true);
         return result;
     }
 
@@ -125,16 +121,13 @@ public class Hyperlink extends MarkdownFeature {
         appendUnstyledText(text.substring(lastIndex), result);
     }
 
-
     private MutableComponent processSiblings(MutableComponent pComponent, Pattern pattern) {
         MutableComponent result = Component.empty();
 
         for (Component sibling : pComponent.getSiblings()) {
             if (sibling instanceof MutableComponent mutableSibling) {
-                BaseLogger.log(BaseLogLevel.INFO, "Processing sibling: " + mutableSibling.getString(), true);
                 processComponentText(mutableSibling.getString(), result, pattern);
             } else {
-                BaseLogger.log(BaseLogLevel.INFO, "Sibling is not mutable. Appending as-is: " + sibling.getString(), true);
                 result.append(sibling);
             }
         }
@@ -144,16 +137,12 @@ public class Hyperlink extends MarkdownFeature {
 
     private void appendUnstyledText(String text, MutableComponent result) {
         if (!text.isEmpty()) {
-            BaseLogger.log(BaseLogLevel.INFO, "Appending unstyled text: " + text, true);
             result.append(Component.literal(text));
         }
     }
 
     private void appendHyperlink(String linkText, String url, MutableComponent result) {
-        BaseLogger.log(BaseLogLevel.INFO, "Matched text: " + linkText + ", URL: " + url, true);
-
         if (!MiscUtils.isValidURL(url)) {
-            BaseLogger.log(BaseLogLevel.INFO, "Invalid URL detected: " + url, true);
             result.append(Component.literal(prefix + linkText + suffix + "(" + url + ")"));
             return;
         }
