@@ -96,7 +96,7 @@ public class ParameterUtils {
      * @author MeAlam
      * @since 1.3.0
      */
-    public static String getCustomParameterForVariant(String pEntityName, String pVariantName, String pParameter) {
+    public static JsonElement getCustomParameterForVariant(String pEntityName, String pVariantName, String pParameter) {
         JsonObject entityData = VariantLoader.AllVariants.get(pEntityName);
         if (entityData == null) {
             BaseLogger.log(BaseLogLevel.INFO, "Entity data not found for: " + pEntityName, true);
@@ -112,12 +112,16 @@ public class ParameterUtils {
         for (JsonElement variantElement : variants) {
             if (variantElement.isJsonObject()) {
                 JsonObject variant = variantElement.getAsJsonObject();
+                
                 if (variant.has(pParameter)) {
                     JsonElement parameterElement = variant.get(pParameter);
+
                     if (parameterElement.isJsonPrimitive()) {
-                        String value = parameterElement.getAsString();
-                        BaseLogger.log(BaseLogLevel.INFO, "Found custom parameter: " + pParameter + " with value: " + value + " for: " + pEntityName, true);
-                        return value;
+                        return parameterElement;
+                    } else if (parameterElement.isJsonArray()) {
+                        return parameterElement;
+                    } else if (parameterElement.isJsonObject()) {
+                        return parameterElement;
                     }
                 }
             }
