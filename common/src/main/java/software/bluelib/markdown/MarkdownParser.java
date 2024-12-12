@@ -52,6 +52,7 @@ public class MarkdownParser {
     public static MutableComponent parseMarkdown(Component pMessage) {
         if (!globalMarkdownEnabled) {
             BaseLogger.log(BaseLogLevel.INFO, "Global markdown is disabled, returning original message", true);
+            return pMessage.copy();
         }
 
         String text = pMessage.getString();
