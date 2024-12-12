@@ -2,7 +2,6 @@
 
 package software.bluelib.markdown.syntax;
 
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import net.minecraft.network.chat.*;
 import software.bluelib.markdown.MarkdownFeature;

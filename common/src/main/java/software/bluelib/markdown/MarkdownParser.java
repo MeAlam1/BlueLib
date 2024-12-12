@@ -71,7 +71,7 @@ public class MarkdownParser {
         //BaseLogger.log(BaseLogLevel.INFO, "After Hyperlink: " + formattedMessage, true);
         formattedMessage = new Color().apply(formattedMessage);
         //BaseLogger.log(BaseLogLevel.INFO, "After Color: " + formattedMessage, true);
-        formattedMessage = new CopyToClipboard().applyCopyToClipboard(formattedMessage, text);
+        formattedMessage = new CopyToClipboard().apply(formattedMessage, text);
         BaseLogger.log(BaseLogLevel.INFO, "Completed Message: " + formattedMessage, true);
         return formattedMessage;
     }

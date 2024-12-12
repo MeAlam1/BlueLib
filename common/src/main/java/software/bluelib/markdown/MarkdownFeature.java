@@ -39,7 +39,6 @@ public abstract class MarkdownFeature {
             MutableComponent result,
             Pattern pattern,
             BiConsumer<Matcher, MutableComponent> specialTextHandler) {
-
         Matcher matcher = pattern.matcher(text);
         int lastIndex = 0;
 
@@ -64,12 +63,10 @@ public abstract class MarkdownFeature {
                 (matcher, res) -> appendFormattedText(matcher.group(1), originalStyle, res));
     }
 
-
     protected MutableComponent processSiblings(
             MutableComponent component,
             Pattern pattern,
             QuadConsumer<String, Style, MutableComponent, Pattern> siblingProcessor) {
-
         MutableComponent result = Component.empty();
 
         for (Component sibling : component.getSiblings()) {
@@ -78,8 +75,7 @@ public abstract class MarkdownFeature {
                         mutableSibling.getString(),
                         mutableSibling.getStyle(),
                         result,
-                        pattern
-                );
+                        pattern);
             } else {
                 result.append(sibling);
             }
@@ -92,7 +88,6 @@ public abstract class MarkdownFeature {
         return processSiblings(component, pattern,
                 this::processComponentTextWithFormatting);
     }
-
 
     protected abstract void appendFormattedText(String text, Style originalStyle, MutableComponent result);
 

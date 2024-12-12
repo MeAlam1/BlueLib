@@ -6,8 +6,6 @@ import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import software.bluelib.markdown.MarkdownFeature;
-import software.bluelib.utils.logging.BaseLogLevel;
-import software.bluelib.utils.logging.BaseLogger;
 
 /**
  * A {@code public class} representing the CopyToClipboard Markdown formatting feature.
@@ -48,7 +46,7 @@ public class CopyToClipboard {
      * @author MeAlam
      * @since 1.5.0
      */
-    public MutableComponent applyCopyToClipboard(MutableComponent pMessage, String pTextToCopy) {
+    public MutableComponent apply(MutableComponent pMessage, String pTextToCopy) {
         if (!isCopyToClipboardEnabled) {
             return pMessage;
         }

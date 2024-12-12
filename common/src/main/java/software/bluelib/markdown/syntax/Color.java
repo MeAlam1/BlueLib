@@ -2,7 +2,6 @@
 
 package software.bluelib.markdown.syntax;
 
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import net.minecraft.network.chat.*;
 import software.bluelib.markdown.MarkdownFeature;
@@ -109,7 +108,6 @@ public class Color extends MarkdownFeature {
             result.append(Component.literal(colorText).setStyle(originalStyle));
         }
     }
-
 
     public MutableComponent processSiblingsWithColors(MutableComponent component, Pattern pattern) {
         return processSiblings(component, pattern,
