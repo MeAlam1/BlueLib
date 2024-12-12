@@ -57,15 +57,15 @@ public class MarkdownParser {
         String text = pMessage.getString();
         MutableComponent formattedMessage = Component.literal(text);
 
-        formattedMessage = new Bold().applyBold(formattedMessage);
+        formattedMessage = new Bold().apply(formattedMessage);
         //BaseLogger.log(BaseLogLevel.INFO, "After Bold: " + formattedMessage, true);
-        formattedMessage = new Italic().applyItalic(formattedMessage);
+        formattedMessage = new Italic().apply(formattedMessage);
         //BaseLogger.log(BaseLogLevel.INFO, "After Italic: " + formattedMessage, true);
-        formattedMessage = new Underline().applyUnderline(formattedMessage);
+        formattedMessage = new Underline().apply(formattedMessage);
         //BaseLogger.log(BaseLogLevel.INFO, "After Underline: " + formattedMessage, true);
-        formattedMessage = new Strikethrough().applyStrikethrough(formattedMessage);
+        formattedMessage = new Strikethrough().apply(formattedMessage);
         //BaseLogger.log(BaseLogLevel.INFO, "After Strikethrough: " + formattedMessage, true);
-        formattedMessage = new Spoiler().applySpoiler(formattedMessage);
+        formattedMessage = new Spoiler().apply(formattedMessage);
         //BaseLogger.log(BaseLogLevel.INFO, "After Spoiler: " + formattedMessage, true);
         formattedMessage = new Hyperlink().applyHyperlink(formattedMessage);
         //BaseLogger.log(BaseLogLevel.INFO, "After Hyperlink: " + formattedMessage, true);

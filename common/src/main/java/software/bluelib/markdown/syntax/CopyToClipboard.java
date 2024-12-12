@@ -13,13 +13,12 @@ import software.bluelib.utils.logging.BaseLogger;
  * A {@code public class} representing the CopyToClipboard Markdown formatting feature.
  * <p>
  * This class applies CopyToClipboard formatting to text surrounded by double asterisks (**). It extends the
- * {@link MarkdownFeature} class and overrides the {@link #applyFormat(String)} method to provide
+ * {@link MarkdownFeature} class and overrides the {@link #(String)} method to provide
  * the specific formatting logic for CopyToClipboard text.
  * </p>
  * <p>
  * Key Methods:
  * <ul>
- * <li>{@link #applyFormat(String)} - Applies CopyToClipboard formatting to the input content.</li>
  * <li>{@link #isCopyToClipboardEnabled()} - Retrieves whether CopyToClipboard formatting is enabled.</li>
  * </ul>
  *
@@ -28,7 +27,7 @@ import software.bluelib.utils.logging.BaseLogger;
  * @see MarkdownFeature
  * @since 1.5.0
  */
-public class CopyToClipboard extends MarkdownFeature {
+public class CopyToClipboard {
 
     /**
      * A {@code protected static} field that determines whether CopyToClipboard formatting is enabled.
@@ -36,22 +35,6 @@ public class CopyToClipboard extends MarkdownFeature {
      * @since 1.5.0
      */
     public static Boolean isCopyToClipboardEnabled = true;
-
-    /**
-     * Overrides the {@link MarkdownFeature#applyFormat(String)} method to apply the formatting logic.
-     * <p>
-     * Currently, this method does not modify the provided content and simply returns it unchanged.
-     * </p>
-     *
-     * @param pContent {@link String} - The content to format.
-     * @return {@link String} - The content unchanged.
-     * @author MeAlam
-     * @since 1.5.0
-     */
-    @Override
-    protected String applyFormat(String pContent) {
-        return pContent;
-    }
 
     /**
      * A {@link MutableComponent} that applies CopyToClipboard formatting to the input message.

@@ -14,13 +14,12 @@ import software.bluelib.utils.math.MiscUtils;
  * A {@code public class} representing the Hyperlink Markdown formatting feature.
  * <p>
  * This class applies Hyperlink formatting to text surrounded by double asterisks (**). It extends the
- * {@link MarkdownFeature} class and overrides the {@link #applyFormat(String)} method to provide
+ * {@link MarkdownFeature} class and overrides the {@link #(String)} method to provide
  * the specific formatting logic for Hyperlink text.
  * </p>
  * <p>
  * Key Methods:
  * <ul>
- * <li>{@link #applyComponent(String)} - Applies Hyperlink formatting to the provided message.</li>
  * <li>{@link #setPrefixSuffix(String, String)} - Updates the prefix and suffix used for Hyperlink formatting.</li>
  * <li>{@link #setPrefix(String)} - Updates the prefix used for Hyperlink formatting.</li>
  * <li>{@link #setSuffix(String)} - Updates the suffix used for Hyperlink formatting.</li>
@@ -34,7 +33,7 @@ import software.bluelib.utils.math.MiscUtils;
  * @see MarkdownFeature
  * @since 1.4.0
  */
-public class Hyperlink extends MarkdownFeature {
+public class Hyperlink {
 
     /**
      * A {@code protected static} field representing the default prefix for Hyperlink formatting.
@@ -58,20 +57,6 @@ public class Hyperlink extends MarkdownFeature {
     public static Boolean isHyperlinkEnabled = true;
 
     /**
-     * A {@code public} constructor that initializes the prefix and suffix for the Hyperlink formatting feature.
-     * <p>
-     * The constructor sets the instance prefix and suffix to match the static Prefix and Suffix values.
-     * </p>
-     *
-     * @author MeAlam
-     * @since 1.4.0
-     */
-    public Hyperlink() {
-        prefix = Prefix;
-        suffix = Suffix;
-    }
-
-    /**
      * A {@code public} {@link MutableComponent} that applies Hyperlink formatting to the provided message.
      * <p>
      * This method applies Hyperlink formatting to the provided message, <br>
@@ -90,7 +75,7 @@ public class Hyperlink extends MarkdownFeature {
             return pComponent;
         }
 
-        Pattern pattern = Pattern.compile(Pattern.quote(prefix) + "(.*?)" + Pattern.quote(suffix) + "\\((.*?)\\)");
+        Pattern pattern = Pattern.compile(Pattern.quote(getPrefix()) + "(.*?)" + Pattern.quote(getSuffix()) + "\\((.*?)\\)");
 
         MutableComponent result = Component.empty();
 
@@ -103,7 +88,7 @@ public class Hyperlink extends MarkdownFeature {
         return result;
     }
 
-    private void processComponentText(String text, Style originalStyle, MutableComponent result, Pattern pattern) {
+    public void processComponentText(String text, Style originalStyle, MutableComponent result, Pattern pattern) {
         Matcher matcher = pattern.matcher(text);
         int lastIndex = 0;
 
@@ -123,7 +108,7 @@ public class Hyperlink extends MarkdownFeature {
         appendUnstyledText(text.substring(lastIndex), result, originalStyle);
     }
 
-    private MutableComponent processSiblings(MutableComponent pComponent, Pattern pattern) {
+    public MutableComponent processSiblings(MutableComponent pComponent, Pattern pattern) {
         MutableComponent result = Component.empty();
 
         for (Component sibling : pComponent.getSiblings()) {
@@ -139,7 +124,7 @@ public class Hyperlink extends MarkdownFeature {
 
     private void appendHyperlink(String linkText, String url, Style originalStyle, MutableComponent result) {
         if (!MiscUtils.isValidURL(url)) {
-            result.append(Component.literal(prefix + linkText + suffix + "(" + url + ")").setStyle(originalStyle));
+            result.append(Component.literal(getPrefix() + linkText + getSuffix() + "(" + url + ")").setStyle(originalStyle));
             return;
         }
 
@@ -156,20 +141,8 @@ public class Hyperlink extends MarkdownFeature {
         result.append(hyperlink);
     }
 
-    /**
-     * Overrides the {@link MarkdownFeature#applyFormat(String)} method to apply the formatting logic.
-     * <p>
-     * Currently, this method does not modify the provided content and simply returns it unchanged.
-     * </p>
-     *
-     * @param pContent {@link String} - The content to format.
-     * @return {@link String} - The content unchanged.
-     * @author MeAlam
-     * @since 1.4.0
-     */
-    @Override
-    protected String applyFormat(String pContent) {
-        return pContent;
+    protected void appendUnstyledText(String text, MutableComponent result, Style originalStyle) {
+        result.append(Component.literal(text).setStyle(originalStyle));
     }
 
     /**

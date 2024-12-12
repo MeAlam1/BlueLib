@@ -34,7 +34,7 @@ import software.bluelib.utils.logging.BaseLogger;
  * @see MarkdownFeature
  * @since 1.6.0
  */
-public class Color extends MarkdownFeature {
+public class Color {
 
     /**
      * A {@code protected static} field representing the default prefix for Color formatting.
@@ -58,20 +58,6 @@ public class Color extends MarkdownFeature {
     public static Boolean isColorEnabled = true;
 
     /**
-     * A {@code public} constructor that initializes the prefix and suffix for the Color formatting feature.
-     * <p>
-     * The constructor sets the instance prefix and suffix to match the static Prefix and Suffix values.
-     * </p>
-     *
-     * @author MeAlam
-     * @since 1.6.0
-     */
-    public Color() {
-        prefix = Prefix;
-        suffix = Suffix;
-    }
-
-    /**
      * A {@code public} {@link MutableComponent} that applies Color formatting to the provided message.
      * <p>
      * This method applies Color formatting to the provided message, <br>
@@ -92,7 +78,7 @@ public class Color extends MarkdownFeature {
 
         MutableComponent result = Component.empty();
         Pattern pattern = Pattern.compile(
-                prefix + "(#?[0-9A-Fa-f]{6}|\\d{1,3}(?:,\\d{1,3}){2,3})" + suffix + "\\((.*?)\\)");
+                getPrefix() + "(#?[0-9A-Fa-f]{6}|\\d{1,3}(?:,\\d{1,3}){2,3})" + getSuffix() + "\\((.*?)\\)");
 
         if (pComponent.getSiblings().isEmpty()) {
             return processComponentTextWithColor(pComponent, pattern);
@@ -159,22 +145,6 @@ public class Color extends MarkdownFeature {
         }
 
         return styledComponent;
-    }
-
-    /**
-     * Overrides the {@link MarkdownFeature#applyFormat(String)} method to apply the formatting logic.
-     * <p>
-     * Currently, this method does not modify the provided content and simply returns it unchanged.
-     * </p>
-     *
-     * @param pContent {@link String} - The content to format.
-     * @return {@link String} - The content unchanged.
-     * @author MeAlam
-     * @since 1.6.0
-     */
-    @Override
-    protected String applyFormat(String pContent) {
-        return pContent;
     }
 
     /**

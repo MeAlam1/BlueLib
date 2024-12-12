@@ -2,8 +2,6 @@
 
 package software.bluelib.markdown.syntax;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
@@ -73,86 +71,21 @@ public class Underline extends MarkdownFeature {
         suffix = Suffix;
     }
 
-    /**
-     * A {@code protected} {@link String} that applies the specific underline formatting to the input content.
-     * <p>
-     * This method overrides the {@link #applyFormat(String)} method from the {@link MarkdownFeature} class
-     * to add underline formatting to the content by wrapping it with the underline Minecraft format (§n and §r).
-     * </p>
-     *
-     * @param pContent {@link String} - The content to be formatted with underline.
-     * @return The content wrapped with underline formatting.
-     * @author MeAlam
-     * @see MarkdownFeature
-     * @see #applyString(String)
-     * @since 1.1.0
-     */
     @Override
-    protected String applyFormat(String pContent) {
-        if (!isUnderlineEnabled) {
-            BaseLogger.log(BaseLogLevel.INFO, "Underline is disabled. Returning original content.", true);
-            return prefix + pContent + suffix;
-        }
-        return "§n" + pContent + "§r";
+    protected void appendFormattedText(String pText, Style pOriginalStyle, MutableComponent pResult) {
+        MutableComponent UnderlineText = Component.literal(pText)
+                .setStyle(pOriginalStyle.withUnderlined(true));
+        pResult.append(UnderlineText);
     }
 
-    public MutableComponent applyUnderline(MutableComponent pComponent) {
-        if (!isUnderlineEnabled) {
-            BaseLogger.log(BaseLogLevel.INFO, "Underline formatting is disabled. Returning original content.", true);
-            return pComponent;
-        }
-
-        Pattern pattern = Pattern.compile(Pattern.quote(prefix) + "(.*?)" + Pattern.quote(suffix));
-
-        MutableComponent result = Component.empty();
-
-        if (pComponent.getSiblings().isEmpty()) {
-            processComponentTextForUnderline(pComponent.getString(), pComponent.getStyle(), result, pattern);
-        } else {
-            result = processSiblingsForUnderline(pComponent, pattern);
-        }
-
-        return result;
+    @Override
+    protected boolean isFeatureEnabled() {
+        return isUnderlineEnabled;
     }
 
-    private void processComponentTextForUnderline(String text, Style originalStyle, MutableComponent result, Pattern pattern) {
-        Matcher matcher = pattern.matcher(text);
-        int lastIndex = 0;
-
-        while (matcher.find()) {
-            if (matcher.group(1).isEmpty()) {
-                appendUnstyledText(text.substring(lastIndex, matcher.end()), result, originalStyle);
-            } else if (matcher.start() > 0 && text.charAt(matcher.start() - 1) == '\\') {
-                appendUnstyledText(text.substring(lastIndex, matcher.start() - 1), result, originalStyle);
-                appendUnstyledText(matcher.group(0), result, originalStyle);
-            } else {
-                appendUnstyledText(text.substring(lastIndex, matcher.start()), result, originalStyle);
-                appendUnderline(matcher.group(1), originalStyle, result);
-            }
-            lastIndex = matcher.end();
-        }
-
-        appendUnstyledText(text.substring(lastIndex), result, originalStyle);
-    }
-
-    private MutableComponent processSiblingsForUnderline(MutableComponent pComponent, Pattern pattern) {
-        MutableComponent result = Component.empty();
-        for (Component sibling : pComponent.getSiblings()) {
-            if (sibling instanceof MutableComponent mutableSibling) {
-                processComponentTextForUnderline(mutableSibling.getString(), mutableSibling.getStyle(), result, pattern);
-            } else {
-                result.append(sibling);
-            }
-        }
-
-        return result;
-    }
-
-    private void appendUnderline(String text, Style originalStyle, MutableComponent result) {
-        MutableComponent underlinedText = Component.literal(text)
-                .setStyle(originalStyle.withUnderlined(true));
-
-        result.append(underlinedText);
+    @Override
+    protected String getFeatureName() {
+        return "Underline";
     }
 
     /**

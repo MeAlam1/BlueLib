@@ -112,7 +112,7 @@ public class ParameterUtils {
         for (JsonElement variantElement : variants) {
             if (variantElement.isJsonObject()) {
                 JsonObject variant = variantElement.getAsJsonObject();
-                
+
                 if (variant.has(pParameter)) {
                     JsonElement parameterElement = variant.get(pParameter);
 
