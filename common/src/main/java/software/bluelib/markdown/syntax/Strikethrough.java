@@ -20,23 +20,24 @@ import software.bluelib.utils.logging.BaseLogger;
  * <p>
  * Key Methods:
  * <ul>
- *     <li>{@link Strikethrough#appendFormattedText(String, Style, MutableComponent)} - Appends the formatted text with the strikethrough style to the result component.</li>
- *     <li>{@link Strikethrough#isFeatureEnabled()} - Checks if the strikethrough feature is enabled.</li>
- *     <li>{@link Strikethrough#getFeatureName()} - Gets the feature's name.</li>
- *     <li>{@link #setPrefixSuffix(String, String)} - Updates the prefix and suffix for Strikethrough formatting.</li>
- *     <li>{@link #setPrefix(String)} - Updates the prefix for Strikethrough formatting.</li>
- *     <li>{@link #setSuffix(String)} - Updates the suffix for Strikethrough formatting.</li>
- *     <li>{@link #getPrefix()} - Retrieves the current prefix for Strikethrough formatting.</li>
- *     <li>{@link #getSuffix()} - Retrieves the current suffix for Strikethrough formatting.</li>
- *     <li>{@link #isStrikethroughEnabled()} - Retrieves whether Strikethrough formatting is enabled.</li>
+ * <li>{@link Strikethrough#appendFormattedText(String, Style, MutableComponent)} - Appends the formatted text with the strikethrough style to the result component.</li>
+ * <li>{@link Strikethrough#isFeatureEnabled()} - Checks if the strikethrough feature is enabled.</li>
+ * <li>{@link Strikethrough#getFeatureName()} - Gets the feature's name.</li>
+ * <li>{@link #setPrefixSuffix(String, String)} - Updates the prefix and suffix for Strikethrough formatting.</li>
+ * <li>{@link #setPrefix(String)} - Updates the prefix for Strikethrough formatting.</li>
+ * <li>{@link #setSuffix(String)} - Updates the suffix for Strikethrough formatting.</li>
+ * <li>{@link #getPrefix()} - Retrieves the current prefix for Strikethrough formatting.</li>
+ * <li>{@link #getSuffix()} - Retrieves the current suffix for Strikethrough formatting.</li>
+ * <li>{@link #isStrikethroughEnabled()} - Retrieves whether Strikethrough formatting is enabled.</li>
  * </ul>
  * </p>
- * @since 1.1.0
- * @version 1.6.0
+ *
  * @author MeAlam
+ * @version 1.6.0
  * @see MarkdownFeature
  * @see Style
  * @see MutableComponent
+ * @since 1.1.0
  */
 public class Strikethrough extends MarkdownFeature {
 
@@ -48,13 +49,14 @@ public class Strikethrough extends MarkdownFeature {
      * Where: Used in the {@link Strikethrough#prefix} and {@link Strikethrough#suffix} logic.<br>
      * Additional Info: The default value is "~~", but it can be modified using {@link Strikethrough#setPrefix(String)} and {@link Strikethrough#setSuffix(String)}.<br>
      * </p>
-     * @since 1.2.0
+     *
      * @see Strikethrough#setSuffix(String)
      * @see Strikethrough#setPrefix(String)
      * @see Strikethrough#Suffix
      * @see Strikethrough#setPrefixSuffix(String, String)
      * @see Strikethrough#getPrefix()
      * @see Strikethrough#getSuffix()
+     * @since 1.2.0
      */
     protected static String Prefix = "~~";
 
@@ -66,13 +68,14 @@ public class Strikethrough extends MarkdownFeature {
      * Where: Used in the {@link Strikethrough#prefix} and {@link Strikethrough#suffix} logic.<br>
      * Additional Info: The default value is "~~", but it can be modified using {@link Strikethrough#setPrefix(String)} and {@link Strikethrough#setSuffix(String)}.<br>
      * </p>
-     * @since 1.2.0
+     *
      * @see Strikethrough#setSuffix(String)
      * @see Strikethrough#setPrefix(String)
      * @see Strikethrough#Prefix
      * @see Strikethrough#setPrefixSuffix(String, String)
      * @see Strikethrough#getPrefix()
      * @see Strikethrough#getSuffix()
+     * @since 1.2.0
      */
     protected static String Suffix = "~~";
 
@@ -84,9 +87,10 @@ public class Strikethrough extends MarkdownFeature {
      * Where: It is used in the {@link Strikethrough#isFeatureEnabled()} & {@link Strikethrough#isStrikethroughEnabled()} methods.<br>
      * Additional Info: This feature can be enabled or disabled globally through this flag.<br>
      * </p>
-     * @since 1.1.0
+     *
      * @see Strikethrough#isFeatureEnabled()
      * @see Strikethrough#isStrikethroughEnabled()
+     * @since 1.1.0
      */
     public static Boolean isStrikethroughEnabled = true;
 
@@ -98,7 +102,7 @@ public class Strikethrough extends MarkdownFeature {
      * Where: Executed within the {@link Strikethrough} constructor.<br>
      * Additional Info: The default prefix and suffix are both set to "~~".<br>
      * </p>
-     * @since 1.1.0
+     *
      * @author MeAlam
      * @see Strikethrough#Prefix
      * @see Strikethrough#Suffix
@@ -107,6 +111,7 @@ public class Strikethrough extends MarkdownFeature {
      * @see Strikethrough#setPrefixSuffix(String, String)
      * @see Strikethrough#getSuffix()
      * @see Strikethrough#getPrefix()
+     * @since 1.1.0
      */
     public Strikethrough() {
         prefix = Prefix;
@@ -121,12 +126,13 @@ public class Strikethrough extends MarkdownFeature {
      * Where: Executed in {@link Strikethrough#processComponentTextWithFormatting(String, Style, MutableComponent, java.util.regex.Pattern)}.<br>
      * Additional Info: The text is wrapped with a style that enables strikethrough.<br>
      * </p>
-     * @param pText The text to be formatted with strikethrough.
+     *
+     * @param pText          The text to be formatted with strikethrough.
      * @param pOriginalStyle The original style applied to the text.
-     * @param pResult The mutable component that the formatted text will be appended to.
-     * @since 1.6.0
+     * @param pResult        The mutable component that the formatted text will be appended to.
      * @author MeAlam
      * @see Strikethrough#processComponentTextWithFormatting(String, Style, MutableComponent, java.util.regex.Pattern)
+     * @since 1.6.0
      */
     @Override
     protected void appendFormattedText(String pText, Style pOriginalStyle, MutableComponent pResult) {
@@ -143,11 +149,12 @@ public class Strikethrough extends MarkdownFeature {
      * Where: Executed in {@link MarkdownFeature#apply(MutableComponent)}.<br>
      * Additional Info: This flag can be changed through {@link Strikethrough#isStrikethroughEnabled}.<br>
      * </p>
+     *
      * @return {@code true} if strikethrough is enabled, {@code false} otherwise.
-     * @since 1.6.0
      * @author MeAlam
      * @see Strikethrough#isStrikethroughEnabled
      * @see MarkdownFeature#apply(MutableComponent)
+     * @since 1.6.0
      */
     @Override
     protected boolean isFeatureEnabled() {
@@ -162,10 +169,11 @@ public class Strikethrough extends MarkdownFeature {
      * Where: Used in the {@link MarkdownFeature#apply(MutableComponent)}.<br>
      * Additional Info: The name is returned as a simple string.<br>
      * </p>
+     *
      * @return The name of the feature, which is "Strikethrough".
-     * @since 1.6.0
      * @author MeAlam
      * @see MarkdownFeature#apply(MutableComponent)
+     * @since 1.6.0
      */
     @Override
     protected String getFeatureName() {
@@ -180,9 +188,9 @@ public class Strikethrough extends MarkdownFeature {
      * Where: Can be invoked from any class or method.<br>
      * Additional Info: The updated prefix and suffix will affect all instances of the {@link Strikethrough} feature.<br>
      * </p>
+     *
      * @param pPrefix The new prefix for strikethrough.
      * @param pSuffix The new suffix for strikethrough.
-     * @since 1.2.0
      * @author MeAlam
      * @see Strikethrough#Suffix
      * @see Strikethrough#setSuffix(String)
@@ -190,6 +198,7 @@ public class Strikethrough extends MarkdownFeature {
      * @see Strikethrough#setPrefix(String)
      * @see Strikethrough#getPrefix()
      * @see Strikethrough#Prefix
+     * @since 1.2.0
      */
     public static void setPrefixSuffix(String pPrefix, String pSuffix) {
         Prefix = pPrefix;
@@ -205,8 +214,8 @@ public class Strikethrough extends MarkdownFeature {
      * Where: Can be invoked from any class or method.<br>
      * Additional Info: The updated prefix will affect all instances of the {@link Strikethrough} feature.<br>
      * </p>
+     *
      * @param pPrefix The new prefix for strikethrough.
-     * @since 1.2.0
      * @author MeAlam
      * @see Strikethrough#Suffix
      * @see Strikethrough#setSuffix(String)
@@ -214,6 +223,7 @@ public class Strikethrough extends MarkdownFeature {
      * @see Strikethrough#getSuffix()
      * @see Strikethrough#getPrefix()
      * @see Strikethrough#Prefix
+     * @since 1.2.0
      */
     public static void setPrefix(String pPrefix) {
         Prefix = pPrefix;
@@ -228,8 +238,8 @@ public class Strikethrough extends MarkdownFeature {
      * Where: Can be invoked from any class or method.<br>
      * Additional Info: The updated suffix will affect all instances of the {@link Strikethrough} feature.<br>
      * </p>
+     *
      * @param pSuffix The new suffix for strikethrough.
-     * @since 1.2.0
      * @author MeAlam
      * @see Strikethrough#Suffix
      * @see Strikethrough#getSuffix()
@@ -237,6 +247,7 @@ public class Strikethrough extends MarkdownFeature {
      * @see Strikethrough#setPrefix(String)
      * @see Strikethrough#getPrefix()
      * @see Strikethrough#Prefix
+     * @since 1.2.0
      */
     public static void setSuffix(String pSuffix) {
         Suffix = pSuffix;
@@ -251,15 +262,16 @@ public class Strikethrough extends MarkdownFeature {
      * Where: Can be invoked from any class or method.<br>
      * Additional Info: Returns the value of the {@link #Prefix} variable.<br>
      * </p>
+     *
      * @return The current prefix for strikethrough.
-     * @since 1.2.0
      * @author MeAlam
      * @see Strikethrough#Suffix
      * @see Strikethrough#setSuffix(String)
      * @see Strikethrough#setPrefixSuffix(String, String)
      * @see Strikethrough#setPrefix(String)
-     * @see Strikethrough#getSuffix() 
+     * @see Strikethrough#getSuffix()
      * @see Strikethrough#Prefix
+     * @since 1.2.0
      */
     public static String getPrefix() {
         return Prefix;
@@ -273,8 +285,8 @@ public class Strikethrough extends MarkdownFeature {
      * Where: Can be invoked from any class or method.<br>
      * Additional Info: Returns the value of the {@link #Suffix} variable.<br>
      * </p>
+     *
      * @return The current suffix for strikethrough.
-     * @since 1.2.0
      * @author MeAlam
      * @see Strikethrough#Suffix
      * @see Strikethrough#setSuffix(String)
@@ -282,6 +294,7 @@ public class Strikethrough extends MarkdownFeature {
      * @see Strikethrough#setPrefix(String)
      * @see Strikethrough#getPrefix()
      * @see Strikethrough#Prefix
+     * @since 1.2.0
      */
     public static String getSuffix() {
         return Suffix;
@@ -295,10 +308,11 @@ public class Strikethrough extends MarkdownFeature {
      * Where: Used in the {@link Strikethrough#isFeatureEnabled()} method.<br>
      * Additional Info: This can be controlled by the global feature flag {@link #isStrikethroughEnabled}.<br>
      * </p>
+     *
      * @return {@code true} if the feature is enabled, {@code false} otherwise.
-     * @since 1.2.0
      * @author MeAlam
      * @see Strikethrough#isStrikethroughEnabled
+     * @since 1.2.0
      */
     public static boolean isStrikethroughEnabled() {
         return isStrikethroughEnabled;

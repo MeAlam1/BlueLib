@@ -32,7 +32,6 @@ import software.bluelib.utils.logging.BaseLogger;
  *
  * @author MeAlam
  * @version 1.6.0
- * @since 1.1.0
  * @see EnableMarkdownFor
  * @see DisableMarkdownFor
  * @see Bold
@@ -43,6 +42,7 @@ import software.bluelib.utils.logging.BaseLogger;
  * @see Hyperlink
  * @see Color
  * @see CopyToClipboard
+ * @since 1.1.0
  */
 public class MarkdownParser {
 
@@ -55,8 +55,8 @@ public class MarkdownParser {
      * Additional Info: If global Markdown is disabled, no formatting will be applied, regardless of other settings.
      * </p>
      *
-     * @since 1.1.0
      * @see #parseMarkdown(Component)
+     * @since 1.1.0
      */
     private static boolean globalMarkdownEnabled = true;
 
@@ -71,8 +71,8 @@ public class MarkdownParser {
      *
      * @param pMessage {@link Component} - The message component containing the text to format.
      * @return A {@link MutableComponent} with the Markdown formatting applied.
-     * @since 1.1.0
      * @author MeAlam
+     * @since 1.1.0
      */
     public static MutableComponent parseMarkdown(Component pMessage) {
         if (!globalMarkdownEnabled) {
@@ -112,11 +112,11 @@ public class MarkdownParser {
      * Additional Info: Enabling global formatting will allow the system to apply all Markdown features like bold, italic, etc.
      * </p>
      *
-     * @since 1.1.0
      * @author MeAlam
      * @see #disableMarkdown()
      * @see EnableMarkdownFor
      * @see DisableMarkdownFor
+     * @since 1.1.0
      */
     public static void enableMarkdown() {
         globalMarkdownEnabled = true;
@@ -132,11 +132,11 @@ public class MarkdownParser {
      * Additional Info: Disabling global formatting ensures no Markdown styles (e.g., bold, italic) are applied to any messages.
      * </p>
      *
-     * @since 1.1.0
      * @author MeAlam
      * @see #enableMarkdown()
      * @see EnableMarkdownFor
      * @see DisableMarkdownFor
+     * @since 1.1.0
      */
     public static void disableMarkdown() {
         globalMarkdownEnabled = false;
@@ -153,10 +153,10 @@ public class MarkdownParser {
      * </p>
      *
      * @return A new {@link EnableMarkdownFor} instance.
-     * @since 1.1.0
      * @author MeAlam
      * @see EnableMarkdownFor
      * @see DisableMarkdownFor
+     * @since 1.1.0
      */
     public static EnableMarkdownFor enableMarkdownFor() {
         BaseLogger.log(BaseLogLevel.INFO, "Returning EnableMarkdownFor instance", true);
@@ -173,10 +173,10 @@ public class MarkdownParser {
      * </p>
      *
      * @return A new {@link DisableMarkdownFor} instance.
-     * @since 1.1.0
      * @author MeAlam
      * @see EnableMarkdownFor
      * @see DisableMarkdownFor
+     * @since 1.1.0
      */
     public static DisableMarkdownFor disableMarkdownFor() {
         BaseLogger.log(BaseLogLevel.INFO, "Returning DisableMarkdownFor instance", true);
@@ -206,7 +206,6 @@ public class MarkdownParser {
      *
      * @author MeAlam
      * @version 1.4.0
-     * @since 1.1.0
      * @see DisableMarkdownFor
      * @see Bold
      * @see Italic
@@ -216,6 +215,7 @@ public class MarkdownParser {
      * @see Hyperlink
      * @see Color
      * @see CopyToClipboard
+     * @since 1.1.0
      */
     public static class EnableMarkdownFor {
 
@@ -229,10 +229,10 @@ public class MarkdownParser {
          * </p>
          *
          * @return The {@link EnableMarkdownFor} instance to allow method chaining.
-         * @since 1.1.0
          * @author MeAlam
          * @see Bold
          * @see DisableMarkdownFor
+         * @since 1.1.0
          */
         public EnableMarkdownFor bold() {
             Bold.isBoldEnabled = true;
@@ -250,10 +250,10 @@ public class MarkdownParser {
          * </p>
          *
          * @return The {@link EnableMarkdownFor} instance to allow method chaining.
-         * @since 1.1.0
          * @author MeAlam
          * @see Italic
          * @see DisableMarkdownFor
+         * @since 1.1.0
          */
         public EnableMarkdownFor italic() {
             Italic.isItalicEnabled = true;
@@ -271,9 +271,9 @@ public class MarkdownParser {
          * </p>
          *
          * @return The {@link EnableMarkdownFor} instance to allow method chaining.
-         * @since 1.1.0
          * @author MeAlam
          * @see Strikethrough
+         * @since 1.1.0
          */
         public EnableMarkdownFor strikethrough() {
             Strikethrough.isStrikethroughEnabled = true;
@@ -291,10 +291,10 @@ public class MarkdownParser {
          * </p>
          *
          * @return The {@link EnableMarkdownFor} instance to allow method chaining.
-         * @since 1.1.0
          * @author MeAlam
          * @see Underline
          * @see DisableMarkdownFor
+         * @since 1.1.0
          */
         public EnableMarkdownFor underline() {
             Underline.isUnderlineEnabled = true;
@@ -312,10 +312,10 @@ public class MarkdownParser {
          * </p>
          *
          * @return The {@link EnableMarkdownFor} instance to allow method chaining.
-         * @since 1.4.0
          * @author MeAlam
          * @see Hyperlink
          * @see DisableMarkdownFor
+         * @since 1.4.0
          */
         public EnableMarkdownFor hyperlink() {
             Hyperlink.isHyperlinkEnabled = true;
@@ -333,10 +333,10 @@ public class MarkdownParser {
          * </p>
          *
          * @return The {@link EnableMarkdownFor} instance to allow method chaining.
-         * @since 1.5.0
          * @author MeAlam
          * @see Spoiler
          * @see DisableMarkdownFor
+         * @since 1.5.0
          */
         public EnableMarkdownFor spoiler() {
             Spoiler.isSpoilerEnabled = true;
@@ -354,10 +354,10 @@ public class MarkdownParser {
          * </p>
          *
          * @return The {@link EnableMarkdownFor} instance to allow method chaining.
-         * @since 1.6.0
          * @author MeAlam
          * @see CopyToClipboard
          * @see DisableMarkdownFor
+         * @since 1.6.0
          */
         public EnableMarkdownFor copyToClipboard() {
             CopyToClipboard.isCopyToClipboardEnabled = true;
@@ -375,10 +375,10 @@ public class MarkdownParser {
          * </p>
          *
          * @return The {@link EnableMarkdownFor} instance to allow method chaining.
-         * @since 1.6.0
          * @author MeAlam
          * @see Color
          * @see DisableMarkdownFor
+         * @since 1.6.0
          */
         public EnableMarkdownFor color() {
             Color.isColorEnabled = true;
@@ -408,7 +408,6 @@ public class MarkdownParser {
      * <li>{@link #color()} - Disables color Markdown formatting.</li>
      * </ul>
      *
-     * @since 1.1.0
      * @author MeAlam
      * @see EnableMarkdownFor
      * @see Bold
@@ -419,6 +418,7 @@ public class MarkdownParser {
      * @see Hyperlink
      * @see Color
      * @see CopyToClipboard
+     * @since 1.1.0
      */
     public static class DisableMarkdownFor {
 
@@ -432,10 +432,10 @@ public class MarkdownParser {
          * </p>
          *
          * @return The {@link DisableMarkdownFor} instance to allow method chaining.
-         * @since 1.1.0
          * @author MeAlam
          * @see Bold
          * @see EnableMarkdownFor
+         * @since 1.1.0
          */
         public DisableMarkdownFor bold() {
             Bold.isBoldEnabled = false;
@@ -453,10 +453,10 @@ public class MarkdownParser {
          * </p>
          *
          * @return The {@link DisableMarkdownFor} instance to allow method chaining.
-         * @since 1.1.0
          * @author MeAlam
          * @see Italic
          * @see EnableMarkdownFor
+         * @since 1.1.0
          */
         public DisableMarkdownFor italic() {
             Italic.isItalicEnabled = false;
@@ -474,10 +474,10 @@ public class MarkdownParser {
          * </p>
          *
          * @return The {@link DisableMarkdownFor} instance to allow method chaining.
-         * @since 1.1.0
          * @author MeAlam
          * @see Strikethrough
          * @see EnableMarkdownFor
+         * @since 1.1.0
          */
         public DisableMarkdownFor strikethrough() {
             Strikethrough.isStrikethroughEnabled = false;
@@ -495,10 +495,10 @@ public class MarkdownParser {
          * </p>
          *
          * @return The {@link DisableMarkdownFor} instance to allow method chaining.
-         * @since 1.1.0
          * @author MeAlam
          * @see Underline
          * @see EnableMarkdownFor
+         * @since 1.1.0
          */
         public DisableMarkdownFor underline() {
             Underline.isUnderlineEnabled = false;
@@ -516,10 +516,10 @@ public class MarkdownParser {
          * </p>
          *
          * @return The {@link DisableMarkdownFor} instance to allow method chaining.
-         * @since 1.4.0
          * @author MeAlam
          * @see Hyperlink
          * @see EnableMarkdownFor
+         * @since 1.4.0
          */
         public DisableMarkdownFor hyperlink() {
             Hyperlink.isHyperlinkEnabled = false;
@@ -537,10 +537,10 @@ public class MarkdownParser {
          * </p>
          *
          * @return The {@link DisableMarkdownFor} instance to allow method chaining.
-         * @since 1.5.0
          * @author MeAlam
          * @see Spoiler
          * @see EnableMarkdownFor
+         * @since 1.5.0
          */
         public DisableMarkdownFor spoiler() {
             Spoiler.isSpoilerEnabled = false;
@@ -558,10 +558,10 @@ public class MarkdownParser {
          * </p>
          *
          * @return The {@link DisableMarkdownFor} instance to allow method chaining.
-         * @since 1.6.0
          * @author MeAlam
          * @see CopyToClipboard
          * @see EnableMarkdownFor
+         * @since 1.6.0
          */
         public DisableMarkdownFor copyToClipboard() {
             CopyToClipboard.isCopyToClipboardEnabled = false;
@@ -579,10 +579,10 @@ public class MarkdownParser {
          * </p>
          *
          * @return The {@link DisableMarkdownFor} instance to allow method chaining.
-         * @since 1.6.0
          * @author MeAlam
          * @see Color
          * @see EnableMarkdownFor
+         * @since 1.6.0
          */
         public DisableMarkdownFor color() {
             Color.isColorEnabled = false;

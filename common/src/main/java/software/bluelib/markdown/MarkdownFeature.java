@@ -35,12 +35,12 @@ import software.bluelib.utils.logging.BaseLogger;
  *
  * @author MeAlam
  * @version 1.1.0
- * @since 1.6.0
  * @see MutableComponent
  * @see Pattern
  * @see Style
  * @see QuadConsumer
  * @see BiConsumer
+ * @since 1.6.0
  */
 public abstract class MarkdownFeature {
 
@@ -82,10 +82,10 @@ public abstract class MarkdownFeature {
      * @param pComponent The component to apply Markdown formatting to.
      * @return The component with the applied Markdown formatting.
      * @author MeAlam
-     * @since 1.6.0
      * @see MarkdownParser#parseMarkdown(Component)
      * @see MutableComponent
      * @see Pattern
+     * @since 1.6.0
      */
     public MutableComponent apply(MutableComponent pComponent) {
         if (!isFeatureEnabled()) {

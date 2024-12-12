@@ -30,13 +30,14 @@ import software.bluelib.utils.logging.BaseLogger;
  * <li>{@link #getSuffix()} - Retrieves the current suffix used for Underline formatting.</li>
  * <li>{@link #isUnderlineEnabled()} - Retrieves whether Underline formatting is enabled.</li>
  * </ul>
- * @since 1.1.0
- * @version 1.6.0
+ *
  * @author MeAlam
+ * @version 1.6.0
  * @see software.bluelib.markdown.MarkdownParser
  * @see MarkdownFeature
  * @see Style
  * @see MutableComponent
+ * @since 1.1.0
  */
 public class Underline extends MarkdownFeature {
 
@@ -48,13 +49,14 @@ public class Underline extends MarkdownFeature {
      * Where: Used in the {@link Underline#prefix} and {@link Underline#suffix} logic.<br>
      * Additional Info: The default value is "__", but it can be modified using {@link Underline#setPrefix(String)} and {@link Underline#setSuffix(String)}.<br>
      * </p>
-     * @since 1.2.0
+     *
      * @see Underline#setSuffix(String)
      * @see Underline#setPrefix(String)
      * @see Underline#Suffix
      * @see Underline#setPrefixSuffix(String, String)
      * @see Underline#getSuffix()
      * @see Underline#getPrefix()
+     * @since 1.2.0
      */
     protected static String Prefix = "__";
 
@@ -66,13 +68,14 @@ public class Underline extends MarkdownFeature {
      * Where: Used in the {@link Underline#prefix} and {@link Underline#suffix} logic.<br>
      * Additional Info: The default value is "__", but it can be modified using {@link Underline#setPrefix(String)} and {@link Underline#setSuffix(String)}.<br>
      * </p>
-     * @since 1.2.0
+     *
      * @see Underline#setSuffix(String)
      * @see Underline#setPrefix(String)
      * @see Underline#Prefix
      * @see Underline#setPrefixSuffix(String, String)
      * @see Underline#getSuffix()
      * @see Underline#getPrefix()
+     * @since 1.2.0
      */
     protected static String Suffix = "__";
 
@@ -84,9 +87,10 @@ public class Underline extends MarkdownFeature {
      * Where: It is used in the {@link Underline#isFeatureEnabled()} & {@link Underline#isUnderlineEnabled()} methods.<br>
      * Additional Info: This feature can be enabled or disabled globally through this flag.<br>
      * </p>
-     * @since 1.1.0
+     *
      * @see Underline#isFeatureEnabled()
      * @see Underline#isUnderlineEnabled()
+     * @since 1.1.0
      */
     public static Boolean isUnderlineEnabled = true;
 
@@ -98,7 +102,7 @@ public class Underline extends MarkdownFeature {
      * Where: Executed within the {@link Underline} constructor.<br>
      * Additional Info: The default prefix and suffix are both set to "__".<br>
      * </p>
-     * @since 1.1.0
+     *
      * @author MeAlam
      * @see Underline#Prefix
      * @see Underline#Suffix
@@ -107,6 +111,7 @@ public class Underline extends MarkdownFeature {
      * @see Underline#setPrefixSuffix(String, String)
      * @see Underline#getPrefix()
      * @see Underline#getSuffix()
+     * @since 1.1.0
      */
     public Underline() {
         prefix = Prefix;
@@ -121,12 +126,13 @@ public class Underline extends MarkdownFeature {
      * Where: Executed in {@link MarkdownFeature#processComponentTextWithFormatting(String, Style, MutableComponent, java.util.regex.Pattern)}.<br>
      * Additional Info: The text is wrapped with a style that enables underlining.<br>
      * </p>
-     * @param pText The text to be formatted with underline.
+     *
+     * @param pText          The text to be formatted with underline.
      * @param pOriginalStyle The original style applied to the text.
-     * @param pResult The mutable component that the formatted text will be appended to.
-     * @since 1.6.0
+     * @param pResult        The mutable component that the formatted text will be appended to.
      * @author MeAlam
      * @see MarkdownFeature#processComponentTextWithFormatting(String, Style, MutableComponent, java.util.regex.Pattern)
+     * @since 1.6.0
      */
     @Override
     protected void appendFormattedText(String pText, Style pOriginalStyle, MutableComponent pResult) {
@@ -143,11 +149,12 @@ public class Underline extends MarkdownFeature {
      * Where: Executed in {@link MarkdownFeature#apply(MutableComponent)}.<br>
      * Additional Info: This flag can be changed through {@link Underline#isUnderlineEnabled}.<br>
      * </p>
+     *
      * @return {@code true} if underline is enabled, {@code false} otherwise.
-     * @since 1.6.0
      * @author MeAlam
      * @see Underline#isUnderlineEnabled
      * @see MarkdownFeature#apply(MutableComponent)
+     * @since 1.6.0
      */
     @Override
     protected boolean isFeatureEnabled() {
@@ -162,10 +169,11 @@ public class Underline extends MarkdownFeature {
      * Where: Used in the {@link MarkdownFeature#apply(MutableComponent)}.<br>
      * Additional Info: The name is returned as a simple string.<br>
      * </p>
+     *
      * @return The name of the feature, which is "Underline".
-     * @since 1.6.0
      * @author MeAlam
      * @see MarkdownFeature#apply(MutableComponent)
+     * @since 1.6.0
      */
     @Override
     protected String getFeatureName() {
@@ -180,9 +188,9 @@ public class Underline extends MarkdownFeature {
      * Where: Can be invoked from any class or method.<br>
      * Additional Info: The updated prefix and suffix will affect all instances of the {@link Underline} feature.<br>
      * </p>
+     *
      * @param pPrefix The new prefix for underline.
      * @param pSuffix The new suffix for underline.
-     * @since 1.2.0
      * @author MeAlam
      * @see Underline#setSuffix(String)
      * @see Underline#getSuffix()
@@ -190,6 +198,7 @@ public class Underline extends MarkdownFeature {
      * @see Underline#getPrefix()
      * @see Underline#Suffix
      * @see Underline#Prefix
+     * @since 1.2.0
      */
     public static void setPrefixSuffix(String pPrefix, String pSuffix) {
         Prefix = pPrefix;
@@ -205,8 +214,8 @@ public class Underline extends MarkdownFeature {
      * Where: Can be invoked from any class or method.<br>
      * Additional Info: The updated prefix will affect all instances of the {@link Underline} feature.<br>
      * </p>
+     *
      * @param pPrefix The new prefix for underline.
-     * @since 1.2.0
      * @author MeAlam
      * @see Underline#setSuffix(String)
      * @see Underline#setPrefixSuffix(String, String)
@@ -214,6 +223,7 @@ public class Underline extends MarkdownFeature {
      * @see Underline#getPrefix()
      * @see Underline#Suffix
      * @see Underline#Prefix
+     * @since 1.2.0
      */
     public static void setPrefix(String pPrefix) {
         Prefix = pPrefix;
@@ -228,8 +238,8 @@ public class Underline extends MarkdownFeature {
      * Where: Can be invoked from any class or method.<br>
      * Additional Info: The updated suffix will affect all instances of the {@link Underline} feature.<br>
      * </p>
+     *
      * @param pSuffix The new suffix for underline.
-     * @since 1.2.0
      * @author MeAlam
      * @see Underline#getSuffix()
      * @see Underline#setPrefixSuffix(String, String)
@@ -237,6 +247,7 @@ public class Underline extends MarkdownFeature {
      * @see Underline#getPrefix()
      * @see Underline#Suffix
      * @see Underline#Prefix
+     * @since 1.2.0
      */
     public static void setSuffix(String pSuffix) {
         Suffix = pSuffix;
@@ -251,8 +262,8 @@ public class Underline extends MarkdownFeature {
      * Where: Can be invoked from any class or method.<br>
      * Additional Info: This returns the default or custom prefix depending on prior settings.<br>
      * </p>
+     *
      * @return The current prefix used for underline.
-     * @since 1.2.0
      * @author MeAlam
      * @see Underline#setSuffix(String)
      * @see Underline#setPrefixSuffix(String, String)
@@ -260,6 +271,7 @@ public class Underline extends MarkdownFeature {
      * @see Underline#getSuffix()
      * @see Underline#Suffix
      * @see Underline#Prefix
+     * @since 1.2.0
      */
     public static String getPrefix() {
         return Prefix;
@@ -273,8 +285,8 @@ public class Underline extends MarkdownFeature {
      * Where: Can be invoked from any class or method.<br>
      * Additional Info: This returns the default or custom suffix depending on prior settings.<br>
      * </p>
+     *
      * @return The current suffix used for underline.
-     * @since 1.2.0
      * @author MeAlam
      * @see Underline#setSuffix(String)
      * @see Underline#setPrefixSuffix(String, String)
@@ -282,6 +294,7 @@ public class Underline extends MarkdownFeature {
      * @see Underline#getPrefix()
      * @see Underline#Suffix
      * @see Underline#Prefix
+     * @since 1.2.0
      */
     public static String getSuffix() {
         return Suffix;
@@ -295,10 +308,11 @@ public class Underline extends MarkdownFeature {
      * Where: Can be invoked from any class or method.<br>
      * Additional Info: This method reflects the current state of the {@link #isUnderlineEnabled} flag.<br>
      * </p>
+     *
      * @return {@code true} if the underline feature is enabled, {@code false} otherwise.
-     * @since 1.2.0
      * @author MeAlam
      * @see Underline#isUnderlineEnabled
+     * @since 1.2.0
      */
     public static Boolean isUnderlineEnabled() {
         return isUnderlineEnabled;
