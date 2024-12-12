@@ -44,7 +44,7 @@ public class MarkdownAllTest {
     }
 
     private static String buildMessage(List<String> combination) {
-        StringBuilder messageBuilder = new StringBuilder("§6 This is a test: §r ");
+        StringBuilder messageBuilder = new StringBuilder("§6 This is an All test: §r ");
         for (String style : combination) {
             messageBuilder.append(style).append(" ");
         }

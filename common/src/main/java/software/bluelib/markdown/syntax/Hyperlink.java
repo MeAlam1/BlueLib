@@ -33,7 +33,7 @@ import software.bluelib.utils.math.MiscUtils;
  * @see MarkdownFeature
  * @since 1.4.0
  */
-public class Hyperlink {
+public class Hyperlink extends MarkdownFeature {
 
     /**
      * A {@code protected static} field representing the default prefix for Hyperlink formatting.
@@ -69,7 +69,7 @@ public class Hyperlink {
      * @author MeAlam
      * @since 1.6.0
      */
-    public MutableComponent applyHyperlink(MutableComponent pComponent) {
+    public MutableComponent apply(MutableComponent pComponent) {
         if (!isHyperlinkEnabled) {
             BaseLogger.log(BaseLogLevel.INFO, "Hyperlink formatting is disabled. Returning original content.", true);
             return pComponent;
@@ -80,56 +80,38 @@ public class Hyperlink {
         MutableComponent result = Component.empty();
 
         if (pComponent.getSiblings().isEmpty()) {
-            processComponentText(pComponent.getString(), pComponent.getStyle(), result, pattern);
+            processComponentTextWithHyperlinks(pComponent.getString(), pComponent.getStyle(), result, pattern);
         } else {
-            result = processSiblings(pComponent, pattern);
+            result = processSiblingsWithHyperlinks(pComponent, pattern);
         }
 
         return result;
     }
 
-    public void processComponentText(String text, Style originalStyle, MutableComponent result, Pattern pattern) {
-        Matcher matcher = pattern.matcher(text);
-        int lastIndex = 0;
-
-        while (matcher.find()) {
-            if (matcher.group(1).isEmpty()) {
-                appendUnstyledText(text.substring(lastIndex, matcher.end()), result, originalStyle);
-            } else if (matcher.start() > 0 && text.charAt(matcher.start() - 1) == '\\') {
-                appendUnstyledText(text.substring(lastIndex, matcher.start() - 1), result, originalStyle);
-                appendUnstyledText(matcher.group(0), result, originalStyle);
-            } else {
-                appendUnstyledText(text.substring(lastIndex, matcher.start()), result, originalStyle);
-                appendHyperlink(matcher.group(1), matcher.group(2), originalStyle, result);
-            }
-            lastIndex = matcher.end();
-        }
-
-        appendUnstyledText(text.substring(lastIndex), result, originalStyle);
+    protected void processComponentTextWithHyperlinks(String text, Style originalStyle, MutableComponent result, Pattern pattern) {
+        processComponentText(text, originalStyle, result, pattern,
+                (matcher, res) -> {
+                    String url = matcher.group(2);
+                    if (url != null && !url.isEmpty()) {
+                        appendHyperlink(matcher.group(1), url, originalStyle, res);
+                    }
+                });
     }
 
-    public MutableComponent processSiblings(MutableComponent pComponent, Pattern pattern) {
-        MutableComponent result = Component.empty();
+    public MutableComponent processSiblingsWithHyperlinks(MutableComponent component, Pattern pattern) {
+        return processSiblings(component, pattern,
+                this::processComponentTextWithHyperlinks);
+    }
 
-        for (Component sibling : pComponent.getSiblings()) {
-            if (sibling instanceof MutableComponent mutableSibling) {
-                processComponentText(mutableSibling.getString(), mutableSibling.getStyle(), result, pattern);
-            } else {
-                result.append(sibling);
-            }
-        }
-
-        return result;
+    @Override
+    protected void appendFormattedText(String text, Style originalStyle, MutableComponent result) {
+        // Due to the nature of Hyperlink formatting, this method is not used.
     }
 
     private void appendHyperlink(String linkText, String url, Style originalStyle, MutableComponent result) {
         if (!MiscUtils.isValidURL(url)) {
             result.append(Component.literal(getPrefix() + linkText + getSuffix() + "(" + url + ")").setStyle(originalStyle));
             return;
-        }
-
-        if (!url.startsWith("http://") && !url.startsWith("https://")) {
-            url = "https://" + url;
         }
 
         MutableComponent hyperlink = Component.literal(linkText)
@@ -141,8 +123,14 @@ public class Hyperlink {
         result.append(hyperlink);
     }
 
-    protected void appendUnstyledText(String text, MutableComponent result, Style originalStyle) {
-        result.append(Component.literal(text).setStyle(originalStyle));
+    @Override
+    protected boolean isFeatureEnabled() {
+        return isHyperlinkEnabled;
+    }
+
+    @Override
+    protected String getFeatureName() {
+        return "Hyperlink";
     }
 
     /**
@@ -191,7 +179,6 @@ public class Hyperlink {
      * @since 1.4.0
      */
     public static String getPrefix() {
-        BaseLogger.log(BaseLogLevel.SUCCESS, "Retrieved Hyperlink prefix: " + Prefix, true);
         return Prefix;
     }
 
@@ -203,7 +190,6 @@ public class Hyperlink {
      * @since 1.4.0
      */
     public static String getSuffix() {
-        BaseLogger.log(BaseLogLevel.SUCCESS, "Retrieved Hyperlink suffix: " + Suffix, true);
         return Suffix;
     }
 
@@ -215,7 +201,6 @@ public class Hyperlink {
      * @since 1.4.0
      */
     public static Boolean isHyperlinkEnabled() {
-        BaseLogger.log(BaseLogLevel.SUCCESS, "Retrieved Hyperlink enabled status: " + isHyperlinkEnabled, true);
         return isHyperlinkEnabled;
     }
 }

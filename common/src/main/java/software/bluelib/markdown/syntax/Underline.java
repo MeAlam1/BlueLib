@@ -134,7 +134,6 @@ public class Underline extends MarkdownFeature {
      * @since 1.2.0
      */
     public static String getPrefix() {
-        BaseLogger.log(BaseLogLevel.SUCCESS, "Retrieved Underline prefix: " + Prefix, true);
         return Prefix;
     }
 
@@ -146,7 +145,6 @@ public class Underline extends MarkdownFeature {
      * @since 1.2.0
      */
     public static String getSuffix() {
-        BaseLogger.log(BaseLogLevel.SUCCESS, "Retrieved Underline suffix: " + Suffix, true);
         return Suffix;
     }
 
@@ -158,7 +156,6 @@ public class Underline extends MarkdownFeature {
      * @since 1.2.0
      */
     public static Boolean isUnderlineEnabled() {
-        BaseLogger.log(BaseLogLevel.SUCCESS, "Retrieved Underline enabled status: " + isUnderlineEnabled, true);
         return isUnderlineEnabled;
     }
 }

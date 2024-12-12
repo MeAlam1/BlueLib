@@ -133,7 +133,6 @@ public class Bold extends MarkdownFeature {
      * @since 1.2.0
      */
     public static String getPrefix() {
-        BaseLogger.log(BaseLogLevel.SUCCESS, "Retrieved Bold prefix: " + Prefix, true);
         return Prefix;
     }
 
@@ -145,7 +144,6 @@ public class Bold extends MarkdownFeature {
      * @since 1.2.0
      */
     public static String getSuffix() {
-        BaseLogger.log(BaseLogLevel.SUCCESS, "Retrieved Bold suffix: " + Suffix, true);
         return Suffix;
     }
 
@@ -157,7 +155,6 @@ public class Bold extends MarkdownFeature {
      * @since 1.2.0
      */
     public static Boolean isBoldEnabled() {
-        BaseLogger.log(BaseLogLevel.SUCCESS, "Retrieved Bold enabled status: " + isBoldEnabled, true);
         return isBoldEnabled;
     }
 }

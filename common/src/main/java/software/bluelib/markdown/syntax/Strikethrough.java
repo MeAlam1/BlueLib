@@ -134,7 +134,6 @@ public class Strikethrough extends MarkdownFeature {
      * @since 1.2.0
      */
     public static String getPrefix() {
-        BaseLogger.log(BaseLogLevel.SUCCESS, "Retrieved Strikethrough prefix: " + Prefix, true);
         return Prefix;
     }
 
@@ -146,7 +145,6 @@ public class Strikethrough extends MarkdownFeature {
      * @since 1.2.0
      */
     public static String getSuffix() {
-        BaseLogger.log(BaseLogLevel.SUCCESS, "Retrieved Strikethrough suffix: " + Suffix, true);
         return Suffix;
     }
 
@@ -158,7 +156,6 @@ public class Strikethrough extends MarkdownFeature {
      * @since 1.2.0
      */
     public static Boolean isStrikethroughEnabled() {
-        BaseLogger.log(BaseLogLevel.SUCCESS, "Retrieved Strikethrough enabled status: " + isStrikethroughEnabled, true);
         return isStrikethroughEnabled;
     }
 }

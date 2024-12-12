@@ -77,7 +77,6 @@ public class CopyToClipboard {
      * @since 1.5.0
      */
     public static Boolean isCopyToClipboardEnabled() {
-        BaseLogger.log(BaseLogLevel.SUCCESS, "Retrieved CopyToClipboard enabled status: " + isCopyToClipboardEnabled, true);
         return isCopyToClipboardEnabled;
     }
 }

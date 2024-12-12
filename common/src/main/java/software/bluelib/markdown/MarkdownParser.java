@@ -67,9 +67,9 @@ public class MarkdownParser {
         //BaseLogger.log(BaseLogLevel.INFO, "After Strikethrough: " + formattedMessage, true);
         formattedMessage = new Spoiler().apply(formattedMessage);
         //BaseLogger.log(BaseLogLevel.INFO, "After Spoiler: " + formattedMessage, true);
-        formattedMessage = new Hyperlink().applyHyperlink(formattedMessage);
+        formattedMessage = new Hyperlink().apply(formattedMessage);
         //BaseLogger.log(BaseLogLevel.INFO, "After Hyperlink: " + formattedMessage, true);
-        formattedMessage = new Color().applyColor(formattedMessage);
+        formattedMessage = new Color().apply(formattedMessage);
         //BaseLogger.log(BaseLogLevel.INFO, "After Color: " + formattedMessage, true);
         formattedMessage = new CopyToClipboard().applyCopyToClipboard(formattedMessage, text);
         BaseLogger.log(BaseLogLevel.INFO, "Completed Message: " + formattedMessage, true);

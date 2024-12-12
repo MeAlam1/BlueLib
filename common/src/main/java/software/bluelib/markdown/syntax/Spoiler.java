@@ -120,7 +120,6 @@ public class Spoiler extends MarkdownFeature {
      * @since 1.5.0
      */
     public static String getPrefix() {
-        BaseLogger.log(BaseLogLevel.SUCCESS, "Retrieved Spoiler prefix: " + Prefix, true);
         return Prefix;
     }
 
@@ -132,7 +131,6 @@ public class Spoiler extends MarkdownFeature {
      * @since 1.5.0
      */
     public static String getSuffix() {
-        BaseLogger.log(BaseLogLevel.SUCCESS, "Retrieved Spoiler suffix: " + Suffix, true);
         return Suffix;
     }
 
@@ -144,7 +142,6 @@ public class Spoiler extends MarkdownFeature {
      * @since 1.5.0
      */
     public static Boolean isSpoilerEnabled() {
-        BaseLogger.log(BaseLogLevel.SUCCESS, "Retrieved Spoiler enabled status: " + isSpoilerEnabled, true);
         return isSpoilerEnabled;
     }
 }

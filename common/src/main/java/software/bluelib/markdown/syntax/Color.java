@@ -34,7 +34,7 @@ import software.bluelib.utils.logging.BaseLogger;
  * @see MarkdownFeature
  * @since 1.6.0
  */
-public class Color {
+public class Color extends MarkdownFeature {
 
     /**
      * A {@code protected static} field representing the default prefix for Color formatting.
@@ -70,81 +70,65 @@ public class Color {
      * @author MeAlam
      * @since 1.6.0
      */
-    public MutableComponent applyColor(MutableComponent pComponent) {
+    public MutableComponent apply(MutableComponent pComponent) {
         if (!isColorEnabled) {
             BaseLogger.log(BaseLogLevel.INFO, "Color formatting is disabled. Returning original content.", true);
             return pComponent;
         }
 
+        // Updated pattern to match color code and text inside parentheses
+        Pattern pattern = Pattern.compile(Pattern.quote(getPrefix()) + "(#[0-9A-Fa-f]{6})" + Pattern.quote(getSuffix()) + "\\((.*?)\\)");
+
         MutableComponent result = Component.empty();
-        Pattern pattern = Pattern.compile(
-                getPrefix() + "(#?[0-9A-Fa-f]{6}|\\d{1,3}(?:,\\d{1,3}){2,3})" + getSuffix() + "\\((.*?)\\)");
 
         if (pComponent.getSiblings().isEmpty()) {
-            return processComponentTextWithColor(pComponent, pattern);
-        }
-
-        for (Component sibling : pComponent.getSiblings()) {
-
-            if (sibling instanceof MutableComponent mutableSibling) {
-                result.append(processComponentTextWithColor(mutableSibling, pattern));
-            } else {
-                result.append(sibling);
-            }
+            processComponentTextWithColors(pComponent.getString(), pComponent.getStyle(), result, pattern);
+        } else {
+            result = processSiblingsWithColors(pComponent, pattern);
         }
 
         return result;
     }
 
-    private MutableComponent processComponentTextWithColor(MutableComponent component, Pattern pattern) {
-        String text = component.getString();
+    protected void processComponentTextWithColors(String text, Style originalStyle, MutableComponent result, Pattern pattern) {
+        processComponentText(text, originalStyle, result, pattern,
+                (matcher, res) -> {
+                    String color = matcher.group(1);
+                    String colorText = matcher.group(2);
+                    if (color != null && !color.isEmpty()) {
+                        appendColor(colorText, color, originalStyle, res);
+                    }
+                });
+    }
 
-        Matcher matcher = pattern.matcher(text);
-        MutableComponent styledComponent = Component.empty();
-
-        int lastIndex = 0;
-
-        while (matcher.find()) {
-            String beforeMatch = text.substring(lastIndex, matcher.start());
-
-            if (matcher.start() > 0 && text.charAt(matcher.start() - 1) == '\\') {
-                if (!beforeMatch.isEmpty()) {
-                    beforeMatch = beforeMatch.substring(0, beforeMatch.length() - 1);
-                    styledComponent.append(Component.literal(beforeMatch).setStyle(component.getStyle()));
-                }
-
-                String matchedText = matcher.group(0);
-                styledComponent.append(Component.literal(matchedText).setStyle(Style.EMPTY));
-            } else {
-                if (!beforeMatch.isEmpty()) {
-                    styledComponent.append(Component.literal(beforeMatch).setStyle(component.getStyle()));
-                }
-
-                String color = matcher.group(1).trim();
-                String matchedText = matcher.group(2).trim();
-
-                if (ColorConversionUtils.isValidColor(color)) {
-                    int colorConverted = ColorConversionUtils.parseColorToHexString(color);
-
-                    Style newStyle = component.getStyle().withColor(TextColor.fromRgb(colorConverted));
-
-                    MutableComponent coloredText = Component.literal(matchedText).setStyle(newStyle);
-                    styledComponent.append(coloredText);
-                } else {
-
-                    return component;
-                }
-            }
-
-            lastIndex = matcher.end();
+    private void appendColor(String colorText, String pColor, Style originalStyle, MutableComponent result) {
+        if (ColorConversionUtils.isValidColor(pColor)) {
+            result.append(Component.literal(colorText)
+                    .setStyle(originalStyle.withColor(TextColor.fromRgb(ColorConversionUtils.parseColorToHexString(pColor)))));
+        } else {
+            result.append(Component.literal(colorText).setStyle(originalStyle));
         }
+    }
 
-        String remainingText = text.substring(lastIndex);
-        if (!remainingText.isEmpty()) {
-            styledComponent.append(Component.literal(remainingText).setStyle(component.getStyle()));
-        }
 
-        return styledComponent;
+    public MutableComponent processSiblingsWithColors(MutableComponent component, Pattern pattern) {
+        return processSiblings(component, pattern,
+                this::processComponentTextWithColors);
+    }
+
+    @Override
+    protected void appendFormattedText(String text, Style originalStyle, MutableComponent result) {
+        // Due to the nature of the Color feature, this method is not used.
+    }
+
+    @Override
+    protected boolean isFeatureEnabled() {
+        return isColorEnabled;
+    }
+
+    @Override
+    protected String getFeatureName() {
+        return "Color";
     }
 
     /**
@@ -193,7 +177,6 @@ public class Color {
      * @since 1.6.0
      */
     public static String getPrefix() {
-        BaseLogger.log(BaseLogLevel.SUCCESS, "Retrieved Color prefix: " + Prefix, true);
         return Prefix;
     }
 
@@ -205,7 +188,6 @@ public class Color {
      * @since 1.6.0
      */
     public static String getSuffix() {
-        BaseLogger.log(BaseLogLevel.SUCCESS, "Retrieved Color suffix: " + Suffix, true);
         return Suffix;
     }
 
@@ -217,7 +199,6 @@ public class Color {
      * @since 1.6.0
      */
     public static Boolean isColorEnabled() {
-        BaseLogger.log(BaseLogLevel.SUCCESS, "Retrieved Color enabled status: " + isColorEnabled, true);
         return isColorEnabled;
     }
 }

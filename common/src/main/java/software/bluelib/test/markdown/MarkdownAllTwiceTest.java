@@ -51,7 +51,7 @@ public class MarkdownAllTwiceTest {
     }
 
     private static String buildMessage(List<String> combination) {
-        StringBuilder messageBuilder = new StringBuilder("§6 This is a test: §r ");
+        StringBuilder messageBuilder = new StringBuilder("§6 This is an All/All test: §r ");
         for (String style : combination) {
             messageBuilder.append(style).append(" ");
         }
