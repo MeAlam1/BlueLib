@@ -26,8 +26,11 @@ import software.bluelib.utils.logging.BaseLogger;
  * <li>{@link #processComponentText(String, Style, MutableComponent, Pattern, BiConsumer)} - Processes text with Markdown formatting.</li>
  * <li>{@link #processComponentTextWithFormatting(String, Style, MutableComponent, Pattern)} - Processes text with specific formatting.</li>
  * <li>{@link #processSiblings(MutableComponent, Pattern, QuadConsumer)} - Processes siblings of a component with Markdown formatting.</li>
+ * <li>{@link #processSiblingsWithFormatting(MutableComponent, Pattern)} - Processes siblings with specific Markdown formatting.</li>
  * <li>{@link #appendFormattedText(String, Style, MutableComponent)} - Appends formatted text to a component.</li>
  * <li>{@link #appendUnstyledText(String, MutableComponent, Style)} - Appends unstyled text to a component.</li>
+ * <li>{@link #isFeatureEnabled()} - Checks if the feature is enabled.</li>
+ * <li>{@link #getFeatureName()} - Gets the name of the feature.</li>
  * </ul>
  *
  * @author MeAlam
@@ -163,6 +166,8 @@ public abstract class MarkdownFeature {
      * @see #processComponentText
      * @see #appendFormattedText
      * @see #apply
+     * @see Style
+     * @see Pattern
      * @since 1.6.0
      */
     protected void processComponentTextWithFormatting(String pText, Style pOriginalStyle, MutableComponent pResult, Pattern pPattern) {
