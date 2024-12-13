@@ -54,7 +54,7 @@ public class StatisticalUtils {
      * Logs a warning if the array is empty and a success message with the calculated mean.
      * </p>
      *
-     * @param pValues {@link double[]} - The array of values to calculate the mean for.
+     * @param pValues {@link Double[]} - The array of values to calculate the mean for.
      * @return The mean of the values.
      * @author MeAlam
      * @since 1.0.0

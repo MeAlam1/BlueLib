@@ -44,10 +44,10 @@ public class GeometricUtils {
     /**
      * A {@link Double} that calculates the Euclidean distance between two points in 2D space.
      *
-     * @param pX1 {@link double} - The x-coordinate of the first point.
-     * @param pY1 {@link double} - The y-coordinate of the first point.
-     * @param pX2 {@link double} - The x-coordinate of the second point.
-     * @param pY2 {@link double} - The y-coordinate of the second point.
+     * @param pX1 {@link Double} - The x-coordinate of the first point.
+     * @param pY1 {@link Double} - The y-coordinate of the first point.
+     * @param pX2 {@link Double} - The x-coordinate of the second point.
+     * @param pY2 {@link Double} - The y-coordinate of the second point.
      * @return The distance between the two points.
      * @author MeAlam
      * @since 1.0.0
