@@ -20,44 +20,94 @@
 #### 1. **Purpose**:
 - **What the code or section of code does.**
 - Clearly describe **why** this block of code exists and its primary function.
-- **Example**: "Handles the calculation of player scores based on time and accuracy."
 
 #### 2. **When**:
 - Specify **when** this code is executed or what triggers it.
-- **Example**: "Called after a player completes a level, before the score is displayed."
 
 #### 3. **Where**:
 - Indicate **where** this code resides or is invoked.
-- **Example**: "Executed in the `ScoreManager#updateScore()` method."
 
 #### 4. **Additional Information**:
 - Include any **important details** that will help someone understand the code's context or behavior.
 - Mention **dependencies**, assumptions, or any other relevant notes.
-- **Example**: "This method relies on the player's current level stored in `PlayerData#level`."
 
 #### 5. **Versioning**:
 - Include the `@since` tag to specify the version in which this code was introduced or modified.
-- **Example**: `@since 1.0.0`
 
 #### 6. **Author**:
 - Include the `@author` tag to specify who created the code.
-- **Example**: `@author MeAlam`
+
+#### 7. **See**:
+- Use the `@see` tag to link to other classes, methods, or resources that are relevant to the code.
+
 
 #### Example Format:
 ```java
-/**
- * Calculates the final score for the player.
+    /**
+ * Applies the Markdown feature to the provided component.
  * <p>
- * Purpose: This method calculates the score based on the time spent and accuracy during the level.<br>
- * When: Called after a player completes a level, before the score is displayed.<br>
- * Where: Executed in the {@link ScoreManager#updateScore()} method.<br>
- * Additional Info: This method depends on the current level and player's accuracy, which are stored in {@link PlayerData#level} and {@link PlayerData#accuracy}.
+ * Purpose: This method checks whether the feature is enabled and applies the corresponding formatting to the given {@link MutableComponent}. If the feature is disabled, it logs an informational message and returns the original component.<br>
+ * When: The method is called when the Markdown feature needs to be applied to a component.<br>
+ * Where: It is called in the {@link MarkdownParser#parseMarkdown(Component)} method.<br>
+ * Additional Info: The method uses a {@link Pattern} to find text matching the specified prefix and suffix for Markdown formatting.<br>
  * </p>
- * @since 1.0.0
+ *
+ * @param pComponent The component to apply Markdown formatting to.
+ * @return The component with the applied Markdown formatting.
  * @author MeAlam
+ * @see MarkdownParser#parseMarkdown(Component)
+ * @see MutableComponent
+ * @see Pattern
+ * @since 1.6.0
  */
-public void calculateFinalScore() {
+public MutableComponent apply(MutableComponent pComponent) {
     // Method implementation
+}
+```
+
+#### 8. **Classes**:
+- For classes, include a Key Methods section that lists out the main methods provided by the class.
+- Include the `@version` tag to indicate the version of the class.
+- **Example Format**:
+```java
+/**
+ * A class responsible for parsing and formatting Markdown into Minecraft's {@link Component}.
+ * <p>
+ * This class processes text components and applies Markdown-style formatting ({@link Bold}, {@link Italic}, {@link Strikethrough}, {@link Underline}, {@link Spoiler}, {@link Hyperlink}, {@link Color}, {@link CopyToClipboard})
+ * to the text. The formatting is controlled globally or individually through the {@link EnableMarkdownFor} and
+ * {@link DisableMarkdownFor} inner classes.
+ * </p>
+ * <p>
+ * Purpose: This class provides a utility for parsing and applying Markdown formatting in Minecraft chat messages.<br>
+ * When: This class is used when a message needs to be formatted with Markdown syntax.<br>
+ * Where: The class is invoked in various components where text formatting is required, typically in chat rendering or message construction.<br>
+ * Additional Info: The formatting can be enabled or disabled globally or selectively for specific features like bold or italic. The settings are managed via the {@link EnableMarkdownFor} and {@link DisableMarkdownFor} classes.
+ * </p>
+ * Key Methods:
+ * <ul>
+ * <li>{@link #parseMarkdown(Component)} - Parses and applies Markdown formatting to a given message component.</li>
+ * <li>{@link #enableMarkdown()} - Enables global Markdown formatting.</li>
+ * <li>{@link #disableMarkdown()} - Disables global Markdown formatting.</li>
+ * <li>{@link #enableMarkdownFor()} - Returns an instance of {@link EnableMarkdownFor} to enable specific Markdown features.</li>
+ * <li>{@link #disableMarkdownFor()} - Returns an instance of {@link DisableMarkdownFor} to disable specific Markdown features.</li>
+ * </ul>
+ *
+ * @author MeAlam
+ * @version 1.6.0
+ * @see EnableMarkdownFor
+ * @see DisableMarkdownFor
+ * @see Bold
+ * @see Italic
+ * @see Strikethrough
+ * @see Underline
+ * @see Spoiler
+ * @see Hyperlink
+ * @see Color
+ * @see CopyToClipboard
+ * @since 1.1.0
+ */
+public class MarkdownParser {
+    // Class implementation
 }
 ```
 
@@ -67,10 +117,10 @@ public void calculateFinalScore() {
     - Use `{@link}` to refer to classes, methods, or any other Java elements where appropriate.
     - Key Methods: In class-level comments, list out key methods provided by the class, which can help users quickly understand the main functionalities. 
     - Versioning: Include the `@since` tag in both class-level and method-level comments to indicate the version since which the class or method has been available.
-    - If you update a Class, please add/update the `@version` to indicate it has been changed.
+    - Update: If you update a Class, please add/update the `@version` to indicate it has been changed.
     - Copyright: Each file should start with `// Copyright (c) BlueLib. Licensed under the MIT License.`
     - Tags: Use `@see` to link to the correct Wiki Documentation page if it exists.
-    - Logging: Log every step using `BaseLogger.log`.
+    - Logging: Log steps using `BaseLogger.log`. Don't forget to add true as the last parameter to ensure it's a BlueLib log.
     - Error Handling: Always ensure that errors and warnings are logged using appropriate logging levels. Critical steps must be logged at least with `BaseLogger.log(BaseLogLevel.Error)` to keep a trail of execution.
 
 ### Deprecation
