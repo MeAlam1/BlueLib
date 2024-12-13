@@ -1,3 +1,5 @@
+// Copyright (c) BlueLib. Licensed under the MIT License.
+
 package software.bluelib.markdown.syntax;
 
 import net.minecraft.network.chat.Component;
