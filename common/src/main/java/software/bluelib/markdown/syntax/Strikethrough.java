@@ -30,7 +30,6 @@ import software.bluelib.utils.logging.BaseLogger;
  * <li>{@link #getSuffix()} - Retrieves the current suffix for Strikethrough formatting.</li>
  * <li>{@link #isStrikethroughEnabled()} - Retrieves whether Strikethrough formatting is enabled.</li>
  * </ul>
- * </p>
  *
  * @author MeAlam
  * @version 1.6.0
@@ -84,7 +83,7 @@ public class Strikethrough extends MarkdownFeature {
      * <p>
      * Purpose: This variable holds the state of the strikethrough feature (enabled or disabled).<br>
      * When: It is checked whenever the markdown text is processed to determine whether the strikethrough should be applied.<br>
-     * Where: It is used in the {@link Strikethrough#isFeatureEnabled()} & {@link Strikethrough#isStrikethroughEnabled()} methods.<br>
+     * Where: It is used in the {@link Strikethrough#isFeatureEnabled()} and {@link Strikethrough#isStrikethroughEnabled()} methods.<br>
      * Additional Info: This feature can be enabled or disabled globally through this flag.<br>
      * </p>
      *

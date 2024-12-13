@@ -91,7 +91,7 @@ public class Color extends MarkdownFeature {
      * <p>
      * Purpose: This variable holds the state of the color feature (enabled or disabled).<br>
      * When: It is checked whenever the markdown text is processed to determine whether the color should be applied.<br>
-     * Where: It is used in the {@link Color#isFeatureEnabled()} & {@link Color#isColorEnabled()} methods.<br>
+     * Where: It is used in the {@link Color#isFeatureEnabled()} and {@link Color#isColorEnabled()} methods.<br>
      * Additional Info: This feature can be enabled or disabled globally through this flag.<br>
      * </p>
      *

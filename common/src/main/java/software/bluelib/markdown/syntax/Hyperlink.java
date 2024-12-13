@@ -87,7 +87,7 @@ public class Hyperlink extends MarkdownFeature {
      * <p>
      * Purpose: This variable holds the state of the hyperlink feature (enabled or disabled).<br>
      * When: It is checked whenever the markdown text is processed to determine whether the hyperlink should be applied.<br>
-     * Where: It is used in the {@link #isFeatureEnabled()} & {@link #isHyperlinkEnabled()} methods.<br>
+     * Where: It is used in the {@link #isFeatureEnabled()} and {@link #isHyperlinkEnabled()} methods.<br>
      * Additional Info: This feature can be enabled or disabled globally through this flag.<br>
      * </p>
      *

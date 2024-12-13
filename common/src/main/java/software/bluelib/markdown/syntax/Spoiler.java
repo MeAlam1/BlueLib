@@ -27,7 +27,6 @@ import software.bluelib.markdown.MarkdownFeature;
  * <li>{@link #getSuffix()} - Retrieves the current suffix for Spoiler formatting.</li>
  * <li>{@link #isSpoilerEnabled()} - Retrieves whether Spoiler formatting is enabled.</li>
  * </ul>
- * </p>
  *
  * @author MeAlam
  * @version 1.6.0
@@ -81,7 +80,7 @@ public class Spoiler extends MarkdownFeature {
      * <p>
      * Purpose: This variable holds the state of the spoiler feature (enabled or disabled).<br>
      * When: It is checked whenever the markdown text is processed to determine whether the spoiler should be applied.<br>
-     * Where: It is used in the {@link Spoiler#isFeatureEnabled()} & {@link Spoiler#isSpoilerEnabled()} methods.<br>
+     * Where: It is used in the {@link Spoiler#isFeatureEnabled()} and {@link Spoiler#isSpoilerEnabled()} methods.<br>
      * Additional Info: This feature can be enabled or disabled globally through this flag.<br>
      * </p>
      *

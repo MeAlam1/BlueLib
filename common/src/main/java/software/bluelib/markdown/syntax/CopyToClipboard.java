@@ -21,7 +21,6 @@ import software.bluelib.markdown.MarkdownFeature;
  * <li>{@link #apply(MutableComponent, String)} - Applies the copy-to-clipboard functionality to the provided text.</li>
  * <li>{@link #isCopyToClipboardEnabled()} - Checks if the copy-to-clipboard feature is enabled.</li>
  * </ul>
- * </p>
  *
  * @author MeAlam
  * @version 1.6.0

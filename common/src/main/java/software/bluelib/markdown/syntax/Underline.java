@@ -84,7 +84,7 @@ public class Underline extends MarkdownFeature {
      * <p>
      * Purpose: This variable holds the state of the underline feature (enabled or disabled).<br>
      * When: It is checked whenever the markdown text is processed to determine whether the underline should be applied.<br>
-     * Where: It is used in the {@link Underline#isFeatureEnabled()} & {@link Underline#isUnderlineEnabled()} methods.<br>
+     * Where: It is used in the {@link Underline#isFeatureEnabled()} and {@link Underline#isUnderlineEnabled()} methods.<br>
      * Additional Info: This feature can be enabled or disabled globally through this flag.<br>
      * </p>
      *

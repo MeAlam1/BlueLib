@@ -30,7 +30,6 @@ import software.bluelib.utils.logging.BaseLogger;
  * <li>{@link #getSuffix()} - Retrieves the current suffix for bold formatting.</li>
  * <li>{@link #isBoldEnabled()} - Retrieves whether bold formatting is enabled.</li>
  * </ul>
- * </p>
  *
  * @author MeAlam
  * @version 1.6.0
@@ -85,7 +84,7 @@ public class Bold extends MarkdownFeature {
      * <p>
      * Purpose: This variable holds the state of the bold feature (enabled or disabled).<br>
      * When: It is checked whenever the markdown text is processed to determine whether the bold should be applied.<br>
-     * Where: It is used in the {@link Bold#isFeatureEnabled()} & {@link Bold#isBoldEnabled()} methods.<br>
+     * Where: It is used in the {@link Bold#isFeatureEnabled()} and {@link Bold#isBoldEnabled()} methods.<br>
      * Additional Info: This feature can be enabled or disabled globally through this flag.<br>
      * </p>
      *

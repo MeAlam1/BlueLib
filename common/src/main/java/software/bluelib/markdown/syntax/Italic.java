@@ -27,7 +27,6 @@ import software.bluelib.markdown.MarkdownFeature;
  * <li>{@link #getSuffix()} - Retrieves the current suffix for italic formatting.</li>
  * <li>{@link #isItalicEnabled()} - Retrieves whether italic formatting is enabled.</li>
  * </ul>
- * </p>
  *
  * @author MeAlam
  * @version 1.6.0
@@ -81,7 +80,7 @@ public class Italic extends MarkdownFeature {
      * <p>
      * Purpose: This variable holds the state of the italic feature (enabled or disabled).<br>
      * When: It is checked whenever the markdown text is processed to determine whether italic should be applied.<br>
-     * Where: It is used in the {@link Italic#isFeatureEnabled()} & {@link Italic#isItalicEnabled()} methods.<br>
+     * Where: It is used in the {@link Italic#isFeatureEnabled()} and {@link Italic#isItalicEnabled()} methods.<br>
      * Additional Info: This feature can be enabled or disabled globally through this flag.<br>
      * </p>
      *
