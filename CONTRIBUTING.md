@@ -112,7 +112,7 @@ public class MarkdownParser {
 ```
 
 - **General Guidelines**:
-    - Always ensure that comments are clear, concise, and provide sufficient information to understand the code.
+    - Always ensure that comments are clear, concise, and provide enough information to understand the code.
     - When referencing variables or constants, use `{@code}` to wrap them within the comment.
     - Use `{@link}` to refer to classes, methods, or any other Java elements where appropriate.
     - Key Methods: In class-level comments, list out key methods provided by the class, which can help users quickly understand the main functionalities. 
@@ -120,7 +120,7 @@ public class MarkdownParser {
     - Update: If you update a Class, please add/update the `@version` to indicate it has been changed.
     - Copyright: Each file should start with `// Copyright (c) BlueLib. Licensed under the MIT License.`
     - Tags: Use `@see` to link to the correct Wiki Documentation page if it exists.
-    - Logging: Log steps using `BaseLogger.log`. Don't forget to add true as the last parameter to ensure it's a BlueLib log.
+    - Logging: Log steps using `BaseLogger.log`. Remember to add true as the last parameter to ensure it's a BlueLib log.
     - Error Handling: Always ensure that errors and warnings are logged using appropriate logging levels. Critical steps must be logged at least with `BaseLogger.log(BaseLogLevel.Error)` to keep a trail of execution.
 
 ### Deprecation
@@ -180,11 +180,11 @@ public class MarkdownParser {
     - Before committing, test your changes by running the game using the appropriate test mod loader folder.
       - Use the `test` package to test your changes.
       - If no code is available to test, create new test code in the `test` package.
-      - Since modifying the existing test code is not recommended, adding Javadocs to comment out the test code is excessive and unnecessary.
+      - Since modifying the existing test code is not recommended, adding Javadocs to comment on the test code is excessive and unnecessary.
     - Ensure that your changes do not introduce any issues or regressions.
 
-7. **Run gradle tasks**
-    - To ensure everything is clean, run the gradle spotless tasks
+7. **Run Gradle tasks**
+    - To ensure everything is clean, run the Gradle spotless tasks
     - **Required**:
       ```bash
         gradlew spotlessApply

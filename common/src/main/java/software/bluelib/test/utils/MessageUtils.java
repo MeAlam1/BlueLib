@@ -2,12 +2,11 @@
 
 package software.bluelib.test.utils;
 
+import java.util.List;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import software.bluelib.markdown.MarkdownParser;
-
-import java.util.List;
 
 /**
  * Utility class for sending messages to players and generating random hex values.

@@ -2,13 +2,12 @@
 
 package software.bluelib.markdown.syntax;
 
+import java.util.regex.Pattern;
 import net.minecraft.network.chat.*;
 import software.bluelib.markdown.MarkdownFeature;
+import software.bluelib.utils.IsValidUtils;
 import software.bluelib.utils.logging.BaseLogLevel;
 import software.bluelib.utils.logging.BaseLogger;
-import software.bluelib.utils.IsValidUtils;
-
-import java.util.regex.Pattern;
 
 /**
  * A class for handling hyperlink Markdown formatting.

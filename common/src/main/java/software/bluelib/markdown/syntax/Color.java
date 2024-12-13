@@ -2,6 +2,7 @@
 
 package software.bluelib.markdown.syntax;
 
+import java.util.regex.Pattern;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
@@ -10,8 +11,6 @@ import software.bluelib.markdown.MarkdownFeature;
 import software.bluelib.utils.conversion.ColorConversionUtils;
 import software.bluelib.utils.logging.BaseLogLevel;
 import software.bluelib.utils.logging.BaseLogger;
-
-import java.util.regex.Pattern;
 
 /**
  * A class for handling color formatting in Markdown.
