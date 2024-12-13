@@ -8,6 +8,7 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextColor;
 import software.bluelib.markdown.MarkdownFeature;
+import software.bluelib.utils.IsValidUtils;
 import software.bluelib.utils.conversion.ColorConversionUtils;
 import software.bluelib.utils.logging.BaseLogLevel;
 import software.bluelib.utils.logging.BaseLogger;
@@ -94,7 +95,6 @@ public class Color extends MarkdownFeature {
      * Additional Info: This feature can be enabled or disabled globally through this flag.<br>
      * </p>
      *
-     * @author MeAlam
      * @see Color#isFeatureEnabled()
      * @see Color#isColorEnabled()
      * @since 1.6.0
@@ -146,10 +146,10 @@ public class Color extends MarkdownFeature {
      * Additional Info: The method delegates to {@link #appendColor} to apply the formatting for matched text.<br>
      * </p>
      *
-     * @param text          The text to be processed.
-     * @param originalStyle The original style of the component.
-     * @param result        The component to append the processed text to.
-     * @param pattern       The pattern used to match color formatting.
+     * @param pText          The text to be processed.
+     * @param pOriginalStyle The original style of the component.
+     * @param pResult        The component to append the processed text to.
+     * @param pPattern       The pattern used to match color formatting.
      * @author MeAlam
      * @see #processComponentText
      * @see #appendColor
@@ -158,13 +158,13 @@ public class Color extends MarkdownFeature {
      * @see Pattern
      * @since 1.6.0
      */
-    protected void processComponentTextWithColors(String text, Style originalStyle, MutableComponent result, Pattern pattern) {
-        processComponentText(text, originalStyle, result, pattern,
+    protected void processComponentTextWithColors(String pText, Style pOriginalStyle, MutableComponent pResult, Pattern pPattern) {
+        processComponentText(pText, pOriginalStyle, pResult, pPattern,
                 (matcher, res) -> {
                     String color = matcher.group(1);
                     String colorText = matcher.group(2);
                     if (color != null && !color.isEmpty()) {
-                        appendColor(colorText, color, originalStyle, res);
+                        appendColor(colorText, color, pOriginalStyle, res);
                     }
                 });
     }
@@ -178,10 +178,10 @@ public class Color extends MarkdownFeature {
      * Additional Info: The method ensures that the appropriate style is applied to the appended text.<br>
      * </p>
      *
-     * @param colorText     The text to be appended.
-     * @param pColor        The color to be applied to the text.
-     * @param originalStyle The original style of the component.
-     * @param result        The component to append the formatted text to.
+     * @param colorText      The text to be appended.
+     * @param pColor         The color to be applied to the text.
+     * @param pOriginalStyle The original style of the component.
+     * @param pResult        The component to append the formatted text to.
      * @author MeAlam
      * @see #processComponentTextWithColors
      * @see Style
@@ -191,12 +191,12 @@ public class Color extends MarkdownFeature {
      * @see TextColor#fromRgb(int)
      * @since 1.6.0
      */
-    private void appendColor(String colorText, String pColor, Style originalStyle, MutableComponent result) {
-        if (ColorConversionUtils.isValidColor(pColor)) {
-            result.append(Component.literal(colorText)
-                    .setStyle(originalStyle.withColor(TextColor.fromRgb(ColorConversionUtils.parseColorToHexString(pColor)))));
+    private void appendColor(String colorText, String pColor, Style pOriginalStyle, MutableComponent pResult) {
+        if (IsValidUtils.isValidColor(pColor)) {
+            pResult.append(Component.literal(colorText)
+                    .setStyle(pOriginalStyle.withColor(TextColor.fromRgb(ColorConversionUtils.parseColorToHexString(pColor)))));
         } else {
-            result.append(Component.literal(colorText).setStyle(originalStyle));
+            pResult.append(Component.literal(colorText).setStyle(pOriginalStyle));
         }
     }
 
@@ -209,39 +209,16 @@ public class Color extends MarkdownFeature {
      * Additional Info: The method iterates over all siblings and applies formatting to each of them individually.<br>
      * </p>
      *
-     * @param component The component whose siblings will be processed.
-     * @param pattern   The pattern used to match color formatting.
+     * @param pComponent The component whose siblings will be processed.
+     * @param pPattern   The pattern used to match color formatting.
      * @return The component with formatted siblings.
      * @author MeAlam
      * @see #apply(MutableComponent)
      * @since 1.6.0
      */
-    public MutableComponent processSiblingsWithColors(MutableComponent component, Pattern pattern) {
-        return processSiblings(component, pattern,
+    public MutableComponent processSiblingsWithColors(MutableComponent pComponent, Pattern pPattern) {
+        return processSiblings(pComponent, pPattern,
                 this::processComponentTextWithColors);
-    }
-
-    /**
-     * <strong>Not Used!</strong>
-     * Appends formatted text to a component.
-     * <p>
-     * Purpose: This method appends formatted text to a component, applying the specified style.<br>
-     * When: This method is called when the Markdown feature needs to format and append text.<br>
-     * Where: It is invoked in {@link #processComponentTextWithFormatting} to handle formatted text.<br>
-     * Additional Info: The method ensures that the appropriate style is applied to the appended text.<br>
-     * </p>
-     * <strong>Not Used!</strong>
-     *
-     * @param text          The text to be appended.
-     * @param originalStyle The style to be applied to the text.
-     * @param result        The component to append the formatted text to.
-     * @author MeAlam
-     * @see #processComponentTextWithFormatting
-     * @since 1.6.0
-     */
-    @Override
-    protected void appendFormattedText(String text, Style originalStyle, MutableComponent result) {
-        // Due to the nature of the Color feature, this method is not used.
     }
 
     /**

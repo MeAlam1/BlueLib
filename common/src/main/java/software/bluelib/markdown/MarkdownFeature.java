@@ -34,13 +34,13 @@ import software.bluelib.utils.logging.BaseLogger;
  * </ul>
  *
  * @author MeAlam
- * @version 1.1.0
+ * @version 1.6.0
  * @see MutableComponent
  * @see Pattern
  * @see Style
  * @see QuadConsumer
  * @see BiConsumer
- * @since 1.6.0
+ * @since 1.1.0
  */
 public abstract class MarkdownFeature {
 

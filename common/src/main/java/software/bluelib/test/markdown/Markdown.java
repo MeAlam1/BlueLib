@@ -116,28 +116,28 @@ public class Markdown {
     @GameTest
     public static void all(GameTestHelper pHelper) {
         pHelper.succeedIf(() -> {
-            MarkdownAllTest.testAllCombinations(pHelper);
+            MarkdownStyleTest.testAllCombinations(pHelper);
         });
     }
 
     @GameTest
     public static void allTwice(GameTestHelper pHelper) {
         pHelper.succeedIf(() -> {
-            MarkdownAllTwiceTest.testAllCombinations(pHelper);
+            MarkdownStyleTest.testAllTwiceCombinations(pHelper);
         });
     }
 
     @GameTest
     public static void allAndCancel(GameTestHelper pHelper) {
         pHelper.succeedIf(() -> {
-            MarkdownAllAndCancelTest.testAllCombinations(pHelper);
+            MarkdownStyleTest.testAllStyles(pHelper);
         });
     }
 
     @GameTest
     public static void allCancel(GameTestHelper pHelper) {
         pHelper.succeedIf(() -> {
-            MarkdownAllCancelTest.testAllCombinations(pHelper);
+            MarkdownStyleTest.testCancelOnlyStyles(pHelper);
         });
     }
 }

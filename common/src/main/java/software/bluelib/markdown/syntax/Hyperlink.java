@@ -33,6 +33,7 @@ import software.bluelib.utils.logging.BaseLogger;
  * <li>{@link #isHyperlinkEnabled()} - Checks if the hyperlink feature is enabled.</li>
  * </ul>
  *
+ * @author MeAlam
  * @version 1.6.0
  * @see MutableComponent
  * @see Pattern
@@ -141,22 +142,22 @@ public class Hyperlink extends MarkdownFeature {
      * Additional Info: The method delegates to {@link #appendHyperlink} to apply the formatting for matched text.<br>
      * </p>
      *
-     * @param text          The text to be processed.
-     * @param originalStyle The original style of the component.
-     * @param result        The component to append the processed text to.
-     * @param pattern       The pattern used to match hyperlink formatting.
+     * @param pText          The text to be processed.
+     * @param pOriginalStyle The original style of the component.
+     * @param pResult        The component to append the processed text to.
+     * @param pPattern       The pattern used to match hyperlink formatting.
      * @author MeAlam
      * @see #processComponentText
      * @see #appendHyperlink(String, String, Style, MutableComponent)
      * @see #apply(MutableComponent)
      * @since 1.6.0
      */
-    protected void processComponentTextWithHyperlinks(String text, Style originalStyle, MutableComponent result, Pattern pattern) {
-        processComponentText(text, originalStyle, result, pattern,
+    protected void processComponentTextWithHyperlinks(String pText, Style pOriginalStyle, MutableComponent pResult, Pattern pPattern) {
+        processComponentText(pText, pOriginalStyle, pResult, pPattern,
                 (matcher, res) -> {
                     String url = matcher.group(2);
                     if (url != null && !url.isEmpty()) {
-                        appendHyperlink(matcher.group(1), url, originalStyle, res);
+                        appendHyperlink(matcher.group(1), url, pOriginalStyle, res);
                     }
                 });
     }
@@ -170,15 +171,15 @@ public class Hyperlink extends MarkdownFeature {
      * Additional Info: The method iterates over all siblings and applies formatting to each of them individually.<br>
      * </p>
      *
-     * @param component The component whose siblings will be processed.
-     * @param pattern   The pattern used to match hyperlink formatting.
+     * @param pComponent The component whose siblings will be processed.
+     * @param pPattern   The pattern used to match hyperlink formatting.
      * @return The component with formatted siblings.
      * @author MeAlam
      * @see #apply(MutableComponent)
      * @since 1.6.0
      */
-    public MutableComponent processSiblingsWithHyperlinks(MutableComponent component, Pattern pattern) {
-        return processSiblings(component, pattern,
+    public MutableComponent processSiblingsWithHyperlinks(MutableComponent pComponent, Pattern pPattern) {
+        return processSiblings(pComponent, pPattern,
                 this::processComponentTextWithHyperlinks);
     }
 
@@ -191,10 +192,10 @@ public class Hyperlink extends MarkdownFeature {
      * Additional Info: The method ensures that the appropriate style is applied to the appended text.<br>
      * </p>
      *
-     * @param linkText      The text to be appended.
-     * @param url           The URL to be linked.
-     * @param originalStyle The original style of the component.
-     * @param result        The component to append the formatted text to.
+     * @param pText          The text to be appended.
+     * @param pUrl           The URL to be linked.
+     * @param pOriginalStyle The original style of the component.
+     * @param pResult        The component to append the formatted text to.
      * @author MeAlam
      * @see Style
      * @see MutableComponent
@@ -205,19 +206,19 @@ public class Hyperlink extends MarkdownFeature {
      * @see #processComponentTextWithHyperlinks(String, Style, MutableComponent, Pattern)
      * @since 1.6.0
      */
-    private void appendHyperlink(String linkText, String url, Style originalStyle, MutableComponent result) {
-        if (!IsValidUtils.isValidURL(url)) {
-            result.append(Component.literal(getPrefix() + linkText + getSuffix() + "(" + url + ")").setStyle(originalStyle));
+    private void appendHyperlink(String pText, String pUrl, Style pOriginalStyle, MutableComponent pResult) {
+        if (!IsValidUtils.isValidURL(pUrl)) {
+            pResult.append(Component.literal(getPrefix() + pText + getSuffix() + "(" + pUrl + ")").setStyle(pOriginalStyle));
             return;
         }
 
-        MutableComponent hyperlink = Component.literal(linkText)
-                .setStyle(originalStyle
+        MutableComponent hyperlink = Component.literal(pText)
+                .setStyle(pOriginalStyle
                         .withColor(TextColor.fromRgb(0x1F5FE1))
                         .withUnderlined(true)
-                        .withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, url)));
+                        .withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, pUrl)));
 
-        result.append(hyperlink);
+        pResult.append(hyperlink);
     }
 
     /**

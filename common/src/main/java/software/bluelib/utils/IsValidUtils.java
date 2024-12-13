@@ -81,4 +81,31 @@ public class IsValidUtils {
         String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
         return pEmail != null && pEmail.matches(emailRegex);
     }
+
+    /**
+     * Validates if a color string is in a recognized format.
+     * <p>
+     * Purpose: This method checks if a color string matches any of the supported formats.<br>
+     * When: Called to validate color strings.<br>
+     * Where: Used in contexts where color validation is required.<br>
+     * Additional Info: Supports RGB, ARGB, and hexadecimal formats.
+     * </p>
+     *
+     * @param pInput the color string to validate
+     * @return true if valid, false otherwise
+     * @author MeAlam
+     * @since 1.6.0
+     */
+    public static boolean isValidColor(String pInput) {
+        if (pInput == null) {
+            return false;
+        }
+
+        String rgbPattern = "\\(\\s*\\d{1,3}\\s*,\\s*\\d{1,3}\\s*,\\s*\\d{1,3}\\s*\\)";
+        String argbPattern = "\\(\\s*\\d{1,3}\\s*,\\s*\\d{1,3}\\s*,\\s*\\d{1,3}\\s*,\\s*\\d{1,3}\\s*\\)";
+        String hexPattern = "^#([0-9A-Fa-f]{6})$";
+        String hex0xPattern = "^0x([0-9A-Fa-f]{6})$";
+
+        return pInput.matches(rgbPattern) || pInput.matches(argbPattern) || pInput.matches(hexPattern) || pInput.matches(hex0xPattern);
+    }
 }

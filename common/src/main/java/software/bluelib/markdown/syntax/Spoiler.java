@@ -258,6 +258,7 @@ public class Spoiler extends MarkdownFeature {
      * </p>
      *
      * @return The current prefix used for spoiler formatting.
+     * @author MeAlam
      * @see Spoiler#setPrefix(String)
      * @see Spoiler#setSuffix(String)
      * @see Spoiler#setPrefixSuffix(String, String)
@@ -281,6 +282,7 @@ public class Spoiler extends MarkdownFeature {
      * </p>
      *
      * @return The current suffix used for spoiler formatting.
+     * @author MeAlam
      * @see Spoiler#setSuffix(String)
      * @see Spoiler#setPrefixSuffix(String, String)
      * @see Spoiler#setPrefix(String)

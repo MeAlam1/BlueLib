@@ -72,6 +72,14 @@ public class MarkdownParser {
      * @param pMessage {@link Component} - The message component containing the text to format.
      * @return A {@link MutableComponent} with the Markdown formatting applied.
      * @author MeAlam
+     * @see Bold
+     * @see Italic
+     * @see Strikethrough
+     * @see Underline
+     * @see Spoiler
+     * @see Hyperlink
+     * @see Color
+     * @see CopyToClipboard
      * @since 1.1.0
      */
     public static MutableComponent parseMarkdown(Component pMessage) {
@@ -205,7 +213,7 @@ public class MarkdownParser {
      * </ul>
      *
      * @author MeAlam
-     * @version 1.4.0
+     * @version 1.6.0
      * @see DisableMarkdownFor
      * @see Bold
      * @see Italic
@@ -409,6 +417,7 @@ public class MarkdownParser {
      * </ul>
      *
      * @author MeAlam
+     * @version 1.6.0
      * @see EnableMarkdownFor
      * @see Bold
      * @see Italic
