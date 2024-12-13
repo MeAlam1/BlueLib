@@ -24,7 +24,7 @@
    <a href="https://img.shields.io/github/commit-activity/m/MeAlam1/BlueLib?style=for-the-badge" target="_blank"><img src="https://img.shields.io/github/commit-activity/m/MeAlam1/BlueLib?style=for-the-badge" alt="BlueLib Commit Activity" /></a>&nbsp;
 </p>
 
-<h2 align="center">BlueLib is an all-round Minecraft modding library that leverages datapack-driven features, providing complete flexibility for mod development and seamless compatibility with addons, resource packs, and datapacks!</h2>
+<h2 align="center">BlueLib is an all-round Minecraft modding library that uses datapack-driven features, giving you complete freedom over mod development and simple compatibility with addons, resource packs, and datapacks!</h2>
 
 <div align="center">
   <details open>
