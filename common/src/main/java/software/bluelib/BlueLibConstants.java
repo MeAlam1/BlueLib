@@ -75,7 +75,7 @@ public class BlueLibConstants {
      *
      * @since 1.0.0
      */
-    public static boolean isBlueLibLoggingEnabled = true;
+    public static boolean isBlueLibLoggingEnabled = false;
 
     /**
      * A {@link Boolean} to enable or disable general logging.
