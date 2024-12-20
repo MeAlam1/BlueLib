@@ -3,15 +3,14 @@
 package software.bluelib.json;
 
 import com.google.gson.JsonObject;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.packs.resources.ResourceManager;
 import software.bluelib.utils.logging.BaseLogLevel;
 import software.bluelib.utils.logging.BaseLogger;
-
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * An abstract class for parsing JSON data.
@@ -40,6 +39,7 @@ import java.util.Map;
  * @author MeAlam
  */
 public abstract class JSONParser {
+
     /**
      * A map to store JSON data with their corresponding keys.
      * <p>
@@ -104,7 +104,7 @@ public abstract class JSONParser {
      * </p>
      *
      * @param pFolderPath The folder path to load JSON data from.
-     * @param pServer The Minecraft server instance.
+     * @param pServer     The Minecraft server instance.
      * @since 1.7.0
      * @author MeAlam
      * @see JSONLoader
@@ -119,18 +119,17 @@ public abstract class JSONParser {
         ResourceManager resourceManager = pServer.getResourceManager();
         mergedJsonObject = new JsonObject();
 
-        Collection<ResourceLocation> resources =
-                resourceManager.listResources(pFolderPath, path -> path.getPath().endsWith(".json")).keySet();
+        Collection<ResourceLocation> resources = resourceManager.listResources(pFolderPath, path -> path.getPath().endsWith(".json")).keySet();
 
-        BaseLogger.log(BaseLogLevel.INFO, "Found resources: " + resources + " at: " + pFolderPath);
+        BaseLogger.log(BaseLogLevel.INFO, "Found resources: " + resources + " at: " + pFolderPath, true);
 
         for (ResourceLocation resourceLocation : resources) {
             try {
-                BaseLogger.log(BaseLogLevel.INFO, "Loading JSON data from resource: " + resourceLocation);
+                BaseLogger.log(BaseLogLevel.INFO, "Loading JSON data from resource: " + resourceLocation, true);
                 JsonObject jsonObject = jsonLoader.loadJson(resourceLocation, resourceManager);
                 jsonMerger.mergeJsonObjects(mergedJsonObject, jsonObject);
             } catch (Exception exception) {
-                BaseLogger.log(BaseLogLevel.ERROR, "Failed to load JSON data from resource: " + resourceLocation, exception);
+                BaseLogger.log(BaseLogLevel.ERROR, "Failed to load JSON data from resource: " + resourceLocation, exception, true);
             }
         }
     }

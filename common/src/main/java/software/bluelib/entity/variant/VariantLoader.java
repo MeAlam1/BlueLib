@@ -4,14 +4,13 @@ package software.bluelib.entity.variant;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import java.util.HashMap;
+import java.util.Map;
 import net.minecraft.server.MinecraftServer;
 import software.bluelib.json.JSONParser;
 import software.bluelib.utils.logging.BaseLogLevel;
 import software.bluelib.utils.logging.BaseLogger;
 import software.bluelib.utils.variant.ParameterUtils;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * A class for loading and managing entity variants.
@@ -35,6 +34,7 @@ import java.util.Map;
  * @since 1.0.0
  */
 public class VariantLoader extends JSONParser {
+
     /**
      * A map to store all loaded variants.
      * <p>
