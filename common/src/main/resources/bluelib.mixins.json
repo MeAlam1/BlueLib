@@ -4,7 +4,6 @@
   "package": "software.bluelib.mixin",
   "refmap": "bluelib.refmap.json",
   "mixins": [
-    "variant.LivingEntityMixin"
   ],
   "client": [],
   "server": [],

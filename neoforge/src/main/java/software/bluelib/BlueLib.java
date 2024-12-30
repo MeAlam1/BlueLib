@@ -3,12 +3,8 @@
 package software.bluelib;
 
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
-import net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent;
-import org.spongepowered.asm.launch.MixinBootstrap;
-import software.bluelib.test.TestRegistry;
 
 /**
  * The main class of the {@code BlueLib} mod.
@@ -21,13 +17,12 @@ import software.bluelib.test.TestRegistry;
  * Key Methods:
  * <ul>
  * <li>{@link #BlueLib(IEventBus, ModContainer)} - Constructs the {@code BlueLib} instance and registers the mod event bus.</li>
- * <li>{@link #onLoadComplete(FMLLoadCompleteEvent)} - Handles the event when the mod loading is complete.</li>
  * </ul>
  *
  * @author MeAlam, Dan and All Contributors of BlueLib!
- * @version 1.6.0
+ * @version 1.7.0
  * @see <a href="https://github.com/MeAlam1/BlueLib/wiki">BlueLib Wiki</a>
- * @since 1.0.0
+ * @since 1.7.0
  */
 @Mod(BlueLibConstants.MOD_ID)
 public class BlueLib {
@@ -41,23 +36,7 @@ public class BlueLib {
      * @param pModEventBus  {@link IEventBus} - The event bus where the mod registers its handlers.
      * @param pModContainer {@link ModContainer} - The mod container that holds the instance of the mod.
      * @author MeAlam
-     * @since 1.0.0
+     * @since 1.7.0
      */
-    public BlueLib(IEventBus pModEventBus, ModContainer pModContainer) {
-        pModEventBus.register(this);
-        TestRegistry.registerTests();
-        MixinBootstrap.init();
-    }
-
-    /**
-     * A {@code public void} that handles the {@link FMLLoadCompleteEvent}, which occurs when the mod finishes loading.
-     *
-     * @param pEvent {@link FMLLoadCompleteEvent} - The event fired after the mod loading process completes.
-     * @author MeAlam
-     * @since 1.0.0
-     */
-    @SubscribeEvent
-    public void onLoadComplete(FMLLoadCompleteEvent pEvent) {
-        BlueLibCommon.init();
-    }
+    public BlueLib(IEventBus pModEventBus, ModContainer pModContainer) {}
 }
