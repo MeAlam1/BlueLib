@@ -37,6 +37,10 @@ public class StrikethroughTest {
         MessageUtils.sendMessageToPlayers(pHelper, "§6 This is a strikethrough/spoiler test: §r ~~Strikethrough~~ ||spoiler||");
     }
 
+    public static void strikethroughGradient(GameTestHelper pHelper) {
+        MessageUtils.sendMessageToPlayers(pHelper, "§6 This is a strikethrough/gradient test: §r ~~Strikethrough~~ -#" + MessageUtils.getRandomHex() + ",#" + MessageUtils.getRandomHex() + ",#" + MessageUtils.getRandomHex() + "-(Gradient)");
+    }
+
     public static void strikethroughCancel(GameTestHelper pHelper) {
         MessageUtils.sendMessageToPlayers(pHelper, "§6 This is a canceled strikethrough test: §r \\~~Strikethrough~~");
     }

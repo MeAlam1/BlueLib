@@ -2,6 +2,9 @@
 
 package software.bluelib.markdown.syntax;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -26,7 +29,9 @@ import software.bluelib.utils.logging.BaseLogger;
  * <li>{@link #apply(MutableComponent)} - Applies the color feature to a given component.</li>
  * <li>{@link #processComponentTextWithColors(String, Style, MutableComponent, Pattern)} - Processes text with color formatting.</li>
  * <li>{@link #processSiblingsWithColors(MutableComponent, Pattern)} - Processes siblings with color formatting.</li>
- * <li>{@link #appendColor(String, String, Style, MutableComponent)} - Appends color formatted text to a component.</li>
+ * <li>{@link #appendColor(String, List, Style, MutableComponent)} - Appends color formatted text to a component.</li>
+ * <li>{@link #interpolateColor(int, int, float)} - Interpolates a color between two colors.</li>
+ * <li>{@link #extractColorsFromMatcher(Matcher)} - Extracts colors from a matcher.</li>
  * <li>{@link #isFeatureEnabled()} - Checks if the feature is enabled.</li>
  * <li>{@link #getFeatureName()} - Gets the name of the feature.</li>
  * <li>{@link #setPrefixSuffix(String, String)} - Sets the prefix and suffix for color formatting.</li>
@@ -125,7 +130,9 @@ public class Color extends MarkdownFeature {
             return pComponent;
         }
 
-        Pattern pattern = Pattern.compile(Pattern.quote(getPrefix()) + "(#[0-9A-Fa-f]{6})" + Pattern.quote(getSuffix()) + "\\((.*?)\\)");
+        Pattern pattern = Pattern.compile(Pattern.quote(getPrefix()) +
+                "#([0-9A-Fa-f]{6}(?:,#([0-9A-Fa-f]{6}))*)" +
+                Pattern.quote(getSuffix()) + "\\((.*?)\\)");
 
         MutableComponent result = Component.empty();
 
@@ -162,12 +169,41 @@ public class Color extends MarkdownFeature {
     protected void processComponentTextWithColors(String pText, Style pOriginalStyle, MutableComponent pResult, Pattern pPattern) {
         processComponentText(pText, pOriginalStyle, pResult, pPattern,
                 (matcher, res) -> {
-                    String color = matcher.group(1);
-                    String colorText = matcher.group(2);
-                    if (color != null && !color.isEmpty()) {
-                        appendColor(colorText, color, pOriginalStyle, res);
-                    }
+                    List<Integer> colors = extractColorsFromMatcher(matcher);
+                    String gradientText = matcher.group(matcher.groupCount());
+
+                    appendColor(gradientText, colors, pOriginalStyle, res);
                 });
+    }
+
+    /**
+     * Extracts colors from a matcher.
+     * <p>
+     * Purpose: This method extracts colors from a matcher and returns them as a list of integers.<br>
+     * When: It is called to extract colors from a matcher.<br>
+     * Where: It is invoked in {@link #processComponentTextWithColors} to extract colors from a matcher.<br>
+     * Additional Info: The method ensures that only valid colors are extracted and converted to hexadecimal format.<br>
+     * </p>
+     *
+     * @param matcher The matcher to extract colors from.
+     * @return A list of integers representing the extracted colors in hexadecimal format.
+     * @see #processComponentTextWithColors
+     * @since 1.7.0
+     */
+    private List<Integer> extractColorsFromMatcher(Matcher matcher) {
+        List<Integer> colors = new ArrayList<>();
+
+        String colorGroup = matcher.group(1);
+        String[] colorArray = colorGroup.split(",");
+        for (String color : colorArray) {
+            if (IsValidUtils.isValidColor(color)) {
+                colors.add(ColorConversionUtils.parseColorToHexString(color));
+            }
+        }
+
+        System.out.println("Colors: " + colors);
+
+        return colors;
     }
 
     /**
@@ -179,8 +215,8 @@ public class Color extends MarkdownFeature {
      * Additional Info: The method ensures that the appropriate style is applied to the appended text.<br>
      * </p>
      *
-     * @param colorText      The text to be appended.
-     * @param pColor         The color to be applied to the text.
+     * @param pColorText     The text to be appended.
+     * @param pColors        List of all colors that will be applied to the text.
      * @param pOriginalStyle The original style of the component.
      * @param pResult        The component to append the formatted text to.
      * @author MeAlam
@@ -192,13 +228,72 @@ public class Color extends MarkdownFeature {
      * @see TextColor#fromRgb(int)
      * @since 1.6.0
      */
-    private void appendColor(String colorText, String pColor, Style pOriginalStyle, MutableComponent pResult) {
-        if (IsValidUtils.isValidColor(pColor)) {
-            pResult.append(Component.literal(colorText)
-                    .setStyle(pOriginalStyle.withColor(TextColor.fromRgb(ColorConversionUtils.parseColorToHexString(pColor)))));
-        } else {
-            pResult.append(Component.literal(colorText).setStyle(pOriginalStyle));
+    private void appendColor(String pColorText, List<Integer> pColors, Style pOriginalStyle, MutableComponent pResult) {
+        if (pColors.isEmpty()) {
+            pResult.append(Component.literal(pColorText).setStyle(pOriginalStyle));
+            return;
         }
+
+        if (pColors.size() == 1) {
+            int color = pColors.get(0);
+            pResult.append(Component.literal(pColorText).setStyle(pOriginalStyle.withColor(TextColor.fromRgb(color))));
+            return;
+        }
+
+        char[] characters = pColorText.toCharArray();
+        int textLength = characters.length;
+        int colorCount = pColors.size();
+        int segmentLength = textLength / (colorCount - 1);
+        int remainder = textLength % (colorCount - 1);
+
+        int charIndex = 0;
+
+        for (int colorIndex = 0; colorIndex < colorCount - 1; colorIndex++) {
+            int startColor = pColors.get(colorIndex);
+            int endColor = pColors.get(colorIndex + 1);
+
+            int currentSegmentLength = segmentLength + (colorIndex < remainder ? 1 : 0);
+
+            for (int i = 0; i < currentSegmentLength && charIndex < textLength; i++, charIndex++) {
+                float positionRatio = (float) i / (currentSegmentLength - 1);
+                int interpolatedColor = interpolateColor(startColor, endColor, positionRatio);
+
+                pResult.append(Component.literal(String.valueOf(characters[charIndex]))
+                        .setStyle(pOriginalStyle.withColor(TextColor.fromRgb(interpolatedColor))));
+            }
+        }
+    }
+
+    /**
+     * Interpolates a color between two colors.
+     * <p>
+     * Purpose: This method interpolates a color between two colors based on a given ratio.<br>
+     * When: It is called to interpolate a color between two colors.<br>
+     * Where: It is invoked in {@link #appendColor} to interpolate a color between two colors.<br>
+     * Additional Info: The method calculates the interpolated color based on the start and end colors and the given ratio.<br>
+     * </p>
+     *
+     * @param startColor The starting color.
+     * @param endColor   The ending color.
+     * @param ratio      The ratio used to interpolate the color.
+     * @return The interpolated color between the start and end colors based on the ratio.
+     * @see #appendColor
+     * @since 1.6.0
+     */
+    private int interpolateColor(int startColor, int endColor, float ratio) {
+        int startR = (startColor >> 16) & 0xFF;
+        int startG = (startColor >> 8) & 0xFF;
+        int startB = startColor & 0xFF;
+
+        int endR = (endColor >> 16) & 0xFF;
+        int endG = (endColor >> 8) & 0xFF;
+        int endB = endColor & 0xFF;
+
+        int r = (int) (startR + (endR - startR) * ratio);
+        int g = (int) (startG + (endG - startG) * ratio);
+        int b = (int) (startB + (endB - startB) * ratio);
+
+        return (r << 16) | (g << 8) | b;
     }
 
     /**

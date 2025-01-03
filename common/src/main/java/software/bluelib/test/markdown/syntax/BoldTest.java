@@ -37,6 +37,10 @@ public class BoldTest {
         MessageUtils.sendMessageToPlayers(pHelper, "§6 This is a bold/spoiler test: §r **bold** ||spoiler||");
     }
 
+    public static void boldGradient(GameTestHelper pHelper) {
+        MessageUtils.sendMessageToPlayers(pHelper, "§6 This is a bold/gradient test: §r **bold** -#" + MessageUtils.getRandomHex() + ",#" + MessageUtils.getRandomHex() + ",#" + MessageUtils.getRandomHex() + "-(Gradient)");
+    }
+
     public static void boldCancel(GameTestHelper pHelper) {
         MessageUtils.sendMessageToPlayers(pHelper, "§6 This is a canceled bold test: §r \\**bold**");
     }
