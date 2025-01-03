@@ -17,6 +17,7 @@ public class Markdown {
             BoldTest.boldHyperlink(pHelper);
             BoldTest.boldColor(pHelper);
             BoldTest.boldSpoiler(pHelper);
+            BoldTest.boldGradient(pHelper);
             BoldTest.boldCancel(pHelper);
         });
     }
@@ -32,6 +33,7 @@ public class Markdown {
             ItalicTest.italicHyperlink(pHelper);
             ItalicTest.italicColor(pHelper);
             ItalicTest.italicSpoiler(pHelper);
+            ItalicTest.italicGradient(pHelper);
             ItalicTest.italicCancel(pHelper);
         });
     }
@@ -47,6 +49,7 @@ public class Markdown {
             UnderlineTest.underlineHyperlink(pHelper);
             UnderlineTest.underlineColor(pHelper);
             UnderlineTest.underlineSpoiler(pHelper);
+            UnderlineTest.underlineGradient(pHelper);
             UnderlineTest.underlineCancel(pHelper);
         });
     }
@@ -62,6 +65,7 @@ public class Markdown {
             StrikethroughTest.strikethroughHyperlink(pHelper);
             StrikethroughTest.strikethroughColor(pHelper);
             StrikethroughTest.strikethroughSpoiler(pHelper);
+            StrikethroughTest.strikethroughGradient(pHelper);
             StrikethroughTest.strikethroughCancel(pHelper);
         });
     }
@@ -77,6 +81,7 @@ public class Markdown {
             HyperlinkTest.hyperlinkHyperlink(pHelper);
             HyperlinkTest.hyperlinkColor(pHelper);
             HyperlinkTest.hyperlinkSpoiler(pHelper);
+            HyperlinkTest.hyperlinkGradient(pHelper);
             HyperlinkTest.hyperlinkCancel(pHelper);
             HyperlinkTest.hyperlinkInvalid(pHelper);
         });
@@ -93,6 +98,7 @@ public class Markdown {
             ColorTest.colorHyperlink(pHelper);
             ColorTest.colorColor(pHelper);
             ColorTest.colorSpoiler(pHelper);
+            ColorTest.colorGradient(pHelper);
             ColorTest.colorCancel(pHelper);
             ColorTest.colorInvalid(pHelper);
         });
@@ -109,7 +115,24 @@ public class Markdown {
             SpoilerTest.spoilerHyperlink(pHelper);
             SpoilerTest.spoilerColor(pHelper);
             SpoilerTest.spoilerSpoiler(pHelper);
+            SpoilerTest.spoilerGradient(pHelper);
             SpoilerTest.spoilerCancel(pHelper);
+        });
+    }
+
+    @GameTest
+    public static void gradient(GameTestHelper pHelper) {
+        pHelper.succeedIf(() -> {
+            GradientTest.gradient(pHelper);
+            GradientTest.gradientBold(pHelper);
+            GradientTest.gradientItalic(pHelper);
+            GradientTest.gradientUnderline(pHelper);
+            GradientTest.gradientStrikethrough(pHelper);
+            GradientTest.gradientHyperlink(pHelper);
+            GradientTest.gradientColor(pHelper);
+            GradientTest.gradientSpoiler(pHelper);
+            GradientTest.gradientGradient(pHelper);
+            GradientTest.gradientCancel(pHelper);
         });
     }
 

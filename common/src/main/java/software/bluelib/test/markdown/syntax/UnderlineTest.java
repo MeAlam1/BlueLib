@@ -37,6 +37,10 @@ public class UnderlineTest {
         MessageUtils.sendMessageToPlayers(pHelper, "§6 This is a underline/spoiler test: §r __Underline__ ||spoiler||");
     }
 
+    public static void underlineGradient(GameTestHelper pHelper) {
+        MessageUtils.sendMessageToPlayers(pHelper, "§6 This is a underline/gradient test: §r __Underline__ -#" + MessageUtils.getRandomHex() + ",#" + MessageUtils.getRandomHex() + ",#" + MessageUtils.getRandomHex() + "-(Gradient)");
+    }
+
     public static void underlineCancel(GameTestHelper pHelper) {
         MessageUtils.sendMessageToPlayers(pHelper, "§6 This is a canceled underline test: §r \\__Underline__");
     }
