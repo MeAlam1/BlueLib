@@ -2,10 +2,12 @@
 
 package software.bluelib;
 
+import net.fabricmc.api.EnvType;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.message.v1.ServerMessageEvents;
+import net.fabricmc.loader.api.FabricLoader;
 import software.bluelib.event.ChatHandler;
 import software.bluelib.example.event.ReloadHandler;
 import software.bluelib.test.TestRegistry;
@@ -51,13 +53,15 @@ public class BlueLib implements ModInitializer {
     @Override
     public void onInitialize() {
         registerModEventListeners();
-        ClientTickEvents.END_CLIENT_TICK.register(client -> {
-            if (!hasInitialized) {
-                hasInitialized = true;
-                BlueLibCommon.init();
-                TestRegistry.registerTests();
-            }
-        });
+        TestRegistry.registerTests();
+        if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
+            ClientTickEvents.END_CLIENT_TICK.register(client -> {
+                if (!hasInitialized) {
+                    hasInitialized = true;
+                    BlueLibCommon.init();
+                }
+            });
+        }
     }
 
     /**
