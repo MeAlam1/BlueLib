@@ -2,8 +2,6 @@
 
 package software.bluelib_examples;
 
-import java.util.concurrent.ScheduledExecutorService;
-
 public class BlueLibConstants {
 
     public static final String MOD_ID = "bluelib_examples";

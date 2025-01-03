@@ -116,6 +116,7 @@ processResources {
             'credits'                      : credits,
             'java_version'                 : java_version,
             'geckolib_version'             : geckolib_version,
+            'bluelib_version'              : bluelib_version
     ]
 
     filesMatching(['pack.mcmeta', 'fabric.mod.json', 'META-INF/mods.toml', 'META-INF/neoforge.mods.toml', '*.mixins.json']) {

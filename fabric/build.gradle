@@ -11,7 +11,7 @@ dependencies {
     modImplementation "software.bernie.geckolib:geckolib-fabric-${minecraft_version}:${geckolib_version}"
     modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
-    implementation files("LocalVersion/fabric.jar")
+    implementation files("LocalVersion/bluelib-${minecraft_version}-${bluelib_version}.jar")
 }
 
 loom {

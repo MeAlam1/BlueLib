@@ -38,7 +38,7 @@ neoForge {
 
 dependencies {
     implementation "software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}"
-    implementation files("LocalVersion/neo.jar")
+    implementation files("LocalVersion/bluelib-${minecraft_version}-${bluelib_version}.jar")
 }
 
 sourceSets.main.resources { srcDir 'src/generated/resources' }
