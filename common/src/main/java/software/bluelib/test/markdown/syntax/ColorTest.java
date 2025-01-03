@@ -37,6 +37,10 @@ public class ColorTest {
         MessageUtils.sendMessageToPlayers(pHelper, "§6 This is a color/spoiler test: §r -#" + MessageUtils.getRandomHex() + "-(Color) ||spoiler||");
     }
 
+    public static void colorGradient(GameTestHelper pHelper) {
+        MessageUtils.sendMessageToPlayers(pHelper, "§6 This is a color/gradient test: §r -#" + MessageUtils.getRandomHex() + "-(Color) -#" + MessageUtils.getRandomHex() + ",#" + MessageUtils.getRandomHex() + ",#" + MessageUtils.getRandomHex() + "-(Gradient)");
+    }
+
     public static void colorCancel(GameTestHelper pHelper) {
         MessageUtils.sendMessageToPlayers(pHelper, "§6 This is a canceled color test: §r \\-#" + MessageUtils.getRandomHex() + "-(Color)");
     }

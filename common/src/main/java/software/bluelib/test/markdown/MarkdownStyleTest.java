@@ -21,7 +21,9 @@ public class MarkdownStyleTest {
             "-#" + MessageUtils.getRandomHex() + "-(Color)", // Color
             "\\-#" + MessageUtils.getRandomHex() + "-(Color)", // Color Canceled
             "||Spoiler||", // Spoiler
-            "\\||Spoiler||" // Spoiler Canceled
+            "\\||Spoiler||", // Spoiler Canceled
+            "-#" + MessageUtils.getRandomHex() + ",#" + MessageUtils.getRandomHex() + ",#" + MessageUtils.getRandomHex() + "-(Gradient)", // Gradient
+            "\\-#" + MessageUtils.getRandomHex() + ",#" + MessageUtils.getRandomHex() + ",#" + MessageUtils.getRandomHex() + "-(Gradient)" // Gradient Canceled
     );
 
     private static final List<String> CANCEL_ONLY_STYLES = List.of(
@@ -31,7 +33,8 @@ public class MarkdownStyleTest {
             "\\~~Strikethrough~~", // Strikethrough Canceled
             "\\[Hyperlink](https://modrinth.com/mod/bluelib)", // Hyperlink Canceled
             "\\-#" + MessageUtils.getRandomHex() + "-(Color)", // Color Canceled
-            "\\||Spoiler||" // Spoiler Canceled
+            "\\||Spoiler||", // Spoiler Canceled
+            "\\-#" + MessageUtils.getRandomHex() + ",#" + MessageUtils.getRandomHex() + ",#" + MessageUtils.getRandomHex() + "-(Gradient)" // Gradient Canceled
     );
 
     private static final List<String> ALL_TEST_STYLES = List.of(
@@ -41,7 +44,8 @@ public class MarkdownStyleTest {
             "~~Strikethrough~~", // Strikethrough
             "[Hyperlink](https://www.curseforge.com/minecraft/mc-mods/bluelib)", // Hyperlink
             "-#" + MessageUtils.getRandomHex() + "-(Color)", // Color
-            "||Spoiler||" // Spoiler
+            "||Spoiler||", // Spoiler
+            "-#" + MessageUtils.getRandomHex() + ",#" + MessageUtils.getRandomHex() + ",#" + MessageUtils.getRandomHex() + "-(Gradient)" // Gradient
     );
 
     private static final List<String> ALL_TWICE_STYLES = List.of(
@@ -58,7 +62,9 @@ public class MarkdownStyleTest {
             "-#" + MessageUtils.getRandomHex() + "-(Color)", // Color
             "-#" + MessageUtils.getRandomHex() + "-(Color)", // Color
             "||Spoiler||", // Spoiler
-            "||Spoiler||" // Spoiler
+            "||Spoiler||", // Spoiler
+            "-#" + MessageUtils.getRandomHex() + ",#" + MessageUtils.getRandomHex() + ",#" + MessageUtils.getRandomHex() + "-(Gradient)", // Gradient
+            "-#" + MessageUtils.getRandomHex() + ",#" + MessageUtils.getRandomHex() + ",#" + MessageUtils.getRandomHex() + "-(Gradient)" // Gradient
     );
 
     public static void testAllStyles(GameTestHelper pHelper) {
