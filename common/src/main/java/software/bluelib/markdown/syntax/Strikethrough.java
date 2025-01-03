@@ -10,7 +10,7 @@ import software.bluelib.utils.logging.BaseLogLevel;
 import software.bluelib.utils.logging.BaseLogger;
 
 /**
- * Handles the application of the strikethrough feature to Markdown text.
+ * Handles the application of the strikethrough feature to a Markdown text.
  * <p>
  * Purpose: This class is responsible for adding strikethrough formatting to text within markdown syntax.<br>
  * When: The strikethrough is applied when the text is surrounded by a specified prefix and suffix.<br>
@@ -32,12 +32,13 @@ import software.bluelib.utils.logging.BaseLogger;
  * </ul>
  *
  * @author MeAlam
- * @version 1.6.0
+ * @version 1.7.0
  * @see MarkdownFeature
  * @see Style
  * @see MutableComponent
  * @since 1.1.0
  */
+@SuppressWarnings("unused")
 public class Strikethrough extends MarkdownFeature {
 
     /**

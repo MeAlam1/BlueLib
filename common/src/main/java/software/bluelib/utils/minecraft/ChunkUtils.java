@@ -32,9 +32,10 @@ import software.bluelib.utils.logging.BaseLogger;
  * </ul>
  *
  * @author MeAlam
- * @version 1.0.0
+ * @version 1.7.0
  * @since 1.0.0
  */
+@SuppressWarnings("unused")
 public class ChunkUtils {
 
     /**
@@ -230,10 +231,8 @@ public class ChunkUtils {
     public static boolean isChunkLoaded(final LevelAccessor pWorld, final int pX, final int pZ) {
     try {
     boolean isLoaded = pWorld.getChunk(pX, pZ, ChunkStatus.FULL, false) != null;
-    BaseLogger.bluelibLogSuccess("Chunk at (" + pX + ", " + pZ + ") is loaded: " + isLoaded);
     return isLoaded;
     } catch (Exception e) {
-    BaseLogger.logError("Error checking if chunk at (" + pX + ", " + pZ + ") is loaded", e);
     return false;
     }
     }

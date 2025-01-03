@@ -38,7 +38,7 @@ import software.bluelib.utils.logging.BaseLogger;
  * </ul>
  *
  * @author MeAlam
- * @version 1.6.0
+ * @version 1.7.0
  * @see MutableComponent
  * @see Pattern
  * @see Style
@@ -48,6 +48,7 @@ import software.bluelib.utils.logging.BaseLogger;
  * @see BaseLogLevel
  * @since 1.6.0
  */
+@SuppressWarnings("unused")
 public class Color extends MarkdownFeature {
 
     /**
@@ -55,7 +56,7 @@ public class Color extends MarkdownFeature {
      * <p>
      * Purpose: This variable stores the default prefix for applying color formatting.<br>
      * When: It is used when checking for the start of a color formatted section.<br>
-     * Where: Used in the {@link Color#Prefix} and {@link Color#Suffix} logic.<br>
+     * Where: Used in several methods to determine the start of a color formatted section.<br>
      * Additional Info: The default value is "-", but it can be modified using {@link Color#setPrefix(String)} and {@link Color#setSuffix(String)}.<br>
      * </p>
      *
@@ -73,7 +74,7 @@ public class Color extends MarkdownFeature {
      * <p>
      * Purpose: This variable stores the default suffix for applying color formatting.<br>
      * When: It is used when checking for the end of a color formatted section.<br>
-     * Where: Used in the {@link Color#Prefix} and {@link Color#Suffix} logic.<br>
+     * Where: Used in several methods to determine the start of a color formatted section.<br>
      * Additional Info: The default value is "-", but it can be modified using {@link Color#setPrefix(String)} and {@link Color#setSuffix(String)}.<br>
      * </p>
      *

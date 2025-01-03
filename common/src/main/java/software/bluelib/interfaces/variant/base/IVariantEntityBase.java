@@ -22,9 +22,10 @@ import software.bluelib.utils.variant.ParameterUtils;
  * </ul>
  *
  * @author MeAlam
- * @version 1.3.0
+ * @version 1.7.0
  * @since 1.0.0
  */
+@SuppressWarnings("unused")
 public interface IVariantEntityBase {
 
     /**

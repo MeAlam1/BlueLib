@@ -32,9 +32,10 @@ import software.bluelib.utils.logging.BaseLogger;
  * </p>
  *
  * @author MeAlam
- * @version 1.0.0
+ * @version 1.7.0
  * @since 1.0.0
  */
+@SuppressWarnings("unused")
 public class StatisticalUtils {
 
     /**

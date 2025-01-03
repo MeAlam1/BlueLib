@@ -25,10 +25,11 @@ import software.bluelib.utils.logging.BaseLogger;
  * </ul>
  *
  * @author MeAlam
- * @version 1.4.0
+ * @version 1.7.0
  * @see VariantLoader
  * @since 1.0.0
  */
+@SuppressWarnings("unused")
 public class ParameterUtils {
 
     /**

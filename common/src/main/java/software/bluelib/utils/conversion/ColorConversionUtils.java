@@ -19,9 +19,10 @@ import java.util.regex.Pattern;
  * </ul>
  *
  * @author MeAlam
- * @version 1.6.0
+ * @version 1.7.0
  * @since 1.6.0
  */
+@SuppressWarnings("unused")
 public class ColorConversionUtils {
 
     /**

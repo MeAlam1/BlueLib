@@ -22,9 +22,10 @@ import software.bluelib.utils.logging.BaseLogger;
  * </ul>
  *
  * @author MeAlam
- * @version 1.0.0
+ * @version 1.7.0
  * @since 1.0.0
  */
+@SuppressWarnings("unused")
 public class CaseConverterUtils {
 
     /**
@@ -135,7 +136,7 @@ public class CaseConverterUtils {
     /**
      * A {@link String} that converts a given {@link String} to kebab-case.
      * <p>
-     * It converts camelCase, PascalCase, and snake_case to kebab-case by adding hyphens where appropriate.
+     * It converts camelCase, PascalCase, and snake_case to a kebab-case by adding hyphens where appropriate.
      *
      * @param pInput {@link String} - The input string to be converted.
      * @return The kebab-case version of the input string.
@@ -181,7 +182,7 @@ public class CaseConverterUtils {
      * A {@link String} that converts a given {@link String} to Train-Case.
      * <p>
      * Converts camelCase, PascalCase, snake_case, and kebab-case to Train-Case by adding hyphens and
-     * capitalizing each word.
+     * capitalizing on each word.
      *
      * @param pInput {@link String} - The input string to be converted.
      * @return The Train-Case version of the input string.

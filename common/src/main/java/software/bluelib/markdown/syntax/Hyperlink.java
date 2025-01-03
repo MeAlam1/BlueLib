@@ -34,12 +34,13 @@ import software.bluelib.utils.logging.BaseLogger;
  * </ul>
  *
  * @author MeAlam
- * @version 1.6.0
+ * @version 1.7.0
  * @see MutableComponent
  * @see Pattern
  * @see Style
  * @since 1.4.0
  */
+@SuppressWarnings("unused")
 public class Hyperlink extends MarkdownFeature {
 
     /**

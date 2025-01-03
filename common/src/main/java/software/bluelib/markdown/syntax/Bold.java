@@ -10,7 +10,7 @@ import software.bluelib.utils.logging.BaseLogLevel;
 import software.bluelib.utils.logging.BaseLogger;
 
 /**
- * Handles the application of the bold feature to Markdown text.
+ * Handles the application of the bold feature to a Markdown text.
  * <p>
  * Purpose: This class is responsible for adding bold formatting to text within markdown syntax.<br>
  * When: The bold is applied when the text is surrounded by a specified prefix and suffix.<br>
@@ -32,13 +32,14 @@ import software.bluelib.utils.logging.BaseLogger;
  * </ul>
  *
  * @author MeAlam
- * @version 1.6.0
+ * @version 1.7.0
  * @see software.bluelib.markdown.MarkdownParser
  * @see MarkdownFeature
  * @see Style
  * @see MutableComponent
  * @since 1.1.0
  */
+@SuppressWarnings("unused")
 public class Bold extends MarkdownFeature {
 
     /**

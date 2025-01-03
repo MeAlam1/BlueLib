@@ -23,11 +23,12 @@ import software.bluelib.markdown.MarkdownFeature;
  * </ul>
  *
  * @author MeAlam
- * @version 1.6.0
+ * @version 1.7.0
  * @see software.bluelib.markdown.MarkdownParser
  * @see MarkdownFeature
  * @since 1.5.0
  */
+@SuppressWarnings("unused")
 public class CopyToClipboard {
 
     /**

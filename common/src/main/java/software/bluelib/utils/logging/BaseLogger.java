@@ -22,8 +22,9 @@ import software.bluelib.BlueLibConstants;
  *
  * @author MeAlam
  * @since 1.0.0
- * @version 1.0.0
+ * @version 1.7.0
  */
+@SuppressWarnings("unused")
 public class BaseLogger {
 
     /**

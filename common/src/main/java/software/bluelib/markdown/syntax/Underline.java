@@ -32,13 +32,14 @@ import software.bluelib.utils.logging.BaseLogger;
  * </ul>
  *
  * @author MeAlam
- * @version 1.6.0
+ * @version 1.7.0
  * @see software.bluelib.markdown.MarkdownParser
  * @see MarkdownFeature
  * @see Style
  * @see MutableComponent
  * @since 1.1.0
  */
+@SuppressWarnings("unused")
 public class Underline extends MarkdownFeature {
 
     /**
