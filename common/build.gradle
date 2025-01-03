@@ -19,6 +19,7 @@ neoForge {
 dependencies {
     compileOnly group: 'org.spongepowered', name: 'mixin', version: mixin_version
     implementation "software.bernie.geckolib:geckolib-common-${minecraft_version}:${geckolib_version}"
+    implementation files("LocalVersion/common.jar")
     // fabric and neoforge both bundle mixinextras, so it is safe to use it in common
     compileOnly group: 'io.github.llamalad7', name: 'mixinextras-common', version: mixin_extra_version
     annotationProcessor group: 'io.github.llamalad7', name: 'mixinextras-common', version: mixin_extra_version

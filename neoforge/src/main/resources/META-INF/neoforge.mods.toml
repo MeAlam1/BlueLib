@@ -15,19 +15,16 @@ credits="Anyone who contributed to the Source Code of BlueLib!"
 authors="${mod_author}"
 description='''${description}'''
 
-[[dependencies.bluelib]]
+[[dependencies.bluelib_examples]]
 modId="neoforge"
 type="required"
 versionRange="${neoforge_version_range}"
 ordering="NONE"
 side="BOTH"
 
-[[dependencies.bluelib]]
+[[dependencies.bluelib_examples]]
 modId="minecraft"
 type="required"
 versionRange="${minecraft_version_range}"
 ordering="NONE"
 side="BOTH"
-
-[[mixins]]
-config = "bluelib.mixins.json"

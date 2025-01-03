@@ -17,13 +17,9 @@
     "environment": "*",
     "entrypoints": {
         "main": [
-            "software.bluelib.BlueLib"
+          "software.bluelib_examples.BlueLib"
         ],
-        "client": [],
-        "fabric-gametest": [
-            "software.bluelib.test.ExampleTest",
-            "software.bluelib.test.markdown.Markdown"
-        ]
+        "client": []
     },
     "mixins": [
         "${mod_id}.mixins.json",
