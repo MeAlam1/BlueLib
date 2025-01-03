@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.packs.resources.CloseableResourceManager;
 import software.bluelib.BlueLibConstants;
 import software.bluelib.event.ReloadEventHandler;
 import software.bluelib.utils.logging.BaseLogLevel;
@@ -21,25 +22,15 @@ import software.bluelib.utils.logging.BaseLogger;
  * Key Methods:
  * <ul>
  * <li>{@link #onServerStart(MinecraftServer)} - Handles server starting events to initialize entity variants.</li>
- * <li>{@link #onReload()} - Handles reload events to refresh entity variants.</li>
+ * <li>{@link #onReload(MinecraftServer, CloseableResourceManager, boolean)} - Handles reload events to refresh entity variants.</li>
  * <li>{@link #LoadEntityVariants(MinecraftServer)} - Loads entity variants from JSON files into the server.</li>
  * </ul>
  *
  * @author MeAlam
- * @version 1.4.0
+ * @version 1.7.0
  * @since 1.0.0
  */
 public class ReloadHandler extends ReloadEventHandler {
-
-    /**
-     * The {@link MinecraftServer} instance for the server handling the events.
-     * <p>
-     * This is initialized when the server starts and used to load entity variants.
-     * </p>
-     *
-     * @since 1.0.0
-     */
-    private static MinecraftServer server;
 
     /**
      * Handles the server starting event to initialize the {@link MinecraftServer} instance
@@ -51,8 +42,7 @@ public class ReloadHandler extends ReloadEventHandler {
      */
     public static void onServerStart(MinecraftServer pServer) {
         BlueLibConstants.SCHEDULER = new ScheduledThreadPoolExecutor(1);
-        server = pServer;
-        ReloadHandler.LoadEntityVariants(server);
+        ReloadHandler.LoadEntityVariants(pServer);
         BaseLogger.log(BaseLogLevel.INFO, "Entity variants loaded.", true);
     }
 
@@ -65,14 +55,12 @@ public class ReloadHandler extends ReloadEventHandler {
      * @author MeAlam
      * @since 1.0.0
      */
-    public static void onReload() {
-        if (server != null) {
-            BlueLibConstants.SCHEDULER.schedule(() -> {
-                server.execute(() -> {
-                    ReloadHandler.LoadEntityVariants(server);
-                    BaseLogger.log(BaseLogLevel.INFO, "Entity variants reloaded.", true);
-                });
-            }, 1, TimeUnit.SECONDS);
+    public static void onReload(MinecraftServer pServer, CloseableResourceManager pCloseableResourceManager, boolean pBoolean) {
+        if (pServer != null) {
+            BlueLibConstants.SCHEDULER.schedule(() -> pServer.execute(() -> {
+                ReloadHandler.LoadEntityVariants(pServer);
+                BaseLogger.log(BaseLogLevel.INFO, "Entity variants reloaded.", true);
+            }), 1, TimeUnit.SECONDS);
         }
     }
 
