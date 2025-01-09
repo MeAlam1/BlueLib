@@ -5,6 +5,7 @@ package software.bluelib;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.logging.Logger;
+import net.minecraft.resources.ResourceLocation;
 
 /**
  * A {@code public class} that defines common constants used across the BlueLib mod.
@@ -83,4 +84,8 @@ public class BlueLibConstants {
      * @since 1.0.0
      */
     public static boolean isLoggingEnabled = true;
+
+    public static ResourceLocation resourceLocation(String pPath) {
+        return ResourceLocation.fromNamespaceAndPath(MOD_ID, pPath);
+    }
 }

@@ -38,7 +38,7 @@ public class SpoilerTest {
     }
 
     public static void spoilerGradient(GameTestHelper pHelper) {
-        MessageUtils.sendMessageToPlayers(pHelper, "§6 This is a spoiler/gradient test: §r ||spoiler|| -#" + MessageUtils.getRandomHex() + ",#" + MessageUtils.getRandomHex() + ",#" + MessageUtils.getRandomHex() + +MessageUtils.getRandomHex() + "-(Gradient)");
+        MessageUtils.sendMessageToPlayers(pHelper, "§6 This is a spoiler/gradient test: §r ||spoiler|| -#" + MessageUtils.getRandomHex() + ",#" + MessageUtils.getRandomHex() + ",#" + MessageUtils.getRandomHex() + MessageUtils.getRandomHex() + "-(Gradient)");
     }
 
     public static void spoilerCancel(GameTestHelper pHelper) {
