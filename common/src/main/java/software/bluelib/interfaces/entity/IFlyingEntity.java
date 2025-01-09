@@ -24,6 +24,7 @@ import software.bluelib.utils.logging.BaseLogger;
  * <li>{@link #getFlyingSpeedMultiplier(LivingEntity)} - Retrieves the speed multiplier for the entity while flying.</li>
  * <li>{@link #setFlyingSpeedMultiplier(LivingEntity, double)} - Sets the speed multiplier for the entity while flying.</li>
  * <li>{@link #canFly(LivingEntity)} - Checks if the entity is capable of flight.</li>
+ * <li>{@link #canFly(LivingEntity, boolean)} - Sets whether the entity can fly.</li>
  * <li>{@link #getFlightCooldown(LivingEntity)} - Retrieves the cooldown period between flights.</li>
  * <li>{@link #setFlightCooldown(LivingEntity, int)} - Sets the cooldown period between flights.</li>
  * <li>{@link #getAltitude(LivingEntity)} - Retrieves the current altitude of the entity.</li>
