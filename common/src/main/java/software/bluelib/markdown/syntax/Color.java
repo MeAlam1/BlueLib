@@ -235,7 +235,7 @@ public class Color extends MarkdownFeature {
         }
 
         if (pColors.size() == 1) {
-            int color = pColors.get(0);
+            int color = pColors.getFirst();
             pResult.append(Component.literal(pColorText).setStyle(pOriginalStyle.withColor(TextColor.fromRgb(color))));
             return;
         }

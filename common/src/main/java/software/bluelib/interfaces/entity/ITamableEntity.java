@@ -1,6 +1,7 @@
 // Copyright (c) BlueLib. Licensed under the MIT License.
 package software.bluelib.interfaces.entity;
 
+import java.util.List;
 import java.util.UUID;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.OwnableEntity;
@@ -19,9 +20,11 @@ import software.bluelib.entity.EntityStateManager;
  * Key Methods:
  * <ul>
  * <li>{@link #isTamed(OwnableEntity)} - Checks if the provided entity is tamed.</li>
- * <li>{@link #ownedBy(OwnableEntity, Player)} - Checks if a specific player owns the entity.</li>
- * <li>{@link #getTamingItem(LivingEntity)} - Retrieves the taming item required for the entity.</li>
- * <li>{@link #setTamingItem(LivingEntity, String)} - Sets the taming item for the entity.</li>
+ * <li>{@link #isOwnedBy(OwnableEntity, Player)} - Checks if a specific player owns the entity.</li>
+ * <li>{@link #getTamingItems(LivingEntity)} - Retrieves the taming items associated with the entity.</li>
+ * <li>{@link #getSpecificTamingItem(LivingEntity, Item)} - Retrieves the specific taming item required for the entity.</li>
+ * <li>{@link #setTamingItems(LivingEntity, List)} - Sets the taming items for the entity.</li>
+ * <li>{@link #addTamingItem(LivingEntity, Item)} - Adds a taming item to the entity.</li>
  * <li>{@link #getFollowingStatus(LivingEntity)} - Checks if the entity is following its owner.</li>
  * <li>{@link #setFollowingStatus(LivingEntity, boolean)} - Sets the following status of the entity.</li>
  * <li>{@link #getLoyaltyLevel(LivingEntity)} - Retrieves the loyalty level of the entity.</li>
@@ -79,44 +82,91 @@ public interface ITamableEntity {
     }
 
     /**
-     * Retrieves the taming item associated with the specified entity.
+     * Retrieves the taming items associated with the specified entity.
      * <p>
-     * Purpose: Returns the item required to tame the {@link LivingEntity}.<br>
+     * Purpose: Returns the items required to tame the {@link LivingEntity}.<br>
      * When: Called during interactions or checks related to taming mechanics.<br>
      * Where: Used in gameplay systems that validate or enforce taming requirements.<br>
      * Additional Info: The library does not enforce the Taming Items; it is up to the developer to manage the Taming Items.<br>
      * </p>
      *
-     * @param pEntity The {@link LivingEntity} whose taming item is to be retrieved.
-     * @return The name of the taming item as a {@link String}.
+     * @param pEntity The {@link LivingEntity} whose taming items are to be retrieved.
+     * @return The name of the taming items as a {@link String}.
      * @author Kyradjis
      * @see EntityStateManager
      * @see LivingEntity
+     * @see Item
+     * @see List
      * @since 1.7.0
      */
-    default Item getTamingItem(LivingEntity pEntity) {
-        return EntityStateManager.getTamingItem(pEntity);
+    default List<Item> getTamingItems(LivingEntity pEntity) {
+        return EntityStateManager.getTamingItems(pEntity);
     }
 
     /**
-     * Sets the taming item for the specified entity.
+     * Retrieves the specific taming item required for the entity.
      * <p>
-     * Purpose: Updates the item required to tame the {@link LivingEntity}.<br>
+     * Purpose: Returns the specific item required to tame the {@link LivingEntity}.<br>
+     * When: Called during interactions or checks related to taming mechanics.<br>
+     * Where: Used in gameplay systems that validate or enforce taming requirements.<br>
+     * Additional Info: The library does not enforce the Taming Items; it is up to the developer to manage the Taming Items.<br>
+     * </p>
+     *
+     * @param pEntity The {@link LivingEntity} whose specific taming item is to be retrieved.
+     * @param pItem   The name of the taming item as a {@link String}.
+     * @return The specific taming item as an {@link Item} object.
+     * @author MeAlam
+     * @see EntityStateManager
+     * @see LivingEntity
+     * @see Item
+     * @since 1.7.0
+     */
+    default Item getSpecificTamingItem(LivingEntity pEntity, Item pItem) {
+        return EntityStateManager.getSpecificTamingItem(pEntity, pItem);
+    }
+
+    /**
+     * Sets the taming items for the specified entity.
+     * <p>
+     * Purpose: Updates the items required to tame the {@link LivingEntity}.<br>
      * When: Invoked during setup or configuration of taming mechanics.<br>
      * Where: Used to modify the taming requirements for an entity.<br>
      * Additional Info: The library does not enforce the Taming Items; it is up to the developer to manage the Taming Items.<br>
      * </p>
      *
-     * @param pEntity The {@link LivingEntity} whose taming item is to be set.
-     * @param pItem   The name of the taming item as a {@link String}.
+     * @param pEntity The {@link LivingEntity} whose taming items are to be set.
+     * @param pItem   The name of the taming items as a {@link String}.
      * @author Kyradjis
      * @see EntityStateManager
      * @see LivingEntity
      * @see String
+     * @see Item
+     * @see List
      * @since 1.7.0
      */
-    default void setTamingItem(LivingEntity pEntity, Item pItem) {
-        EntityStateManager.setTamingItem(pEntity, pItem);
+    default void setTamingItems(LivingEntity pEntity, List<Item> pItem) {
+        EntityStateManager.setTamingItems(pEntity, pItem);
+    }
+
+    /**
+     * Adds a taming item to the specified entity.
+     * <p>
+     * Purpose: Adds an item to the list of items required to tame the {@link LivingEntity}.<br>
+     * When: Invoked during setup or configuration of taming mechanics.<br>
+     * Where: Used to modify the taming requirements for an entity.<br>
+     * Additional Info: The library does not enforce the Taming Items; it is up to the developer to manage the Taming Items.<br>
+     * </p>
+     *
+     * @param pEntity The {@link LivingEntity} to add the taming item to.
+     * @param pItem   The item to add to the list of taming items.
+     * @author MeAlam
+     * @see EntityStateManager
+     * @see LivingEntity
+     * @see Item
+     * @since 1.7.0
+     */
+    default void addTamingItem(LivingEntity pEntity, Item pItem) {
+        EntityStateManager.addTamingItem(pEntity, pItem);
     }
 
     /**

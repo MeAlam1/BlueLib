@@ -1,10 +1,13 @@
 // Copyright (c) BlueLib. Licensed under the MIT License.
 package software.bluelib.entity;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
+import org.jetbrains.annotations.Nullable;
 import software.bluelib.interfaces.entity.ITamableEntity;
 
 /**
@@ -27,8 +30,10 @@ import software.bluelib.interfaces.entity.ITamableEntity;
  * <li>{@link #setSwimmingState(LivingEntity, boolean)} - Updates the swimming state of the entity.</li>
  * <li>{@link #getSwimmingCooldown(LivingEntity)} - Retrieves the swimming cooldown period of the entity.</li>
  * <li>{@link #setSwimmingCooldown(LivingEntity, int)} - Updates the swimming cooldown period of the entity.</li>
- * <li>{@link #getTamingItem(LivingEntity)} - Retrieves the taming item associated with the entity.</li>
- * <li>{@link #setTamingItem(LivingEntity, Item)} - Updates the taming item for the entity.</li>
+ * <li>{@link #getTamingItems(LivingEntity)} - Retrieves the taming items associated with the entity.</li>
+ * <li>{@link #setTamingItems(LivingEntity, List)} - Sets the taming items for the entity.</li>
+ * <li>{@link #addTamingItem(LivingEntity, Item)} - Adds a taming item to the entity.</li>
+ * <li>{@link #getSpecificTamingItem(LivingEntity, Item)} - Retrieves the specific taming item associated with the entity.</li>
  * <li>{@link #getFollowingState(LivingEntity)} - Retrieves the following state of the entity.</li>
  * <li>{@link #setFollowingState(LivingEntity, boolean)} - Updates the following state of the entity.</li>
  * <li>{@link #getLoyaltyLevel(LivingEntity)} - Retrieves the loyalty level of the entity.</li>
@@ -433,7 +438,7 @@ public class EntityStateManager {
      * A map to store the taming item associated with entities.
      * <p>
      * Purpose: This map tracks the specific taming item required for each {@link LivingEntity}.<br>
-     * When: The map is populated or accessed when {@link #getTamingItem(LivingEntity)} or {@link #setTamingItem(LivingEntity, Item)} is invoked.<br>
+     * When: The map is populated or accessed when {@link #getTamingItem(LivingEntity)} or {@link #setTamingItem(LivingEntity, List)} is invoked.<br>
      * Where: Used to manage and validate taming mechanics based on specific items.<br>
      * Additional Info: The keys are {@link LivingEntity} instances, and the values are the taming items.
      * </p>
@@ -442,48 +447,114 @@ public class EntityStateManager {
      * @see String
      * @since 1.7.0
      */
-    private static final Map<LivingEntity, Item> tamingItemMap = new HashMap<>();
+    private static final Map<LivingEntity, List<Item>> tamingItemMap = new HashMap<>();
 
     /**
-     * Retrieves the taming item associated with the specified entity.
+     * Retrieves the taming items associated with the specified entity.
      * <p>
-     * Purpose: Returns the {@link String} representation of the item required to tame the given {@link LivingEntity}.<br>
-     * When: Invoked during interactions or checks that require validation of the entity's taming item.<br>
+     * Purpose: Returns the {@link String} representation of the items required to tame the given {@link LivingEntity}.<br>
+     * When: Invoked during interactions or checks that require validation of the entity's taming items.<br>
      * Where: Used in taming mechanics or gameplay systems that enforce item-based taming.<br>
-     * Additional Info: If no taming item is set for the entity, the method returns {@code null}.
+     * Additional Info: If no taming items are set for the entity, the method returns an empty {@link ArrayList}.
      * </p>
      *
-     * @param pEntity The {@link LivingEntity} whose taming item is to be retrieved.
+     * @param pEntity The {@link LivingEntity} whose taming items are to be retrieved.
      * @return The taming item.
      * @author Kyradjis
      * @see #tamingItemMap
      * @see LivingEntity
      * @see String
+     * @see List
+     * @see ArrayList
      * @since 1.7.0
      */
-    public static Item getTamingItem(LivingEntity pEntity) {
-        return tamingItemMap.getOrDefault(pEntity, null);
+    public static List<Item> getTamingItems(LivingEntity pEntity) {
+        return tamingItemMap.getOrDefault(pEntity, new ArrayList<>());
     }
 
     /**
-     * Sets the taming item for the specified entity.
+     * Retrieves the specific taming item associated with the specified entity.
      * <p>
-     * Purpose: Updates the item required to tame the given {@link LivingEntity}.<br>
-     * When: Called during interactions or events that define or modify the taming requirements for an entity.<br>
-     * Where: Used to manage taming mechanics based on specific items.<br>
-     * Additional Info: The taming item is stored in the {@link #tamingItemMap}.
+     * Purpose: Returns the specific item required to tame the given {@link LivingEntity}.<br>
+     * When: Invoked during interactions or checks that require validation of the entity's taming items.<br>
+     * Where: Used in taming mechanics or gameplay systems that enforce item-based taming.<br>
+     * Additional Info: If no taming items are set for the entity, the method returns {@code null}.
      * </p>
      *
-     * @param pEntity The {@link LivingEntity} whose taming item is to be set.
+     * @param pEntity The {@link LivingEntity} whose taming item is to be retrieved.
      * @param pItem   The taming item.
+     * @return The specific taming item required to tame the entity, or {@code null} if no item is set.
+     * @author MeAlam
+     * @see #tamingItemMap
+     * @see LivingEntity
+     * @see Item
+     * @see List
+     * @see ArrayList
+     * @see Nullable
+     * @since 1.7.0
+     */
+    @Nullable
+    public static Item getSpecificTamingItem(LivingEntity pEntity, Item pItem) {
+        List<Item> items = tamingItemMap.getOrDefault(pEntity, new ArrayList<>());
+        if (items.isEmpty()) {
+            return null;
+        }
+        for (Item item : items) {
+            if (item == pItem) {
+                return item;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Sets the taming items for the specified entity.
+     * <p>
+     * Purpose: Updates the items required to tame the given {@link LivingEntity}.<br>
+     * When: Called during interactions or events that define or modify the taming requirements for an entity.<br>
+     * Where: Used to manage taming mechanics based on specific items.<br>
+     * Additional Info: The taming items are stored in the {@link #tamingItemMap}.
+     * </p>
+     *
+     * @param pEntity The {@link LivingEntity} whose taming items are to be set.
+     * @param pItem   The taming items.
      * @author Kyradjis
      * @see #tamingItemMap
      * @see LivingEntity
      * @see String
+     * @see Item
+     * @see List
+     * @see ArrayList
      * @since 1.7.0
      */
-    public static void setTamingItem(LivingEntity pEntity, Item pItem) {
+    public static void setTamingItems(LivingEntity pEntity, List<Item> pItem) {
         tamingItemMap.put(pEntity, pItem);
+    }
+
+    /**
+     * Adds a taming item to the specified entity.
+     * <p>
+     * Purpose: Adds an item to the list of taming items required to tame the given {@link LivingEntity}.<br>
+     * When: Called during interactions or events that add new taming items to an entity's requirements.<br>
+     * Where: Used to manage taming mechanics based on specific items.<br>
+     * Additional Info: The taming item is stored in the {@link #tamingItemMap}.
+     * </p>
+     *
+     * @param pEntity The {@link LivingEntity} to add the taming item to.
+     * @param pItem   The taming item to add to the entity's requirements.
+     * @author MeAlam
+     * @see #tamingItemMap
+     * @see LivingEntity
+     * @see String
+     * @see Item
+     * @see List
+     * @see ArrayList
+     * @since 1.7.0
+     */
+    public static void addTamingItem(LivingEntity pEntity, Item pItem) {
+        List<Item> items = tamingItemMap.getOrDefault(pEntity, new ArrayList<>());
+        items.add(pItem);
+        tamingItemMap.put(pEntity, items);
     }
 
     // Owner Following
