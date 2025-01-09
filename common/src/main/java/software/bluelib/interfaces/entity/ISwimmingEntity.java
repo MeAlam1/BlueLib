@@ -23,6 +23,8 @@ import software.bluelib.utils.logging.BaseLogger;
  * <li>{@link #setSwimmingState(LivingEntity, boolean)} - Updates the swimming state of the entity.</li>
  * <li>{@link #getSwimmingSpeedMultiplier(LivingEntity)} - Retrieves the swimming speed multiplier of the entity.</li>
  * <li>{@link #setSwimmingSpeedMultiplier(LivingEntity, double)} - Updates the swimming speed multiplier of the entity.</li>
+ * <li>{@link #canSwim(LivingEntity)} - Checks if the entity is capable of swimming.</li>
+ * <li>{@link #canSwim(LivingEntity, boolean)} - Sets whether the entity can swim.</li>
  * <li>{@link #getSwimmingCooldown(LivingEntity)} - Retrieves the cooldown period for the entity's swimming behavior.</li>
  * <li>{@link #setSwimmingCooldown(LivingEntity, int)} - Updates the cooldown period for the entity's swimming behavior.</li>
  * <li>{@link #getDepth(LivingEntity)} - Retrieves the current depth (Y-coordinate) of the entity.</li>
