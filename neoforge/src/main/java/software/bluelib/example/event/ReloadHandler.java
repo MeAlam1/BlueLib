@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
 import net.minecraft.server.MinecraftServer;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.event.AddReloadListenerEvent;
+import net.neoforged.neoforge.event.AddServerReloadListenersEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import software.bluelib.BlueLibConstants;
 import software.bluelib.event.ReloadEventHandler;
@@ -26,7 +26,7 @@ import software.bluelib.utils.logging.BaseLogger;
  * Key Methods:
  * <ul>
  * <li>{@link #onServerStart(ServerStartingEvent)} - Handles server starting events to initialize entity variants.</li>
- * <li>{@link #onReload(AddReloadListenerEvent)} - Handles reload events to refresh entity variants.</li>
+ * <li>{@link #onReload(AddServerReloadListenersEvent)} - Handles reload events to refresh entity variants.</li>
  * <li>{@link #LoadEntityVariants(MinecraftServer)} - Loads entity variants from JSON files into the server.</li>
  * </ul>
  *
@@ -69,12 +69,12 @@ public class ReloadHandler extends ReloadEventHandler {
      * This method schedules the {@code LoadEntityVariants} method to run after a short delay.
      * </p>
      *
-     * @param pEvent {@link AddReloadListenerEvent} - The event triggered when a reload occurs.
+     * @param pEvent {@link AddServerReloadListenersEvent} - The event triggered when a reload occurs.
      * @author MeAlam
      * @since 1.0.0
      */
     @SubscribeEvent
-    public static void onReload(AddReloadListenerEvent pEvent) {
+    public static void onReload(AddServerReloadListenersEvent pEvent) {
         if (server != null) {
             BlueLibConstants.SCHEDULER.schedule(() -> {
                 server.execute(() -> {
