@@ -1,10 +1,9 @@
 package software.bluelib.utils.conversion;
 
-import software.bluelib.utils.logging.BaseLogLevel;
-import software.bluelib.utils.logging.BaseLogger;
-
 import java.net.URI;
 import java.net.URISyntaxException;
+import software.bluelib.utils.logging.BaseLogLevel;
+import software.bluelib.utils.logging.BaseLogger;
 
 public class LinkUtils {
 

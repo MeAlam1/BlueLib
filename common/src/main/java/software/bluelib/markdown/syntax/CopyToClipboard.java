@@ -5,7 +5,6 @@ package software.bluelib.markdown.syntax;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import org.jetbrains.annotations.NotNull;
 import software.bluelib.markdown.MarkdownFeature;
 
 /**

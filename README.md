@@ -33,7 +33,7 @@
 
 <!-- Versions -->
 <div align="center">
-   <img src="https://github.com/user-attachments/assets/dcf8609c-a8b0-4c44-85e4-74010ff01214" alt="Versions"/>
+   <img src="https://github.com/user-attachments/assets/2313d94c-f1c3-4892-a0ca-16ed99bed331" alt="Versions"/>
 </div>
 
 <!-- Documentation Banner -->
