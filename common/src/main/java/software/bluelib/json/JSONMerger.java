@@ -59,11 +59,11 @@ public class JSONMerger {
                     BaseLogger.log(BaseLogLevel.INFO, "Merged array for key: " + key, true);
                 } else {
                     pTarget.add(key, sourceElement);
-                    BaseLogger.log(BaseLogLevel.WARNING, "Overwriting value for key: " + key, true);
+                    BaseLogger.log(BaseLogLevel.WARNING, "Overwriting value for key: " + key + " for " + sourceElement, true);
                 }
             } else {
                 pTarget.add(key, sourceElement);
-                BaseLogger.log(BaseLogLevel.SUCCESS, "Added new key: " + key, true);
+                BaseLogger.log(BaseLogLevel.SUCCESS, "Added new key: " + key + " to " + sourceElement, true);
             }
         }
     }

@@ -7,6 +7,7 @@ import com.google.gson.JsonObject;
 import java.util.HashMap;
 import java.util.Map;
 import net.minecraft.server.MinecraftServer;
+import software.bluelib.BlueLibCommon;
 import software.bluelib.json.JSONParser;
 import software.bluelib.utils.logging.BaseLogLevel;
 import software.bluelib.utils.logging.BaseLogger;
@@ -109,9 +110,14 @@ public class VariantLoader extends JSONParser {
      * @since 1.0.0
      */
     private static void parseVariants(String pEntityName, JsonObject pJsonObject) {
-        for (Map.Entry<String, JsonElement> ignored : pJsonObject.entrySet()) {
-            AllVariants.putIfAbsent(pEntityName, pJsonObject);
+        for (Map.Entry<String, JsonElement> entry : pJsonObject.entrySet()) {
+            String key = entry.getKey();
+            if (!AllVariants.containsKey(pEntityName)) {
+                AllVariants.put(pEntityName, pJsonObject);
+                BlueLibCommon.EVENT_PROXY.onVariantLoaded(pEntityName, key);
+            }
         }
+        BlueLibCommon.EVENT_PROXY.onAllVariantsLoaded(pEntityName);
         BaseLogger.log(BaseLogLevel.INFO, "All Entities: " + ParameterUtils.getAllEntities(), true);
         BaseLogger.log(BaseLogLevel.INFO, "Variants of " + pEntityName + ": " + ParameterUtils.getVariantsOfEntity(pEntityName), true);
     }

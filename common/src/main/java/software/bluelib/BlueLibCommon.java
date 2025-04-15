@@ -6,6 +6,9 @@ import static software.bluelib.BlueLibConstants.SCHEDULER;
 
 import java.util.ServiceLoader;
 import java.util.concurrent.TimeUnit;
+
+import software.bluelib.api.event.IEventProxy;
+import software.bluelib.api.event.mod.ModIntegration;
 import software.bluelib.interfaces.platform.IPlatformHelper;
 import software.bluelib.utils.logging.BaseLogLevel;
 import software.bluelib.utils.logging.BaseLogger;
@@ -48,6 +51,8 @@ public class BlueLibCommon {
      */
     public static final IPlatformHelper PLATFORM = load(IPlatformHelper.class);
 
+    public static final IEventProxy EVENT_PROXY = ServiceLoader.load(IEventProxy.class).findFirst().orElseThrow();
+
     /**
      * A {@code public static} {@link T} that loads a service using {@link ServiceLoader}.
      *
@@ -72,6 +77,7 @@ public class BlueLibCommon {
      * @since 1.0.0
      */
     public static void init() {
+        ModIntegration.checkSupportMods();
         if (isDeveloperMode()) {
             SCHEDULER.schedule(() -> {
                 BaseLogger.logBlueLib("**************************************************");

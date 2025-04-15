@@ -2,6 +2,11 @@
 
 package software.bluelib.interfaces.platform;
 
+import software.bluelib.api.event.mod.ModMeta;
+
+import java.util.List;
+import java.util.Set;
+
 /**
  * A {@code public interface} that defines platform-specific functionality for the BlueLib mod.
  * <p>
@@ -42,6 +47,10 @@ public interface IPlatformHelper {
      * @since 1.0.0
      */
     boolean isModLoaded(String pModId);
+
+    Set<String> getLoadedMods();
+
+    List<ModMeta> getLoadedModMetadata();
 
     /**
      * A {@link Boolean} method that checks if the game is currently running in a development environment.
