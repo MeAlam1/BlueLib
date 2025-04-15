@@ -194,14 +194,18 @@ public class Color extends MarkdownFeature {
         List<Integer> colors = new ArrayList<>();
 
         String colorGroup = matcher.group(1);
-        String[] colorArray = colorGroup.split(",");
-        for (String color : colorArray) {
-            if (IsValidUtils.isValidColor(color)) {
-                colors.add(ColorConversionUtils.parseColorToHexString(color));
+        if (colorGroup != null) {
+            String[] colorArray = colorGroup.split(",");
+            for (String color : colorArray) {
+                if (IsValidUtils.isValidColor(color)) {
+                    colors.add(ColorConversionUtils.parseColorToHexString(color));
+                } else {
+                    BaseLogger.log(BaseLogLevel.WARNING, "Invalid color detected: " + color, true);
+                }
             }
         }
 
-        System.out.println("Colors: " + colors);
+        BaseLogger.log(BaseLogLevel.INFO, "Extracted colors: " + colors, true);
 
         return colors;
     }
