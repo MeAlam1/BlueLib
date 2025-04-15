@@ -33,7 +33,52 @@
 
 <!-- Versions -->
 <div align="center">
-   <img src="https://github.com/user-attachments/assets/dcf8609c-a8b0-4c44-85e4-74010ff01214" alt="Versions"/>
+<table align="center">
+  <tr>
+    <td colspan="3" align="center"> <h3>Minecraft Mod Loaders</h3></td>
+  </tr>
+  <tr>
+    <td align="center"><strong>Neoforge</strong></td>
+    <td align="center"><strong>Fabric</strong></td>
+  </tr>
+  <tr>
+    <td>
+      <table border="1" align="center">
+        <thead>
+          <tr>
+            <th>Version</th>
+            <th>Support</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1.21.x</td>
+            <td>Active</td>
+          </tr>
+        </tbody>
+      </table>
+    </td>
+    <td>
+      <table border="1" align="center">
+        <thead>
+          <tr>
+            <th>Version</th>
+            <th>Support</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1.21.x</td>
+            <td>Active</td>
+          </tr>
+        </tbody>
+      </table>
+    </td>
+        </tbody>
+      </table>
+    </td>
+  </tr>
+</table>    
 </div>
 
 <!-- Documentation Banner -->
