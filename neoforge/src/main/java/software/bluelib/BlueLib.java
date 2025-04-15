@@ -8,7 +8,6 @@ import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent;
 import org.spongepowered.asm.launch.MixinBootstrap;
-import software.bluelib.test.TestRegistry;
 
 /**
  * The main class of the {@code BlueLib} mod.
@@ -45,7 +44,6 @@ public class BlueLib {
      */
     public BlueLib(IEventBus pModEventBus, ModContainer pModContainer) {
         pModEventBus.register(this);
-        TestRegistry.registerTests();
         MixinBootstrap.init();
     }
 

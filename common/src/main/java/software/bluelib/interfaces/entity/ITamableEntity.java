@@ -2,6 +2,7 @@
 package software.bluelib.interfaces.entity;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.OwnableEntity;
@@ -77,8 +78,8 @@ public interface ITamableEntity {
      * @since 1.7.0
      */
     default boolean isOwnedBy(OwnableEntity pEntity, Player pPlayer) {
-        UUID ownerUUID = pEntity.getOwnerUUID();
-        return ownerUUID != null && ownerUUID.equals(pPlayer.getUUID());
+        UUID ownerUUID = Objects.requireNonNull(pEntity.getOwner()).getUUID();
+        return ownerUUID.equals(pPlayer.getUUID());
     }
 
     /**

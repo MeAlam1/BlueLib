@@ -5,6 +5,7 @@ package software.bluelib.markdown.syntax;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import org.jetbrains.annotations.NotNull;
 import software.bluelib.markdown.MarkdownFeature;
 
 /**
@@ -71,7 +72,7 @@ public class CopyToClipboard {
             if (sibling instanceof MutableComponent mutableSibling) {
                 if (mutableSibling.getStyle().getClickEvent() == null) {
                     mutableSibling.setStyle(mutableSibling.getStyle()
-                            .withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, pTextToCopy)));
+                            .withClickEvent(new ClickEvent.CopyToClipboard(pTextToCopy)));
                 }
                 result.append(mutableSibling);
             } else {

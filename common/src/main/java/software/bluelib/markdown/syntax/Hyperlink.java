@@ -6,6 +6,7 @@ import java.util.regex.Pattern;
 import net.minecraft.network.chat.*;
 import software.bluelib.markdown.MarkdownFeature;
 import software.bluelib.utils.IsValidUtils;
+import software.bluelib.utils.conversion.LinkUtils;
 import software.bluelib.utils.logging.BaseLogLevel;
 import software.bluelib.utils.logging.BaseLogger;
 
@@ -217,7 +218,7 @@ public class Hyperlink extends MarkdownFeature {
                 .setStyle(pOriginalStyle
                         .withColor(TextColor.fromRgb(0x1F5FE1))
                         .withUnderlined(true)
-                        .withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, pUrl)));
+                        .withClickEvent(new ClickEvent.OpenUrl(LinkUtils.stringToUri(pUrl))));
 
         pResult.append(hyperlink);
     }

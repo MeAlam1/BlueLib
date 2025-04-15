@@ -85,7 +85,7 @@ public class LivingEntityMixin implements IVariantAccessor {
      */
     @Inject(method = "readAdditionalSaveData", at = @At("HEAD"))
     public void readAdditionalSaveData(@NotNull CompoundTag pCompound, CallbackInfo pCi) {
-        bluelib$setVariantName(pCompound.getString("Variant"));
+        bluelib$setVariantName(pCompound.getStringOr("Variant", "normal"));
     }
 
     /**
