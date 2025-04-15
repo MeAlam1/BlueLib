@@ -2,6 +2,7 @@
 
 package software.bluelib.utils.minecraft;
 
+import java.util.Collection;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
@@ -9,8 +10,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.chunk.LevelChunk;
 import software.bluelib.utils.logging.BaseLogLevel;
 import software.bluelib.utils.logging.BaseLogger;
-
-import java.util.Collection;
 
 /**
  * A {@code class} providing methods to interact with Minecraft chunks,
@@ -38,8 +37,7 @@ public class ChunkUtils {
      * @author MeAlam
      * @since 1.0.0
      */
-    private ChunkUtils() {
-    }
+    private ChunkUtils() {}
 
     /**
      * A {@link Biome} that retrieves the {@link Biome} of the specified chunk.

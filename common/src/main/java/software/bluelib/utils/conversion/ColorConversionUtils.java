@@ -45,7 +45,7 @@ public class ColorConversionUtils {
         }
 
         if (pInput.matches("^([0-9A-Fa-f]{6})$")) {
-            pInput="#" + pInput;
+            pInput = "#" + pInput;
         }
 
         String rgbPattern = "\\(\\s*(\\d{1,3})\\s*,\\s*(\\d{1,3})\\s*,\\s*(\\d{1,3})\\s*\\)";
