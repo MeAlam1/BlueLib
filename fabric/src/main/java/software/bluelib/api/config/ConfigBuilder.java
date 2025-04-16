@@ -1,19 +1,20 @@
-package software.bluelib.config;
+package software.bluelib.api.config;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import software.bluelib.config.BlueLibConfig;
 
-public class ConfigHolder<T extends BlueLibConfig> {
+public class ConfigBuilder<T extends BlueLibConfig> {
 
     private final Path configPath;
     private final Class<T> configClass;
     private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
     private T config;
 
-    public ConfigHolder(Path pConfigPath, Class<T> pConfigClass) {
+    public ConfigBuilder(Path pConfigPath, Class<T> pConfigClass) {
         this.configPath = pConfigPath;
         this.configClass = pConfigClass;
     }

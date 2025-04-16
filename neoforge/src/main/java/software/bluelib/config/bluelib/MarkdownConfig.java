@@ -1,7 +1,7 @@
 package software.bluelib.config.bluelib;
 
 import net.neoforged.neoforge.common.ModConfigSpec;
-import software.bluelib.config.ConfigBuilder;
+import software.bluelib.api.config.ConfigBuilder;
 
 public class MarkdownConfig {
 

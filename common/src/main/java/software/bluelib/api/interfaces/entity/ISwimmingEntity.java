@@ -1,11 +1,11 @@
 // Copyright (c) BlueLib. Licensed under the MIT License.
-package software.bluelib.interfaces.entity;
+package software.bluelib.api.interfaces.entity;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import software.bluelib.entity.EntityStateManager;
+import software.bluelib.api.entity.EntityStateManager;
 import software.bluelib.utils.logging.BaseLogLevel;
 import software.bluelib.utils.logging.BaseLogger;
 

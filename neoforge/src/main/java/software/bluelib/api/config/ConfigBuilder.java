@@ -1,4 +1,4 @@
-package software.bluelib.config;
+package software.bluelib.api.config;
 
 import net.neoforged.neoforge.common.ModConfigSpec;
 
