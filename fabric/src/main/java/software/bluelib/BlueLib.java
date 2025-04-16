@@ -8,7 +8,6 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.message.v1.ServerMessageEvents;
 import net.fabricmc.loader.api.FabricLoader;
-import software.bluelib.api.event.mod.ModLoadedEvent;
 import software.bluelib.event.ChatHandler;
 import software.bluelib.example.event.ReloadHandler;
 import software.bluelib.test.TestRegistry;

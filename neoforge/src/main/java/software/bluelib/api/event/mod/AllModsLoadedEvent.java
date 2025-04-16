@@ -1,19 +1,15 @@
 package software.bluelib.api.event.mod;
 
+import java.util.List;
 import net.neoforged.bus.api.Event;
 import net.neoforged.fml.event.IModBusEvent;
 import org.jetbrains.annotations.Nullable;
 
-import java.net.URL;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
 @SuppressWarnings("unused")
 public class AllModsLoadedEvent extends Event implements IModBusEvent {
-    
+
     List<ModMeta> modData;
-    
+
     public AllModsLoadedEvent(@Nullable List<ModMeta> pModData) {
         super();
         this.modData = pModData;
@@ -23,7 +19,7 @@ public class AllModsLoadedEvent extends Event implements IModBusEvent {
     public List<ModMeta> getAllModsData() {
         return modData;
     }
-    
+
     @Nullable
     public ModMeta getModMetaById(String pModId) {
         return modData.stream()

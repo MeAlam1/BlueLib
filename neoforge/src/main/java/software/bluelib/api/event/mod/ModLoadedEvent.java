@@ -1,19 +1,18 @@
 package software.bluelib.api.event.mod;
 
+import java.net.URL;
+import java.util.Map;
+import java.util.Optional;
 import net.neoforged.bus.api.Event;
 import net.neoforged.fml.event.IModBusEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.net.URL;
-import java.util.Map;
-import java.util.Optional;
-
 @SuppressWarnings("unused")
 public class ModLoadedEvent extends Event implements IModBusEvent {
-    
+
     ModMeta modData;
-    
+
     public ModLoadedEvent(@NotNull ModMeta pModData) {
         super();
         this.modData = pModData;
@@ -38,7 +37,7 @@ public class ModLoadedEvent extends Event implements IModBusEvent {
     public String getVersion() {
         return modData.version();
     }
-    
+
     public String getDescription() {
         return modData.description();
     }
@@ -51,12 +50,12 @@ public class ModLoadedEvent extends Event implements IModBusEvent {
     public Map<String, Object> getProperties() {
         return modData.properties();
     }
-    
+
     @Nullable
     public Optional<URL> getUpdateURL() {
         return modData.updateURL();
     }
-    
+
     @Nullable
     public Optional<URL> getModURL() {
         return modData.modURL();

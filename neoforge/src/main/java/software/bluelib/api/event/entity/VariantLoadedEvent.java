@@ -1,13 +1,12 @@
 package software.bluelib.api.event.entity;
 
-import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.bus.api.Event;
+import net.neoforged.bus.api.ICancellableEvent;
 import net.neoforged.fml.event.IModBusEvent;
-import net.neoforged.neoforge.event.entity.living.LivingEvent;
 import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("unused")
-public class VariantLoadedEvent extends Event implements IModBusEvent {
+public abstract class VariantLoadedEvent extends Event implements IModBusEvent {
 
     String entityName;
     String variant;
@@ -27,7 +26,18 @@ public class VariantLoadedEvent extends Event implements IModBusEvent {
     public String getVariant() {
         return variant;
     }
-    
-    
 
+    public static class Pre extends VariantLoadedEvent implements ICancellableEvent {
+
+        public Pre(@NotNull String pEntityName, @NotNull String pVariant) {
+            super(pEntityName, pVariant);
+        }
+    }
+
+    public static class Post extends VariantLoadedEvent {
+
+        public Post(@NotNull String pEntityName, @NotNull String pVariant) {
+            super(pEntityName, pVariant);
+        }
+    }
 }

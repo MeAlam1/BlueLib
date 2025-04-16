@@ -15,5 +15,4 @@ public record ModMeta(
         Optional<URL> modURL,
         Optional<String> logoFile
 
-) {
-}
+) {}

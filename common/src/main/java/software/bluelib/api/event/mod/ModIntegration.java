@@ -1,16 +1,15 @@
 package software.bluelib.api.event.mod;
 
-import software.bluelib.BlueLibCommon;
-import software.bluelib.BlueLibConstants;
-import software.bluelib.utils.logging.BaseLogLevel;
-import software.bluelib.utils.logging.BaseLogger;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import software.bluelib.BlueLibCommon;
+import software.bluelib.utils.logging.BaseLogLevel;
+import software.bluelib.utils.logging.BaseLogger;
 
 public class ModIntegration {
+
     private static final List<ModMeta> loadedModMetas = new ArrayList<>();
 
     public static void checkSupportMods() {

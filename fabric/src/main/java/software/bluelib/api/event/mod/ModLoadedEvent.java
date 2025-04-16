@@ -4,6 +4,7 @@ import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
 
 public final class ModLoadedEvent {
+
     public static final Event<ModLoadedEventListener> EVENT = EventFactory.createArrayBacked(ModLoadedEventListener.class,
             (listeners) -> (pModData) -> {
                 for (ModLoadedEventListener listener : listeners) {
@@ -13,6 +14,7 @@ public final class ModLoadedEvent {
 
     @FunctionalInterface
     public interface ModLoadedEventListener {
+
         void onModLoaded(ModMeta pModData);
     }
 }

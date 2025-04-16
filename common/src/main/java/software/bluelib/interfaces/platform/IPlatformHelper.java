@@ -2,10 +2,9 @@
 
 package software.bluelib.interfaces.platform;
 
-import software.bluelib.api.event.mod.ModMeta;
-
 import java.util.List;
 import java.util.Set;
+import software.bluelib.api.event.mod.ModMeta;
 
 /**
  * A {@code public interface} that defines platform-specific functionality for the BlueLib mod.

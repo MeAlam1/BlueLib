@@ -6,7 +6,6 @@ import static software.bluelib.BlueLibConstants.SCHEDULER;
 
 import java.util.ServiceLoader;
 import java.util.concurrent.TimeUnit;
-
 import software.bluelib.api.event.IEventProxy;
 import software.bluelib.api.event.mod.ModIntegration;
 import software.bluelib.interfaces.platform.IPlatformHelper;
