@@ -19,6 +19,7 @@ public abstract class MarkdownFeature {
     protected String suffix;
 
     public MutableComponent apply(MutableComponent pComponent) {
+        BaseLogger.log(BaseLogLevel.INFO, getFeatureName() + " is enabled: " + isFeatureEnabled(), true);
         if (!isFeatureEnabled()) {
             BaseLogger.log(BaseLogLevel.INFO, getFeatureName() + " formatting is disabled. Returning original content.", true);
             return pComponent;

@@ -6,6 +6,9 @@ import static software.bluelib.BlueLibConstants.SCHEDULER;
 
 import java.util.ServiceLoader;
 import java.util.concurrent.TimeUnit;
+
+import net.minecraft.network.chat.Component;
+import org.jetbrains.annotations.ApiStatus;
 import software.bluelib.api.event.IEventProxy;
 import software.bluelib.api.event.mod.ModIntegration;
 import software.bluelib.interfaces.platform.IPlatformHelper;
@@ -49,5 +52,16 @@ public class BlueLibCommon {
             BaseLogger.log(BaseLogLevel.INFO, "Running in Production mode.", true);
         }
         return isDevMode;
+    }
+    
+    @ApiStatus.Internal
+    public static class Translation {
+        public static Component translate(String pString) {
+            return Component.translatable(BlueLibConstants.MOD_ID + "." + pString);
+        }
+
+        public static Component translate(String pString, Object... pArgs) {
+            return Component.translatable(BlueLibConstants.MOD_ID + "." + pString, pArgs);
+        }
     }
 }

@@ -5,14 +5,13 @@ package software.bluelib.markdown.syntax;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import software.bluelib.config.MarkdownConfig;
 
 @SuppressWarnings("unused")
 public class CopyToClipboard {
 
-    public static Boolean isCopyToClipboardEnabled = true;
-
     public MutableComponent apply(MutableComponent pMessage, String pTextToCopy) {
-        if (!isCopyToClipboardEnabled) {
+        if (!MarkdownConfig.isCopyToClipboardEnabled) {
             return pMessage;
         }
         MutableComponent result = Component.empty();
@@ -33,6 +32,6 @@ public class CopyToClipboard {
     }
 
     public static Boolean isCopyToClipboardEnabled() {
-        return isCopyToClipboardEnabled;
+        return MarkdownConfig.isCopyToClipboardEnabled;
     }
 }

@@ -5,20 +5,15 @@ package software.bluelib.markdown.syntax;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
+import software.bluelib.config.MarkdownConfig;
 import software.bluelib.markdown.MarkdownFeature;
 
 @SuppressWarnings("unused")
 public class Italic extends MarkdownFeature {
 
-    protected static String Prefix = "*";
-
-    protected static String Suffix = "*";
-
-    public static Boolean isItalicEnabled = true;
-
     public Italic() {
-        prefix = Prefix;
-        suffix = Suffix;
+        prefix = MarkdownConfig.italicPrefix;
+        suffix = MarkdownConfig.italicSuffix;
     }
 
     @Override
@@ -30,7 +25,7 @@ public class Italic extends MarkdownFeature {
 
     @Override
     protected boolean isFeatureEnabled() {
-        return isItalicEnabled;
+        return MarkdownConfig.isItalicEnabled;
     }
 
     @Override
@@ -38,28 +33,7 @@ public class Italic extends MarkdownFeature {
         return "Italic";
     }
 
-    public static void setPrefixSuffix(String pPrefix, String pSuffix) {
-        Prefix = pPrefix;
-        Suffix = pSuffix;
-    }
-
-    public static void setPrefix(String pPrefix) {
-        Prefix = pPrefix;
-    }
-
-    public static void setSuffix(String pSuffix) {
-        Suffix = pSuffix;
-    }
-
-    public static String getPrefix() {
-        return Prefix;
-    }
-
-    public static String getSuffix() {
-        return Suffix;
-    }
-
     public static boolean isItalicEnabled() {
-        return isItalicEnabled;
+        return MarkdownConfig.isItalicEnabled;
     }
 }
