@@ -12,44 +12,10 @@ import software.bluelib.event.ChatHandler;
 import software.bluelib.example.event.ReloadHandler;
 import software.bluelib.test.TestRegistry;
 
-/**
- * A {@code public class} that implements {@link ModInitializer} to initialize the BlueLib mod on the Fabric platform.
- * <p>
- * This class handles the initialization of BlueLib by registering a client tick event that ensures
- * the mod is initialized only once during the game runtime.
- * </p>
- * <p>
- * Key Methods:
- * <ul>
- * <li>{@link #onInitialize()} - Registers the client tick event to initialize BlueLib.</li>
- * </ul>
- *
- * @author MeAlam
- * @version 1.7.0
- * @since 1.0.0
- */
 public class BlueLib implements ModInitializer {
 
-    /**
-     * A {@code private} {@link Boolean} flag indicating whether the mod has been initialized.
-     * <p>
-     * This ensures that the {@link BlueLibCommon#init()} method is called only once during the game's lifecycle.
-     * </p>
-     *
-     * @since 1.0.0
-     */
     private boolean hasInitialized = false;
 
-    /**
-     * A {@code public void} that registers a client tick event to initialize the BlueLib mod.
-     * <p>
-     * This method uses {@link ClientTickEvents#END_CLIENT_TICK} to register a callback that checks
-     * whether the mod has already been initialized and calls {@link BlueLibCommon#init()} if necessary.
-     * </p>
-     *
-     * @author MeAlam
-     * @since 1.0.0
-     */
     @Override
     public void onInitialize() {
         registerModEventListeners();
@@ -64,12 +30,6 @@ public class BlueLib implements ModInitializer {
         }
     }
 
-    /**
-     * Registers the Mod Dependant event listeners.
-     *
-     * @author MeAlam
-     * @since 1.0.0
-     */
     public static void registerModEventListeners() {
         ServerLifecycleEvents.SERVER_STARTING.register(ReloadHandler::onServerStart);
         ServerLifecycleEvents.END_DATA_PACK_RELOAD.register(ReloadHandler::onReload);
