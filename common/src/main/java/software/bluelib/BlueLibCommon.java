@@ -6,7 +6,6 @@ import static software.bluelib.BlueLibConstants.SCHEDULER;
 
 import java.util.ServiceLoader;
 import java.util.concurrent.TimeUnit;
-
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.ApiStatus;
 import software.bluelib.api.event.IEventProxy;
@@ -53,9 +52,10 @@ public class BlueLibCommon {
         }
         return isDevMode;
     }
-    
+
     @ApiStatus.Internal
     public static class Translation {
+
         public static Component translate(String pString) {
             return Component.translatable(BlueLibConstants.MOD_ID + "." + pString);
         }

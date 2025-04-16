@@ -5,7 +5,6 @@ import software.bluelib.config.ConfigBuilder;
 
 public class MarkdownConfig {
 
-
     // List of Config Options
     public final ModConfigSpec.BooleanValue isMarkdownEnabled;
 
@@ -42,45 +41,44 @@ public class MarkdownConfig {
     // List of Config Options
     public MarkdownConfig(final ModConfigSpec.Builder pBuilder) {
         pBuilder.push("Markdown");
-        isMarkdownEnabled = ConfigBuilder.buildBoolean(pBuilder, "markdownEnabled", true, "Default is 'true'");
+        isMarkdownEnabled = ConfigBuilder.buildBoolean(pBuilder, "markdownEnabled", true, "Default is 'true/on'");
         pBuilder.push("Bold");
         boldPrefix = ConfigBuilder.buildString(pBuilder, "prefix", "**", "Default is '**'");
         boldSuffix = ConfigBuilder.buildString(pBuilder, "suffix", "**", "Default is '**'");
-        isBoldEnabled = ConfigBuilder.buildBoolean(pBuilder, "boldEnabled", true, "Default is 'true'");
+        isBoldEnabled = ConfigBuilder.buildBoolean(pBuilder, "boldEnabled", true, "Default is 'true/on'");
         pBuilder.pop(1);
         pBuilder.push("Italic");
         italicPrefix = ConfigBuilder.buildString(pBuilder, "prefix", "*", "Default is '*'");
         italicSuffix = ConfigBuilder.buildString(pBuilder, "suffix", "*", "Default is '*'");
-        isItalicEnabled = ConfigBuilder.buildBoolean(pBuilder, "italicEnabled", true, "Default is 'true'");
+        isItalicEnabled = ConfigBuilder.buildBoolean(pBuilder, "italicEnabled", true, "Default is 'true/on'");
         pBuilder.pop(1);
         pBuilder.push("Underline");
         underlinePrefix = ConfigBuilder.buildString(pBuilder, "prefix", "__", "Default is '__'");
         underlineSuffix = ConfigBuilder.buildString(pBuilder, "suffix", "__", "Default is '__'");
-        isUnderlineEnabled = ConfigBuilder.buildBoolean(pBuilder, "underlineEnabled", true, "Default is 'true'");
+        isUnderlineEnabled = ConfigBuilder.buildBoolean(pBuilder, "underlineEnabled", true, "Default is 'true/on'");
         pBuilder.pop(1);
         pBuilder.push("Strikethrough");
         strikethroughPrefix = ConfigBuilder.buildString(pBuilder, "prefix", "~~", "Default is '~~'");
         strikethroughSuffix = ConfigBuilder.buildString(pBuilder, "suffix", "~~", "Default is '~~'");
-        isStrikethroughEnabled = ConfigBuilder.buildBoolean(pBuilder, "strikethroughEnabled", true, "Default is 'true'");
+        isStrikethroughEnabled = ConfigBuilder.buildBoolean(pBuilder, "strikethroughEnabled", true, "Default is 'true/on'");
         pBuilder.pop(1);
         pBuilder.push("Spoiler");
         spoilerPrefix = ConfigBuilder.buildString(pBuilder, "prefix", "||", "Default is '||'");
         spoilerSuffix = ConfigBuilder.buildString(pBuilder, "suffix", "||", "Default is '||'");
-        isSpoilerEnabled = ConfigBuilder.buildBoolean(pBuilder, "spoilerEnabled", true, "Default is 'true'");
+        isSpoilerEnabled = ConfigBuilder.buildBoolean(pBuilder, "spoilerEnabled", true, "Default is 'true/on'");
         pBuilder.pop(1);
         pBuilder.push("Hyperlink");
         hyperlinkPrefix = ConfigBuilder.buildString(pBuilder, "prefix", "[", "Default is '['");
         hyperlinkSuffix = ConfigBuilder.buildString(pBuilder, "suffix", "]", "Default is ']'");
-        isHyperlinkEnabled = ConfigBuilder.buildBoolean(pBuilder, "hyperlinkEnabled", true, "Default is 'true'");
+        isHyperlinkEnabled = ConfigBuilder.buildBoolean(pBuilder, "hyperlinkEnabled", true, "Default is 'true/on'");
         pBuilder.pop(1);
         pBuilder.push("Color");
         colorPrefix = ConfigBuilder.buildString(pBuilder, "prefix", "-", "Default is '-'");
         colorSuffix = ConfigBuilder.buildString(pBuilder, "suffix", "-", "Default is '-'");
-        isColorEnabled = ConfigBuilder.buildBoolean(pBuilder, "colorEnabled", true, "Default is 'true'");
+        isColorEnabled = ConfigBuilder.buildBoolean(pBuilder, "colorEnabled", true, "Default is 'true/on'");
         pBuilder.pop(1);
         pBuilder.push("CopyToClipboard");
-        isCopyToClipboardEnabled = ConfigBuilder.buildBoolean(pBuilder, "copyToClipboardEnabled", true, "Default is 'true'");
+        isCopyToClipboardEnabled = ConfigBuilder.buildBoolean(pBuilder, "copyToClipboardEnabled", true, "Default is 'true/on'");
         pBuilder.pop(2);
     }
-
 }

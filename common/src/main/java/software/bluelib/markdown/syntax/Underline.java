@@ -7,8 +7,6 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import software.bluelib.config.MarkdownConfig;
 import software.bluelib.markdown.MarkdownFeature;
-import software.bluelib.utils.logging.BaseLogLevel;
-import software.bluelib.utils.logging.BaseLogger;
 
 @SuppressWarnings("unused")
 public class Underline extends MarkdownFeature {
@@ -34,7 +32,7 @@ public class Underline extends MarkdownFeature {
     protected String getFeatureName() {
         return "Underline";
     }
-    
+
     public static Boolean isUnderlineEnabled() {
         return MarkdownConfig.isUnderlineEnabled;
     }

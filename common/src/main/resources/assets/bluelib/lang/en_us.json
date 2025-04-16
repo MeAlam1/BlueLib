@@ -36,5 +36,8 @@
   "bluelib.configuration.Spoiler.tooltip": "Spoiler related Config Settings",
   "bluelib.configuration.Hyperlink.tooltip": "Hyperlink related Config Settings",
   "bluelib.configuration.Color.tooltip": "Color related Config Settings",
-  "bluelib.configuration.CopyToClipboard.tooltip": "Copy to Clipboard related Config Settings"
+  "bluelib.configuration.CopyToClipboard.tooltip": "Copy to Clipboard related Config Settings",
+  "bluelib.configuration.title": "BlueLib Configuration",
+  "bluelib.configuration.section.bluelib.markdown.toml": "BlueLib Markdown Config",
+  "bluelib.configuration.section.bluelib.markdown.toml.title": "BlueLib Markdown"
 }

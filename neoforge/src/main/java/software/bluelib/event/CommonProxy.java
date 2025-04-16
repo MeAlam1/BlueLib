@@ -12,7 +12,7 @@ import software.bluelib.config.ConfigHolder;
 public class CommonProxy {
 
     @SubscribeEvent
-    public static void onModConfigEvent(final ModConfigEvent.Loading event) {
+    public static void onModConfigEvent(final ModConfigEvent.Reloading event) {
         final ModConfig config = event.getConfig();
         if (config.getSpec() == ConfigHolder.MARKDOWN_SPEC) {
             BlueLibConfig.bakeMarkdown(config);

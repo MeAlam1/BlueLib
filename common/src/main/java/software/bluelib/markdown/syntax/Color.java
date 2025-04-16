@@ -2,6 +2,10 @@
 
 package software.bluelib.markdown.syntax;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
@@ -13,13 +17,9 @@ import software.bluelib.utils.conversion.ColorConversionUtils;
 import software.bluelib.utils.logging.BaseLogLevel;
 import software.bluelib.utils.logging.BaseLogger;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 @SuppressWarnings("unused")
 public class Color extends MarkdownFeature {
+
     public MutableComponent apply(MutableComponent pComponent) {
         if (!MarkdownConfig.isColorEnabled) {
             BaseLogger.log(BaseLogLevel.INFO, "Color formatting is disabled. Returning original content.", true);

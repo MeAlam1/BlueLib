@@ -2,14 +2,13 @@
 
 package software.bluelib.markdown.syntax;
 
+import java.util.regex.Pattern;
 import net.minecraft.network.chat.*;
 import software.bluelib.config.MarkdownConfig;
 import software.bluelib.markdown.MarkdownFeature;
 import software.bluelib.utils.IsValidUtils;
 import software.bluelib.utils.logging.BaseLogLevel;
 import software.bluelib.utils.logging.BaseLogger;
-
-import java.util.regex.Pattern;
 
 @SuppressWarnings("unused")
 public class Hyperlink extends MarkdownFeature {

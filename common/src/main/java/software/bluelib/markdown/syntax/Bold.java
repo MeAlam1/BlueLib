@@ -7,8 +7,6 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import software.bluelib.config.MarkdownConfig;
 import software.bluelib.markdown.MarkdownFeature;
-import software.bluelib.utils.logging.BaseLogLevel;
-import software.bluelib.utils.logging.BaseLogger;
 
 @SuppressWarnings("unused")
 public class Bold extends MarkdownFeature {
