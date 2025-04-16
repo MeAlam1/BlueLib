@@ -16,53 +16,11 @@ import net.minecraft.world.level.chunk.LevelChunk;
 import software.bluelib.utils.logging.BaseLogLevel;
 import software.bluelib.utils.logging.BaseLogger;
 
-/**
- * A {@code class} providing methods to interact with Minecraft chunks,
- * specifically for retrieving biome and tile entity information.
- * <p>
- * Key Methods:
- * <ul>
- * <li>{@link #getBiomeOfChunk(Level, ChunkPos)} - Retrieves the {@link Biome} of the specified chunk.</li>
- * <li>{@link #getBiomeRegistryNameOfChunk(Level, ChunkPos)} - Retrieves the biome registry name of the specified chunk.</li>
- * <li>{@link #getBiomeSimpleNameOfChunk(Level, ChunkPos)} - Retrieves the simple name of the biome in the specified chunk.</li>
- * <li>{@link #getChunkTileEntities(Level, ChunkPos)} - Retrieves the tile entities within the specified chunk.</li>
- * <li>{@link #getChunkTileEntitiesRegistryNames(Level, ChunkPos)} - Retrieves the registry names of tile entities in the specified chunk.</li>
- * <li>{@link #getChunkTileEntitiesSimpleNames(Level, ChunkPos)} - Retrieves the simple names of tile entities in the specified chunk.</li>
- * <li>{@link #getChunkBlockCount(Level, ChunkPos)} - Counts the number of non-air blocks in the specified chunk.</li>
- * </ul>
- *
- * @author MeAlam
- * @version 1.7.0
- * @since 1.0.0
- */
 @SuppressWarnings("unused")
 public class ChunkUtils {
 
-    /**
-     * Private constructor to prevent instantiation.
-     * <p>
-     * This constructor is intentionally empty to prevent creating instances of this utility class.
-     * </p>
-     *
-     * @author MeAlam
-     * @since 1.0.0
-     */
     private ChunkUtils() {}
 
-    /**
-     * A {@link Biome} that retrieves the {@link Biome} of the specified chunk.
-     * <p>
-     * Logs a success message if the biome is retrieved successfully,
-     * and an error message if an exception occurs.
-     * </p>
-     *
-     * @param pLevel    {@link Level} - The game world level.
-     * @param pChunkPos {@link ChunkPos} - The position of the chunk.
-     * @return The {@link Biome} associated with the specified chunk.
-     * @throws RuntimeException if there is an error retrieving the biome.
-     * @author MeAlam
-     * @since 1.0.0
-     */
     public static Biome getBiomeOfChunk(Level pLevel, ChunkPos pChunkPos) {
         try {
             return pLevel.getBiome(pChunkPos.getWorldPosition()).value();
@@ -72,19 +30,6 @@ public class ChunkUtils {
         }
     }
 
-    /**
-     * A {@link String} that retrieves the biome registry name of the specified chunk.
-     * <p>
-     * Example: "minecraft:plains", "minecraft:desert"
-     * </p>
-     *
-     * @param pLevel    {@link Level} - The game world level.
-     * @param pChunkPos {@link ChunkPos} - The position of the chunk.
-     * @return The registry name of the chunk's biome as a {@link String}.
-     * @throws RuntimeException if there is an error retrieving the biome registry name.
-     * @author MeAlam
-     * @since 1.0.0
-     */
     public static String getBiomeRegistryNameOfChunk(Level pLevel, ChunkPos pChunkPos) {
         ResourceLocation biomeKey = pLevel.registryAccess()
                 .lookupOrThrow(Registries.BIOME)
@@ -98,37 +43,11 @@ public class ChunkUtils {
         return biomeKey.toString();
     }
 
-    /**
-     * A {@link String} that retrieves the simple name of the biome in the specified chunk.
-     * <p>
-     * Example: "plains", "desert"
-     * </p>
-     *
-     * @param pLevel    {@link Level} - The game world level.
-     * @param pChunkPos {@link ChunkPos} - The position of the chunk.
-     * @return The simple name of the chunk's biome.
-     * @author MeAlam
-     * @since 1.0.0
-     */
     public static String getBiomeSimpleNameOfChunk(Level pLevel, ChunkPos pChunkPos) {
         String registryName = getBiomeRegistryNameOfChunk(pLevel, pChunkPos);
         return registryName.contains(":") ? registryName.split(":")[1] : registryName;
     }
 
-    /**
-     * A {@link Collection<BlockEntity>} that retrieves the tile entities within the specified chunk.
-     * <p>
-     * Logs a success message with the number of tile entities retrieved,
-     * and an error message if an exception occurs.
-     * </p>
-     *
-     * @param pLevel    {@link Level} - The game world level.
-     * @param pChunkPos {@link ChunkPos} - The position of the chunk.
-     * @return A collection of tile entities present in the specified chunk.
-     * @throws RuntimeException if there is an error retrieving tile entities.
-     * @author MeAlam
-     * @since 1.0.0
-     */
     public static Collection<BlockEntity> getChunkTileEntities(Level pLevel, ChunkPos pChunkPos) {
         try {
             LevelChunk chunk = pLevel.getChunk(pChunkPos.x, pChunkPos.z);
@@ -139,19 +58,6 @@ public class ChunkUtils {
         }
     }
 
-    /**
-     * A {@link String} that retrieves the registry names of tile entities in the specified chunk.
-     * <p>
-     * Example: "minecraft:chest, minecraft:furnace"
-     * </p>
-     *
-     * @param pLevel    {@link Level} - The game world level.
-     * @param pChunkPos {@link ChunkPos} - The position of the chunk.
-     * @return A comma-separated string of tile entity registry names in the chunk.
-     * @throws RuntimeException if there is an error retrieving tile entity registry names.
-     * @author MeAlam
-     * @since 1.0.0
-     */
     public static String getChunkTileEntitiesRegistryNames(Level pLevel, ChunkPos pChunkPos) {
         try {
             Collection<BlockEntity> blockEntities = getChunkTileEntities(pLevel, pChunkPos);
@@ -171,18 +77,6 @@ public class ChunkUtils {
         }
     }
 
-    /**
-     * A {@link String} that retrieves the simple names of tile entities in the specified chunk.
-     * <p>
-     * Example: "chest, furnace"
-     * </p>
-     *
-     * @param pLevel    {@link Level} - The game world level.
-     * @param pChunkPos {@link ChunkPos} - The position of the chunk.
-     * @return A comma-separated string of tile entity simple names in the chunk.
-     * @author MeAlam
-     * @since 1.0.0
-     */
     public static String getChunkTileEntitiesSimpleNames(Level pLevel, ChunkPos pChunkPos) {
         String registryNames = getChunkTileEntitiesRegistryNames(pLevel, pChunkPos);
 
@@ -191,20 +85,6 @@ public class ChunkUtils {
                 .collect(Collectors.joining(", "));
     }
 
-    /**
-     * A {@link Integer} that counts the number of non-air blocks in the specified chunk.
-     * <p>
-     * Logs a success message with the block count,
-     * and an error message if an exception occurs.
-     * </p>
-     *
-     * @param pLevel    {@link Level} - The game world level.
-     * @param pChunkPos {@link ChunkPos} - The position of the chunk.
-     * @return The number of non-air blocks in the specified chunk.
-     * @throws RuntimeException if there is an error counting blocks.
-     * @author MeAlam
-     * @since 1.0.0
-     */
     public static int getChunkBlockCount(Level pLevel, ChunkPos pChunkPos) {
         try {
             LevelChunk chunk = pLevel.getChunk(pChunkPos.x, pChunkPos.z);
