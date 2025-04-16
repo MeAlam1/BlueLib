@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.packs.resources.CloseableResourceManager;
 import software.bluelib.BlueLibConstants;
-import software.bluelib.event.ReloadEventHandler;
+import software.bluelib.api.reload.ReloadEventHandler;
 import software.bluelib.utils.logging.BaseLogLevel;
 import software.bluelib.utils.logging.BaseLogger;
 

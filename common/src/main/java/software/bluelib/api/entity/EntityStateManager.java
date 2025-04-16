@@ -1,5 +1,5 @@
 // Copyright (c) BlueLib. Licensed under the MIT License.
-package software.bluelib.entity;
+package software.bluelib.api.entity;
 
 import java.util.ArrayList;
 import java.util.HashMap;

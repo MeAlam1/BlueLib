@@ -10,6 +10,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextColor;
+import software.bluelib.config.MarkdownConfig;
 import software.bluelib.markdown.MarkdownFeature;
 import software.bluelib.utils.IsValidUtils;
 import software.bluelib.utils.conversion.ColorConversionUtils;
@@ -19,21 +20,15 @@ import software.bluelib.utils.logging.BaseLogger;
 @SuppressWarnings("unused")
 public class Color extends MarkdownFeature {
 
-    protected static String Prefix = "-";
-
-    protected static String Suffix = "-";
-
-    public static Boolean isColorEnabled = true;
-
     public MutableComponent apply(MutableComponent pComponent) {
-        if (!isColorEnabled) {
+        if (!MarkdownConfig.isColorEnabled) {
             BaseLogger.log(BaseLogLevel.INFO, "Color formatting is disabled. Returning original content.", true);
             return pComponent;
         }
 
-        Pattern pattern = Pattern.compile(Pattern.quote(getPrefix()) +
+        Pattern pattern = Pattern.compile(Pattern.quote(MarkdownConfig.colorPrefix) +
                 "#([0-9A-Fa-f]{6}(?:,#([0-9A-Fa-f]{6}))*)" +
-                Pattern.quote(getSuffix()) + "\\((.*?)\\)");
+                Pattern.quote(MarkdownConfig.colorSuffix) + "\\((.*?)\\)");
 
         MutableComponent result = Component.empty();
 
@@ -49,14 +44,14 @@ public class Color extends MarkdownFeature {
     protected void processComponentTextWithColors(String pText, Style pOriginalStyle, MutableComponent pResult, Pattern pPattern) {
         processComponentText(pText, pOriginalStyle, pResult, pPattern,
                 (matcher, res) -> {
-                    List<Integer> colors = extractColorsFromMatcher(matcher);
+                    Object colors = extractColorsFromMatcher(matcher);
                     String gradientText = matcher.group(matcher.groupCount());
 
                     appendColor(gradientText, colors, pOriginalStyle, res);
                 });
     }
 
-    private List<Integer> extractColorsFromMatcher(Matcher matcher) {
+    private Object extractColorsFromMatcher(Matcher matcher) {
         List<Integer> colors = new ArrayList<>();
 
         String colorGroup = matcher.group(1);
@@ -67,6 +62,7 @@ public class Color extends MarkdownFeature {
                     colors.add(ColorConversionUtils.parseColorToHexString(color));
                 } else {
                     BaseLogger.log(BaseLogLevel.WARNING, "Invalid color detected: " + color, true);
+                    return colorGroup;
                 }
             }
         }
@@ -76,39 +72,48 @@ public class Color extends MarkdownFeature {
         return colors;
     }
 
-    private void appendColor(String pColorText, List<Integer> pColors, Style pOriginalStyle, MutableComponent pResult) {
-        if (pColors.isEmpty()) {
-            pResult.append(Component.literal(pColorText).setStyle(pOriginalStyle));
+    private void appendColor(String pColorText, Object pColors, Style pOriginalStyle, MutableComponent pResult) {
+        if (pColors instanceof String) {
+            pResult.append(Component.literal(MarkdownConfig.colorPrefix + pColors + MarkdownConfig.colorSuffix + "(" + pColorText + ")")
+                    .setStyle(pOriginalStyle));
             return;
         }
 
-        if (pColors.size() == 1) {
-            int color = pColors.getFirst();
-            pResult.append(Component.literal(pColorText).setStyle(pOriginalStyle.withColor(TextColor.fromRgb(color))));
-            return;
-        }
+        if (pColors instanceof List<?> colorsList && !colorsList.isEmpty() && colorsList.getFirst() instanceof Integer) {
+            List<Integer> colors = (List<Integer>) colorsList;
 
-        char[] characters = pColorText.toCharArray();
-        int textLength = characters.length;
-        int colorCount = pColors.size();
-        int segmentLength = textLength / (colorCount - 1);
-        int remainder = textLength % (colorCount - 1);
-
-        int charIndex = 0;
-
-        for (int colorIndex = 0; colorIndex < colorCount - 1; colorIndex++) {
-            int startColor = pColors.get(colorIndex);
-            int endColor = pColors.get(colorIndex + 1);
-
-            int currentSegmentLength = segmentLength + (colorIndex < remainder ? 1 : 0);
-
-            for (int i = 0; i < currentSegmentLength && charIndex < textLength; i++, charIndex++) {
-                float positionRatio = (float) i / (currentSegmentLength - 1);
-                int interpolatedColor = interpolateColor(startColor, endColor, positionRatio);
-
-                pResult.append(Component.literal(String.valueOf(characters[charIndex]))
-                        .setStyle(pOriginalStyle.withColor(TextColor.fromRgb(interpolatedColor))));
+            if (colors.size() == 1) {
+                int color = colors.getFirst();
+                pResult.append(Component.literal(pColorText).setStyle(pOriginalStyle.withColor(TextColor.fromRgb(color))));
+                return;
             }
+
+            char[] characters = pColorText.toCharArray();
+            int textLength = characters.length;
+            int colorCount = colors.size();
+            int segmentLength = textLength / (colorCount - 1);
+            int remainder = textLength % (colorCount - 1);
+
+            int charIndex = 0;
+
+            for (int colorIndex = 0; colorIndex < colorCount - 1; colorIndex++) {
+                int startColor = colors.get(colorIndex);
+                int endColor = colors.get(colorIndex + 1);
+
+                int currentSegmentLength = segmentLength + (colorIndex < remainder ? 1 : 0);
+
+                for (int i = 0; i < currentSegmentLength && charIndex < textLength; i++, charIndex++) {
+                    float positionRatio = (float) i / (currentSegmentLength - 1);
+                    int interpolatedColor = interpolateColor(startColor, endColor, positionRatio);
+
+                    pResult.append(Component.literal(String.valueOf(characters[charIndex]))
+                            .setStyle(pOriginalStyle.withColor(TextColor.fromRgb(interpolatedColor))));
+                }
+            }
+        } else {
+            BaseLogger.log(BaseLogLevel.WARNING, "Invalid color list detected: " + pColors, true);
+            pResult.append(Component.literal(MarkdownConfig.colorPrefix + pColors + MarkdownConfig.colorSuffix + "(" + pColorText + ")")
+                    .setStyle(pOriginalStyle));
         }
     }
 
@@ -135,7 +140,7 @@ public class Color extends MarkdownFeature {
 
     @Override
     protected boolean isFeatureEnabled() {
-        return isColorEnabled;
+        return MarkdownConfig.isColorEnabled;
     }
 
     @Override
@@ -143,31 +148,7 @@ public class Color extends MarkdownFeature {
         return "Color";
     }
 
-    public static void setPrefixSuffix(String pPrefix, String pSuffix) {
-        Prefix = pPrefix;
-        Suffix = pSuffix;
-        BaseLogger.log(BaseLogLevel.SUCCESS, "Color prefix and suffix updated to: " + Prefix + " and " + Suffix, true);
-    }
-
-    public static void setPrefix(String pPrefix) {
-        Prefix = pPrefix;
-        BaseLogger.log(BaseLogLevel.SUCCESS, "Color prefix updated to: " + Prefix, true);
-    }
-
-    public static void setSuffix(String pSuffix) {
-        Suffix = pSuffix;
-        BaseLogger.log(BaseLogLevel.SUCCESS, "Color suffix updated to: " + Suffix, true);
-    }
-
-    public static String getPrefix() {
-        return Prefix;
-    }
-
-    public static String getSuffix() {
-        return Suffix;
-    }
-
     public static Boolean isColorEnabled() {
-        return isColorEnabled;
+        return MarkdownConfig.isColorEnabled;
     }
 }

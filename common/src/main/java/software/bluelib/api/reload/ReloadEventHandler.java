@@ -1,6 +1,6 @@
 // Copyright (c) BlueLib. Licensed under the MIT License.
 
-package software.bluelib.event;
+package software.bluelib.api.reload;
 
 import com.google.gson.JsonParseException;
 import net.minecraft.server.MinecraftServer;

@@ -1,6 +1,6 @@
 // Copyright (c) BlueLib. Licensed under the MIT License.
 
-package software.bluelib.interfaces.variant;
+package software.bluelib.api.interfaces.variant;
 
 import java.util.List;
 import net.minecraft.util.RandomSource;

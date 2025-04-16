@@ -1,5 +1,5 @@
 // Copyright (c) BlueLib. Licensed under the MIT License.
-package software.bluelib.interfaces.entity;
+package software.bluelib.api.interfaces.entity;
 
 import java.util.List;
 import java.util.UUID;
@@ -7,7 +7,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.OwnableEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
-import software.bluelib.entity.EntityStateManager;
+import software.bluelib.api.entity.EntityStateManager;
 
 @SuppressWarnings("unused")
 public interface ITamableEntity {

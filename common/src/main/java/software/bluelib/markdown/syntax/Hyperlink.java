@@ -4,6 +4,7 @@ package software.bluelib.markdown.syntax;
 
 import java.util.regex.Pattern;
 import net.minecraft.network.chat.*;
+import software.bluelib.config.MarkdownConfig;
 import software.bluelib.markdown.MarkdownFeature;
 import software.bluelib.utils.IsValidUtils;
 import software.bluelib.utils.logging.BaseLogLevel;
@@ -12,19 +13,13 @@ import software.bluelib.utils.logging.BaseLogger;
 @SuppressWarnings("unused")
 public class Hyperlink extends MarkdownFeature {
 
-    protected static String Prefix = "[";
-
-    protected static String Suffix = "]";
-
-    public static Boolean isHyperlinkEnabled = true;
-
     public MutableComponent apply(MutableComponent pComponent) {
-        if (!isHyperlinkEnabled) {
+        if (!MarkdownConfig.isHyperlinkEnabled) {
             BaseLogger.log(BaseLogLevel.INFO, "Hyperlink formatting is disabled. Returning original content.", true);
             return pComponent;
         }
 
-        Pattern pattern = Pattern.compile(Pattern.quote(getPrefix()) + "(.*?)" + Pattern.quote(getSuffix()) + "\\((.*?)\\)");
+        Pattern pattern = Pattern.compile(Pattern.quote(MarkdownConfig.hyperlinkPrefix) + "(.*?)" + Pattern.quote(MarkdownConfig.hyperlinkSuffix) + "\\((.*?)\\)");
 
         MutableComponent result = Component.empty();
 
@@ -54,7 +49,7 @@ public class Hyperlink extends MarkdownFeature {
 
     private void appendHyperlink(String pText, String pUrl, Style pOriginalStyle, MutableComponent pResult) {
         if (!IsValidUtils.isValidURL(pUrl)) {
-            pResult.append(Component.literal(getPrefix() + pText + getSuffix() + "(" + pUrl + ")").setStyle(pOriginalStyle));
+            pResult.append(Component.literal(MarkdownConfig.hyperlinkPrefix + pText + MarkdownConfig.hyperlinkSuffix + "(" + pUrl + ")").setStyle(pOriginalStyle));
             return;
         }
 
@@ -69,7 +64,7 @@ public class Hyperlink extends MarkdownFeature {
 
     @Override
     protected boolean isFeatureEnabled() {
-        return isHyperlinkEnabled;
+        return MarkdownConfig.isHyperlinkEnabled;
     }
 
     @Override
@@ -77,31 +72,7 @@ public class Hyperlink extends MarkdownFeature {
         return "Hyperlink";
     }
 
-    public static void setPrefixSuffix(String pPrefix, String pSuffix) {
-        Prefix = pPrefix;
-        Suffix = pSuffix;
-        BaseLogger.log(BaseLogLevel.SUCCESS, "Hyperlink prefix and suffix updated to: " + Prefix + " and " + Suffix, true);
-    }
-
-    public static void setPrefix(String pPrefix) {
-        Prefix = pPrefix;
-        BaseLogger.log(BaseLogLevel.SUCCESS, "Hyperlink prefix updated to: " + Prefix, true);
-    }
-
-    public static void setSuffix(String pSuffix) {
-        Suffix = pSuffix;
-        BaseLogger.log(BaseLogLevel.SUCCESS, "Hyperlink suffix updated to: " + Suffix, true);
-    }
-
-    public static String getPrefix() {
-        return Prefix;
-    }
-
-    public static String getSuffix() {
-        return Suffix;
-    }
-
     public static Boolean isHyperlinkEnabled() {
-        return isHyperlinkEnabled;
+        return MarkdownConfig.isHyperlinkEnabled;
     }
 }
