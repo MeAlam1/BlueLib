@@ -18,9 +18,9 @@ public class ConfigHolder<T extends BlueLibConfig> {
         this.configClass = pConfigClass;
     }
 
-    public void createIfAbsent(T defaultConfig) {
+    public void createIfAbsent(T pDefaultConfig) {
         if (!Files.exists(configPath)) {
-            config = defaultConfig;
+            config = pDefaultConfig;
             save();
         }
     }
