@@ -2,16 +2,11 @@ name: Spotless Check
 
 on:
   pull_request_target:
-    branches:
-      - 1.21
     types:
       - opened
       - synchronize
       - reopened
       - ready_for_review
-  push:
-    branches:
-      - 1.21
 
 permissions:
   contents: read

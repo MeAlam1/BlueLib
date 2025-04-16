@@ -13,48 +13,14 @@ import software.bluelib.event.ReloadEventHandler;
 import software.bluelib.utils.logging.BaseLogLevel;
 import software.bluelib.utils.logging.BaseLogger;
 
-/**
- * A {@code ReloadHandler} class that handles server start and reload events related to entity variants.
- * <p>
- * This class extends {@link ReloadEventHandler} and implements event handling for server starting and reloading,
- * ensuring that entity variant data is properly loaded and refreshed.
- * </p>
- * Key Methods:
- * <ul>
- * <li>{@link #onServerStart(MinecraftServer)} - Handles server starting events to initialize entity variants.</li>
- * <li>{@link #onReload(MinecraftServer, CloseableResourceManager, boolean)} - Handles reload events to refresh entity variants.</li>
- * <li>{@link #LoadEntityVariants(MinecraftServer)} - Loads entity variants from JSON files into the server.</li>
- * </ul>
- *
- * @author MeAlam
- * @version 1.7.0
- * @since 1.0.0
- */
 public class ReloadHandler extends ReloadEventHandler {
 
-    /**
-     * Handles the server starting event to initialize the {@link MinecraftServer} instance
-     * and load entity variants.
-     *
-     * @param pServer {@link MinecraftServer} - The server triggered when the server starts.
-     * @author MeAlam
-     * @since 1.0.0
-     */
     public static void onServerStart(MinecraftServer pServer) {
         BlueLibConstants.SCHEDULER = new ScheduledThreadPoolExecutor(1);
         ReloadHandler.LoadEntityVariants(pServer);
         BaseLogger.log(BaseLogLevel.INFO, "Entity variants loaded.", true);
     }
 
-    /**
-     * Handles the reload event by scheduling a task to reload entity variants.
-     * <p>
-     * This method schedules the {@code LoadEntityVariants} method to run after a short delay.
-     * </p>
-     *
-     * @author MeAlam
-     * @since 1.0.0
-     */
     public static void onReload(MinecraftServer pServer, CloseableResourceManager pCloseableResourceManager, boolean pBoolean) {
         if (pServer != null) {
             BlueLibConstants.SCHEDULER.schedule(() -> pServer.execute(() -> {
@@ -64,34 +30,10 @@ public class ReloadHandler extends ReloadEventHandler {
         }
     }
 
-    /**
-     * The base path for entity variant JSON files.
-     * <p>
-     * This path is used to locate the files that contain variant data for entities.
-     * </p>
-     *
-     * @since 1.0.0
-     */
     private static final String basePath = "variant/entity/";
 
-    /**
-     * The entities. This list contains the names of the entities for which variants are loaded.
-     *
-     * @since 1.0.0
-     */
     private static final List<String> ENTITY_NAMES = Arrays.asList("exampleone", "exampletwo");
 
-    /**
-     * Loads entity variants from JSON files into the {@link MinecraftServer}.
-     * <p>
-     * This method iterates through the list of entity names, constructs file paths, and registers
-     * entity variants using the {@link ReloadEventHandler}.
-     * </p>
-     *
-     * @param pServer {@link MinecraftServer} - The server on which the entity variants will be loaded.
-     * @since 1.0.0
-     * @author MeAlam
-     */
     public static void LoadEntityVariants(MinecraftServer pServer) {
         for (String entityName : ENTITY_NAMES) {
             String folderPath = basePath + entityName;
