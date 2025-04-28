@@ -19,10 +19,7 @@
         "main": [
             "software.bluelib.BlueLib"
         ],
-        "client": [],
-        "fabric-gametest": [
-            "software.bluelib.test.markdown.Markdown"
-        ]
+        "client": []
     },
     "mixins": [
         "${mod_id}.mixins.json",

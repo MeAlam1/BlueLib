@@ -2,10 +2,6 @@
 
 package software.bluelib.example.event;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 import net.minecraft.server.MinecraftServer;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -15,6 +11,11 @@ import software.bluelib.BlueLibConstants;
 import software.bluelib.api.reload.ReloadEventHandler;
 import software.bluelib.utils.logging.BaseLogLevel;
 import software.bluelib.utils.logging.BaseLogger;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 @EventBusSubscriber
 public class ReloadHandler extends ReloadEventHandler {
@@ -32,12 +33,10 @@ public class ReloadHandler extends ReloadEventHandler {
     @SubscribeEvent
     public static void onReload(AddReloadListenerEvent pEvent) {
         if (server != null) {
-            BlueLibConstants.SCHEDULER.schedule(() -> {
-                server.execute(() -> {
-                    ReloadHandler.LoadEntityVariants(server);
-                    BaseLogger.log(BaseLogLevel.INFO, "Entity variants reloaded.", true);
-                });
-            }, 1, TimeUnit.SECONDS);
+            BlueLibConstants.SCHEDULER.schedule(() -> server.execute(() -> {
+                ReloadHandler.LoadEntityVariants(server);
+                BaseLogger.log(BaseLogLevel.INFO, "Entity variants reloaded.", true);
+            }), 1, TimeUnit.SECONDS);
         }
     }
 

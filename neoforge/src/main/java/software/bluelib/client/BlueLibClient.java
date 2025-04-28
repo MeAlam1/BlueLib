@@ -1,6 +1,6 @@
 // Copyright (c) BlueLib. Licensed under the MIT License.
 
-package software.bluelib;
+package software.bluelib.client;
 
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
@@ -8,6 +8,7 @@ import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
+import software.bluelib.BlueLibConstants;
 
 @Mod(value = BlueLibConstants.MOD_ID, dist = Dist.CLIENT)
 public class BlueLibClient {

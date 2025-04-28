@@ -6,9 +6,10 @@ import net.minecraft.network.chat.Component;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.ServerChatEvent;
+import software.bluelib.BlueLibConstants;
 import software.bluelib.markdown.MarkdownParser;
 
-@EventBusSubscriber
+@EventBusSubscriber(modid = BlueLibConstants.MOD_ID)
 public class ChatHandler {
 
     @SubscribeEvent
