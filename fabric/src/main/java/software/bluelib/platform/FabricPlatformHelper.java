@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
 import software.bluelib.api.event.mod.ModMeta;
-import software.bluelib.interfaces.platform.IPlatformHelper;
 
 public class FabricPlatformHelper implements IPlatformHelper {
 

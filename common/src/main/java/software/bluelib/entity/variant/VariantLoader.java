@@ -9,9 +9,9 @@ import java.util.Map;
 import net.minecraft.server.MinecraftServer;
 import software.bluelib.BlueLibCommon;
 import software.bluelib.json.JSONParser;
-import software.bluelib.utils.logging.BaseLogLevel;
-import software.bluelib.utils.logging.BaseLogger;
-import software.bluelib.utils.variant.ParameterUtils;
+import software.bluelib.api.utils.logging.BaseLogLevel;
+import software.bluelib.api.utils.logging.BaseLogger;
+import software.bluelib.api.utils.variant.ParameterUtils;
 
 public class VariantLoader extends JSONParser {
 

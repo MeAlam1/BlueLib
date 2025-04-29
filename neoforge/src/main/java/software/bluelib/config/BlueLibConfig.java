@@ -1,8 +1,8 @@
 package software.bluelib.config;
 
 import net.neoforged.fml.config.ModConfig;
-import software.bluelib.utils.logging.BaseLogLevel;
-import software.bluelib.utils.logging.BaseLogger;
+import software.bluelib.api.utils.logging.BaseLogLevel;
+import software.bluelib.api.utils.logging.BaseLogger;
 
 public class BlueLibConfig {
 

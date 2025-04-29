@@ -8,7 +8,6 @@ import net.neoforged.fml.ModList;
 import net.neoforged.fml.loading.FMLLoader;
 import net.neoforged.neoforgespi.language.IModInfo;
 import software.bluelib.api.event.mod.ModMeta;
-import software.bluelib.interfaces.platform.IPlatformHelper;
 
 public class NeoForgePlatformHelper implements IPlatformHelper {
 

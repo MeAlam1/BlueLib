@@ -5,8 +5,8 @@ package software.bluelib.api.reload;
 import com.google.gson.JsonParseException;
 import net.minecraft.server.MinecraftServer;
 import software.bluelib.entity.variant.VariantLoader;
-import software.bluelib.utils.logging.BaseLogLevel;
-import software.bluelib.utils.logging.BaseLogger;
+import software.bluelib.api.utils.logging.BaseLogLevel;
+import software.bluelib.api.utils.logging.BaseLogger;
 
 public class ReloadEventHandler {
 
