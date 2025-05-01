@@ -4,10 +4,10 @@ package software.bluelib.markdown;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import software.bluelib.config.MarkdownConfig;
-import software.bluelib.markdown.syntax.*;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
+import software.bluelib.config.MarkdownConfig;
+import software.bluelib.markdown.syntax.*;
 
 @SuppressWarnings("unused")
 public class MarkdownParser {

@@ -4,9 +4,9 @@ package software.bluelib.api.entity.variant;
 
 import java.util.List;
 import net.minecraft.util.RandomSource;
-import software.bluelib.entity.variant.base.IVariantEntityBase;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
+import software.bluelib.entity.variant.base.IVariantEntityBase;
 
 @SuppressWarnings("unused")
 public interface IVariantEntity extends IVariantEntityBase {

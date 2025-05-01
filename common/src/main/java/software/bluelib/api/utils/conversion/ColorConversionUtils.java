@@ -2,15 +2,14 @@
 
 package software.bluelib.api.utils.conversion;
 
-import net.minecraft.world.item.DyeColor;
-import software.bluelib.api.utils.logging.BaseLogLevel;
-import software.bluelib.api.utils.logging.BaseLogger;
-
 import java.awt.*;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import net.minecraft.world.item.DyeColor;
+import software.bluelib.api.utils.logging.BaseLogLevel;
+import software.bluelib.api.utils.logging.BaseLogger;
 
 @SuppressWarnings("unused")
 public class ColorConversionUtils {

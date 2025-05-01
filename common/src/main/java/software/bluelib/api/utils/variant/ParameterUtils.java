@@ -6,9 +6,9 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import java.util.Set;
-import software.bluelib.entity.variant.VariantLoader;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
+import software.bluelib.entity.variant.VariantLoader;
 
 @SuppressWarnings("unused")
 public class ParameterUtils {

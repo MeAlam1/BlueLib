@@ -10,9 +10,9 @@ import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.ApiStatus;
 import software.bluelib.api.event.IEventProxy;
 import software.bluelib.api.event.mod.ModIntegration;
-import software.bluelib.platform.IPlatformHelper;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
+import software.bluelib.platform.IPlatformHelper;
 
 public class BlueLibCommon {
 
