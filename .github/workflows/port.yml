@@ -1,0 +1,40 @@
+name: Port
+
+on:
+  push:
+    branches:
+      - 1.21-1.21.3
+
+jobs:
+  backport:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout the repo
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # Needed for cherry-picking
+
+      - name: Set up Git
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+
+      - name: Create Port Branch
+        run: |
+          export COMMIT_SHA=$(git rev-parse HEAD)
+          git checkout -b temp-port origin/1.21.4-1.22
+          git cherry-pick $COMMIT_SHA || true
+
+      - name: Push Port Branch
+        run: |
+          git push origin temp-backport --force
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          base: 1.21.4-1.22
+          branch: temp-port
+          title: 'Port: ${{ github.sha }}'
+          body: 'Auto-ported commit.'
