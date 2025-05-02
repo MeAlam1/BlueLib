@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 import java.util.TreeMap;
+
 import org.jetbrains.annotations.ApiStatus;
 
 /**
@@ -37,11 +38,11 @@ import org.jetbrains.annotations.ApiStatus;
  * Math formula for weighting:
  * <ul>
  * <li>For each value <code>x</code>, its weight <code>w(x)</code> is calculated as:</li>
- * 
+ *
  * <pre>
  * <code>w(x) = 2^(maxCount - count(x))</code>
  * </pre>
- * 
+ *
  * <li>Where <code>maxCount</code> is the highest count of selections made for any value, and <code>count(x)</code> is the number of times <code>x</code> has been selected.</li>
  * <li>The weight decreases exponentially for values with higher selection counts, and increases for values with fewer selections, encouraging the selection of less-picked values.</li>
  * </ul>
