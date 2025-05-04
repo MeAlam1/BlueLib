@@ -16,7 +16,7 @@ import software.bluelib.api.reload.ReloadEventHandler;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
 
-@EventBusSubscriber
+@EventBusSubscriber(modid = BlueLibConstants.MOD_ID)
 public class ReloadHandler extends ReloadEventHandler {
 
     private static MinecraftServer server;

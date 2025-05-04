@@ -7,6 +7,7 @@ import static software.bluelib.BlueLibConstants.SCHEDULER;
 import java.util.ServiceLoader;
 import java.util.concurrent.TimeUnit;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.ApiStatus;
 import software.bluelib.api.event.IEventProxy;
 import software.bluelib.api.event.mod.ModIntegration;
@@ -51,6 +52,14 @@ public class BlueLibCommon {
             BaseLogger.log(BaseLogLevel.INFO, "Running in Production mode.", true);
         }
         return isDevMode;
+    }
+
+    @ApiStatus.Internal
+    public static class Resource {
+
+        public static ResourceLocation resource(String pPath) {
+            return ResourceLocation.fromNamespaceAndPath(BlueLibConstants.MOD_ID, pPath);
+        }
     }
 
     @ApiStatus.Internal

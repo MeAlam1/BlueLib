@@ -1,3 +1,5 @@
+// Copyright (c) BlueLib. Licensed under the MIT License.
+
 package software.bluelib.api.utils.schedular;
 
 import java.util.concurrent.CompletableFuture;

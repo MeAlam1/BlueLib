@@ -1,3 +1,5 @@
+// Copyright (c) BlueLib. Licensed under the MIT License.
+
 package software.bluelib.api.config;
 
 import net.neoforged.neoforge.common.ModConfigSpec;
