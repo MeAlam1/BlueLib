@@ -87,10 +87,9 @@
 </div>
 
 <h3 align="center">
-    BlueLib offers two resources for the community: an 
-    <a href="https://mealam1.github.io/BlueLib/">API Documentation</a> and a 
+    BlueLib offers one resource for the community: A 
     <a href="https://github.com/MeAlam1/BlueLib/wiki">Wiki</a>. 
-    Feel free to go through them.
+    Feel free to go through it.
 </h3>
 
 <!-- Contributing Banner -->

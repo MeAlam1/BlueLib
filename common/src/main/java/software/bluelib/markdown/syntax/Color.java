@@ -11,7 +11,7 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextColor;
 import software.bluelib.api.utils.IsValidUtils;
-import software.bluelib.api.utils.conversion.ColorConversionUtils;
+import software.bluelib.api.utils.conversion.ColorConverterUtils;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
 import software.bluelib.config.MarkdownConfig;
@@ -59,7 +59,7 @@ public class Color extends MarkdownFeature {
             String[] colorArray = colorGroup.split(",");
             for (String color : colorArray) {
                 if (IsValidUtils.isValidColor(color)) {
-                    colors.add(ColorConversionUtils.parseColorToHexString(color));
+                    colors.add(ColorConverterUtils.parseColorToHexString(color));
                 } else {
                     BaseLogger.log(BaseLogLevel.WARNING, "Invalid color detected: " + color, true);
                     return colorGroup;

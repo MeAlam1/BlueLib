@@ -18,7 +18,7 @@ public class BlueLibConstants {
 
     public static final String MOD_NAME = "BlueLib";
 
-    public static boolean isBlueLibLoggingEnabled = true;
+    public static boolean isBlueLibLoggingEnabled = false;
 
     public static boolean isLoggingEnabled = true;
 }

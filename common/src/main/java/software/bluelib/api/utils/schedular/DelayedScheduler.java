@@ -7,13 +7,13 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 public class DelayedScheduler {
 
     private static final ScheduledExecutorService EXECUTOR_SERVICE = Executors.newSingleThreadScheduledExecutor();
 
-    @Nonnull
+    @NotNull
     public static CompletableFuture<Void> schedule(Runnable task, long delay, TimeUnit unit) {
         CompletableFuture<Void> future = new CompletableFuture<>();
         EXECUTOR_SERVICE.schedule(() -> {
@@ -27,7 +27,7 @@ public class DelayedScheduler {
         return future;
     }
 
-    @Nonnull
+    @NotNull
     public static <A> CompletableFuture<A> schedule(Supplier<A> supplier, long delay, TimeUnit unit) {
         CompletableFuture<A> future = new CompletableFuture<>();
         EXECUTOR_SERVICE.schedule(() -> {

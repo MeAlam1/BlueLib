@@ -12,7 +12,7 @@ import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
 
 @SuppressWarnings("unused")
-public class ColorConversionUtils {
+public class ColorConverterUtils {
 
     public static int parseColorToHexString(String pInput) {
         if (pInput == null || pInput.isEmpty()) {
