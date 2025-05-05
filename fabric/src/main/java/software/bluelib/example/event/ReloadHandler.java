@@ -17,6 +17,7 @@ public class ReloadHandler extends ReloadEventHandler {
 
     public static void onServerStart(MinecraftServer pServer) {
         BlueLibConstants.SCHEDULER = new ScheduledThreadPoolExecutor(1);
+        BlueLibConstants.server = pServer;
         ReloadHandler.LoadEntityVariants(pServer);
         BaseLogger.log(BaseLogLevel.INFO, "Entity variants loaded.", true);
     }

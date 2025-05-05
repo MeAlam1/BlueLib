@@ -3,6 +3,10 @@
 package software.bluelib.api.utils.logging;
 
 import java.util.logging.Level;
+
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerPlayer;
 import software.bluelib.BlueLibConstants;
 import software.bluelib.api.utils.minecraft.ClientUtils;
 
@@ -18,25 +22,25 @@ public class BaseLogger {
 
     public static void log(Level pLogLevel, String pMessage, Throwable pThrowable, boolean pIsBlueLib) {
         if (shouldLogBlueLib(pLogLevel, pIsBlueLib)) {
-            BlueLibConstants.LOGGER.log(pLogLevel, pMessage, pThrowable);
+            logBoth(pLogLevel, pMessage, pThrowable);
         }
     }
 
     public static void log(Level pLogLevel, String pMessage, boolean pIsBlueLib) {
         if (shouldLogBlueLib(pLogLevel, pIsBlueLib)) {
-            BlueLibConstants.LOGGER.log(pLogLevel, pMessage);
+            logBoth(pLogLevel, pMessage);
         }
     }
 
     public static void log(Level pLogLevel, String pMessage, Throwable pThrowable) {
         if (shouldLog(pLogLevel)) {
-            BlueLibConstants.LOGGER.log(pLogLevel, pMessage, pThrowable);
+            logBoth(pLogLevel, pMessage, pThrowable);
         }
     }
 
     public static void log(Level pLogLevel, String pMessage) {
         if (shouldLog(pLogLevel)) {
-            BlueLibConstants.LOGGER.log(pLogLevel, pMessage);
+            logBoth(pLogLevel, pMessage);
         }
     }
 
@@ -59,5 +63,31 @@ public class BaseLogger {
                 pLogLevel == BaseLogLevel.BLUELIB ||
                 !ClientUtils.isInWorld() ||
                 software.bluelib.config.LoggerConfig.isLoggingEnabled;
+    }
+    
+    private static void logBoth(Level pLogLevel, String pMessage) {
+            BlueLibConstants.LOGGER.log(pLogLevel, pMessage);
+            sendToAdmins(pMessage, null);
+    }
+
+    private static void logBoth(Level pLogLevel, String pMessage, Throwable pThrowable) {
+        BlueLibConstants.LOGGER.log(pLogLevel, pMessage, pThrowable);
+        sendToAdmins(pMessage, pThrowable);
+    }
+
+    private static void sendToAdmins(String pMessage, Throwable pThrowable) {
+        MinecraftServer server = BlueLibConstants.server;
+        if (server == null) {
+            return;
+        }
+        for (ServerPlayer player : server.getPlayerList().getPlayers()) {
+            if (player.hasPermissions(3)) {
+                if (pThrowable != null) {
+                    player.displayClientMessage(Component.literal(pMessage + "\n The Throwable is displayed in the Terminal"), false);
+                } else {
+                    player.displayClientMessage(Component.literal(pMessage), false);
+                }
+            }
+        }
     }
 }

@@ -15,25 +15,24 @@ import software.bluelib.BlueLibConstants;
 import software.bluelib.api.reload.ReloadEventHandler;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
+import software.bluelib.config.LoggerConfig;
 
 @EventBusSubscriber(modid = BlueLibConstants.MOD_ID)
 public class ReloadHandler extends ReloadEventHandler {
 
-    private static MinecraftServer server;
-
     @SubscribeEvent
     public static void onServerStart(ServerStartingEvent pEvent) {
         BlueLibConstants.SCHEDULER = new ScheduledThreadPoolExecutor(1);
-        server = pEvent.getServer();
-        ReloadHandler.LoadEntityVariants(server);
+        BlueLibConstants.server = pEvent.getServer();
+        ReloadHandler.LoadEntityVariants(BlueLibConstants.server);
         BaseLogger.log(BaseLogLevel.INFO, "Entity variants loaded.", true);
     }
 
     @SubscribeEvent
     public static void onReload(AddReloadListenerEvent pEvent) {
-        if (server != null) {
-            BlueLibConstants.SCHEDULER.schedule(() -> server.execute(() -> {
-                ReloadHandler.LoadEntityVariants(server);
+        if (BlueLibConstants.server != null) {
+            BlueLibConstants.SCHEDULER.schedule(() -> BlueLibConstants.server.execute(() -> {
+                ReloadHandler.LoadEntityVariants(BlueLibConstants.server);
                 BaseLogger.log(BaseLogLevel.INFO, "Entity variants reloaded.", true);
             }), 1, TimeUnit.SECONDS);
         }

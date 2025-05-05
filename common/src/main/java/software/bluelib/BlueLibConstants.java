@@ -2,6 +2,8 @@
 
 package software.bluelib;
 
+import net.minecraft.server.MinecraftServer;
+
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.logging.Logger;
@@ -17,4 +19,6 @@ public class BlueLibConstants {
     public static final String MOD_ID = "bluelib";
 
     public static final String MOD_NAME = "BlueLib";
+
+    public static MinecraftServer server;
 }
