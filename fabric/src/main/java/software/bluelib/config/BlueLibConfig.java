@@ -35,4 +35,14 @@ public class BlueLibConfig {
             BaseLogger.log(BaseLogLevel.WARNING, "The Markdown Config of BlueLib has not been loaded. " + pException.getMessage(), true);
         }
     }
+    
+    public static void bakeLogger(software.bluelib.config.bluelib.LoggerConfig pConfig) {
+        try {
+            LoggerConfig.isLoggingEnabled = pConfig.isLoggingEnabled;
+            LoggerConfig.isBlueLibLoggingEnabled = pConfig.isBlueLibLoggingEnabled;
+            BaseLogger.log(BaseLogLevel.INFO, "The Logger Config of BlueLib has been loaded.", true);
+        } catch (Exception pException) {
+            BaseLogger.log(BaseLogLevel.WARNING, "The Logger Config of BlueLib has not been loaded. " + pException.getMessage(), true);
+        }
+    }
 }

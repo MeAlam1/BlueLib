@@ -4,71 +4,60 @@ package software.bluelib.api.utils.logging;
 
 import java.util.logging.Level;
 import software.bluelib.BlueLibConstants;
+import software.bluelib.api.utils.minecraft.ClientUtils;
+
 
 @SuppressWarnings("unused")
 public class BaseLogger {
 
     private BaseLogger() {}
 
-    public static void setBlueLibLoggingEnabled(boolean pEnabled) {
-        BlueLibConstants.isBlueLibLoggingEnabled = pEnabled;
-    }
-
-    public static boolean isBlueLibLoggingEnabled() {
-        return BlueLibConstants.isBlueLibLoggingEnabled;
-    }
-
-    public static boolean isLoggingEnabled() {
-        return BlueLibConstants.isLoggingEnabled;
-    }
-
-    public static void setLoggingEnabled(boolean pEnabled) {
-        BlueLibConstants.isLoggingEnabled = pEnabled;
-    }
-
     static {
         LoggerConfig.configureLogger(BlueLibConstants.LOGGER, new DefaultLogColorProvider());
     }
 
     public static void log(Level pLogLevel, String pMessage, Throwable pThrowable, boolean pIsBlueLib) {
-        if (pLogLevel == BaseLogLevel.ERROR ||
-                pLogLevel == BaseLogLevel.WARNING ||
-                pLogLevel == BaseLogLevel.BLUELIB ||
-                pIsBlueLib && BlueLibConstants.isBlueLibLoggingEnabled ||
-                !pIsBlueLib && BlueLibConstants.isLoggingEnabled) {
+        if (shouldLogBlueLib(pLogLevel, pIsBlueLib)) {
             BlueLibConstants.LOGGER.log(pLogLevel, pMessage, pThrowable);
         }
     }
 
     public static void log(Level pLogLevel, String pMessage, boolean pIsBlueLib) {
-        if (pLogLevel == BaseLogLevel.ERROR ||
-                pLogLevel == BaseLogLevel.WARNING ||
-                pLogLevel == BaseLogLevel.BLUELIB ||
-                pIsBlueLib && BlueLibConstants.isBlueLibLoggingEnabled ||
-                !pIsBlueLib && BlueLibConstants.isLoggingEnabled) {
+        if (shouldLogBlueLib(pLogLevel, pIsBlueLib)) {
             BlueLibConstants.LOGGER.log(pLogLevel, pMessage);
         }
     }
 
     public static void log(Level pLogLevel, String pMessage, Throwable pThrowable) {
-        if (pLogLevel == BaseLogLevel.ERROR ||
-                pLogLevel == BaseLogLevel.WARNING ||
-                pLogLevel == BaseLogLevel.BLUELIB ||
-                BlueLibConstants.isLoggingEnabled) {
+        if (shouldLog(pLogLevel)) {
             BlueLibConstants.LOGGER.log(pLogLevel, pMessage, pThrowable);
         }
     }
 
     public static void log(Level pLogLevel, String pMessage) {
-        if (pLogLevel == BaseLogLevel.ERROR ||
-                pLogLevel == BaseLogLevel.WARNING ||
-                pLogLevel == BaseLogLevel.BLUELIB ||
-                BlueLibConstants.isLoggingEnabled) {
+        if (shouldLog(pLogLevel)) {
             BlueLibConstants.LOGGER.log(pLogLevel, pMessage);
         }
     }
 
     public static void logBlueLib(String pMessage) {
         BlueLibConstants.LOGGER.log(BaseLogLevel.BLUELIB, pMessage);
+    }
+    
+    private static boolean shouldLogBlueLib(Level pLogLevel, boolean pIsBlueLib) {
+        return pLogLevel == BaseLogLevel.ERROR ||
+                pLogLevel == BaseLogLevel.WARNING ||
+                pLogLevel == BaseLogLevel.BLUELIB ||
+                !ClientUtils.isInWorld() ||
+                pIsBlueLib && software.bluelib.config.LoggerConfig.isBlueLibLoggingEnabled ||
+                !pIsBlueLib && software.bluelib.config.LoggerConfig.isLoggingEnabled;
+    }
+    
+    private static boolean shouldLog(Level pLogLevel) {
+        return pLogLevel == BaseLogLevel.ERROR ||
+                pLogLevel == BaseLogLevel.WARNING ||
+                pLogLevel == BaseLogLevel.BLUELIB ||
+                !ClientUtils.isInWorld() ||
+                software.bluelib.config.LoggerConfig.isLoggingEnabled;
     }
 }

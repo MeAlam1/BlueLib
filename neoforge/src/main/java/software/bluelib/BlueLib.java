@@ -17,7 +17,8 @@ public class BlueLib {
     public BlueLib(IEventBus pModEventBus, ModContainer pModContainer) {
         pModEventBus.register(this);
         MixinBootstrap.init();
-        pModContainer.registerConfig(ModConfig.Type.SERVER, ConfigHolder.MARKDOWN_SPEC, "bluelib-markdown.toml");
+        pModContainer.registerConfig(ModConfig.Type.SERVER, ConfigHolder.MARKDOWN_SPEC, BlueLibConstants.MOD_ID + "-markdown.toml");
+        pModContainer.registerConfig(ModConfig.Type.SERVER, ConfigHolder.LOGGER_SPEC, BlueLibConstants.MOD_ID + "-logger.toml");
     }
 
     @SubscribeEvent

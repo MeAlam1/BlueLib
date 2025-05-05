@@ -7,7 +7,6 @@ import software.bluelib.api.config.ConfigBuilder;
 
 public class MarkdownConfig {
 
-    // List of Config Options
     public final ModConfigSpec.BooleanValue isMarkdownEnabled;
 
     public final ModConfigSpec.ConfigValue<String> boldPrefix;
@@ -40,7 +39,6 @@ public class MarkdownConfig {
 
     public final ModConfigSpec.BooleanValue isCopyToClipboardEnabled;
 
-    // List of Config Options
     public MarkdownConfig(final ModConfigSpec.Builder pBuilder) {
         pBuilder.push("Markdown");
         isMarkdownEnabled = ConfigBuilder.buildBoolean(pBuilder, "markdownEnabled", true, "Default is 'true/on'");

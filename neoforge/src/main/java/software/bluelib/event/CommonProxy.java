@@ -19,5 +19,8 @@ public class CommonProxy {
         if (config.getSpec() == ConfigHolder.MARKDOWN_SPEC) {
             BlueLibConfig.bakeMarkdown(config);
         }
+        if (config.getSpec() == ConfigHolder.LOGGER_SPEC) {
+            BlueLibConfig.bakeLogger(config);
+        }
     }
 }
