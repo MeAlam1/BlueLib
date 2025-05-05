@@ -6,6 +6,6 @@ import software.bluelib.config.BlueLibConfig;
 
 public class LoggerConfig extends BlueLibConfig {
 
-    public boolean isBlueLibLoggingEnabled;
-    public boolean isLoggingEnabled;
+    public boolean isBlueLibLoggingEnabled = false;
+    public boolean isLoggingEnabled = false;
 }

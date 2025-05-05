@@ -1,7 +1,9 @@
 {
+  "bluelib.configuration.title": "BlueLib Configuration",
+  
   "prefix": "Prefix",
   "suffix": "Suffix",
-  "markdownEnabled": "Enabled Markdown",
+  "markdownEnabled": "Enable Markdown",
   "boldEnabled": "Enable Bold",
   "italicEnabled": "Enable Italic",
   "underlineEnabled": "Enable Underline",
@@ -37,7 +39,12 @@
   "bluelib.configuration.Hyperlink.tooltip": "Hyperlink related Config Settings",
   "bluelib.configuration.Color.tooltip": "Color related Config Settings",
   "bluelib.configuration.CopyToClipboard.tooltip": "Copy to Clipboard related Config Settings",
-  "bluelib.configuration.title": "BlueLib Configuration",
   "bluelib.configuration.section.bluelib.markdown.toml": "BlueLib Markdown Config",
-  "bluelib.configuration.section.bluelib.markdown.toml.title": "BlueLib Markdown"
+  "bluelib.configuration.section.bluelib.markdown.toml.title": "BlueLib Markdown",
+  
+  "bluelib.configuration.Logging": "Logging",
+  "BlueLibLogging": "Is BlueLib Logging Enabled?",
+  "modLogging": "Is Mod Logging Enabled?",
+  "bluelib.configuration.section.bluelib.logger.toml": "BlueLib Logger Config",
+  "bluelib.configuration.section.bluelib.logger.toml.title": "BlueLib Logger"
 }
