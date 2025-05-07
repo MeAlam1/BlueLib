@@ -14,14 +14,6 @@ public abstract class LoggerConfig {
 
     protected static final String RESET = "\u001B[0m";
 
-    protected static final String RED = "\u001B[31m";
-
-    protected static final String ORANGE = "\u001B[38;5;214m";
-
-    protected static final String BLUE = "\u001B[34m";
-
-    protected static final String GREEN = "\u001B[38;5;10m";
-
     public static void configureLogger(Logger pLogger, ILogColorProvider pColorProvider) {
         ConsoleHandler handler = new ConsoleHandler();
         handler.setFormatter(new SimpleFormatter() {
@@ -29,31 +21,42 @@ public abstract class LoggerConfig {
             @Override
             public synchronized String format(LogRecord pRecord) {
                 String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
-                StringBuilder coloredMessage = new StringBuilder(pColorProvider.getColor(pRecord.getLevel()) +
-                        "[" + timestamp + "]" + " [" + pRecord.getLevel() + "]: " + pRecord.getMessage());
+                int color = pColorProvider.getColor(pRecord.getLevel());
+                String ansiColor = rgbToAnsi(color);
+
+                StringBuilder coloredMessage = new StringBuilder(ansiColor +
+                        "[" + timestamp + "]" + " [" + pRecord.getLevel() + "]: " + pRecord.getMessage() + RESET);
+
+                String plainMessage = "[" + timestamp + "]" + " [" + pRecord.getLevel() + "]: " + pRecord.getMessage();
 
                 if (pRecord.getThrown() != null) {
-                    coloredMessage.append("\nException: ").append(pRecord.getThrown().getMessage());
+                    String exceptionDetails = "\nException: " + pRecord.getThrown().getMessage();
                     for (StackTraceElement element : pRecord.getThrown().getStackTrace()) {
                         String packageName = element.getClassName().substring(0, element.getClassName().lastIndexOf('.'));
                         String className = element.getClassName().substring(element.getClassName().lastIndexOf('.') + 1);
                         String methodName = element.getMethodName();
                         int lineNumber = element.getLineNumber();
 
-                        coloredMessage.append("\n\tat ")
-                                .append(packageName).append(".")
-                                .append(className).append(".")
-                                .append(methodName).append("(Line: ")
-                                .append(lineNumber).append(")");
+                        exceptionDetails += "\n\tat " + packageName + "." + className + "." + methodName + "(Line: " + lineNumber + ")";
                     }
+                    coloredMessage.append(exceptionDetails);
+                    plainMessage += exceptionDetails;
                 }
 
-                coloredMessage.append(RESET);
+                LogCache.addLog(plainMessage, color);
+
                 return coloredMessage + "\n";
             }
         });
 
         pLogger.setUseParentHandlers(false);
         pLogger.addHandler(handler);
+    }
+
+    private static String rgbToAnsi(int pRgb) {
+        int red = (pRgb >> 16) & 0xFF;
+        int green = (pRgb >> 8) & 0xFF;
+        int blue = pRgb & 0xFF;
+        return String.format("\u001B[38;2;%d;%d;%dm", red, green, blue);
     }
 }

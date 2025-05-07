@@ -2,15 +2,18 @@
 
 package software.bluelib.client.gui.logging;
 
+import java.util.ArrayList;
+import java.util.List;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
+import software.bluelib.api.utils.logging.LogCache;
 
-@OnlyIn(Dist.CLIENT)
 public class LoggerScreen extends Screen {
+
+    private int scrollOffset = 0;
+    private static final int LINE_HEIGHT = 10;
 
     public LoggerScreen() {
         super(Component.translatable("bluelib.ui.logger.title"));
@@ -18,15 +21,99 @@ public class LoggerScreen extends Screen {
 
     @Override
     public void render(@NotNull GuiGraphics pGuiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
-        this.renderBackground(pGuiGraphics, pMouseX, pMouseY, pPartialTick);
-
         int boxWidth = (int) (this.width * 0.9);
         int boxHeight = (int) (this.height * 0.9);
         int boxX = (this.width - boxWidth) / 2;
         int boxY = (this.height - boxHeight) / 2;
 
-        pGuiGraphics.blit(MENU_BACKGROUND, boxX, boxY, 0, 0, boxWidth, boxHeight, 256, 256);
+        pGuiGraphics.fill(boxX - 2, boxY - 22, boxX + boxWidth + 2, boxY + boxHeight + 2, 0xDD000000); // background
 
-        super.render(pGuiGraphics, pMouseX, pMouseY, pPartialTick);
+        pGuiGraphics.fill(boxX, boxY - 20, boxX + boxWidth, boxY, 0xFF444444); // header
+        pGuiGraphics.drawCenteredString(this.font, this.title, boxX + boxWidth / 2, boxY - 15, 0xFFFFFF);
+
+        List<LogCache.LogEntry> logEntries = LogCache.getLogs();
+        List<RenderedLine> renderedLines = new ArrayList<>();
+
+        for (LogCache.LogEntry entry : logEntries) {
+            List<String> wrapped = wrapText(entry.message(), boxWidth - 15);
+            for (String line : wrapped) {
+                renderedLines.add(new RenderedLine(line, entry.color()));
+            }
+        }
+
+        int maxVisibleLines = (boxHeight - 10) / LINE_HEIGHT;
+        int maxOffset = Math.max(0, renderedLines.size() - maxVisibleLines);
+        scrollOffset = Math.min(scrollOffset, maxOffset);
+
+        int y = boxY + 5;
+        for (int i = scrollOffset; i < renderedLines.size() && y < boxY + boxHeight - LINE_HEIGHT; i++) {
+            RenderedLine line = renderedLines.get(i);
+            pGuiGraphics.drawString(this.font, line.text(), boxX + 7, y, line.color());
+            y += LINE_HEIGHT;
+        }
+
+        // Scrollbar
+        if (renderedLines.size() > maxVisibleLines) {
+            int scrollbarHeight = (int) ((float) maxVisibleLines / renderedLines.size() * (boxHeight - 10));
+            int scrollbarY = boxY + 5 + (int) ((float) scrollOffset / renderedLines.size() * (boxHeight - 10));
+            pGuiGraphics.fill(boxX + boxWidth - 6, scrollbarY, boxX + boxWidth - 3, scrollbarY + scrollbarHeight, 0xFF888888);
+        }
+    }
+
+    private record RenderedLine(String text, int color) {}
+
+    private List<String> wrapText(String text, int maxWidth) {
+        List<String> lines = new ArrayList<>();
+        String[] segments = text.split("\n");
+
+        for (String segment : segments) {
+            String[] words = segment.split(" ");
+            StringBuilder currentLine = new StringBuilder();
+
+            for (String word : words) {
+                int wordWidth = this.font.width(word);
+                if (wordWidth > maxWidth) {
+                    while (!word.isEmpty()) {
+                        int splitIndex = getSplitIndex(word, maxWidth);
+                        lines.add(word.substring(0, splitIndex));
+                        word = word.substring(splitIndex);
+                    }
+                    continue;
+                }
+
+                int lineWidth = this.font.width(currentLine + word + " ");
+                if (lineWidth > maxWidth) {
+                    lines.add(currentLine.toString().trim());
+                    currentLine = new StringBuilder(word + " ");
+                } else {
+                    currentLine.append(word).append(" ");
+                }
+            }
+
+            if (!currentLine.isEmpty()) {
+                lines.add(currentLine.toString().trim());
+            }
+        }
+
+        return lines;
+    }
+
+    private int getSplitIndex(String word, int maxWidth) {
+        for (int i = 1; i <= word.length(); i++) {
+            if (this.font.width(word.substring(0, i)) > maxWidth) {
+                return i - 1;
+            }
+        }
+        return word.length();
+    }
+
+    @Override
+    public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY) {
+        if (scrollY > 0) {
+            scrollOffset = Math.max(0, scrollOffset - 1);
+        } else if (scrollY < 0) {
+            scrollOffset++;
+        }
+        return true;
     }
 }

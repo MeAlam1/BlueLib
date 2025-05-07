@@ -62,13 +62,9 @@ public class BaseLogger {
 
     private static void logBoth(Level pLogLevel, String pMessage) {
         BlueLibConstants.LOGGER.log(pLogLevel, pMessage);
-        sendToAdmins(pMessage, null);
     }
 
     private static void logBoth(Level pLogLevel, String pMessage, Throwable pThrowable) {
         BlueLibConstants.LOGGER.log(pLogLevel, pMessage, pThrowable);
-        sendToAdmins(pMessage, pThrowable);
     }
-
-    private static void sendToAdmins(String pMessage, Throwable pThrowable) {}
 }
