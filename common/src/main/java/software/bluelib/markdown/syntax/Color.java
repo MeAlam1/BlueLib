@@ -72,6 +72,7 @@ public class Color extends MarkdownFeature {
         return colors;
     }
 
+    @SuppressWarnings("unchecked")
     private void appendColor(String pColorText, Object pColors, Style pOriginalStyle, MutableComponent pResult) {
         if (pColors instanceof String) {
             pResult.append(Component.literal(MarkdownConfig.colorPrefix + pColors + MarkdownConfig.colorSuffix + "(" + pColorText + ")")

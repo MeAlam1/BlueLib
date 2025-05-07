@@ -76,18 +76,5 @@ public class BaseLogger {
     }
 
     private static void sendToAdmins(String pMessage, Throwable pThrowable) {
-        MinecraftServer server = BlueLibConstants.server;
-        if (server == null) {
-            return;
-        }
-        for (ServerPlayer player : server.getPlayerList().getPlayers()) {
-            if (player.hasPermissions(3)) {
-                if (pThrowable != null) {
-                    player.displayClientMessage(Component.literal(pMessage + "\n The Throwable is displayed in the Terminal"), false);
-                } else {
-                    player.displayClientMessage(Component.literal(pMessage), false);
-                }
-            }
-        }
     }
 }
