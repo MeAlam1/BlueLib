@@ -1,3 +1,5 @@
+// Copyright (c) BlueLib. Licensed under the MIT License.
+
 package software.bluelib.client.gui.logging;
 
 import net.minecraft.client.gui.GuiGraphics;
@@ -9,6 +11,7 @@ import org.jetbrains.annotations.NotNull;
 
 @OnlyIn(Dist.CLIENT)
 public class LoggerScreen extends Screen {
+
     public LoggerScreen() {
         super(Component.translatable("bluelib.ui.logger.title"));
     }

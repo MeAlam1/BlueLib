@@ -4,8 +4,8 @@ package software.bluelib.config;
 
 import net.neoforged.neoforge.common.ModConfigSpec;
 import org.apache.commons.lang3.tuple.Pair;
-import software.bluelib.config.bluelib.MarkdownConfig;
 import software.bluelib.config.bluelib.LoggerConfig;
+import software.bluelib.config.bluelib.MarkdownConfig;
 
 public final class ConfigHolder {
 
@@ -14,7 +14,7 @@ public final class ConfigHolder {
     // Markdown
     public static final ModConfigSpec MARKDOWN_SPEC;
     public static final MarkdownConfig MARKDOWN;
-    
+
     // Logger
     public static final ModConfigSpec LOGGER_SPEC;
     public static final LoggerConfig LOGGER;

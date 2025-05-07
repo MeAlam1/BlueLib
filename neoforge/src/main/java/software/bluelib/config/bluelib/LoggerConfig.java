@@ -12,7 +12,7 @@ public class LoggerConfig {
 
     public LoggerConfig(final ModConfigSpec.Builder pBuilder) {
         pBuilder.push("Logging");
-        isBlueLibLoggingEnabled = ConfigBuilder.buildBoolean(pBuilder, "BlueLibLogging", false, "Default is 'false/off'");
-        isLoggingEnabled = ConfigBuilder.buildBoolean(pBuilder, "modLogging", false, "Default is 'false/off'");
+        isBlueLibLoggingEnabled = ConfigBuilder.buildBoolean(pBuilder, "BlueLibLogging", true, "Default is 'false/off'");
+        isLoggingEnabled = ConfigBuilder.buildBoolean(pBuilder, "modLogging", true, "Default is 'false/off'");
     }
 }

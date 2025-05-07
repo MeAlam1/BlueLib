@@ -6,6 +6,9 @@ import java.util.*;
 import java.util.stream.Collectors;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
+import net.minecraft.client.Minecraft;
+import net.minecraft.server.MinecraftServer;
+import software.bluelib.BlueLibConstants;
 import software.bluelib.api.event.mod.ModMeta;
 
 public class FabricPlatformHelper implements IPlatformHelper {
@@ -44,5 +47,23 @@ public class FabricPlatformHelper implements IPlatformHelper {
     @Override
     public boolean isDevelopmentEnvironment() {
         return FabricLoader.getInstance().isDevelopmentEnvironment();
+    }
+
+    @Override
+    public BlueLibConstants.Environment getEnvironment() {
+        return switch (FabricLoader.getInstance().getEnvironmentType()) {
+            case CLIENT -> BlueLibConstants.Environment.CLIENT;
+            case SERVER -> BlueLibConstants.Environment.SERVER;
+        };
+    }
+
+    @Override
+    public BlueLibConstants.ModAPI getAPI() {
+        return BlueLibConstants.ModAPI.FABRIC;
+    }
+
+    @Override
+    public MinecraftServer getServer() {
+        return this.getEnvironment() == BlueLibConstants.Environment.CLIENT ? Minecraft.getInstance().getSingleplayerServer() : BlueLibConstants.server;
     }
 }

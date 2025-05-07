@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-import software.bluelib.BlueLibCommon;
+import software.bluelib.BlueLibConstants;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
 
@@ -73,7 +73,7 @@ public class ModIntegration {
                 "fabric-transitive-access-wideners-v1",
                 "fabric-networking-api-v1");
 
-        Set<String> loadedMods = BlueLibCommon.PLATFORM.getLoadedMods().stream()
+        Set<String> loadedMods = BlueLibConstants.PlatformHelper.PLATFORM.getLoadedMods().stream()
                 .filter(mod -> !excludedMods.contains(mod))
                 .collect(Collectors.toSet());
 
@@ -83,20 +83,20 @@ public class ModIntegration {
                 ModMeta modMeta = getModMeta(mod);
                 if (modMeta != null) {
                     loadedModMetas.add(modMeta);
-                    BlueLibCommon.EVENT_PROXY.onModLoaded(modMeta);
+                    BlueLibConstants.PlatformHelper.EVENT_PROXY.onModLoaded(modMeta);
                 }
                 modsMessage.append(mod).append("\n");
             }
-            BlueLibCommon.EVENT_PROXY.onAllModsLoaded(loadedModMetas);
+            BlueLibConstants.PlatformHelper.EVENT_PROXY.onAllModsLoaded(loadedModMetas);
             BaseLogger.log(BaseLogLevel.INFO, modsMessage.toString());
         } else {
-            BlueLibCommon.EVENT_PROXY.onAllModsLoaded(loadedModMetas);
+            BlueLibConstants.PlatformHelper.EVENT_PROXY.onAllModsLoaded(loadedModMetas);
             BaseLogger.log(BaseLogLevel.INFO, "No supported mods loaded.");
         }
     }
 
     public static ModMeta getModMeta(String pModId) {
-        return BlueLibCommon.PLATFORM.getLoadedModMetadata().stream()
+        return BlueLibConstants.PlatformHelper.PLATFORM.getLoadedModMetadata().stream()
                 .filter(modMeta -> modMeta.modId().equals(pModId))
                 .findFirst()
                 .orElse(null);

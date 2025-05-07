@@ -15,7 +15,6 @@ import software.bluelib.BlueLibConstants;
 import software.bluelib.api.reload.ReloadEventHandler;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
-import software.bluelib.config.LoggerConfig;
 
 @EventBusSubscriber(modid = BlueLibConstants.MOD_ID)
 public class ReloadHandler extends ReloadEventHandler {

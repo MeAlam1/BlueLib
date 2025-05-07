@@ -38,7 +38,7 @@ public class BlueLibConfig {
             BaseLogger.log(BaseLogLevel.WARNING, "The Markdown Config of BlueLib has not been loaded. " + pException.getMessage(), true);
         }
     }
-    
+
     public static void bakeLogger(final ModConfig pConfig) {
         try {
             LoggerConfig.isBlueLibLoggingEnabled = ConfigHolder.LOGGER.isBlueLibLoggingEnabled.get();

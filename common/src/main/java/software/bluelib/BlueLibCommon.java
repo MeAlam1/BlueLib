@@ -4,30 +4,17 @@ package software.bluelib;
 
 import static software.bluelib.BlueLibConstants.SCHEDULER;
 
-import java.util.ServiceLoader;
 import java.util.concurrent.TimeUnit;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.ApiStatus;
-import software.bluelib.api.event.IEventProxy;
 import software.bluelib.api.event.mod.ModIntegration;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
-import software.bluelib.platform.IPlatformHelper;
 
 public class BlueLibCommon {
 
     private BlueLibCommon() {}
-
-    public static final IPlatformHelper PLATFORM = load(IPlatformHelper.class);
-
-    public static final IEventProxy EVENT_PROXY = ServiceLoader.load(IEventProxy.class).findFirst().orElseThrow();
-
-    public static <T> T load(Class<T> pClazz) {
-        return ServiceLoader.load(pClazz)
-                .findFirst()
-                .orElseThrow(() -> new NullPointerException("Failed to load service for " + pClazz.getName()));
-    }
 
     public static void init() {
         ModIntegration.checkSupportMods();
@@ -45,7 +32,7 @@ public class BlueLibCommon {
     }
 
     public static boolean isDeveloperMode() {
-        boolean isDevMode = PLATFORM.isDevelopmentEnvironment();
+        boolean isDevMode = BlueLibConstants.PlatformHelper.PLATFORM.isDevelopmentEnvironment();
         if (isDevMode) {
             BaseLogger.log(BaseLogLevel.INFO, "Running in Developer mode.", true);
         } else {

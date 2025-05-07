@@ -19,7 +19,9 @@
         "main": [
             "software.bluelib.BlueLib"
         ],
-        "client": []
+        "client": [
+            "software.bluelib.client.BlueLibClient"
+        ]
     },
     "mixins": [
         "${mod_id}.mixins.json",

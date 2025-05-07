@@ -3,13 +3,8 @@
 package software.bluelib.api.utils.logging;
 
 import java.util.logging.Level;
-
-import net.minecraft.network.chat.Component;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.level.ServerPlayer;
 import software.bluelib.BlueLibConstants;
 import software.bluelib.api.utils.minecraft.ClientUtils;
-
 
 @SuppressWarnings("unused")
 public class BaseLogger {
@@ -47,7 +42,7 @@ public class BaseLogger {
     public static void logBlueLib(String pMessage) {
         BlueLibConstants.LOGGER.log(BaseLogLevel.BLUELIB, pMessage);
     }
-    
+
     private static boolean shouldLogBlueLib(Level pLogLevel, boolean pIsBlueLib) {
         return pLogLevel == BaseLogLevel.ERROR ||
                 pLogLevel == BaseLogLevel.WARNING ||
@@ -56,7 +51,7 @@ public class BaseLogger {
                 pIsBlueLib && software.bluelib.config.LoggerConfig.isBlueLibLoggingEnabled ||
                 !pIsBlueLib && software.bluelib.config.LoggerConfig.isLoggingEnabled;
     }
-    
+
     private static boolean shouldLog(Level pLogLevel) {
         return pLogLevel == BaseLogLevel.ERROR ||
                 pLogLevel == BaseLogLevel.WARNING ||
@@ -64,10 +59,10 @@ public class BaseLogger {
                 !ClientUtils.isInWorld() ||
                 software.bluelib.config.LoggerConfig.isLoggingEnabled;
     }
-    
+
     private static void logBoth(Level pLogLevel, String pMessage) {
-            BlueLibConstants.LOGGER.log(pLogLevel, pMessage);
-            sendToAdmins(pMessage, null);
+        BlueLibConstants.LOGGER.log(pLogLevel, pMessage);
+        sendToAdmins(pMessage, null);
     }
 
     private static void logBoth(Level pLogLevel, String pMessage, Throwable pThrowable) {
@@ -75,6 +70,5 @@ public class BaseLogger {
         sendToAdmins(pMessage, pThrowable);
     }
 
-    private static void sendToAdmins(String pMessage, Throwable pThrowable) {
-    }
+    private static void sendToAdmins(String pMessage, Throwable pThrowable) {}
 }

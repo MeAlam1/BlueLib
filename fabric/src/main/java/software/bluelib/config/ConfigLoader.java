@@ -8,8 +8,8 @@ import net.minecraft.server.packs.resources.CloseableResourceManager;
 import net.minecraft.world.level.storage.LevelResource;
 import software.bluelib.BlueLibConstants;
 import software.bluelib.api.config.ConfigBuilder;
-import software.bluelib.config.bluelib.MarkdownConfig;
 import software.bluelib.config.bluelib.LoggerConfig;
+import software.bluelib.config.bluelib.MarkdownConfig;
 
 public class ConfigLoader {
 
@@ -20,7 +20,7 @@ public class ConfigLoader {
         createMarkdownConfig(pServer);
         createLoggerConfig(pServer);
     }
-    
+
     public static void createMarkdownConfig(MinecraftServer pServer) {
         Path MARKDOWN_CONFIG = pServer.getWorldPath(LevelResource.ROOT).resolve("serverConfig/" + BlueLibConstants.MOD_ID + "-markdown.json");
         markdownConfigBuilder = new ConfigBuilder<>(MARKDOWN_CONFIG, MarkdownConfig.class);
@@ -29,7 +29,7 @@ public class ConfigLoader {
         markdownConfigBuilder.load();
         BlueLibConfig.bakeMarkdown(markdownConfigBuilder.getConfig());
     }
-    
+
     public static void createLoggerConfig(MinecraftServer pServer) {
         Path LOGGER_CONFIG = pServer.getWorldPath(LevelResource.ROOT).resolve("serverConfig/" + BlueLibConstants.MOD_ID + "-logger.json");
         loggerConfigBuilder = new ConfigBuilder<>(LOGGER_CONFIG, LoggerConfig.class);
