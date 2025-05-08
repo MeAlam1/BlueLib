@@ -6,6 +6,9 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import java.util.Set;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import software.bluelib.BlueLibCommon;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
 import software.bluelib.entity.variant.VariantLoader;
@@ -15,33 +18,33 @@ public class ParameterUtils {
 
     private ParameterUtils() {}
 
+    @NotNull
     public static Set<String> getAllEntities() {
-        Set<String> allEntities = VariantLoader.AllVariants.keySet();
-        BaseLogger.log(BaseLogLevel.INFO, "Found Entities: " + allEntities, true);
-        return allEntities;
+        return VariantLoader.AllVariants.keySet();
     }
 
+    @Nullable
     public static Set<String> getVariantsOfEntity(String pEntityName) {
         JsonObject entityData = VariantLoader.AllVariants.get(pEntityName);
-        if (entityData != null) {
-            Set<String> variants = entityData.keySet();
-            BaseLogger.log(BaseLogLevel.INFO, "Found Variants: " + variants, true);
-            return variants;
+        if (entityData == null) {
+            BaseLogger.log(BaseLogLevel.WARNING, BlueLibCommon.Translation.log("entity.notfound", pEntityName), true);
+            return null;
         }
-        BaseLogger.log(BaseLogLevel.WARNING, "No variants found for: " + pEntityName, true);
-        return null;
+
+        return entityData.keySet();
     }
 
+    @Nullable
     public static JsonElement getCustomParameterForVariant(String pEntityName, String pVariantName, String pParameter) {
         JsonObject entityData = VariantLoader.AllVariants.get(pEntityName);
         if (entityData == null) {
-            BaseLogger.log(BaseLogLevel.INFO, "Entity data not found for: " + pEntityName, true);
+            BaseLogger.log(BaseLogLevel.WARNING, BlueLibCommon.Translation.log("entity.notfound", pEntityName), true);
             return null;
         }
 
         JsonArray variants = entityData.getAsJsonArray(pVariantName);
         if (variants == null || variants.isEmpty()) {
-            BaseLogger.log(BaseLogLevel.INFO, "Variants not found or empty for: " + pVariantName + " in entity: " + pEntityName, true);
+            BaseLogger.log(BaseLogLevel.WARNING, BlueLibCommon.Translation.log("entity.variantsNotfound", pVariantName, pEntityName), true);
             return null;
         }
 
@@ -62,7 +65,7 @@ public class ParameterUtils {
                 }
             }
         }
-        BaseLogger.log(BaseLogLevel.INFO, "Custom parameter: " + pParameter + " not found for: " + pEntityName, true);
+        BaseLogger.log(BaseLogLevel.INFO, BlueLibCommon.Translation.log("entity.parameterNotfound", pParameter, pVariantName, pEntityName), true);
         return null;
     }
 }

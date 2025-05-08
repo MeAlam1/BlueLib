@@ -1,5 +1,6 @@
 package software.bluelib.config;
 
+import software.bluelib.BlueLibCommon;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
 
@@ -30,9 +31,19 @@ public class BlueLibConfig {
             MarkdownConfig.colorSuffix = pConfig.colorSuffix;
             MarkdownConfig.isColorEnabled = pConfig.isColorEnabled;
             MarkdownConfig.isCopyToClipboardEnabled = pConfig.isCopyToClipboardEnabled;
-            BaseLogger.log(BaseLogLevel.INFO, "The Markdown Config of BlueLib has been loaded.", true);
+            BaseLogger.log(BaseLogLevel.INFO, BlueLibCommon.Translation.config("markdown.loaded"), true);
         } catch (Exception pException) {
-            BaseLogger.log(BaseLogLevel.WARNING, "The Markdown Config of BlueLib has not been loaded. " + pException.getMessage(), true);
+            BaseLogger.log(BaseLogLevel.ERROR, BlueLibCommon.Translation.config("markdown.failed", pException.getMessage()), true);
+        }
+    }
+
+    public static void bakeLogger(software.bluelib.config.bluelib.LoggerConfig pConfig) {
+        try {
+            LoggerConfig.isLoggingEnabled = pConfig.isLoggingEnabled;
+            LoggerConfig.isBlueLibLoggingEnabled = pConfig.isBlueLibLoggingEnabled;
+            BaseLogger.log(BaseLogLevel.INFO, BlueLibCommon.Translation.config("markdown.loaded"), true);
+        } catch (Exception pException) {
+            BaseLogger.log(BaseLogLevel.ERROR, BlueLibCommon.Translation.config("markdown.failed", pException.getMessage()), true);
         }
     }
 }

@@ -8,6 +8,7 @@ import java.util.regex.Pattern;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
+import software.bluelib.BlueLibCommon;
 import software.bluelib.api.utils.QuadConsumer;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
@@ -19,9 +20,8 @@ public abstract class MarkdownFeature {
     protected String suffix;
 
     public MutableComponent apply(MutableComponent pComponent) {
-        BaseLogger.log(BaseLogLevel.INFO, getFeatureName() + " is enabled: " + isFeatureEnabled(), true);
         if (!isFeatureEnabled()) {
-            BaseLogger.log(BaseLogLevel.INFO, getFeatureName() + " formatting is disabled. Returning original content.", true);
+            BaseLogger.log(BaseLogLevel.INFO, BlueLibCommon.Translation.log("markdown.feature.disabled", getFeatureName()), true);
             return pComponent;
         }
 

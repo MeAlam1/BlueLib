@@ -11,6 +11,7 @@ import net.fabricmc.loader.api.FabricLoader;
 import software.bluelib.config.ConfigLoader;
 import software.bluelib.event.ChatHandler;
 import software.bluelib.example.event.ReloadHandler;
+import software.bluelib.net.FabricNetworkManager;
 
 public class BlueLib implements ModInitializer {
 
@@ -18,6 +19,9 @@ public class BlueLib implements ModInitializer {
 
     @Override
     public void onInitialize() {
+        BlueLibCommon.doRegistration();
+        FabricNetworkManager.registerMessages();
+        FabricNetworkManager.registerServerHandlers();
         registerModEventListeners();
         if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
             ClientTickEvents.END_CLIENT_TICK.register(client -> {

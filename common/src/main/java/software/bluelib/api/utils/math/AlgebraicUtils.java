@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import software.bluelib.BlueLibCommon;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
 
@@ -17,7 +18,8 @@ public class AlgebraicUtils {
     public static double[] solveQuadraticEquation(double pA, double pB, double pC) {
         double discriminant = pB * pB - 4 * pA * pC;
         if (discriminant < 0) {
-            BaseLogger.log(BaseLogLevel.WARNING, "No real roots found for the quadratic equation.", true);
+            Throwable throwable = new IllegalArgumentException("Number must be non-negative.");
+            BaseLogger.log(BaseLogLevel.WARNING, BlueLibCommon.Translation.log("math.error.calc", "quadratic"), throwable, true);
             return new double[0];
         }
 
@@ -25,15 +27,14 @@ public class AlgebraicUtils {
         double root1 = (-pB + sqrtDiscriminant) / (2 * pA);
         double root2 = (-pB - sqrtDiscriminant) / (2 * pA);
 
-        BaseLogger.log(BaseLogLevel.INFO, "Roots found: root1=" + root1 + ", root2=" + root2, true);
         return new double[] { root1, root2 };
     }
 
     public static long factorial(int pNumber) {
         if (pNumber < 0) {
-            IllegalArgumentException exception = new IllegalArgumentException("Number must be non-negative.");
-            BaseLogger.log(BaseLogLevel.ERROR, "Attempted to calculate factorial of a negative number: " + pNumber, exception, true);
-            throw exception;
+            Throwable throwable = new IllegalArgumentException("Number must be non-negative.");
+            BaseLogger.log(BaseLogLevel.WARNING, BlueLibCommon.Translation.log("math.error.calc", "factorial"), throwable, true);
+            return 0;
         }
 
         long result = 1;

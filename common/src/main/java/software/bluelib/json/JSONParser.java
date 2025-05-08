@@ -9,6 +9,7 @@ import java.util.Map;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.packs.resources.ResourceManager;
+import software.bluelib.BlueLibCommon;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
 
@@ -28,15 +29,14 @@ public abstract class JSONParser {
 
         Collection<ResourceLocation> resources = resourceManager.listResources(pFolderPath, path -> path.getPath().endsWith(".json")).keySet();
 
-        BaseLogger.log(BaseLogLevel.INFO, "Found resources: " + resources + " at: " + pFolderPath, true);
+        BaseLogger.log(BaseLogLevel.SUCCESS, BlueLibCommon.Translation.log("json.found", pFolderPath), true);
 
         for (ResourceLocation resourceLocation : resources) {
             try {
-                BaseLogger.log(BaseLogLevel.INFO, "Loading JSON data from resource: " + resourceLocation, true);
                 JsonObject jsonObject = jsonLoader.loadJson(resourceLocation, resourceManager);
                 jsonMerger.mergeJsonObjects(mergedJsonObject, jsonObject);
-            } catch (Exception exception) {
-                BaseLogger.log(BaseLogLevel.ERROR, "Failed to load JSON data from resource: " + resourceLocation, exception, true);
+            } catch (Exception pException) {
+                BaseLogger.log(BaseLogLevel.ERROR, BlueLibCommon.Translation.log("json.failed", resourceLocation.toString()), pException, true);
             }
         }
     }

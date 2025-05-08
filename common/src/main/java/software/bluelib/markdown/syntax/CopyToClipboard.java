@@ -5,6 +5,9 @@ package software.bluelib.markdown.syntax;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import software.bluelib.BlueLibCommon;
+import software.bluelib.api.utils.logging.BaseLogLevel;
+import software.bluelib.api.utils.logging.BaseLogger;
 import software.bluelib.config.MarkdownConfig;
 
 @SuppressWarnings("unused")
@@ -12,6 +15,7 @@ public class CopyToClipboard {
 
     public MutableComponent apply(MutableComponent pMessage, String pTextToCopy) {
         if (!MarkdownConfig.isCopyToClipboardEnabled) {
+            BaseLogger.log(BaseLogLevel.INFO, BlueLibCommon.Translation.log("markdown.copyToClipboard.disabled"), true);
             return pMessage;
         }
         MutableComponent result = Component.empty();

@@ -8,19 +8,19 @@ import java.util.logging.Level;
 public class DefaultLogColorProvider implements ILogColorProvider {
 
     @Override
-    public String getColor(Level pLevel) {
+    public int getColor(Level pLevel) {
         if (pLevel == BaseLogLevel.ERROR) {
-            return LoggerConfig.RED;
+            return 0xFF0000; // Red
         } else if (pLevel == BaseLogLevel.WARNING) {
-            return LoggerConfig.ORANGE;
+            return 0xFFA500; // Orange
         } else if (pLevel == BaseLogLevel.INFO) {
-            return LoggerConfig.BLUE;
+            return 0x0000FF; // Blue
         } else if (pLevel == BaseLogLevel.SUCCESS) {
-            return LoggerConfig.GREEN;
+            return 0x00FF00; // Green
         } else if (pLevel == BaseLogLevel.BLUELIB) {
-            return LoggerConfig.GREEN;
+            return 0x00FF00; // Green
         } else {
-            return LoggerConfig.RESET;
+            return 0xFFFFFF; // Default to white
         }
     }
 }

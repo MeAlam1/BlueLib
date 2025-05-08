@@ -4,6 +4,8 @@ package software.bluelib.platform;
 
 import java.util.List;
 import java.util.Set;
+import net.minecraft.server.MinecraftServer;
+import software.bluelib.BlueLibConstants;
 import software.bluelib.api.event.mod.ModMeta;
 
 @SuppressWarnings("unused")
@@ -22,4 +24,10 @@ public interface IPlatformHelper {
     default String getEnvironmentName() {
         return isDevelopmentEnvironment() ? "development" : "production";
     }
+
+    BlueLibConstants.Environment getEnvironment();
+
+    BlueLibConstants.ModAPI getAPI();
+
+    MinecraftServer getServer();
 }

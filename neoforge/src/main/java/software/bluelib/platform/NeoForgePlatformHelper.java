@@ -4,9 +4,13 @@ package software.bluelib.platform;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import net.minecraft.server.MinecraftServer;
 import net.neoforged.fml.ModList;
+import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.fml.loading.FMLLoader;
+import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import net.neoforged.neoforgespi.language.IModInfo;
+import software.bluelib.BlueLibConstants;
 import software.bluelib.api.event.mod.ModMeta;
 
 public class NeoForgePlatformHelper implements IPlatformHelper {
@@ -45,5 +49,20 @@ public class NeoForgePlatformHelper implements IPlatformHelper {
     @Override
     public boolean isDevelopmentEnvironment() {
         return !FMLLoader.isProduction();
+    }
+
+    @Override
+    public BlueLibConstants.Environment getEnvironment() {
+        return FMLEnvironment.dist.isClient() ? BlueLibConstants.Environment.CLIENT : BlueLibConstants.Environment.SERVER;
+    }
+
+    @Override
+    public BlueLibConstants.ModAPI getAPI() {
+        return BlueLibConstants.ModAPI.NEOFORGE;
+    }
+
+    @Override
+    public MinecraftServer getServer() {
+        return ServerLifecycleHooks.getCurrentServer();
     }
 }

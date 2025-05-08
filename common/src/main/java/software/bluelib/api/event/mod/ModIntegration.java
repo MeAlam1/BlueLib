@@ -6,7 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import net.minecraft.network.chat.Component;
 import software.bluelib.BlueLibCommon;
+import software.bluelib.BlueLibConstants;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
 
@@ -73,30 +75,30 @@ public class ModIntegration {
                 "fabric-transitive-access-wideners-v1",
                 "fabric-networking-api-v1");
 
-        Set<String> loadedMods = BlueLibCommon.PLATFORM.getLoadedMods().stream()
+        Set<String> loadedMods = BlueLibConstants.PlatformHelper.PLATFORM.getLoadedMods().stream()
                 .filter(mod -> !excludedMods.contains(mod))
                 .collect(Collectors.toSet());
 
         if (!loadedMods.isEmpty()) {
-            StringBuilder modsMessage = new StringBuilder("Mods Loaded:\n");
+            StringBuilder modsMessage = new StringBuilder();
             for (String mod : loadedMods) {
                 ModMeta modMeta = getModMeta(mod);
                 if (modMeta != null) {
                     loadedModMetas.add(modMeta);
-                    BlueLibCommon.EVENT_PROXY.onModLoaded(modMeta);
+                    BlueLibConstants.PlatformHelper.EVENT_PROXY.onModLoaded(modMeta);
                 }
                 modsMessage.append(mod).append("\n");
             }
-            BlueLibCommon.EVENT_PROXY.onAllModsLoaded(loadedModMetas);
-            BaseLogger.log(BaseLogLevel.INFO, modsMessage.toString());
+            BlueLibConstants.PlatformHelper.EVENT_PROXY.onAllModsLoaded(loadedModMetas);
+            BaseLogger.log(BaseLogLevel.INFO, BlueLibCommon.Translation.translate("mod.loaded", Component.literal(modsMessage.toString())), true);
         } else {
-            BlueLibCommon.EVENT_PROXY.onAllModsLoaded(loadedModMetas);
-            BaseLogger.log(BaseLogLevel.INFO, "No supported mods loaded.");
+            BlueLibConstants.PlatformHelper.EVENT_PROXY.onAllModsLoaded(loadedModMetas);
+            BaseLogger.log(BaseLogLevel.INFO, BlueLibCommon.Translation.translate("mod.loaded.empty"), true);
         }
     }
 
     public static ModMeta getModMeta(String pModId) {
-        return BlueLibCommon.PLATFORM.getLoadedModMetadata().stream()
+        return BlueLibConstants.PlatformHelper.PLATFORM.getLoadedModMetadata().stream()
                 .filter(modMeta -> modMeta.modId().equals(pModId))
                 .findFirst()
                 .orElse(null);

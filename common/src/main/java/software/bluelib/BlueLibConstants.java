@@ -2,13 +2,26 @@
 
 package software.bluelib;
 
+import java.util.ServiceLoader;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.logging.Logger;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerPlayer;
+import software.bluelib.api.event.IEventProxy;
+import software.bluelib.api.net.NetworkPacket;
+import software.bluelib.platform.IPlatformHelper;
+import software.bluelib.platform.IRegistryHelper;
 
 public class BlueLibConstants {
 
     private BlueLibConstants() {}
+
+    public static <T> T load(Class<T> pClazz) {
+        return ServiceLoader.load(pClazz)
+                .findFirst()
+                .orElseThrow(() -> new NullPointerException("Failed to load service for " + pClazz.getName()));
+    }
 
     public static final Logger LOGGER = Logger.getLogger(BlueLibConstants.MOD_NAME);
 
@@ -18,7 +31,32 @@ public class BlueLibConstants {
 
     public static final String MOD_NAME = "BlueLib";
 
-    public static boolean isBlueLibLoggingEnabled = false;
+    public static MinecraftServer server;
 
-    public static boolean isLoggingEnabled = true;
+    public static class PlatformHelper {
+
+        public static final IPlatformHelper PLATFORM = load(IPlatformHelper.class);
+
+        public static final IEventProxy EVENT_PROXY = load(IEventProxy.class);
+
+        public static final IRegistryHelper REGISTRY = load(IRegistryHelper.class);
+    }
+
+    public enum ModAPI {
+        FABRIC,
+        FORGE,
+        NEOFORGE
+    }
+
+    public interface NetworkManager {
+
+        void sendPacketToPlayer(ServerPlayer player, NetworkPacket<?> packet);
+
+        void sendToServer(NetworkPacket<?> packet);
+    }
+
+    public enum Environment {
+        CLIENT,
+        SERVER
+    }
 }

@@ -5,6 +5,7 @@ package software.bluelib.api.utils.conversion;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import software.bluelib.BlueLibCommon;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
 
@@ -42,7 +43,7 @@ public class MathConverterUtils {
             SimpleDateFormat formatter = new SimpleDateFormat(pFormat);
             return formatter.parse(pDateStr);
         } catch (ParseException pException) {
-            BaseLogger.log(BaseLogLevel.ERROR, "Error parsing date string: " + pDateStr + " with format: " + pFormat, pException, true);
+            BaseLogger.log(BaseLogLevel.ERROR, BlueLibCommon.Translation.log("error.date.format", pDateStr, pFormat), pException, true);
             throw pException;
         }
     }
@@ -52,7 +53,7 @@ public class MathConverterUtils {
             SimpleDateFormat formatter = new SimpleDateFormat(pFormat);
             return formatter.format(pDate);
         } catch (Exception pException) {
-            BaseLogger.log(BaseLogLevel.ERROR, "Error formatting date: " + pDate.toString() + " with format: " + pFormat, pException, true);
+            BaseLogger.log(BaseLogLevel.ERROR, BlueLibCommon.Translation.log("error.date.format", pDate, pFormat), pException, true);
             return pException.getMessage();
         }
     }

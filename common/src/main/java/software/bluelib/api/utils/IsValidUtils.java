@@ -4,15 +4,24 @@ package software.bluelib.api.utils;
 
 import java.net.URI;
 import java.util.regex.Pattern;
+import org.jetbrains.annotations.Nullable;
+import software.bluelib.BlueLibCommon;
+import software.bluelib.api.utils.logging.BaseLogLevel;
+import software.bluelib.api.utils.logging.BaseLogger;
 
 @SuppressWarnings("unused")
 public class IsValidUtils {
 
     private IsValidUtils() {}
 
-    public static boolean isValidURL(String pUrl) {
+    public static boolean isValidURL(@Nullable String pUrl) {
         try {
+            if (pUrl == null) {
+                BaseLogger.log(BaseLogLevel.WARNING, BlueLibCommon.Translation.translate("null"), true);
+                return false;
+            }
             if (!pUrl.startsWith("http://") && !pUrl.startsWith("https://")) {
+                BaseLogger.log(BaseLogLevel.WARNING, BlueLibCommon.Translation.log("invalid_url.begin", pUrl), true);
                 return false;
             }
 
@@ -24,6 +33,7 @@ public class IsValidUtils {
 
             return uri.isAbsolute() && (pattern.matcher(host).matches());
         } catch (Exception pException) {
+            BaseLogger.log(BaseLogLevel.ERROR, BlueLibCommon.Translation.log("invalid_url", pUrl), true);
             return false;
         }
     }
@@ -33,8 +43,9 @@ public class IsValidUtils {
         return pEmail != null && pEmail.matches(emailRegex);
     }
 
-    public static boolean isValidColor(String pInput) {
+    public static boolean isValidColor(@Nullable String pInput) {
         if (pInput == null) {
+            BaseLogger.log(BaseLogLevel.WARNING, BlueLibCommon.Translation.translate("null"), true);
             return false;
         }
 

@@ -20,8 +20,8 @@ public class DelayedScheduler {
             try {
                 task.run();
                 future.complete(null);
-            } catch (Exception e) {
-                future.completeExceptionally(e);
+            } catch (Exception pException) {
+                future.completeExceptionally(pException);
             }
         }, delay, unit);
         return future;
@@ -34,8 +34,8 @@ public class DelayedScheduler {
             try {
                 A a = supplier.get();
                 future.complete(a);
-            } catch (Exception e) {
-                future.completeExceptionally(e);
+            } catch (Exception pException) {
+                future.completeExceptionally(pException);
             }
         }, delay, unit);
         return future;
