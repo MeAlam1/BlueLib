@@ -1,8 +1,25 @@
 {
   "bluelib.mod.thank_you":          "    Thank you for using BlueLib!                 ",
   "bluelib.mod.thank_you.subtitle": "     We appreciate your support                  ",
+
+  "bluelib.log.variants.loaded": "Entity variants loaded.",
+  "bluelib.log.varaints.reloaded": "Entity variants reloaded.",
+  "bluelib.log.variants.loaded.entity": "Entity variants loaded for {0}.",
   
+  "bluelib.config.markdown.loaded": "The Markdown Config of BlueLib has been loaded.",
+  "bluelib.config.markdown.failed": "The Markdown Config of BlueLib has failed to load. {0}",
+  "bluelib.config.logger.loaded": "The Logger Config of BlueLib has been loaded.",
+  "bluelib.config.logger.failed": "The Logger Config of BlueLib has failed to load. {0}",
   
+  "bluelib.packet.send.player.success": "Successfully sent packet {0} to player {1}.",
+  "bluelib.packet.send.player.fail": "Failed to send packet {0} to player {1}.",
+  "bluelib.packet.send.server.success": "Successfully sent packet {0} to the server.",
+  "bluelib.packet.send.server.fail": "Failed to send packet {0} to the server.",
+  "bluelib.packet.register.client.success": "Successfully registered packet to client: {0}",
+  "bluelib.packet.register.client.fail": "Failed to register packet to client: {0}",
+  "bluelib.packet.register.server.success": "Successfully registered packet to server: {0}",
+  "bluelib.packet.register.server.fail": "Failed to register packet to server: {0}",
+
   "bluelib.configuration.title": "BlueLib Configuration",
   
   "prefix": "Prefix",

@@ -11,6 +11,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.AddReloadListenerEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
+import software.bluelib.BlueLibCommon;
 import software.bluelib.BlueLibConstants;
 import software.bluelib.api.reload.ReloadEventHandler;
 import software.bluelib.api.utils.logging.BaseLogLevel;
@@ -24,7 +25,7 @@ public class ReloadHandler extends ReloadEventHandler {
         BlueLibConstants.SCHEDULER = new ScheduledThreadPoolExecutor(1);
         BlueLibConstants.server = pEvent.getServer();
         ReloadHandler.LoadEntityVariants(BlueLibConstants.server);
-        BaseLogger.log(BaseLogLevel.INFO, "Entity variants loaded.", true);
+        BaseLogger.log(BaseLogLevel.INFO, BlueLibCommon.Translation.log("variants.loaded"), true);
     }
 
     @SubscribeEvent
@@ -32,7 +33,7 @@ public class ReloadHandler extends ReloadEventHandler {
         if (BlueLibConstants.server != null) {
             BlueLibConstants.SCHEDULER.schedule(() -> BlueLibConstants.server.execute(() -> {
                 ReloadHandler.LoadEntityVariants(BlueLibConstants.server);
-                BaseLogger.log(BaseLogLevel.INFO, "Entity variants reloaded.", true);
+                BaseLogger.log(BaseLogLevel.INFO, BlueLibCommon.Translation.log("variants.reloaded"), true);
             }), 1, TimeUnit.SECONDS);
         }
     }
@@ -45,7 +46,7 @@ public class ReloadHandler extends ReloadEventHandler {
         for (String entityName : ENTITY_NAMES) {
             String folderPath = basePath + entityName;
             ReloadEventHandler.registerEntityVariants(folderPath, pServer, BlueLibConstants.MOD_ID, entityName);
-            BaseLogger.log(BaseLogLevel.INFO, "Entity variants loaded for " + entityName + ".", true);
+            BaseLogger.log(BaseLogLevel.INFO, BlueLibCommon.Translation.log("variants.loaded.entity", entityName), true);
         }
     }
 }

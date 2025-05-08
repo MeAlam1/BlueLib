@@ -25,8 +25,8 @@ public class BlueLibCommon {
             SCHEDULER.schedule(() -> {
                 BaseLogger.logBlueLib(Component.literal("**************************************************"));
                 BaseLogger.logBlueLib(Component.literal("                                                  "));
-                BaseLogger.logBlueLib(Component.translatable("bluelib.mod.thank_you"));
-                BaseLogger.logBlueLib(Component.translatable("bluelib.mod.thank_you.subtitle"));
+                BaseLogger.logBlueLib(BlueLibCommon.Translation.translate("mod.thank_you"));
+                BaseLogger.logBlueLib(BlueLibCommon.Translation.translate("mod.thank_you.subtitle"));
                 BaseLogger.logBlueLib(Component.literal("                                                  "));
                 BaseLogger.logBlueLib(Component.literal("**************************************************"));
                 SCHEDULER.shutdown();
@@ -67,6 +67,22 @@ public class BlueLibCommon {
 
         public static Component translate(String pString, Object... pArgs) {
             return Component.translatable(BlueLibConstants.MOD_ID + "." + pString, pArgs);
+        }
+
+        public static Component log(String pString) {
+            return Component.translatable(BlueLibConstants.MOD_ID + ".log." + pString);
+        }
+
+        public static Component log(String pString, Object... pArgs) {
+            return Component.translatable(BlueLibConstants.MOD_ID + ".log." + pString, pArgs);
+        }
+
+        public static Component config(String pString) {
+            return Component.translatable(BlueLibConstants.MOD_ID + ".config." + pString);
+        }
+
+        public static Component config(String pString, Object... pArgs) {
+            return Component.translatable(BlueLibConstants.MOD_ID + ".config." + pString, pArgs);
         }
     }
 }
