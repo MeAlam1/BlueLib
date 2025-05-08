@@ -9,7 +9,7 @@ import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import software.bluelib.net.messages.client.OpenLoggerPacket;
-import software.bluelib.registry.NetworkRegistry;
+import software.bluelib.api.net.NetworkRegistry;
 
 public class OpenLoggerScreenCommand {
 

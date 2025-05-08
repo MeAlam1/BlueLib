@@ -12,7 +12,7 @@ import net.neoforged.neoforge.network.registration.HandlerThread;
 import software.bluelib.BlueLibConstants;
 import software.bluelib.api.net.NetworkPacket;
 import software.bluelib.client.net.data.DataRegistrySyncPacketHandler;
-import software.bluelib.registry.NetworkRegistry;
+import software.bluelib.api.net.NetworkRegistry;
 
 public class NeoForgeNetworkManager implements BlueLibConstants.NetworkManager {
 

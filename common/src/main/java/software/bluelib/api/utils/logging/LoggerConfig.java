@@ -2,6 +2,8 @@
 
 package software.bluelib.api.utils.logging;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.logging.ConsoleHandler;
@@ -30,15 +32,7 @@ public abstract class LoggerConfig {
                 String plainMessage = "[" + timestamp + "]" + " [" + pRecord.getLevel() + "]: " + pRecord.getMessage();
 
                 if (pRecord.getThrown() != null) {
-                    String exceptionDetails = "\nException: " + pRecord.getThrown().getMessage();
-                    for (StackTraceElement element : pRecord.getThrown().getStackTrace()) {
-                        String packageName = element.getClassName().substring(0, element.getClassName().lastIndexOf('.'));
-                        String className = element.getClassName().substring(element.getClassName().lastIndexOf('.') + 1);
-                        String methodName = element.getMethodName();
-                        int lineNumber = element.getLineNumber();
-
-                        exceptionDetails += "\n\tat " + packageName + "." + className + "." + methodName + "(Line: " + lineNumber + ")";
-                    }
+                    String exceptionDetails = getExceptionDetails(pRecord);
                     coloredMessage.append(exceptionDetails);
                     plainMessage += exceptionDetails;
                 }
@@ -46,6 +40,19 @@ public abstract class LoggerConfig {
                 LogCache.addLog(plainMessage, color);
 
                 return coloredMessage + "\n";
+            }
+
+            private static @NotNull String getExceptionDetails(LogRecord pRecord) {
+                StringBuilder exceptionDetails = new StringBuilder("\nException: " + pRecord.getThrown().getMessage());
+                for (StackTraceElement element : pRecord.getThrown().getStackTrace()) {
+                    String packageName = element.getClassName().substring(0, element.getClassName().lastIndexOf('.'));
+                    String className = element.getClassName().substring(element.getClassName().lastIndexOf('.') + 1);
+                    String methodName = element.getMethodName();
+                    int lineNumber = element.getLineNumber();
+
+                    exceptionDetails.append("\n\tat ").append(packageName).append(".").append(className).append(".").append(methodName).append("(Line: ").append(lineNumber).append(")");
+                }
+                return exceptionDetails.toString();
             }
         });
 

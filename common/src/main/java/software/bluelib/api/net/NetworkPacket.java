@@ -10,7 +10,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import software.bluelib.BlueLibConstants;
-import software.bluelib.registry.NetworkRegistry;
 
 public interface NetworkPacket<T extends NetworkPacket<T>> extends CustomPacketPayload, Encodable {
 

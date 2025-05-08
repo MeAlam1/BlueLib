@@ -8,6 +8,8 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
+import software.bluelib.api.utils.logging.BaseLogLevel;
+import software.bluelib.api.utils.logging.BaseLogger;
 import software.bluelib.api.utils.logging.LogCache;
 
 public class LoggerScreen extends Screen {
@@ -20,15 +22,21 @@ public class LoggerScreen extends Screen {
     }
 
     @Override
+    protected void init() {
+        super.init();
+        scrollOffset = 0;
+    }
+    
+    @Override
     public void render(@NotNull GuiGraphics pGuiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
         int boxWidth = (int) (this.width * 0.9);
         int boxHeight = (int) (this.height * 0.9);
         int boxX = (this.width - boxWidth) / 2;
         int boxY = (this.height - boxHeight) / 2;
 
-        pGuiGraphics.fill(boxX - 2, boxY - 22, boxX + boxWidth + 2, boxY + boxHeight + 2, 0xDD000000); // background
+        pGuiGraphics.fill(boxX - 2, boxY - 22, boxX + boxWidth + 2, boxY + boxHeight + 2, 0xDD000000);
 
-        pGuiGraphics.fill(boxX, boxY - 20, boxX + boxWidth, boxY, 0xFF444444); // header
+        pGuiGraphics.fill(boxX, boxY - 20, boxX + boxWidth, boxY, 0xFF444444);
         pGuiGraphics.drawCenteredString(this.font, this.title, boxX + boxWidth / 2, boxY - 15, 0xFFFFFF);
 
         List<LogCache.LogEntry> logEntries = LogCache.getLogs();
@@ -62,9 +70,9 @@ public class LoggerScreen extends Screen {
 
     private record RenderedLine(String text, int color) {}
 
-    private List<String> wrapText(String text, int maxWidth) {
+    private List<String> wrapText(String pText, int pMaxWidth) {
         List<String> lines = new ArrayList<>();
-        String[] segments = text.split("\n");
+        String[] segments = pText.split("\n");
 
         for (String segment : segments) {
             String[] words = segment.split(" ");
@@ -72,9 +80,9 @@ public class LoggerScreen extends Screen {
 
             for (String word : words) {
                 int wordWidth = this.font.width(word);
-                if (wordWidth > maxWidth) {
+                if (wordWidth > pMaxWidth) {
                     while (!word.isEmpty()) {
-                        int splitIndex = getSplitIndex(word, maxWidth);
+                        int splitIndex = getSplitIndex(word, pMaxWidth);
                         lines.add(word.substring(0, splitIndex));
                         word = word.substring(splitIndex);
                     }
@@ -82,7 +90,7 @@ public class LoggerScreen extends Screen {
                 }
 
                 int lineWidth = this.font.width(currentLine + word + " ");
-                if (lineWidth > maxWidth) {
+                if (lineWidth > pMaxWidth) {
                     lines.add(currentLine.toString().trim());
                     currentLine = new StringBuilder(word + " ");
                 } else {
@@ -98,20 +106,20 @@ public class LoggerScreen extends Screen {
         return lines;
     }
 
-    private int getSplitIndex(String word, int maxWidth) {
-        for (int i = 1; i <= word.length(); i++) {
-            if (this.font.width(word.substring(0, i)) > maxWidth) {
+    private int getSplitIndex(String pWord, int pMaxWidth) {
+        for (int i = 1; i <= pWord.length(); i++) {
+            if (this.font.width(pWord.substring(0, i)) > pMaxWidth) {
                 return i - 1;
             }
         }
-        return word.length();
+        return pWord.length();
     }
 
     @Override
-    public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY) {
-        if (scrollY > 0) {
+    public boolean mouseScrolled(double pMouseX, double pMouseY, double pScrollX, double pScrollY) {
+        if (pScrollY > 0) {
             scrollOffset = Math.max(0, scrollOffset - 1);
-        } else if (scrollY < 0) {
+        } else if (pScrollY < 0) {
             scrollOffset++;
         }
         return true;

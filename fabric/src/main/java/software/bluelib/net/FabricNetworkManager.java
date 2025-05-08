@@ -7,7 +7,7 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.server.level.ServerPlayer;
 import software.bluelib.BlueLibConstants;
 import software.bluelib.api.net.NetworkPacket;
-import software.bluelib.registry.NetworkRegistry;
+import software.bluelib.api.net.NetworkRegistry;
 
 public class FabricNetworkManager implements BlueLibConstants.NetworkManager {
 

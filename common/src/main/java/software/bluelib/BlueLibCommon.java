@@ -2,22 +2,26 @@
 
 package software.bluelib;
 
-import static software.bluelib.BlueLibConstants.SCHEDULER;
-
-import java.util.concurrent.TimeUnit;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.ApiStatus;
 import software.bluelib.api.event.mod.ModIntegration;
+import software.bluelib.api.net.NetworkRegistry;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
 
+import java.util.concurrent.TimeUnit;
+
+import static software.bluelib.BlueLibConstants.SCHEDULER;
+
 public class BlueLibCommon {
 
-    private BlueLibCommon() {}
+    private BlueLibCommon() {
+    }
 
     public static void init() {
         ModIntegration.checkSupportMods();
+        doRegistration();
         if (isDeveloperMode()) {
             SCHEDULER.schedule(() -> {
                 BaseLogger.logBlueLib("**************************************************");
@@ -29,6 +33,11 @@ public class BlueLibCommon {
                 SCHEDULER.shutdown();
             }, 5, TimeUnit.SECONDS);
         }
+    }
+
+    public static void doRegistration() {
+        NetworkRegistry.registerC2SPacketProvider(new software.bluelib.registry.NetworkRegistry());
+        NetworkRegistry.registerS2CPacketProvider(new software.bluelib.registry.NetworkRegistry());
     }
 
     public static boolean isDeveloperMode() {
