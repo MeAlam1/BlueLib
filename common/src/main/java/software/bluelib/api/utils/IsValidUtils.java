@@ -2,14 +2,12 @@
 
 package software.bluelib.api.utils;
 
-import org.jetbrains.annotations.NotNull;
+import java.net.URI;
+import java.util.regex.Pattern;
+import org.jetbrains.annotations.Nullable;
 import software.bluelib.BlueLibCommon;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
-
-import javax.annotation.Nullable;
-import java.net.URI;
-import java.util.regex.Pattern;
 
 @SuppressWarnings("unused")
 public class IsValidUtils {
@@ -23,7 +21,7 @@ public class IsValidUtils {
                 return false;
             }
             if (!pUrl.startsWith("http://") && !pUrl.startsWith("https://")) {
-                BaseLogger.log(BaseLogLevel.WARNING, BlueLibCommon.Translation.log("invalid_url.begin", pUrl), true); 
+                BaseLogger.log(BaseLogLevel.WARNING, BlueLibCommon.Translation.log("invalid_url.begin", pUrl), true);
                 return false;
             }
 

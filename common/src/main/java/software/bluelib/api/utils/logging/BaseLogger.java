@@ -3,7 +3,6 @@
 package software.bluelib.api.utils.logging;
 
 import java.util.logging.Level;
-
 import net.minecraft.network.chat.Component;
 import software.bluelib.BlueLibConstants;
 import software.bluelib.api.utils.minecraft.ClientUtils;

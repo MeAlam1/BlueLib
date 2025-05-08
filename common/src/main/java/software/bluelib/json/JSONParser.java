@@ -29,7 +29,7 @@ public abstract class JSONParser {
 
         Collection<ResourceLocation> resources = resourceManager.listResources(pFolderPath, path -> path.getPath().endsWith(".json")).keySet();
 
-        BaseLogger.log(BaseLogLevel.INFO, BlueLibCommon.Translation.log("json.found", pFolderPath), true);
+        BaseLogger.log(BaseLogLevel.SUCCESS, BlueLibCommon.Translation.log("json.found", pFolderPath), true);
 
         for (ResourceLocation resourceLocation : resources) {
             try {

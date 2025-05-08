@@ -4,12 +4,10 @@ package software.bluelib.entity.variant;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-
 import net.minecraft.server.MinecraftServer;
 import software.bluelib.BlueLibCommon;
 import software.bluelib.BlueLibConstants;
@@ -48,6 +46,6 @@ public class VariantLoader extends JSONParser {
         }
         BlueLibConstants.PlatformHelper.EVENT_PROXY.allVariantsLoadedPost(pEntityName);
         BaseLogger.log(BaseLogLevel.INFO, BlueLibCommon.Translation.log("variants.entities", Arrays.toString(ParameterUtils.getAllEntities().toArray())), true);
-        BaseLogger.log(BaseLogLevel.INFO, BlueLibCommon.Translation.log("variants.variants",pEntityName, Arrays.toString(Objects.requireNonNull(ParameterUtils.getVariantsOfEntity(pEntityName)).toArray())), true);
+        BaseLogger.log(BaseLogLevel.INFO, BlueLibCommon.Translation.log("variants.variants", pEntityName, Arrays.toString(Objects.requireNonNull(ParameterUtils.getVariantsOfEntity(pEntityName)).toArray())), true);
     }
 }

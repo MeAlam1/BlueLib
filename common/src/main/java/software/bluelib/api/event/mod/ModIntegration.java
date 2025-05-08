@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-
 import net.minecraft.network.chat.Component;
 import software.bluelib.BlueLibCommon;
 import software.bluelib.BlueLibConstants;
@@ -91,7 +90,7 @@ public class ModIntegration {
                 modsMessage.append(mod).append("\n");
             }
             BlueLibConstants.PlatformHelper.EVENT_PROXY.onAllModsLoaded(loadedModMetas);
-            BaseLogger.log(BaseLogLevel.INFO, BlueLibCommon.Translation.translate("mod.loaded",Component.literal(modsMessage.toString())), true);
+            BaseLogger.log(BaseLogLevel.INFO, BlueLibCommon.Translation.translate("mod.loaded", Component.literal(modsMessage.toString())), true);
         } else {
             BlueLibConstants.PlatformHelper.EVENT_PROXY.onAllModsLoaded(loadedModMetas);
             BaseLogger.log(BaseLogLevel.INFO, BlueLibCommon.Translation.translate("mod.loaded.empty"), true);

@@ -7,13 +7,10 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.HandlerThread;
-import software.bluelib.BlueLibCommon;
 import software.bluelib.BlueLibConstants;
 import software.bluelib.api.net.NetworkPacket;
-import software.bluelib.client.net.data.DataRegistrySyncPacketHandler;
 import software.bluelib.api.net.NetworkRegistry;
-import software.bluelib.api.utils.logging.BaseLogLevel;
-import software.bluelib.api.utils.logging.BaseLogger;
+import software.bluelib.client.net.data.DataRegistrySyncPacketHandler;
 
 public class NeoForgeNetworkManager implements BlueLibConstants.NetworkManager {
 

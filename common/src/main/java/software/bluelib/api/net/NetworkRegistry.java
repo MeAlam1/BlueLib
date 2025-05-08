@@ -2,12 +2,11 @@
 
 package software.bluelib.api.net;
 
+import java.util.ArrayList;
+import java.util.List;
 import net.minecraft.server.level.ServerPlayer;
 import software.bluelib.BlueLibConstants;
 import software.bluelib.net.PacketRegisterInfo;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class NetworkRegistry {
 
@@ -35,7 +34,7 @@ public class NetworkRegistry {
 
     private static final List<PacketProvider.C2SPacketProvider> c2sProviders = new ArrayList<>();
     private static final List<PacketProvider.S2CPacketProvider> s2cProviders = new ArrayList<>();
-    
+
     public static List<PacketRegisterInfo<?>> s2cPayloads = generateS2CPacketInfoList();
     public static List<PacketRegisterInfo<?>> c2sPayloads = generateC2SPacketInfoList();
 

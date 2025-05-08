@@ -2,6 +2,9 @@
 
 package software.bluelib;
 
+import static software.bluelib.BlueLibConstants.SCHEDULER;
+
+import java.util.concurrent.TimeUnit;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.ApiStatus;
@@ -10,14 +13,9 @@ import software.bluelib.api.net.NetworkRegistry;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
 
-import java.util.concurrent.TimeUnit;
-
-import static software.bluelib.BlueLibConstants.SCHEDULER;
-
 public class BlueLibCommon {
 
-    private BlueLibCommon() {
-    }
+    private BlueLibCommon() {}
 
     public static void init() {
         if (isDeveloperMode()) {

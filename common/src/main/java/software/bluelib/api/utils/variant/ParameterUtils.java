@@ -6,14 +6,12 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import java.util.Set;
-
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import software.bluelib.BlueLibCommon;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
 import software.bluelib.entity.variant.VariantLoader;
-
-import javax.annotation.Nullable;
 
 @SuppressWarnings("unused")
 public class ParameterUtils {
@@ -24,7 +22,7 @@ public class ParameterUtils {
     public static Set<String> getAllEntities() {
         return VariantLoader.AllVariants.keySet();
     }
-    
+
     @Nullable
     public static Set<String> getVariantsOfEntity(String pEntityName) {
         JsonObject entityData = VariantLoader.AllVariants.get(pEntityName);

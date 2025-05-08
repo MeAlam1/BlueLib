@@ -2,6 +2,7 @@
 
 package software.bluelib.api.utils.minecraft;
 
+import java.util.Collection;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
@@ -11,13 +12,10 @@ import software.bluelib.BlueLibCommon;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
 
-import java.util.Collection;
-
 @SuppressWarnings("unused")
 public class ChunkUtils {
 
-    private ChunkUtils() {
-    }
+    private ChunkUtils() {}
 
     public static Biome getBiomeOfChunk(Level pLevel, ChunkPos pChunkPos) {
         try {

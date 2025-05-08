@@ -2,13 +2,11 @@
 
 package software.bluelib.api.utils.conversion;
 
+import java.util.Objects;
 import org.jetbrains.annotations.NotNull;
 import software.bluelib.BlueLibCommon;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
-
-import javax.annotation.Nullable;
-import java.util.Objects;
 
 @SuppressWarnings("unused")
 public class CaseConverterUtils {

@@ -6,11 +6,10 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import software.bluelib.BlueLibCommon;
-import software.bluelib.net.messages.client.OpenLoggerPacket;
 import software.bluelib.api.net.NetworkRegistry;
+import software.bluelib.net.messages.client.OpenLoggerPacket;
 
 public class OpenLoggerScreenCommand {
 

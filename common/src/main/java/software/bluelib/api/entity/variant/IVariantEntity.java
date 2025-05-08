@@ -5,7 +5,6 @@ package software.bluelib.api.entity.variant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
 import net.minecraft.util.RandomSource;
 import software.bluelib.BlueLibCommon;
 import software.bluelib.api.utils.logging.BaseLogLevel;

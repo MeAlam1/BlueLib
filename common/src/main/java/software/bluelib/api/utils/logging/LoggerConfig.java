@@ -2,14 +2,13 @@
 
 package software.bluelib.api.utils.logging;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
+import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("unused")
 public abstract class LoggerConfig {

@@ -5,7 +5,6 @@ package software.bluelib.api.utils.math;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-
 import software.bluelib.BlueLibCommon;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;

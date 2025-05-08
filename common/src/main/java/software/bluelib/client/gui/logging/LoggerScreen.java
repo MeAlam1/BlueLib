@@ -6,11 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 import software.bluelib.BlueLibCommon;
-import software.bluelib.api.utils.logging.BaseLogLevel;
-import software.bluelib.api.utils.logging.BaseLogger;
 import software.bluelib.api.utils.logging.LogCache;
 
 public class LoggerScreen extends Screen {
@@ -27,7 +24,7 @@ public class LoggerScreen extends Screen {
         super.init();
         scrollOffset = 0;
     }
-    
+
     @Override
     public void render(@NotNull GuiGraphics pGuiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
         int boxWidth = (int) (this.width * 0.9);
