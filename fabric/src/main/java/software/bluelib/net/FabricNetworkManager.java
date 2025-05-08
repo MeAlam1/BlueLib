@@ -5,9 +5,12 @@ package software.bluelib.net;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.server.level.ServerPlayer;
+import software.bluelib.BlueLibCommon;
 import software.bluelib.BlueLibConstants;
 import software.bluelib.api.net.NetworkPacket;
 import software.bluelib.api.net.NetworkRegistry;
+import software.bluelib.api.utils.logging.BaseLogLevel;
+import software.bluelib.api.utils.logging.BaseLogger;
 
 public class FabricNetworkManager implements BlueLibConstants.NetworkManager {
 
@@ -31,10 +34,12 @@ public class FabricNetworkManager implements BlueLibConstants.NetworkManager {
     @Override
     public void sendPacketToPlayer(ServerPlayer pPlayer, NetworkPacket<?> pPacket) {
         ServerPlayNetworking.send(pPlayer, pPacket);
+        BaseLogger.log(BaseLogLevel.SUCCESS, BlueLibCommon.Translation.translate("packet.send.player.success", pPacket.getClass().getSimpleName(), pPlayer.getName().getString()), true);
     }
 
     @Override
     public void sendToServer(NetworkPacket<?> pPacket) {
         ClientPlayNetworking.send(pPacket);
+        BaseLogger.log(BaseLogLevel.SUCCESS, BlueLibCommon.Translation.translate("packet.send.server.success", pPacket.getClass().getSimpleName()), true);
     }
 }

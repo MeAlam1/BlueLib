@@ -1,7 +1,10 @@
 {
   "bluelib.mod.thank_you":          "    Thank you for using BlueLib!                 ",
   "bluelib.mod.thank_you.subtitle": "     We appreciate your support                  ",
-
+  "bluelib.mod.developer": "Running in Developer mode.",
+  "bluelib.mod.production": "Running in Production mode.",
+  
+  
   "bluelib.log.variants.loaded": "Entity variants loaded.",
   "bluelib.log.varaints.reloaded": "Entity variants reloaded.",
   "bluelib.log.variants.loaded.entity": "Entity variants loaded for {0}.",

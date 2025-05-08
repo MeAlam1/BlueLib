@@ -43,9 +43,9 @@ public class BlueLibCommon {
     public static boolean isDeveloperMode() {
         boolean isDevMode = BlueLibConstants.PlatformHelper.PLATFORM.isDevelopmentEnvironment();
         if (isDevMode) {
-            BaseLogger.log(BaseLogLevel.INFO, "Running in Developer mode.", true);
+            BaseLogger.log(BaseLogLevel.INFO, BlueLibCommon.Translation.translate("mod.developer"), true);
         } else {
-            BaseLogger.log(BaseLogLevel.INFO, "Running in Production mode.", true);
+            BaseLogger.log(BaseLogLevel.INFO, BlueLibCommon.Translation.translate("mod.production"), true);
         }
         return isDevMode;
     }
