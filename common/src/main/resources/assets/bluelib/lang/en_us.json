@@ -1,27 +1,77 @@
 {
-  "bluelib.mod.thank_you":          "    Thank you for using BlueLib!                 ",
+  "bluelib.mod.thank_you":          "     Thank you for using BlueLib!                ",
   "bluelib.mod.thank_you.subtitle": "     We appreciate your support                  ",
   "bluelib.mod.developer": "Running in Developer mode.",
   "bluelib.mod.production": "Running in Production mode.",
   
+  "bluelib.mod.loaded": "Mods loaded:\n %1$s \n\n\n",
+  "bluelib.mod.loaded.empty": "No supported mods loaded. \n\n\n",
+  
+  "bluelib.log.invalid_url": "Invalid URL: %1$s",
+  "bluelib.log.invalid_url.begin": "Invalid URL: %1$s does not start with: http:// or https://",
+  "bluelib.null": "Input is null",
+  "bluelib.notfound": "Input not found or recognized",
+  
+  "bluelib.log.math.null": "%1$s is null or empty, %2$s calculation might fail.",
+  "bluelib.log.math.error.gen": "Error generating %1$s",
+  "bluelib.log.math.error.calc": "Error calculating %1$s",
+  "bluelib.log.math.error.inverting": "Error inverting %1$s",
+  
+  "bluelib.log.color.notvalid": "Color: %1$s is not valid.",
+  
+  "bluelib.log.error.date.format": "Error formatting date: %1$s with format: %2$s",
+  "bluelib.log.error.date.parse": "Error parsing date: %1$s with format: %2$s",
+  
+  "bluelib.server.null": "Server is null.",
+  
+  "bluelib.log.test": "Received Text Message: %1$s",
+  
+  "bluelib.log.chunk.biome.error": "Error retrieving biome for chunk at position: %1$s",
+  "bluelib.log.chunk.tile.error": "Error retrieving tile entities for chunk at position: %1$s",
+  
+  "bluelib.log.entity.notfound": "Entity data not found for: %1$s",
+  "bluelib.log.entity.variantsNotfound": "Variants not found or empty for: %1$s in entity: %2$s",
+  "bluelib.log.entity.parameterNotfound": "Custom parameter: %1$s not found for: %2$s in entity: %3$s",
+  
+  "bluelib.log.variant.list.empty": "Variant names list is empty. Returning default variant: %1$s",
+  "bluelib.log.variant.random": "Selected random variant: %1$s from list of size: %2$s",
+  "bluelib.log.varaint.data": "All data of Variants: %1$s",
+  "bluelib.log.variant.load.cancelled": "Loading variant: %1$s of entity: %2$s has been cancelled.",
+  "bluelib.log.variants.load.cancelled": "Loading all the Variants has been cancelled.",
+
+  "bluelib.log.entities": "All Entities: %1$s",
+  "bluelib.log.variants": "Variants of %1$s: %2$s",
+  
+  "bluelib.log.json.found": "Found resources at: %1$s",
+  "bluelib.log.json.notfound": "Resources not found: %1$s",
+  "bluelib.log.json.loaded": "Successfully loaded JSON resource: %1$s",
+  "bluelib.log.json.failed": "Failed to load JSON resource: %1$s",
+  "bluelib.log.json.merge": "Merged array for key: %1$s",
+  "bluelib.log.json.add": "Added new key: %1$s",
+  "bluelib.log.json.overwrite": "Overwriting value for key: %1$s",
+  "bluelib.log.json.parse.failed": "Failed to parse JSON(s) while registering entity variants for %1$s from ModID: %2$s",
+  "bluelib.log.json.error": "Unexpected error occurred while registering entity variants for %1$s from ModID: %2$s",
+  
+  "bluelib.log.markdown.disabled": "Global markdown is disabled, returning original message",
+  "bluelib.log.markdown.message": "Completed message: %1$s",
+  "bluelib.log.markdown.feature.disabled": "%1$s is disabled, returning original message",
+  "bluelib.log.markdown.hyperlink.disabled": "Hyperlink is disabled, returning original message",
+  "bluelib.log.markdown.copyToClipboard.disabled": "Copy to Clipboard is disabled, returning original message",
+  "bluelib.log.markdown.color.disabled": "Color is disabled, returning original message",
+  "bluelib.log.markdown.color.list.invalid": "Invalid color list detected: %1$s",
+  "bluelib.log.markdown.color.invalid": "Invalid color detected: %1$s",
   
   "bluelib.log.variants.loaded": "Entity variants loaded.",
   "bluelib.log.varaints.reloaded": "Entity variants reloaded.",
-  "bluelib.log.variants.loaded.entity": "Entity variants loaded for {0}.",
+  "bluelib.log.variants.loaded.entity": "Entity variants loaded for %1$s.",
   
   "bluelib.config.markdown.loaded": "The Markdown Config of BlueLib has been loaded.",
-  "bluelib.config.markdown.failed": "The Markdown Config of BlueLib has failed to load. {0}",
+  "bluelib.config.markdown.failed": "The Markdown Config of BlueLib has failed to load. %1$s",
   "bluelib.config.logger.loaded": "The Logger Config of BlueLib has been loaded.",
-  "bluelib.config.logger.failed": "The Logger Config of BlueLib has failed to load. {0}",
-  
-  "bluelib.packet.send.player.success": "Successfully sent packet {0} to player {1}.",
-  "bluelib.packet.send.player.fail": "Failed to send packet {0} to player {1}.",
-  "bluelib.packet.send.server.success": "Successfully sent packet {0} to the server.",
-  "bluelib.packet.send.server.fail": "Failed to send packet {0} to the server.",
-  "bluelib.packet.register.client.success": "Successfully registered packet to client: {0}",
-  "bluelib.packet.register.client.fail": "Failed to register packet to client: {0}",
-  "bluelib.packet.register.server.success": "Successfully registered packet to server: {0}",
-  "bluelib.packet.register.server.fail": "Failed to register packet to server: {0}",
+  "bluelib.config.logger.failed": "The Logger Config of BlueLib has failed to load. %1$s",
+
+  "bluelib.command.logger.no_permission": "You do not have permission to use this command.",
+  "bluelib.ui.logger.title": "Logger Screen!",
 
   "bluelib.configuration.title": "BlueLib Configuration",
   

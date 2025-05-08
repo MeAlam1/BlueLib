@@ -5,6 +5,8 @@ package software.bluelib.api.utils.math;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+
+import software.bluelib.BlueLibCommon;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
 
@@ -15,7 +17,7 @@ public class StatisticalUtils {
 
     public static double calculateMean(double[] pValues) {
         if (pValues.length == 0) {
-            BaseLogger.log(BaseLogLevel.WARNING, "Array is empty, mean calculation might fail.", true);
+            BaseLogger.log(BaseLogLevel.WARNING, BlueLibCommon.Translation.log("math.null", "array", "mean"), true);
             return 0;
         }
 
@@ -28,7 +30,7 @@ public class StatisticalUtils {
 
     public static double calculateMedian(double[] pValues) {
         if (pValues.length == 0) {
-            BaseLogger.log(BaseLogLevel.WARNING, "Array is empty, median calculation might fail.", true);
+            BaseLogger.log(BaseLogLevel.WARNING, BlueLibCommon.Translation.log("math.null", "array", "median"), true);
             return 0;
         }
 
@@ -41,7 +43,7 @@ public class StatisticalUtils {
 
     public static double calculateMode(double[] pValues) {
         if (pValues.length == 0) {
-            BaseLogger.log(BaseLogLevel.WARNING, "Array is empty, mode calculation might fail.", true);
+            BaseLogger.log(BaseLogLevel.WARNING, BlueLibCommon.Translation.log("math.null", "array", "mode"), true);
             return 0;
         }
 
@@ -63,7 +65,7 @@ public class StatisticalUtils {
 
     public static double calculateStandardDeviation(double[] pValues) {
         if (pValues.length == 0) {
-            BaseLogger.log(BaseLogLevel.WARNING, "Array is empty, standard deviation calculation might fail.", true);
+            BaseLogger.log(BaseLogLevel.WARNING, BlueLibCommon.Translation.log("math.null", "array", "standard deviation"), true);
             return 0;
         }
 
@@ -77,7 +79,7 @@ public class StatisticalUtils {
 
     public static double calculateVariance(double[] pValues) {
         if (pValues.length == 0) {
-            BaseLogger.log(BaseLogLevel.WARNING, "Array is empty, variance calculation might fail.", true);
+            BaseLogger.log(BaseLogLevel.WARNING, BlueLibCommon.Translation.log("math.null", "array", "variance"), true);
             return 0;
         }
 
@@ -91,7 +93,7 @@ public class StatisticalUtils {
 
     public static double calculateRange(double[] pValues) {
         if (pValues.length == 0) {
-            BaseLogger.log(BaseLogLevel.WARNING, "Array is empty, range calculation might fail.", true);
+            BaseLogger.log(BaseLogLevel.WARNING, BlueLibCommon.Translation.log("math.null", "array", "range"), true);
             return 0;
         }
 
@@ -102,7 +104,7 @@ public class StatisticalUtils {
 
     public static double calculateCoefficientOfVariation(double[] pValues) {
         if (pValues.length == 0) {
-            BaseLogger.log(BaseLogLevel.WARNING, "Array is empty, coefficient of variation calculation might fail.", true);
+            BaseLogger.log(BaseLogLevel.WARNING, BlueLibCommon.Translation.log("math.null", "array", "coefficient of variation"), true);
             return 0;
         }
 

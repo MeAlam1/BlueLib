@@ -34,12 +34,10 @@ public class FabricNetworkManager implements BlueLibConstants.NetworkManager {
     @Override
     public void sendPacketToPlayer(ServerPlayer pPlayer, NetworkPacket<?> pPacket) {
         ServerPlayNetworking.send(pPlayer, pPacket);
-        BaseLogger.log(BaseLogLevel.SUCCESS, BlueLibCommon.Translation.translate("packet.send.player.success", pPacket.getClass().getSimpleName(), pPlayer.getName().getString()), true);
     }
 
     @Override
     public void sendToServer(NetworkPacket<?> pPacket) {
         ClientPlayNetworking.send(pPacket);
-        BaseLogger.log(BaseLogLevel.SUCCESS, BlueLibCommon.Translation.translate("packet.send.server.success", pPacket.getClass().getSimpleName()), true);
     }
 }

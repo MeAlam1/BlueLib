@@ -44,28 +44,16 @@ public class NeoForgeNetworkManager implements BlueLibConstants.NetworkManager {
 
         NetworkRegistry.c2sPayloads.stream()
                 .map(NeoForgePacketInfo::new)
-                .forEach(it -> {
-                    it.registerToServer(registrar);
-                });
+                .forEach(it -> it.registerToServer(registrar));
     }
 
     @Override
     public void sendPacketToPlayer(ServerPlayer pPlayer, NetworkPacket<?> pPacket) {
-        try {
-            pPlayer.connection.send(pPacket);
-            BaseLogger.log(BaseLogLevel.SUCCESS, BlueLibCommon.Translation.translate("packet.send.player.success", pPacket.getClass().getSimpleName(), pPlayer.getName().getString()), true);
-        } catch (Exception pException) {
-            BaseLogger.log(BaseLogLevel.ERROR, BlueLibCommon.Translation.translate("packet.send.player.fail", pPacket.getClass().getSimpleName(), pPlayer.getName().getString()), pException, true);
-        }
+        pPlayer.connection.send(pPacket);
     }
 
     @Override
     public void sendToServer(NetworkPacket<?> pPacket) {
-        try {
-            Objects.requireNonNull(Minecraft.getInstance().getConnection()).send(pPacket);
-            BaseLogger.log(BaseLogLevel.SUCCESS, BlueLibCommon.Translation.translate("packet.send.server.success", pPacket.getClass().getSimpleName()), true);
-        } catch (Exception pException) {
-            BaseLogger.log(BaseLogLevel.ERROR, BlueLibCommon.Translation.translate("packet.send.server.fail", pPacket.getClass().getSimpleName()), pException, true);
-        }
+        Objects.requireNonNull(Minecraft.getInstance().getConnection()).send(pPacket);
     }
 }

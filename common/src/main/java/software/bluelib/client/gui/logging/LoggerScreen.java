@@ -8,6 +8,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
+import software.bluelib.BlueLibCommon;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
 import software.bluelib.api.utils.logging.LogCache;
@@ -18,7 +19,7 @@ public class LoggerScreen extends Screen {
     private static final int LINE_HEIGHT = 10;
 
     public LoggerScreen() {
-        super(Component.translatable("bluelib.ui.logger.title"));
+        super(BlueLibCommon.Translation.translate("ui.logger.title"));
     }
 
     @Override

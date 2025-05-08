@@ -30,7 +30,6 @@ public class FabricPacketInfo<T extends NetworkPacket<T>> {
     public void registerClientHandler() {
         ClientPlayNetworking.registerGlobalReceiver(info.getPayloadId(), (obj, ignored) -> {
             ClientNetworkPacketHandler<T> handler = (ClientNetworkPacketHandler<T>) info.getHandler();
-            BaseLogger.log(BaseLogLevel.SUCCESS, BlueLibCommon.Translation.translate("packet.register.client.success", info.getPayloadId()), true);
             handler.handle(obj, Minecraft.getInstance());
         });
     }
@@ -38,7 +37,6 @@ public class FabricPacketInfo<T extends NetworkPacket<T>> {
     public void registerServerHandler() {
         ServerPlayNetworking.registerGlobalReceiver(info.getPayloadId(), (obj, context) -> {
             ServerNetworkPacketHandler<T> handler = (ServerNetworkPacketHandler<T>) info.getHandler();
-            BaseLogger.log(BaseLogLevel.SUCCESS, BlueLibCommon.Translation.translate("packet.register.server.success", info.getPayloadId()), true);
             handler.handle(obj, context.player().getServer(), context.player());
         });
     }

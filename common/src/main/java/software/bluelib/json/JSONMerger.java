@@ -6,6 +6,8 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import java.util.Map;
+
+import software.bluelib.BlueLibCommon;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
 
@@ -27,14 +29,14 @@ public class JSONMerger {
                         targetArray.add(element);
                     }
 
-                    BaseLogger.log(BaseLogLevel.INFO, "Merged array for key: " + key, true);
+                    BaseLogger.log(BaseLogLevel.INFO, BlueLibCommon.Translation.log("json.merge", key), true);
                 } else {
                     pTarget.add(key, sourceElement);
-                    BaseLogger.log(BaseLogLevel.WARNING, "Overwriting value for key: " + key + " for " + sourceElement, true);
+                    BaseLogger.log(BaseLogLevel.WARNING, BlueLibCommon.Translation.log("json.overwrite", key), true);
                 }
             } else {
                 pTarget.add(key, sourceElement);
-                BaseLogger.log(BaseLogLevel.SUCCESS, "Added new key: " + key + " to " + sourceElement, true);
+                BaseLogger.log(BaseLogLevel.SUCCESS, BlueLibCommon.Translation.log("json.add", key), true);
             }
         }
     }

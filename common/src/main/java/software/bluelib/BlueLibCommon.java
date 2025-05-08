@@ -20,9 +20,9 @@ public class BlueLibCommon {
     }
 
     public static void init() {
-        ModIntegration.checkSupportMods();
         if (isDeveloperMode()) {
             SCHEDULER.schedule(() -> {
+                ModIntegration.checkSupportMods();
                 BaseLogger.logBlueLib(Component.literal("**************************************************"));
                 BaseLogger.logBlueLib(Component.literal("                                                  "));
                 BaseLogger.logBlueLib(BlueLibCommon.Translation.translate("mod.thank_you"));
@@ -43,9 +43,7 @@ public class BlueLibCommon {
     public static boolean isDeveloperMode() {
         boolean isDevMode = BlueLibConstants.PlatformHelper.PLATFORM.isDevelopmentEnvironment();
         if (isDevMode) {
-            BaseLogger.log(BaseLogLevel.INFO, BlueLibCommon.Translation.translate("mod.developer"), true);
-        } else {
-            BaseLogger.log(BaseLogLevel.INFO, BlueLibCommon.Translation.translate("mod.production"), true);
+            BaseLogger.log(BaseLogLevel.INFO, Component.literal("Running in Developer mode."), true);
         }
         return isDevMode;
     }

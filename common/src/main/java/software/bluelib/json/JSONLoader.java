@@ -12,6 +12,7 @@ import java.util.Optional;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
+import software.bluelib.BlueLibCommon;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
 
@@ -24,7 +25,7 @@ public class JSONLoader {
             Optional<Resource> resource = pResourceManager.getResource(pResourceLocation);
 
             if (resource.isEmpty()) {
-                BaseLogger.log(BaseLogLevel.ERROR, "Resource not found: " + pResourceLocation, true);
+                BaseLogger.log(BaseLogLevel.ERROR, BlueLibCommon.Translation.log("json.notfound", pResourceLocation.toString()), true);
                 return new JsonObject();
             }
 
@@ -32,13 +33,12 @@ public class JSONLoader {
                     InputStreamReader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8)) {
 
                 JsonObject jsonObject = gson.fromJson(reader, JsonObject.class);
-                BaseLogger.log(BaseLogLevel.SUCCESS, "Successfully loaded JSON resource: " + pResourceLocation, true);
+                BaseLogger.log(BaseLogLevel.SUCCESS, BlueLibCommon.Translation.log("json.loaded", pResourceLocation.toString()), true);
                 return jsonObject;
             }
         } catch (IOException pException) {
-            RuntimeException exception = new RuntimeException("Failed to load JSON resource: " + pResourceLocation, pException);
-            BaseLogger.log(BaseLogLevel.ERROR, "Failed to load JSON resource: " + pResourceLocation, exception, true);
-            throw exception;
+            BaseLogger.log(BaseLogLevel.ERROR, BlueLibCommon.Translation.log("json.failed", pResourceLocation.toString()), pException, true);
+            return new JsonObject();
         }
     }
 }

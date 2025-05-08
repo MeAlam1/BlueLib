@@ -10,6 +10,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextColor;
+import software.bluelib.BlueLibCommon;
 import software.bluelib.api.utils.IsValidUtils;
 import software.bluelib.api.utils.conversion.ColorConverterUtils;
 import software.bluelib.api.utils.logging.BaseLogLevel;
@@ -22,7 +23,7 @@ public class Color extends MarkdownFeature {
 
     public MutableComponent apply(MutableComponent pComponent) {
         if (!MarkdownConfig.isColorEnabled) {
-            BaseLogger.log(BaseLogLevel.INFO, "Color formatting is disabled. Returning original content.", true);
+            BaseLogger.log(BaseLogLevel.INFO, BlueLibCommon.Translation.log("markdown.color.disabled"), true);
             return pComponent;
         }
 
@@ -61,14 +62,11 @@ public class Color extends MarkdownFeature {
                 if (IsValidUtils.isValidColor(color)) {
                     colors.add(ColorConverterUtils.parseColorToHexString(color));
                 } else {
-                    BaseLogger.log(BaseLogLevel.WARNING, "Invalid color detected: " + color, true);
+                    BaseLogger.log(BaseLogLevel.WARNING, BlueLibCommon.Translation.log("markdown.color.invalid", color), true);
                     return colorGroup;
                 }
             }
         }
-
-        BaseLogger.log(BaseLogLevel.INFO, "Extracted colors: " + colors, true);
-
         return colors;
     }
 
@@ -112,7 +110,7 @@ public class Color extends MarkdownFeature {
                 }
             }
         } else {
-            BaseLogger.log(BaseLogLevel.WARNING, "Invalid color list detected: " + pColors, true);
+            BaseLogger.log(BaseLogLevel.WARNING, BlueLibCommon.Translation.log("markdown.color.list.invalid", pColors), true);
             pResult.append(Component.literal(MarkdownConfig.colorPrefix + pColors + MarkdownConfig.colorSuffix + "(" + pColorText + ")")
                     .setStyle(pOriginalStyle));
         }

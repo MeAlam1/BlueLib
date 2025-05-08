@@ -8,17 +8,15 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import net.minecraft.world.item.DyeColor;
+import org.jetbrains.annotations.NotNull;
+import software.bluelib.BlueLibCommon;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
 
 @SuppressWarnings("unused")
 public class ColorConverterUtils {
 
-    public static int parseColorToHexString(String pInput) {
-        if (pInput == null || pInput.isEmpty()) {
-            return 0xFFFFFF;
-        }
-
+    public static int parseColorToHexString(@NotNull String pInput) {
         if (pInput.matches("^([0-9A-Fa-f]{6})$")) {
             pInput = "#" + pInput;
         }
@@ -75,24 +73,26 @@ public class ColorConverterUtils {
         return (pRed << 16) | (pGreen << 8) | pBlue;
     }
 
-    public static Optional<Color> getParsedColor(String color) {
+    @NotNull
+    public static Optional<Color> getParsedColor(@NotNull String pColor) {
         try {
-            if (color.contains("#"))
-                return Optional.of(Color.decode(color));
-            return Optional.of(new Color(DyeColor.valueOf(color.toUpperCase(Locale.ROOT)).getTextColor()));
+            if (pColor.contains("#"))
+                return Optional.of(Color.decode(pColor));
+            return Optional.of(new Color(DyeColor.valueOf(pColor.toUpperCase(Locale.ROOT)).getTextColor()));
         } catch (IllegalArgumentException pException) {
-            BaseLogger.log(BaseLogLevel.ERROR, color + " is not a valid color", true);
+            BaseLogger.log(BaseLogLevel.ERROR, BlueLibCommon.Translation.log("color.notvalid", pColor), true);
             return Optional.empty();
         }
     }
 
-    public static Optional<String> getParsedColorName(String color) {
+    @NotNull
+    public static Optional<String> getParsedColorName(@NotNull String pColor) {
         try {
-            if (!color.contains("#")) {
-                return Optional.of(DyeColor.valueOf(color.toUpperCase(Locale.ROOT)).getName());
+            if (!pColor.contains("#")) {
+                return Optional.of(DyeColor.valueOf(pColor.toUpperCase(Locale.ROOT)).getName());
             }
         } catch (IllegalArgumentException pException) {
-            BaseLogger.log(BaseLogLevel.ERROR, color + " is not a valid color", true);
+            BaseLogger.log(BaseLogLevel.ERROR, BlueLibCommon.Translation.log("color.notvalid", pColor), true);
             return Optional.empty();
         }
         return Optional.empty();

@@ -15,30 +15,20 @@ import software.bluelib.api.utils.logging.BaseLogger;
 public record NeoForgePacketInfo<T extends NetworkPacket<T>>(PacketRegisterInfo<T> info) {
 
     public void registerToClient(PayloadRegistrar pRegistrar) {
-        try {
-            IPayloadHandler<T> handler = (arg, unused) -> {
-                ClientNetworkPacketHandler<T> clientHandler = (ClientNetworkPacketHandler<T>) info.getHandler();
-                clientHandler.handle(arg, Minecraft.getInstance());
-            };
+        IPayloadHandler<T> handler = (arg, unused) -> {
+            ClientNetworkPacketHandler<T> clientHandler = (ClientNetworkPacketHandler<T>) info.getHandler();
+            clientHandler.handle(arg, Minecraft.getInstance());
+        };
 
-            pRegistrar.playToClient(info.getPayloadId(), info.getCodec(), handler);
-            BaseLogger.log(BaseLogLevel.SUCCESS, BlueLibCommon.Translation.translate("packet.register.client.success", info.getPayloadId()), true);
-        } catch (Exception pException) {
-            BaseLogger.log(BaseLogLevel.ERROR, BlueLibCommon.Translation.translate("packet.register.client.fail", info.getPayloadId()), pException, true);
-        }
+        pRegistrar.playToClient(info.getPayloadId(), info.getCodec(), handler);
     }
 
     public void registerToServer(PayloadRegistrar pRegistrar) {
-        try {
-            IPayloadHandler<T> handler = (arg, ctx) -> {
-                ServerNetworkPacketHandler<T> serverHandler = (ServerNetworkPacketHandler<T>) info.getHandler();
-                serverHandler.handle(arg, ctx.player().getServer(), (ServerPlayer) ctx.player());
-            };
+        IPayloadHandler<T> handler = (arg, ctx) -> {
+            ServerNetworkPacketHandler<T> serverHandler = (ServerNetworkPacketHandler<T>) info.getHandler();
+            serverHandler.handle(arg, ctx.player().getServer(), (ServerPlayer) ctx.player());
+        };
 
-            pRegistrar.playToServer(info.getPayloadId(), info.getCodec(), handler);
-            BaseLogger.log(BaseLogLevel.SUCCESS, BlueLibCommon.Translation.translate("packet.register.server.success", info.getPayloadId()), true);
-        } catch (Exception pException) {
-            BaseLogger.log(BaseLogLevel.ERROR, BlueLibCommon.Translation.translate("packet.register.server.fail", info.getPayloadId()), pException, true);
-        }
+        pRegistrar.playToServer(info.getPayloadId(), info.getCodec(), handler);
     }
 }
