@@ -3,6 +3,8 @@
 package software.bluelib.api.utils.logging;
 
 import java.util.logging.Level;
+
+import net.minecraft.network.chat.Component;
 import software.bluelib.BlueLibConstants;
 import software.bluelib.api.utils.minecraft.ClientUtils;
 
@@ -15,32 +17,33 @@ public class BaseLogger {
         LoggerConfig.configureLogger(BlueLibConstants.LOGGER, new DefaultLogColorProvider());
     }
 
-    public static void log(Level pLogLevel, String pMessage, Throwable pThrowable, boolean pIsBlueLib) {
+    public static void log(Level pLogLevel, Component pMessage, Throwable pThrowable, boolean pIsBlueLib) {
         if (shouldLogBlueLib(pLogLevel, pIsBlueLib)) {
             logBoth(pLogLevel, pMessage, pThrowable);
         }
     }
 
-    public static void log(Level pLogLevel, String pMessage, boolean pIsBlueLib) {
+    public static void log(Level pLogLevel, Component pMessage, boolean pIsBlueLib) {
         if (shouldLogBlueLib(pLogLevel, pIsBlueLib)) {
             logBoth(pLogLevel, pMessage);
         }
     }
 
-    public static void log(Level pLogLevel, String pMessage, Throwable pThrowable) {
+    public static void log(Level pLogLevel, Component pMessage, Throwable pThrowable) {
         if (shouldLog(pLogLevel)) {
             logBoth(pLogLevel, pMessage, pThrowable);
         }
     }
 
-    public static void log(Level pLogLevel, String pMessage) {
+    public static void log(Level pLogLevel, Component pMessage) {
         if (shouldLog(pLogLevel)) {
             logBoth(pLogLevel, pMessage);
         }
     }
 
-    public static void logBlueLib(String pMessage) {
-        BlueLibConstants.LOGGER.log(BaseLogLevel.BLUELIB, pMessage);
+    public static void logBlueLib(Component pMessage) {
+        String translatedMessage = pMessage.getString();
+        BlueLibConstants.LOGGER.log(BaseLogLevel.BLUELIB, translatedMessage);
     }
 
     private static boolean shouldLogBlueLib(Level pLogLevel, boolean pIsBlueLib) {
@@ -60,11 +63,13 @@ public class BaseLogger {
                 software.bluelib.config.LoggerConfig.isLoggingEnabled;
     }
 
-    private static void logBoth(Level pLogLevel, String pMessage) {
-        BlueLibConstants.LOGGER.log(pLogLevel, pMessage);
+    private static void logBoth(Level pLogLevel, Component pMessage) {
+        String translatedMessage = pMessage.getString();
+        BlueLibConstants.LOGGER.log(pLogLevel, translatedMessage);
     }
 
-    private static void logBoth(Level pLogLevel, String pMessage, Throwable pThrowable) {
-        BlueLibConstants.LOGGER.log(pLogLevel, pMessage, pThrowable);
+    private static void logBoth(Level pLogLevel, Component pMessage, Throwable pThrowable) {
+        String translatedMessage = pMessage.getString();
+        BlueLibConstants.LOGGER.log(pLogLevel, translatedMessage, pThrowable);
     }
 }

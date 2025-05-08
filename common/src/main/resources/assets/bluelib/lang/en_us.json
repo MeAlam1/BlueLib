@@ -1,4 +1,8 @@
 {
+  "bluelib.mod.thank_you":          "    Thank you for using BlueLib!                 ",
+  "bluelib.mod.thank_you.subtitle": "     We appreciate your support                  ",
+  
+  
   "bluelib.configuration.title": "BlueLib Configuration",
   
   "prefix": "Prefix",

@@ -16,6 +16,7 @@ import software.bluelib.net.NeoForgeNetworkManager;
 public class BlueLib {
 
     public BlueLib(IEventBus pModEventBus, ModContainer pModContainer) {
+        BlueLibCommon.doRegistration();
         pModEventBus.register(this);
         MixinBootstrap.init();
         pModEventBus.addListener(NeoForgeNetworkManager::registerMessages);

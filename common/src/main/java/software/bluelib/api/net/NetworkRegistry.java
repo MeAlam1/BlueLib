@@ -57,9 +57,11 @@ public class NetworkRegistry {
 
     public static void registerC2SPacketProvider(PacketProvider.C2SPacketProvider pProvider) {
         c2sProviders.add(pProvider);
+        c2sPayloads = generateC2SPacketInfoList();
     }
 
     public static void registerS2CPacketProvider(PacketProvider.S2CPacketProvider pProvider) {
         s2cProviders.add(pProvider);
+        s2cPayloads = generateS2CPacketInfoList();
     }
 }

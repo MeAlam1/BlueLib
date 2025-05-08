@@ -88,10 +88,10 @@ public class ModIntegration {
                 modsMessage.append(mod).append("\n");
             }
             BlueLibConstants.PlatformHelper.EVENT_PROXY.onAllModsLoaded(loadedModMetas);
-            BaseLogger.log(BaseLogLevel.INFO, modsMessage.toString());
+            BaseLogger.log(BaseLogLevel.INFO, modsMessage.toString(), true);
         } else {
             BlueLibConstants.PlatformHelper.EVENT_PROXY.onAllModsLoaded(loadedModMetas);
-            BaseLogger.log(BaseLogLevel.INFO, "No supported mods loaded.");
+            BaseLogger.log(BaseLogLevel.INFO, "No supported mods loaded.", true);
         }
     }
 

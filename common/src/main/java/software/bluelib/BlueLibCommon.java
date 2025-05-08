@@ -21,23 +21,23 @@ public class BlueLibCommon {
 
     public static void init() {
         ModIntegration.checkSupportMods();
-        doRegistration();
         if (isDeveloperMode()) {
             SCHEDULER.schedule(() -> {
-                BaseLogger.logBlueLib("**************************************************");
-                BaseLogger.logBlueLib("                                                  ");
-                BaseLogger.logBlueLib("     Thank you for using BlueLib!                 ");
-                BaseLogger.logBlueLib("     We appreciate your support.                  ");
-                BaseLogger.logBlueLib("                                                  ");
-                BaseLogger.logBlueLib("**************************************************");
+                BaseLogger.logBlueLib(Component.literal("**************************************************"));
+                BaseLogger.logBlueLib(Component.literal("                                                  "));
+                BaseLogger.logBlueLib(Component.translatable("bluelib.mod.thank_you"));
+                BaseLogger.logBlueLib(Component.translatable("bluelib.mod.thank_you.subtitle"));
+                BaseLogger.logBlueLib(Component.literal("                                                  "));
+                BaseLogger.logBlueLib(Component.literal("**************************************************"));
                 SCHEDULER.shutdown();
             }, 5, TimeUnit.SECONDS);
         }
     }
 
     public static void doRegistration() {
-        NetworkRegistry.registerC2SPacketProvider(new software.bluelib.registry.NetworkRegistry());
-        NetworkRegistry.registerS2CPacketProvider(new software.bluelib.registry.NetworkRegistry());
+        var networkRegistry = new software.bluelib.registry.NetworkRegistry();
+        NetworkRegistry.registerC2SPacketProvider(networkRegistry);
+        NetworkRegistry.registerS2CPacketProvider(networkRegistry);
     }
 
     public static boolean isDeveloperMode() {

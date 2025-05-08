@@ -16,6 +16,6 @@ public class TestPacketHandler implements ServerNetworkPacketHandler<TestPacket>
 
     @Override
     public void handle(TestPacket pPacket, MinecraftServer pServer, ServerPlayer pPlayer) {
-        BaseLogger.log(BaseLogLevel.INFO, "Received TestPacket: " + pPacket.value());
+        BaseLogger.log(BaseLogLevel.INFO, "Received TestPacket: " + pPacket.value(), true);
     }
 }
