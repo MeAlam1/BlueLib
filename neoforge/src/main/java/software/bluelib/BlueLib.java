@@ -2,6 +2,7 @@
 
 package software.bluelib;
 
+import net.minecraft.world.item.Item;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
@@ -15,9 +16,17 @@ import software.bluelib.config.ConfigHolder;
 import software.bluelib.net.NeoForgeNetworkManager;
 import software.bluelib.platform.NeoForgeRegistryHelper;
 
+import java.util.function.Supplier;
+
 @Mod(BlueLibConstants.MOD_ID)
 public class BlueLib {
-
+    /**
+     * Initializes the {@link RegistryBuilder} instance with the mod ID. Replace {@link BlueLibConstants#MOD_ID} with your mod's unique mod ID to register content under your mod's namespace.
+     * <br>
+     * This is essential for registering mod content such as items, blocks, and entities.
+     * <br>
+     * <strong>Do not remove</strong>, as it will break the mod's registration system.
+     */
     public RegistryBuilder REGISTRY = new RegistryBuilder(BlueLibConstants.MOD_ID);
 
     public BlueLib(IEventBus pModEventBus, ModContainer pModContainer) {

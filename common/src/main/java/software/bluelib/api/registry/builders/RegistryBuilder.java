@@ -23,23 +23,23 @@ public class RegistryBuilder {
         return modID;
     }
 
-    public static <T extends Mob> EntityBuilder<T> entity(String name, EntityType.EntityFactory<T> factory, MobCategory category) {
+    public <T extends Mob> EntityBuilder<T> entity(String name, EntityType.EntityFactory<T> factory, MobCategory category) {
         return new EntityBuilder<>(name, factory, category);
     }
 
-    public static <T extends Entity> ProjectileBuilder<T> projectile(String name, EntityType.EntityFactory<T> factory, MobCategory category, Class<T> entityClass) {
+    public <T extends Entity> ProjectileBuilder<T> projectile(String name, EntityType.EntityFactory<T> factory, MobCategory category, Class<T> entityClass) {
         return new ProjectileBuilder<>(name, factory, category, entityClass);
     }
 
-    public static <T extends Block> BlockBuilder<T> block(String name, Function<Block.Properties, T> blockFactory) {
+    public <T extends Block> BlockBuilder<T> block(String name, Function<Block.Properties, T> blockFactory) {
         return new BlockBuilder<>(modID, name, blockFactory);
     }
 
-    public static <T extends Item> ItemBuilder<T> item(String name, Function<Item.Properties, T> constructor) {
+    public <T extends Item> ItemBuilder<T> item(String name, Function<Item.Properties, T> constructor) {
         return new ItemBuilder<>(modID, name, constructor);
     }
 
-    public static CreativeTabBuilder tab(String id) {
+    public CreativeTabBuilder tab(String id) {
         return new CreativeTabBuilder(id, modID);
     }
 
