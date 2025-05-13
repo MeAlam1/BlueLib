@@ -1,5 +1,15 @@
 package software.bluelib.api.registry.builders.items;
 
+import net.minecraft.core.Holder;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.*;
+import software.bluelib.BlueLibConstants;
+import software.bluelib.api.registry.datagen.items.BddItemModelGenerator;
+import software.bluelib.api.registry.datagen.items.BddItemModelTemplates;
+import software.bluelib.api.registry.helpers.ArmorSetConfig;
+import software.bluelib.api.registry.helpers.ToolsetConfig;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -8,14 +18,6 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
-import net.minecraft.core.Holder;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.*;
-import software.bluelib.BlueLibConstants;
-import software.bluelib.api.registry.datagen.items.*;
-import software.bluelib.api.registry.helpers.ArmorSetConfig;
-import software.bluelib.api.registry.helpers.ToolsetConfig;
 
 @SuppressWarnings("unchecked")
 public class ItemBuilder<T extends Item> {

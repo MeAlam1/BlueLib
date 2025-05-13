@@ -1,7 +1,8 @@
 package software.bluelib.api.registry.helpers;
 
-import java.util.function.Consumer;
 import net.minecraft.world.item.Item;
+
+import java.util.function.Consumer;
 
 public class ArmorSetConfig {
 

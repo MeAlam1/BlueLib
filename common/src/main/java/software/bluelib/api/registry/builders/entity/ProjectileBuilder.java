@@ -1,12 +1,13 @@
 package software.bluelib.api.registry.builders.entity;
 
-import java.util.function.Supplier;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import software.bluelib.BlueLibConstants;
 import software.bluelib.api.registry.helpers.entity.RenderHelper;
+
+import java.util.function.Supplier;
 
 public class ProjectileBuilder<T extends Entity> {
 

@@ -1,6 +1,7 @@
 package software.bluelib.api.registry.datagen.blocks;
 
 import com.google.gson.JsonObject;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;

@@ -1,18 +1,21 @@
 package software.bluelib.api.registry.builders;
 
-import java.util.function.Function;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
-import software.bluelib.api.registry.builders.blocks.*;
-import software.bluelib.api.registry.builders.entity.*;
-import software.bluelib.api.registry.builders.items.*;
-import software.bluelib.api.registry.builders.tabs.*;
+import software.bluelib.api.registry.builders.blocks.BlockBuilder;
+import software.bluelib.api.registry.builders.entity.EntityBuilder;
+import software.bluelib.api.registry.builders.entity.ProjectileBuilder;
+import software.bluelib.api.registry.builders.items.ItemBuilder;
+import software.bluelib.api.registry.builders.tabs.CreativeTabBuilder;
+
+import java.util.function.Function;
 
 public class RegistryBuilder {
+
     public static String modID;
 
     public RegistryBuilder(String modId) {

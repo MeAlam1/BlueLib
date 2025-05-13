@@ -2,6 +2,7 @@ package software.bluelib.api.registry.datagen.blockstates;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+
 import java.util.Map;
 
 public abstract class BddBlockstateTemplates {

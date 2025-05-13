@@ -1,10 +1,5 @@
 package software.bluelib.api.registry.builders.entity;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.function.Supplier;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -14,9 +9,16 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SpawnEggItem;
 import software.bluelib.BlueLibConstants;
-import software.bluelib.api.registry.datagen.items.*;
+import software.bluelib.api.registry.datagen.items.BddItemModelGenerator;
+import software.bluelib.api.registry.datagen.items.BddItemModelTemplates;
 import software.bluelib.api.registry.helpers.entity.AttributeHelper;
 import software.bluelib.api.registry.helpers.entity.RenderHelper;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Supplier;
 
 public class EntityBuilder<T extends Mob> {
 

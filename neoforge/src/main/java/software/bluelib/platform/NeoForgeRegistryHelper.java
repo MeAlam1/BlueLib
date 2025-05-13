@@ -19,6 +19,7 @@ import software.bluelib.api.registry.helpers.entity.AttributeHelper;
 import software.bluelib.net.NeoForgeNetworkManager;
 
 public class NeoForgeRegistryHelper implements IRegistryHelper {
+
     private static final DeferredRegister<Item> itemRegistry = DeferredRegister.create(Registries.ITEM, RegistryBuilder.getModID());
     private static final DeferredRegister<Block> blockRegistry = DeferredRegister.create(Registries.BLOCK, RegistryBuilder.getModID());
     private static final DeferredRegister<EntityType<?>> entityRegistry = DeferredRegister.create(Registries.ENTITY_TYPE, RegistryBuilder.getModID());

@@ -1,16 +1,20 @@
 package software.bluelib.api.registry.builders.blocks;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Function;
-import java.util.function.Supplier;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import software.bluelib.BlueLibConstants;
-import software.bluelib.api.registry.datagen.blocks.*;
-import software.bluelib.api.registry.datagen.blockstates.*;
-import software.bluelib.api.registry.datagen.items.*;
+import software.bluelib.api.registry.datagen.blocks.BddBlockModelGenerator;
+import software.bluelib.api.registry.datagen.blocks.BddBlockModelTemplates;
+import software.bluelib.api.registry.datagen.blockstates.BddBlockstateGenerator;
+import software.bluelib.api.registry.datagen.blockstates.BddBlockstateTemplates;
+import software.bluelib.api.registry.datagen.items.BddItemModelGenerator;
+import software.bluelib.api.registry.datagen.items.BddItemModelTemplates;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 public class BlockBuilder<T extends Block> {
 
