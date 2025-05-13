@@ -22,9 +22,9 @@ import java.util.function.Supplier;
 public class BlueLib {
     /**
      * Initializes the {@link RegistryBuilder} instance with the mod ID. Replace {@link BlueLibConstants#MOD_ID} with your mod's unique mod ID to register content under your mod's namespace.
-     * <br>
+     * <p>
      * This is essential for registering mod content such as items, blocks, and entities.
-     * <br>
+     * <p>
      * <strong>Do not remove</strong>, as it will break the mod's registration system.
      */
     public RegistryBuilder REGISTRY = new RegistryBuilder(BlueLibConstants.MOD_ID);
