@@ -21,6 +21,9 @@
         ],
         "client": [
             "software.bluelib.client.BlueLibClient"
+        ],
+        "fabric-datagen": [
+            "software.bluelib.BlueLib"
         ]
     },
     "mixins": [

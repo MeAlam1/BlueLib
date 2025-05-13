@@ -1,0 +1,90 @@
+package software.bluelib.api.registry.datagen.items;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+import java.util.function.BiConsumer;
+import java.util.function.Supplier;
+import net.minecraft.data.models.model.ModelTemplate;
+import net.minecraft.data.models.model.TextureMapping;
+import net.minecraft.resources.ResourceLocation;
+
+public class BddItemModelGenerator {
+
+    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+
+    public static void generateItemModel(String modId, String name, BddItemModelTemplates modelTemplate) {
+        Path itemModelPath = findProjectRoot().resolve(modId + "/models/item/" + name + ".json");
+
+        try {
+            if (Files.exists(itemModelPath)) {
+                System.out.println("Item model for '" + name + "' already exists at: " + itemModelPath + ". Skipping creation.");
+                return;
+            }
+
+            JsonElement modelJson = generateModelJson(modId, name, modelTemplate);
+
+            Files.createDirectories(itemModelPath.getParent());
+            Files.write(itemModelPath, GSON.toJson(modelJson).getBytes(), StandardOpenOption.CREATE_NEW);
+            System.out.println("Item model for '" + name + "' created at: " + itemModelPath);
+
+        } catch (IOException e) {
+            System.err.println("Failed [ERROR]: Failed to create item model for '" + name + "' at " + itemModelPath + ": " + e.getMessage());
+        }
+    }
+
+    private static JsonElement generateModelJson(String modId, String name, BddItemModelTemplates modelTemplate) {
+        ResourceLocation modelLocation = ResourceLocation.fromNamespaceAndPath(modId, "item/" + name);
+        ModelTemplate template = modelTemplate.getTemplate();
+
+        final JsonElement[] capturedJson = new JsonElement[1];
+        BiConsumer<ResourceLocation, Supplier<JsonElement>> tempConsumer = (location, jsonSupplier) -> {
+            capturedJson[0] = jsonSupplier.get();
+            System.out.println("Generated JSON for '" + location + "':\n" + GSON.toJson(capturedJson[0]));
+        };
+
+        template.create(modelLocation, TextureMapping.layer0(ResourceLocation.fromNamespaceAndPath(modId, "item/" + name)), tempConsumer);
+        return capturedJson[0];
+    }
+
+    public static Path findProjectRoot() {
+        Path current = Paths.get(System.getProperty("user.dir")).toAbsolutePath();
+        while (current != null) {
+            Path resources = findResourcesPath(current);
+            if (resources != null) return resources;
+            current = current.getParent();
+        }
+        throw new IllegalStateException("Could not locate project root");
+    }
+
+    private static Path findResourcesPath(Path current) {
+        String[] potentialPaths = {
+                "src/main/resources/assets",
+                "common/src/main/resources/assets"
+        };
+
+        for (String path : potentialPaths) {
+            Path resources = current.resolve(path);
+            if (Files.exists(resources) && Files.isDirectory(resources)) {
+                return resources;
+            }
+        }
+
+        String currentDirName = current.getFileName() != null ? current.getFileName().toString() : "";
+        if (currentDirName.matches("fabric|forge|neoforge|quilt")) {
+            for (String path : potentialPaths) {
+                Path parentResources = current.getParent().resolve(path);
+                if (Files.exists(parentResources) && Files.isDirectory(parentResources)) {
+                    return parentResources;
+                }
+            }
+        }
+
+        return null;
+    }
+}

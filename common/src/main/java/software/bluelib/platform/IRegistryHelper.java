@@ -2,9 +2,26 @@
 
 package software.bluelib.platform;
 
+import java.util.function.Supplier;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
 import software.bluelib.BlueLibConstants;
 
 public interface IRegistryHelper {
 
     BlueLibConstants.NetworkManager getNetwork();
+
+    <T extends Entity> Supplier<EntityType<T>> registerEntity(String pId, Supplier<EntityType<T>> pEntity);
+
+    <T extends CreativeModeTab> Supplier<T> registerTab(String pId, Supplier<T> pTab);
+
+    <T extends Item> Supplier<T> registerItem(String id, Supplier<T> item);
+
+    <T extends Block> Supplier<T> registerBlock(String pId, Supplier<T> pBlock);
+
+    Supplier<MenuType<?>> registerMenu(String pId, Supplier<MenuType<?>> pBlock);
 }

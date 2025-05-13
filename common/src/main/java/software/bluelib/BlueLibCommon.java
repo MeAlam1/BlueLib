@@ -10,6 +10,9 @@ import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.ApiStatus;
 import software.bluelib.api.event.mod.ModIntegration;
 import software.bluelib.api.net.NetworkRegistry;
+import software.bluelib.api.registry.builders.blocks.BlockBuilder;
+import software.bluelib.api.registry.builders.entity.EntityBuilder;
+import software.bluelib.api.registry.builders.items.ItemBuilder;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
 
@@ -36,6 +39,12 @@ public class BlueLibCommon {
         var networkRegistry = new software.bluelib.registry.NetworkRegistry();
         NetworkRegistry.registerC2SPacketProvider(networkRegistry);
         NetworkRegistry.registerS2CPacketProvider(networkRegistry);
+    }
+
+    public static void doDatagen(String modId) {
+        ItemBuilder.doItemModelGen(modId);
+        BlockBuilder.doBlockModelGen(modId);
+        EntityBuilder.doSpawnEggDatagen(modId);
     }
 
     public static boolean isDeveloperMode() {
