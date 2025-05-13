@@ -13,6 +13,7 @@ import net.fabricmc.fabric.api.message.v1.ServerMessageEvents;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
+import software.bluelib.api.registry.builders.RegistryBuilder;
 import software.bluelib.api.registry.helpers.entity.AttributeHelper;
 import software.bluelib.api.registry.helpers.entity.RenderHelper;
 import software.bluelib.config.ConfigLoader;
@@ -52,6 +53,6 @@ public class BlueLib implements ModInitializer, DataGeneratorEntrypoint {
 
     @Override
     public void onInitializeDataGenerator(FabricDataGenerator fabricDataGenerator) {
-        BlueLibCommon.doDatagen(BlueLibConstants.MOD_ID);
+        RegistryBuilder.doDatagen();
     }
 }

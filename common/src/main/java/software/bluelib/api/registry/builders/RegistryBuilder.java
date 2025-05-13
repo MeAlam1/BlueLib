@@ -14,6 +14,16 @@ import software.bluelib.api.registry.builders.tabs.*;
 
 public class RegistryBuilder {
 
+    public static String modID;
+
+    public RegistryBuilder(String modId) {
+        modID = modId;
+    }
+
+    public static String getModID() {
+        return modID;
+    }
+
     public static <T extends Mob> EntityBuilder<T> entity(String name, EntityType.EntityFactory<T> factory, MobCategory category) {
         return new EntityBuilder<>(name, factory, category);
     }
@@ -22,15 +32,21 @@ public class RegistryBuilder {
         return new ProjectileBuilder<>(name, factory, category, entityClass);
     }
 
-    public static <T extends Block> BlockBuilder<T> block(String modId, String name, Function<Block.Properties, T> blockFactory) {
-        return new BlockBuilder<>(modId, name, blockFactory);
+    public static <T extends Block> BlockBuilder<T> block(String name, Function<Block.Properties, T> blockFactory) {
+        return new BlockBuilder<>(modID, name, blockFactory);
     }
 
-    public static <T extends Item> ItemBuilder<T> item(String modId, String name, Function<Item.Properties, T> constructor) {
-        return new ItemBuilder<>(modId, name, constructor);
+    public static <T extends Item> ItemBuilder<T> item(String name, Function<Item.Properties, T> constructor) {
+        return new ItemBuilder<>(modID, name, constructor);
     }
 
-    public static CreativeTabBuilder tab(String id, String modId) {
-        return new CreativeTabBuilder(id, modId);
+    public static CreativeTabBuilder tab(String id) {
+        return new CreativeTabBuilder(id, modID);
+    }
+
+    public static void doDatagen() {
+        ItemBuilder.doItemModelGen(modID);
+        BlockBuilder.doBlockModelGen(modID);
+        EntityBuilder.doSpawnEggDatagen(modID);
     }
 }
