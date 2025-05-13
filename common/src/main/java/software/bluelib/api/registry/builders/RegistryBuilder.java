@@ -35,15 +35,15 @@ public class RegistryBuilder {
     }
 
     public <T extends Block> BlockBuilder<T> block(String name, Function<Block.Properties, T> blockFactory) {
-        return new BlockBuilder<>(getModID(), name, blockFactory);
+        return new BlockBuilder<>(name, blockFactory);
     }
 
     public <T extends Item> ItemBuilder<T> item(String name, Function<Item.Properties, T> constructor) {
-        return new ItemBuilder<>(getModID(), name, constructor);
+        return new ItemBuilder<>(name, constructor);
     }
 
     public CreativeTabBuilder tab(String id) {
-        return new CreativeTabBuilder(id, getModID());
+        return new CreativeTabBuilder(id);
     }
 
     public static void doDatagen() {

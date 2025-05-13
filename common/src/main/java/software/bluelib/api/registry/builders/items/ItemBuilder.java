@@ -5,6 +5,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.*;
 import software.bluelib.BlueLibConstants;
+import software.bluelib.api.registry.builders.RegistryBuilder;
 import software.bluelib.api.registry.datagen.items.BddItemModelGenerator;
 import software.bluelib.api.registry.datagen.items.BddItemModelTemplates;
 import software.bluelib.api.registry.helpers.ArmorSetConfig;
@@ -29,16 +30,15 @@ public class ItemBuilder<T extends Item> {
     public Consumer<Item.Properties> propertiesConsumer = props -> {};
     public static final Map<String, List<Supplier<Item>>> TOOLSETS = new HashMap<>();
     public static final Map<String, List<Supplier<Item>>> ARMORSETS = new HashMap<>();
-    private static String modId;
+    private static final String modId = RegistryBuilder.getModID();
 
-    public ItemBuilder(String modID, String name, Function<Item.Properties, T> itemConstructor) {
+    public ItemBuilder(String name, Function<Item.Properties, T> itemConstructor) {
         itemName = name;
-        modId = modID;
         this.itemConstructor = itemConstructor;
     }
 
     public static <T extends Item> ItemBuilder<T> item(String name, Function<Item.Properties, T> itemConstructor) {
-        return new ItemBuilder<>(modId, name, itemConstructor);
+        return new ItemBuilder<>(name, itemConstructor);
     }
 
     public static void doItemModelGen(String modId) {

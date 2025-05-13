@@ -9,6 +9,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import software.bluelib.BlueLibConstants;
+import software.bluelib.api.registry.builders.RegistryBuilder;
 import software.bluelib.api.registry.builders.entity.EntityBuilder;
 import software.bluelib.api.registry.builders.items.ItemBuilder;
 import software.bluelib.api.utils.logging.BaseLogLevel;
@@ -22,15 +23,15 @@ import java.util.function.Supplier;
 public class CreativeTabBuilder {
 
     private final String id;
-    private static String modId;
+    private static String modId = RegistryBuilder.getModID();
     private Supplier<Item> iconSupplier;
     private CreativeModeTab.DisplayItemsGenerator displayItemsGenerator;
-    private String backgroundSuffix = "item_search.png";
+    private String backgroundSuffix;
     private static final Map<Supplier<CreativeModeTab>, CreativeTabBuilder> TAB_BUILDERS = new HashMap<>();
 
-    public CreativeTabBuilder(String id, String modId) {
+    public CreativeTabBuilder(String id) {
         this.id = id;
-        CreativeTabBuilder.modId = modId;
+
     }
 
     public CreativeTabBuilder icon(Supplier<Item> iconSupplier) {
@@ -44,15 +45,13 @@ public class CreativeTabBuilder {
     }
 
     public static Supplier<Item> useSpawnEgg(Supplier<? extends EntityType<?>> entityTypeSupplier) {
-        return () -> {
-            EntityType<?> entityType = entityTypeSupplier.get();
+        return () -> {EntityType<?> entityType = entityTypeSupplier.get();
             if (entityType != null) {
                 String entityId = BuiltInRegistries.ENTITY_TYPE.getKey(entityType).getPath();
                 String spawnEggId = entityId + "_spawn_egg";
                 return BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(modId, spawnEggId));
             }
-            BaseLogger.log(BaseLogLevel.ERROR, Component.literal("Spawn egg icon could not be found for entity: " + entityType));
-            return Items.AIR; // fallback icon
+            return Items.AIR;
         };
     }
 
@@ -63,11 +62,6 @@ public class CreativeTabBuilder {
 
     public CreativeTabBuilder background(String backgroundSuffix) {
         this.backgroundSuffix = backgroundSuffix;
-        return this;
-    }
-
-    public CreativeTabBuilder background() {
-        this.backgroundSuffix = "item_search.png"; // Default background
         return this;
     }
 
@@ -94,7 +88,8 @@ public class CreativeTabBuilder {
                             output.accept(item);
                         }
                     }
-                });
+                })
+                .backgroundTexture(ResourceLocation.fromNamespaceAndPath(modId, backgroundSuffix));
 
         CreativeModeTab tab = tabBuilder.build();
         Supplier<CreativeModeTab> tabSupplier = () -> tab;
@@ -165,13 +160,12 @@ public class CreativeTabBuilder {
     public static void addAllSpawnEggs(CreativeModeTab.Output populator) {
         List<String> names = EntityBuilder.getDragonNames();
         for (String name : names) {
-            String entityId = name;
-            String spawnEggId = entityId + "_spawn_egg";
+            String spawnEggId = name + "_spawn_egg";
             try {
                 Item spawnEggItem = BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(modId, spawnEggId));
                 populator.accept(spawnEggItem);
             } catch (Exception e) {
-                BaseLogger.log(BaseLogLevel.ERROR, Component.literal("Spawn egg for entity " + entityId + " not found!"));
+                BaseLogger.log(BaseLogLevel.ERROR, Component.literal("Spawn egg for entity " + name + " not found!"));
             }
         }
     }

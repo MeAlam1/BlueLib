@@ -4,6 +4,7 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import software.bluelib.BlueLibConstants;
+import software.bluelib.api.registry.builders.RegistryBuilder;
 import software.bluelib.api.registry.datagen.blocks.BddBlockModelGenerator;
 import software.bluelib.api.registry.datagen.blocks.BddBlockModelTemplates;
 import software.bluelib.api.registry.datagen.blockstates.BddBlockstateGenerator;
@@ -19,7 +20,7 @@ import java.util.function.Supplier;
 public class BlockBuilder<T extends Block> {
 
     public static final List<BlockBuilder<?>> REGISTERED_BUILDERS = new ArrayList<>();
-    private static String modId;
+    private static final String modId = RegistryBuilder.getModID();
     public static String blockName;
     public final Function<Block.Properties, T> blockConstructor;
     public Block.Properties properties;
@@ -28,8 +29,7 @@ public class BlockBuilder<T extends Block> {
     public static BddBlockstateTemplates blockstateTemplate;
     public static BddBlockModelTemplates blockModelTemplate;
 
-    public BlockBuilder(String modID, String name, Function<Block.Properties, T> blockConstructor) {
-        modId = modID;
+    public BlockBuilder(String name, Function<Block.Properties, T> blockConstructor) {
         blockName = name;
         this.blockConstructor = blockConstructor;
     }
