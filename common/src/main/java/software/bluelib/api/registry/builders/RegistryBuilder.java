@@ -13,7 +13,6 @@ import software.bluelib.api.registry.builders.items.*;
 import software.bluelib.api.registry.builders.tabs.*;
 
 public class RegistryBuilder {
-
     public static String modID;
 
     public RegistryBuilder(String modId) {

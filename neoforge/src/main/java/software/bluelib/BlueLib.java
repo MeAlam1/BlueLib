@@ -22,7 +22,7 @@ public class BlueLib {
 
     public BlueLib(IEventBus pModEventBus, ModContainer pModContainer) {
         BlueLibCommon.doRegistration();
-        NeoForgeRegistryHelper.register(pModEventBus, RegistryBuilder.getModID());
+        NeoForgeRegistryHelper.register(pModEventBus);
         pModEventBus.register(this);
         MixinBootstrap.init();
         pModEventBus.addListener(NeoForgeNetworkManager::registerMessages);

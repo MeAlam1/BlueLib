@@ -14,17 +14,16 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import software.bluelib.BlueLibConstants;
+import software.bluelib.api.registry.builders.RegistryBuilder;
 import software.bluelib.api.registry.helpers.entity.AttributeHelper;
 import software.bluelib.net.NeoForgeNetworkManager;
 
 public class NeoForgeRegistryHelper implements IRegistryHelper {
-
-    public static String modId;
-    private static final DeferredRegister<Item> itemRegistry = DeferredRegister.create(Registries.ITEM, modId);
-    private static final DeferredRegister<Block> blockRegistry = DeferredRegister.create(Registries.BLOCK, modId);
-    private static final DeferredRegister<EntityType<?>> entityRegistry = DeferredRegister.create(Registries.ENTITY_TYPE, modId);
-    private static final DeferredRegister<CreativeModeTab> tabRegistry = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, modId);
-    private static final DeferredRegister<MenuType<?>> menuRegistry = DeferredRegister.create(Registries.MENU, modId);
+    private static final DeferredRegister<Item> itemRegistry = DeferredRegister.create(Registries.ITEM, RegistryBuilder.getModID());
+    private static final DeferredRegister<Block> blockRegistry = DeferredRegister.create(Registries.BLOCK, RegistryBuilder.getModID());
+    private static final DeferredRegister<EntityType<?>> entityRegistry = DeferredRegister.create(Registries.ENTITY_TYPE, RegistryBuilder.getModID());
+    private static final DeferredRegister<CreativeModeTab> tabRegistry = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, RegistryBuilder.getModID());
+    private static final DeferredRegister<MenuType<?>> menuRegistry = DeferredRegister.create(Registries.MENU, RegistryBuilder.getModID());
 
     @Override
     public BlueLibConstants.NetworkManager getNetwork() {
@@ -57,8 +56,7 @@ public class NeoForgeRegistryHelper implements IRegistryHelper {
         return pBlock;
     }
 
-    public static void register(IEventBus modEventBus, String modID) {
-        modId = modID;
+    public static void register(IEventBus modEventBus) {
         entityRegistry.register(modEventBus);
         itemRegistry.register(modEventBus);
         blockRegistry.register(modEventBus);
