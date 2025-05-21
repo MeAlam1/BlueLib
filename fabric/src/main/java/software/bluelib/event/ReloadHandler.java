@@ -4,6 +4,7 @@ package software.bluelib.event;
 
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.packs.resources.CloseableResourceManager;
+import net.minecraft.server.packs.resources.ResourceManager;
 import software.bluelib.BlueLibCommon;
 import software.bluelib.BlueLibConstants;
 import software.bluelib.api.entity.variant.IVariantProvider;
@@ -28,24 +29,24 @@ public class ReloadHandler {
 		
 		BlueLibConstants.SCHEDULER = new ScheduledThreadPoolExecutor(1);
 		BlueLibConstants.server = pServer;
-		ReloadHandler.LoadEntityVariants(pServer);
+		ReloadHandler.LoadEntityVariants(pServer.getResourceManager());
 		BaseLogger.log(BaseLogLevel.INFO, BlueLibCommon.Translation.log("variants.loaded"), true);
 	}
 
 	public static void onReload(MinecraftServer pServer, CloseableResourceManager pCloseableResourceManager, boolean pBoolean) {
 		if (provider == null) return;
 		
-		ReloadHandler.LoadEntityVariants(pServer);
+		ReloadHandler.LoadEntityVariants(pServer.getResourceManager());
 		BaseLogger.log(BaseLogLevel.INFO, BlueLibCommon.Translation.log("variants.reloaded"), true);
 	}
 	
-	public static void LoadEntityVariants(MinecraftServer pServer) {
+	public static void LoadEntityVariants(ResourceManager pResourceManager) {
 		List<String> entityNames = provider.getEntityNames();
 		String basePath = provider.getBasePath();
 
 		for (String entityName : entityNames) {
 			String folderPath = basePath + entityName;
-			VariantLoader.loadVariants(folderPath, pServer, entityName);
+			VariantLoader.loadVariants(folderPath, pResourceManager, entityName);
 			BaseLogger.log(BaseLogLevel.INFO, BlueLibCommon.Translation.log("variants.loaded.entity", entityName), true);
 		}
 	}

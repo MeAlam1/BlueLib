@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.packs.resources.ResourceManager;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.OnDatapackSyncEvent;
@@ -30,7 +31,7 @@ public class ReloadHandler {
 
         BlueLibConstants.SCHEDULER = new ScheduledThreadPoolExecutor(1);
         BlueLibConstants.server = pEvent.getServer();
-        loadEntityVariants(pEvent.getServer());
+        loadEntityVariants(pEvent.getServer().getResourceManager());
         BaseLogger.log(BaseLogLevel.INFO, BlueLibCommon.Translation.log("variants.loaded"), true);
     }
 
@@ -38,17 +39,17 @@ public class ReloadHandler {
     public static void onDatapackSync(OnDatapackSyncEvent pEvent) {
         if (provider == null) return;
 
-        loadEntityVariants(pEvent.getPlayerList().getServer());
+        loadEntityVariants(pEvent.getPlayerList().getServer().getResourceManager());
         BaseLogger.log(BaseLogLevel.INFO, BlueLibCommon.Translation.log("variants.reloaded"), true);
     }
 
-    private static void loadEntityVariants(MinecraftServer pServer) {
+    private static void loadEntityVariants(ResourceManager pResourceManager) {
         List<String> entityNames = provider.getEntityNames();
         String basePath = provider.getBasePath();
 
         for (String entityName : entityNames) {
             String folderPath = basePath + entityName;
-            VariantLoader.loadVariants(folderPath, pServer, entityName);
+            VariantLoader.loadVariants(folderPath, pResourceManager, entityName);
             BaseLogger.log(BaseLogLevel.INFO, BlueLibCommon.Translation.log("variants.loaded.entity", entityName), true);
         }
     }

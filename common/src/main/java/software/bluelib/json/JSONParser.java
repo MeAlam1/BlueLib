@@ -23,17 +23,16 @@ public abstract class JSONParser {
 
     protected JsonObject mergedJsonObject;
 
-    public void loadData(String pFolderPath, MinecraftServer pServer) {
-        ResourceManager resourceManager = pServer.getResourceManager();
+    public void loadData(String pFolderPath, ResourceManager pResourceManager) {
         mergedJsonObject = new JsonObject();
 
-        Collection<ResourceLocation> resources = resourceManager.listResources(pFolderPath, path -> path.getPath().endsWith(".json")).keySet();
+        Collection<ResourceLocation> resources = pResourceManager.listResources(pFolderPath, path -> path.getPath().endsWith(".json")).keySet();
 
         BaseLogger.log(BaseLogLevel.SUCCESS, BlueLibCommon.Translation.log("json.found", pFolderPath), true);
 
         for (ResourceLocation resourceLocation : resources) {
             try {
-                JsonObject jsonObject = jsonLoader.loadJson(resourceLocation, resourceManager);
+                JsonObject jsonObject = jsonLoader.loadJson(resourceLocation, pResourceManager);
                 jsonMerger.mergeJsonObjects(mergedJsonObject, jsonObject);
             } catch (Exception pException) {
                 BaseLogger.log(BaseLogLevel.ERROR, BlueLibCommon.Translation.log("json.failed", resourceLocation.toString()), pException, true);

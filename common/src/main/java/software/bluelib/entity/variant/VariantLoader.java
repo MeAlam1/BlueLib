@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.packs.resources.ResourceManager;
 import software.bluelib.BlueLibCommon;
 import software.bluelib.BlueLibConstants;
 import software.bluelib.api.utils.logging.BaseLogLevel;
@@ -22,8 +23,8 @@ public class VariantLoader extends JSONParser {
 
     private static final VariantLoader LOADER = new VariantLoader();
 
-    public static void loadVariants(String pFolderPath, MinecraftServer pServer, String pEntityName) {
-        LOADER.loadData(pFolderPath, pServer);
+    public static void loadVariants(String pFolderPath, ResourceManager pResourceManager, String pEntityName) {
+        LOADER.loadData(pFolderPath, pResourceManager);
         AllVariants.putAll(LOADER.getDataMap());
         parseVariants(pEntityName, LOADER.getMergedJsonObject());
     }
