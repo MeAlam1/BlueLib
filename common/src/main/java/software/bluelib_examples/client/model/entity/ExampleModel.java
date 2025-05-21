@@ -1,4 +1,4 @@
-// Copyright (c) BlueLib. Licensed under the MIT License.
+
 
 package software.bluelib_examples.client.model.entity;
 
@@ -20,7 +20,17 @@ public class ExampleModel extends GeoModel<ExampleEntity> {
     }
 
     @Override
+    public ResourceLocation getModelResource(ExampleEntity animatable) {
+        return model;
+    }
+
+    @Override
     public ResourceLocation getTextureResource(ExampleEntity pExampleEntity, @Nullable GeoRenderer<ExampleEntity> pGeoRenderer) {
+        return ResourceLocation.fromNamespaceAndPath(BlueLibConstants.MOD_ID, "textures/" + pExampleEntity.entityName + "/" + pExampleEntity.getVariantName() + ".png");
+    }
+
+    @Override
+    public ResourceLocation getTextureResource(ExampleEntity pExampleEntity) {
         return ResourceLocation.fromNamespaceAndPath(BlueLibConstants.MOD_ID, "textures/" + pExampleEntity.entityName + "/" + pExampleEntity.getVariantName() + ".png");
     }
 

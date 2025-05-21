@@ -1,37 +1,39 @@
 {
-    "schemaVersion": 1,
-    "id": "${mod_id}",
-    "version": "${version}",
-    "name": "${mod_name}",
-    "description": "${description}",
-    "authors": [
-        "${mod_author}"
+  "schemaVersion": 1,
+  "id": "${mod_id}",
+  "version": "${version}",
+  "name": "${mod_name}",
+  "description": "${description}",
+  "authors": [
+    "${mod_author}"
+  ],
+  "contact": {
+    "homepage": "https://www.curseforge.com/minecraft/mc-mods/bluelib",
+    "issues": "https://github.com/MeAlam1/BlueLib/issues",
+    "sources": "https://github.com/MeAlam1/BlueLib"
+  },
+  "license": "${license}",
+  "icon": "bluelib.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "software.bluelib_examples.BlueLib"
     ],
-    "contact": {
-        "homepage": "https://www.curseforge.com/minecraft/mc-mods/bluelib",
-        "issues": "https://github.com/MeAlam1/BlueLib/issues",
-        "sources": "https://github.com/MeAlam1/BlueLib"
-    },
-    "license": "${license}",
-    "icon": "bluelib.png",
-    "environment": "*",
-    "entrypoints": {
-        "main": [
-          "software.bluelib_examples.BlueLib"
-        ],
-        "client": []
-    },
-    "mixins": [
-        "${mod_id}.mixins.json",
-        "${mod_id}.fabric.mixins.json"
-    ],
-    "depends": {
-        "fabricloader": ">=${fabric_loader_version}",
-        "fabric-api": "*",
-        "minecraft": ">=1.21.0 <1.22",
-        "java": ">=${java_version}"
-    },
-    "suggests": {
-        "another-mod": "*"
-    }
+    "client": [
+      "software.bluelib_examples.BlueLibClient"
+    ]
+  },
+  "mixins": [
+    "${mod_id}.mixins.json",
+    "${mod_id}.fabric.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${fabric_loader_version}",
+    "fabric-api": "*",
+    "minecraft": ">=1.21.0 <1.22",
+    "java": ">=${java_version}"
+  },
+  "suggests": {
+    "another-mod": "*"
+  }
 }
