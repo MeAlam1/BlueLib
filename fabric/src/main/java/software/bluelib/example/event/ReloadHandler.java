@@ -24,12 +24,8 @@ public class ReloadHandler extends ReloadEventHandler {
     }
 
     public static void onReload(MinecraftServer pServer, CloseableResourceManager pCloseableResourceManager, boolean pBoolean) {
-        if (pServer != null) {
-            BlueLibConstants.SCHEDULER.schedule(() -> pServer.execute(() -> {
-                ReloadHandler.LoadEntityVariants(pServer);
-                BaseLogger.log(BaseLogLevel.INFO, BlueLibCommon.Translation.log("variants.reloaded"), true);
-            }), 1, TimeUnit.SECONDS);
-        }
+        ReloadHandler.LoadEntityVariants(pServer);
+        BaseLogger.log(BaseLogLevel.INFO, BlueLibCommon.Translation.log("variants.reloaded"), true);
     }
 
     private static final String basePath = "variant/entity/";

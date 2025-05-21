@@ -5,11 +5,11 @@ package software.bluelib.example.event;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+
 import net.minecraft.server.MinecraftServer;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.event.AddReloadListenerEvent;
+import net.neoforged.neoforge.event.OnDatapackSyncEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import software.bluelib.BlueLibCommon;
 import software.bluelib.BlueLibConstants;
@@ -24,18 +24,14 @@ public class ReloadHandler extends ReloadEventHandler {
     public static void onServerStart(ServerStartingEvent pEvent) {
         BlueLibConstants.SCHEDULER = new ScheduledThreadPoolExecutor(1);
         BlueLibConstants.server = pEvent.getServer();
-        ReloadHandler.LoadEntityVariants(BlueLibConstants.server);
+        ReloadHandler.LoadEntityVariants(pEvent.getServer());
         BaseLogger.log(BaseLogLevel.INFO, BlueLibCommon.Translation.log("variants.loaded"), true);
     }
 
     @SubscribeEvent
-    public static void onReload(AddReloadListenerEvent pEvent) {
-        if (BlueLibConstants.server != null) {
-            BlueLibConstants.SCHEDULER.schedule(() -> BlueLibConstants.server.execute(() -> {
-                ReloadHandler.LoadEntityVariants(BlueLibConstants.server);
-                BaseLogger.log(BaseLogLevel.INFO, BlueLibCommon.Translation.log("variants.reloaded"), true);
-            }), 1, TimeUnit.SECONDS);
-        }
+    public static void onDatapackSync(OnDatapackSyncEvent pEvent) {
+        ReloadHandler.LoadEntityVariants(pEvent.getPlayerList().getServer());
+        BaseLogger.log(BaseLogLevel.INFO, BlueLibCommon.Translation.log("variants.reloaded"), true);
     }
 
     private static final String basePath = "variant/entity/";
