@@ -10,7 +10,8 @@ import net.fabricmc.fabric.api.message.v1.ServerMessageEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import software.bluelib.config.ConfigLoader;
 import software.bluelib.event.ChatHandler;
-import software.bluelib.example.event.ReloadHandler;
+import software.bluelib.event.ReloadHandler;
+import software.bluelib.example.event.VariantProvider;
 import software.bluelib.net.FabricNetworkManager;
 
 public class BlueLib implements ModInitializer {
@@ -19,6 +20,7 @@ public class BlueLib implements ModInitializer {
 
     @Override
     public void onInitialize() {
+        ReloadHandler.setProvider(new VariantProvider());
         BlueLibCommon.doRegistration();
         FabricNetworkManager.registerMessages();
         FabricNetworkManager.registerServerHandlers();

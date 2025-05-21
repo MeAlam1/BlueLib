@@ -10,6 +10,8 @@ import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent;
 import org.spongepowered.asm.launch.MixinBootstrap;
 import software.bluelib.config.ConfigHolder;
+import software.bluelib.event.ReloadHandler;
+import software.bluelib.example.event.VariantProvider;
 import software.bluelib.net.NeoForgeNetworkManager;
 
 @Mod(BlueLibConstants.MOD_ID)
@@ -17,6 +19,7 @@ public class BlueLib {
 
     public BlueLib(IEventBus pModEventBus, ModContainer pModContainer) {
         BlueLibCommon.doRegistration();
+        ReloadHandler.setProvider(new VariantProvider());
         pModEventBus.register(this);
         MixinBootstrap.init();
         pModEventBus.addListener(NeoForgeNetworkManager::registerMessages);
