@@ -22,6 +22,7 @@ public class BlueLibCommon {
 
     private BlueLibCommon() {}
 
+    @ApiStatus.Internal
     public static void init() {
         if (isDeveloperMode()) {
             SCHEDULER.schedule(() -> {
@@ -37,6 +38,7 @@ public class BlueLibCommon {
         }
     }
 
+    @ApiStatus.Internal
     public static void doRegistration() {
         var networkRegistry = new software.bluelib.registry.NetworkRegistry();
         NetworkRegistry.registerC2SPacketProvider(networkRegistry);

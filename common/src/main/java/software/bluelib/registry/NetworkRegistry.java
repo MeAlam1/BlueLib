@@ -9,6 +9,8 @@ package software.bluelib.registry;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.jetbrains.annotations.ApiStatus;
 import software.bluelib.api.net.PacketProvider;
 import software.bluelib.client.net.OpenLoggerPacketHandler;
 import software.bluelib.net.PacketRegisterInfo;
@@ -16,6 +18,7 @@ import software.bluelib.net.messages.client.OpenLoggerPacket;
 import software.bluelib.net.messages.server.TestPacket;
 import software.bluelib.net.serverHandling.TestPacketHandler;
 
+@ApiStatus.Internal
 public class NetworkRegistry implements PacketProvider.C2SPacketProvider, PacketProvider.S2CPacketProvider {
 
     @Override

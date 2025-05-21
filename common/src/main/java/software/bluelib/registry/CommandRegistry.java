@@ -9,8 +9,10 @@ package software.bluelib.registry;
 
 import com.mojang.brigadier.CommandDispatcher;
 import net.minecraft.commands.CommandSourceStack;
+import org.jetbrains.annotations.ApiStatus;
 import software.bluelib.commands.OpenLoggerScreenCommand;
 
+@ApiStatus.Internal
 public class CommandRegistry {
 
     public static void registerCommands(CommandDispatcher<CommandSourceStack> pDispatcher) {

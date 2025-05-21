@@ -5,7 +5,7 @@
  * If a copy of the MIT License was not distributed with this file,
  * You can obtain one at https://opensource.org/licenses/MIT.
  */
-package software.bluelib.json;
+package software.bluelib.api.json;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;

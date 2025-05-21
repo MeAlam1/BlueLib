@@ -8,8 +8,11 @@
 package software.bluelib.example.event;
 
 import java.util.List;
+
+import org.jetbrains.annotations.ApiStatus;
 import software.bluelib.api.entity.variant.IVariantProvider;
 
+@ApiStatus.Internal
 public class VariantProvider implements IVariantProvider {
 
     @Override
