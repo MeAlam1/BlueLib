@@ -40,6 +40,15 @@ public class ParameterUtils {
     }
 
     @Nullable
+    public static JsonElement getParameterDataForVariant(String pEntityName, String pVariantName, String pParameter, @NotNull String pFallbackVariant) {
+        JsonElement result = getParameterDataForVariant(pEntityName, pVariantName, pParameter);
+        if (result == null && !pFallbackVariant.equals(pVariantName)) {
+            result = getParameterDataForVariant(pEntityName, pFallbackVariant, pParameter);
+        }
+        return result;
+    }
+
+    @Nullable
     public static JsonElement getParameterDataForVariant(String pEntityName, String pVariantName, String pParameter) {
         JsonObject entityData = VariantLoader.AllVariants.get(pEntityName);
         if (entityData == null) {

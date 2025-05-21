@@ -35,26 +35,26 @@ public class VariantLoader extends JSONParser {
 		parseVariants(pEntityName, LOADER.getMergedJsonObject());
 	}
 
-	private static void parseVariants(String entityName, JsonObject variantsJson) {
-		if (BlueLibConstants.PlatformHelper.EVENT_PROXY.allVariantsLoadedPre(entityName)) {
+	private static void parseVariants(String pEntityName, JsonObject pVariantsJson) {
+		if (BlueLibConstants.PlatformHelper.EVENT_PROXY.allVariantsLoadedPre(pEntityName)) {
 			BaseLogger.log(BaseLogLevel.INFO, BlueLibCommon.Translation.log("variants.load.cancelled"), true);
 			return;
 		}
 
-		if (!AllVariants.containsKey(entityName)) {
-			for (String variantKey : variantsJson.keySet()) {
-				if (BlueLibConstants.PlatformHelper.EVENT_PROXY.variantLoadedPre(variantKey, entityName)) {
-					BaseLogger.log(BaseLogLevel.INFO, BlueLibCommon.Translation.log("variant.load.cancelled", variantKey, entityName), true);
+		if (!AllVariants.containsKey(pEntityName)) {
+			for (String variantKey : pVariantsJson.keySet()) {
+				if (BlueLibConstants.PlatformHelper.EVENT_PROXY.variantLoadedPre(variantKey, pEntityName)) {
+					BaseLogger.log(BaseLogLevel.INFO, BlueLibCommon.Translation.log("variant.load.cancelled", variantKey, pEntityName), true);
 					return;
 				}
-				BlueLibConstants.PlatformHelper.EVENT_PROXY.variantLoadedPost(entityName, variantKey);
+				BlueLibConstants.PlatformHelper.EVENT_PROXY.variantLoadedPost(pEntityName, variantKey);
 			}
-			AllVariants.put(entityName, variantsJson);
+			AllVariants.put(pEntityName, pVariantsJson);
 		}
 
-		BlueLibConstants.PlatformHelper.EVENT_PROXY.allVariantsLoadedPost(entityName);
+		BlueLibConstants.PlatformHelper.EVENT_PROXY.allVariantsLoadedPost(pEntityName);
 
 		BaseLogger.log(BaseLogLevel.INFO, BlueLibCommon.Translation.log("variants.entities", Arrays.toString(ParameterUtils.getAllEntities().toArray())), true);
-		BaseLogger.log(BaseLogLevel.INFO, BlueLibCommon.Translation.log("variants.variants", entityName, Arrays.toString(Objects.requireNonNull(ParameterUtils.getVariantsOfEntity(entityName)).toArray())), true);
+		BaseLogger.log(BaseLogLevel.INFO, BlueLibCommon.Translation.log("variants.variants", pEntityName, Arrays.toString(Objects.requireNonNull(ParameterUtils.getVariantsOfEntity(pEntityName)).toArray())), true);
 	}
 }
