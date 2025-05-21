@@ -23,7 +23,7 @@ public class NetworkRegistry implements PacketProvider.C2SPacketProvider, Packet
         List<PacketRegisterInfo<?>> list = new ArrayList<>();
 
         // Test
-        list.add(new PacketRegisterInfo<>(TestPacket.ID, TestPacket::decode, new TestPacketHandler(), null));
+        list.add(new PacketRegisterInfo<>(TestPacket.ID, TestPacket::decode, new TestPacketHandler()));
 
         return list;
     }
@@ -33,7 +33,7 @@ public class NetworkRegistry implements PacketProvider.C2SPacketProvider, Packet
         List<PacketRegisterInfo<?>> list = new ArrayList<>();
 
         // Logger
-        list.add(new PacketRegisterInfo<>(OpenLoggerPacket.ID, OpenLoggerPacket::decode, new OpenLoggerPacketHandler(), null));
+        list.add(new PacketRegisterInfo<>(OpenLoggerPacket.ID, OpenLoggerPacket::decode, new OpenLoggerPacketHandler()));
 
         return list;
     }

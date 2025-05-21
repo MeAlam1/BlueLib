@@ -40,7 +40,7 @@ public class ParameterUtils {
     }
 
     @Nullable
-    public static JsonElement getCustomParameterForVariant(String pEntityName, String pVariantName, String pParameter) {
+    public static JsonElement getParameterDataForVariant(String pEntityName, String pVariantName, String pParameter) {
         JsonObject entityData = VariantLoader.AllVariants.get(pEntityName);
         if (entityData == null) {
             BaseLogger.log(BaseLogLevel.WARNING, BlueLibCommon.Translation.log("entity.notfound", pEntityName), true);

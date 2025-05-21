@@ -35,6 +35,16 @@ public class PacketRegisterInfo<T extends NetworkPacket<T> & Encodable> {
         this.codec = pCodec != null ? pCodec : createDefaultCodec(pDecoder);
     }
 
+    public PacketRegisterInfo(ResourceLocation pId,
+            Function<RegistryFriendlyByteBuf, T> pDecoder,
+            PacketHandler<T> pHandler) {
+        this.id = pId;
+        this.decoder = pDecoder;
+        this.handler = pHandler;
+        this.payloadId = new CustomPacketPayload.Type<>(pId);
+        this.codec = createDefaultCodec(pDecoder);
+    }
+
     private StreamCodec<RegistryFriendlyByteBuf, T> createDefaultCodec(Function<RegistryFriendlyByteBuf, T> pDecoder) {
         return StreamCodec.of(
                 (buf, packet) -> packet.encode(buf),
