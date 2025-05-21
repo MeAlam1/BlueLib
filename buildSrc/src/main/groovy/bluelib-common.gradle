@@ -4,6 +4,7 @@ plugins {
 }
 
 project.plugins.apply('com.diffplug.spotless')
+project.plugins.apply('com.github.hierynomus.license')
 
 base {
     archivesName = "${mod_id}-${minecraft_version}"
@@ -149,4 +150,15 @@ spotless {
         }
         bumpThisNumberIfACustomStepChanges(2)
     }
+}
+
+license {
+    header = rootProject.file('HEADER')
+    include '**/*.java'
+    strictCheck true
+    mapping {
+        java = 'SLASHSTAR_STYLE'
+    }
+
+    skipExistingHeaders false
 }

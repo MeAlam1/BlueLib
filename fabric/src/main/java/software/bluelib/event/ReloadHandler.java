@@ -1,7 +1,14 @@
-// Copyright (c) BlueLib. Licensed under the MIT License.
-
+/*
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
+ */
 package software.bluelib.event;
 
+import java.util.List;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.packs.resources.CloseableResourceManager;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -12,42 +19,38 @@ import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
 import software.bluelib.entity.variant.VariantLoader;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-
 public class ReloadHandler {
 
-	private static IVariantProvider provider;
+    private static IVariantProvider provider;
 
-	public static void setProvider(IVariantProvider pVariantProvider) {
-		provider = pVariantProvider;
-	}
+    public static void setProvider(IVariantProvider pVariantProvider) {
+        provider = pVariantProvider;
+    }
 
-	public static void onServerStart(MinecraftServer pServer) {
-		if (provider == null) return;
-		
-		BlueLibConstants.SCHEDULER = new ScheduledThreadPoolExecutor(1);
-		BlueLibConstants.server = pServer;
-		ReloadHandler.LoadEntityVariants(pServer.getResourceManager());
-		BaseLogger.log(BaseLogLevel.INFO, BlueLibCommon.Translation.log("variants.loaded"), true);
-	}
+    public static void onServerStart(MinecraftServer pServer) {
+        if (provider == null) return;
 
-	public static void onReload(MinecraftServer pServer, CloseableResourceManager pCloseableResourceManager, boolean pBoolean) {
-		if (provider == null) return;
-		
-		ReloadHandler.LoadEntityVariants(pServer.getResourceManager());
-		BaseLogger.log(BaseLogLevel.INFO, BlueLibCommon.Translation.log("variants.reloaded"), true);
-	}
-	
-	public static void LoadEntityVariants(ResourceManager pResourceManager) {
-		List<String> entityNames = provider.getEntityNames();
-		String basePath = provider.getBasePath();
+        BlueLibConstants.SCHEDULER = new ScheduledThreadPoolExecutor(1);
+        BlueLibConstants.server = pServer;
+        ReloadHandler.LoadEntityVariants(pServer.getResourceManager());
+        BaseLogger.log(BaseLogLevel.INFO, BlueLibCommon.Translation.log("variants.loaded"), true);
+    }
 
-		for (String entityName : entityNames) {
-			String folderPath = basePath + entityName;
-			VariantLoader.loadVariants(folderPath, pResourceManager, entityName);
-			BaseLogger.log(BaseLogLevel.INFO, BlueLibCommon.Translation.log("variants.loaded.entity", entityName), true);
-		}
-	}
+    public static void onReload(MinecraftServer pServer, CloseableResourceManager pCloseableResourceManager, boolean pBoolean) {
+        if (provider == null) return;
+
+        ReloadHandler.LoadEntityVariants(pServer.getResourceManager());
+        BaseLogger.log(BaseLogLevel.INFO, BlueLibCommon.Translation.log("variants.reloaded"), true);
+    }
+
+    public static void LoadEntityVariants(ResourceManager pResourceManager) {
+        List<String> entityNames = provider.getEntityNames();
+        String basePath = provider.getBasePath();
+
+        for (String entityName : entityNames) {
+            String folderPath = basePath + entityName;
+            VariantLoader.loadVariants(folderPath, pResourceManager, entityName);
+            BaseLogger.log(BaseLogLevel.INFO, BlueLibCommon.Translation.log("variants.loaded.entity", entityName), true);
+        }
+    }
 }

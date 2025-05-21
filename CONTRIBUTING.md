@@ -14,7 +14,6 @@
     - **Example**: `String getParameter(String pVariantName, String pParameterKey)`.
 
 - **General Guidelines**:
-    - Copyright: Each file should start with `// Copyright (c) BlueLib. Licensed under the MIT License.`
     - Logging: Log steps using `BaseLogger.log`. Remember to add true as the last parameter to ensure it's a BlueLib
       log.
     - Error Handling: Always ensure that errors and warnings are logged using appropriate logging levels. Critical steps

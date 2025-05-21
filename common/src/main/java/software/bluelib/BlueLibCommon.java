@@ -1,5 +1,10 @@
-// Copyright (c) BlueLib. Licensed under the MIT License.
-
+/*
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
+ */
 package software.bluelib;
 
 import static software.bluelib.BlueLibConstants.SCHEDULER;
@@ -12,7 +17,6 @@ import software.bluelib.api.event.mod.ModIntegration;
 import software.bluelib.api.net.NetworkRegistry;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
-import software.bluelib.example.event.VariantProvider;
 
 public class BlueLibCommon {
 
