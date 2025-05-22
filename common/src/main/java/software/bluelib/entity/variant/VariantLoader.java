@@ -15,10 +15,10 @@ import java.util.Objects;
 import net.minecraft.server.packs.resources.ResourceManager;
 import software.bluelib.BlueLibCommon;
 import software.bluelib.BlueLibConstants;
+import software.bluelib.api.json.JSONParser;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
 import software.bluelib.api.utils.variant.ParameterUtils;
-import software.bluelib.api.json.JSONParser;
 
 public class VariantLoader extends JSONParser {
 

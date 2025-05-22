@@ -9,7 +9,6 @@ package software.bluelib.registry;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.jetbrains.annotations.ApiStatus;
 import software.bluelib.api.net.PacketProvider;
 import software.bluelib.client.net.OpenLoggerPacketHandler;
