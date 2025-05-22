@@ -1,5 +1,10 @@
-// Copyright (c) BlueLib. Licensed under the MIT License.
-
+/*
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
+ */
 package software.bluelib;
 
 import static software.bluelib.BlueLibConstants.SCHEDULER;
@@ -17,6 +22,7 @@ public class BlueLibCommon {
 
     private BlueLibCommon() {}
 
+    @ApiStatus.Internal
     public static void init() {
         if (isDeveloperMode()) {
             SCHEDULER.schedule(() -> {
@@ -32,6 +38,7 @@ public class BlueLibCommon {
         }
     }
 
+    @ApiStatus.Internal
     public static void doRegistration() {
         var networkRegistry = new software.bluelib.registry.NetworkRegistry();
         NetworkRegistry.registerC2SPacketProvider(networkRegistry);

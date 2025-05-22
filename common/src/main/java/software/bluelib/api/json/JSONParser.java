@@ -1,13 +1,17 @@
-// Copyright (c) BlueLib. Licensed under the MIT License.
-
-package software.bluelib.json;
+/*
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
+ */
+package software.bluelib.api.json;
 
 import com.google.gson.JsonObject;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.packs.resources.ResourceManager;
 import software.bluelib.BlueLibCommon;
 import software.bluelib.api.utils.logging.BaseLogLevel;
@@ -23,17 +27,16 @@ public abstract class JSONParser {
 
     protected JsonObject mergedJsonObject;
 
-    public void loadData(String pFolderPath, MinecraftServer pServer) {
-        ResourceManager resourceManager = pServer.getResourceManager();
+    public void loadData(String pFolderPath, ResourceManager pResourceManager) {
         mergedJsonObject = new JsonObject();
 
-        Collection<ResourceLocation> resources = resourceManager.listResources(pFolderPath, path -> path.getPath().endsWith(".json")).keySet();
+        Collection<ResourceLocation> resources = pResourceManager.listResources(pFolderPath, path -> path.getPath().endsWith(".json")).keySet();
 
         BaseLogger.log(BaseLogLevel.SUCCESS, BlueLibCommon.Translation.log("json.found", pFolderPath), true);
 
         for (ResourceLocation resourceLocation : resources) {
             try {
-                JsonObject jsonObject = jsonLoader.loadJson(resourceLocation, resourceManager);
+                JsonObject jsonObject = jsonLoader.loadJson(resourceLocation, pResourceManager);
                 jsonMerger.mergeJsonObjects(mergedJsonObject, jsonObject);
             } catch (Exception pException) {
                 BaseLogger.log(BaseLogLevel.ERROR, BlueLibCommon.Translation.log("json.failed", resourceLocation.toString()), pException, true);

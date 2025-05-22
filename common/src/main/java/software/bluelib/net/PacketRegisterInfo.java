@@ -1,5 +1,10 @@
-// Copyright (c) BlueLib. Licensed under the MIT License.
-
+/*
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
+ */
 package software.bluelib.net;
 
 import java.util.function.Function;
@@ -28,6 +33,16 @@ public class PacketRegisterInfo<T extends NetworkPacket<T> & Encodable> {
         this.handler = pHandler;
         this.payloadId = new CustomPacketPayload.Type<>(pId);
         this.codec = pCodec != null ? pCodec : createDefaultCodec(pDecoder);
+    }
+
+    public PacketRegisterInfo(ResourceLocation pId,
+            Function<RegistryFriendlyByteBuf, T> pDecoder,
+            PacketHandler<T> pHandler) {
+        this.id = pId;
+        this.decoder = pDecoder;
+        this.handler = pHandler;
+        this.payloadId = new CustomPacketPayload.Type<>(pId);
+        this.codec = createDefaultCodec(pDecoder);
     }
 
     private StreamCodec<RegistryFriendlyByteBuf, T> createDefaultCodec(Function<RegistryFriendlyByteBuf, T> pDecoder) {

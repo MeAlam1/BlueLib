@@ -1,5 +1,10 @@
-// Copyright (c) BlueLib. Licensed under the MIT License.
-
+/*
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
+ */
 package software.bluelib.api.utils.variant;
 
 import com.google.gson.JsonArray;
@@ -35,7 +40,16 @@ public class ParameterUtils {
     }
 
     @Nullable
-    public static JsonElement getCustomParameterForVariant(String pEntityName, String pVariantName, String pParameter) {
+    public static JsonElement getParameterDataForVariant(String pEntityName, String pVariantName, String pParameter, @NotNull String pFallbackVariant) {
+        JsonElement result = getParameterDataForVariant(pEntityName, pVariantName, pParameter);
+        if (result == null && !pFallbackVariant.equals(pVariantName)) {
+            result = getParameterDataForVariant(pEntityName, pFallbackVariant, pParameter);
+        }
+        return result;
+    }
+
+    @Nullable
+    public static JsonElement getParameterDataForVariant(String pEntityName, String pVariantName, String pParameter) {
         JsonObject entityData = VariantLoader.AllVariants.get(pEntityName);
         if (entityData == null) {
             BaseLogger.log(BaseLogLevel.WARNING, BlueLibCommon.Translation.log("entity.notfound", pEntityName), true);
