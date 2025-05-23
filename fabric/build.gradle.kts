@@ -1,5 +1,6 @@
 import net.fabricmc.loom.task.RemapJarTask
 import net.darkhax.curseforgegradle.TaskPublishCurseForge
+import org.cadixdev.mercury.shadow.org.osgi.framework.Bundle
 
 plugins {
     id("bluelib-convention")
@@ -28,6 +29,7 @@ repositories {
             includeGroupAndSubgroups("org.parchmentmc")
         }
     }
+    maven(url = "${rootProject.projectDir}/deps")
 }
 
 dependencies {
@@ -39,6 +41,9 @@ dependencies {
     modImplementation(libs.fabric)
     modImplementation(libs.fabric.api)
     compileOnly(project(":common"))
+    include(libs.molang)
+    modCompileOnly(libs.molang)
+    
 
     // ExampleMod
     //modLocalRuntime(libs.examplemod.fabric)
@@ -131,4 +136,10 @@ publishing {
 tasks.named<DefaultTask>("publish").configure {
     finalizedBy("modrinth")
     finalizedBy("publishToCurseForge")
+}
+
+tasks.withType<Javadoc> {
+    exclude("**/*.kt")
+    (options as StandardJavadocDocletOptions).addStringOption("Xdoclint:none", "-quiet")
+    isFailOnError = false
 }
