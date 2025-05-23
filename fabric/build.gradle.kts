@@ -1,6 +1,5 @@
 import net.fabricmc.loom.task.RemapJarTask
 import net.darkhax.curseforgegradle.TaskPublishCurseForge
-import org.cadixdev.mercury.shadow.org.osgi.framework.Bundle
 
 plugins {
     id("bluelib-convention")
@@ -136,10 +135,4 @@ publishing {
 tasks.named<DefaultTask>("publish").configure {
     finalizedBy("modrinth")
     finalizedBy("publishToCurseForge")
-}
-
-tasks.withType<Javadoc> {
-    exclude("**/*.kt")
-    (options as StandardJavadocDocletOptions).addStringOption("Xdoclint:none", "-quiet")
-    isFailOnError = false
 }

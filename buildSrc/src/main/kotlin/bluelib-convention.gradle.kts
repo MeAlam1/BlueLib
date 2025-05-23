@@ -110,3 +110,9 @@ publishing {
         }
     }
 }
+
+tasks.withType<Javadoc> {
+    exclude("**/*.kt")
+    (options as StandardJavadocDocletOptions).addStringOption("Xdoclint:none", "-quiet")
+    isFailOnError = false
+}

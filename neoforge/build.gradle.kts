@@ -125,9 +125,3 @@ tasks.named<DefaultTask>("publish").configure {
     finalizedBy("modrinth")
     finalizedBy("publishToCurseForge")
 }
-
-tasks.withType<Javadoc> {
-    exclude("**/*.kt")
-    (options as StandardJavadocDocletOptions).addStringOption("Xdoclint:none", "-quiet")
-    isFailOnError = false
-}
