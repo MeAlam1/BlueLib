@@ -56,3 +56,6 @@ build/reports/problems/problems-report.html
 build/tmp/spotless-register-dependencies
 /build
 /fabric/remappedSrc
+common/src/main/resources/assets/bluelib/animations/test.animation.json
+common/src/main/resources/assets/bluelib/textures/test.png
+common/src/main/resources/assets/bluelib/models/test.geo.json
