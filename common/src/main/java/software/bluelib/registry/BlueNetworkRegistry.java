@@ -18,7 +18,7 @@ import software.bluelib.net.messages.server.TestPacket;
 import software.bluelib.net.serverHandling.TestPacketHandler;
 
 @ApiStatus.Internal
-public class NetworkRegistry implements PacketProvider.C2SPacketProvider, PacketProvider.S2CPacketProvider {
+public class BlueNetworkRegistry implements PacketProvider.C2SPacketProvider, PacketProvider.S2CPacketProvider {
 
     @Override
     public List<PacketRegisterInfo<?>> getC2SPacketInfoList() {

@@ -17,6 +17,7 @@ import software.bluelib.api.event.mod.ModIntegration;
 import software.bluelib.api.net.NetworkRegistry;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
+import software.bluelib.registry.BlueNetworkRegistry;
 
 public class BlueLibCommon {
 
@@ -40,7 +41,7 @@ public class BlueLibCommon {
 
     @ApiStatus.Internal
     public static void doRegistration() {
-        var networkRegistry = new software.bluelib.registry.NetworkRegistry();
+        var networkRegistry = new BlueNetworkRegistry();
         NetworkRegistry.registerC2SPacketProvider(networkRegistry);
         NetworkRegistry.registerS2CPacketProvider(networkRegistry);
     }

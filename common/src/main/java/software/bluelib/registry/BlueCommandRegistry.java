@@ -13,7 +13,7 @@ import org.jetbrains.annotations.ApiStatus;
 import software.bluelib.commands.OpenLoggerScreenCommand;
 
 @ApiStatus.Internal
-public class CommandRegistry {
+public class BlueCommandRegistry {
 
     public static void registerCommands(CommandDispatcher<CommandSourceStack> pDispatcher) {
         OpenLoggerScreenCommand.register(pDispatcher);
