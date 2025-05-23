@@ -2,6 +2,8 @@ plugins {
     id("bluelib-convention")
     alias(libs.plugins.curseforgegradle)
     alias(libs.plugins.moddevgradle)
+    id("com.diffplug.spotless") version "6.25.0"
+    id("com.github.hierynomus.license") version "0.16.1"
 }
 
 version = libs.versions.bluelib.get()
@@ -38,3 +40,33 @@ publishing {
         }
     }
 }
+
+spotless {
+    java {
+        endWithNewline()
+        removeUnusedImports()
+        toggleOffOn()
+
+        // Pin version to 4.31 due to Spotless bug https://github.com/diffplug/spotless/issues/1992
+        eclipse("4.31").configFile(rootProject.file("codeformat/formatter-config.xml"))
+
+        importOrder()
+        custom("jetbrainsNullable") { fileContents: String ->
+            fileContents.replace("javax.annotation.Nullable", "org.jetbrains.annotations.Nullable")
+        }
+
+        bumpThisNumberIfACustomStepChanges(2)
+    }
+}
+
+license {
+    header = rootProject.file("HEADER")
+    include("**/*.java")
+    strictCheck = true
+
+    mapping("java", "SLASHSTAR_STYLE")
+
+    skipExistingHeaders = false
+}
+
+
