@@ -1,4 +1,6 @@
 import net.darkhax.curseforgegradle.TaskPublishCurseForge
+import net.neoforged.moddevgradle.internal.jarjar.JarJarPlugin
+import net.neoforged.moddevgradle.tasks.JarJar
 
 plugins {
     id("bluelib-convention")
@@ -46,10 +48,13 @@ neoForge {
 }
 
 repositories {
+    maven(url = "${rootProject.projectDir}/deps")
 }
 
 dependencies {
     compileOnly(project(":common"))
+    jarJar(libs.molang)
+    compileOnly(libs.molang)
 
     // Only enable for testing as needed
     // Disable before publishing

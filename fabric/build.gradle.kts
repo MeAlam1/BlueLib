@@ -28,6 +28,7 @@ repositories {
             includeGroupAndSubgroups("org.parchmentmc")
         }
     }
+    maven(url = "${rootProject.projectDir}/deps")
 }
 
 dependencies {
@@ -39,6 +40,9 @@ dependencies {
     modImplementation(libs.fabric)
     modImplementation(libs.fabric.api)
     compileOnly(project(":common"))
+    include(libs.molang)
+    modCompileOnly(libs.molang)
+    
 
     // ExampleMod
     //modLocalRuntime(libs.examplemod.fabric)

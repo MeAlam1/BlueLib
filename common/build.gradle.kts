@@ -6,6 +6,10 @@ plugins {
     id("com.github.hierynomus.license") version "0.16.1"
 }
 
+repositories {
+    maven(url = "${rootProject.projectDir}/deps")
+}
+
 version = libs.versions.bluelib.get()
 
 base {
@@ -24,6 +28,8 @@ neoForge {
 dependencies {
     compileOnly(libs.mixin)
     compileOnly(libs.mixinextras.common)
+    jarJar(libs.molang)
+    compileOnly(libs.molang)
 
     // Only enable for testing as needed
     // Disable before publishing
