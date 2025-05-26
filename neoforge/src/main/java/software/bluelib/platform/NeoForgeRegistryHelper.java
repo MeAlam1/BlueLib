@@ -21,6 +21,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -28,6 +29,7 @@ import software.bluelib.BlueLibConstants;
 import software.bluelib.api.registry.builders.RegistryBuilder;
 import software.bluelib.api.registry.builders.keybinds.KeybindBuilder;
 import software.bluelib.api.registry.helpers.entity.AttributeHelper;
+import software.bluelib.api.registry.helpers.entity.RenderHelper;
 import software.bluelib.net.NeoForgeNetworkManager;
 
 public class NeoForgeRegistryHelper implements IRegistryHelper {
@@ -95,5 +97,6 @@ public class NeoForgeRegistryHelper implements IRegistryHelper {
         biomeRegistry.register(modEventBus);
         modEventBus.<EntityAttributeCreationEvent>addListener(pEvent -> AttributeHelper.registerAttributes(pEvent::put));
         modEventBus.<RegisterKeyMappingsEvent>addListener(event -> KeybindBuilder.REGISTERED_BUILDERS.forEach(builder -> event.register(builder.getKeyMapping().get())));
+        modEventBus.<EntityRenderersEvent.RegisterRenderers>addListener(event -> RenderHelper.registerRenderers(event::registerEntityRenderer, event::registerBlockEntityRenderer));
     }
 }

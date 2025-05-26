@@ -22,12 +22,6 @@ import software.bluelib.api.registry.helpers.entity.RenderHelper;
 
 @EventBusSubscriber(value = Dist.CLIENT, modid = BlueLibConstants.MOD_ID)
 public class BlueLibClient {
-
-    @SubscribeEvent(priority = EventPriority.HIGHEST)
-    public static void registerRenderers(final EntityRenderersEvent.RegisterRenderers pEvent) {
-        RenderHelper.registerRenderers(pEvent::registerEntityRenderer, pEvent::registerBlockEntityRenderer);
-    }
-
 	public static void init(ModContainer pModContainer) {
 		pModContainer.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
 	}
