@@ -31,7 +31,7 @@ examplemod = "2.0.0"
 plugin-moddevgradle = "2.0.78"
 plugin-minotaur = "2.8.7"
 plugin-curseforge-gradle = "1.1.25"
-plugin-idea-ext = "1.1.8"
+plugin-idea-ext = "1.1.10"
 plugin-mixin = "0.7.+"
 plugin-loom = "1.10-SNAPSHOT"
 
