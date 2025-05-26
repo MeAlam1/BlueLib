@@ -1,5 +1,4 @@
 
-
 package software.bluelib_examples.client.render.entity;
 
 import net.minecraft.client.renderer.entity.EntityRendererProvider;

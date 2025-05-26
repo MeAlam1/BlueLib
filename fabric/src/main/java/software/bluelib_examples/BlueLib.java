@@ -1,5 +1,4 @@
 
-
 package software.bluelib_examples;
 
 import net.fabricmc.api.ModInitializer;

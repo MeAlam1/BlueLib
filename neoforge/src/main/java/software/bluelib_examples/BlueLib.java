@@ -13,13 +13,13 @@ import software.bluelib_examples.variant.VariantProvider;
 @Mod(BlueLibConstants.MOD_ID)
 public class BlueLib {
 
-	public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(Registries.ENTITY_TYPE, BlueLibConstants.MOD_ID);
+    public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(Registries.ENTITY_TYPE, BlueLibConstants.MOD_ID);
 
-	public BlueLib(IEventBus pModEventBus) {
-		ReloadHandler.registerProvider(new VariantProvider());
-		ENTITIES.register(pModEventBus);
-		pModEventBus.<EntityAttributeCreationEvent>addListener(event -> EntityRegistry.registerEntityAttributes(event::put));
+    public BlueLib(IEventBus pModEventBus) {
+        ReloadHandler.registerProvider(new VariantProvider());
+        ENTITIES.register(pModEventBus);
+        pModEventBus.<EntityAttributeCreationEvent>addListener(event -> EntityRegistry.registerEntityAttributes(event::put));
 
-		BlueLibCommon.doRegistrations();
-	}
+        BlueLibCommon.doRegistrations();
+    }
 }

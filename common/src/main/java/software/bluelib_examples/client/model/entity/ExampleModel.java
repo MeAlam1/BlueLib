@@ -1,5 +1,4 @@
 
-
 package software.bluelib_examples.client.model.entity;
 
 import net.minecraft.resources.ResourceLocation;

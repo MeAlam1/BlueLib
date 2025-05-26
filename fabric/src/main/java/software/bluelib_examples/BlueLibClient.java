@@ -6,8 +6,9 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import software.bluelib_examples.client.BlueLibCommonClient;
 
 public class BlueLibClient implements ClientModInitializer {
-	@Override
-	public void onInitializeClient() {
-		BlueLibCommonClient.registerRenderers(EntityRendererRegistry::register, BlockEntityRenderers::register);
-	}
+
+    @Override
+    public void onInitializeClient() {
+        BlueLibCommonClient.registerRenderers(EntityRendererRegistry::register, BlockEntityRenderers::register);
+    }
 }
