@@ -1,7 +1,5 @@
 package software.bluelib.api.registry.builders;
 
-import net.minecraft.client.KeyMapping;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -10,8 +8,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import org.lwjgl.glfw.GLFW;
-import software.bluelib.BlueLibConstants;
 import software.bluelib.api.registry.builders.blocks.BlockBuilder;
 import software.bluelib.api.registry.builders.blocks.BlockEntityBuilder;
 import software.bluelib.api.registry.builders.entity.EntityBuilder;
@@ -20,11 +16,8 @@ import software.bluelib.api.registry.builders.items.ItemBuilder;
 import software.bluelib.api.registry.builders.keybinds.KeybindBuilder;
 import software.bluelib.api.registry.builders.tabs.CreativeTabBuilder;
 import software.bluelib.api.registry.datagen.entity.EntityTagBuilder;
-import software.bluelib.api.utils.logging.BaseLogLevel;
-import software.bluelib.api.utils.logging.BaseLogger;
 
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 public class RegistryBuilder {
 
