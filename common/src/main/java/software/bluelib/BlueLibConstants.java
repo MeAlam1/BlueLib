@@ -10,11 +10,17 @@ package software.bluelib;
 import java.util.ServiceLoader;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.function.Supplier;
 import java.util.logging.Logger;
+
+import com.mojang.serialization.Codec;
+import net.minecraft.core.component.DataComponentType;
+import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import software.bluelib.api.event.IEventProxy;
 import software.bluelib.api.net.NetworkPacket;
+import software.bluelib.loader.GeckoLibServices;
 import software.bluelib.platform.IPlatformHelper;
 import software.bluelib.platform.IRegistryHelper;
 
@@ -31,6 +37,8 @@ public class BlueLibConstants {
     public static final Logger LOGGER = Logger.getLogger(BlueLibConstants.MOD_NAME);
 
     public static ScheduledExecutorService SCHEDULER = Executors.newScheduledThreadPool(1);
+
+    public static final Supplier<DataComponentType<Long>> STACK_ANIMATABLE_ID_COMPONENT = GeckoLibServices.PLATFORM.registerDataComponent("stack_animatable_id", builder -> builder.persistent(Codec.LONG).networkSynchronized(ByteBufCodecs.VAR_LONG));
 
     public static final String MOD_ID = "bluelib";
 

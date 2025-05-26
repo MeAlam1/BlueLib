@@ -4,9 +4,15 @@
   "package": "software.bluelib.mixin",
   "refmap": "bluelib.refmap.json",
   "mixins": [
-    "variant.LivingEntityMixin"
+    "common.variant.LivingEntityMixin",
+    "common.loader.AbstractContainerMenuMixin",
+    "common.loader.ItemStackMixin"
   ],
-  "client": [],
+  "client": [
+    "client.BlockEntityWithoutLevelRendererMixin",
+    "client.LevelRendererMixin",
+    "client.TextureManagerMixin"
+  ],
   "server": [],
   "injectors": {
     "defaultRequire": 1

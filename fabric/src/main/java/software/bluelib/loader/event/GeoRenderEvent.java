@@ -1,0 +1,922 @@
+package software.bluelib.loader.event;
+
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.fabricmc.fabric.api.event.Event;
+import net.fabricmc.fabric.api.event.EventFactory;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import org.jetbrains.annotations.Nullable;
+import software.bluelib.loader.animatable.GeoAnimatable;
+import software.bluelib.loader.cache.object.BakedGeoModel;
+import software.bluelib.loader.renderer.*;
+import software.bluelib.loader.renderer.layer.GeoRenderLayer;
+
+
+public interface GeoRenderEvent {
+	
+	GeoRenderer<?> getRenderer();
+
+	
+	abstract class Armor implements GeoRenderEvent {
+		private final GeoArmorRenderer<?> renderer;
+
+		public Armor(GeoArmorRenderer<?> renderer) {
+			this.renderer = renderer;
+		}
+
+		
+		@Override
+		public GeoArmorRenderer<?> getRenderer() {
+			return this.renderer;
+		}
+
+		
+		@Nullable
+		public net.minecraft.world.entity.Entity getEntity() {
+			return getRenderer().getCurrentEntity();
+		}
+
+		
+		@Nullable
+		public ItemStack getItemStack() {
+			return getRenderer().getCurrentStack();
+		}
+
+		
+		@Nullable
+		public EquipmentSlot getEquipmentSlot() {
+			return getRenderer().getCurrentSlot();
+		}
+
+		
+		public static class Pre extends Armor {
+			public static final Event<Listener> EVENT = EventFactory.createArrayBacked(Listener.class, event -> true, listeners -> event -> {
+				for (Listener listener : listeners) {
+					if (!listener.handle(event))
+						return false;
+				}
+
+				return true;
+			});
+
+			private final PoseStack poseStack;
+			private final BakedGeoModel model;
+			private final MultiBufferSource bufferSource;
+			private final float partialTick;
+			private final int packedLight;
+
+			public Pre(GeoArmorRenderer<?> renderer, PoseStack poseStack, BakedGeoModel model, MultiBufferSource bufferSource, float partialTick, int packedLight) {
+				super(renderer);
+
+				this.poseStack = poseStack;
+				this.model = model;
+				this.bufferSource = bufferSource;
+				this.partialTick = partialTick;
+				this.packedLight = packedLight;
+			}
+
+			public PoseStack getPoseStack() {
+				return this.poseStack;
+			}
+
+			public BakedGeoModel getModel() {
+				return this.model;
+			}
+
+			public MultiBufferSource getBufferSource() {
+				return this.bufferSource;
+			}
+
+			public float getPartialTick() {
+				return this.partialTick;
+			}
+
+			public int getPackedLight() {
+				return this.packedLight;
+			}
+
+			
+			@FunctionalInterface
+			public interface Listener {
+				boolean handle(Pre event);
+			}
+		}
+
+		
+		public static class Post extends Armor {
+			public static final Event<Listener> EVENT = EventFactory.createArrayBacked(Listener.class, post -> {}, listeners -> event -> {
+				for (Listener listener : listeners) {
+					listener.handle(event);
+				}
+			});
+
+			private final PoseStack poseStack;
+			private final BakedGeoModel model;
+			private final MultiBufferSource bufferSource;
+			private final float partialTick;
+			private final int packedLight;
+
+			public Post(GeoArmorRenderer<?> renderer, PoseStack poseStack, BakedGeoModel model, MultiBufferSource bufferSource, float partialTick, int packedLight) {
+				super(renderer);
+
+				this.poseStack = poseStack;
+				this.model = model;
+				this.bufferSource = bufferSource;
+				this.partialTick = partialTick;
+				this.packedLight = packedLight;
+			}
+
+			public PoseStack getPoseStack() {
+				return this.poseStack;
+			}
+
+			public BakedGeoModel getModel() {
+				return this.model;
+			}
+
+			public MultiBufferSource getBufferSource() {
+				return this.bufferSource;
+			}
+
+			public float getPartialTick() {
+				return this.partialTick;
+			}
+
+			public int getPackedLight() {
+				return this.packedLight;
+			}
+
+			
+			@FunctionalInterface
+			public interface Listener {
+				void handle(Post event);
+			}
+		}
+
+		
+		public static class CompileRenderLayers extends Armor {
+			public static final Event<Listener> EVENT = EventFactory.createArrayBacked(Listener.class, post -> {}, listeners -> event -> {
+				for (Listener listener : listeners) {
+					listener.handle(event);
+				}
+			});
+
+			public CompileRenderLayers(GeoArmorRenderer<?> renderer) {
+				super(renderer);
+			}
+
+			
+			public void addLayer(GeoRenderLayer renderLayer) {
+				getRenderer().addRenderLayer(renderLayer);
+			}
+
+			
+			@FunctionalInterface
+			public interface Listener {
+				void handle(CompileRenderLayers event);
+			}
+		}
+	}
+
+	
+	abstract class Block implements GeoRenderEvent {
+		private final GeoBlockRenderer<?> renderer;
+
+		public Block(GeoBlockRenderer<?> renderer) {
+			this.renderer = renderer;
+		}
+
+		
+		@Override
+		public GeoBlockRenderer<?> getRenderer() {
+			return this.renderer;
+		}
+
+		
+		public BlockEntity getBlockEntity() {
+			return getRenderer().getAnimatable();
+		}
+
+		
+		public static class Pre extends Block {
+			public static final Event<Listener> EVENT = EventFactory.createArrayBacked(Listener.class, event -> true, listeners -> event -> {
+				for (Listener listener : listeners) {
+					if (!listener.handle(event))
+						return false;
+				}
+
+				return true;
+			});
+
+			private final PoseStack poseStack;
+			private final BakedGeoModel model;
+			private final MultiBufferSource bufferSource;
+			private final float partialTick;
+			private final int packedLight;
+
+			public Pre(GeoBlockRenderer<?> renderer, PoseStack poseStack, BakedGeoModel model, MultiBufferSource bufferSource, float partialTick, int packedLight) {
+				super(renderer);
+
+				this.poseStack = poseStack;
+				this.model = model;
+				this.bufferSource = bufferSource;
+				this.partialTick = partialTick;
+				this.packedLight = packedLight;
+			}
+
+			public PoseStack getPoseStack() {
+				return this.poseStack;
+			}
+
+			public BakedGeoModel getModel() {
+				return this.model;
+			}
+
+			public MultiBufferSource getBufferSource() {
+				return this.bufferSource;
+			}
+
+			public float getPartialTick() {
+				return this.partialTick;
+			}
+
+			public int getPackedLight() {
+				return this.packedLight;
+			}
+
+			
+			@FunctionalInterface
+			public interface Listener {
+				boolean handle(Pre event);
+			}
+		}
+
+		
+		public static class Post extends Block {
+			public static final Event<Listener> EVENT = EventFactory.createArrayBacked(Listener.class, post -> {}, listeners -> event -> {
+				for (Listener listener : listeners) {
+					listener.handle(event);
+				}
+			});
+
+			private final PoseStack poseStack;
+			private final BakedGeoModel model;
+			private final MultiBufferSource bufferSource;
+			private final float partialTick;
+			private final int packedLight;
+
+			public Post(GeoBlockRenderer<?> renderer, PoseStack poseStack, BakedGeoModel model, MultiBufferSource bufferSource, float partialTick, int packedLight) {
+				super(renderer);
+
+				this.poseStack = poseStack;
+				this.model = model;
+				this.bufferSource = bufferSource;
+				this.partialTick = partialTick;
+				this.packedLight = packedLight;
+			}
+
+			public PoseStack getPoseStack() {
+				return this.poseStack;
+			}
+
+			public BakedGeoModel getModel() {
+				return this.model;
+			}
+
+			public MultiBufferSource getBufferSource() {
+				return this.bufferSource;
+			}
+
+			public float getPartialTick() {
+				return this.partialTick;
+			}
+
+			public int getPackedLight() {
+				return this.packedLight;
+			}
+
+			
+			@FunctionalInterface
+			public interface Listener {
+				void handle(Post event);
+			}
+		}
+
+		
+		public static class CompileRenderLayers extends Block {
+			public static final Event<Listener> EVENT = EventFactory.createArrayBacked(Listener.class, post -> {}, listeners -> event -> {
+				for (Listener listener : listeners) {
+					listener.handle(event);
+				}
+			});
+
+			public CompileRenderLayers(GeoBlockRenderer<?> renderer) {
+				super(renderer);
+			}
+
+			
+			public void addLayer(GeoRenderLayer renderLayer) {
+				getRenderer().addRenderLayer(renderLayer);
+			}
+
+			
+			@FunctionalInterface
+			public interface Listener {
+				void handle(CompileRenderLayers event);
+			}
+		}
+	}
+
+	
+	abstract class Entity implements GeoRenderEvent {
+		private final GeoEntityRenderer<?> renderer;
+
+		public Entity(GeoEntityRenderer<?> renderer) {
+			this.renderer = renderer;
+		}
+
+		
+		@Override
+		public GeoEntityRenderer<?> getRenderer() {
+			return this.renderer;
+		}
+
+		
+		public net.minecraft.world.entity.Entity getEntity() {
+			return this.renderer.getAnimatable();
+		}
+
+		
+		public static class Pre extends Entity {
+			public static final Event<Listener> EVENT = EventFactory.createArrayBacked(Listener.class, event -> true, listeners -> event -> {
+				for (Listener listener : listeners) {
+					if (!listener.handle(event))
+						return false;
+				}
+
+				return true;
+			});
+
+			private final PoseStack poseStack;
+			private final BakedGeoModel model;
+			private final MultiBufferSource bufferSource;
+			private final float partialTick;
+			private final int packedLight;
+
+			public Pre(GeoEntityRenderer<?> renderer, PoseStack poseStack, BakedGeoModel model, MultiBufferSource bufferSource, float partialTick, int packedLight) {
+				super(renderer);
+
+				this.poseStack = poseStack;
+				this.model = model;
+				this.bufferSource = bufferSource;
+				this.partialTick = partialTick;
+				this.packedLight = packedLight;
+			}
+
+			public PoseStack getPoseStack() {
+				return this.poseStack;
+			}
+
+			public BakedGeoModel getModel() {
+				return this.model;
+			}
+
+			public MultiBufferSource getBufferSource() {
+				return this.bufferSource;
+			}
+
+			public float getPartialTick() {
+				return this.partialTick;
+			}
+
+			public int getPackedLight() {
+				return this.packedLight;
+			}
+
+			
+			@FunctionalInterface
+			public interface Listener {
+				boolean handle(Pre event);
+			}
+		}
+
+		
+		public static class Post extends Entity {
+			public static final Event<Listener> EVENT = EventFactory.createArrayBacked(Listener.class, post -> {}, listeners -> event -> {
+				for (Listener listener : listeners) {
+					listener.handle(event);
+				}
+			});
+
+			private final PoseStack poseStack;
+			private final BakedGeoModel model;
+			private final MultiBufferSource bufferSource;
+			private final float partialTick;
+			private final int packedLight;
+
+			public Post(GeoEntityRenderer<?> renderer, PoseStack poseStack, BakedGeoModel model, MultiBufferSource bufferSource, float partialTick, int packedLight) {
+				super(renderer);
+
+				this.poseStack = poseStack;
+				this.model = model;
+				this.bufferSource = bufferSource;
+				this.partialTick = partialTick;
+				this.packedLight = packedLight;
+			}
+
+			public PoseStack getPoseStack() {
+				return this.poseStack;
+			}
+
+			public BakedGeoModel getModel() {
+				return this.model;
+			}
+
+			public MultiBufferSource getBufferSource() {
+				return this.bufferSource;
+			}
+
+			public float getPartialTick() {
+				return this.partialTick;
+			}
+
+			public int getPackedLight() {
+				return this.packedLight;
+			}
+
+			
+			@FunctionalInterface
+			public interface Listener {
+				void handle(Post event);
+			}
+		}
+
+		
+		public static class CompileRenderLayers extends Entity {
+			public static final Event<Listener> EVENT = EventFactory.createArrayBacked(Listener.class, post -> {}, listeners -> event -> {
+				for (Listener listener : listeners) {
+					listener.handle(event);
+				}
+			});
+
+			public CompileRenderLayers(GeoEntityRenderer<?> renderer) {
+				super(renderer);
+			}
+
+			
+			public void addLayer(GeoRenderLayer renderLayer) {
+				getRenderer().addRenderLayer(renderLayer);
+			}
+
+			
+			@FunctionalInterface
+			public interface Listener {
+				void handle(CompileRenderLayers event);
+			}
+		}
+	}
+
+	
+	abstract class Item implements GeoRenderEvent {
+		private final GeoItemRenderer<?> renderer;
+
+		public Item(GeoItemRenderer<?> renderer) {
+			this.renderer = renderer;
+		}
+
+		
+		@Override
+		public GeoItemRenderer<?> getRenderer() {
+			return this.renderer;
+		}
+
+		
+		public ItemStack getItemStack() {
+			return getRenderer().getCurrentItemStack();
+		}
+
+		
+		public static class Pre extends Item {
+			public static final Event<Listener> EVENT = EventFactory.createArrayBacked(Listener.class, event -> true, listeners -> event -> {
+				for (Listener listener : listeners) {
+					if (!listener.handle(event))
+						return false;
+				}
+
+				return true;
+			});
+
+			private final PoseStack poseStack;
+			private final BakedGeoModel model;
+			private final MultiBufferSource bufferSource;
+			private final float partialTick;
+			private final int packedLight;
+
+			public Pre(GeoItemRenderer<?> renderer, PoseStack poseStack, BakedGeoModel model, MultiBufferSource bufferSource, float partialTick, int packedLight) {
+				super(renderer);
+
+				this.poseStack = poseStack;
+				this.model = model;
+				this.bufferSource = bufferSource;
+				this.partialTick = partialTick;
+				this.packedLight = packedLight;
+			}
+
+			public PoseStack getPoseStack() {
+				return this.poseStack;
+			}
+
+			public BakedGeoModel getModel() {
+				return this.model;
+			}
+
+			public MultiBufferSource getBufferSource() {
+				return this.bufferSource;
+			}
+
+			public float getPartialTick() {
+				return this.partialTick;
+			}
+
+			public int getPackedLight() {
+				return this.packedLight;
+			}
+
+			
+			@FunctionalInterface
+			public interface Listener {
+				boolean handle(Pre event);
+			}
+		}
+
+		
+		public static class Post extends Item {
+			public static final Event<Listener> EVENT = EventFactory.createArrayBacked(Listener.class, post -> {}, listeners -> event -> {
+				for (Listener listener : listeners) {
+					listener.handle(event);
+				}
+			});
+
+			private final PoseStack poseStack;
+			private final BakedGeoModel model;
+			private final MultiBufferSource bufferSource;
+			private final float partialTick;
+			private final int packedLight;
+
+			public Post(GeoItemRenderer<?> renderer, PoseStack poseStack, BakedGeoModel model, MultiBufferSource bufferSource, float partialTick, int packedLight) {
+				super(renderer);
+
+				this.poseStack = poseStack;
+				this.model = model;
+				this.bufferSource = bufferSource;
+				this.partialTick = partialTick;
+				this.packedLight = packedLight;
+			}
+
+			public PoseStack getPoseStack() {
+				return this.poseStack;
+			}
+
+			public BakedGeoModel getModel() {
+				return this.model;
+			}
+
+			public MultiBufferSource getBufferSource() {
+				return this.bufferSource;
+			}
+
+			public float getPartialTick() {
+				return this.partialTick;
+			}
+
+			public int getPackedLight() {
+				return this.packedLight;
+			}
+
+			
+			@FunctionalInterface
+			public interface Listener {
+				void handle(Post event);
+			}
+		}
+
+		
+		public static class CompileRenderLayers extends Item {
+			public static final Event<Listener> EVENT = EventFactory.createArrayBacked(Listener.class, post -> {}, listeners -> event -> {
+				for (Listener listener : listeners) {
+					listener.handle(event);
+				}
+			});
+
+			public CompileRenderLayers(GeoItemRenderer<?> renderer) {
+				super(renderer);
+			}
+
+			
+			public void addLayer(GeoRenderLayer renderLayer) {
+				getRenderer().addRenderLayer(renderLayer);
+			}
+
+			
+			@FunctionalInterface
+			public interface Listener {
+				void handle(CompileRenderLayers event);
+			}
+		}
+	}
+
+	
+	abstract class Object implements GeoRenderEvent {
+		private final GeoObjectRenderer<?> renderer;
+
+		public Object(GeoObjectRenderer<?> renderer) {
+			this.renderer = renderer;
+		}
+
+		
+		@Override
+		public GeoObjectRenderer<?> getRenderer() {
+			return this.renderer;
+		}
+
+		
+		public static class Pre extends Object {
+			public static final Event<Listener> EVENT = EventFactory.createArrayBacked(Listener.class, event -> true, listeners -> event -> {
+				for (Listener listener : listeners) {
+					if (!listener.handle(event))
+						return false;
+				}
+
+				return true;
+			});
+
+			private final PoseStack poseStack;
+			private final BakedGeoModel model;
+			private final MultiBufferSource bufferSource;
+			private final float partialTick;
+			private final int packedLight;
+
+			public Pre(GeoObjectRenderer<?> renderer, PoseStack poseStack, BakedGeoModel model, MultiBufferSource bufferSource, float partialTick, int packedLight) {
+				super(renderer);
+
+				this.poseStack = poseStack;
+				this.model = model;
+				this.bufferSource = bufferSource;
+				this.partialTick = partialTick;
+				this.packedLight = packedLight;
+			}
+
+			public PoseStack getPoseStack() {
+				return this.poseStack;
+			}
+
+			public BakedGeoModel getModel() {
+				return this.model;
+			}
+
+			public MultiBufferSource getBufferSource() {
+				return this.bufferSource;
+			}
+
+			public float getPartialTick() {
+				return this.partialTick;
+			}
+
+			public int getPackedLight() {
+				return this.packedLight;
+			}
+
+			
+			@FunctionalInterface
+			public interface Listener {
+				boolean handle(Pre event);
+			}
+		}
+
+		
+		public static class Post extends Object {
+			public static final Event<Listener> EVENT = EventFactory.createArrayBacked(Listener.class, post -> {}, listeners -> event -> {
+				for (Listener listener : listeners) {
+					listener.handle(event);
+				}
+			});
+
+			private final PoseStack poseStack;
+			private final BakedGeoModel model;
+			private final MultiBufferSource bufferSource;
+			private final float partialTick;
+			private final int packedLight;
+
+			public Post(GeoObjectRenderer<?> renderer, PoseStack poseStack, BakedGeoModel model, MultiBufferSource bufferSource, float partialTick, int packedLight) {
+				super(renderer);
+
+				this.poseStack = poseStack;
+				this.model = model;
+				this.bufferSource = bufferSource;
+				this.partialTick = partialTick;
+				this.packedLight = packedLight;
+			}
+
+			public PoseStack getPoseStack() {
+				return this.poseStack;
+			}
+
+			public BakedGeoModel getModel() {
+				return this.model;
+			}
+
+			public MultiBufferSource getBufferSource() {
+				return this.bufferSource;
+			}
+
+			public float getPartialTick() {
+				return this.partialTick;
+			}
+
+			public int getPackedLight() {
+				return this.packedLight;
+			}
+
+			
+			@FunctionalInterface
+			public interface Listener {
+				void handle(Post event);
+			}
+		}
+
+		
+		public static class CompileRenderLayers extends Object {
+			public static final Event<Listener> EVENT = EventFactory.createArrayBacked(Listener.class, post -> {}, listeners -> event -> {
+				for (Listener listener : listeners) {
+					listener.handle(event);
+				}
+			});
+
+			public CompileRenderLayers(GeoObjectRenderer<?> renderer) {
+				super(renderer);
+			}
+
+			
+			public void addLayer(GeoRenderLayer renderLayer) {
+				getRenderer().addRenderLayer(renderLayer);
+			}
+
+			
+			@FunctionalInterface
+			public interface Listener {
+				void handle(CompileRenderLayers event);
+			}
+		}
+	}
+
+	
+	abstract class ReplacedEntity implements GeoRenderEvent {
+		private final GeoReplacedEntityRenderer<?, ?> renderer;
+
+		public ReplacedEntity(GeoReplacedEntityRenderer<?, ?> renderer) {
+			this.renderer = renderer;
+		}
+
+		
+		@Override
+		public GeoReplacedEntityRenderer<?, ?> getRenderer() {
+			return this.renderer;
+		}
+
+		
+		public net.minecraft.world.entity.Entity getReplacedEntity() {
+			return getRenderer().getCurrentEntity();
+		}
+
+		
+		public static class Pre extends ReplacedEntity {
+			public static final Event<Listener> EVENT = EventFactory.createArrayBacked(Listener.class, event -> true, listeners -> event -> {
+				for (Listener listener : listeners) {
+					if (!listener.handle(event))
+						return false;
+				}
+
+				return true;
+			});
+
+			private final PoseStack poseStack;
+			private final BakedGeoModel model;
+			private final MultiBufferSource bufferSource;
+			private final float partialTick;
+			private final int packedLight;
+
+			public Pre(GeoReplacedEntityRenderer<?, ?> renderer, PoseStack poseStack, BakedGeoModel model, MultiBufferSource bufferSource, float partialTick, int packedLight) {
+				super(renderer);
+
+				this.poseStack = poseStack;
+				this.model = model;
+				this.bufferSource = bufferSource;
+				this.partialTick = partialTick;
+				this.packedLight = packedLight;
+			}
+
+			public PoseStack getPoseStack() {
+				return this.poseStack;
+			}
+
+			public BakedGeoModel getModel() {
+				return this.model;
+			}
+
+			public MultiBufferSource getBufferSource() {
+				return this.bufferSource;
+			}
+
+			public float getPartialTick() {
+				return this.partialTick;
+			}
+
+			public int getPackedLight() {
+				return this.packedLight;
+			}
+
+			
+			@FunctionalInterface
+			public interface Listener {
+				boolean handle(Pre event);
+			}
+		}
+
+		
+		public static class Post extends ReplacedEntity {
+			public static final Event<Listener> EVENT = EventFactory.createArrayBacked(Listener.class, post -> {}, listeners -> event -> {
+				for (Listener listener : listeners) {
+					listener.handle(event);
+				}
+			});
+
+			private final PoseStack poseStack;
+			private final BakedGeoModel model;
+			private final MultiBufferSource bufferSource;
+			private final float partialTick;
+			private final int packedLight;
+
+			public Post(GeoReplacedEntityRenderer<?, ?> renderer, PoseStack poseStack, BakedGeoModel model, MultiBufferSource bufferSource, float partialTick, int packedLight) {
+				super(renderer);
+
+				this.poseStack = poseStack;
+				this.model = model;
+				this.bufferSource = bufferSource;
+				this.partialTick = partialTick;
+				this.packedLight = packedLight;
+			}
+
+			public PoseStack getPoseStack() {
+				return this.poseStack;
+			}
+
+			public BakedGeoModel getModel() {
+				return this.model;
+			}
+
+			public MultiBufferSource getBufferSource() {
+				return this.bufferSource;
+			}
+
+			public float getPartialTick() {
+				return this.partialTick;
+			}
+
+			public int getPackedLight() {
+				return this.packedLight;
+			}
+
+			
+			@FunctionalInterface
+			public interface Listener {
+				void handle(Post event);
+			}
+		}
+
+		
+		public static class CompileRenderLayers extends ReplacedEntity {
+			public static final Event<Listener> EVENT = EventFactory.createArrayBacked(Listener.class, post -> {}, listeners -> event -> {
+				for (Listener listener : listeners) {
+					listener.handle(event);
+				}
+			});
+
+			public CompileRenderLayers(GeoReplacedEntityRenderer<?, ?> renderer) {
+				super(renderer);
+			}
+
+			
+			public void addLayer(GeoRenderLayer renderLayer) {
+				getRenderer().addRenderLayer(renderLayer);
+			}
+
+			
+			@FunctionalInterface
+			public interface Listener {
+				void handle(CompileRenderLayers event);
+			}
+		}
+	}
+}

@@ -13,9 +13,7 @@ import software.bluelib.BlueLibCommon;
 import software.bluelib.api.net.NetworkPacket;
 import software.bluelib.net.serverHandling.TestPacketHandler;
 
-/**
- * {@link TestPacketHandler}
- */
+
 public record TestPacket(boolean value) implements NetworkPacket<TestPacket> {
 
     public static final ResourceLocation ID = BlueLibCommon.Resource.resource("test_packet");
