@@ -15,16 +15,15 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
-import software.bluelib.loader.GeckoLibConstants;
+import software.bluelib.client.loader.cache.ResourceCache;
+import software.bluelib.client.loader.cache.model.BoneCache;
+import software.bluelib.client.loader.cache.model.ModelCache;
 import software.bluelib.loader.animatable.GeoAnimatable;
 import software.bluelib.loader.animatable.GeoReplacedEntity;
 import software.bluelib.loader.animation.AnimatableManager;
 import software.bluelib.loader.animation.Animation;
 import software.bluelib.loader.animation.AnimationProcessor;
 import software.bluelib.loader.animation.AnimationState;
-import software.bluelib.client.loader.cache.ResourceCache;
-import software.bluelib.client.loader.cache.model.ModelCache;
-import software.bluelib.client.loader.cache.model.BoneCache;
 import software.bluelib.loader.constant.DataTickets;
 import software.bluelib.loader.constant.dataticket.DataTicket;
 import software.bluelib.loader.loading.object.BakedAnimations;
@@ -74,9 +73,9 @@ public abstract class GeoModel<T extends GeoAnimatable> {
 
         if (model == null) {
             if (!location.getPath().contains("geo/"))
-                throw GeckoLibConstants.exception(location, "Invalid model resource path provided - GeckoLib models must be placed in assets/<modid>/geo/");
+                throw new RuntimeException("Invalid model resource path provided - GeckoLib models must be placed in assets/<modid>/geo/");
 
-            throw GeckoLibConstants.exception(location, "Unable to find model");
+            throw new RuntimeException("Unable to find model file: " + location);
         }
 
         if (model != this.currentModel) {
@@ -110,9 +109,9 @@ public abstract class GeoModel<T extends GeoAnimatable> {
 
         if (bakedAnimations == null) {
             if (!location.getPath().contains("animations/"))
-                throw GeckoLibConstants.exception(location, "Invalid animation resource path provided - GeckoLib animations must be placed in assets/<modid>/animations/");
+                throw new RuntimeException("Invalid animation resource path provided - GeckoLib animations must be placed in assets/<modid>/animations/");
 
-            throw GeckoLibConstants.exception(location, "Unable to find animation file.");
+            throw new RuntimeException("Unable to find animation file: " + location);
         }
 
         return null;

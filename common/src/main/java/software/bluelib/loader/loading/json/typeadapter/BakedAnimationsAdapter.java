@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentMap;
 import net.minecraft.util.GsonHelper;
 import org.apache.commons.lang3.math.NumberUtils;
-import software.bluelib.loader.GeckoLibConstants;
+import software.bluelib.api.utils.JsonUtils;
 import software.bluelib.loader.animation.Animation;
 import software.bluelib.loader.animation.EasingType;
 import software.bluelib.loader.animation.keyframe.BoneAnimation;
@@ -28,7 +28,6 @@ import software.bluelib.loader.loading.math.MathValue;
 import software.bluelib.loader.loading.math.value.Constant;
 import software.bluelib.loader.loading.object.BakedAnimations;
 import software.bluelib.loader.util.CompoundException;
-import software.bluelib.api.utils.JsonUtils;
 
 public class BakedAnimationsAdapter implements JsonDeserializer<BakedAnimations> {
 
@@ -44,9 +43,9 @@ public class BakedAnimationsAdapter implements JsonDeserializer<BakedAnimations>
                 animations.put(entry.getKey(), bakeAnimation(entry.getKey(), entry.getValue().getAsJsonObject(), context));
             } catch (Exception ex) {
                 if (ex instanceof CompoundException compoundEx) {
-                    GeckoLibConstants.LOGGER.error(compoundEx.withMessage("Unable to parse animation: " + entry.getKey()).getLocalizedMessage());
+                    //GeckoLibConstants.LOGGER.error(compoundEx.withMessage("Unable to parse animation: " + entry.getKey()).getLocalizedMessage());
                 } else {
-                    GeckoLibConstants.LOGGER.error("Unable to parse animation: " + entry.getKey());
+                    //GeckoLibConstants.LOGGER.error("Unable to parse animation: " + entry.getKey());
                 }
 
                 ex.printStackTrace();

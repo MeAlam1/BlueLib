@@ -21,9 +21,9 @@ import net.neoforged.fml.loading.FMLLoader;
 import net.neoforged.fml.loading.FMLPaths;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import net.neoforged.neoforgespi.language.IModInfo;
+import software.bluelib.BlueLib;
 import software.bluelib.BlueLibConstants;
 import software.bluelib.api.event.mod.ModMeta;
-import software.bluelib.loader.GeckoLib;
 
 public class NeoForgePlatformHelper implements IPlatformHelper {
 
@@ -75,7 +75,7 @@ public class NeoForgePlatformHelper implements IPlatformHelper {
 
     @Override
     public <T> Supplier<DataComponentType<T>> registerDataComponent(String pId, UnaryOperator<DataComponentType.Builder<T>> pBuilder) {
-        return GeckoLib.DATA_COMPONENTS_REGISTER.registerComponentType(pId, pBuilder);
+        return BlueLib.DATA_COMPONENTS_REGISTER.registerComponentType(pId, pBuilder);
     }
 
     @Override

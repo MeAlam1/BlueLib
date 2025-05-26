@@ -20,10 +20,8 @@ import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 import java.util.regex.Pattern;
 import net.minecraft.Util;
-import org.apache.logging.log4j.Level;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import software.bluelib.loader.GeckoLibConstants;
 import software.bluelib.loader.loading.math.function.MathFunction;
 import software.bluelib.loader.loading.math.function.generic.*;
 import software.bluelib.loader.loading.math.function.limit.ClampFunction;
@@ -85,10 +83,10 @@ public class MathParser {
     }
 
     public static void registerFunction(String name, MathFunction.Factory<?> factory) {
-        if (FUNCTION_FACTORIES.put(name, factory) != null)
-            GeckoLibConstants.LOGGER.log(Level.WARN, "Duplicate registration of MathFunction: '" + name + "'. Ignore if intentional override");
+        //if (FUNCTION_FACTORIES.put(name, factory) != null)
+        //GeckoLibConstants.LOGGER.log(Level.WARN, "Duplicate registration of MathFunction: '" + name + "'. Ignore if intentional override");
 
-        GeckoLibConstants.LOGGER.log(Level.DEBUG, "Registered MathFunction '" + name + "'");
+        //GeckoLibConstants.LOGGER.log(Level.DEBUG, "Registered MathFunction '" + name + "'");
     }
 
     @Nullable

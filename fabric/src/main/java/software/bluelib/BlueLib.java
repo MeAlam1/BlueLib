@@ -19,6 +19,7 @@ import software.bluelib.event.ChatHandler;
 import software.bluelib.event.CommandHandler;
 import software.bluelib.event.ReloadHandler;
 import software.bluelib.example.event.VariantProvider;
+import software.bluelib.loader.service.GeckoLibNetworking;
 import software.bluelib.net.FabricNetworkManager;
 
 public class BlueLib implements ModInitializer {
@@ -27,6 +28,10 @@ public class BlueLib implements ModInitializer {
 
     @Override
     public void onInitialize() {
+
+        // TODO: Remove this 
+        GeckoLibNetworking.init();
+        
         ReloadHandler.registerProvider(new VariantProvider());
         BlueLibCommon.doRegistration();
         FabricNetworkManager.registerMessages();

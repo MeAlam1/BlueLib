@@ -1,45 +1,50 @@
+/*
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
+ */
 package software.bluelib.client.loader.json.model.deserialize;
 
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import java.util.List;
 import net.minecraft.util.GsonHelper;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.utils.JsonUtils;
 
-import java.util.List;
-
 public record Cube(
-		List<Float> origin,
-		List<Float> size,
-		List<Float> pivot,
-		List<Float> rotation,
-		UVUnion uvUnion,
-		@Nullable Float inflate,
-		@Nullable Boolean mirror
-) {
-	public static JsonDeserializer<Cube> deserializer() throws JsonParseException {
-		return (json, type, context) -> {
-			JsonObject obj = json.getAsJsonObject();
+        List<Float> origin,
+        List<Float> size,
+        List<Float> pivot,
+        List<Float> rotation,
+        UVUnion uvUnion,
+        @Nullable Float inflate,
+        @Nullable Boolean mirror) {
 
-			Float inflate = JsonUtils.getOptionalFloat(obj, "inflate");
-			Boolean mirror = JsonUtils.getOptionalBoolean(obj, "mirror");
+    public static JsonDeserializer<Cube> deserializer() throws JsonParseException {
+        return (json, type, context) -> {
+            JsonObject obj = json.getAsJsonObject();
 
-			List<Float> origin = JsonUtils.jsonArrayToFloatList(GsonHelper.getAsJsonArray(obj, "origin", null));
-			List<Float> size = JsonUtils.jsonArrayToFloatList(GsonHelper.getAsJsonArray(obj, "size", null));
-			List<Float> pivot = JsonUtils.jsonArrayToFloatList(GsonHelper.getAsJsonArray(obj, "pivot", null));
-			List<Float> rotation = JsonUtils.jsonArrayToFloatList(GsonHelper.getAsJsonArray(obj, "rotation", null));
-			UVUnion uvUnion = GsonHelper.getAsObject(obj, "uv", null, context, UVUnion.class);
+            Float inflate = JsonUtils.getOptionalFloat(obj, "inflate");
+            Boolean mirror = JsonUtils.getOptionalBoolean(obj, "mirror");
 
-			return new Cube(
-					origin,
-					size,
-					pivot,
-					rotation,
-					uvUnion,
-					inflate,
-					mirror
-			);
-		};
-	}
+            List<Float> origin = JsonUtils.jsonArrayToFloatList(GsonHelper.getAsJsonArray(obj, "origin", null));
+            List<Float> size = JsonUtils.jsonArrayToFloatList(GsonHelper.getAsJsonArray(obj, "size", null));
+            List<Float> pivot = JsonUtils.jsonArrayToFloatList(GsonHelper.getAsJsonArray(obj, "pivot", null));
+            List<Float> rotation = JsonUtils.jsonArrayToFloatList(GsonHelper.getAsJsonArray(obj, "rotation", null));
+            UVUnion uvUnion = GsonHelper.getAsObject(obj, "uv", null, context, UVUnion.class);
+
+            return new Cube(
+                    origin,
+                    size,
+                    pivot,
+                    rotation,
+                    uvUnion,
+                    inflate,
+                    mirror);
+        };
+    }
 }

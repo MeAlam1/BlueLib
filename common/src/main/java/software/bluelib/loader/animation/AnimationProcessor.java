@@ -13,14 +13,12 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
 import net.minecraft.util.Mth;
-import org.apache.logging.log4j.Level;
-import software.bluelib.loader.GeckoLibConstants;
+import software.bluelib.client.loader.cache.model.BoneCache;
+import software.bluelib.client.loader.cache.model.ModelCache;
 import software.bluelib.loader.animatable.GeoAnimatable;
 import software.bluelib.loader.animation.keyframe.AnimationPoint;
 import software.bluelib.loader.animation.keyframe.BoneAnimationQueue;
 import software.bluelib.loader.animation.state.BoneSnapshot;
-import software.bluelib.client.loader.cache.model.ModelCache;
-import software.bluelib.client.loader.cache.model.BoneCache;
 import software.bluelib.loader.loading.math.MolangQueries;
 import software.bluelib.loader.model.GeoModel;
 
@@ -48,7 +46,7 @@ public class AnimationProcessor<T extends GeoAnimatable> {
                 try {
                     animation = this.model.getAnimation(animatable, stage.animationName());
                 } catch (RuntimeException ex) {
-                    GeckoLibConstants.LOGGER.log(Level.ERROR, "Unable to find animation: " + stage.animationName() + " for " + animatable.getClass().getSimpleName());
+                    //GeckoLibConstants.LOGGER.log(Level.ERROR, "Unable to find animation: " + stage.animationName() + " for " + animatable.getClass().getSimpleName());
 
                     error = true;
                     ex.printStackTrace();

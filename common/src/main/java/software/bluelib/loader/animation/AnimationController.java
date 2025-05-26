@@ -12,9 +12,8 @@ import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import java.util.*;
 import java.util.function.Function;
 import net.minecraft.core.Direction.Axis;
-import org.apache.logging.log4j.Level;
 import org.jetbrains.annotations.Nullable;
-import software.bluelib.loader.GeckoLibConstants;
+import software.bluelib.client.loader.cache.model.BoneCache;
 import software.bluelib.loader.animatable.GeoAnimatable;
 import software.bluelib.loader.animation.keyframe.*;
 import software.bluelib.loader.animation.keyframe.event.CustomInstructionKeyframeEvent;
@@ -25,7 +24,6 @@ import software.bluelib.loader.animation.keyframe.event.data.KeyFrameData;
 import software.bluelib.loader.animation.keyframe.event.data.ParticleKeyframeData;
 import software.bluelib.loader.animation.keyframe.event.data.SoundKeyframeData;
 import software.bluelib.loader.animation.state.BoneSnapshot;
-import software.bluelib.client.loader.cache.model.BoneCache;
 import software.bluelib.loader.loading.math.MathParser;
 import software.bluelib.loader.loading.math.MathValue;
 import software.bluelib.loader.loading.math.MolangQueries;
@@ -435,7 +433,7 @@ public class AnimationController<T extends GeoAnimatable> {
         for (SoundKeyframeData keyframeData : this.currentAnimation.animation().keyFrames().sounds()) {
             if (adjustedTick >= keyframeData.getStartTick() && this.executedKeyFrames.add(keyframeData)) {
                 if (this.soundKeyframeHandler == null) {
-                    GeckoLibConstants.LOGGER.log(Level.WARN, "Sound Keyframe found for " + this.animatable.getClass().getSimpleName() + " -> " + getName() + ", but no keyframe handler registered");
+                    //GeckoLibConstants.LOGGER.log(Level.WARN, "Sound Keyframe found for " + this.animatable.getClass().getSimpleName() + " -> " + getName() + ", but no keyframe handler registered");
 
                     break;
                 }
@@ -447,7 +445,7 @@ public class AnimationController<T extends GeoAnimatable> {
         for (ParticleKeyframeData keyframeData : this.currentAnimation.animation().keyFrames().particles()) {
             if (adjustedTick >= keyframeData.getStartTick() && this.executedKeyFrames.add(keyframeData)) {
                 if (this.particleKeyframeHandler == null) {
-                    GeckoLibConstants.LOGGER.log(Level.WARN, "Particle Keyframe found for " + this.animatable.getClass().getSimpleName() + " -> " + getName() + ", but no keyframe handler registered");
+                    //GeckoLibConstants.LOGGER.log(Level.WARN, "Particle Keyframe found for " + this.animatable.getClass().getSimpleName() + " -> " + getName() + ", but no keyframe handler registered");
 
                     break;
                 }
@@ -459,7 +457,7 @@ public class AnimationController<T extends GeoAnimatable> {
         for (CustomInstructionKeyframeData keyframeData : this.currentAnimation.animation().keyFrames().customInstructions()) {
             if (adjustedTick >= keyframeData.getStartTick() && this.executedKeyFrames.add(keyframeData)) {
                 if (this.customKeyframeHandler == null) {
-                    GeckoLibConstants.LOGGER.log(Level.WARN, "Custom Instruction Keyframe found for " + this.animatable.getClass().getSimpleName() + " -> " + getName() + ", but no keyframe handler registered");
+                    //GeckoLibConstants.LOGGER.log(Level.WARN, "Custom Instruction Keyframe found for " + this.animatable.getClass().getSimpleName() + " -> " + getName() + ", but no keyframe handler registered");
 
                     break;
                 }

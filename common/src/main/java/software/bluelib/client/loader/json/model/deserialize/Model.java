@@ -11,26 +11,23 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import java.util.List;
 import net.minecraft.util.GsonHelper;
-import software.bluelib.client.loader.json.model.ModelFormatVersion;
 import software.bluelib.api.utils.JsonUtils;
 
-import java.util.List;
-
 public record Model(
-        ModelFormatVersion modelFormatVersion, 
-        List<ModelGeometry> modelGeometry
-) {
+        String modelFormatVersion,
+        List<ModelGeometry> modelGeometry) {
+
     public static JsonDeserializer<Model> deserializer() throws JsonParseException {
         return (json, type, context) -> {
             JsonObject obj = json.getAsJsonObject();
-            ModelFormatVersion modelFormatVersion = context.deserialize(obj.get("format_version"), ModelFormatVersion.class);
+            String formatVersion = obj.get("format_version").getAsString();
             List<ModelGeometry> modelGeometry = JsonUtils.jsonArrayToObjectList(GsonHelper.getAsJsonArray(obj, "minecraft:geometry", new JsonArray(0)), context, ModelGeometry.class);
 
             return new Model(
-                    modelFormatVersion, 
-                    modelGeometry
-            );
+                    formatVersion,
+                    modelGeometry);
         };
     }
 }

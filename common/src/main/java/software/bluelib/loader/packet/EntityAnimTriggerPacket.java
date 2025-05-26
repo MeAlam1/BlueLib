@@ -15,7 +15,7 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.Nullable;
-import software.bluelib.loader.GeckoLibConstants;
+import software.bluelib.BlueLibCommon;
 import software.bluelib.loader.animatable.GeoEntity;
 import software.bluelib.loader.animatable.GeoReplacedEntity;
 import software.bluelib.loader.util.ClientUtil;
@@ -23,7 +23,7 @@ import software.bluelib.loader.util.RenderUtil;
 
 public record EntityAnimTriggerPacket(int entityId, boolean isReplacedEntity, String controllerName, String animName) implements MultiloaderPacket {
 
-    public static final Type<EntityAnimTriggerPacket> TYPE = new Type<>(GeckoLibConstants.id("entity_anim_trigger"));
+    public static final Type<EntityAnimTriggerPacket> TYPE = new Type<>(BlueLibCommon.Resource.resource("entity_anim_trigger"));
     public static final StreamCodec<FriendlyByteBuf, EntityAnimTriggerPacket> CODEC = StreamCodec.composite(
             ByteBufCodecs.VAR_INT, EntityAnimTriggerPacket::entityId,
             ByteBufCodecs.BOOL, EntityAnimTriggerPacket::isReplacedEntity,

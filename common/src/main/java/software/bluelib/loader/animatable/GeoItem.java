@@ -15,7 +15,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
-import software.bluelib.loader.GeckoLibConstants;
+import software.bluelib.BlueLibConstants;
 import software.bluelib.loader.animatable.instance.AnimatableInstanceCache;
 import software.bluelib.loader.animatable.instance.SingletonAnimatableInstanceCache;
 import software.bluelib.loader.animation.AnimatableManager;
@@ -31,7 +31,7 @@ public interface GeoItem extends SingletonGeoAnimatable {
     }
 
     static long getId(ItemStack stack) {
-        return Optional.ofNullable(stack.getComponentsPatch().get(GeckoLibConstants.STACK_ANIMATABLE_ID_COMPONENT.get()))
+        return Optional.ofNullable(stack.getComponentsPatch().get(BlueLibConstants.STACK_ANIMATABLE_ID_COMPONENT.get()))
                 .filter(Optional::isPresent)
                 .<Long>map(Optional::get)
                 .orElse(Long.MAX_VALUE);
@@ -41,10 +41,10 @@ public interface GeoItem extends SingletonGeoAnimatable {
         if (!(stack.getComponents() instanceof PatchedDataComponentMap components))
             return Long.MAX_VALUE;
 
-        Long id = components.get(GeckoLibConstants.STACK_ANIMATABLE_ID_COMPONENT.get());
+        Long id = components.get(BlueLibConstants.STACK_ANIMATABLE_ID_COMPONENT.get());
 
         if (id == null)
-            components.set(GeckoLibConstants.STACK_ANIMATABLE_ID_COMPONENT.get(), id = AnimatableIdCache.getFreeId(level));
+            components.set(BlueLibConstants.STACK_ANIMATABLE_ID_COMPONENT.get(), id = AnimatableIdCache.getFreeId(level));
 
         return id;
     }

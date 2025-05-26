@@ -12,7 +12,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
-import software.bluelib.loader.GeckoLibConstants;
 import software.bluelib.loader.GeckoLibServices;
 import software.bluelib.loader.animation.AnimatableManager;
 import software.bluelib.loader.constant.dataticket.SerializableDataTicket;
@@ -32,7 +31,7 @@ public interface GeoBlockEntity extends GeoAnimatable {
         Level level = blockEntity.getLevel();
 
         if (level == null) {
-            GeckoLibConstants.LOGGER.error("Attempting to set animation data for BlockEntity too early! Must wait until after the BlockEntity has been set in the world. (" + blockEntity.getClass().toString() + ")");
+            //GeckoLibConstants.LOGGER.error("Attempting to set animation data for BlockEntity too early! Must wait until after the BlockEntity has been set in the world. (" + blockEntity.getClass().toString() + ")");
 
             return;
         }
@@ -50,7 +49,7 @@ public interface GeoBlockEntity extends GeoAnimatable {
         Level level = blockEntity.getLevel();
 
         if (level == null) {
-            GeckoLibConstants.LOGGER.error("Attempting to trigger an animation for a BlockEntity too early! Must wait until after the BlockEntity has been set in the world. (" + blockEntity.getClass().toString() + ")");
+            //GeckoLibConstants.LOGGER.error("Attempting to trigger an animation for a BlockEntity too early! Must wait until after the BlockEntity has been set in the world. (" + blockEntity.getClass().toString() + ")");
 
             return;
         }
@@ -72,7 +71,7 @@ public interface GeoBlockEntity extends GeoAnimatable {
         Level level = blockEntity.getLevel();
 
         if (level == null) {
-            GeckoLibConstants.LOGGER.error("Attempting to stop a triggered animation for a BlockEntity too early! Must wait until after the BlockEntity has been set in the world. (" + blockEntity.getClass().toString() + ")");
+            //GeckoLibConstants.LOGGER.error("Attempting to stop a triggered animation for a BlockEntity too early! Must wait until after the BlockEntity has been set in the world. (" + blockEntity.getClass().toString() + ")");
 
             return;
         }

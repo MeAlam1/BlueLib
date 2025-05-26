@@ -13,7 +13,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.Nullable;
-import software.bluelib.loader.GeckoLibConstants;
+import software.bluelib.BlueLibCommon;
 import software.bluelib.loader.animatable.GeoAnimatable;
 import software.bluelib.loader.animatable.SingletonGeoAnimatable;
 import software.bluelib.loader.constant.dataticket.SerializableDataTicket;
@@ -22,7 +22,7 @@ import software.bluelib.loader.util.GeckoLibUtil;
 
 public record SingletonDataSyncPacket<D>(String syncableId, long instanceId, SerializableDataTicket<D> dataTicket, D data) implements MultiloaderPacket {
 
-    public static final Type<SingletonDataSyncPacket<?>> TYPE = new Type<>(GeckoLibConstants.id("singleton_data_sync"));
+    public static final Type<SingletonDataSyncPacket<?>> TYPE = new Type<>(BlueLibCommon.Resource.resource("singleton_data_sync"));
     public static final StreamCodec<RegistryFriendlyByteBuf, SingletonDataSyncPacket<?>> CODEC = StreamCodec.of((buf, packet) -> {
         SerializableDataTicket.STREAM_CODEC.encode(buf, packet.dataTicket);
         buf.writeUtf(packet.syncableId);

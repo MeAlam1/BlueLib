@@ -15,13 +15,13 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.Nullable;
-import software.bluelib.loader.GeckoLibConstants;
+import software.bluelib.BlueLibCommon;
 import software.bluelib.loader.animatable.GeoBlockEntity;
 import software.bluelib.loader.util.ClientUtil;
 
 public record StopTriggeredBlockEntityAnimPacket(BlockPos pos, String controllerName, String animName) implements MultiloaderPacket {
 
-    public static final Type<StopTriggeredBlockEntityAnimPacket> TYPE = new Type<>(GeckoLibConstants.id("stop_triggered_blockentity_anim"));
+    public static final Type<StopTriggeredBlockEntityAnimPacket> TYPE = new Type<>(BlueLibCommon.Resource.resource("stop_triggered_blockentity_anim"));
     public static final StreamCodec<FriendlyByteBuf, StopTriggeredBlockEntityAnimPacket> CODEC = StreamCodec.composite(
             BlockPos.STREAM_CODEC, StopTriggeredBlockEntityAnimPacket::pos,
             ByteBufCodecs.STRING_UTF8, StopTriggeredBlockEntityAnimPacket::controllerName,

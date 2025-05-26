@@ -14,13 +14,13 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.Nullable;
-import software.bluelib.loader.GeckoLibConstants;
+import software.bluelib.BlueLibCommon;
 import software.bluelib.loader.animatable.GeoAnimatable;
 import software.bluelib.loader.util.GeckoLibUtil;
 
 public record SingletonAnimTriggerPacket(String syncableId, long instanceId, String controllerName, String animName) implements MultiloaderPacket {
 
-    public static final Type<SingletonAnimTriggerPacket> TYPE = new Type<>(GeckoLibConstants.id("singleton_anim_trigger"));
+    public static final Type<SingletonAnimTriggerPacket> TYPE = new Type<>(BlueLibCommon.Resource.resource("singleton_anim_trigger"));
     public static final StreamCodec<FriendlyByteBuf, SingletonAnimTriggerPacket> CODEC = StreamCodec.composite(
             ByteBufCodecs.STRING_UTF8, SingletonAnimTriggerPacket::syncableId,
             ByteBufCodecs.VAR_LONG, SingletonAnimTriggerPacket::instanceId,

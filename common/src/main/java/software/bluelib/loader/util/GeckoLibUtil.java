@@ -14,6 +14,7 @@ import java.util.Map;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import org.jetbrains.annotations.Nullable;
+import software.bluelib.client.loader.json.model.ModelCacheFactory;
 import software.bluelib.loader.animatable.GeoAnimatable;
 import software.bluelib.loader.animatable.instance.AnimatableInstanceCache;
 import software.bluelib.loader.animatable.instance.InstancedAnimatableInstanceCache;
@@ -22,7 +23,6 @@ import software.bluelib.loader.animation.Animation;
 import software.bluelib.loader.animation.EasingType;
 import software.bluelib.loader.constant.DataTickets;
 import software.bluelib.loader.constant.dataticket.SerializableDataTicket;
-import software.bluelib.client.loader.json.model.ModelCacheFactory;
 
 @SuppressWarnings("unused")
 public final class GeckoLibUtil {
@@ -65,7 +65,7 @@ public final class GeckoLibUtil {
         GeoAnimatable existing = SYNCED_ANIMATABLES.put(getSyncedSingletonAnimatableId(pAnimatable), pAnimatable);
 
         //if (existing == null)
-        //GeckoLibConstants.LOGGER.debug("Registered SyncedAnimatable for " + animatable.getClass());
+        ////GeckoLibConstants.LOGGER.debug("Registered SyncedAnimatable for " + animatable.getClass());
     }
 
     @Nullable
@@ -73,7 +73,7 @@ public final class GeckoLibUtil {
         GeoAnimatable animatable = SYNCED_ANIMATABLES.get(pSyncedAnimatableId);
 
         //if (animatable == null)
-        //GeckoLibConstants.LOGGER.error("Attempting to retrieve unregistered synced animatable! (" + syncedAnimatableId + ")");
+        ////GeckoLibConstants.LOGGER.error("Attempting to retrieve unregistered synced animatable! (" + syncedAnimatableId + ")");
 
         return animatable;
     }

@@ -9,7 +9,6 @@ package software.bluelib.loader.loading.math.value;
 
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.DoubleSupplier;
-import software.bluelib.loader.GeckoLibConstants;
 import software.bluelib.loader.loading.math.MathValue;
 
 public record Variable(String name, AtomicReference<DoubleSupplier> value) implements MathValue {
@@ -27,7 +26,7 @@ public record Variable(String name, AtomicReference<DoubleSupplier> value) imple
         try {
             return this.value.get().getAsDouble();
         } catch (Exception ex) {
-            GeckoLibConstants.LOGGER.error("Attempted to use Molang variable for incompatible animatable type (" + this.name + "). An animation json needs to be fixed", ex.getMessage());
+            //GeckoLibConstants.LOGGER.error("Attempted to use Molang variable for incompatible animatable type (" + this.name + "). An animation json needs to be fixed", ex.getMessage());
 
             return 0;
         }

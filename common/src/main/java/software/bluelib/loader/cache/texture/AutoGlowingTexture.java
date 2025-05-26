@@ -31,8 +31,6 @@ import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.BlueLibConstants;
-import software.bluelib.loader.GeckoLibConstants;
-import software.bluelib.loader.GeckoLibServices;
 import software.bluelib.loader.resource.GeoGlowingTextureMeta;
 
 public class AutoGlowingTexture extends GeoAbstractTexture {
@@ -123,7 +121,7 @@ public class AutoGlowingTexture extends GeoAbstractTexture {
                 }
             }
         } catch (IOException e) {
-            GeckoLibConstants.LOGGER.warn("Resource failed to open for glowlayer meta: {}", this.glowLayer, e);
+            //GeckoLibConstants.LOGGER.warn("Resource failed to open for glowlayer meta: {}", this.glowLayer, e);
         }
 
         NativeImage mask = glowImage;

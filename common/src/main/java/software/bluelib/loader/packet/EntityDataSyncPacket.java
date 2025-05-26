@@ -14,7 +14,7 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.Nullable;
-import software.bluelib.loader.GeckoLibConstants;
+import software.bluelib.BlueLibCommon;
 import software.bluelib.loader.animatable.GeoEntity;
 import software.bluelib.loader.animatable.GeoReplacedEntity;
 import software.bluelib.loader.constant.dataticket.SerializableDataTicket;
@@ -23,7 +23,7 @@ import software.bluelib.loader.util.RenderUtil;
 
 public record EntityDataSyncPacket<D>(int entityId, boolean isReplacedEntity, SerializableDataTicket<D> dataTicket, D data) implements MultiloaderPacket {
 
-    public static final Type<EntityDataSyncPacket<?>> TYPE = new Type<>(GeckoLibConstants.id("entity_data_sync"));
+    public static final Type<EntityDataSyncPacket<?>> TYPE = new Type<>(BlueLibCommon.Resource.resource("entity_data_sync"));
     public static final StreamCodec<RegistryFriendlyByteBuf, EntityDataSyncPacket<?>> CODEC = StreamCodec.of((buf, packet) -> {
         SerializableDataTicket.STREAM_CODEC.encode(buf, packet.dataTicket);
         buf.writeVarInt(packet.entityId);
