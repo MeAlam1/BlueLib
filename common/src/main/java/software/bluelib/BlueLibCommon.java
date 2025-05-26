@@ -49,7 +49,7 @@ public class BlueLibCommon {
     public static boolean isDeveloperMode() {
         boolean isDevMode = BlueLibConstants.PlatformHelper.PLATFORM.isDevelopmentEnvironment();
         if (isDevMode) {
-            BaseLogger.log(BaseLogLevel.INFO, Component.literal("Running in Developer mode."), true);
+            BaseLogger.log(true, BaseLogLevel.INFO, Component.literal("Running in Developer mode."));
         }
         return isDevMode;
     }

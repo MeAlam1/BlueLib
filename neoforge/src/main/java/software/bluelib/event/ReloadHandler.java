@@ -37,7 +37,7 @@ public class ReloadHandler {
         BlueLibConstants.SCHEDULER = new ScheduledThreadPoolExecutor(1);
         BlueLibConstants.server = pEvent.getServer();
         loadEntityVariants(pEvent.getServer().getResourceManager());
-        BaseLogger.log(BaseLogLevel.INFO, BlueLibCommon.Translation.log("variants.loaded"), true);
+        BaseLogger.log(true, BaseLogLevel.INFO, BlueLibCommon.Translation.log("variants.loaded"));
     }
 
     @SubscribeEvent
@@ -45,7 +45,7 @@ public class ReloadHandler {
         if (provider == null) return;
 
         loadEntityVariants(pEvent.getPlayerList().getServer().getResourceManager());
-        BaseLogger.log(BaseLogLevel.INFO, BlueLibCommon.Translation.log("variants.reloaded"), true);
+        BaseLogger.log(true, BaseLogLevel.INFO, BlueLibCommon.Translation.log("variants.reloaded"));
     }
 
     private static void loadEntityVariants(ResourceManager pResourceManager) {
@@ -55,7 +55,7 @@ public class ReloadHandler {
         for (String entityName : entityNames) {
             String folderPath = basePath + entityName;
             VariantLoader.loadVariants(folderPath, pResourceManager, entityName);
-            BaseLogger.log(BaseLogLevel.INFO, BlueLibCommon.Translation.log("variants.loaded.entity", entityName), true);
+            BaseLogger.log(true, BaseLogLevel.INFO, BlueLibCommon.Translation.log("variants.loaded.entity", entityName));
         }
     }
 }

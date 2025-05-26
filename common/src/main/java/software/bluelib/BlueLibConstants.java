@@ -29,7 +29,7 @@ public class BlueLibConstants {
     }
 
     public static final Logger LOGGER = Logger.getLogger(BlueLibConstants.MOD_NAME);
-
+    
     public static ScheduledExecutorService SCHEDULER = Executors.newScheduledThreadPool(1);
 
     public static final String MOD_ID = "bluelib";

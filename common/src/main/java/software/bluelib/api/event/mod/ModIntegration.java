@@ -95,10 +95,10 @@ public class ModIntegration {
                 modsMessage.append(mod).append("\n");
             }
             BlueLibConstants.PlatformHelper.EVENT_PROXY.onAllModsLoaded(loadedModMetas);
-            BaseLogger.log(BaseLogLevel.INFO, BlueLibCommon.Translation.translate("mod.loaded", Component.literal(modsMessage.toString())), true);
+            BaseLogger.log(true, BaseLogLevel.INFO, BlueLibCommon.Translation.translate("mod.loaded", Component.literal(modsMessage.toString())));
         } else {
             BlueLibConstants.PlatformHelper.EVENT_PROXY.onAllModsLoaded(loadedModMetas);
-            BaseLogger.log(BaseLogLevel.INFO, BlueLibCommon.Translation.translate("mod.loaded.empty"), true);
+            BaseLogger.log(true, BaseLogLevel.INFO, BlueLibCommon.Translation.translate("mod.loaded.empty"));
         }
     }
 

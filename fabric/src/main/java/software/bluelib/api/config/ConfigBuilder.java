@@ -48,8 +48,8 @@ public class ConfigBuilder<T extends BlueLibConfig> {
                     field.set(config, loadedValue);
                 }
             }
-        } catch (IOException | IllegalAccessException e) {
-            throw new RuntimeException("Failed to load config", e);
+        } catch (IOException | IllegalAccessException pException) {
+            throw new RuntimeException("Failed to load config", pException);
         }
     }
 
@@ -58,8 +58,8 @@ public class ConfigBuilder<T extends BlueLibConfig> {
             Files.createDirectories(configPath.getParent());
             String json = gson.toJson(config);
             Files.writeString(configPath, json);
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to save config", e);
+        } catch (IOException pIoException) {
+            throw new RuntimeException("Failed to save config", pIoException);
         }
     }
 

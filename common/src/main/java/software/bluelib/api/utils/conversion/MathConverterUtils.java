@@ -48,7 +48,7 @@ public class MathConverterUtils {
             SimpleDateFormat formatter = new SimpleDateFormat(pFormat);
             return formatter.parse(pDateStr);
         } catch (ParseException pException) {
-            BaseLogger.log(BaseLogLevel.ERROR, BlueLibCommon.Translation.log("error.date.format", pDateStr, pFormat), pException, true);
+            BaseLogger.log(true, BaseLogLevel.ERROR, BlueLibCommon.Translation.log("error.date.format", pDateStr, pFormat), pException);
             throw pException;
         }
     }
@@ -58,7 +58,7 @@ public class MathConverterUtils {
             SimpleDateFormat formatter = new SimpleDateFormat(pFormat);
             return formatter.format(pDate);
         } catch (Exception pException) {
-            BaseLogger.log(BaseLogLevel.ERROR, BlueLibCommon.Translation.log("error.date.format", pDate, pFormat), pException, true);
+            BaseLogger.log(true, BaseLogLevel.ERROR, BlueLibCommon.Translation.log("error.date.format", pDate, pFormat), pException);
             return pException.getMessage();
         }
     }

@@ -32,7 +32,7 @@ public class ParameterUtils {
     public static Set<String> getVariantsOfEntity(String pEntityName) {
         JsonObject entityData = VariantLoader.AllVariants.get(pEntityName);
         if (entityData == null) {
-            BaseLogger.log(BaseLogLevel.WARNING, BlueLibCommon.Translation.log("entity.notfound", pEntityName), true);
+            BaseLogger.log(true, BaseLogLevel.WARNING, BlueLibCommon.Translation.log("entity.notfound", pEntityName));
             return null;
         }
 
@@ -52,13 +52,13 @@ public class ParameterUtils {
     public static JsonElement getParameterDataForVariant(String pEntityName, String pVariantName, String pParameter) {
         JsonObject entityData = VariantLoader.AllVariants.get(pEntityName);
         if (entityData == null) {
-            BaseLogger.log(BaseLogLevel.WARNING, BlueLibCommon.Translation.log("entity.notfound", pEntityName), true);
+            BaseLogger.log(true, BaseLogLevel.WARNING, BlueLibCommon.Translation.log("entity.notfound", pEntityName));
             return null;
         }
 
         JsonArray variants = entityData.getAsJsonArray(pVariantName);
         if (variants == null || variants.isEmpty()) {
-            BaseLogger.log(BaseLogLevel.WARNING, BlueLibCommon.Translation.log("entity.variantsNotfound", pVariantName, pEntityName), true);
+            BaseLogger.log(true, BaseLogLevel.WARNING, BlueLibCommon.Translation.log("entity.variantsNotfound", pVariantName, pEntityName));
             return null;
         }
 
@@ -79,7 +79,7 @@ public class ParameterUtils {
                 }
             }
         }
-        BaseLogger.log(BaseLogLevel.INFO, BlueLibCommon.Translation.log("entity.parameterNotfound", pParameter, pVariantName, pEntityName), true);
+        BaseLogger.log(true, BaseLogLevel.INFO, BlueLibCommon.Translation.log("entity.parameterNotfound", pParameter, pVariantName, pEntityName));
         return null;
     }
 }

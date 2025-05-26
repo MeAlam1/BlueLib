@@ -38,9 +38,9 @@ public class BlueLibConfig {
             MarkdownConfig.colorSuffix = pConfig.colorSuffix;
             MarkdownConfig.isColorEnabled = pConfig.isColorEnabled;
             MarkdownConfig.isCopyToClipboardEnabled = pConfig.isCopyToClipboardEnabled;
-            BaseLogger.log(BaseLogLevel.INFO, BlueLibCommon.Translation.config("markdown.loaded"), true);
+            BaseLogger.log(true, BaseLogLevel.INFO, BlueLibCommon.Translation.config("markdown.loaded"));
         } catch (Exception pException) {
-            BaseLogger.log(BaseLogLevel.ERROR, BlueLibCommon.Translation.config("markdown.failed", pException.getMessage()), true);
+            BaseLogger.log(true, BaseLogLevel.ERROR, BlueLibCommon.Translation.config("markdown.failed", pException.getMessage()));
         }
     }
 
@@ -48,9 +48,9 @@ public class BlueLibConfig {
         try {
             LoggerConfig.isLoggingEnabled = pConfig.isLoggingEnabled;
             LoggerConfig.isBlueLibLoggingEnabled = pConfig.isBlueLibLoggingEnabled;
-            BaseLogger.log(BaseLogLevel.INFO, BlueLibCommon.Translation.config("markdown.loaded"), true);
+            BaseLogger.log(true, BaseLogLevel.INFO, BlueLibCommon.Translation.config("markdown.loaded"));
         } catch (Exception pException) {
-            BaseLogger.log(BaseLogLevel.ERROR, BlueLibCommon.Translation.config("markdown.failed", pException.getMessage()), true);
+            BaseLogger.log(true, BaseLogLevel.ERROR, BlueLibCommon.Translation.config("markdown.failed", pException.getMessage()));
         }
     }
 }

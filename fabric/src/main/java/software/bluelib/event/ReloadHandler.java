@@ -33,14 +33,14 @@ public class ReloadHandler {
         BlueLibConstants.SCHEDULER = new ScheduledThreadPoolExecutor(1);
         BlueLibConstants.server = pServer;
         ReloadHandler.LoadEntityVariants(pServer.getResourceManager());
-        BaseLogger.log(BaseLogLevel.INFO, BlueLibCommon.Translation.log("variants.loaded"), true);
+        BaseLogger.log(true, BaseLogLevel.INFO, BlueLibCommon.Translation.log("variants.loaded"));
     }
 
     public static void onReload(MinecraftServer pServer, CloseableResourceManager pCloseableResourceManager, boolean pBoolean) {
         if (provider == null) return;
 
         ReloadHandler.LoadEntityVariants(pServer.getResourceManager());
-        BaseLogger.log(BaseLogLevel.INFO, BlueLibCommon.Translation.log("variants.reloaded"), true);
+        BaseLogger.log(true, BaseLogLevel.INFO, BlueLibCommon.Translation.log("variants.reloaded"));
     }
 
     public static void LoadEntityVariants(ResourceManager pResourceManager) {
@@ -50,7 +50,7 @@ public class ReloadHandler {
         for (String entityName : entityNames) {
             String folderPath = basePath + entityName;
             VariantLoader.loadVariants(folderPath, pResourceManager, entityName);
-            BaseLogger.log(BaseLogLevel.INFO, BlueLibCommon.Translation.log("variants.loaded.entity", entityName), true);
+            BaseLogger.log(true, BaseLogLevel.INFO, BlueLibCommon.Translation.log("variants.loaded.entity", entityName));
         }
     }
 }

@@ -24,7 +24,7 @@ public class AlgebraicUtils {
         double discriminant = pB * pB - 4 * pA * pC;
         if (discriminant < 0) {
             Throwable throwable = new IllegalArgumentException("Number must be non-negative.");
-            BaseLogger.log(BaseLogLevel.WARNING, BlueLibCommon.Translation.log("math.error.calc", "quadratic"), throwable, true);
+            BaseLogger.log(true, BaseLogLevel.WARNING, BlueLibCommon.Translation.log("math.error.calc", "quadratic"), throwable);
             return new double[0];
         }
 
@@ -38,7 +38,7 @@ public class AlgebraicUtils {
     public static long factorial(int pNumber) {
         if (pNumber < 0) {
             Throwable throwable = new IllegalArgumentException("Number must be non-negative.");
-            BaseLogger.log(BaseLogLevel.WARNING, BlueLibCommon.Translation.log("math.error.calc", "factorial"), throwable, true);
+            BaseLogger.log(true, BaseLogLevel.WARNING, BlueLibCommon.Translation.log("math.error.calc", "factorial"), throwable);
             return 0;
         }
 

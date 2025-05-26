@@ -34,14 +34,14 @@ public class VariantLoader extends JSONParser {
 
     private static void parseVariants(String pEntityName, JsonObject pVariantsJson) {
         if (BlueLibConstants.PlatformHelper.EVENT_PROXY.allVariantsLoadedPre(pEntityName)) {
-            BaseLogger.log(BaseLogLevel.INFO, BlueLibCommon.Translation.log("variants.load.cancelled"), true);
+            BaseLogger.log(true, BaseLogLevel.INFO, BlueLibCommon.Translation.log("variants.load.cancelled"));
             return;
         }
 
         if (!AllVariants.containsKey(pEntityName)) {
             for (String variantKey : pVariantsJson.keySet()) {
                 if (BlueLibConstants.PlatformHelper.EVENT_PROXY.variantLoadedPre(variantKey, pEntityName)) {
-                    BaseLogger.log(BaseLogLevel.INFO, BlueLibCommon.Translation.log("variant.load.cancelled", variantKey, pEntityName), true);
+                    BaseLogger.log(true, BaseLogLevel.INFO, BlueLibCommon.Translation.log("variant.load.cancelled", variantKey, pEntityName));
                     return;
                 }
                 BlueLibConstants.PlatformHelper.EVENT_PROXY.variantLoadedPost(pEntityName, variantKey);
@@ -51,7 +51,7 @@ public class VariantLoader extends JSONParser {
 
         BlueLibConstants.PlatformHelper.EVENT_PROXY.allVariantsLoadedPost(pEntityName);
 
-        BaseLogger.log(BaseLogLevel.INFO, BlueLibCommon.Translation.log("variants.entities", Arrays.toString(ParameterUtils.getAllEntities().toArray())), true);
-        BaseLogger.log(BaseLogLevel.INFO, BlueLibCommon.Translation.log("variants.variants", pEntityName, Arrays.toString(Objects.requireNonNull(ParameterUtils.getVariantsOfEntity(pEntityName)).toArray())), true);
+        BaseLogger.log(true, BaseLogLevel.INFO, BlueLibCommon.Translation.log("variants.entities", Arrays.toString(ParameterUtils.getAllEntities().toArray())));
+        BaseLogger.log(true, BaseLogLevel.INFO, BlueLibCommon.Translation.log("variants.variants", pEntityName, Arrays.toString(Objects.requireNonNull(ParameterUtils.getVariantsOfEntity(pEntityName)).toArray())));
     }
 }

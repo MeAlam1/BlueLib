@@ -21,7 +21,7 @@ public class Hyperlink extends MarkdownFeature {
 
     public MutableComponent apply(MutableComponent pComponent) {
         if (!MarkdownConfig.isHyperlinkEnabled) {
-            BaseLogger.log(BaseLogLevel.INFO, BlueLibCommon.Translation.log("markdown.hyperlink.disabled"), true);
+            BaseLogger.log(true, BaseLogLevel.INFO, BlueLibCommon.Translation.log("markdown.hyperlink.disabled"));
             return pComponent;
         }
 
