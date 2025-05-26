@@ -9,7 +9,7 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import software.bluelib_examples.client.BlueLibCommonClient;
 
-@EventBusSubscriber(modid = BlueLibConstants.MOD_ID, value = Dist.CLIENT)
+@EventBusSubscriber(modid = BlueLibConstants.MOD_ID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD)
 public class BlueLibClient {
 
 	@SubscribeEvent

@@ -16,8 +16,14 @@ import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.util.GeckoLibUtil;
+import software.bluelib.BlueLibConstants;
 import software.bluelib.api.entity.variant.IVariantEntity;
+import software.bluelib.api.net.NetworkPacket;
+import software.bluelib.api.net.NetworkRegistry;
 import software.bluelib.entity.variant.IVariantAccessor;
+import software.bluelib.net.messages.client.OpenLoggerPacket;
+import software.bluelib.net.messages.server.TestPacket;
+import software.bluelib_examples.BlueLibCommon;
 
 public class ExampleEntity extends PathfinderMob implements GeoEntity, IVariantEntity {
 
@@ -51,6 +57,7 @@ public class ExampleEntity extends PathfinderMob implements GeoEntity, IVariantE
 
 	@Override
 	public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor pLevel, @NotNull DifficultyInstance pDifficulty, @NotNull MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData) {
+		//NetworkRegistry.sendToAllPlayers(new OpenLoggerPacket());
 		if (getVariantName() == null || getVariantName().isEmpty()) {
 			setVariantName(getRandomVariant(getEntityVariants(entityName), "normal"));
 		}
