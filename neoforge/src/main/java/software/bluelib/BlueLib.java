@@ -2,6 +2,7 @@
 
 package software.bluelib;
 
+import net.minecraft.client.KeyMapping;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
@@ -9,11 +10,14 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
+import org.lwjgl.glfw.GLFW;
 import org.spongepowered.asm.launch.MixinBootstrap;
 import software.bluelib.api.registry.builders.RegistryBuilder;
 import software.bluelib.config.ConfigHolder;
 import software.bluelib.net.NeoForgeNetworkManager;
 import software.bluelib.platform.NeoForgeRegistryHelper;
+
+import java.util.function.Supplier;
 
 @Mod(BlueLibConstants.MOD_ID)
 public class BlueLib {
@@ -27,7 +31,7 @@ public class BlueLib {
      * <p>
      * Do not use this, you need to add this line into your own mod.
      */
-    public RegistryBuilder REGISTRY = new RegistryBuilder(BlueLibConstants.MOD_ID);
+    public static RegistryBuilder REGISTRY = new RegistryBuilder(BlueLibConstants.MOD_ID);
 
     public BlueLib(IEventBus pModEventBus, ModContainer pModContainer) {
         BlueLibCommon.doRegistration();

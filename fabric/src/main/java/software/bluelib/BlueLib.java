@@ -12,7 +12,9 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.message.v1.ServerMessageEvents;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.client.KeyMapping;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
+import org.lwjgl.glfw.GLFW;
 import software.bluelib.api.registry.builders.RegistryBuilder;
 import software.bluelib.api.registry.helpers.entity.AttributeHelper;
 import software.bluelib.api.registry.helpers.entity.RenderHelper;
@@ -21,7 +23,20 @@ import software.bluelib.event.ChatHandler;
 import software.bluelib.example.event.ReloadHandler;
 import software.bluelib.net.FabricNetworkManager;
 
+import java.util.function.Supplier;
+
 public class BlueLib implements ModInitializer, DataGeneratorEntrypoint {
+
+    /**
+     * Initializes the {@link RegistryBuilder} instance with the mod ID. Replace {@link BlueLibConstants#MOD_ID} with your mod's unique mod ID to register content under your mod's namespace.
+     * <p>
+     * This is essential for registering mod content such as items, blocks, and entities.
+     * <p>
+     * <strong>Do not remove</strong>, as it will break the mod's registration system.
+     * <p>
+     * Do not use this, you need to add this line into your own mod.
+     */
+    public static RegistryBuilder REGISTRY = new RegistryBuilder(BlueLibConstants.MOD_ID);
 
     private boolean hasInitialized = false;
 

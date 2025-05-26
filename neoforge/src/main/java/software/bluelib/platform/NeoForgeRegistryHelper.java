@@ -3,18 +3,25 @@
 package software.bluelib.platform;
 
 import java.util.function.Supplier;
+
+import net.minecraft.client.KeyMapping;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import software.bluelib.BlueLibConstants;
 import software.bluelib.api.registry.builders.RegistryBuilder;
+import software.bluelib.api.registry.builders.keybinds.KeybindBuilder;
 import software.bluelib.api.registry.helpers.entity.AttributeHelper;
 import software.bluelib.net.NeoForgeNetworkManager;
 
@@ -25,6 +32,8 @@ public class NeoForgeRegistryHelper implements IRegistryHelper {
     private static final DeferredRegister<EntityType<?>> entityRegistry = DeferredRegister.create(Registries.ENTITY_TYPE, RegistryBuilder.getModID());
     private static final DeferredRegister<CreativeModeTab> tabRegistry = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, RegistryBuilder.getModID());
     private static final DeferredRegister<MenuType<?>> menuRegistry = DeferredRegister.create(Registries.MENU, RegistryBuilder.getModID());
+    private static final DeferredRegister<BlockEntityType<?>> blockEntityRegistry = DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, RegistryBuilder.getModID());
+    private static final DeferredRegister<Biome> biomeRegistry = DeferredRegister.create(Registries.BIOME, RegistryBuilder.getModID());
 
     @Override
     public BlueLibConstants.NetworkManager getNetwork() {
@@ -52,9 +61,24 @@ public class NeoForgeRegistryHelper implements IRegistryHelper {
     }
 
     @Override
-    public Supplier<MenuType<?>> registerMenu(String pId, Supplier<MenuType<?>> pBlock) {
-        menuRegistry.register(pId, pBlock);
-        return pBlock;
+    public <T extends BlockEntity> Supplier<BlockEntityType<T>> registerBlockEntity(String pId, Supplier<BlockEntityType<T>> pBlockEntity) {
+        return blockEntityRegistry.register(pId, pBlockEntity);
+    }
+
+    @Override
+    public <T extends MenuType<?>>Supplier<T> registerMenu(String pId, Supplier<T> pMenu) {
+        menuRegistry.register(pId, pMenu);
+        return pMenu;
+    }
+
+    @Override
+    public <T extends Biome> Supplier<T> registerBiome(String id, Supplier<T> pBiome) {
+        return biomeRegistry.register(id, pBiome);
+    }
+
+    @Override
+    public Supplier<KeyMapping> registerKeybind(String pId, Supplier<KeyMapping> pKeybind) {
+        return pKeybind;
     }
 
     public static void register(IEventBus modEventBus) {
@@ -63,6 +87,8 @@ public class NeoForgeRegistryHelper implements IRegistryHelper {
         blockRegistry.register(modEventBus);
         tabRegistry.register(modEventBus);
         menuRegistry.register(modEventBus);
+        biomeRegistry.register(modEventBus);
         modEventBus.<EntityAttributeCreationEvent>addListener(pEvent -> AttributeHelper.registerAttributes(pEvent::put));
+        modEventBus.<RegisterKeyMappingsEvent>addListener(event -> KeybindBuilder.REGISTERED_BUILDERS.forEach(builder -> event.register(builder.getKeyMapping().get())));
     }
 }
