@@ -2,7 +2,7 @@ plugins {
     id("bluelib-convention")
     alias(libs.plugins.curseforgegradle)
     alias(libs.plugins.moddevgradle)
-    id("com.diffplug.spotless") version "6.25.0"
+    id("com.diffplug.spotless") version "7.0.3"
     id("com.github.hierynomus.license") version "0.16.1"
 }
 
