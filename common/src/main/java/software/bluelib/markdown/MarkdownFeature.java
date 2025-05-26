@@ -1,5 +1,10 @@
-// Copyright (c) BlueLib. Licensed under the MIT License.
-
+/*
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
+ */
 package software.bluelib.markdown;
 
 import java.util.function.BiConsumer;
@@ -21,7 +26,7 @@ public abstract class MarkdownFeature {
 
     public MutableComponent apply(MutableComponent pComponent) {
         if (!isFeatureEnabled()) {
-            BaseLogger.log(BaseLogLevel.INFO, BlueLibCommon.Translation.log("markdown.feature.disabled", getFeatureName()), true);
+            BaseLogger.log(true, BaseLogLevel.INFO, BlueLibCommon.Translation.log("markdown.feature.disabled", getFeatureName()));
             return pComponent;
         }
 

@@ -1,5 +1,10 @@
-// Copyright (c) BlueLib. Licensed under the MIT License.
-
+/*
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
+ */
 package software.bluelib.api.utils.minecraft;
 
 import java.util.Collection;
@@ -21,7 +26,7 @@ public class ChunkUtils {
         try {
             return pLevel.getBiome(pChunkPos.getWorldPosition()).value();
         } catch (Exception pException) {
-            BaseLogger.log(BaseLogLevel.ERROR, BlueLibCommon.Translation.log("chunk.biome.error"), pException, true);
+            BaseLogger.log(true, BaseLogLevel.ERROR, BlueLibCommon.Translation.log("chunk.biome.error"), pException);
             throw pException;
         }
     }
@@ -31,7 +36,7 @@ public class ChunkUtils {
             LevelChunk chunk = pLevel.getChunk(pChunkPos.x, pChunkPos.z);
             return chunk.getBlockEntities().values();
         } catch (Exception pException) {
-            BaseLogger.log(BaseLogLevel.ERROR, BlueLibCommon.Translation.log("chunk.tile.error"), pException, true);
+            BaseLogger.log(true, BaseLogLevel.ERROR, BlueLibCommon.Translation.log("chunk.tile.error"), pException);
             throw pException;
         }
     }

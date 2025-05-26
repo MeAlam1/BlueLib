@@ -1,5 +1,10 @@
-// Copyright (c) BlueLib. Licensed under the MIT License.
-
+/*
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
+ */
 package software.bluelib.api.utils.conversion;
 
 import java.text.ParseException;
@@ -43,7 +48,7 @@ public class MathConverterUtils {
             SimpleDateFormat formatter = new SimpleDateFormat(pFormat);
             return formatter.parse(pDateStr);
         } catch (ParseException pException) {
-            BaseLogger.log(BaseLogLevel.ERROR, BlueLibCommon.Translation.log("error.date.format", pDateStr, pFormat), pException, true);
+            BaseLogger.log(true, BaseLogLevel.ERROR, BlueLibCommon.Translation.log("error.date.format", pDateStr, pFormat), pException);
             throw pException;
         }
     }
@@ -53,7 +58,7 @@ public class MathConverterUtils {
             SimpleDateFormat formatter = new SimpleDateFormat(pFormat);
             return formatter.format(pDate);
         } catch (Exception pException) {
-            BaseLogger.log(BaseLogLevel.ERROR, BlueLibCommon.Translation.log("error.date.format", pDate, pFormat), pException, true);
+            BaseLogger.log(true, BaseLogLevel.ERROR, BlueLibCommon.Translation.log("error.date.format", pDate, pFormat), pException);
             return pException.getMessage();
         }
     }

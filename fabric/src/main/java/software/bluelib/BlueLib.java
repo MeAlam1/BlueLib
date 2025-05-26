@@ -1,5 +1,10 @@
-// Copyright (c) BlueLib. Licensed under the MIT License.
-
+/*
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
+ */
 package software.bluelib;
 
 import net.fabricmc.api.EnvType;
@@ -8,6 +13,7 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
+import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.message.v1.ServerMessageEvents;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
@@ -20,7 +26,9 @@ import software.bluelib.api.registry.helpers.entity.AttributeHelper;
 import software.bluelib.api.registry.helpers.entity.RenderHelper;
 import software.bluelib.config.ConfigLoader;
 import software.bluelib.event.ChatHandler;
-import software.bluelib.example.event.ReloadHandler;
+import software.bluelib.event.CommandHandler;
+import software.bluelib.event.ReloadHandler;
+import software.bluelib.example.event.VariantProvider;
 import software.bluelib.net.FabricNetworkManager;
 
 import java.util.function.Supplier;
@@ -42,6 +50,7 @@ public class BlueLib implements ModInitializer, DataGeneratorEntrypoint {
 
     @Override
     public void onInitialize() {
+        ReloadHandler.registerProvider(new VariantProvider());
         BlueLibCommon.doRegistration();
         FabricNetworkManager.registerMessages();
         FabricNetworkManager.registerServerHandlers();
@@ -64,6 +73,7 @@ public class BlueLib implements ModInitializer, DataGeneratorEntrypoint {
         ServerLifecycleEvents.END_DATA_PACK_RELOAD.register(ConfigLoader::reloadConfigs);
         ServerLifecycleEvents.END_DATA_PACK_RELOAD.register(ReloadHandler::onReload);
         ServerMessageEvents.ALLOW_CHAT_MESSAGE.register(ChatHandler::onAllowChat);
+        CommandRegistrationCallback.EVENT.register(CommandHandler::registerCommands);
     }
 
     @Override

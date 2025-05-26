@@ -1,5 +1,10 @@
-// Copyright (c) BlueLib. Licensed under the MIT License.
-
+/*
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
+ */
 package software.bluelib.api.utils.math;
 
 import software.bluelib.BlueLibCommon;
@@ -14,7 +19,7 @@ public class RandomGenUtils {
     public static int generateRandomInt(int pMin, int pMax) {
         if (pMin > pMax) {
             Throwable throwable = new IllegalArgumentException("Minimum value must not be greater than maximum value.");
-            BaseLogger.log(BaseLogLevel.WARNING, BlueLibCommon.Translation.log("math.error.gen", "random integer"), throwable, true);
+            BaseLogger.log(true, BaseLogLevel.WARNING, BlueLibCommon.Translation.log("math.error.gen", "random integer"), throwable);
             return 0;
         }
         return pMin + (int) (Math.random() * (pMax - pMin + 1));
@@ -23,7 +28,7 @@ public class RandomGenUtils {
     public static double generateRandomDouble(double pMin, double pMax) {
         if (pMin > pMax) {
             Throwable throwable = new IllegalArgumentException("Minimum value must not be greater than maximum value.");
-            BaseLogger.log(BaseLogLevel.WARNING, BlueLibCommon.Translation.log("math.error.gen", "random double"), throwable, true);
+            BaseLogger.log(true, BaseLogLevel.WARNING, BlueLibCommon.Translation.log("math.error.gen", "random double"), throwable);
             return 0;
         }
         return pMin + Math.random() * (pMax - pMin);
@@ -36,7 +41,7 @@ public class RandomGenUtils {
     public static String generateRandomString(int pLength) {
         if (pLength < 0) {
             Throwable throwable = new IllegalArgumentException("Length must be non-negative.");
-            BaseLogger.log(BaseLogLevel.WARNING, BlueLibCommon.Translation.log("math.error.gen", "random string"), throwable, true);
+            BaseLogger.log(true, BaseLogLevel.WARNING, BlueLibCommon.Translation.log("math.error.gen", "random string"), throwable);
             return "unknown";
         }
         String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -51,7 +56,7 @@ public class RandomGenUtils {
     public static String generateRandomStringWithPrefix(String pPrefix, int pLength) {
         if (pLength < 0) {
             Throwable throwable = new IllegalArgumentException("Length must be non-negative.");
-            BaseLogger.log(BaseLogLevel.WARNING, BlueLibCommon.Translation.log("math.error.gen", "random string with prefix"), throwable, true);
+            BaseLogger.log(true, BaseLogLevel.WARNING, BlueLibCommon.Translation.log("math.error.gen", "random string with prefix"), throwable);
             return "unknown";
         }
         return pPrefix + generateRandomString(pLength - pPrefix.length());

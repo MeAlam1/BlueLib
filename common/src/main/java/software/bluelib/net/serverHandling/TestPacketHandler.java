@@ -1,5 +1,10 @@
-// Copyright (c) BlueLib. Licensed under the MIT License.
-
+/*
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
+ */
 package software.bluelib.net.serverHandling;
 
 import net.minecraft.server.MinecraftServer;
@@ -17,6 +22,6 @@ public class TestPacketHandler implements ServerNetworkPacketHandler<TestPacket>
 
     @Override
     public void handle(TestPacket pPacket, MinecraftServer pServer, ServerPlayer pPlayer) {
-        BaseLogger.log(BaseLogLevel.INFO, BlueLibCommon.Translation.log("test", pPacket.value()), true);
+        BaseLogger.log(true, BaseLogLevel.INFO, BlueLibCommon.Translation.log("test", pPacket.value()));
     }
 }

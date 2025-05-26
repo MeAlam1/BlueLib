@@ -1,5 +1,10 @@
-// Copyright (c) BlueLib. Licensed under the MIT License.
-
+/*
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
+ */
 package software.bluelib.api.utils;
 
 import java.net.URI;
@@ -17,11 +22,11 @@ public class IsValidUtils {
     public static boolean isValidURL(@Nullable String pUrl) {
         try {
             if (pUrl == null) {
-                BaseLogger.log(BaseLogLevel.WARNING, BlueLibCommon.Translation.translate("null"), true);
+                BaseLogger.log(true, BaseLogLevel.WARNING, BlueLibCommon.Translation.translate("null"));
                 return false;
             }
             if (!pUrl.startsWith("http://") && !pUrl.startsWith("https://")) {
-                BaseLogger.log(BaseLogLevel.WARNING, BlueLibCommon.Translation.log("invalid_url.begin", pUrl), true);
+                BaseLogger.log(true, BaseLogLevel.WARNING, BlueLibCommon.Translation.log("invalid_url.begin", pUrl));
                 return false;
             }
 
@@ -33,7 +38,7 @@ public class IsValidUtils {
 
             return uri.isAbsolute() && (pattern.matcher(host).matches());
         } catch (Exception pException) {
-            BaseLogger.log(BaseLogLevel.ERROR, BlueLibCommon.Translation.log("invalid_url", pUrl), true);
+            BaseLogger.log(true, BaseLogLevel.ERROR, BlueLibCommon.Translation.log("invalid_url", pUrl));
             return false;
         }
     }
@@ -45,7 +50,7 @@ public class IsValidUtils {
 
     public static boolean isValidColor(@Nullable String pInput) {
         if (pInput == null) {
-            BaseLogger.log(BaseLogLevel.WARNING, BlueLibCommon.Translation.translate("null"), true);
+            BaseLogger.log(true, BaseLogLevel.WARNING, BlueLibCommon.Translation.translate("null"));
             return false;
         }
 

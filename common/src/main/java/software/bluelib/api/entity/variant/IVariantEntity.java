@@ -1,5 +1,10 @@
-// Copyright (c) BlueLib. Licensed under the MIT License.
-
+/*
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
+ */
 package software.bluelib.api.entity.variant;
 
 import java.util.ArrayList;
@@ -18,12 +23,12 @@ public interface IVariantEntity {
 
     default String getRandomVariant(List<String> pVariantNamesList, String pDefaultVariant) {
         if (pVariantNamesList.isEmpty()) {
-            BaseLogger.log(BaseLogLevel.INFO, BlueLibCommon.Translation.log("variant.list.empty", pDefaultVariant), true);
+            BaseLogger.log(true, BaseLogLevel.INFO, BlueLibCommon.Translation.log("variant.list.empty", pDefaultVariant));
             return pDefaultVariant;
         }
         int index = random.nextInt(pVariantNamesList.size());
         String selectedVariant = pVariantNamesList.get(index);
-        BaseLogger.log(BaseLogLevel.SUCCESS, BlueLibCommon.Translation.log("variant.random", selectedVariant, pVariantNamesList.size()), true);
+        BaseLogger.log(true, BaseLogLevel.SUCCESS, BlueLibCommon.Translation.log("variant.random", selectedVariant, pVariantNamesList.size()));
         return selectedVariant;
     }
 

@@ -1,5 +1,10 @@
-// Copyright (c) BlueLib. Licensed under the MIT License.
-
+/*
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
+ */
 package software.bluelib.markdown.syntax;
 
 import java.util.regex.Pattern;
@@ -16,7 +21,7 @@ public class Hyperlink extends MarkdownFeature {
 
     public MutableComponent apply(MutableComponent pComponent) {
         if (!MarkdownConfig.isHyperlinkEnabled) {
-            BaseLogger.log(BaseLogLevel.INFO, BlueLibCommon.Translation.log("markdown.hyperlink.disabled"), true);
+            BaseLogger.log(true, BaseLogLevel.INFO, BlueLibCommon.Translation.log("markdown.hyperlink.disabled"));
             return pComponent;
         }
 

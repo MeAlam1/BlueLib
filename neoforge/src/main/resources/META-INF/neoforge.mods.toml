@@ -1,19 +1,19 @@
 modLoader="javafml"
-loaderVersion="${neoforge_loader_version_range}"
-license="${license}"
+loaderVersion="${neoforge_loader_range}"
+license="${mod_license}"
 issueTrackerURL="https://github.com/MeAlam1/BlueLib/issues"
 
 [[mods]]
 modId="${mod_id}"
 version="${version}"
-displayName="${mod_name}"
+displayName="${mod_display_name}"
 # A URL to query for updates for this mod. See the JSON update specification https://docs.neoforged.net/docs/misc/updatechecker/
 #updateJSONURL="https://change.me.example.invalid/updates.json" #optional
 displayURL="https://mealam1.github.io/BlueLib/"
 logoFile="bluelib.png"
 credits="Anyone who contributed to the Source Code of BlueLib!"
-authors="${mod_author}"
-description='''${description}'''
+authors="${mod_authors}"
+description='''${mod_description}'''
 
 [[dependencies.bluelib]]
 modId="neoforge"
@@ -31,3 +31,6 @@ side="BOTH"
 
 [[mixins]]
 config = "bluelib.mixins.json"
+
+[[accessTransformers]]
+file = "META-INF/accesstransformer-nf.cfg"

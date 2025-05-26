@@ -1,5 +1,10 @@
-// Copyright (c) BlueLib. Licensed under the MIT License.
-
+/*
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
+ */
 package software.bluelib.markdown.syntax;
 
 import java.util.ArrayList;
@@ -23,7 +28,7 @@ public class Color extends MarkdownFeature {
 
     public MutableComponent apply(MutableComponent pComponent) {
         if (!MarkdownConfig.isColorEnabled) {
-            BaseLogger.log(BaseLogLevel.INFO, BlueLibCommon.Translation.log("markdown.color.disabled"), true);
+            BaseLogger.log(true, BaseLogLevel.INFO, BlueLibCommon.Translation.log("markdown.color.disabled"));
             return pComponent;
         }
 
@@ -62,7 +67,7 @@ public class Color extends MarkdownFeature {
                 if (IsValidUtils.isValidColor(color)) {
                     colors.add(ColorConverterUtils.parseColorToHexString(color));
                 } else {
-                    BaseLogger.log(BaseLogLevel.WARNING, BlueLibCommon.Translation.log("markdown.color.invalid", color), true);
+                    BaseLogger.log(true, BaseLogLevel.WARNING, BlueLibCommon.Translation.log("markdown.color.invalid", color));
                     return colorGroup;
                 }
             }
@@ -110,7 +115,7 @@ public class Color extends MarkdownFeature {
                 }
             }
         } else {
-            BaseLogger.log(BaseLogLevel.WARNING, BlueLibCommon.Translation.log("markdown.color.list.invalid", pColors), true);
+            BaseLogger.log(true, BaseLogLevel.WARNING, BlueLibCommon.Translation.log("markdown.color.list.invalid", pColors));
             pResult.append(Component.literal(MarkdownConfig.colorPrefix + pColors + MarkdownConfig.colorSuffix + "(" + pColorText + ")")
                     .setStyle(pOriginalStyle));
         }

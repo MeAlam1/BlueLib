@@ -1,5 +1,10 @@
-// Copyright (c) BlueLib. Licensed under the MIT License.
-
+/*
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
+ */
 package software.bluelib.markdown;
 
 import net.minecraft.network.chat.Component;
@@ -15,7 +20,7 @@ public class MarkdownParser {
 
     public static MutableComponent parseMarkdown(Component pMessage) {
         if (!MarkdownConfig.isMarkdownEnabled) {
-            BaseLogger.log(BaseLogLevel.INFO, BlueLibCommon.Translation.log("markdown.disabled"), true);
+            BaseLogger.log(true, BaseLogLevel.INFO, BlueLibCommon.Translation.log("markdown.disabled"));
             return pMessage.copy();
         }
 
@@ -31,7 +36,7 @@ public class MarkdownParser {
         formattedMessage = new Color().apply(formattedMessage);
         formattedMessage = new CopyToClipboard().apply(formattedMessage, text);
 
-        BaseLogger.log(BaseLogLevel.INFO, BlueLibCommon.Translation.log("markdown.message"), true);
+        BaseLogger.log(true, BaseLogLevel.INFO, BlueLibCommon.Translation.log("markdown.message"));
         return formattedMessage;
     }
 }

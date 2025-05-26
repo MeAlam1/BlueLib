@@ -1,5 +1,10 @@
-// Copyright (c) BlueLib. Licensed under the MIT License.
-
+/*
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
+ */
 package software.bluelib.api.net;
 
 import java.util.function.Predicate;
@@ -39,7 +44,7 @@ public interface NetworkPacket<T extends NetworkPacket<T>> extends CustomPacketP
     default void sendToPlayersAround(double pX, double pY, double pZ, double pDistance, ResourceKey<Level> pWorldKey, Predicate<ServerPlayer> pExclusionCondition) {
         var server = BlueLibConstants.PlatformHelper.PLATFORM.getServer();
         if (server == null) {
-            BaseLogger.log(BaseLogLevel.ERROR, BlueLibCommon.Translation.translate("server.null"), true);
+            BaseLogger.log(true, BaseLogLevel.ERROR, BlueLibCommon.Translation.translate("server.null"));
             return;
         }
 

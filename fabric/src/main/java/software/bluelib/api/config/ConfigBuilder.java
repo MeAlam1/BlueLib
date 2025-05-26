@@ -1,5 +1,10 @@
-// Copyright (c) BlueLib. Licensed under the MIT License.
-
+/*
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
+ */
 package software.bluelib.api.config;
 
 import com.google.gson.Gson;
@@ -43,8 +48,8 @@ public class ConfigBuilder<T extends BlueLibConfig> {
                     field.set(config, loadedValue);
                 }
             }
-        } catch (IOException | IllegalAccessException e) {
-            throw new RuntimeException("Failed to load config", e);
+        } catch (IOException | IllegalAccessException pException) {
+            throw new RuntimeException("Failed to load config", pException);
         }
     }
 
@@ -53,8 +58,8 @@ public class ConfigBuilder<T extends BlueLibConfig> {
             Files.createDirectories(configPath.getParent());
             String json = gson.toJson(config);
             Files.writeString(configPath, json);
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to save config", e);
+        } catch (IOException pIoException) {
+            throw new RuntimeException("Failed to save config", pIoException);
         }
     }
 

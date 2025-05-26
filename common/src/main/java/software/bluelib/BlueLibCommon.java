@@ -1,5 +1,10 @@
-// Copyright (c) BlueLib. Licensed under the MIT License.
-
+/*
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
+ */
 package software.bluelib;
 
 import static software.bluelib.BlueLibConstants.SCHEDULER;
@@ -12,11 +17,13 @@ import software.bluelib.api.event.mod.ModIntegration;
 import software.bluelib.api.net.NetworkRegistry;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
+import software.bluelib.registry.BlueNetworkRegistry;
 
 public class BlueLibCommon {
 
     private BlueLibCommon() {}
 
+    @ApiStatus.Internal
     public static void init() {
         if (isDeveloperMode()) {
             SCHEDULER.schedule(() -> {
@@ -32,8 +39,9 @@ public class BlueLibCommon {
         }
     }
 
+    @ApiStatus.Internal
     public static void doRegistration() {
-        var networkRegistry = new software.bluelib.registry.NetworkRegistry();
+        var networkRegistry = new BlueNetworkRegistry();
         NetworkRegistry.registerC2SPacketProvider(networkRegistry);
         NetworkRegistry.registerS2CPacketProvider(networkRegistry);
     }
@@ -41,7 +49,7 @@ public class BlueLibCommon {
     public static boolean isDeveloperMode() {
         boolean isDevMode = BlueLibConstants.PlatformHelper.PLATFORM.isDevelopmentEnvironment();
         if (isDevMode) {
-            BaseLogger.log(BaseLogLevel.INFO, Component.literal("Running in Developer mode."), true);
+            BaseLogger.log(true, BaseLogLevel.INFO, Component.literal("Running in Developer mode."));
         }
         return isDevMode;
     }

@@ -35,12 +35,12 @@
   
   "bluelib.log.variant.list.empty": "Variant names list is empty. Returning default variant: %1$s",
   "bluelib.log.variant.random": "Selected random variant: %1$s from list of size: %2$s",
-  "bluelib.log.varaint.data": "All data of Variants: %1$s",
+  "bluelib.log.variant.data": "All data of Variants: %1$s",
   "bluelib.log.variant.load.cancelled": "Loading variant: %1$s of entity: %2$s has been cancelled.",
   "bluelib.log.variants.load.cancelled": "Loading all the Variants has been cancelled.",
 
-  "bluelib.log.entities": "All Entities: %1$s",
-  "bluelib.log.variants": "Variants of %1$s: %2$s",
+  "bluelib.log.variants.entities": "All Entities: %1$s",
+  "bluelib.log.variants.variants": "Variants of %1$s: %2$s",
   
   "bluelib.log.json.found": "Found resources at: %1$s",
   "bluelib.log.json.notfound": "Resources not found: %1$s",
@@ -62,7 +62,7 @@
   "bluelib.log.markdown.color.invalid": "Invalid color detected: %1$s",
   
   "bluelib.log.variants.loaded": "Entity variants loaded.",
-  "bluelib.log.varaints.reloaded": "Entity variants reloaded.",
+  "bluelib.log.variants.reloaded": "Entity variants reloaded.",
   "bluelib.log.variants.loaded.entity": "Entity variants loaded for %1$s.",
   
   "bluelib.config.markdown.loaded": "The Markdown Config of BlueLib has been loaded.",

@@ -1,3 +1,10 @@
+/*
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
+ */
 package software.bluelib.config;
 
 import software.bluelib.BlueLibCommon;
@@ -31,9 +38,9 @@ public class BlueLibConfig {
             MarkdownConfig.colorSuffix = pConfig.colorSuffix;
             MarkdownConfig.isColorEnabled = pConfig.isColorEnabled;
             MarkdownConfig.isCopyToClipboardEnabled = pConfig.isCopyToClipboardEnabled;
-            BaseLogger.log(BaseLogLevel.INFO, BlueLibCommon.Translation.config("markdown.loaded"), true);
+            BaseLogger.log(true, BaseLogLevel.INFO, BlueLibCommon.Translation.config("markdown.loaded"));
         } catch (Exception pException) {
-            BaseLogger.log(BaseLogLevel.ERROR, BlueLibCommon.Translation.config("markdown.failed", pException.getMessage()), true);
+            BaseLogger.log(true, BaseLogLevel.ERROR, BlueLibCommon.Translation.config("markdown.failed", pException.getMessage()));
         }
     }
 
@@ -41,9 +48,9 @@ public class BlueLibConfig {
         try {
             LoggerConfig.isLoggingEnabled = pConfig.isLoggingEnabled;
             LoggerConfig.isBlueLibLoggingEnabled = pConfig.isBlueLibLoggingEnabled;
-            BaseLogger.log(BaseLogLevel.INFO, BlueLibCommon.Translation.config("markdown.loaded"), true);
+            BaseLogger.log(true, BaseLogLevel.INFO, BlueLibCommon.Translation.config("markdown.loaded"));
         } catch (Exception pException) {
-            BaseLogger.log(BaseLogLevel.ERROR, BlueLibCommon.Translation.config("markdown.failed", pException.getMessage()), true);
+            BaseLogger.log(true, BaseLogLevel.ERROR, BlueLibCommon.Translation.config("markdown.failed", pException.getMessage()));
         }
     }
 }

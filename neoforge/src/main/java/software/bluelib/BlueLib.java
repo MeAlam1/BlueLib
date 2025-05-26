@@ -1,7 +1,13 @@
-// Copyright (c) BlueLib. Licensed under the MIT License.
-
+/*
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
+ */
 package software.bluelib;
 
+import net.neoforged.api.distmarker.Dist;
 import net.minecraft.client.KeyMapping;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -11,8 +17,10 @@ import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 import org.lwjgl.glfw.GLFW;
+import net.neoforged.fml.loading.FMLEnvironment;
 import org.spongepowered.asm.launch.MixinBootstrap;
 import software.bluelib.api.registry.builders.RegistryBuilder;
+import software.bluelib.client.BlueLibClient;
 import software.bluelib.config.ConfigHolder;
 import software.bluelib.net.NeoForgeNetworkManager;
 import software.bluelib.platform.NeoForgeRegistryHelper;
@@ -35,11 +43,15 @@ public class BlueLib {
 
     public BlueLib(IEventBus pModEventBus, ModContainer pModContainer) {
         BlueLibCommon.doRegistration();
+        ReloadHandler.registerProvider(new VariantProvider());
         NeoForgeRegistryHelper.register(pModEventBus);
         pModEventBus.register(this);
         MixinBootstrap.init();
         pModEventBus.addListener(NeoForgeNetworkManager::registerMessages);
         pModEventBus.addListener(GatherDataEvent.class, this::onGatherData);
+
+        if (FMLEnvironment.dist == Dist.CLIENT)
+            BlueLibClient.init(pModContainer);
 
         pModContainer.registerConfig(ModConfig.Type.SERVER, ConfigHolder.MARKDOWN_SPEC, BlueLibConstants.MOD_ID + "-markdown.toml");
         pModContainer.registerConfig(ModConfig.Type.SERVER, ConfigHolder.LOGGER_SPEC, BlueLibConstants.MOD_ID + "-logger.toml");

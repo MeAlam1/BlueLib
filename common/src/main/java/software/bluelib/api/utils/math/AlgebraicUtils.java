@@ -1,5 +1,10 @@
-// Copyright (c) BlueLib. Licensed under the MIT License.
-
+/*
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
+ */
 package software.bluelib.api.utils.math;
 
 import java.util.ArrayList;
@@ -19,7 +24,7 @@ public class AlgebraicUtils {
         double discriminant = pB * pB - 4 * pA * pC;
         if (discriminant < 0) {
             Throwable throwable = new IllegalArgumentException("Number must be non-negative.");
-            BaseLogger.log(BaseLogLevel.WARNING, BlueLibCommon.Translation.log("math.error.calc", "quadratic"), throwable, true);
+            BaseLogger.log(true, BaseLogLevel.WARNING, BlueLibCommon.Translation.log("math.error.calc", "quadratic"), throwable);
             return new double[0];
         }
 
@@ -33,7 +38,7 @@ public class AlgebraicUtils {
     public static long factorial(int pNumber) {
         if (pNumber < 0) {
             Throwable throwable = new IllegalArgumentException("Number must be non-negative.");
-            BaseLogger.log(BaseLogLevel.WARNING, BlueLibCommon.Translation.log("math.error.calc", "factorial"), throwable, true);
+            BaseLogger.log(true, BaseLogLevel.WARNING, BlueLibCommon.Translation.log("math.error.calc", "factorial"), throwable);
             return 0;
         }
 
