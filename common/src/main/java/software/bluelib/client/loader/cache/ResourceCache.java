@@ -21,6 +21,8 @@ import net.minecraft.util.GsonHelper;
 import net.minecraft.util.profiling.ProfilerFiller;
 import org.jetbrains.annotations.NotNull;
 import software.bluelib.BlueLibCommon;
+import software.bluelib.api.utils.logging.BaseLogLevel;
+import software.bluelib.api.utils.logging.BaseLogger;
 import software.bluelib.client.loader.json.model.ModelFormatVersion;
 import software.bluelib.client.loader.json.model.deserialize.Model;
 import software.bluelib.client.loader.model.ModelLoader;
@@ -49,7 +51,7 @@ import java.util.stream.Collectors;
 public final class ResourceCache {
 	public static final ResourceLocation RELOAD_LISTENER_ID = BlueLibCommon.Resource.resource("models_animations");
 	public static final ResourceLocation ANIMATIONS_PATH = BlueLibCommon.Resource.resource("bluelib/animations");
-	public static final ResourceLocation MODELS_PATH = BlueLibCommon.Resource.resource("bluelib/models");
+	public static final ResourceLocation MODELS_PATH = BlueLibCommon.Resource.resource("models");
 	public static final Pattern SUFFIX_STRIPPER = Pattern.compile("((\\.geo)|((\\.animation)s?))?(\\.json)$");
 	public static final Pattern PREFIX_STRIPPER = Pattern.compile("^(bluelib/)((animations/)|(models/))?");
 
@@ -75,6 +77,8 @@ public final class ResourceCache {
 		CompletableFuture<Map<ResourceLocation, BakedAnimations>> animations = loadAnimations(pBackgroundExecutor, pResourceManager);
 		CompletableFuture<Map<ResourceLocation, ModelCache>> models = loadModels(pBackgroundExecutor, pResourceManager);
 
+		BaseLogger.log(BaseLogLevel.ERROR, "Models: " + models);
+		
 		return CompletableFuture.runAsync(() -> BakedAnimationsAdapter.COMPRESSION_CACHE = new ConcurrentHashMap<>(), pBackgroundExecutor)
 				.thenCompose(ignored -> CompletableFuture.allOf(animations, models).thenCompose(pStage::wait).thenRunAsync(() -> {
 					ResourceCache.ANIMATIONS = animations.join();
