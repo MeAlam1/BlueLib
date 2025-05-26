@@ -21,6 +21,7 @@ import software.bluelib.api.registry.builders.RegistryBuilder;
 import software.bluelib.client.BlueLibClient;
 import software.bluelib.config.ConfigHolder;
 import software.bluelib.event.ReloadHandler;
+import software.bluelib.example.event.VariantProvider;
 import software.bluelib.net.NeoForgeNetworkManager;
 import software.bluelib.platform.NeoForgeRegistryHelper;
 
