@@ -7,11 +7,11 @@
  */
 package software.bluelib.loader.animation.state;
 
-import software.bluelib.loader.cache.object.GeoBone;
+import software.bluelib.client.loader.cache.model.BoneCache;
 
 public class BoneSnapshot {
 
-    private final GeoBone bone;
+    private final BoneCache bone;
 
     private float scaleX;
     private float scaleY;
@@ -33,7 +33,7 @@ public class BoneSnapshot {
     private boolean posAnimInProgress = true;
     private boolean scaleAnimInProgress = true;
 
-    public BoneSnapshot(GeoBone bone) {
+    public BoneSnapshot(BoneCache bone) {
         this.rotX = bone.getRotX();
         this.rotY = bone.getRotY();
         this.rotZ = bone.getRotZ();
@@ -67,7 +67,7 @@ public class BoneSnapshot {
         return newSnapshot;
     }
 
-    public GeoBone getBone() {
+    public BoneCache getBone() {
         return this.bone;
     }
 

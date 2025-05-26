@@ -36,8 +36,8 @@ import org.joml.Matrix4f;
 import software.bluelib.BlueLibConstants;
 import software.bluelib.loader.animatable.GeoAnimatable;
 import software.bluelib.loader.animation.AnimationState;
-import software.bluelib.loader.cache.object.BakedGeoModel;
-import software.bluelib.loader.cache.object.GeoBone;
+import software.bluelib.client.loader.cache.model.ModelCache;
+import software.bluelib.client.loader.cache.model.BoneCache;
 import software.bluelib.loader.cache.texture.AnimatableTexture;
 import software.bluelib.loader.constant.DataTickets;
 import software.bluelib.loader.model.GeoModel;
@@ -128,7 +128,7 @@ public class GeoReplacedEntityRenderer<E extends Entity, T extends GeoAnimatable
     }
 
     @Override
-    public void preRender(PoseStack pPoseStack, T pAnimatable, BakedGeoModel pModel, @Nullable MultiBufferSource pBufferSource, @Nullable VertexConsumer pBuffer, boolean pIsReRender, float pPartialTick, int pPackedLight, int pPackedOverlay, int pColour) {
+    public void preRender(PoseStack pPoseStack, T pAnimatable, ModelCache pModel, @Nullable MultiBufferSource pBufferSource, @Nullable VertexConsumer pBuffer, boolean pIsReRender, float pPartialTick, int pPackedLight, int pPackedOverlay, int pColour) {
         this.entityRenderTranslations = new Matrix4f(pPoseStack.last().pose());
 
         scaleModelForRender(this.scaleWidth, this.scaleHeight, pPoseStack, pAnimatable, pModel, pIsReRender, pPartialTick, pPackedLight, pPackedOverlay);
@@ -143,8 +143,8 @@ public class GeoReplacedEntityRenderer<E extends Entity, T extends GeoAnimatable
     }
 
     @Override
-    public void actuallyRender(PoseStack pPoseStack, T pAnimatable, BakedGeoModel pModel, @Nullable RenderType pRenderType, MultiBufferSource pBufferSource,
-            @Nullable VertexConsumer pBuffer, boolean pIsReRender, float pPartialTick, int pPackedLight, int pPackedOverlay, int pColour) {
+    public void actuallyRender(PoseStack pPoseStack, T pAnimatable, ModelCache pModel, @Nullable RenderType pRenderType, MultiBufferSource pBufferSource,
+                               @Nullable VertexConsumer pBuffer, boolean pIsReRender, float pPartialTick, int pPackedLight, int pPackedOverlay, int pColour) {
         pPoseStack.pushPose();
 
         LivingEntity livingEntity = this.currentEntity instanceof LivingEntity entity ? entity : null;
@@ -238,13 +238,13 @@ public class GeoReplacedEntityRenderer<E extends Entity, T extends GeoAnimatable
     }
 
     @Override
-    public void applyRenderLayers(PoseStack pPoseStack, T pAnimatable, BakedGeoModel pModel, @Nullable RenderType pRenderType, MultiBufferSource pBufferSource, @Nullable VertexConsumer pBuffer, float pPartialTick, int pPackedLight, int pPackedOverlay) {
+    public void applyRenderLayers(PoseStack pPoseStack, T pAnimatable, ModelCache pModel, @Nullable RenderType pRenderType, MultiBufferSource pBufferSource, @Nullable VertexConsumer pBuffer, float pPartialTick, int pPackedLight, int pPackedOverlay) {
         if (!this.currentEntity.isSpectator())
             GeoRenderer.super.applyRenderLayers(pPoseStack, pAnimatable, pModel, pRenderType, pBufferSource, pBuffer, pPartialTick, pPackedLight, pPackedOverlay);
     }
 
     @Override
-    public void renderFinal(PoseStack pPoseStack, T pAnimatable, BakedGeoModel pModel, MultiBufferSource pBufferSource, @Nullable VertexConsumer pBuffer, float pPartialTick, int pPackedLight, int pPackedOverlay, int pColour) {
+    public void renderFinal(PoseStack pPoseStack, T pAnimatable, ModelCache pModel, MultiBufferSource pBufferSource, @Nullable VertexConsumer pBuffer, float pPartialTick, int pPackedLight, int pPackedOverlay, int pColour) {
         super.render(this.currentEntity, 0, pPartialTick, pPoseStack, pBufferSource, pPackedLight);
 
         if (this.currentEntity instanceof Mob mob) {
@@ -256,7 +256,7 @@ public class GeoReplacedEntityRenderer<E extends Entity, T extends GeoAnimatable
     }
 
     @Override
-    public void postRender(PoseStack pPoseStack, T pAnimatable, BakedGeoModel pModel, MultiBufferSource pBufferSource, VertexConsumer pBuffer, boolean pIsReRender, float pPartialTick, int pPackedLight, int pPackedOverlay, int pColour) {
+    public void postRender(PoseStack pPoseStack, T pAnimatable, ModelCache pModel, MultiBufferSource pBufferSource, VertexConsumer pBuffer, boolean pIsReRender, float pPartialTick, int pPackedLight, int pPackedOverlay, int pColour) {
         if (!pIsReRender)
             super.render(this.currentEntity, 0, pPartialTick, pPoseStack, pBufferSource, pPackedLight);
     }
@@ -267,8 +267,8 @@ public class GeoReplacedEntityRenderer<E extends Entity, T extends GeoAnimatable
     }
 
     @Override
-    public void renderRecursively(PoseStack pPoseStack, T pAnimatable, GeoBone bone, RenderType pRenderType, MultiBufferSource pBufferSource, VertexConsumer pBuffer, boolean pIsReRender, float pPartialTick, int pPackedLight,
-            int pPackedOverlay, int pColour) {
+    public void renderRecursively(PoseStack pPoseStack, T pAnimatable, BoneCache bone, RenderType pRenderType, MultiBufferSource pBufferSource, VertexConsumer pBuffer, boolean pIsReRender, float pPartialTick, int pPackedLight,
+                                  int pPackedOverlay, int pColour) {
         pPoseStack.pushPose();
         RenderUtil.translateMatrixToBone(pPoseStack, bone);
         RenderUtil.translateToPivotPoint(pPoseStack, bone);
@@ -456,12 +456,12 @@ public class GeoReplacedEntityRenderer<E extends Entity, T extends GeoAnimatable
     }
 
     @Override
-    public boolean firePreRenderEvent(PoseStack pPoseStack, BakedGeoModel pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight) {
+    public boolean firePreRenderEvent(PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight) {
         return BlueLibConstants.PlatformHelper.EVENT_PROXY.fireReplacedEntityPreRender(this, pPoseStack, pModel, pBufferSource, pPartialTick, pPackedLight);
     }
 
     @Override
-    public void firePostRenderEvent(PoseStack pPoseStack, BakedGeoModel pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight) {
+    public void firePostRenderEvent(PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight) {
         BlueLibConstants.PlatformHelper.EVENT_PROXY.fireReplacedEntityPostRender(this, pPoseStack, pModel, pBufferSource, pPartialTick, pPackedLight);
     }
 }

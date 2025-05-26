@@ -5,8 +5,11 @@
  * If a copy of the MIT License was not distributed with this file,
  * You can obtain one at https://opensource.org/licenses/MIT.
  */
-package software.bluelib.loader.cache.object;
+package software.bluelib.client.loader.cache.model;
 
 import net.minecraft.world.phys.Vec3;
+import software.bluelib.client.loader.json.model.object.QuadData;
 
-public record GeoCube(GeoQuad[] quads, Vec3 pivot, Vec3 rotation, Vec3 size, double inflate, boolean mirror) {}
+import java.util.List;
+
+public record CubeCache(List<QuadData> quads, Vec3 pivot, Vec3 rotation, Vec3 size, double inflate, boolean mirror) {}

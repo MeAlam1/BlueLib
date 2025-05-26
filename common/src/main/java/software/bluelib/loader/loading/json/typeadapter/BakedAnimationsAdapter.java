@@ -28,7 +28,7 @@ import software.bluelib.loader.loading.math.MathValue;
 import software.bluelib.loader.loading.math.value.Constant;
 import software.bluelib.loader.loading.object.BakedAnimations;
 import software.bluelib.loader.util.CompoundException;
-import software.bluelib.loader.util.JsonUtil;
+import software.bluelib.api.utils.JsonUtils;
 
 public class BakedAnimationsAdapter implements JsonDeserializer<BakedAnimations> {
 
@@ -191,7 +191,7 @@ public class BakedAnimationsAdapter implements JsonDeserializer<BakedAnimations>
 
             JsonObject entryObj = element instanceof JsonObject obj ? obj : null;
             EasingType easingType = entryObj != null && entryObj.has("easing") ? EasingType.fromJson(entryObj.get("easing")) : EasingType.LINEAR;
-            List<MathValue> easingArgs = entryObj != null && entryObj.has("easingArgs") ? JsonUtil.jsonArrayToList(GsonHelper.getAsJsonArray(entryObj, "easingArgs"), ele -> new Constant(ele.getAsDouble())) : new ObjectArrayList<>();
+            List<MathValue> easingArgs = entryObj != null && entryObj.has("easingArgs") ? JsonUtils.jsonArrayToList(GsonHelper.getAsJsonArray(entryObj, "easingArgs"), ele -> new Constant(ele.getAsDouble())) : new ObjectArrayList<>();
 
             xFrames.add(new Keyframe<>(timeDelta * 20, prevEntry == null ? xValue : xPrev, xValue, easingType, easingArgs));
             yFrames.add(new Keyframe<>(timeDelta * 20, prevEntry == null ? yValue : yPrev, yValue, easingType, easingArgs));

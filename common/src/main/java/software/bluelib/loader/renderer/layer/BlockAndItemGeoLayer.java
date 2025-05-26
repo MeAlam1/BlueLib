@@ -20,20 +20,20 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.loader.animatable.GeoAnimatable;
-import software.bluelib.loader.cache.object.GeoBone;
+import software.bluelib.client.loader.cache.model.BoneCache;
 import software.bluelib.loader.renderer.GeoRenderer;
 import software.bluelib.loader.util.RenderUtil;
 
 public class BlockAndItemGeoLayer<T extends GeoAnimatable> extends GeoRenderLayer<T> {
 
-    protected final BiFunction<GeoBone, T, ItemStack> stackForBone;
-    protected final BiFunction<GeoBone, T, BlockState> blockForBone;
+    protected final BiFunction<BoneCache, T, ItemStack> stackForBone;
+    protected final BiFunction<BoneCache, T, BlockState> blockForBone;
 
     public BlockAndItemGeoLayer(GeoRenderer<T> renderer) {
         this(renderer, (bone, animatable) -> null, (bone, animatable) -> null);
     }
 
-    public BlockAndItemGeoLayer(GeoRenderer<T> renderer, BiFunction<GeoBone, T, ItemStack> stackForBone, BiFunction<GeoBone, T, BlockState> blockForBone) {
+    public BlockAndItemGeoLayer(GeoRenderer<T> renderer, BiFunction<BoneCache, T, ItemStack> stackForBone, BiFunction<BoneCache, T, BlockState> blockForBone) {
         super(renderer);
 
         this.stackForBone = stackForBone;
@@ -41,22 +41,22 @@ public class BlockAndItemGeoLayer<T extends GeoAnimatable> extends GeoRenderLaye
     }
 
     @Nullable
-    protected ItemStack getStackForBone(GeoBone bone, T animatable) {
+    protected ItemStack getStackForBone(BoneCache bone, T animatable) {
         return this.stackForBone.apply(bone, animatable);
     }
 
     @Nullable
-    protected BlockState getBlockForBone(GeoBone bone, T animatable) {
+    protected BlockState getBlockForBone(BoneCache bone, T animatable) {
         return this.blockForBone.apply(bone, animatable);
     }
 
-    protected ItemDisplayContext getTransformTypeForStack(GeoBone bone, ItemStack stack, T animatable) {
+    protected ItemDisplayContext getTransformTypeForStack(BoneCache bone, ItemStack stack, T animatable) {
         return ItemDisplayContext.NONE;
     }
 
     @Override
-    public void renderForBone(PoseStack pPoseStack, T animatable, GeoBone bone, RenderType pRenderType, MultiBufferSource pBufferSource,
-            VertexConsumer buffer, float pPartialTick, int pPackedLight, int pPackedOverlay) {
+    public void renderForBone(PoseStack pPoseStack, T animatable, BoneCache bone, RenderType pRenderType, MultiBufferSource pBufferSource,
+                              VertexConsumer buffer, float pPartialTick, int pPackedLight, int pPackedOverlay) {
         ItemStack stack = getStackForBone(bone, animatable);
         BlockState blockState = getBlockForBone(bone, animatable);
 
@@ -75,8 +75,8 @@ public class BlockAndItemGeoLayer<T extends GeoAnimatable> extends GeoRenderLaye
         pPoseStack.popPose();
     }
 
-    protected void renderStackForBone(PoseStack pPoseStack, GeoBone bone, ItemStack stack, T animatable, MultiBufferSource pBufferSource,
-            float pPartialTick, int pPackedLight, int pPackedOverlay) {
+    protected void renderStackForBone(PoseStack pPoseStack, BoneCache bone, ItemStack stack, T animatable, MultiBufferSource pBufferSource,
+                                      float pPartialTick, int pPackedLight, int pPackedOverlay) {
         if (animatable instanceof LivingEntity livingEntity) {
             Minecraft.getInstance().getItemRenderer().renderStatic(livingEntity, stack,
                     getTransformTypeForStack(bone, stack, animatable), false, pPoseStack, pBufferSource, livingEntity.level(),
@@ -87,8 +87,8 @@ public class BlockAndItemGeoLayer<T extends GeoAnimatable> extends GeoRenderLaye
         }
     }
 
-    protected void renderBlockForBone(PoseStack pPoseStack, GeoBone bone, BlockState state, T animatable, MultiBufferSource pBufferSource,
-            float pPartialTick, int pPackedLight, int pPackedOverlay) {
+    protected void renderBlockForBone(PoseStack pPoseStack, BoneCache bone, BlockState state, T animatable, MultiBufferSource pBufferSource,
+                                      float pPartialTick, int pPackedLight, int pPackedOverlay) {
         pPoseStack.pushPose();
         pPoseStack.translate(-0.25f, -0.25f, -0.25f);
         pPoseStack.scale(0.5f, 0.5f, 0.5f);

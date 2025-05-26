@@ -14,8 +14,8 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.loader.animatable.GeoAnimatable;
-import software.bluelib.loader.cache.object.BakedGeoModel;
-import software.bluelib.loader.cache.object.GeoBone;
+import software.bluelib.client.loader.cache.model.ModelCache;
+import software.bluelib.client.loader.cache.model.BoneCache;
 import software.bluelib.loader.model.GeoModel;
 import software.bluelib.loader.renderer.GeoRenderer;
 
@@ -31,7 +31,7 @@ public abstract class GeoRenderLayer<T extends GeoAnimatable> {
         return this.renderer.getGeoModel();
     }
 
-    public BakedGeoModel getDefaultBakedModel(T animatable) {
+    public ModelCache getDefaultBakedModel(T animatable) {
         return getGeoModel().getBakedModel(getGeoModel().getModelResource(animatable, getRenderer()));
     }
 
@@ -43,14 +43,14 @@ public abstract class GeoRenderLayer<T extends GeoAnimatable> {
         return getRenderer().getTextureLocation(animatable);
     }
 
-    public void preRender(PoseStack pPoseStack, T animatable, BakedGeoModel bakedModel, @Nullable RenderType pRenderType,
-            MultiBufferSource pBufferSource, @Nullable VertexConsumer buffer, float pPartialTick,
-            int pPackedLight, int pPackedOverlay) {}
+    public void preRender(PoseStack pPoseStack, T animatable, ModelCache bakedModel, @Nullable RenderType pRenderType,
+                          MultiBufferSource pBufferSource, @Nullable VertexConsumer buffer, float pPartialTick,
+                          int pPackedLight, int pPackedOverlay) {}
 
-    public void render(PoseStack pPoseStack, T animatable, BakedGeoModel bakedModel, @Nullable RenderType pRenderType,
-            MultiBufferSource pBufferSource, @Nullable VertexConsumer buffer, float pPartialTick,
-            int pPackedLight, int pPackedOverlay) {}
+    public void render(PoseStack pPoseStack, T animatable, ModelCache bakedModel, @Nullable RenderType pRenderType,
+                       MultiBufferSource pBufferSource, @Nullable VertexConsumer buffer, float pPartialTick,
+                       int pPackedLight, int pPackedOverlay) {}
 
-    public void renderForBone(PoseStack pPoseStack, T animatable, GeoBone bone, RenderType pRenderType,
-            MultiBufferSource pBufferSource, VertexConsumer buffer, float pPartialTick, int pPackedLight, int pPackedOverlay) {}
+    public void renderForBone(PoseStack pPoseStack, T animatable, BoneCache bone, RenderType pRenderType,
+                              MultiBufferSource pBufferSource, VertexConsumer buffer, float pPartialTick, int pPackedLight, int pPackedOverlay) {}
 }

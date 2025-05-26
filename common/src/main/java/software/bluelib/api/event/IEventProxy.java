@@ -12,7 +12,7 @@ import java.util.List;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.MultiBufferSource;
 import software.bluelib.api.event.mod.ModMeta;
-import software.bluelib.loader.cache.object.BakedGeoModel;
+import software.bluelib.client.loader.cache.model.ModelCache;
 import software.bluelib.loader.renderer.*;
 
 public interface IEventProxy {
@@ -38,45 +38,45 @@ public interface IEventProxy {
     // Block
     void fireCompileBlockRenderLayers(GeoBlockRenderer<?> pRenderer);
 
-    boolean fireBlockPreRender(GeoBlockRenderer<?> pRenderer, PoseStack pPoseStack, BakedGeoModel pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight);
+    boolean fireBlockPreRender(GeoBlockRenderer<?> pRenderer, PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight);
 
-    void fireBlockPostRender(GeoBlockRenderer<?> pRenderer, PoseStack pPoseStack, BakedGeoModel pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight);
+    void fireBlockPostRender(GeoBlockRenderer<?> pRenderer, PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight);
 
     // Armor
     
     void fireCompileArmorRenderLayers(GeoArmorRenderer<?> pRenderer);
 
-    boolean fireArmorPreRender(GeoArmorRenderer<?> pRenderer, PoseStack pPoseStack, BakedGeoModel pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight);
+    boolean fireArmorPreRender(GeoArmorRenderer<?> pRenderer, PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight);
 
-    void fireArmorPostRender(GeoArmorRenderer<?> pRenderer, PoseStack pPoseStack, BakedGeoModel pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight);
+    void fireArmorPostRender(GeoArmorRenderer<?> pRenderer, PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight);
 
     // Entity
     
     void fireCompileEntityRenderLayers(GeoEntityRenderer<?> pRenderer);
 
-    boolean fireEntityPreRender(GeoEntityRenderer<?> pRenderer, PoseStack pPoseStack, BakedGeoModel pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight);
+    boolean fireEntityPreRender(GeoEntityRenderer<?> pRenderer, PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight);
 
-    void fireEntityPostRender(GeoEntityRenderer<?> pRenderer, PoseStack pPoseStack, BakedGeoModel pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight);
+    void fireEntityPostRender(GeoEntityRenderer<?> pRenderer, PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight);
 
     void fireCompileReplacedEntityRenderLayers(GeoReplacedEntityRenderer<?, ?> pRenderer);
 
-    boolean fireReplacedEntityPreRender(GeoReplacedEntityRenderer<?, ?> pRenderer, PoseStack pPoseStack, BakedGeoModel pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight);
+    boolean fireReplacedEntityPreRender(GeoReplacedEntityRenderer<?, ?> pRenderer, PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight);
 
-    void fireReplacedEntityPostRender(GeoReplacedEntityRenderer<?, ?> pRenderer, PoseStack pPoseStack, BakedGeoModel pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight);
+    void fireReplacedEntityPostRender(GeoReplacedEntityRenderer<?, ?> pRenderer, PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight);
 
     // Item
     
     void fireCompileItemRenderLayers(GeoItemRenderer<?> pRenderer);
 
-    boolean fireItemPreRender(GeoItemRenderer<?> pRenderer, PoseStack pPoseStack, BakedGeoModel pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight);
+    boolean fireItemPreRender(GeoItemRenderer<?> pRenderer, PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight);
 
-    void fireItemPostRender(GeoItemRenderer<?> pRenderer, PoseStack pPoseStack, BakedGeoModel pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight);
+    void fireItemPostRender(GeoItemRenderer<?> pRenderer, PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight);
 
     // Object
     
     void fireCompileObjectRenderLayers(GeoObjectRenderer<?> pRenderer);
 
-    boolean fireObjectPreRender(GeoObjectRenderer<?> pRenderer, PoseStack pPoseStack, BakedGeoModel pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight);
+    boolean fireObjectPreRender(GeoObjectRenderer<?> pRenderer, PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight);
 
-    void fireObjectPostRender(GeoObjectRenderer<?> pRenderer, PoseStack pPoseStack, BakedGeoModel pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight);
+    void fireObjectPostRender(GeoObjectRenderer<?> pRenderer, PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight);
 }

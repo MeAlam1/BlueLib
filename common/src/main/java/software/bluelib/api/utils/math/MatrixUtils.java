@@ -16,7 +16,7 @@ public class MatrixUtils {
 
     private MatrixUtils() {}
 
-    public static double[][] multiplyMatrices(double[][] pMatrixA, double[][] pMatrixB) {
+    public static List<Float>[] multiplyMatrices(List<Float>[] pMatrixA, List<Float>[] pMatrixB) {
         int rowsA = pMatrixA.length;
         int colsA = pMatrixA[0].length;
         int colsB = pMatrixB[0].length;
@@ -25,7 +25,7 @@ public class MatrixUtils {
             BaseLogger.log(true, BaseLogLevel.WARNING, BlueLibCommon.Translation.log("math.error.calc", "matrix multiplication"), throwable);
             return new double[0][0];
         }
-        double[][] result = new double[rowsA][colsB];
+        List<Float>[] result = new double[rowsA][colsB];
         for (int i = 0; i < rowsA; i++) {
             for (int j = 0; j < colsB; j++) {
                 for (int k = 0; k < colsA; k++) {
@@ -36,10 +36,10 @@ public class MatrixUtils {
         return result;
     }
 
-    public static double[][] transposeMatrix(double[][] pMatrix) {
+    public static List<Float>[] transposeMatrix(List<Float>[] pMatrix) {
         int rows = pMatrix.length;
         int cols = pMatrix[0].length;
-        double[][] transposed = new double[cols][rows];
+        List<Float>[] transposed = new double[cols][rows];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
                 transposed[j][i] = pMatrix[i][j];
@@ -48,7 +48,7 @@ public class MatrixUtils {
         return transposed;
     }
 
-    public static double calculate2x2MatrixDeterminant(double[][] pMatrix) {
+    public static double calculate2x2MatrixDeterminant(List<Float>[] pMatrix) {
         if (pMatrix.length != 2 || pMatrix[0].length != 2) {
             Throwable throwable = new IllegalArgumentException("Matrix must be 2x2.");
             BaseLogger.log(true, BaseLogLevel.WARNING, BlueLibCommon.Translation.log("math.error.calc", "2x2 matrix determinant"), throwable);
@@ -57,7 +57,7 @@ public class MatrixUtils {
         return pMatrix[0][0] * pMatrix[1][1] - pMatrix[0][1] * pMatrix[1][0];
     }
 
-    public static double[][] invert2x2Matrix(double[][] pMatrix) {
+    public static List<Float>[] invert2x2Matrix(List<Float>[] pMatrix) {
         if (pMatrix.length != 2 || pMatrix[0].length != 2) {
             Throwable throwable = new IllegalArgumentException("Matrix must be 2x2.");
             BaseLogger.log(true, BaseLogLevel.WARNING, BlueLibCommon.Translation.log("math.error.inverting", "2x2 matrix"), throwable);
@@ -69,7 +69,7 @@ public class MatrixUtils {
             BaseLogger.log(true, BaseLogLevel.WARNING, BlueLibCommon.Translation.log("math.error.inverting", "2x2 matrix"), throwable);
             return new double[0][0];
         }
-        double[][] inverse = new double[2][2];
+        List<Float>[] inverse = new double[2][2];
         inverse[0][0] = pMatrix[1][1] / determinant;
         inverse[0][1] = -pMatrix[0][1] / determinant;
         inverse[1][0] = -pMatrix[1][0] / determinant;

@@ -21,8 +21,11 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
+import software.bluelib.client.loader.cache.model.ModelCache;
+import software.bluelib.client.loader.cache.model.BoneCache;
+import software.bluelib.client.loader.json.model.object.VertexData;
+import software.bluelib.client.loader.json.model.object.QuadData;
 import software.bluelib.loader.animatable.GeoAnimatable;
-import software.bluelib.loader.cache.object.*;
 import software.bluelib.loader.model.GeoModel;
 import software.bluelib.loader.renderer.GeoEntityRenderer;
 import software.bluelib.loader.util.RenderUtil;
@@ -38,22 +41,22 @@ public abstract class DynamicGeoEntityRenderer<T extends Entity & GeoAnimatable>
     }
 
     @Nullable
-    protected ResourceLocation getTextureOverrideForBone(GeoBone bone, T animatable, float pPartialTick) {
+    protected ResourceLocation getTextureOverrideForBone(BoneCache bone, T animatable, float pPartialTick) {
         return null;
     }
 
     @Nullable
-    protected RenderType getRenderTypeOverrideForBone(GeoBone bone, T animatable, ResourceLocation texturePath, MultiBufferSource pBufferSource, float pPartialTick) {
+    protected RenderType getRenderTypeOverrideForBone(BoneCache bone, T animatable, ResourceLocation texturePath, MultiBufferSource pBufferSource, float pPartialTick) {
         return null;
     }
 
-    protected boolean boneRenderOverride(PoseStack pPoseStack, GeoBone bone, MultiBufferSource pBufferSource, VertexConsumer buffer,
-            float pPartialTick, int pPackedLight, int pPackedOverlay, int colour) {
+    protected boolean boneRenderOverride(PoseStack pPoseStack, BoneCache bone, MultiBufferSource pBufferSource, VertexConsumer buffer,
+                                         float pPartialTick, int pPackedLight, int pPackedOverlay, int colour) {
         return false;
     }
 
     @Override
-    public void renderRecursively(PoseStack pPoseStack, T animatable, GeoBone bone, RenderType pRenderType, MultiBufferSource pBufferSource, VertexConsumer buffer, boolean pIsReRender, float pPartialTick, int pPackedLight, int pPackedOverlay, int colour) {
+    public void renderRecursively(PoseStack pPoseStack, T animatable, BoneCache bone, RenderType pRenderType, MultiBufferSource pBufferSource, VertexConsumer buffer, boolean pIsReRender, float pPartialTick, int pPackedLight, int pPackedOverlay, int colour) {
         pPoseStack.pushPose();
         RenderUtil.translateMatrixToBone(pPoseStack, bone);
         RenderUtil.translateToPivotPoint(pPoseStack, bone);
@@ -103,15 +106,15 @@ public abstract class DynamicGeoEntityRenderer<T extends Entity & GeoAnimatable>
     }
 
     @Override
-    public void postRender(PoseStack pPoseStack, T animatable, BakedGeoModel model, MultiBufferSource pBufferSource, @Nullable VertexConsumer buffer, boolean pIsReRender, float pPartialTick, int pPackedLight, int pPackedOverlay, int colour) {
+    public void postRender(PoseStack pPoseStack, T animatable, ModelCache model, MultiBufferSource pBufferSource, @Nullable VertexConsumer buffer, boolean pIsReRender, float pPartialTick, int pPackedLight, int pPackedOverlay, int colour) {
         this.textureOverride = null;
 
         super.postRender(pPoseStack, animatable, model, pBufferSource, buffer, pIsReRender, pPartialTick, pPackedLight, pPackedOverlay, colour);
     }
 
     @Override
-    public void createVerticesOfQuad(GeoQuad quad, Matrix4f poseState, Vector3f normal, VertexConsumer buffer,
-            int pPackedLight, int pPackedOverlay, int colour) {
+    public void createVerticesOfQuad(QuadData quad, Matrix4f poseState, Vector3f normal, VertexConsumer buffer,
+                                     int pPackedLight, int pPackedOverlay, int colour) {
         if (this.textureOverride == null) {
             super.createVerticesOfQuad(quad, poseState, normal, buffer, pPackedLight, pPackedOverlay,
                     colour);
@@ -129,7 +132,7 @@ public abstract class DynamicGeoEntityRenderer<T extends Entity & GeoAnimatable>
             return;
         }
 
-        for (GeoVertex vertex : quad.vertices()) {
+        for (VertexData vertex : quad.vertices()) {
             Vector4f vector4f = poseState.transform(new Vector4f(vertex.position().x(), vertex.position().y(), vertex.position().z(), 1.0f));
             float texU = (vertex.texU() * entityTextureSize.firstInt()) / boneTextureSize.firstInt();
             float texV = (vertex.texV() * entityTextureSize.secondInt()) / boneTextureSize.secondInt();

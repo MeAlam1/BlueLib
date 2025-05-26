@@ -5,17 +5,17 @@
  * If a copy of the MIT License was not distributed with this file,
  * You can obtain one at https://opensource.org/licenses/MIT.
  */
-package software.bluelib.loader.cache.object;
+package software.bluelib.client.loader.json.model.object;
 
 import org.joml.Vector3f;
 
-public record GeoVertex(Vector3f position, float texU, float texV) {
+public record VertexData(Vector3f position, float texU, float texV) {
 
-    public GeoVertex(double x, double y, double z) {
+    public VertexData(double x, double y, double z) {
         this(new Vector3f((float) x, (float) y, (float) z), 0, 0);
     }
 
-    public GeoVertex withUVs(float texU, float texV) {
-        return new GeoVertex(this.position, texU, texV);
+    public VertexData withUVs(float texU, float texV) {
+        return new VertexData(this.position, texU, texV);
     }
 }

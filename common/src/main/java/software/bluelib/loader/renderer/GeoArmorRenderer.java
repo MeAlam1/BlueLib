@@ -31,8 +31,8 @@ import software.bluelib.BlueLibConstants;
 import software.bluelib.loader.animatable.GeoAnimatable;
 import software.bluelib.loader.animatable.GeoItem;
 import software.bluelib.loader.animation.AnimationState;
-import software.bluelib.loader.cache.object.BakedGeoModel;
-import software.bluelib.loader.cache.object.GeoBone;
+import software.bluelib.client.loader.cache.model.ModelCache;
+import software.bluelib.client.loader.cache.model.BoneCache;
 import software.bluelib.loader.cache.texture.AnimatableTexture;
 import software.bluelib.loader.constant.DataTickets;
 import software.bluelib.loader.model.GeoModel;
@@ -54,15 +54,15 @@ public class GeoArmorRenderer<T extends Item & GeoItem> extends HumanoidModel im
     protected Matrix4f entityRenderTranslations = new Matrix4f();
     protected Matrix4f modelRenderTranslations = new Matrix4f();
 
-    protected BakedGeoModel lastModel = null;
-    protected GeoBone head = null;
-    protected GeoBone body = null;
-    protected GeoBone rightArm = null;
-    protected GeoBone leftArm = null;
-    protected GeoBone rightLeg = null;
-    protected GeoBone leftLeg = null;
-    protected GeoBone rightBoot = null;
-    protected GeoBone leftBoot = null;
+    protected ModelCache lastModel = null;
+    protected BoneCache head = null;
+    protected BoneCache body = null;
+    protected BoneCache rightArm = null;
+    protected BoneCache leftArm = null;
+    protected BoneCache rightLeg = null;
+    protected BoneCache leftLeg = null;
+    protected BoneCache rightBoot = null;
+    protected BoneCache leftBoot = null;
 
     protected Entity currentEntity = null;
     protected ItemStack currentStack = null;
@@ -135,42 +135,42 @@ public class GeoArmorRenderer<T extends Item & GeoItem> extends HumanoidModel im
     }
 
     @Nullable
-    public GeoBone getHeadBone(GeoModel<T> pModel) {
+    public BoneCache getHeadBone(GeoModel<T> pModel) {
         return pModel.getBone("armorHead").orElse(null);
     }
 
     @Nullable
-    public GeoBone getBodyBone(GeoModel<T> pModel) {
+    public BoneCache getBodyBone(GeoModel<T> pModel) {
         return pModel.getBone("armorBody").orElse(null);
     }
 
     @Nullable
-    public GeoBone getRightArmBone(GeoModel<T> pModel) {
+    public BoneCache getRightArmBone(GeoModel<T> pModel) {
         return pModel.getBone("armorRightArm").orElse(null);
     }
 
     @Nullable
-    public GeoBone getLeftArmBone(GeoModel<T> pModel) {
+    public BoneCache getLeftArmBone(GeoModel<T> pModel) {
         return pModel.getBone("armorLeftArm").orElse(null);
     }
 
     @Nullable
-    public GeoBone getRightLegBone(GeoModel<T> pModel) {
+    public BoneCache getRightLegBone(GeoModel<T> pModel) {
         return pModel.getBone("armorRightLeg").orElse(null);
     }
 
     @Nullable
-    public GeoBone getLeftLegBone(GeoModel<T> pModel) {
+    public BoneCache getLeftLegBone(GeoModel<T> pModel) {
         return pModel.getBone("armorLeftLeg").orElse(null);
     }
 
     @Nullable
-    public GeoBone getRightBootBone(GeoModel<T> pModel) {
+    public BoneCache getRightBootBone(GeoModel<T> pModel) {
         return pModel.getBone("armorRightBoot").orElse(null);
     }
 
     @Nullable
-    public GeoBone getLeftBootBone(GeoModel<T> pModel) {
+    public BoneCache getLeftBootBone(GeoModel<T> pModel) {
         return pModel.getBone("armorLeftBoot").orElse(null);
     }
 
@@ -180,9 +180,9 @@ public class GeoArmorRenderer<T extends Item & GeoItem> extends HumanoidModel im
     }
 
     @Override
-    public void preRender(PoseStack pPoseStack, T pAnimatable, BakedGeoModel pModel, @Nullable MultiBufferSource pBufferSource,
-            @Nullable VertexConsumer buffer, boolean pIsReRender, float pPartialTick, int pPackedLight,
-            int pPackedOverlay, int colour) {
+    public void preRender(PoseStack pPoseStack, T pAnimatable, ModelCache pModel, @Nullable MultiBufferSource pBufferSource,
+                          @Nullable VertexConsumer buffer, boolean pIsReRender, float pPartialTick, int pPackedLight,
+                          int pPackedOverlay, int colour) {
         this.entityRenderTranslations = new Matrix4f(pPoseStack.last().pose());
 
         applyBaseModel(this.baseModel);
@@ -216,9 +216,9 @@ public class GeoArmorRenderer<T extends Item & GeoItem> extends HumanoidModel im
     }
 
     @Override
-    public void actuallyRender(PoseStack pPoseStack, T pAnimatable, BakedGeoModel pModel, @Nullable RenderType pRenderType,
-            MultiBufferSource pBufferSource, @Nullable VertexConsumer pBuffer, boolean pIsReRender, float pPartialTick,
-            int pPackedLight, int pPackedOverlay, int colour) {
+    public void actuallyRender(PoseStack pPoseStack, T pAnimatable, ModelCache pModel, @Nullable RenderType pRenderType,
+                               MultiBufferSource pBufferSource, @Nullable VertexConsumer pBuffer, boolean pIsReRender, float pPartialTick,
+                               int pPackedLight, int pPackedOverlay, int colour) {
         pPoseStack.pushPose();
         pPoseStack.translate(0, 24 / 16f, 0);
         pPoseStack.scale(-1, -1, 1);
@@ -264,8 +264,8 @@ public class GeoArmorRenderer<T extends Item & GeoItem> extends HumanoidModel im
     public void doArmourPostRenderCleanup() {}
 
     @Override
-    public void renderRecursively(PoseStack pPoseStack, T pAnimatable, GeoBone pBone, RenderType pRenderType, MultiBufferSource pBufferSource, VertexConsumer pBuffer, boolean pIsReRender, float pPartialTick, int pPackedLight,
-            int pPackedOverlay, int pColour) {
+    public void renderRecursively(PoseStack pPoseStack, T pAnimatable, BoneCache pBone, RenderType pRenderType, MultiBufferSource pBufferSource, VertexConsumer pBuffer, boolean pIsReRender, float pPartialTick, int pPackedLight,
+                                  int pPackedOverlay, int pColour) {
         if (pBone.isTrackingMatrices()) {
             Matrix4f poseState = new Matrix4f(pPoseStack.last().pose());
 
@@ -276,7 +276,7 @@ public class GeoArmorRenderer<T extends Item & GeoItem> extends HumanoidModel im
         GeoRenderer.super.renderRecursively(pPoseStack, pAnimatable, pBone, pRenderType, pBufferSource, pBuffer, pIsReRender, pPartialTick, pPackedLight, pPackedOverlay, pColour);
     }
 
-    protected void grabRelevantBones(BakedGeoModel pBakedModel) {
+    protected void grabRelevantBones(ModelCache pBakedModel) {
         if (this.lastModel == pBakedModel)
             return;
 
@@ -361,7 +361,7 @@ public class GeoArmorRenderer<T extends Item & GeoItem> extends HumanoidModel im
         setAllVisible(false);
 
         currentPart.visible = true;
-        GeoBone bone = null;
+        BoneCache bone = null;
 
         if (currentPart == pModel.hat || currentPart == pModel.head) {
             bone = this.head;
@@ -472,7 +472,7 @@ public class GeoArmorRenderer<T extends Item & GeoItem> extends HumanoidModel im
         }
     }
 
-    protected void setBoneVisible(@Nullable GeoBone bone, boolean visible) {
+    protected void setBoneVisible(@Nullable BoneCache bone, boolean visible) {
         if (bone == null)
             return;
 
@@ -491,12 +491,12 @@ public class GeoArmorRenderer<T extends Item & GeoItem> extends HumanoidModel im
     }
 
     @Override
-    public boolean firePreRenderEvent(PoseStack pPoseStack, BakedGeoModel pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight) {
+    public boolean firePreRenderEvent(PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight) {
         return BlueLibConstants.PlatformHelper.EVENT_PROXY.fireArmorPreRender(this, pPoseStack, pModel, pBufferSource, pPartialTick, pPackedLight);
     }
 
     @Override
-    public void firePostRenderEvent(PoseStack pPoseStack, BakedGeoModel pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight) {
+    public void firePostRenderEvent(PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight) {
         BlueLibConstants.PlatformHelper.EVENT_PROXY.fireArmorPostRender(this, pPoseStack, pModel, pBufferSource, pPartialTick, pPackedLight);
     }
 }

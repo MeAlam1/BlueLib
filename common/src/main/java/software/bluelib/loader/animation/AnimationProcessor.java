@@ -19,14 +19,14 @@ import software.bluelib.loader.animatable.GeoAnimatable;
 import software.bluelib.loader.animation.keyframe.AnimationPoint;
 import software.bluelib.loader.animation.keyframe.BoneAnimationQueue;
 import software.bluelib.loader.animation.state.BoneSnapshot;
-import software.bluelib.loader.cache.object.BakedGeoModel;
-import software.bluelib.loader.cache.object.GeoBone;
+import software.bluelib.client.loader.cache.model.ModelCache;
+import software.bluelib.client.loader.cache.model.BoneCache;
 import software.bluelib.loader.loading.math.MolangQueries;
 import software.bluelib.loader.model.GeoModel;
 
 public class AnimationProcessor<T extends GeoAnimatable> {
 
-    private final Map<String, GeoBone> bones = new Object2ObjectOpenHashMap<>();
+    private final Map<String, BoneCache> bones = new Object2ObjectOpenHashMap<>();
     private final GeoModel<T> model;
 
     public boolean reloadAnimations = false;
@@ -77,7 +77,7 @@ public class AnimationProcessor<T extends GeoAnimatable> {
             controller.process(model, state, this.bones, boneSnapshots, animTime, crashWhenCantFindBone);
 
             for (BoneAnimationQueue boneAnimation : controller.getBoneAnimationQueues().values()) {
-                GeoBone bone = boneAnimation.bone();
+                BoneCache bone = boneAnimation.bone();
                 BoneSnapshot snapshot = boneSnapshots.get(bone.getName());
                 BoneSnapshot initialSnapshot = bone.getInitialSnapshot();
 
@@ -124,7 +124,7 @@ public class AnimationProcessor<T extends GeoAnimatable> {
         this.reloadAnimations = false;
         double resetTickLength = animatable.getBoneResetTime();
 
-        for (GeoBone bone : getRegisteredBones()) {
+        for (BoneCache bone : getRegisteredBones()) {
             if (!bone.hasRotationChanged()) {
                 BoneSnapshot initialSnapshot = bone.getInitialSnapshot();
                 BoneSnapshot saveSnapshot = boneSnapshots.get(bone.getName());
@@ -214,11 +214,11 @@ public class AnimationProcessor<T extends GeoAnimatable> {
     }
 
     private void resetBoneTransformationMarkers() {
-        getRegisteredBones().forEach(GeoBone::resetStateChanges);
+        getRegisteredBones().forEach(BoneCache::resetStateChanges);
     }
 
     private Map<String, BoneSnapshot> updateBoneSnapshots(Map<String, BoneSnapshot> snapshots) {
-        for (GeoBone bone : getRegisteredBones()) {
+        for (BoneCache bone : getRegisteredBones()) {
             if (!snapshots.containsKey(bone.getName()))
                 snapshots.put(bone.getName(), BoneSnapshot.copy(bone.getInitialSnapshot()));
         }
@@ -226,28 +226,28 @@ public class AnimationProcessor<T extends GeoAnimatable> {
         return snapshots;
     }
 
-    public GeoBone getBone(String boneName) {
+    public BoneCache getBone(String boneName) {
         return this.bones.get(boneName);
     }
 
-    public void registerGeoBone(GeoBone bone) {
+    public void registerGeoBone(BoneCache bone) {
         bone.saveInitialSnapshot();
         this.bones.put(bone.getName(), bone);
 
-        for (GeoBone child : bone.getChildBones()) {
+        for (BoneCache child : bone.getChildBones()) {
             registerGeoBone(child);
         }
     }
 
-    public void setActiveModel(BakedGeoModel model) {
+    public void setActiveModel(ModelCache model) {
         this.bones.clear();
 
-        for (GeoBone bone : model.topLevelBones()) {
+        for (BoneCache bone : model.topLevelBones()) {
             registerGeoBone(bone);
         }
     }
 
-    public Collection<GeoBone> getRegisteredBones() {
+    public Collection<BoneCache> getRegisteredBones() {
         return this.bones.values();
     }
 

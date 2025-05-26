@@ -20,8 +20,8 @@ import org.joml.Matrix4f;
 import software.bluelib.BlueLibConstants;
 import software.bluelib.loader.animatable.GeoAnimatable;
 import software.bluelib.loader.animation.AnimationState;
-import software.bluelib.loader.cache.object.BakedGeoModel;
-import software.bluelib.loader.cache.object.GeoBone;
+import software.bluelib.client.loader.cache.model.ModelCache;
+import software.bluelib.client.loader.cache.model.BoneCache;
 import software.bluelib.loader.cache.texture.AnimatableTexture;
 import software.bluelib.loader.model.GeoModel;
 import software.bluelib.loader.renderer.layer.GeoRenderLayer;
@@ -93,7 +93,7 @@ public class GeoObjectRenderer<T extends GeoAnimatable> implements GeoRenderer<T
     }
 
     @Override
-    public void preRender(PoseStack pPoseStack, T pAnimatable, BakedGeoModel pModel, @Nullable MultiBufferSource pBufferSource, @Nullable VertexConsumer pBuffer, boolean pIsReRender, float pPartialTick, int pPackedLight, int pPackedOverlay, int pColour) {
+    public void preRender(PoseStack pPoseStack, T pAnimatable, ModelCache pModel, @Nullable MultiBufferSource pBufferSource, @Nullable VertexConsumer pBuffer, boolean pIsReRender, float pPartialTick, int pPackedLight, int pPackedOverlay, int pColour) {
         this.objectRenderTranslations = new Matrix4f(pPoseStack.last().pose());
 
         scaleModelForRender(this.scaleWidth, this.scaleHeight, pPoseStack, pAnimatable, pModel, pIsReRender, pPartialTick, pPackedLight, pPackedOverlay);
@@ -102,9 +102,9 @@ public class GeoObjectRenderer<T extends GeoAnimatable> implements GeoRenderer<T
     }
 
     @Override
-    public void actuallyRender(PoseStack pPoseStack, T pAnimatable, BakedGeoModel pModel, @Nullable RenderType pRenderType,
-            MultiBufferSource pBufferSource, @Nullable VertexConsumer pBuffer, boolean pIsReRender, float pPartialTick,
-            int pPackedLight, int pPackedOverlay, int pColour) {
+    public void actuallyRender(PoseStack pPoseStack, T pAnimatable, ModelCache pModel, @Nullable RenderType pRenderType,
+                               MultiBufferSource pBufferSource, @Nullable VertexConsumer pBuffer, boolean pIsReRender, float pPartialTick,
+                               int pPackedLight, int pPackedOverlay, int pColour) {
         pPoseStack.pushPose();
 
         if (!pIsReRender) {
@@ -131,8 +131,8 @@ public class GeoObjectRenderer<T extends GeoAnimatable> implements GeoRenderer<T
     }
 
     @Override
-    public void renderRecursively(PoseStack pPoseStack, T pAnimatable, GeoBone pBone, RenderType pRenderType, MultiBufferSource pBufferSource, VertexConsumer pBuffer, boolean pIsReRender, float pPartialTick, int pPackedLight,
-            int pPackedOverlay, int pColour) {
+    public void renderRecursively(PoseStack pPoseStack, T pAnimatable, BoneCache pBone, RenderType pRenderType, MultiBufferSource pBufferSource, VertexConsumer pBuffer, boolean pIsReRender, float pPartialTick, int pPackedLight,
+                                  int pPackedOverlay, int pColour) {
         if (pBone.isTrackingMatrices()) {
             Matrix4f poseState = new Matrix4f(pPoseStack.last().pose());
 
@@ -155,12 +155,12 @@ public class GeoObjectRenderer<T extends GeoAnimatable> implements GeoRenderer<T
     }
 
     @Override
-    public boolean firePreRenderEvent(PoseStack pPoseStack, BakedGeoModel pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight) {
+    public boolean firePreRenderEvent(PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight) {
         return BlueLibConstants.PlatformHelper.EVENT_PROXY.fireObjectPreRender(this, pPoseStack, pModel, pBufferSource, pPartialTick, pPackedLight);
     }
 
     @Override
-    public void firePostRenderEvent(PoseStack pPoseStack, BakedGeoModel pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight) {
+    public void firePostRenderEvent(PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight) {
         BlueLibConstants.PlatformHelper.EVENT_PROXY.fireObjectPostRender(this, pPoseStack, pModel, pBufferSource, pPartialTick, pPackedLight);
     }
 }

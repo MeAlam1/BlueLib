@@ -23,8 +23,12 @@ import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
+import software.bluelib.client.loader.cache.model.ModelCache;
+import software.bluelib.client.loader.cache.model.BoneCache;
+import software.bluelib.client.loader.cache.model.CubeCache;
+import software.bluelib.client.loader.json.model.object.VertexData;
+import software.bluelib.client.loader.json.model.object.QuadData;
 import software.bluelib.loader.animatable.GeoAnimatable;
-import software.bluelib.loader.cache.object.*;
 import software.bluelib.loader.loading.math.MolangQueries;
 import software.bluelib.loader.model.GeoModel;
 import software.bluelib.loader.renderer.layer.GeoRenderLayer;
@@ -76,7 +80,7 @@ public interface GeoRenderer<T extends GeoAnimatable> {
 
         int renderColor = getRenderColor(pAnimatable, pPartialTick, pPackedLight).argbInt();
         int pPackedOverlay = getPackedOverlay(pAnimatable, 0, pPartialTick);
-        BakedGeoModel pModel = getGeoModel().getBakedModel(getGeoModel().getModelResource(pAnimatable, this));
+        ModelCache pModel = getGeoModel().getBakedModel(getGeoModel().getModelResource(pAnimatable, this));
 
         if (pRenderType == null)
             pRenderType = getRenderType(pAnimatable, getTextureLocation(pAnimatable), pBufferSource, pPartialTick);
@@ -102,9 +106,9 @@ public interface GeoRenderer<T extends GeoAnimatable> {
         MolangQueries.clearActor();
     }
 
-    default void reRender(BakedGeoModel pModel, PoseStack pPoseStack, MultiBufferSource pBufferSource, T pAnimatable,
-            RenderType pRenderType, VertexConsumer pBuffer, float pPartialTick,
-            int pPackedLight, int pPackedOverlay, int pColour) {
+    default void reRender(ModelCache pModel, PoseStack pPoseStack, MultiBufferSource pBufferSource, T pAnimatable,
+                          RenderType pRenderType, VertexConsumer pBuffer, float pPartialTick,
+                          int pPackedLight, int pPackedOverlay, int pColour) {
         pPoseStack.pushPose();
         preRender(pPoseStack, pAnimatable, pModel, pBufferSource, pBuffer, true, pPartialTick, pPackedLight, pPackedOverlay, pColour);
         actuallyRender(pPoseStack, pAnimatable, pModel, pRenderType, pBufferSource, pBuffer, true, pPartialTick, pPackedLight, pPackedOverlay, pColour);
@@ -112,9 +116,9 @@ public interface GeoRenderer<T extends GeoAnimatable> {
         pPoseStack.popPose();
     }
 
-    default void actuallyRender(PoseStack pPoseStack, T pAnimatable, BakedGeoModel pModel, @Nullable RenderType pRenderType,
-            MultiBufferSource pBufferSource, @Nullable VertexConsumer pBuffer, boolean pIsReRender, float pPartialTick,
-            int pPackedLight, int pPackedOverlay, int pColour) {
+    default void actuallyRender(PoseStack pPoseStack, T pAnimatable, ModelCache pModel, @Nullable RenderType pRenderType,
+                                MultiBufferSource pBufferSource, @Nullable VertexConsumer pBuffer, boolean pIsReRender, float pPartialTick,
+                                int pPackedLight, int pPackedOverlay, int pColour) {
         if (pBuffer == null) {
             if (pRenderType == null)
                 return;
@@ -124,21 +128,21 @@ public interface GeoRenderer<T extends GeoAnimatable> {
 
         updateAnimatedTextureFrame(pAnimatable);
 
-        for (GeoBone group : pModel.topLevelBones()) {
+        for (BoneCache group : pModel.topLevelBones()) {
             renderRecursively(pPoseStack, pAnimatable, group, pRenderType, pBufferSource, pBuffer, pIsReRender, pPartialTick, pPackedLight,
                     pPackedOverlay, pColour);
         }
     }
 
-    default void preApplyRenderLayers(PoseStack pPoseStack, T pAnimatable, BakedGeoModel pModel, @Nullable RenderType pRenderType, MultiBufferSource pBufferSource,
-            @Nullable VertexConsumer pBuffer, float pPartialTick, int pPackedLight, int pPackedOverlay) {
+    default void preApplyRenderLayers(PoseStack pPoseStack, T pAnimatable, ModelCache pModel, @Nullable RenderType pRenderType, MultiBufferSource pBufferSource,
+                                      @Nullable VertexConsumer pBuffer, float pPartialTick, int pPackedLight, int pPackedOverlay) {
         for (GeoRenderLayer<T> renderLayer : getRenderLayers()) {
             renderLayer.preRender(pPoseStack, pAnimatable, pModel, pRenderType, pBufferSource, pBuffer, pPartialTick, pPackedLight, pPackedOverlay);
         }
     }
 
-    default void applyRenderLayersForBone(PoseStack pPoseStack, T pAnimatable, GeoBone bone, RenderType pRenderType, MultiBufferSource pBufferSource,
-            VertexConsumer pBuffer, float pPartialTick, int pPackedLight, int pPackedOverlay) {
+    default void applyRenderLayersForBone(PoseStack pPoseStack, T pAnimatable, BoneCache bone, RenderType pRenderType, MultiBufferSource pBufferSource,
+                                          VertexConsumer pBuffer, float pPartialTick, int pPackedLight, int pPackedOverlay) {
         for (GeoRenderLayer<T> renderLayer : getRenderLayers()) {
             renderLayer.renderForBone(pPoseStack, pAnimatable, bone, pRenderType, pBufferSource, pBuffer, pPartialTick, pPackedLight, pPackedOverlay);
         }
@@ -146,26 +150,26 @@ public interface GeoRenderer<T extends GeoAnimatable> {
 
     // TODO append renderColor to layers
 
-    default void applyRenderLayers(PoseStack pPoseStack, T pAnimatable, BakedGeoModel pModel, @Nullable RenderType pRenderType, MultiBufferSource pBufferSource,
-            @Nullable VertexConsumer pBuffer, float pPartialTick, int pPackedLight, int pPackedOverlay) {
+    default void applyRenderLayers(PoseStack pPoseStack, T pAnimatable, ModelCache pModel, @Nullable RenderType pRenderType, MultiBufferSource pBufferSource,
+                                   @Nullable VertexConsumer pBuffer, float pPartialTick, int pPackedLight, int pPackedOverlay) {
         for (GeoRenderLayer<T> renderLayer : getRenderLayers()) {
             renderLayer.render(pPoseStack, pAnimatable, pModel, pRenderType, pBufferSource, pBuffer, pPartialTick, pPackedLight, pPackedOverlay);
         }
     }
 
-    default void preRender(PoseStack pPoseStack, T pAnimatable, BakedGeoModel pModel, @Nullable MultiBufferSource pBufferSource, @Nullable VertexConsumer pBuffer, boolean pIsReRender, float pPartialTick, int pPackedLight,
-            int pPackedOverlay, int pColour) {}
+    default void preRender(PoseStack pPoseStack, T pAnimatable, ModelCache pModel, @Nullable MultiBufferSource pBufferSource, @Nullable VertexConsumer pBuffer, boolean pIsReRender, float pPartialTick, int pPackedLight,
+                           int pPackedOverlay, int pColour) {}
 
-    default void postRender(PoseStack pPoseStack, T pAnimatable, BakedGeoModel pModel, MultiBufferSource pBufferSource, @Nullable VertexConsumer pBuffer, boolean pIsReRender, float pPartialTick, int pPackedLight, int pPackedOverlay, int pColour) {}
+    default void postRender(PoseStack pPoseStack, T pAnimatable, ModelCache pModel, MultiBufferSource pBufferSource, @Nullable VertexConsumer pBuffer, boolean pIsReRender, float pPartialTick, int pPackedLight, int pPackedOverlay, int pColour) {}
 
-    default void renderFinal(PoseStack pPoseStack, T pAnimatable, BakedGeoModel pModel, MultiBufferSource pBufferSource, @Nullable VertexConsumer pBuffer, float pPartialTick, int pPackedLight,
-            int pPackedOverlay, int pColour) {}
+    default void renderFinal(PoseStack pPoseStack, T pAnimatable, ModelCache pModel, MultiBufferSource pBufferSource, @Nullable VertexConsumer pBuffer, float pPartialTick, int pPackedLight,
+                             int pPackedOverlay, int pColour) {}
 
     default void doPostRenderCleanup() {}
 
-    default void renderRecursively(PoseStack pPoseStack, T pAnimatable, GeoBone pBone, RenderType pRenderType, MultiBufferSource pBufferSource,
-            VertexConsumer pBuffer, boolean pIsReRender, float pPartialTick, int pPackedLight,
-            int pPackedOverlay, int pColour) {
+    default void renderRecursively(PoseStack pPoseStack, T pAnimatable, BoneCache pBone, RenderType pRenderType, MultiBufferSource pBufferSource,
+                                   VertexConsumer pBuffer, boolean pIsReRender, float pPartialTick, int pPackedLight,
+                                   int pPackedOverlay, int pColour) {
         pPoseStack.pushPose();
         RenderUtil.prepMatrixForBone(pPoseStack, pBone);
 
@@ -180,30 +184,30 @@ public interface GeoRenderer<T extends GeoAnimatable> {
         pPoseStack.popPose();
     }
 
-    default void renderCubesOfBone(PoseStack pPoseStack, GeoBone pBone, VertexConsumer pBuffer, int pPackedLight,
-            int pPackedOverlay, int pColour) {
+    default void renderCubesOfBone(PoseStack pPoseStack, BoneCache pBone, VertexConsumer pBuffer, int pPackedLight,
+                                   int pPackedOverlay, int pColour) {
         if (pBone.isHidden())
             return;
 
-        for (GeoCube cube : pBone.getCubes()) {
+        for (CubeCache cube : pBone.getCubes()) {
             pPoseStack.pushPose();
             renderCube(pPoseStack, cube, pBuffer, pPackedLight, pPackedOverlay, pColour);
             pPoseStack.popPose();
         }
     }
 
-    default void renderChildBones(PoseStack pPoseStack, T pAnimatable, GeoBone pBone, RenderType pRenderType, MultiBufferSource pBufferSource, VertexConsumer pBuffer,
-            boolean pIsReRender, float pPartialTick, int pPackedLight, int pPackedOverlay, int pColour) {
+    default void renderChildBones(PoseStack pPoseStack, T pAnimatable, BoneCache pBone, RenderType pRenderType, MultiBufferSource pBufferSource, VertexConsumer pBuffer,
+                                  boolean pIsReRender, float pPartialTick, int pPackedLight, int pPackedOverlay, int pColour) {
         if (pBone.isHidingChildren())
             return;
 
-        for (GeoBone childBone : pBone.getChildBones()) {
+        for (BoneCache childBone : pBone.getChildBones()) {
             renderRecursively(pPoseStack, pAnimatable, childBone, pRenderType, pBufferSource, pBuffer, pIsReRender, pPartialTick, pPackedLight, pPackedOverlay, pColour);
         }
     }
 
-    default void renderCube(PoseStack pPoseStack, GeoCube pCube, VertexConsumer pBuffer, int pPackedLight,
-            int pPackedOverlay, int pColour) {
+    default void renderCube(PoseStack pPoseStack, CubeCache pCube, VertexConsumer pBuffer, int pPackedLight,
+                            int pPackedOverlay, int pColour) {
         RenderUtil.translateToPivotPoint(pPoseStack, pCube);
         RenderUtil.rotateMatrixAroundCube(pPoseStack, pCube);
         RenderUtil.translateAwayFromPivotPoint(pPoseStack, pCube);
@@ -211,7 +215,7 @@ public interface GeoRenderer<T extends GeoAnimatable> {
         Matrix3f normalisedPoseState = pPoseStack.last().normal();
         Matrix4f poseState = new Matrix4f(pPoseStack.last().pose());
 
-        for (GeoQuad quad : pCube.quads()) {
+        for (QuadData quad : pCube.quads()) {
             if (quad == null)
                 continue;
 
@@ -222,9 +226,9 @@ public interface GeoRenderer<T extends GeoAnimatable> {
         }
     }
 
-    default void createVerticesOfQuad(GeoQuad pQuad, Matrix4f pPoseState, Vector3f pNormal, VertexConsumer pBuffer,
-            int pPackedLight, int pPackedOverlay, int pColour) {
-        for (GeoVertex vertex : pQuad.vertices()) {
+    default void createVerticesOfQuad(QuadData pQuad, Matrix4f pPoseState, Vector3f pNormal, VertexConsumer pBuffer,
+                                      int pPackedLight, int pPackedOverlay, int pColour) {
+        for (VertexData vertex : pQuad.vertices()) {
             Vector3f position = vertex.position();
             Vector4f vector4f = pPoseState.transform(new Vector4f(position.x(), position.y(), position.z(), 1.0f));
 
@@ -235,11 +239,11 @@ public interface GeoRenderer<T extends GeoAnimatable> {
 
     void fireCompileRenderLayersEvent();
 
-    boolean firePreRenderEvent(PoseStack pPoseStack, BakedGeoModel pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight);
+    boolean firePreRenderEvent(PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight);
 
-    void firePostRenderEvent(PoseStack pPoseStack, BakedGeoModel pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight);
+    void firePostRenderEvent(PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight);
 
-    default void scaleModelForRender(float widthScale, float heightScale, PoseStack pPoseStack, T pAnimatable, BakedGeoModel pModel, boolean pIsReRender, float pPartialTick, int pPackedLight, int pPackedOverlay) {
+    default void scaleModelForRender(float widthScale, float heightScale, PoseStack pPoseStack, T pAnimatable, ModelCache pModel, boolean pIsReRender, float pPartialTick, int pPackedLight, int pPackedOverlay) {
         if (!pIsReRender && (widthScale != 1 || heightScale != 1))
             pPoseStack.scale(widthScale, heightScale, widthScale);
     }

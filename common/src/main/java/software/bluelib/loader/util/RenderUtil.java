@@ -33,20 +33,22 @@ import org.joml.Quaternionf;
 import org.joml.Vector3f;
 import software.bluelib.BlueLibConstants;
 import software.bluelib.loader.animatable.GeoAnimatable;
-import software.bluelib.loader.cache.object.GeoBone;
-import software.bluelib.loader.cache.object.GeoCube;
+import software.bluelib.client.loader.cache.model.BoneCache;
+import software.bluelib.client.loader.cache.model.CubeCache;
 import software.bluelib.loader.model.GeoModel;
 import software.bluelib.loader.renderer.GeoRenderer;
 import software.bluelib.loader.renderer.GeoReplacedEntityRenderer;
 
+import java.util.List;
+
 @SuppressWarnings("unused")
 public final class RenderUtil {
 
-	public static void translateMatrixToBone(PoseStack pPoseStack, GeoBone pBone) {
+	public static void translateMatrixToBone(PoseStack pPoseStack, BoneCache pBone) {
 		pPoseStack.translate(-pBone.getPosX() / 16f, pBone.getPosY() / 16f, pBone.getPosZ() / 16f);
 	}
 
-	public static void rotateMatrixAroundBone(PoseStack pPoseStack, GeoBone pBone) {
+	public static void rotateMatrixAroundBone(PoseStack pPoseStack, BoneCache pBone) {
 		if (pBone.getRotZ() != 0)
 			pPoseStack.mulPose(Axis.ZP.rotation(pBone.getRotZ()));
 
@@ -57,7 +59,7 @@ public final class RenderUtil {
 			pPoseStack.mulPose(Axis.XP.rotation(pBone.getRotX()));
 	}
 
-	public static void rotateMatrixAroundCube(PoseStack pPoseStack, GeoCube pCube) {
+	public static void rotateMatrixAroundCube(PoseStack pPoseStack, CubeCache pCube) {
 		Vec3 rotation = pCube.rotation();
 
 		pPoseStack.mulPose(new Quaternionf().rotationXYZ(0, 0, (float) rotation.z()));
@@ -65,35 +67,35 @@ public final class RenderUtil {
 		pPoseStack.mulPose(new Quaternionf().rotationXYZ((float) rotation.x(), 0, 0));
 	}
 
-	public static void scaleMatrixForBone(PoseStack pPoseStack, GeoBone pBone) {
+	public static void scaleMatrixForBone(PoseStack pPoseStack, BoneCache pBone) {
 		pPoseStack.scale(pBone.getScaleX(), pBone.getScaleY(), pBone.getScaleZ());
 	}
 
-	public static void translateToPivotPoint(PoseStack pPoseStack, GeoCube pCube) {
+	public static void translateToPivotPoint(PoseStack pPoseStack, CubeCache pCube) {
 		Vec3 pivot = pCube.pivot();
 		pPoseStack.translate(pivot.x() / 16f, pivot.y() / 16f, pivot.z() / 16f);
 	}
 
-	public static void translateToPivotPoint(PoseStack pPoseStack, GeoBone pBone) {
+	public static void translateToPivotPoint(PoseStack pPoseStack, BoneCache pBone) {
 		pPoseStack.translate(pBone.getPivotX() / 16f, pBone.getPivotY() / 16f, pBone.getPivotZ() / 16f);
 	}
 
-	public static void translateAwayFromPivotPoint(PoseStack pPoseStack, GeoCube pCube) {
+	public static void translateAwayFromPivotPoint(PoseStack pPoseStack, CubeCache pCube) {
 		Vec3 pivot = pCube.pivot();
 
 		pPoseStack.translate(-pivot.x() / 16f, -pivot.y() / 16f, -pivot.z() / 16f);
 	}
 
-	public static void translateAwayFromPivotPoint(PoseStack pPoseStack, GeoBone pBone) {
+	public static void translateAwayFromPivotPoint(PoseStack pPoseStack, BoneCache pBone) {
 		pPoseStack.translate(-pBone.getPivotX() / 16f, -pBone.getPivotY() / 16f, -pBone.getPivotZ() / 16f);
 	}
 
-	public static void translateAndRotateMatrixForBone(PoseStack pPoseStack, GeoBone pBone) {
+	public static void translateAndRotateMatrixForBone(PoseStack pPoseStack, BoneCache pBone) {
 		translateToPivotPoint(pPoseStack, pBone);
 		rotateMatrixAroundBone(pPoseStack, pBone);
 	}
 
-	public static void prepMatrixForBone(PoseStack pPoseStack, GeoBone pBone) {
+	public static void prepMatrixForBone(PoseStack pPoseStack, BoneCache pBone) {
 		translateMatrixToBone(pPoseStack, pBone);
 		translateToPivotPoint(pPoseStack, pBone);
 		rotateMatrixAroundBone(pPoseStack, pBone);
@@ -160,15 +162,15 @@ public final class RenderUtil {
 		return pInput ? 1f : 0f;
 	}
 
-	public static Vec3 arrayToVec(double[] pArray) {
-		return new Vec3(pArray[0], pArray[1], pArray[2]);
+	public static Vec3 listToVec(List<Float> pArray) {
+		return new Vec3(pArray.get(0), pArray.get(1), pArray.get(2));
 	}
 
-	public static void matchModelPartRot(ModelPart pModelPart, GeoBone pBone) {
+	public static void matchModelPartRot(ModelPart pModelPart, BoneCache pBone) {
 		pBone.updateRotation(-pModelPart.xRot, -pModelPart.yRot, pModelPart.zRot);
 	}
 
-	public static void fixInvertedFlatCube(GeoCube pCube, Vector3f pNormal) {
+	public static void fixInvertedFlatCube(CubeCache pCube, Vector3f pNormal) {
 		if (pNormal.x() < 0 && (pCube.size().y() == 0 || pCube.size().z() == 0))
 			pNormal.mul(-1, 1, 1);
 

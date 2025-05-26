@@ -22,9 +22,9 @@ import software.bluelib.loader.animation.AnimatableManager;
 import software.bluelib.loader.animation.Animation;
 import software.bluelib.loader.animation.AnimationProcessor;
 import software.bluelib.loader.animation.AnimationState;
-import software.bluelib.loader.cache.GeckoLibCache;
-import software.bluelib.loader.cache.object.BakedGeoModel;
-import software.bluelib.loader.cache.object.GeoBone;
+import software.bluelib.client.loader.cache.ResourceCache;
+import software.bluelib.client.loader.cache.model.ModelCache;
+import software.bluelib.client.loader.cache.model.BoneCache;
 import software.bluelib.loader.constant.DataTickets;
 import software.bluelib.loader.constant.dataticket.DataTicket;
 import software.bluelib.loader.loading.object.BakedAnimations;
@@ -35,7 +35,7 @@ public abstract class GeoModel<T extends GeoAnimatable> {
 
     private final AnimationProcessor<T> processor = new AnimationProcessor<>(this);
 
-    private BakedGeoModel currentModel = null;
+    private ModelCache currentModel = null;
     private double animTime;
     private double lastGameTickTime;
     private long lastRenderedInstance = -1;
@@ -69,8 +69,8 @@ public abstract class GeoModel<T extends GeoAnimatable> {
         return RenderType.entityCutoutNoCull(texture);
     }
 
-    public BakedGeoModel getBakedModel(ResourceLocation location) {
-        BakedGeoModel model = GeckoLibCache.getBakedModels().get(location);
+    public ModelCache getBakedModel(ResourceLocation location) {
+        ModelCache model = ResourceCache.getBakedModels().get(location);
 
         if (model == null) {
             if (!location.getPath().contains("geo/"))
@@ -87,21 +87,21 @@ public abstract class GeoModel<T extends GeoAnimatable> {
         return this.currentModel;
     }
 
-    public Optional<GeoBone> getBone(String name) {
+    public Optional<BoneCache> getBone(String name) {
         return Optional.ofNullable(getAnimationProcessor().getBone(name));
     }
 
     @Nullable
     public Animation getAnimation(T animatable, String name) {
         ResourceLocation location = getAnimationResource(animatable);
-        BakedAnimations bakedAnimations = GeckoLibCache.getBakedAnimations().get(location);
+        BakedAnimations bakedAnimations = ResourceCache.getBakedAnimations().get(location);
         Animation animation = bakedAnimations != null ? bakedAnimations.getAnimation(name) : null;
 
         if (animation != null)
             return animation;
 
         for (ResourceLocation fallbackLocation : getAnimationResourceFallbacks(animatable)) {
-            bakedAnimations = GeckoLibCache.getBakedAnimations().get(location = fallbackLocation);
+            bakedAnimations = ResourceCache.getBakedAnimations().get(location = fallbackLocation);
             animation = bakedAnimations != null ? bakedAnimations.getAnimation(name) : null;
 
             if (animation != null)

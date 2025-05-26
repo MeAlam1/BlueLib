@@ -8,14 +8,14 @@
 package software.bluelib.loader.animation.keyframe;
 
 import software.bluelib.loader.animation.state.BoneSnapshot;
-import software.bluelib.loader.cache.object.GeoBone;
+import software.bluelib.client.loader.cache.model.BoneCache;
 
-public record BoneAnimationQueue(GeoBone bone, AnimationPointQueue rotationXQueue, AnimationPointQueue rotationYQueue,
-        AnimationPointQueue rotationZQueue, AnimationPointQueue positionXQueue, AnimationPointQueue positionYQueue,
-        AnimationPointQueue positionZQueue, AnimationPointQueue scaleXQueue, AnimationPointQueue scaleYQueue,
-        AnimationPointQueue scaleZQueue) {
+public record BoneAnimationQueue(BoneCache bone, AnimationPointQueue rotationXQueue, AnimationPointQueue rotationYQueue,
+                                 AnimationPointQueue rotationZQueue, AnimationPointQueue positionXQueue, AnimationPointQueue positionYQueue,
+                                 AnimationPointQueue positionZQueue, AnimationPointQueue scaleXQueue, AnimationPointQueue scaleYQueue,
+                                 AnimationPointQueue scaleZQueue) {
 
-    public BoneAnimationQueue(GeoBone bone) {
+    public BoneAnimationQueue(BoneCache bone) {
         this(bone, new AnimationPointQueue(), new AnimationPointQueue(), new AnimationPointQueue(),
                 new AnimationPointQueue(), new AnimationPointQueue(), new AnimationPointQueue(),
                 new AnimationPointQueue(), new AnimationPointQueue(), new AnimationPointQueue());

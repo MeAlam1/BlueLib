@@ -17,7 +17,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.loader.animatable.GeoAnimatable;
-import software.bluelib.loader.cache.object.BakedGeoModel;
+import software.bluelib.client.loader.cache.model.ModelCache;
 import software.bluelib.loader.cache.texture.AutoGlowingTexture;
 import software.bluelib.loader.renderer.GeoRenderer;
 import software.bluelib.loader.util.ClientUtil;
@@ -55,7 +55,7 @@ public class AutoGlowingGeoLayer<T extends GeoAnimatable> extends GeoRenderLayer
     }
 
     @Override
-    public void render(PoseStack pPoseStack, T animatable, BakedGeoModel bakedModel, @Nullable RenderType pRenderType, MultiBufferSource pBufferSource, @Nullable VertexConsumer buffer, float pPartialTick, int pPackedLight, int pPackedOverlay) {
+    public void render(PoseStack pPoseStack, T animatable, ModelCache bakedModel, @Nullable RenderType pRenderType, MultiBufferSource pBufferSource, @Nullable VertexConsumer buffer, float pPartialTick, int pPackedLight, int pPackedOverlay) {
         pRenderType = getRenderType(animatable);
 
         if (pRenderType != null) {

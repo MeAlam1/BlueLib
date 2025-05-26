@@ -31,8 +31,8 @@ import software.bluelib.BlueLibConstants;
 import software.bluelib.loader.animatable.GeoAnimatable;
 import software.bluelib.loader.animatable.GeoItem;
 import software.bluelib.loader.animation.AnimationState;
-import software.bluelib.loader.cache.object.BakedGeoModel;
-import software.bluelib.loader.cache.object.GeoBone;
+import software.bluelib.client.loader.cache.model.ModelCache;
+import software.bluelib.client.loader.cache.model.BoneCache;
 import software.bluelib.loader.cache.texture.AnimatableTexture;
 import software.bluelib.loader.constant.DataTickets;
 import software.bluelib.loader.model.GeoModel;
@@ -119,7 +119,7 @@ public class GeoItemRenderer<T extends Item & GeoAnimatable> extends BlockEntity
     }
 
     @Override
-    public void preRender(PoseStack pPoseStack, T pAnimatable, BakedGeoModel pModel, @Nullable MultiBufferSource pBufferSource, @Nullable VertexConsumer pBuffer, boolean pIsReRender, float pPartialTick, int pPackedLight, int pPackedOverlay, int pColour) {
+    public void preRender(PoseStack pPoseStack, T pAnimatable, ModelCache pModel, @Nullable MultiBufferSource pBufferSource, @Nullable VertexConsumer pBuffer, boolean pIsReRender, float pPartialTick, int pPackedLight, int pPackedOverlay, int pColour) {
         this.itemRenderTranslations = new Matrix4f(pPoseStack.last().pose());
 
         scaleModelForRender(this.scaleWidth, this.scaleHeight, pPoseStack, pAnimatable, pModel, pIsReRender, pPartialTick, pPackedLight, pPackedOverlay);
@@ -167,9 +167,9 @@ public class GeoItemRenderer<T extends Item & GeoAnimatable> extends BlockEntity
     }
 
     @Override
-    public void actuallyRender(PoseStack pPoseStack, T pAnimatable, BakedGeoModel pModel, @Nullable RenderType pRenderType,
-            MultiBufferSource pBufferSource, @Nullable VertexConsumer pBuffer, boolean pIsReRender, float pPartialTick,
-            int pPackedLight, int pPackedOverlay, int pColour) {
+    public void actuallyRender(PoseStack pPoseStack, T pAnimatable, ModelCache pModel, @Nullable RenderType pRenderType,
+                               MultiBufferSource pBufferSource, @Nullable VertexConsumer pBuffer, boolean pIsReRender, float pPartialTick,
+                               int pPackedLight, int pPackedOverlay, int pColour) {
         if (!pIsReRender) {
             AnimationState<T> animationState = new AnimationState<>(pAnimatable, 0, 0, pPartialTick, false);
             long instanceId = getInstanceId(pAnimatable);
@@ -198,8 +198,8 @@ public class GeoItemRenderer<T extends Item & GeoAnimatable> extends BlockEntity
     }
 
     @Override
-    public void renderRecursively(PoseStack pPoseStack, T pAnimatable, GeoBone pBone, RenderType pRenderType, MultiBufferSource pBufferSource, VertexConsumer pBuffer, boolean pIsReRender, float pPartialTick, int pPackedLight,
-            int pPackedOverlay, int pColour) {
+    public void renderRecursively(PoseStack pPoseStack, T pAnimatable, BoneCache pBone, RenderType pRenderType, MultiBufferSource pBufferSource, VertexConsumer pBuffer, boolean pIsReRender, float pPartialTick, int pPackedLight,
+                                  int pPackedOverlay, int pColour) {
         if (pBone.isTrackingMatrices()) {
             Matrix4f poseState = new Matrix4f(pPoseStack.last().pose());
 
@@ -230,12 +230,12 @@ public class GeoItemRenderer<T extends Item & GeoAnimatable> extends BlockEntity
     }
 
     @Override
-    public boolean firePreRenderEvent(PoseStack pPoseStack, BakedGeoModel pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight) {
+    public boolean firePreRenderEvent(PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight) {
         return BlueLibConstants.PlatformHelper.EVENT_PROXY.fireItemPreRender(this, pPoseStack, pModel, pBufferSource, pPartialTick, pPackedLight);
     }
 
     @Override
-    public void firePostRenderEvent(PoseStack pPoseStack, BakedGeoModel pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight) {
+    public void firePostRenderEvent(PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight) {
         BlueLibConstants.PlatformHelper.EVENT_PROXY.fireItemPostRender(this, pPoseStack, pModel, pBufferSource, pPartialTick, pPackedLight);
     }
 }

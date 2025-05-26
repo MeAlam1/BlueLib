@@ -18,23 +18,23 @@ import net.minecraft.world.item.Item;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.loader.animatable.GeoItem;
-import software.bluelib.loader.cache.object.BakedGeoModel;
-import software.bluelib.loader.cache.object.GeoBone;
+import software.bluelib.client.loader.cache.model.ModelCache;
+import software.bluelib.client.loader.cache.model.BoneCache;
 import software.bluelib.loader.model.GeoModel;
 import software.bluelib.loader.renderer.GeoArmorRenderer;
 import software.bluelib.loader.util.Color;
 
 public abstract class DyeableGeoArmorRenderer<T extends Item & GeoItem> extends GeoArmorRenderer<T> {
 
-    protected final Set<GeoBone> dyeableBones = new ObjectArraySet<>();
-    protected BakedGeoModel lastModel = null;
+    protected final Set<BoneCache> dyeableBones = new ObjectArraySet<>();
+    protected ModelCache lastModel = null;
 
     public DyeableGeoArmorRenderer(GeoModel<T> model) {
         super(model);
     }
 
     @Override
-    public void preRender(PoseStack pPoseStack, T pAnimatable, BakedGeoModel model, @Nullable MultiBufferSource pBufferSource, @Nullable VertexConsumer buffer, boolean pIsReRender, float pPartialTick, int pPackedLight, int pPackedOverlay, int colour) {
+    public void preRender(PoseStack pPoseStack, T pAnimatable, ModelCache model, @Nullable MultiBufferSource pBufferSource, @Nullable VertexConsumer buffer, boolean pIsReRender, float pPartialTick, int pPackedLight, int pPackedOverlay, int colour) {
         super.preRender(pPoseStack, pAnimatable, model, pBufferSource, buffer, pIsReRender, pPartialTick, pPackedLight, pPackedOverlay, colour);
 
         if (!pIsReRender)
@@ -42,7 +42,7 @@ public abstract class DyeableGeoArmorRenderer<T extends Item & GeoItem> extends 
     }
 
     @Override
-    public void renderCubesOfBone(PoseStack pPoseStack, GeoBone bone, VertexConsumer buffer, int pPackedLight, int pPackedOverlay, int colour) {
+    public void renderCubesOfBone(PoseStack pPoseStack, BoneCache bone, VertexConsumer buffer, int pPackedLight, int pPackedOverlay, int colour) {
         if (this.dyeableBones.contains(bone)) {
             final Color color = getColorForBone(bone);
 
@@ -52,12 +52,12 @@ public abstract class DyeableGeoArmorRenderer<T extends Item & GeoItem> extends 
         super.renderCubesOfBone(pPoseStack, bone, buffer, pPackedLight, pPackedOverlay, colour);
     }
 
-    protected abstract boolean isBoneDyeable(GeoBone bone);
+    protected abstract boolean isBoneDyeable(BoneCache bone);
 
     @NotNull
-    protected abstract Color getColorForBone(GeoBone bone);
+    protected abstract Color getColorForBone(BoneCache bone);
 
-    protected void checkBoneDyeCache(T animatable, BakedGeoModel model, float pPartialTick, int pPackedLight, int pPackedOverlay, int colour) {
+    protected void checkBoneDyeCache(T animatable, ModelCache model, float pPartialTick, int pPackedLight, int pPackedOverlay, int colour) {
         if (model != this.lastModel) {
             this.dyeableBones.clear();
             this.lastModel = model;
@@ -65,8 +65,8 @@ public abstract class DyeableGeoArmorRenderer<T extends Item & GeoItem> extends 
         }
     }
 
-    protected void collectDyeableBones(Collection<GeoBone> bones) {
-        for (GeoBone bone : bones) {
+    protected void collectDyeableBones(Collection<BoneCache> bones) {
+        for (BoneCache bone : bones) {
             if (isBoneDyeable(bone))
                 this.dyeableBones.add(bone);
 

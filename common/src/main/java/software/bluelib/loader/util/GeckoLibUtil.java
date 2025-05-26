@@ -22,7 +22,7 @@ import software.bluelib.loader.animation.Animation;
 import software.bluelib.loader.animation.EasingType;
 import software.bluelib.loader.constant.DataTickets;
 import software.bluelib.loader.constant.dataticket.SerializableDataTicket;
-import software.bluelib.loader.loading.object.BakedModelFactory;
+import software.bluelib.client.loader.json.model.ModelCacheFactory;
 
 @SuppressWarnings("unused")
 public final class GeckoLibUtil {
@@ -53,8 +53,8 @@ public final class GeckoLibUtil {
         return EasingType.register(pName, pEasingType);
     }
 
-    synchronized public static void addCustomBakedModelFactory(String pNamespace, BakedModelFactory pFactory) {
-        BakedModelFactory.register(pNamespace, pFactory);
+    synchronized public static void addCustomBakedModelFactory(String pNamespace, ModelCacheFactory pFactory) {
+        ModelCacheFactory.register(pNamespace, pFactory);
     }
 
     synchronized public static <D> SerializableDataTicket<D> addDataTicket(SerializableDataTicket<D> pDataTicket) {

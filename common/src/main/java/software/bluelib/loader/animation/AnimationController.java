@@ -25,7 +25,7 @@ import software.bluelib.loader.animation.keyframe.event.data.KeyFrameData;
 import software.bluelib.loader.animation.keyframe.event.data.ParticleKeyframeData;
 import software.bluelib.loader.animation.keyframe.event.data.SoundKeyframeData;
 import software.bluelib.loader.animation.state.BoneSnapshot;
-import software.bluelib.loader.cache.object.GeoBone;
+import software.bluelib.client.loader.cache.model.BoneCache;
 import software.bluelib.loader.loading.math.MathParser;
 import software.bluelib.loader.loading.math.MathValue;
 import software.bluelib.loader.loading.math.MolangQueries;
@@ -263,7 +263,7 @@ public class AnimationController<T extends GeoAnimatable> {
         return this.stateHandler.handle(state);
     }
 
-    public void process(GeoModel<T> model, AnimationState<T> state, Map<String, GeoBone> bones, Map<String, BoneSnapshot> snapshots, final double seekTime, boolean crashWhenCantFindBone) {
+    public void process(GeoModel<T> model, AnimationState<T> state, Map<String, BoneCache> bones, Map<String, BoneSnapshot> snapshots, final double seekTime, boolean crashWhenCantFindBone) {
         double adjustedTick = adjustTick(seekTime);
         this.lastModel = model;
 
@@ -322,7 +322,7 @@ public class AnimationController<T extends GeoAnimatable> {
                 for (BoneAnimation boneAnimation : this.currentAnimation.animation().boneAnimations()) {
                     BoneAnimationQueue boneAnimationQueue = this.boneAnimationQueues.get(boneAnimation.boneName());
                     BoneSnapshot boneSnapshot = this.boneSnapshots.get(boneAnimation.boneName());
-                    GeoBone bone = bones.get(boneAnimation.boneName());
+                    BoneCache bone = bones.get(boneAnimation.boneName());
 
                     if (boneSnapshot == null)
                         continue;
@@ -472,10 +472,10 @@ public class AnimationController<T extends GeoAnimatable> {
             this.currentAnimation = this.animationQueue.poll();
     }
 
-    private void createInitialQueues(Collection<GeoBone> modelRendererList) {
+    private void createInitialQueues(Collection<BoneCache> modelRendererList) {
         this.boneAnimationQueues.clear();
 
-        for (GeoBone modelRenderer : modelRendererList) {
+        for (BoneCache modelRenderer : modelRendererList) {
             this.boneAnimationQueues.put(modelRenderer.getName(), new BoneAnimationQueue(modelRenderer));
         }
     }

@@ -20,7 +20,7 @@ public class AlgebraicUtils {
 
     private AlgebraicUtils() {}
 
-    public static double[] solveQuadraticEquation(double pA, double pB, double pC) {
+    public static List<Float> solveQuadraticEquation(double pA, double pB, double pC) {
         double discriminant = pB * pB - 4 * pA * pC;
         if (discriminant < 0) {
             Throwable throwable = new IllegalArgumentException("Number must be non-negative.");
@@ -32,7 +32,7 @@ public class AlgebraicUtils {
         double root1 = (-pB + sqrtDiscriminant) / (2 * pA);
         double root2 = (-pB - sqrtDiscriminant) / (2 * pA);
 
-        return new double[] { root1, root2 };
+        return new List<Float> { root1, root2 };
     }
 
     public static long factorial(int pNumber) {

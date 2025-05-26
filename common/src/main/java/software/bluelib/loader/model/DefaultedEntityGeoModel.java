@@ -11,7 +11,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import software.bluelib.loader.animatable.GeoAnimatable;
 import software.bluelib.loader.animation.AnimationState;
-import software.bluelib.loader.cache.object.GeoBone;
+import software.bluelib.client.loader.cache.model.BoneCache;
 import software.bluelib.loader.constant.DataTickets;
 import software.bluelib.loader.model.data.EntityModelData;
 
@@ -39,7 +39,7 @@ public class DefaultedEntityGeoModel<T extends GeoAnimatable> extends DefaultedG
         if (!this.turnsHead)
             return;
 
-        GeoBone head = getAnimationProcessor().getBone("head");
+        BoneCache head = getAnimationProcessor().getBone("head");
 
         if (head != null) {
             EntityModelData entityData = animationState.getData(DataTickets.ENTITY_MODEL_DATA);
