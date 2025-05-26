@@ -452,16 +452,16 @@ public class GeoReplacedEntityRenderer<E extends Entity, T extends GeoAnimatable
 
     @Override
     public void fireCompileRenderLayersEvent() {
-        GeckoLibServices.Client.EVENTS.fireCompileReplacedEntityRenderLayers(this);
+        BlueLibConstants.PlatformHelper.EVENT_PROXY.fireCompileReplacedEntityRenderLayers(this);
     }
 
     @Override
     public boolean firePreRenderEvent(PoseStack poseStack, BakedGeoModel model, MultiBufferSource bufferSource, float partialTick, int packedLight) {
-        return GeckoLibServices.Client.EVENTS.fireReplacedEntityPreRender(this, poseStack, model, bufferSource, partialTick, packedLight);
+        return BlueLibConstants.PlatformHelper.EVENT_PROXY.fireReplacedEntityPreRender(this, poseStack, model, bufferSource, partialTick, packedLight);
     }
 
     @Override
     public void firePostRenderEvent(PoseStack poseStack, BakedGeoModel model, MultiBufferSource bufferSource, float partialTick, int packedLight) {
-        GeckoLibServices.Client.EVENTS.fireReplacedEntityPostRender(this, poseStack, model, bufferSource, partialTick, packedLight);
+        BlueLibConstants.PlatformHelper.EVENT_PROXY.fireReplacedEntityPostRender(this, poseStack, model, bufferSource, partialTick, packedLight);
     }
 }

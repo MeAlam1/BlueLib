@@ -7,16 +7,23 @@
  */
 package software.bluelib.platform;
 
+import java.nio.file.Path;
 import java.util.*;
+import java.util.function.Supplier;
+import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
+
+import net.minecraft.core.component.DataComponentType;
 import net.minecraft.server.MinecraftServer;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.fml.loading.FMLLoader;
+import net.neoforged.fml.loading.FMLPaths;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import net.neoforged.neoforgespi.language.IModInfo;
 import software.bluelib.BlueLibConstants;
 import software.bluelib.api.event.mod.ModMeta;
+import software.bluelib.loader.GeckoLib;
 
 public class NeoForgePlatformHelper implements IPlatformHelper {
 
@@ -54,6 +61,21 @@ public class NeoForgePlatformHelper implements IPlatformHelper {
     @Override
     public boolean isDevelopmentEnvironment() {
         return !FMLLoader.isProduction();
+    }
+
+    @Override
+    public Path getGameDir() {
+        return FMLPaths.GAMEDIR.get();
+    }
+
+    @Override
+    public boolean isPhysicalClient() {
+        return FMLEnvironment.dist.isClient();
+    }
+
+    @Override
+    public <T> Supplier<DataComponentType<T>> registerDataComponent(String pId, UnaryOperator<DataComponentType.Builder<T>> pBuilder) {
+        return GeckoLib.DATA_COMPONENTS_REGISTER.registerComponentType(pId, pBuilder);
     }
 
     @Override

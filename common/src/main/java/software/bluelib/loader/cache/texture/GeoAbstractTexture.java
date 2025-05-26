@@ -21,6 +21,7 @@ import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import org.jetbrains.annotations.Nullable;
+import software.bluelib.BlueLibConstants;
 import software.bluelib.loader.GeckoLibServices;
 
 public abstract class GeoAbstractTexture extends AbstractTexture {
@@ -51,7 +52,7 @@ public abstract class GeoAbstractTexture extends AbstractTexture {
 
     protected void printDebugImageToDisk(ResourceLocation id, NativeImage newImage) {
         try {
-            File file = new File(GeckoLibServices.PLATFORM.getGameDir().toFile(), "GeoTexture Debug Printouts");
+            File file = new File(BlueLibConstants.PlatformHelper.PLATFORM.getGameDir().toFile(), "GeoTexture Debug Printouts");
 
             if (!file.exists()) {
                 file.mkdirs();

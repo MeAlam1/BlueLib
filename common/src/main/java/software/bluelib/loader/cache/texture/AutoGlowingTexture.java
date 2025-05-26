@@ -30,6 +30,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 import org.jetbrains.annotations.Nullable;
+import software.bluelib.BlueLibConstants;
 import software.bluelib.loader.GeckoLibConstants;
 import software.bluelib.loader.GeckoLibServices;
 import software.bluelib.loader.resource.GeoGlowingTextureMeta;
@@ -116,7 +117,7 @@ public class AutoGlowingTexture extends GeoAbstractTexture {
             if (glowLayerMeta != null) {
                 glowLayerMeta.createImageMask(baseImage, glowImage);
 
-                if (PRINT_DEBUG_IMAGES && GeckoLibServices.PLATFORM.isDevelopmentEnvironment()) {
+                if (PRINT_DEBUG_IMAGES && BlueLibConstants.PlatformHelper.PLATFORM.isDevelopmentEnvironment()) {
                     printDebugImageToDisk(this.textureBase, baseImage);
                     printDebugImageToDisk(this.glowLayer, glowImage);
                 }

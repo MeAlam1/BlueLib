@@ -24,7 +24,7 @@ import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
-import software.bluelib.loader.GeckoLibServices;
+import software.bluelib.BlueLibConstants;
 import software.bluelib.loader.animatable.GeoAnimatable;
 import software.bluelib.loader.animation.AnimationState;
 import software.bluelib.loader.cache.object.BakedGeoModel;
@@ -184,16 +184,16 @@ public class GeoBlockRenderer<T extends BlockEntity & GeoAnimatable> implements 
 
     @Override
     public void fireCompileRenderLayersEvent() {
-        GeckoLibServices.Client.EVENTS.fireCompileBlockRenderLayers(this);
+        BlueLibConstants.PlatformHelper.EVENT_PROXY.fireCompileBlockRenderLayers(this);
     }
 
     @Override
     public boolean firePreRenderEvent(PoseStack poseStack, BakedGeoModel model, MultiBufferSource bufferSource, float partialTick, int packedLight) {
-        return GeckoLibServices.Client.EVENTS.fireBlockPreRender(this, poseStack, model, bufferSource, partialTick, packedLight);
+        return BlueLibConstants.PlatformHelper.EVENT_PROXY.fireBlockPreRender(this, poseStack, model, bufferSource, partialTick, packedLight);
     }
 
     @Override
     public void firePostRenderEvent(PoseStack poseStack, BakedGeoModel model, MultiBufferSource bufferSource, float partialTick, int packedLight) {
-        GeckoLibServices.Client.EVENTS.fireBlockPostRender(this, poseStack, model, bufferSource, partialTick, packedLight);
+        BlueLibConstants.PlatformHelper.EVENT_PROXY.fireBlockPostRender(this, poseStack, model, bufferSource, partialTick, packedLight);
     }
 }

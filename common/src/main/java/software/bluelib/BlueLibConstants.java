@@ -20,6 +20,7 @@ import net.minecraft.server.level.ServerPlayer;
 import software.bluelib.api.event.IEventProxy;
 import software.bluelib.api.net.NetworkPacket;
 import software.bluelib.loader.GeckoLibServices;
+import software.bluelib.platform.IPlatformClient;
 import software.bluelib.platform.IPlatformHelper;
 import software.bluelib.platform.IRegistryHelper;
 
@@ -37,7 +38,7 @@ public class BlueLibConstants {
 
     public static ScheduledExecutorService SCHEDULER = Executors.newScheduledThreadPool(1);
 
-    public static final Supplier<DataComponentType<Long>> STACK_ANIMATABLE_ID_COMPONENT = GeckoLibServices.PLATFORM.registerDataComponent("stack_animatable_id", builder -> builder.persistent(Codec.LONG).networkSynchronized(ByteBufCodecs.VAR_LONG));
+    public static final Supplier<DataComponentType<Long>> STACK_ANIMATABLE_ID_COMPONENT = PlatformHelper.PLATFORM.registerDataComponent("stack_animatable_id", builder -> builder.persistent(Codec.LONG).networkSynchronized(ByteBufCodecs.VAR_LONG));
 
     public static final String MOD_ID = "bluelib";
 
@@ -52,6 +53,8 @@ public class BlueLibConstants {
         public static final IEventProxy EVENT_PROXY = load(IEventProxy.class);
 
         public static final IRegistryHelper REGISTRY = load(IRegistryHelper.class);
+        
+        public static final IPlatformClient ITEM_RENDERING = load(IPlatformClient.class);
     }
 
     public enum ModAPI {

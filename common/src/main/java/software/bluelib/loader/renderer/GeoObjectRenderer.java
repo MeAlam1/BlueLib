@@ -151,16 +151,16 @@ public class GeoObjectRenderer<T extends GeoAnimatable> implements GeoRenderer<T
 
     @Override
     public void fireCompileRenderLayersEvent() {
-        GeckoLibServices.Client.EVENTS.fireCompileObjectRenderLayers(this);
+        BlueLibConstants.PlatformHelper.EVENT_PROXY.fireCompileObjectRenderLayers(this);
     }
 
     @Override
     public boolean firePreRenderEvent(PoseStack poseStack, BakedGeoModel model, MultiBufferSource bufferSource, float partialTick, int packedLight) {
-        return GeckoLibServices.Client.EVENTS.fireObjectPreRender(this, poseStack, model, bufferSource, partialTick, packedLight);
+        return BlueLibConstants.PlatformHelper.EVENT_PROXY.fireObjectPreRender(this, poseStack, model, bufferSource, partialTick, packedLight);
     }
 
     @Override
     public void firePostRenderEvent(PoseStack poseStack, BakedGeoModel model, MultiBufferSource bufferSource, float partialTick, int packedLight) {
-        GeckoLibServices.Client.EVENTS.fireObjectPostRender(this, poseStack, model, bufferSource, partialTick, packedLight);
+        BlueLibConstants.PlatformHelper.EVENT_PROXY.fireObjectPostRender(this, poseStack, model, bufferSource, partialTick, packedLight);
     }
 }

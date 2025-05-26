@@ -10,6 +10,7 @@ package software.bluelib.loader.animatable.instance;
 import com.google.common.base.Suppliers;
 import java.util.function.Supplier;
 import org.apache.commons.lang3.mutable.MutableObject;
+import software.bluelib.BlueLibConstants;
 import software.bluelib.loader.GeckoLibServices;
 import software.bluelib.loader.animatable.GeoAnimatable;
 import software.bluelib.loader.animatable.SingletonGeoAnimatable;
@@ -25,7 +26,7 @@ public abstract class AnimatableInstanceCache {
     public AnimatableInstanceCache(GeoAnimatable animatable) {
         this.animatable = animatable;
         this.renderProvider = Suppliers.memoize(() -> {
-            if (!(this.animatable instanceof SingletonGeoAnimatable singleton) || !GeckoLibServices.PLATFORM.isPhysicalClient())
+            if (!(this.animatable instanceof SingletonGeoAnimatable singleton) || !BlueLibConstants.PlatformHelper.PLATFORM.isPhysicalClient())
                 return null;
 
             final MutableObject<GeoRenderProvider> consumer = new MutableObject<>(GeoRenderProvider.DEFAULT);

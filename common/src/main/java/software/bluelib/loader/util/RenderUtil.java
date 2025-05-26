@@ -31,6 +31,7 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
+import software.bluelib.BlueLibConstants;
 import software.bluelib.loader.GeckoLibServices;
 import software.bluelib.loader.animatable.GeoAnimatable;
 import software.bluelib.loader.cache.object.GeoBone;
@@ -219,7 +220,7 @@ public final class RenderUtil {
 
     @Nullable
     public static GeoModel<?> getGeoModelForItem(ItemStack item) {
-        return GeckoLibServices.Client.ITEM_RENDERING.getGeoModelForItem(item);
+        return BlueLibConstants.PlatformHelper.ITEM_RENDERING.getGeoModelForItem(item);
     }
 
     @Nullable
@@ -231,6 +232,6 @@ public final class RenderUtil {
 
     @Nullable
     public static GeoModel<?> getGeoModelForArmor(ItemStack stack) {
-        return GeckoLibServices.Client.ITEM_RENDERING.getGeoModelForArmor(stack);
+        return BlueLibConstants.PlatformHelper.ITEM_RENDERING.getGeoModelForArmor(stack);
     }
 }
