@@ -13,9 +13,9 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
-import software.bluelib.loader.animatable.GeoAnimatable;
-import software.bluelib.client.loader.cache.model.ModelCache;
 import software.bluelib.client.loader.cache.model.BoneCache;
+import software.bluelib.client.loader.cache.model.ModelCache;
+import software.bluelib.loader.animatable.GeoAnimatable;
 import software.bluelib.loader.model.GeoModel;
 import software.bluelib.loader.renderer.GeoRenderer;
 
@@ -44,13 +44,13 @@ public abstract class GeoRenderLayer<T extends GeoAnimatable> {
     }
 
     public void preRender(PoseStack pPoseStack, T animatable, ModelCache bakedModel, @Nullable RenderType pRenderType,
-                          MultiBufferSource pBufferSource, @Nullable VertexConsumer buffer, float pPartialTick,
-                          int pPackedLight, int pPackedOverlay) {}
+            MultiBufferSource pBufferSource, @Nullable VertexConsumer buffer, float pPartialTick,
+            int pPackedLight, int pPackedOverlay) {}
 
     public void render(PoseStack pPoseStack, T animatable, ModelCache bakedModel, @Nullable RenderType pRenderType,
-                       MultiBufferSource pBufferSource, @Nullable VertexConsumer buffer, float pPartialTick,
-                       int pPackedLight, int pPackedOverlay) {}
+            MultiBufferSource pBufferSource, @Nullable VertexConsumer buffer, float pPartialTick,
+            int pPackedLight, int pPackedOverlay) {}
 
     public void renderForBone(PoseStack pPoseStack, T animatable, BoneCache bone, RenderType pRenderType,
-                              MultiBufferSource pBufferSource, VertexConsumer buffer, float pPartialTick, int pPackedLight, int pPackedOverlay) {}
+            MultiBufferSource pBufferSource, VertexConsumer buffer, float pPartialTick, int pPackedLight, int pPackedOverlay) {}
 }

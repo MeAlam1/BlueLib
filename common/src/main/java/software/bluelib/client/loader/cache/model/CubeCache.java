@@ -7,9 +7,8 @@
  */
 package software.bluelib.client.loader.cache.model;
 
+import java.util.List;
 import net.minecraft.world.phys.Vec3;
 import software.bluelib.client.loader.json.model.object.QuadData;
-
-import java.util.List;
 
 public record CubeCache(List<QuadData> quads, Vec3 pivot, Vec3 rotation, Vec3 size, double inflate, boolean mirror) {}

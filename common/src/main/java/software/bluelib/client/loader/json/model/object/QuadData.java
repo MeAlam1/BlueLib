@@ -7,11 +7,10 @@
  */
 package software.bluelib.client.loader.json.model.object;
 
+import java.util.List;
 import net.minecraft.core.Direction;
 import org.joml.Vector3f;
 import software.bluelib.client.loader.json.model.deserialize.FaceUV;
-
-import java.util.List;
 
 public record QuadData(List<VertexData> vertices, Vector3f normal, Direction direction) {
 

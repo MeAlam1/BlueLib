@@ -28,11 +28,11 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import software.bluelib.BlueLibConstants;
+import software.bluelib.client.loader.cache.model.BoneCache;
+import software.bluelib.client.loader.cache.model.ModelCache;
 import software.bluelib.loader.animatable.GeoAnimatable;
 import software.bluelib.loader.animatable.GeoItem;
 import software.bluelib.loader.animation.AnimationState;
-import software.bluelib.client.loader.cache.model.ModelCache;
-import software.bluelib.client.loader.cache.model.BoneCache;
 import software.bluelib.loader.cache.texture.AnimatableTexture;
 import software.bluelib.loader.constant.DataTickets;
 import software.bluelib.loader.model.GeoModel;
@@ -131,7 +131,7 @@ public class GeoItemRenderer<T extends Item & GeoAnimatable> extends BlockEntity
     @Override
     @ApiStatus.Internal
     public void renderByItem(ItemStack pStack, @NotNull ItemDisplayContext pTransformType, @NotNull PoseStack pPoseStack,
-                             @NotNull MultiBufferSource pBufferSource, int pPackedLight, int pPackedOverlay) {
+            @NotNull MultiBufferSource pBufferSource, int pPackedLight, int pPackedOverlay) {
         this.animatable = (T) pStack.getItem();
         this.currentItemStack = pStack;
         this.renderPerspective = pTransformType;
@@ -168,8 +168,8 @@ public class GeoItemRenderer<T extends Item & GeoAnimatable> extends BlockEntity
 
     @Override
     public void actuallyRender(PoseStack pPoseStack, T pAnimatable, ModelCache pModel, @Nullable RenderType pRenderType,
-                               MultiBufferSource pBufferSource, @Nullable VertexConsumer pBuffer, boolean pIsReRender, float pPartialTick,
-                               int pPackedLight, int pPackedOverlay, int pColour) {
+            MultiBufferSource pBufferSource, @Nullable VertexConsumer pBuffer, boolean pIsReRender, float pPartialTick,
+            int pPackedLight, int pPackedOverlay, int pColour) {
         if (!pIsReRender) {
             AnimationState<T> animationState = new AnimationState<>(pAnimatable, 0, 0, pPartialTick, false);
             long instanceId = getInstanceId(pAnimatable);
@@ -199,7 +199,7 @@ public class GeoItemRenderer<T extends Item & GeoAnimatable> extends BlockEntity
 
     @Override
     public void renderRecursively(PoseStack pPoseStack, T pAnimatable, BoneCache pBone, RenderType pRenderType, MultiBufferSource pBufferSource, VertexConsumer pBuffer, boolean pIsReRender, float pPartialTick, int pPackedLight,
-                                  int pPackedOverlay, int pColour) {
+            int pPackedOverlay, int pColour) {
         if (pBone.isTrackingMatrices()) {
             Matrix4f poseState = new Matrix4f(pPoseStack.last().pose());
 

@@ -10,63 +10,62 @@ package software.bluelib.client.loader.json.model.deserialize;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import java.util.List;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.utils.JsonUtils;
 
-import java.util.List;
-
 public record FaceUV(
-		@Nullable String materialInstance,
-		List<Float> uv,
-		List<Float> uvSize,
-		Rotation uvRotation
-) {
-	public FaceUV(@Nullable String pMaterialInstance, List<Float> pUv, List<Float> pUvSize) {
-		this(pMaterialInstance, pUv, pUvSize, Rotation.NONE);
-	}
+        @Nullable String materialInstance,
+        List<Float> uv,
+        List<Float> uvSize,
+        Rotation uvRotation) {
 
-	public static JsonDeserializer<FaceUV> deserializer() throws JsonParseException {
-		return (json, type, context) -> {
-			JsonObject obj = json.getAsJsonObject();
+    public FaceUV(@Nullable String pMaterialInstance, List<Float> pUv, List<Float> pUvSize) {
+        this(pMaterialInstance, pUv, pUvSize, Rotation.NONE);
+    }
 
-			String materialInstance = GsonHelper.getAsString(obj, "material_instance", null);
-			List<Float> uv = JsonUtils.jsonArrayToFloatList(GsonHelper.getAsJsonArray(obj, "uv", null));
-			List<Float> uvSize = JsonUtils.jsonArrayToFloatList(GsonHelper.getAsJsonArray(obj, "uv_size", null));
-			Rotation uvRotation = Rotation.fromValue(GsonHelper.getAsInt(obj, "uv_rotation", 0));
+    public static JsonDeserializer<FaceUV> deserializer() throws JsonParseException {
+        return (json, type, context) -> {
+            JsonObject obj = json.getAsJsonObject();
 
-			return new FaceUV(
-					materialInstance,
-					uv,
-					uvSize,
-					uvRotation
-			);
-		};
-	}
+            String materialInstance = GsonHelper.getAsString(obj, "material_instance", null);
+            List<Float> uv = JsonUtils.jsonArrayToFloatList(GsonHelper.getAsJsonArray(obj, "uv", null));
+            List<Float> uvSize = JsonUtils.jsonArrayToFloatList(GsonHelper.getAsJsonArray(obj, "uv_size", null));
+            Rotation uvRotation = Rotation.fromValue(GsonHelper.getAsInt(obj, "uv_rotation", 0));
 
-	public enum Rotation {
-		NONE,
-		CLOCKWISE_90,
-		CLOCKWISE_180,
-		CLOCKWISE_270;
+            return new FaceUV(
+                    materialInstance,
+                    uv,
+                    uvSize,
+                    uvRotation);
+        };
+    }
 
-		public static Rotation fromValue(int pValue) {
-			try {
-				return Rotation.values()[(pValue % 360) / 90];
-			} catch (Exception pException) {
-				// TODO: Log a warning about an invalid rotation value
-				return fromValue(Mth.floor(Math.abs(pValue) / 90f) * 90);
-			}
-		}
+    public enum Rotation {
 
-		public List<Float> rotateUvs(float pU, float pV, float pUWidth, float pVHeight) {
-			return switch (this) {
-				case NONE -> List.of(pU, pV, pUWidth, pV, pUWidth, pVHeight, pU, pVHeight);
-				case CLOCKWISE_90 -> List.of(pUWidth, pV, pUWidth, pVHeight, pU, pVHeight, pU, pV);
-				case CLOCKWISE_180 -> List.of(pUWidth, pVHeight, pU, pVHeight, pU, pV, pUWidth, pV);
-				case CLOCKWISE_270 -> List.of(pU, pVHeight, pU, pV, pUWidth, pV, pUWidth, pVHeight);
-			};
-		}
-	}
+        NONE,
+        CLOCKWISE_90,
+        CLOCKWISE_180,
+        CLOCKWISE_270;
+
+        public static Rotation fromValue(int pValue) {
+            try {
+                return Rotation.values()[(pValue % 360) / 90];
+            } catch (Exception pException) {
+                // TODO: Log a warning about an invalid rotation value
+                return fromValue(Mth.floor(Math.abs(pValue) / 90f) * 90);
+            }
+        }
+
+        public List<Float> rotateUvs(float pU, float pV, float pUWidth, float pVHeight) {
+            return switch (this) {
+                case NONE -> List.of(pU, pV, pUWidth, pV, pUWidth, pVHeight, pU, pVHeight);
+                case CLOCKWISE_90 -> List.of(pUWidth, pV, pUWidth, pVHeight, pU, pVHeight, pU, pV);
+                case CLOCKWISE_180 -> List.of(pUWidth, pVHeight, pU, pVHeight, pU, pV, pUWidth, pV);
+                case CLOCKWISE_270 -> List.of(pU, pVHeight, pU, pV, pUWidth, pV, pUWidth, pVHeight);
+            };
+        }
+    }
 }

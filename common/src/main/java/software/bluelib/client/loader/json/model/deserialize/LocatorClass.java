@@ -10,29 +10,27 @@ package software.bluelib.client.loader.json.model.deserialize;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import java.util.List;
 import net.minecraft.util.GsonHelper;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.utils.JsonUtils;
 
-import java.util.List;
-
 public record LocatorClass(
-		@Nullable Boolean ignoreInheritedScale,
-		List<Float> offset,
-		List<Float> rotation
-) {
-	public static JsonDeserializer<LocatorClass> deserializer() throws JsonParseException {
-		return (json, type, context) -> {
-			JsonObject obj = json.getAsJsonObject();
-			Boolean ignoreInheritedScale = JsonUtils.getOptionalBoolean(obj, "ignore_inherited_scale");
-			List<Float> offset = JsonUtils.jsonArrayToFloatList(GsonHelper.getAsJsonArray(obj, "offset", null));
-			List<Float> rotation = JsonUtils.jsonArrayToFloatList(GsonHelper.getAsJsonArray(obj, "rotation", null));
+        @Nullable Boolean ignoreInheritedScale,
+        List<Float> offset,
+        List<Float> rotation) {
 
-			return new LocatorClass(
-					ignoreInheritedScale,
-					offset,
-					rotation
-			);
-		};
-	}
+    public static JsonDeserializer<LocatorClass> deserializer() throws JsonParseException {
+        return (json, type, context) -> {
+            JsonObject obj = json.getAsJsonObject();
+            Boolean ignoreInheritedScale = JsonUtils.getOptionalBoolean(obj, "ignore_inherited_scale");
+            List<Float> offset = JsonUtils.jsonArrayToFloatList(GsonHelper.getAsJsonArray(obj, "offset", null));
+            List<Float> rotation = JsonUtils.jsonArrayToFloatList(GsonHelper.getAsJsonArray(obj, "rotation", null));
+
+            return new LocatorClass(
+                    ignoreInheritedScale,
+                    offset,
+                    rotation);
+        };
+    }
 }

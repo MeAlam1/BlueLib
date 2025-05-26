@@ -12,9 +12,9 @@ import java.util.Map;
 import software.bluelib.client.loader.json.model.deserialize.Bone;
 
 public record BoneStructure(
-        Bone self, 
-        Map<String, BoneStructure> children
-) {
+        Bone self,
+        Map<String, BoneStructure> children) {
+
     public BoneStructure(Bone self) {
         this(self, new Object2ObjectOpenHashMap<>());
     }

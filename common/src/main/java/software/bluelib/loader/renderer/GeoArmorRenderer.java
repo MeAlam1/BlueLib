@@ -28,11 +28,11 @@ import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import software.bluelib.BlueLibConstants;
+import software.bluelib.client.loader.cache.model.BoneCache;
+import software.bluelib.client.loader.cache.model.ModelCache;
 import software.bluelib.loader.animatable.GeoAnimatable;
 import software.bluelib.loader.animatable.GeoItem;
 import software.bluelib.loader.animation.AnimationState;
-import software.bluelib.client.loader.cache.model.ModelCache;
-import software.bluelib.client.loader.cache.model.BoneCache;
 import software.bluelib.loader.cache.texture.AnimatableTexture;
 import software.bluelib.loader.constant.DataTickets;
 import software.bluelib.loader.model.GeoModel;
@@ -181,8 +181,8 @@ public class GeoArmorRenderer<T extends Item & GeoItem> extends HumanoidModel im
 
     @Override
     public void preRender(PoseStack pPoseStack, T pAnimatable, ModelCache pModel, @Nullable MultiBufferSource pBufferSource,
-                          @Nullable VertexConsumer buffer, boolean pIsReRender, float pPartialTick, int pPackedLight,
-                          int pPackedOverlay, int colour) {
+            @Nullable VertexConsumer buffer, boolean pIsReRender, float pPartialTick, int pPackedLight,
+            int pPackedOverlay, int colour) {
         this.entityRenderTranslations = new Matrix4f(pPoseStack.last().pose());
 
         applyBaseModel(this.baseModel);
@@ -217,8 +217,8 @@ public class GeoArmorRenderer<T extends Item & GeoItem> extends HumanoidModel im
 
     @Override
     public void actuallyRender(PoseStack pPoseStack, T pAnimatable, ModelCache pModel, @Nullable RenderType pRenderType,
-                               MultiBufferSource pBufferSource, @Nullable VertexConsumer pBuffer, boolean pIsReRender, float pPartialTick,
-                               int pPackedLight, int pPackedOverlay, int colour) {
+            MultiBufferSource pBufferSource, @Nullable VertexConsumer pBuffer, boolean pIsReRender, float pPartialTick,
+            int pPackedLight, int pPackedOverlay, int colour) {
         pPoseStack.pushPose();
         pPoseStack.translate(0, 24 / 16f, 0);
         pPoseStack.scale(-1, -1, 1);
@@ -265,7 +265,7 @@ public class GeoArmorRenderer<T extends Item & GeoItem> extends HumanoidModel im
 
     @Override
     public void renderRecursively(PoseStack pPoseStack, T pAnimatable, BoneCache pBone, RenderType pRenderType, MultiBufferSource pBufferSource, VertexConsumer pBuffer, boolean pIsReRender, float pPartialTick, int pPackedLight,
-                                  int pPackedOverlay, int pColour) {
+            int pPackedOverlay, int pColour) {
         if (pBone.isTrackingMatrices()) {
             Matrix4f poseState = new Matrix4f(pPoseStack.last().pose());
 

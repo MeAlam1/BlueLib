@@ -19,8 +19,8 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
-import software.bluelib.loader.animatable.GeoAnimatable;
 import software.bluelib.client.loader.cache.model.BoneCache;
+import software.bluelib.loader.animatable.GeoAnimatable;
 import software.bluelib.loader.renderer.GeoRenderer;
 import software.bluelib.loader.util.RenderUtil;
 
@@ -56,7 +56,7 @@ public class BlockAndItemGeoLayer<T extends GeoAnimatable> extends GeoRenderLaye
 
     @Override
     public void renderForBone(PoseStack pPoseStack, T animatable, BoneCache bone, RenderType pRenderType, MultiBufferSource pBufferSource,
-                              VertexConsumer buffer, float pPartialTick, int pPackedLight, int pPackedOverlay) {
+            VertexConsumer buffer, float pPartialTick, int pPackedLight, int pPackedOverlay) {
         ItemStack stack = getStackForBone(bone, animatable);
         BlockState blockState = getBlockForBone(bone, animatable);
 
@@ -76,7 +76,7 @@ public class BlockAndItemGeoLayer<T extends GeoAnimatable> extends GeoRenderLaye
     }
 
     protected void renderStackForBone(PoseStack pPoseStack, BoneCache bone, ItemStack stack, T animatable, MultiBufferSource pBufferSource,
-                                      float pPartialTick, int pPackedLight, int pPackedOverlay) {
+            float pPartialTick, int pPackedLight, int pPackedOverlay) {
         if (animatable instanceof LivingEntity livingEntity) {
             Minecraft.getInstance().getItemRenderer().renderStatic(livingEntity, stack,
                     getTransformTypeForStack(bone, stack, animatable), false, pPoseStack, pBufferSource, livingEntity.level(),
@@ -88,7 +88,7 @@ public class BlockAndItemGeoLayer<T extends GeoAnimatable> extends GeoRenderLaye
     }
 
     protected void renderBlockForBone(PoseStack pPoseStack, BoneCache bone, BlockState state, T animatable, MultiBufferSource pBufferSource,
-                                      float pPartialTick, int pPackedLight, int pPackedOverlay) {
+            float pPartialTick, int pPackedLight, int pPackedOverlay) {
         pPoseStack.pushPose();
         pPoseStack.translate(-0.25f, -0.25f, -0.25f);
         pPoseStack.scale(0.5f, 0.5f, 0.5f);

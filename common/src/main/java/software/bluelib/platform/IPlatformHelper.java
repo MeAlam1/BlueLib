@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
-
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.server.MinecraftServer;
 import software.bluelib.BlueLibConstants;

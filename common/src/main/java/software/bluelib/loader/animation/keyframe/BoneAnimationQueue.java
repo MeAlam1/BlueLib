@@ -7,13 +7,13 @@
  */
 package software.bluelib.loader.animation.keyframe;
 
-import software.bluelib.loader.animation.state.BoneSnapshot;
 import software.bluelib.client.loader.cache.model.BoneCache;
+import software.bluelib.loader.animation.state.BoneSnapshot;
 
 public record BoneAnimationQueue(BoneCache bone, AnimationPointQueue rotationXQueue, AnimationPointQueue rotationYQueue,
-                                 AnimationPointQueue rotationZQueue, AnimationPointQueue positionXQueue, AnimationPointQueue positionYQueue,
-                                 AnimationPointQueue positionZQueue, AnimationPointQueue scaleXQueue, AnimationPointQueue scaleYQueue,
-                                 AnimationPointQueue scaleZQueue) {
+        AnimationPointQueue rotationZQueue, AnimationPointQueue positionXQueue, AnimationPointQueue positionYQueue,
+        AnimationPointQueue positionZQueue, AnimationPointQueue scaleXQueue, AnimationPointQueue scaleYQueue,
+        AnimationPointQueue scaleZQueue) {
 
     public BoneAnimationQueue(BoneCache bone) {
         this(bone, new AnimationPointQueue(), new AnimationPointQueue(), new AnimationPointQueue(),

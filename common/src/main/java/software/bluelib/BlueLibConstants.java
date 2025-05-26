@@ -19,7 +19,6 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import software.bluelib.api.event.IEventProxy;
 import software.bluelib.api.net.NetworkPacket;
-import software.bluelib.loader.GeckoLibServices;
 import software.bluelib.platform.IPlatformClient;
 import software.bluelib.platform.IPlatformHelper;
 import software.bluelib.platform.IRegistryHelper;
@@ -53,7 +52,7 @@ public class BlueLibConstants {
         public static final IEventProxy EVENT_PROXY = load(IEventProxy.class);
 
         public static final IRegistryHelper REGISTRY = load(IRegistryHelper.class);
-        
+
         public static final IPlatformClient ITEM_RENDERING = load(IPlatformClient.class);
     }
 

@@ -20,10 +20,10 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
-import software.bluelib.client.loader.cache.model.ModelCache;
 import software.bluelib.client.loader.cache.model.BoneCache;
-import software.bluelib.client.loader.json.model.object.VertexData;
+import software.bluelib.client.loader.cache.model.ModelCache;
 import software.bluelib.client.loader.json.model.object.QuadData;
+import software.bluelib.client.loader.json.model.object.VertexData;
 import software.bluelib.loader.animatable.GeoAnimatable;
 import software.bluelib.loader.model.GeoModel;
 import software.bluelib.loader.renderer.GeoItemRenderer;
@@ -50,7 +50,7 @@ public abstract class DynamicGeoItemRenderer<T extends Item & GeoAnimatable> ext
     }
 
     protected boolean boneRenderOverride(PoseStack pPoseStack, BoneCache bone, MultiBufferSource pBufferSource, VertexConsumer buffer,
-                                         float pPartialTick, int pPackedLight, int pPackedOverlay, int colour) {
+            float pPartialTick, int pPackedLight, int pPackedOverlay, int colour) {
         return false;
     }
 
@@ -106,7 +106,7 @@ public abstract class DynamicGeoItemRenderer<T extends Item & GeoAnimatable> ext
 
     @Override
     public void createVerticesOfQuad(QuadData quad, Matrix4f poseState, Vector3f normal, VertexConsumer buffer,
-                                     int pPackedLight, int pPackedOverlay, int colour) {
+            int pPackedLight, int pPackedOverlay, int colour) {
         if (this.textureOverride == null) {
             super.createVerticesOfQuad(quad, poseState, normal, buffer, pPackedLight, pPackedOverlay,
                     colour);

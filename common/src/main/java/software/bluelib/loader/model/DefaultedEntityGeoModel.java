@@ -9,9 +9,9 @@ package software.bluelib.loader.model;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import software.bluelib.client.loader.cache.model.BoneCache;
 import software.bluelib.loader.animatable.GeoAnimatable;
 import software.bluelib.loader.animation.AnimationState;
-import software.bluelib.client.loader.cache.model.BoneCache;
 import software.bluelib.loader.constant.DataTickets;
 import software.bluelib.loader.model.data.EntityModelData;
 

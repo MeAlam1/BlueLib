@@ -13,9 +13,9 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import org.apache.logging.log4j.util.TriConsumer;
 import org.jetbrains.annotations.Nullable;
-import software.bluelib.loader.animatable.GeoAnimatable;
-import software.bluelib.client.loader.cache.model.ModelCache;
 import software.bluelib.client.loader.cache.model.BoneCache;
+import software.bluelib.client.loader.cache.model.ModelCache;
+import software.bluelib.loader.animatable.GeoAnimatable;
 import software.bluelib.loader.renderer.GeoRenderer;
 
 public class BoneFilterGeoLayer<T extends GeoAnimatable> extends GeoRenderLayer<T> {

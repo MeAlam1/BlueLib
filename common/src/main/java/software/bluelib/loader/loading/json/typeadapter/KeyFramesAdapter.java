@@ -18,7 +18,6 @@ import software.bluelib.loader.animation.Animation;
 import software.bluelib.loader.animation.keyframe.event.data.CustomInstructionKeyframeData;
 import software.bluelib.loader.animation.keyframe.event.data.ParticleKeyframeData;
 import software.bluelib.loader.animation.keyframe.event.data.SoundKeyframeData;
-import software.bluelib.loader.loading.object.BakedAnimations;
 
 public class KeyFramesAdapter implements JsonDeserializer<Animation.Keyframes> {
 

@@ -11,7 +11,6 @@ import com.google.common.base.Suppliers;
 import java.util.function.Supplier;
 import org.apache.commons.lang3.mutable.MutableObject;
 import software.bluelib.BlueLibConstants;
-import software.bluelib.loader.GeckoLibServices;
 import software.bluelib.loader.animatable.GeoAnimatable;
 import software.bluelib.loader.animatable.SingletonGeoAnimatable;
 import software.bluelib.loader.animatable.client.GeoRenderProvider;

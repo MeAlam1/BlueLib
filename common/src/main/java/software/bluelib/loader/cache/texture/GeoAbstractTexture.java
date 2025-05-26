@@ -22,7 +22,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.BlueLibConstants;
-import software.bluelib.loader.GeckoLibServices;
 
 public abstract class GeoAbstractTexture extends AbstractTexture {
 

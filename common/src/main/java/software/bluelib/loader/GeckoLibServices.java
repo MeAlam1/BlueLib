@@ -8,7 +8,6 @@
 package software.bluelib.loader;
 
 import java.util.ServiceLoader;
-
 import software.bluelib.loader.service.GeckoLibNetworking;
 
 public final class GeckoLibServices {

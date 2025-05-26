@@ -15,9 +15,9 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import org.apache.logging.log4j.util.TriConsumer;
 import org.jetbrains.annotations.Nullable;
-import software.bluelib.loader.animatable.GeoAnimatable;
-import software.bluelib.client.loader.cache.model.ModelCache;
 import software.bluelib.client.loader.cache.model.BoneCache;
+import software.bluelib.client.loader.cache.model.ModelCache;
+import software.bluelib.loader.animatable.GeoAnimatable;
 import software.bluelib.loader.renderer.GeoRenderer;
 
 public class FastBoneFilterGeoLayer<T extends GeoAnimatable> extends BoneFilterGeoLayer<T> {
@@ -44,7 +44,7 @@ public class FastBoneFilterGeoLayer<T extends GeoAnimatable> extends BoneFilterG
 
     @Override
     public void preRender(PoseStack pPoseStack, T animatable, ModelCache bakedModel, @Nullable RenderType pRenderType, MultiBufferSource pBufferSource,
-                          @Nullable VertexConsumer buffer, float pPartialTick, int pPackedLight, int pPackedOverlay) {
+            @Nullable VertexConsumer buffer, float pPartialTick, int pPackedLight, int pPackedOverlay) {
         for (String boneName : getAffectedBones()) {
             this.renderer.getGeoModel().getBone(boneName).ifPresent(bone -> checkAndApply(bone, animatable, pPartialTick));
         }

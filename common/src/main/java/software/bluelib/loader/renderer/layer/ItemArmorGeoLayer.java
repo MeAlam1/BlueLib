@@ -33,11 +33,11 @@ import net.minecraft.world.level.block.SkullBlock;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.BlueLibConstants;
-import software.bluelib.loader.animatable.GeoAnimatable;
-import software.bluelib.loader.animatable.GeoItem;
-import software.bluelib.client.loader.cache.model.ModelCache;
 import software.bluelib.client.loader.cache.model.BoneCache;
 import software.bluelib.client.loader.cache.model.CubeCache;
+import software.bluelib.client.loader.cache.model.ModelCache;
+import software.bluelib.loader.animatable.GeoAnimatable;
+import software.bluelib.loader.animatable.GeoItem;
 import software.bluelib.loader.renderer.GeoArmorRenderer;
 import software.bluelib.loader.renderer.GeoRenderer;
 import software.bluelib.loader.util.Color;
@@ -89,7 +89,7 @@ public class ItemArmorGeoLayer<T extends LivingEntity & GeoAnimatable> extends G
 
     @Override
     public void preRender(PoseStack pPoseStack, T animatable, ModelCache bakedModel, @Nullable RenderType pRenderType, MultiBufferSource pBufferSource,
-                          @Nullable VertexConsumer buffer, float pPartialTick, int pPackedLight, int pPackedOverlay) {
+            @Nullable VertexConsumer buffer, float pPartialTick, int pPackedLight, int pPackedOverlay) {
         this.mainHandStack = animatable.getItemBySlot(EquipmentSlot.MAINHAND);
         this.offhandStack = animatable.getItemBySlot(EquipmentSlot.OFFHAND);
         this.helmetStack = animatable.getItemBySlot(EquipmentSlot.HEAD);
@@ -100,7 +100,7 @@ public class ItemArmorGeoLayer<T extends LivingEntity & GeoAnimatable> extends G
 
     @Override
     public void renderForBone(PoseStack pPoseStack, T animatable, BoneCache bone, RenderType pRenderType, MultiBufferSource pBufferSource,
-                              VertexConsumer buffer, float pPartialTick, int pPackedLight, int pPackedOverlay) {
+            VertexConsumer buffer, float pPartialTick, int pPackedLight, int pPackedOverlay) {
         ItemStack armorStack = getArmorItemForBone(bone, animatable);
 
         if (armorStack == null)
@@ -133,7 +133,7 @@ public class ItemArmorGeoLayer<T extends LivingEntity & GeoAnimatable> extends G
     }
 
     protected <I extends Item & GeoItem> void renderVanillaArmorPiece(PoseStack pPoseStack, T animatable, BoneCache bone, EquipmentSlot slot, ItemStack armorStack,
-                                                                      ModelPart modelPart, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight, int pPackedOverlay) {
+            ModelPart modelPart, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight, int pPackedOverlay) {
         Holder<ArmorMaterial> material = ((ArmorItem) armorStack.getItem()).getMaterial();
 
         for (ArmorMaterial.Layer layer : material.value().layers()) {
