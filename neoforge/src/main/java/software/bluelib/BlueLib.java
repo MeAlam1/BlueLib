@@ -27,7 +27,7 @@ public class BlueLib {
 
     public BlueLib(IEventBus pModEventBus, ModContainer pModContainer) {
         BlueLibCommon.doRegistration();
-        ReloadHandler.setProvider(new VariantProvider());
+        ReloadHandler.registerProvider(new VariantProvider());
         pModEventBus.register(this);
         MixinBootstrap.init();
         pModEventBus.addListener(NeoForgeNetworkManager::registerMessages);

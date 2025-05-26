@@ -7,8 +7,6 @@
  */
 package software.bluelib.event;
 
-import java.util.List;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -21,41 +19,47 @@ import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
 import software.bluelib.entity.variant.VariantLoader;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+
 @EventBusSubscriber(modid = BlueLibConstants.MOD_ID)
 public class ReloadHandler {
 
-    private static IVariantProvider provider;
+	private static final List<IVariantProvider> providers = new ArrayList<>();
 
-    public static void setProvider(IVariantProvider pVariantProvider) {
-        provider = pVariantProvider;
-    }
+	public static void registerProvider(IVariantProvider provider) {
+		providers.add(provider);
+	}
 
-    @SubscribeEvent
-    public static void onServerStart(ServerStartingEvent pEvent) {
-        if (provider == null) return;
+	@SubscribeEvent
+	public static void onServerStart(ServerStartingEvent pEvent) {
+		if (providers.isEmpty()) return;
 
-        BlueLibConstants.SCHEDULER = new ScheduledThreadPoolExecutor(1);
-        BlueLibConstants.server = pEvent.getServer();
-        loadEntityVariants(pEvent.getServer().getResourceManager());
-        BaseLogger.log(true, BaseLogLevel.INFO, BlueLibCommon.Translation.log("variants.loaded"));
-    }
+		BlueLibConstants.SCHEDULER = new ScheduledThreadPoolExecutor(1);
+		BlueLibConstants.server = pEvent.getServer();
+		loadEntityVariants(pEvent.getServer().getResourceManager());
+		BaseLogger.log(true, BaseLogLevel.INFO, BlueLibCommon.Translation.log("variants.loaded"));
+	}
 
-    @SubscribeEvent
-    public static void onDatapackSync(OnDatapackSyncEvent pEvent) {
-        if (provider == null) return;
+	@SubscribeEvent
+	public static void onDatapackSync(OnDatapackSyncEvent pEvent) {
+		if (providers.isEmpty()) return;
 
-        loadEntityVariants(pEvent.getPlayerList().getServer().getResourceManager());
-        BaseLogger.log(true, BaseLogLevel.INFO, BlueLibCommon.Translation.log("variants.reloaded"));
-    }
+		loadEntityVariants(pEvent.getPlayerList().getServer().getResourceManager());
+		BaseLogger.log(true, BaseLogLevel.INFO, BlueLibCommon.Translation.log("variants.reloaded"));
+	}
 
-    private static void loadEntityVariants(ResourceManager pResourceManager) {
-        List<String> entityNames = provider.getEntityNames();
-        String basePath = provider.getBasePath();
+	private static void loadEntityVariants(ResourceManager pResourceManager) {
+		for (IVariantProvider provider : providers) {
+			List<String> entityNames = provider.getEntityNames();
+			String basePath = provider.getBasePath();
 
-        for (String entityName : entityNames) {
-            String folderPath = basePath + entityName;
-            VariantLoader.loadVariants(folderPath, pResourceManager, entityName);
-            BaseLogger.log(true, BaseLogLevel.INFO, BlueLibCommon.Translation.log("variants.loaded.entity", entityName));
-        }
-    }
+			for (String entityName : entityNames) {
+				String folderPath = basePath + entityName;
+				VariantLoader.loadVariants(folderPath, pResourceManager, entityName);
+				BaseLogger.log(true, BaseLogLevel.INFO, BlueLibCommon.Translation.log("variants.loaded.entity", entityName));
+			}
+		}
+	}
 }

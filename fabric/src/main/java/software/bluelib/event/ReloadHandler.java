@@ -7,6 +7,7 @@
  */
 package software.bluelib.event;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import net.minecraft.server.MinecraftServer;
@@ -21,14 +22,14 @@ import software.bluelib.entity.variant.VariantLoader;
 
 public class ReloadHandler {
 
-    private static IVariantProvider provider;
 
-    public static void setProvider(IVariantProvider pVariantProvider) {
-        provider = pVariantProvider;
+    private static final List<IVariantProvider> providers = new ArrayList<>();
+
+    public static void registerProvider(IVariantProvider provider) {
+        providers.add(provider);
     }
-
     public static void onServerStart(MinecraftServer pServer) {
-        if (provider == null) return;
+        if (providers.isEmpty()) return;
 
         BlueLibConstants.SCHEDULER = new ScheduledThreadPoolExecutor(1);
         BlueLibConstants.server = pServer;
@@ -37,20 +38,22 @@ public class ReloadHandler {
     }
 
     public static void onReload(MinecraftServer pServer, CloseableResourceManager pCloseableResourceManager, boolean pBoolean) {
-        if (provider == null) return;
+        if (providers.isEmpty()) return;
 
         ReloadHandler.LoadEntityVariants(pServer.getResourceManager());
         BaseLogger.log(true, BaseLogLevel.INFO, BlueLibCommon.Translation.log("variants.reloaded"));
     }
 
     public static void LoadEntityVariants(ResourceManager pResourceManager) {
-        List<String> entityNames = provider.getEntityNames();
-        String basePath = provider.getBasePath();
+        for (IVariantProvider provider : providers) {
+            List<String> entityNames = provider.getEntityNames();
+            String basePath = provider.getBasePath();
 
-        for (String entityName : entityNames) {
-            String folderPath = basePath + entityName;
-            VariantLoader.loadVariants(folderPath, pResourceManager, entityName);
-            BaseLogger.log(true, BaseLogLevel.INFO, BlueLibCommon.Translation.log("variants.loaded.entity", entityName));
+            for (String entityName : entityNames) {
+                String folderPath = basePath + entityName;
+                VariantLoader.loadVariants(folderPath, pResourceManager, entityName);
+                BaseLogger.log(true, BaseLogLevel.INFO, BlueLibCommon.Translation.log("variants.loaded.entity", entityName));
+            }
         }
     }
 }

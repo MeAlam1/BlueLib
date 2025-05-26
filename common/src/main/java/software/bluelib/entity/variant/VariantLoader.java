@@ -7,6 +7,8 @@
  */
 package software.bluelib.entity.variant;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -22,13 +24,13 @@ import software.bluelib.api.utils.variant.ParameterUtils;
 
 public class VariantLoader extends JSONParser {
 
-    public static final Map<String, JsonObject> AllVariants = new HashMap<>();
+    // entityName -> (variantName -> Variants)
+    public static final Map<String, Map<String, Variants>> AllVariants = new HashMap<>();
 
     private static final VariantLoader LOADER = new VariantLoader();
 
     public static void loadVariants(String pFolderPath, ResourceManager pResourceManager, String pEntityName) {
         LOADER.loadData(pFolderPath, pResourceManager);
-        AllVariants.putAll(LOADER.getDataMap());
         parseVariants(pEntityName, LOADER.getMergedJsonObject());
     }
 
@@ -39,14 +41,24 @@ public class VariantLoader extends JSONParser {
         }
 
         if (!AllVariants.containsKey(pEntityName)) {
+            Map<String, Variants> variantMap = new HashMap<>();
             for (String variantKey : pVariantsJson.keySet()) {
                 if (BlueLibConstants.PlatformHelper.EVENT_PROXY.variantLoadedPre(variantKey, pEntityName)) {
                     BaseLogger.log(true, BaseLogLevel.INFO, BlueLibCommon.Translation.log("variant.load.cancelled", variantKey, pEntityName));
                     return;
                 }
+                JsonArray variantArray = pVariantsJson.getAsJsonArray(variantKey);
+                if (variantArray != null && !variantArray.isEmpty()) {
+                    for (JsonElement variantElement : variantArray) {
+                        if (variantElement.isJsonObject()) {
+                            Variants record = new Variants(pEntityName, variantKey, variantElement.getAsJsonObject());
+                            variantMap.put(variantKey, record);
+                        }
+                    }
+                }
                 BlueLibConstants.PlatformHelper.EVENT_PROXY.variantLoadedPost(pEntityName, variantKey);
             }
-            AllVariants.put(pEntityName, pVariantsJson);
+            AllVariants.put(pEntityName, variantMap);
         }
 
         BlueLibConstants.PlatformHelper.EVENT_PROXY.allVariantsLoadedPost(pEntityName);

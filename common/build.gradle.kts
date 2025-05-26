@@ -10,10 +10,10 @@ repositories {
     maven(url = "${rootProject.projectDir}/deps")
 }
 
-version = libs.versions.bluelib.get()
+version = ""
 
 base {
-    archivesName = "${version}-common-${libs.versions.minecraft.asProvider().get()}-bluelib"
+    archivesName = "${libs.versions.bluelib.get()}-common-${libs.versions.minecraft.asProvider().get()}-bluelib"
 }
 
 neoForge {
