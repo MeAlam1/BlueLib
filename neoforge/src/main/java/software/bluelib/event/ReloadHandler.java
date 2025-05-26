@@ -7,7 +7,6 @@
  */
 package software.bluelib.event;
 
-import net.minecraft.server.packs.resources.ResourceManager;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.OnDatapackSyncEvent;
@@ -38,7 +37,7 @@ public class ReloadHandler {
 
 		BlueLibConstants.SCHEDULER = new ScheduledThreadPoolExecutor(1);
 		BlueLibConstants.server = pEvent.getServer();
-		loadEntityVariants(pEvent.getServer().getResourceManager());
+		VariantLoader.loadEntityVariants(pEvent.getServer().getResourceManager(), providers);
 		BaseLogger.log(true, BaseLogLevel.INFO, BlueLibCommon.Translation.log("variants.loaded"));
 	}
 
@@ -46,20 +45,7 @@ public class ReloadHandler {
 	public static void onDatapackSync(OnDatapackSyncEvent pEvent) {
 		if (providers.isEmpty()) return;
 
-		loadEntityVariants(pEvent.getPlayerList().getServer().getResourceManager());
+		VariantLoader.loadEntityVariants(pEvent.getPlayerList().getServer().getResourceManager(), providers);
 		BaseLogger.log(true, BaseLogLevel.INFO, BlueLibCommon.Translation.log("variants.reloaded"));
-	}
-
-	private static void loadEntityVariants(ResourceManager pResourceManager) {
-		for (IVariantProvider provider : providers) {
-			List<String> entityNames = provider.getEntityNames();
-			String basePath = provider.getBasePath();
-
-			for (String entityName : entityNames) {
-				String folderPath = basePath + entityName;
-				VariantLoader.loadVariants(folderPath, pResourceManager, entityName);
-				BaseLogger.log(true, BaseLogLevel.INFO, BlueLibCommon.Translation.log("variants.loaded.entity", entityName));
-			}
-		}
 	}
 }

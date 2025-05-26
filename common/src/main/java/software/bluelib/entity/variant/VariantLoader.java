@@ -10,13 +10,11 @@ package software.bluelib.entity.variant;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import net.minecraft.server.packs.resources.ResourceManager;
 import software.bluelib.BlueLibCommon;
 import software.bluelib.BlueLibConstants;
+import software.bluelib.api.entity.variant.IVariantProvider;
 import software.bluelib.api.json.JSONParser;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
@@ -28,6 +26,19 @@ public class VariantLoader extends JSONParser {
     public static final Map<String, Map<String, Variants>> AllVariants = new HashMap<>();
 
     private static final VariantLoader LOADER = new VariantLoader();
+
+    public static void loadEntityVariants(ResourceManager pResourceManager, List<IVariantProvider> pProviders) {
+        for (IVariantProvider provider : pProviders) {
+            List<String> entityNames = provider.getEntityNames();
+            String basePath = provider.getBasePath();
+
+            for (String entityName : entityNames) {
+                String folderPath = basePath + entityName;
+                VariantLoader.loadVariants(folderPath, pResourceManager, entityName);
+                BaseLogger.log(true, BaseLogLevel.INFO, BlueLibCommon.Translation.log("variants.loaded.entity", entityName));
+            }
+        }
+    }
 
     public static void loadVariants(String pFolderPath, ResourceManager pResourceManager, String pEntityName) {
         LOADER.loadData(pFolderPath, pResourceManager);
