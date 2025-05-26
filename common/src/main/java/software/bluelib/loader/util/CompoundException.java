@@ -15,12 +15,12 @@ public class CompoundException extends RuntimeException {
 
     private final List<String> messages = new ObjectArrayList<>();
 
-    public CompoundException(String message) {
-        this.messages.add(message);
+    public CompoundException(String pMessage) {
+        this.messages.add(pMessage);
     }
 
-    public CompoundException withMessage(String message) {
-        this.messages.add(message);
+    public CompoundException withMessage(String pMessage) {
+        this.messages.add(pMessage);
 
         return this;
     }
@@ -39,7 +39,7 @@ public class CompoundException extends RuntimeException {
 
     @Override
     public String toString() {
-        final String name = "Geckolib.CompoundException";
+        final String name = "BlueLib.CompoundException";
         final String message = getLocalizedMessage();
 
         return message != null ? name + ": " + message : name;

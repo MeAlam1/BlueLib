@@ -55,44 +55,44 @@ public class BlockAndItemGeoLayer<T extends GeoAnimatable> extends GeoRenderLaye
     }
 
     @Override
-    public void renderForBone(PoseStack poseStack, T animatable, GeoBone bone, RenderType renderType, MultiBufferSource bufferSource,
-            VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay) {
+    public void renderForBone(PoseStack pPoseStack, T animatable, GeoBone bone, RenderType pRenderType, MultiBufferSource pBufferSource,
+            VertexConsumer buffer, float pPartialTick, int pPackedLight, int pPackedOverlay) {
         ItemStack stack = getStackForBone(bone, animatable);
         BlockState blockState = getBlockForBone(bone, animatable);
 
         if (stack == null && blockState == null)
             return;
 
-        poseStack.pushPose();
-        RenderUtil.translateAndRotateMatrixForBone(poseStack, bone);
+        pPoseStack.pushPose();
+        RenderUtil.translateAndRotateMatrixForBone(pPoseStack, bone);
 
         if (stack != null)
-            renderStackForBone(poseStack, bone, stack, animatable, bufferSource, partialTick, packedLight, packedOverlay);
+            renderStackForBone(pPoseStack, bone, stack, animatable, pBufferSource, pPartialTick, pPackedLight, pPackedOverlay);
 
         if (blockState != null)
-            renderBlockForBone(poseStack, bone, blockState, animatable, bufferSource, partialTick, packedLight, packedOverlay);
+            renderBlockForBone(pPoseStack, bone, blockState, animatable, pBufferSource, pPartialTick, pPackedLight, pPackedOverlay);
 
-        poseStack.popPose();
+        pPoseStack.popPose();
     }
 
-    protected void renderStackForBone(PoseStack poseStack, GeoBone bone, ItemStack stack, T animatable, MultiBufferSource bufferSource,
-            float partialTick, int packedLight, int packedOverlay) {
+    protected void renderStackForBone(PoseStack pPoseStack, GeoBone bone, ItemStack stack, T animatable, MultiBufferSource pBufferSource,
+            float pPartialTick, int pPackedLight, int pPackedOverlay) {
         if (animatable instanceof LivingEntity livingEntity) {
             Minecraft.getInstance().getItemRenderer().renderStatic(livingEntity, stack,
-                    getTransformTypeForStack(bone, stack, animatable), false, poseStack, bufferSource, livingEntity.level(),
-                    packedLight, packedOverlay, livingEntity.getId());
+                    getTransformTypeForStack(bone, stack, animatable), false, pPoseStack, pBufferSource, livingEntity.level(),
+                    pPackedLight, pPackedOverlay, livingEntity.getId());
         } else {
             Minecraft.getInstance().getItemRenderer().renderStatic(stack, getTransformTypeForStack(bone, stack, animatable),
-                    packedLight, packedOverlay, poseStack, bufferSource, Minecraft.getInstance().level, (int) this.renderer.getInstanceId(animatable));
+                    pPackedLight, pPackedOverlay, pPoseStack, pBufferSource, Minecraft.getInstance().level, (int) this.renderer.getInstanceId(animatable));
         }
     }
 
-    protected void renderBlockForBone(PoseStack poseStack, GeoBone bone, BlockState state, T animatable, MultiBufferSource bufferSource,
-            float partialTick, int packedLight, int packedOverlay) {
-        poseStack.pushPose();
-        poseStack.translate(-0.25f, -0.25f, -0.25f);
-        poseStack.scale(0.5f, 0.5f, 0.5f);
-        Minecraft.getInstance().getBlockRenderer().renderSingleBlock(state, poseStack, bufferSource, packedLight, OverlayTexture.NO_OVERLAY);
-        poseStack.popPose();
+    protected void renderBlockForBone(PoseStack pPoseStack, GeoBone bone, BlockState state, T animatable, MultiBufferSource pBufferSource,
+            float pPartialTick, int pPackedLight, int pPackedOverlay) {
+        pPoseStack.pushPose();
+        pPoseStack.translate(-0.25f, -0.25f, -0.25f);
+        pPoseStack.scale(0.5f, 0.5f, 0.5f);
+        Minecraft.getInstance().getBlockRenderer().renderSingleBlock(state, pPoseStack, pBufferSource, pPackedLight, OverlayTexture.NO_OVERLAY);
+        pPoseStack.popPose();
     }
 }

@@ -90,45 +90,45 @@ public class GeoBlockRenderer<T extends BlockEntity & GeoAnimatable> implements 
     }
 
     @Override
-    public void preRender(PoseStack poseStack, T animatable, BakedGeoModel model, @Nullable MultiBufferSource bufferSource, @Nullable VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, int colour) {
-        this.blockRenderTranslations = new Matrix4f(poseStack.last().pose());
+    public void preRender(PoseStack pPoseStack, T animatable, BakedGeoModel model, @Nullable MultiBufferSource pBufferSource, @Nullable VertexConsumer buffer, boolean pIsReRender, float pPartialTick, int pPackedLight, int pPackedOverlay, int colour) {
+        this.blockRenderTranslations = new Matrix4f(pPoseStack.last().pose());
 
-        if (!isReRender)
-            poseStack.translate(0.5, 0, 0.5);
+        if (!pIsReRender)
+            pPoseStack.translate(0.5, 0, 0.5);
 
-        scaleModelForRender(this.scaleWidth, this.scaleHeight, poseStack, animatable, model, isReRender, partialTick, packedLight, packedOverlay);
+        scaleModelForRender(this.scaleWidth, this.scaleHeight, pPoseStack, animatable, model, pIsReRender, pPartialTick, pPackedLight, pPackedOverlay);
     }
 
     @Override
     @ApiStatus.Internal
-    public void render(T animatable, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource,
-            int packedLight, int packedOverlay) {
+    public void render(T animatable, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBufferSource,
+            int pPackedLight, int pPackedOverlay) {
         this.animatable = animatable;
 
-        defaultRender(poseStack, this.animatable, bufferSource, null, null, 0, partialTick, packedLight);
+        defaultRender(pPoseStack, this.animatable, pBufferSource, null, null, 0, pPartialTick, pPackedLight);
     }
 
     @Override
-    public void actuallyRender(PoseStack poseStack, T animatable, BakedGeoModel model, @Nullable RenderType renderType,
-            MultiBufferSource bufferSource, @Nullable VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight,
-            int packedOverlay, int colour) {
-        if (!isReRender) {
-            AnimationState<T> animationState = new AnimationState<T>(animatable, 0, 0, partialTick, false);
+    public void actuallyRender(PoseStack pPoseStack, T animatable, BakedGeoModel model, @Nullable RenderType pRenderType,
+            MultiBufferSource pBufferSource, @Nullable VertexConsumer buffer, boolean pIsReRender, float pPartialTick, int pPackedLight,
+            int pPackedOverlay, int colour) {
+        if (!pIsReRender) {
+            AnimationState<T> animationState = new AnimationState<T>(animatable, 0, 0, pPartialTick, false);
             long instanceId = getInstanceId(animatable);
             GeoModel<T> currentModel = getGeoModel();
 
             animationState.setData(DataTickets.TICK, animatable.getTick(animatable));
             animationState.setData(DataTickets.BLOCK_ENTITY, animatable);
             currentModel.addAdditionalStateData(animatable, instanceId, animationState::setData);
-            rotateBlock(getFacing(animatable), poseStack);
-            currentModel.handleAnimations(animatable, instanceId, animationState, partialTick);
+            rotateBlock(getFacing(animatable), pPoseStack);
+            currentModel.handleAnimations(animatable, instanceId, animationState, pPartialTick);
         }
 
-        this.modelRenderTranslations = new Matrix4f(poseStack.last().pose());
+        this.modelRenderTranslations = new Matrix4f(pPoseStack.last().pose());
 
         if (buffer != null)
-            GeoRenderer.super.actuallyRender(poseStack, animatable, model, renderType, bufferSource, buffer, isReRender, partialTick,
-                    packedLight, packedOverlay, colour);
+            GeoRenderer.super.actuallyRender(pPoseStack, animatable, model, pRenderType, pBufferSource, buffer, pIsReRender, pPartialTick,
+                    pPackedLight, pPackedOverlay, colour);
     }
 
     @Override
@@ -137,10 +137,10 @@ public class GeoBlockRenderer<T extends BlockEntity & GeoAnimatable> implements 
     }
 
     @Override
-    public void renderRecursively(PoseStack poseStack, T animatable, GeoBone bone, RenderType renderType, MultiBufferSource bufferSource, VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight,
-            int packedOverlay, int colour) {
+    public void renderRecursively(PoseStack pPoseStack, T animatable, GeoBone bone, RenderType pRenderType, MultiBufferSource pBufferSource, VertexConsumer buffer, boolean pIsReRender, float pPartialTick, int pPackedLight,
+            int pPackedOverlay, int colour) {
         if (bone.isTrackingMatrices()) {
-            Matrix4f poseState = new Matrix4f(poseStack.last().pose());
+            Matrix4f poseState = new Matrix4f(pPoseStack.last().pose());
             Matrix4f localMatrix = RenderUtil.invertAndMultiplyMatrices(poseState, this.blockRenderTranslations);
             Matrix4f worldState = new Matrix4f(localMatrix);
             BlockPos pos = this.animatable.getBlockPos();
@@ -150,18 +150,18 @@ public class GeoBlockRenderer<T extends BlockEntity & GeoAnimatable> implements 
             bone.setWorldSpaceMatrix(worldState.translate(new Vector3f(pos.getX(), pos.getY(), pos.getZ())));
         }
 
-        GeoRenderer.super.renderRecursively(poseStack, animatable, bone, renderType, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay,
+        GeoRenderer.super.renderRecursively(pPoseStack, animatable, bone, pRenderType, pBufferSource, buffer, pIsReRender, pPartialTick, pPackedLight, pPackedOverlay,
                 colour);
     }
 
-    protected void rotateBlock(Direction facing, PoseStack poseStack) {
+    protected void rotateBlock(Direction facing, PoseStack pPoseStack) {
         switch (facing) {
-            case SOUTH -> poseStack.mulPose(Axis.YP.rotationDegrees(180));
-            case WEST -> poseStack.mulPose(Axis.YP.rotationDegrees(90));
-            case NORTH -> poseStack.mulPose(Axis.YP.rotationDegrees(0));
-            case EAST -> poseStack.mulPose(Axis.YP.rotationDegrees(270));
-            case UP -> poseStack.mulPose(Axis.XP.rotationDegrees(90));
-            case DOWN -> poseStack.mulPose(Axis.XN.rotationDegrees(90));
+            case SOUTH -> pPoseStack.mulPose(Axis.YP.rotationDegrees(180));
+            case WEST -> pPoseStack.mulPose(Axis.YP.rotationDegrees(90));
+            case NORTH -> pPoseStack.mulPose(Axis.YP.rotationDegrees(0));
+            case EAST -> pPoseStack.mulPose(Axis.YP.rotationDegrees(270));
+            case UP -> pPoseStack.mulPose(Axis.XP.rotationDegrees(90));
+            case DOWN -> pPoseStack.mulPose(Axis.XN.rotationDegrees(90));
         }
     }
 
@@ -188,12 +188,12 @@ public class GeoBlockRenderer<T extends BlockEntity & GeoAnimatable> implements 
     }
 
     @Override
-    public boolean firePreRenderEvent(PoseStack poseStack, BakedGeoModel model, MultiBufferSource bufferSource, float partialTick, int packedLight) {
-        return BlueLibConstants.PlatformHelper.EVENT_PROXY.fireBlockPreRender(this, poseStack, model, bufferSource, partialTick, packedLight);
+    public boolean firePreRenderEvent(PoseStack pPoseStack, BakedGeoModel model, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight) {
+        return BlueLibConstants.PlatformHelper.EVENT_PROXY.fireBlockPreRender(this, pPoseStack, model, pBufferSource, pPartialTick, pPackedLight);
     }
 
     @Override
-    public void firePostRenderEvent(PoseStack poseStack, BakedGeoModel model, MultiBufferSource bufferSource, float partialTick, int packedLight) {
-        BlueLibConstants.PlatformHelper.EVENT_PROXY.fireBlockPostRender(this, poseStack, model, bufferSource, partialTick, packedLight);
+    public void firePostRenderEvent(PoseStack pPoseStack, BakedGeoModel model, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight) {
+        BlueLibConstants.PlatformHelper.EVENT_PROXY.fireBlockPostRender(this, pPoseStack, model, pBufferSource, pPartialTick, pPackedLight);
     }
 }

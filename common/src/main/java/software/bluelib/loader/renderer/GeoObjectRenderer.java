@@ -17,7 +17,7 @@ import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
-import software.bluelib.loader.GeckoLibServices;
+import software.bluelib.BlueLibConstants;
 import software.bluelib.loader.animatable.GeoAnimatable;
 import software.bluelib.loader.animation.AnimationState;
 import software.bluelib.loader.cache.object.BakedGeoModel;
@@ -40,8 +40,8 @@ public class GeoObjectRenderer<T extends GeoAnimatable> implements GeoRenderer<T
     protected Matrix4f objectRenderTranslations = new Matrix4f();
     protected Matrix4f modelRenderTranslations = new Matrix4f();
 
-    public GeoObjectRenderer(GeoModel<T> model) {
-        this.model = model;
+    public GeoObjectRenderer(GeoModel<T> pModel) {
+        this.model = pModel;
     }
 
     @Override
@@ -55,8 +55,8 @@ public class GeoObjectRenderer<T extends GeoAnimatable> implements GeoRenderer<T
     }
 
     @Override
-    public ResourceLocation getTextureLocation(T animatable) {
-        return GeoRenderer.super.getTextureLocation(animatable);
+    public ResourceLocation getTextureLocation(T pAnimatable) {
+        return GeoRenderer.super.getTextureLocation(pAnimatable);
     }
 
     @Override
@@ -64,65 +64,65 @@ public class GeoObjectRenderer<T extends GeoAnimatable> implements GeoRenderer<T
         return this.renderLayers.getRenderLayers();
     }
 
-    public GeoObjectRenderer<T> addRenderLayer(GeoRenderLayer<T> renderLayer) {
-        this.renderLayers.addLayer(renderLayer);
+    public GeoObjectRenderer<T> addRenderLayer(GeoRenderLayer<T> pRenderLayer) {
+        this.renderLayers.addLayer(pRenderLayer);
 
         return this;
     }
 
-    public GeoObjectRenderer<T> withScale(float scale) {
-        return withScale(scale, scale);
+    public GeoObjectRenderer<T> withScale(float pScale) {
+        return withScale(pScale, pScale);
     }
 
-    public GeoObjectRenderer<T> withScale(float scaleWidth, float scaleHeight) {
-        this.scaleWidth = scaleWidth;
-        this.scaleHeight = scaleHeight;
+    public GeoObjectRenderer<T> withScale(float pScaleWidth, float pScaleHeight) {
+        this.scaleWidth = pScaleWidth;
+        this.scaleHeight = pScaleHeight;
 
         return this;
     }
 
     @ApiStatus.Internal
-    public void render(PoseStack poseStack, T animatable, @Nullable MultiBufferSource bufferSource, @Nullable RenderType renderType,
-            @Nullable VertexConsumer buffer, int packedLight, float partialTick) {
-        this.animatable = animatable;
+    public void render(PoseStack pPoseStack, T pAnimatable, @Nullable MultiBufferSource pBufferSource, @Nullable RenderType pRenderType,
+            @Nullable VertexConsumer pBuffer, int pPackedLight, float pPartialTick) {
+        this.animatable = pAnimatable;
 
-        if (buffer == null)
-            bufferSource = Minecraft.getInstance().levelRenderer.renderBuffers.bufferSource();
+        if (pBuffer == null)
+            pBufferSource = Minecraft.getInstance().levelRenderer.renderBuffers.bufferSource();
 
-        defaultRender(poseStack, animatable, bufferSource, renderType, buffer, 0, partialTick, packedLight);
+        defaultRender(pPoseStack, pAnimatable, pBufferSource, pRenderType, pBuffer, 0, pPartialTick, pPackedLight);
     }
 
     @Override
-    public void preRender(PoseStack poseStack, T animatable, BakedGeoModel model, @Nullable MultiBufferSource bufferSource, @Nullable VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, int colour) {
-        this.objectRenderTranslations = new Matrix4f(poseStack.last().pose());
+    public void preRender(PoseStack pPoseStack, T pAnimatable, BakedGeoModel pModel, @Nullable MultiBufferSource pBufferSource, @Nullable VertexConsumer pBuffer, boolean pIsReRender, float pPartialTick, int pPackedLight, int pPackedOverlay, int pColour) {
+        this.objectRenderTranslations = new Matrix4f(pPoseStack.last().pose());
 
-        scaleModelForRender(this.scaleWidth, this.scaleHeight, poseStack, animatable, model, isReRender, partialTick, packedLight, packedOverlay);
+        scaleModelForRender(this.scaleWidth, this.scaleHeight, pPoseStack, pAnimatable, pModel, pIsReRender, pPartialTick, pPackedLight, pPackedOverlay);
 
-        poseStack.translate(0.5f, 0.51f, 0.5f);
+        pPoseStack.translate(0.5f, 0.51f, 0.5f);
     }
 
     @Override
-    public void actuallyRender(PoseStack poseStack, T animatable, BakedGeoModel model, @Nullable RenderType renderType,
-            MultiBufferSource bufferSource, @Nullable VertexConsumer buffer, boolean isReRender, float partialTick,
-            int packedLight, int packedOverlay, int colour) {
-        poseStack.pushPose();
+    public void actuallyRender(PoseStack pPoseStack, T pAnimatable, BakedGeoModel pModel, @Nullable RenderType pRenderType,
+            MultiBufferSource pBufferSource, @Nullable VertexConsumer pBuffer, boolean pIsReRender, float pPartialTick,
+            int pPackedLight, int pPackedOverlay, int pColour) {
+        pPoseStack.pushPose();
 
-        if (!isReRender) {
-            AnimationState<T> animationState = new AnimationState<>(animatable, 0, 0, partialTick, false);
-            long instanceId = getInstanceId(animatable);
+        if (!pIsReRender) {
+            AnimationState<T> animationState = new AnimationState<>(pAnimatable, 0, 0, pPartialTick, false);
+            long instanceId = getInstanceId(pAnimatable);
             GeoModel<T> currentModel = getGeoModel();
 
-            currentModel.addAdditionalStateData(animatable, instanceId, animationState::setData);
-            currentModel.handleAnimations(animatable, instanceId, animationState, partialTick);
+            currentModel.addAdditionalStateData(pAnimatable, instanceId, animationState::setData);
+            currentModel.handleAnimations(pAnimatable, instanceId, animationState, pPartialTick);
         }
 
-        this.modelRenderTranslations = new Matrix4f(poseStack.last().pose());
+        this.modelRenderTranslations = new Matrix4f(pPoseStack.last().pose());
 
-        if (buffer != null)
-            GeoRenderer.super.actuallyRender(poseStack, animatable, model, renderType, bufferSource, buffer, isReRender, partialTick,
-                    packedLight, packedOverlay, colour);
+        if (pBuffer != null)
+            GeoRenderer.super.actuallyRender(pPoseStack, pAnimatable, pModel, pRenderType, pBufferSource, pBuffer, pIsReRender, pPartialTick,
+                    pPackedLight, pPackedOverlay, pColour);
 
-        poseStack.popPose();
+        pPoseStack.popPose();
     }
 
     @Override
@@ -131,22 +131,22 @@ public class GeoObjectRenderer<T extends GeoAnimatable> implements GeoRenderer<T
     }
 
     @Override
-    public void renderRecursively(PoseStack poseStack, T animatable, GeoBone bone, RenderType renderType, MultiBufferSource bufferSource, VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight,
-            int packedOverlay, int colour) {
-        if (bone.isTrackingMatrices()) {
-            Matrix4f poseState = new Matrix4f(poseStack.last().pose());
+    public void renderRecursively(PoseStack pPoseStack, T pAnimatable, GeoBone pBone, RenderType pRenderType, MultiBufferSource pBufferSource, VertexConsumer pBuffer, boolean pIsReRender, float pPartialTick, int pPackedLight,
+            int pPackedOverlay, int pColour) {
+        if (pBone.isTrackingMatrices()) {
+            Matrix4f poseState = new Matrix4f(pPoseStack.last().pose());
 
-            bone.setModelSpaceMatrix(RenderUtil.invertAndMultiplyMatrices(poseState, this.modelRenderTranslations));
-            bone.setLocalSpaceMatrix(RenderUtil.invertAndMultiplyMatrices(poseState, this.objectRenderTranslations));
+            pBone.setModelSpaceMatrix(RenderUtil.invertAndMultiplyMatrices(poseState, this.modelRenderTranslations));
+            pBone.setLocalSpaceMatrix(RenderUtil.invertAndMultiplyMatrices(poseState, this.objectRenderTranslations));
         }
 
-        GeoRenderer.super.renderRecursively(poseStack, animatable, bone, renderType, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay,
-                colour);
+        GeoRenderer.super.renderRecursively(pPoseStack, pAnimatable, pBone, pRenderType, pBufferSource, pBuffer, pIsReRender, pPartialTick, pPackedLight, pPackedOverlay,
+                pColour);
     }
 
     @Override
-    public void updateAnimatedTextureFrame(T animatable) {
-        AnimatableTexture.setAndUpdate(getTextureLocation(animatable));
+    public void updateAnimatedTextureFrame(T pAnimatable) {
+        AnimatableTexture.setAndUpdate(getTextureLocation(pAnimatable));
     }
 
     @Override
@@ -155,12 +155,12 @@ public class GeoObjectRenderer<T extends GeoAnimatable> implements GeoRenderer<T
     }
 
     @Override
-    public boolean firePreRenderEvent(PoseStack poseStack, BakedGeoModel model, MultiBufferSource bufferSource, float partialTick, int packedLight) {
-        return BlueLibConstants.PlatformHelper.EVENT_PROXY.fireObjectPreRender(this, poseStack, model, bufferSource, partialTick, packedLight);
+    public boolean firePreRenderEvent(PoseStack pPoseStack, BakedGeoModel pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight) {
+        return BlueLibConstants.PlatformHelper.EVENT_PROXY.fireObjectPreRender(this, pPoseStack, pModel, pBufferSource, pPartialTick, pPackedLight);
     }
 
     @Override
-    public void firePostRenderEvent(PoseStack poseStack, BakedGeoModel model, MultiBufferSource bufferSource, float partialTick, int packedLight) {
-        BlueLibConstants.PlatformHelper.EVENT_PROXY.fireObjectPostRender(this, poseStack, model, bufferSource, partialTick, packedLight);
+    public void firePostRenderEvent(PoseStack pPoseStack, BakedGeoModel pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight) {
+        BlueLibConstants.PlatformHelper.EVENT_PROXY.fireObjectPostRender(this, pPoseStack, pModel, pBufferSource, pPartialTick, pPackedLight);
     }
 }

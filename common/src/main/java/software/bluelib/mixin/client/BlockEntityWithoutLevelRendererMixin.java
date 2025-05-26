@@ -22,11 +22,11 @@ import software.bluelib.loader.animatable.client.GeoRenderProvider;
 public class BlockEntityWithoutLevelRendererMixin {
 
     @Inject(method = "renderByItem", at = @At("HEAD"), cancellable = true)
-    public void geckolib$renderGeckolibItem(ItemStack stack, ItemDisplayContext displayContext, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay, CallbackInfo ci) {
+    public void geckolib$renderGeckolibItem(ItemStack stack, ItemDisplayContext displayContext, PoseStack pPoseStack, MultiBufferSource pBufferSource, int pPackedLight, int pPackedOverlay, CallbackInfo ci) {
         final BlockEntityWithoutLevelRenderer geckolibRenderer = GeoRenderProvider.of(stack).getGeoItemRenderer();
 
         if (geckolibRenderer != null) {
-            geckolibRenderer.renderByItem(stack, displayContext, poseStack, bufferSource, packedLight, packedOverlay);
+            geckolibRenderer.renderByItem(stack, displayContext, pPoseStack, pBufferSource, pPackedLight, pPackedOverlay);
 
             ci.cancel();
         }

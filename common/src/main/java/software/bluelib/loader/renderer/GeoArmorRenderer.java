@@ -28,7 +28,6 @@ import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import software.bluelib.BlueLibConstants;
-import software.bluelib.loader.GeckoLibServices;
 import software.bluelib.loader.animatable.GeoAnimatable;
 import software.bluelib.loader.animatable.GeoItem;
 import software.bluelib.loader.animation.AnimationState;
@@ -68,17 +67,17 @@ public class GeoArmorRenderer<T extends Item & GeoItem> extends HumanoidModel im
     protected Entity currentEntity = null;
     protected ItemStack currentStack = null;
     protected EquipmentSlot currentSlot = null;
-    protected MultiBufferSource bufferSource = null;
-    protected float partialTick;
+    protected MultiBufferSource pBufferSource = null;
+    protected float pPartialTick;
     protected float limbSwing;
     protected float limbSwingAmount;
     protected float netHeadYaw;
     protected float headPitch;
 
-    public GeoArmorRenderer(GeoModel<T> model) {
+    public GeoArmorRenderer(GeoModel<T> pModel) {
         super(Minecraft.getInstance().getEntityModels().bakeLayer(ModelLayers.PLAYER_INNER_ARMOR));
 
-        this.model = model;
+        this.model = pModel;
         this.young = false;
     }
 
@@ -104,13 +103,13 @@ public class GeoArmorRenderer<T extends Item & GeoItem> extends HumanoidModel im
     }
 
     @Override
-    public long getInstanceId(T animatable) {
+    public long getInstanceId(T pAnimatable) {
         return -GeoItem.getId(this.currentStack);
     }
 
     @Override
-    public RenderType getRenderType(T animatable, ResourceLocation texture, @Nullable MultiBufferSource bufferSource, float partialTick) {
-        return RenderType.armorCutoutNoCull(texture);
+    public RenderType getRenderType(T pAnimatable, ResourceLocation pTexture, @Nullable MultiBufferSource pBufferSource, float pPartialTick) {
+        return RenderType.armorCutoutNoCull(pTexture);
     }
 
     @Override
@@ -118,79 +117,79 @@ public class GeoArmorRenderer<T extends Item & GeoItem> extends HumanoidModel im
         return this.renderLayers.getRenderLayers();
     }
 
-    public GeoArmorRenderer<T> addRenderLayer(GeoRenderLayer<T> renderLayer) {
-        this.renderLayers.addLayer(renderLayer);
+    public GeoArmorRenderer<T> addRenderLayer(GeoRenderLayer<T> pRenderLayer) {
+        this.renderLayers.addLayer(pRenderLayer);
 
         return this;
     }
 
-    public GeoArmorRenderer<T> withScale(float scale) {
-        return withScale(scale, scale);
+    public GeoArmorRenderer<T> withScale(float pScale) {
+        return withScale(pScale, pScale);
     }
 
-    public GeoArmorRenderer<T> withScale(float scaleWidth, float scaleHeight) {
-        this.scaleWidth = scaleWidth;
-        this.scaleHeight = scaleHeight;
+    public GeoArmorRenderer<T> withScale(float pScaleWidth, float pScaleHeight) {
+        this.scaleWidth = pScaleWidth;
+        this.scaleHeight = pScaleHeight;
 
         return this;
     }
 
     @Nullable
-    public GeoBone getHeadBone(GeoModel<T> model) {
-        return model.getBone("armorHead").orElse(null);
+    public GeoBone getHeadBone(GeoModel<T> pModel) {
+        return pModel.getBone("armorHead").orElse(null);
     }
 
     @Nullable
-    public GeoBone getBodyBone(GeoModel<T> model) {
-        return model.getBone("armorBody").orElse(null);
+    public GeoBone getBodyBone(GeoModel<T> pModel) {
+        return pModel.getBone("armorBody").orElse(null);
     }
 
     @Nullable
-    public GeoBone getRightArmBone(GeoModel<T> model) {
-        return model.getBone("armorRightArm").orElse(null);
+    public GeoBone getRightArmBone(GeoModel<T> pModel) {
+        return pModel.getBone("armorRightArm").orElse(null);
     }
 
     @Nullable
-    public GeoBone getLeftArmBone(GeoModel<T> model) {
-        return model.getBone("armorLeftArm").orElse(null);
+    public GeoBone getLeftArmBone(GeoModel<T> pModel) {
+        return pModel.getBone("armorLeftArm").orElse(null);
     }
 
     @Nullable
-    public GeoBone getRightLegBone(GeoModel<T> model) {
-        return model.getBone("armorRightLeg").orElse(null);
+    public GeoBone getRightLegBone(GeoModel<T> pModel) {
+        return pModel.getBone("armorRightLeg").orElse(null);
     }
 
     @Nullable
-    public GeoBone getLeftLegBone(GeoModel<T> model) {
-        return model.getBone("armorLeftLeg").orElse(null);
+    public GeoBone getLeftLegBone(GeoModel<T> pModel) {
+        return pModel.getBone("armorLeftLeg").orElse(null);
     }
 
     @Nullable
-    public GeoBone getRightBootBone(GeoModel<T> model) {
-        return model.getBone("armorRightBoot").orElse(null);
+    public GeoBone getRightBootBone(GeoModel<T> pModel) {
+        return pModel.getBone("armorRightBoot").orElse(null);
     }
 
     @Nullable
-    public GeoBone getLeftBootBone(GeoModel<T> model) {
-        return model.getBone("armorLeftBoot").orElse(null);
+    public GeoBone getLeftBootBone(GeoModel<T> pModel) {
+        return pModel.getBone("armorLeftBoot").orElse(null);
     }
 
     @Override
-    public Color getRenderColor(T animatable, float partialTick, int packedLight) {
+    public Color getRenderColor(T pAnimatable, float pPartialTick, int pPackedLight) {
         return this.currentStack.is(ItemTags.DYEABLE) ? Color.ofOpaque(DyedItemColor.getOrDefault(this.currentStack, -6265536)) : Color.WHITE;
     }
 
     @Override
-    public void preRender(PoseStack poseStack, T animatable, BakedGeoModel model, @Nullable MultiBufferSource bufferSource,
-            @Nullable VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight,
-            int packedOverlay, int colour) {
-        this.entityRenderTranslations = new Matrix4f(poseStack.last().pose());
+    public void preRender(PoseStack pPoseStack, T pAnimatable, BakedGeoModel pModel, @Nullable MultiBufferSource pBufferSource,
+            @Nullable VertexConsumer buffer, boolean pIsReRender, float pPartialTick, int pPackedLight,
+            int pPackedOverlay, int colour) {
+        this.entityRenderTranslations = new Matrix4f(pPoseStack.last().pose());
 
         applyBaseModel(this.baseModel);
-        grabRelevantBones(model);
+        grabRelevantBones(pModel);
         applyBaseTransformations(this.baseModel);
-        scaleModelForBaby(poseStack, animatable, partialTick, isReRender);
-        scaleModelForRender(this.scaleWidth, this.scaleHeight, poseStack, animatable, model, isReRender, partialTick, packedLight, packedOverlay);
+        scaleModelForBaby(pPoseStack, pAnimatable, pPartialTick, pIsReRender);
+        scaleModelForRender(this.scaleWidth, this.scaleHeight, pPoseStack, pAnimatable, pModel, pIsReRender, pPartialTick, pPackedLight, pPackedOverlay);
 
         if (!(this.currentEntity instanceof GeoAnimatable))
             applyBoneVisibilityBySlot(this.currentSlot);
@@ -198,52 +197,52 @@ public class GeoArmorRenderer<T extends Item & GeoItem> extends HumanoidModel im
 
     @Override
     @ApiStatus.Internal
-    public void renderToBuffer(PoseStack poseStack, @Nullable VertexConsumer buffer, int packedLight,
-            int packedOverlay, int colour) {
+    public void renderToBuffer(PoseStack pPoseStack, @Nullable VertexConsumer pBuffer, int pPackedLight,
+            int pPackedOverlay, int colour) {
         Minecraft mc = Minecraft.getInstance();
-        MultiBufferSource bufferSource = mc.levelRenderer.renderBuffers.bufferSource();
+        MultiBufferSource pBufferSource = mc.levelRenderer.renderBuffers.bufferSource();
 
         if (mc.levelRenderer.shouldShowEntityOutlines() && mc.shouldEntityAppearGlowing(this.currentEntity))
-            bufferSource = mc.levelRenderer.renderBuffers.outlineBufferSource();
+            pBufferSource = mc.levelRenderer.renderBuffers.outlineBufferSource();
 
-        float partialTick = mc.getTimer().getGameTimeDeltaPartialTick(true);
-        RenderType renderType = getRenderType(this.animatable, getTextureLocation(this.animatable), bufferSource, partialTick);
-        buffer = ItemRenderer.getArmorFoilBuffer(bufferSource, renderType, this.currentStack.hasFoil());
+        float pPartialTick = mc.getTimer().getGameTimeDeltaPartialTick(true);
+        RenderType pRenderType = getRenderType(this.animatable, getTextureLocation(this.animatable), pBufferSource, pPartialTick);
+        pBuffer = ItemRenderer.getArmorFoilBuffer(pBufferSource, pRenderType, this.currentStack.hasFoil());
 
-        defaultRender(poseStack, this.animatable, bufferSource, null, buffer,
-                0, partialTick, packedLight);
+        defaultRender(pPoseStack, this.animatable, pBufferSource, null, pBuffer,
+                0, pPartialTick, pPackedLight);
 
         this.animatable = null;
     }
 
     @Override
-    public void actuallyRender(PoseStack poseStack, T animatable, BakedGeoModel model, @Nullable RenderType renderType,
-            MultiBufferSource bufferSource, @Nullable VertexConsumer buffer, boolean isReRender, float partialTick,
-            int packedLight, int packedOverlay, int colour) {
-        poseStack.pushPose();
-        poseStack.translate(0, 24 / 16f, 0);
-        poseStack.scale(-1, -1, 1);
+    public void actuallyRender(PoseStack pPoseStack, T pAnimatable, BakedGeoModel pModel, @Nullable RenderType pRenderType,
+            MultiBufferSource pBufferSource, @Nullable VertexConsumer pBuffer, boolean pIsReRender, float pPartialTick,
+            int pPackedLight, int pPackedOverlay, int colour) {
+        pPoseStack.pushPose();
+        pPoseStack.translate(0, 24 / 16f, 0);
+        pPoseStack.scale(-1, -1, 1);
 
-        if (!isReRender) {
-            AnimationState<T> animationState = new AnimationState<>(animatable, 0, 0, partialTick, false);
-            long instanceId = getInstanceId(animatable);
+        if (!pIsReRender) {
+            AnimationState<T> animationState = new AnimationState<>(pAnimatable, 0, 0, pPartialTick, false);
+            long instanceId = getInstanceId(pAnimatable);
             GeoModel<T> currentModel = getGeoModel();
 
-            animationState.setData(DataTickets.TICK, animatable.getTick(this.currentEntity));
+            animationState.setData(DataTickets.TICK, pAnimatable.getTick(this.currentEntity));
             animationState.setData(DataTickets.ITEMSTACK, this.currentStack);
             animationState.setData(DataTickets.ENTITY, this.currentEntity);
             animationState.setData(DataTickets.EQUIPMENT_SLOT, this.currentSlot);
-            currentModel.addAdditionalStateData(animatable, instanceId, animationState::setData);
-            currentModel.handleAnimations(animatable, instanceId, animationState, partialTick);
+            currentModel.addAdditionalStateData(pAnimatable, instanceId, animationState::setData);
+            currentModel.handleAnimations(pAnimatable, instanceId, animationState, pPartialTick);
         }
 
-        this.modelRenderTranslations = new Matrix4f(poseStack.last().pose());
+        this.modelRenderTranslations = new Matrix4f(pPoseStack.last().pose());
 
-        if (buffer != null)
-            GeoRenderer.super.actuallyRender(poseStack, animatable, model, renderType, bufferSource, buffer, isReRender, partialTick,
-                    packedLight, packedOverlay, colour);
+        if (pBuffer != null)
+            GeoRenderer.super.actuallyRender(pPoseStack, pAnimatable, pModel, pRenderType, pBufferSource, pBuffer, pIsReRender, pPartialTick,
+                    pPackedLight, pPackedOverlay, colour);
 
-        poseStack.popPose();
+        pPoseStack.popPose();
     }
 
     @Override
@@ -253,8 +252,8 @@ public class GeoArmorRenderer<T extends Item & GeoItem> extends HumanoidModel im
         this.currentStack = null;
         this.animatable = null;
         this.currentSlot = null;
-        this.bufferSource = null;
-        this.partialTick = 0;
+        this.pBufferSource = null;
+        this.pPartialTick = 0;
         this.limbSwing = 0;
         this.limbSwingAmount = 0;
         this.netHeadYaw = 0;
@@ -265,53 +264,53 @@ public class GeoArmorRenderer<T extends Item & GeoItem> extends HumanoidModel im
     public void doArmourPostRenderCleanup() {}
 
     @Override
-    public void renderRecursively(PoseStack poseStack, T animatable, GeoBone bone, RenderType renderType, MultiBufferSource bufferSource, VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight,
-            int packedOverlay, int colour) {
-        if (bone.isTrackingMatrices()) {
-            Matrix4f poseState = new Matrix4f(poseStack.last().pose());
+    public void renderRecursively(PoseStack pPoseStack, T pAnimatable, GeoBone pBone, RenderType pRenderType, MultiBufferSource pBufferSource, VertexConsumer pBuffer, boolean pIsReRender, float pPartialTick, int pPackedLight,
+            int pPackedOverlay, int pColour) {
+        if (pBone.isTrackingMatrices()) {
+            Matrix4f poseState = new Matrix4f(pPoseStack.last().pose());
 
-            bone.setModelSpaceMatrix(RenderUtil.invertAndMultiplyMatrices(poseState, this.modelRenderTranslations));
-            bone.setLocalSpaceMatrix(RenderUtil.invertAndMultiplyMatrices(poseState, this.entityRenderTranslations));
+            pBone.setModelSpaceMatrix(RenderUtil.invertAndMultiplyMatrices(poseState, this.modelRenderTranslations));
+            pBone.setLocalSpaceMatrix(RenderUtil.invertAndMultiplyMatrices(poseState, this.entityRenderTranslations));
         }
 
-        GeoRenderer.super.renderRecursively(poseStack, animatable, bone, renderType, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, colour);
+        GeoRenderer.super.renderRecursively(pPoseStack, pAnimatable, pBone, pRenderType, pBufferSource, pBuffer, pIsReRender, pPartialTick, pPackedLight, pPackedOverlay, pColour);
     }
 
-    protected void grabRelevantBones(BakedGeoModel bakedModel) {
-        if (this.lastModel == bakedModel)
+    protected void grabRelevantBones(BakedGeoModel pBakedModel) {
+        if (this.lastModel == pBakedModel)
             return;
 
-        GeoModel<T> model = getGeoModel();
-        this.lastModel = bakedModel;
-        this.head = getHeadBone(model);
-        this.body = getBodyBone(model);
-        this.rightArm = getRightArmBone(model);
-        this.leftArm = getLeftArmBone(model);
-        this.rightLeg = getRightLegBone(model);
-        this.leftLeg = getLeftLegBone(model);
-        this.rightBoot = getRightBootBone(model);
-        this.leftBoot = getLeftBootBone(model);
+        GeoModel<T> pModel = getGeoModel();
+        this.lastModel = pBakedModel;
+        this.head = getHeadBone(pModel);
+        this.body = getBodyBone(pModel);
+        this.rightArm = getRightArmBone(pModel);
+        this.leftArm = getLeftArmBone(pModel);
+        this.rightLeg = getRightLegBone(pModel);
+        this.leftLeg = getLeftLegBone(pModel);
+        this.rightBoot = getRightBootBone(pModel);
+        this.leftBoot = getLeftBootBone(pModel);
     }
 
     @Deprecated(forRemoval = true)
-    public void prepForRender(@Nullable Entity entity, ItemStack stack, @Nullable EquipmentSlot slot, @Nullable HumanoidModel<?> baseModel) {
-        if (entity == null || slot == null || baseModel == null)
+    public void prepForRender(@Nullable Entity pEntity, ItemStack pStack, @Nullable EquipmentSlot slot, @Nullable HumanoidModel<?> baseModel) {
+        if (pEntity == null || slot == null || baseModel == null)
             return;
 
         final Minecraft mc = Minecraft.getInstance();
 
-        prepForRender(entity, stack, slot, baseModel, mc.levelRenderer.renderBuffers.bufferSource(), mc.getTimer().getGameTimeDeltaPartialTick(true), 0, 0, 0, 0);
+        prepForRender(pEntity, pStack, slot, baseModel, mc.levelRenderer.renderBuffers.bufferSource(), mc.getTimer().getGameTimeDeltaPartialTick(true), 0, 0, 0, 0);
     }
 
-    public void prepForRender(Entity entity, ItemStack stack, EquipmentSlot slot, HumanoidModel<?> baseModel, MultiBufferSource bufferSource,
-            float partialTick, float limbSwing, float limbSwingAmount, float netHeadYaw, float headPitch) {
+    public void prepForRender(Entity entity, ItemStack stack, EquipmentSlot slot, HumanoidModel<?> baseModel, MultiBufferSource pBufferSource,
+            float pPartialTick, float limbSwing, float limbSwingAmount, float netHeadYaw, float headPitch) {
         this.baseModel = baseModel;
         this.currentEntity = entity;
         this.currentStack = stack;
         this.animatable = (T) stack.getItem();
         this.currentSlot = slot;
-        this.bufferSource = bufferSource;
-        this.partialTick = partialTick;
+        this.pBufferSource = pBufferSource;
+        this.pPartialTick = pPartialTick;
         this.limbSwing = limbSwing;
         this.limbSwingAmount = limbSwingAmount;
         this.netHeadYaw = netHeadYaw;
@@ -337,44 +336,44 @@ public class GeoArmorRenderer<T extends Item & GeoItem> extends HumanoidModel im
 
     protected void applyBoneVisibilityBySlot(EquipmentSlot currentSlot) {
         setAllBonesVisible(false);
-        HumanoidModel<?> model = this;
+        HumanoidModel<?> pModel = this;
 
         switch (currentSlot) {
-            case HEAD -> setBoneVisible(this.head, model.head.visible);
+            case HEAD -> setBoneVisible(this.head, pModel.head.visible);
             case CHEST -> {
-                setBoneVisible(this.body, model.body.visible);
-                setBoneVisible(this.rightArm, model.rightArm.visible);
-                setBoneVisible(this.leftArm, model.leftArm.visible);
+                setBoneVisible(this.body, pModel.body.visible);
+                setBoneVisible(this.rightArm, pModel.rightArm.visible);
+                setBoneVisible(this.leftArm, pModel.leftArm.visible);
             }
             case LEGS -> {
-                setBoneVisible(this.rightLeg, model.rightLeg.visible);
-                setBoneVisible(this.leftLeg, model.leftLeg.visible);
+                setBoneVisible(this.rightLeg, pModel.rightLeg.visible);
+                setBoneVisible(this.leftLeg, pModel.leftLeg.visible);
             }
             case FEET -> {
-                setBoneVisible(this.rightBoot, model.rightLeg.visible);
-                setBoneVisible(this.leftBoot, model.leftLeg.visible);
+                setBoneVisible(this.rightBoot, pModel.rightLeg.visible);
+                setBoneVisible(this.leftBoot, pModel.leftLeg.visible);
             }
             default -> {}
         }
     }
 
-    public void applyBoneVisibilityByPart(EquipmentSlot currentSlot, ModelPart currentPart, HumanoidModel<?> model) {
+    public void applyBoneVisibilityByPart(EquipmentSlot currentSlot, ModelPart currentPart, HumanoidModel<?> pModel) {
         setAllVisible(false);
 
         currentPart.visible = true;
         GeoBone bone = null;
 
-        if (currentPart == model.hat || currentPart == model.head) {
+        if (currentPart == pModel.hat || currentPart == pModel.head) {
             bone = this.head;
-        } else if (currentPart == model.body) {
+        } else if (currentPart == pModel.body) {
             bone = this.body;
-        } else if (currentPart == model.leftArm) {
+        } else if (currentPart == pModel.leftArm) {
             bone = this.leftArm;
-        } else if (currentPart == model.rightArm) {
+        } else if (currentPart == pModel.rightArm) {
             bone = this.rightArm;
-        } else if (currentPart == model.leftLeg) {
+        } else if (currentPart == pModel.leftLeg) {
             bone = currentSlot == EquipmentSlot.FEET ? this.leftBoot : this.leftLeg;
-        } else if (currentPart == model.rightLeg) {
+        } else if (currentPart == pModel.rightLeg) {
             bone = currentSlot == EquipmentSlot.FEET ? this.rightBoot : this.rightLeg;
         }
 
@@ -453,23 +452,23 @@ public class GeoArmorRenderer<T extends Item & GeoItem> extends HumanoidModel im
         setBoneVisible(this.leftBoot, visible);
     }
 
-    public void scaleModelForBaby(PoseStack poseStack, T animatable, float partialTick, boolean isReRender) {
-        if (!this.young || isReRender)
+    public void scaleModelForBaby(PoseStack pPoseStack, T animatable, float pPartialTick, boolean pIsReRender) {
+        if (!this.young || pIsReRender)
             return;
 
         if (this.currentSlot == EquipmentSlot.HEAD) {
             if (this.baseModel.scaleHead) {
                 float headScale = 1.5f / this.baseModel.babyHeadScale;
 
-                poseStack.scale(headScale, headScale, headScale);
+                pPoseStack.scale(headScale, headScale, headScale);
             }
 
-            poseStack.translate(0, this.baseModel.babyYHeadOffset / 16f, this.baseModel.babyZHeadOffset / 16f);
+            pPoseStack.translate(0, this.baseModel.babyYHeadOffset / 16f, this.baseModel.babyZHeadOffset / 16f);
         } else {
             float bodyScale = 1 / this.baseModel.babyBodyScale;
 
-            poseStack.scale(bodyScale, bodyScale, bodyScale);
-            poseStack.translate(0, this.baseModel.bodyYOffset / 16f, 0);
+            pPoseStack.scale(bodyScale, bodyScale, bodyScale);
+            pPoseStack.translate(0, this.baseModel.bodyYOffset / 16f, 0);
         }
     }
 
@@ -492,12 +491,12 @@ public class GeoArmorRenderer<T extends Item & GeoItem> extends HumanoidModel im
     }
 
     @Override
-    public boolean firePreRenderEvent(PoseStack poseStack, BakedGeoModel model, MultiBufferSource bufferSource, float partialTick, int packedLight) {
-        return BlueLibConstants.PlatformHelper.EVENT_PROXY.fireArmorPreRender(this, poseStack, model, bufferSource, partialTick, packedLight);
+    public boolean firePreRenderEvent(PoseStack pPoseStack, BakedGeoModel pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight) {
+        return BlueLibConstants.PlatformHelper.EVENT_PROXY.fireArmorPreRender(this, pPoseStack, pModel, pBufferSource, pPartialTick, pPackedLight);
     }
 
     @Override
-    public void firePostRenderEvent(PoseStack poseStack, BakedGeoModel model, MultiBufferSource bufferSource, float partialTick, int packedLight) {
-        BlueLibConstants.PlatformHelper.EVENT_PROXY.fireArmorPostRender(this, poseStack, model, bufferSource, partialTick, packedLight);
+    public void firePostRenderEvent(PoseStack pPoseStack, BakedGeoModel pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight) {
+        BlueLibConstants.PlatformHelper.EVENT_PROXY.fireArmorPostRender(this, pPoseStack, pModel, pBufferSource, pPartialTick, pPackedLight);
     }
 }

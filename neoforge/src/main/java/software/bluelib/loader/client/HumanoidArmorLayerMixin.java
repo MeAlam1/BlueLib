@@ -22,8 +22,8 @@ public abstract class HumanoidArmorLayerMixin<T extends LivingEntity, M extends 
             at = @At(
                     value = "INVOKE",
                     target = "Lnet/minecraft/client/renderer/entity/layers/HumanoidArmorLayer;renderArmorPiece(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/entity/EquipmentSlot;ILnet/minecraft/client/model/HumanoidModel;FFFFFF)V"))
-    public boolean geckolib$wrapArmorPieceRender(HumanoidArmorLayer<T, M, A> renderLayer, PoseStack poseStack, MultiBufferSource bufferSource, T entity, EquipmentSlot equipmentSlot, int packedLight, A baseModel,
-                                                 float limbSwing, float limbSwingAmount, float partialTick, float lerpedTickCount, float netHeadYaw, float headPitch) {
-        return !InternalUtil.tryRenderGeoArmorPiece(poseStack, bufferSource, entity, entity.getItemBySlot(equipmentSlot), equipmentSlot, renderLayer.getParentModel(), baseModel, partialTick, packedLight, limbSwing, limbSwingAmount, lerpedTickCount, netHeadYaw, headPitch, this::setPartVisibility);
+    public boolean geckolib$wrapArmorPieceRender(HumanoidArmorLayer<T, M, A> renderLayer, PoseStack pPoseStack, MultiBufferSource pBufferSource, T entity, EquipmentSlot equipmentSlot, int pPackedLight, A baseModel,
+                                                 float limbSwing, float limbSwingAmount, float pPartialTick, float lerpedTickCount, float netHeadYaw, float headPitch) {
+        return !InternalUtil.tryRenderGeoArmorPiece(pPoseStack, pBufferSource, entity, entity.getItemBySlot(equipmentSlot), equipmentSlot, renderLayer.getParentModel(), baseModel, pPartialTick, pPackedLight, limbSwing, limbSwingAmount, lerpedTickCount, netHeadYaw, headPitch, this::setPartVisibility);
     }
 }

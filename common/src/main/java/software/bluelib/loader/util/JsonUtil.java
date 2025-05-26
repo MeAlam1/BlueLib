@@ -17,78 +17,79 @@ import java.util.function.Function;
 import net.minecraft.util.GsonHelper;
 import org.jetbrains.annotations.Nullable;
 
+@SuppressWarnings("unused")
 public final class JsonUtil {
 
     private JsonUtil() {}
 
-    public static double[] jsonArrayToDoubleArray(@Nullable JsonArray array) throws JsonParseException {
-        if (array == null)
+    public static double[] jsonArrayToDoubleArray(@Nullable JsonArray pArray) throws JsonParseException {
+        if (pArray == null)
             return new double[3];
 
-        double[] output = new double[array.size()];
+        double[] output = new double[pArray.size()];
 
-        for (int i = 0; i < array.size(); i++) {
-            output[i] = array.get(i).getAsDouble();
+        for (int i = 0; i < pArray.size(); i++) {
+            output[i] = pArray.get(i).getAsDouble();
         }
 
         return output;
     }
 
-    public static <T> T[] jsonArrayToObjectArray(JsonArray array, JsonDeserializationContext context, Class<T> objectClass) {
-        T[] objArray = (T[]) Array.newInstance(objectClass, array.size());
+    public static <T> T[] jsonArrayToObjectArray(JsonArray pArray, JsonDeserializationContext pContext, Class<T> pObjectClass) {
+        T[] objArray = (T[]) Array.newInstance(pObjectClass, pArray.size());
 
-        for (int i = 0; i < array.size(); i++) {
-            objArray[i] = context.deserialize(array.get(i), objectClass);
+        for (int i = 0; i < pArray.size(); i++) {
+            objArray[i] = pContext.deserialize(pArray.get(i), pObjectClass);
         }
 
         return objArray;
     }
 
-    public static <T> List<T> jsonArrayToList(@Nullable JsonArray array, Function<JsonElement, T> elementTransformer) {
-        if (array == null)
+    public static <T> List<T> jsonArrayToList(@Nullable JsonArray pArray, Function<JsonElement, T> pElementTransformer) {
+        if (pArray == null)
             return new ObjectArrayList<>();
 
-        List<T> list = new ObjectArrayList<>(array.size());
+        List<T> list = new ObjectArrayList<>(pArray.size());
 
-        for (JsonElement element : array) {
-            list.add(elementTransformer.apply(element));
+        for (JsonElement element : pArray) {
+            list.add(pElementTransformer.apply(element));
         }
 
         return list;
     }
 
-    public static <T> Map<String, T> jsonObjToMap(JsonObject obj, JsonDeserializationContext context, Class<T> objectType) {
+    public static <T> Map<String, T> jsonObjToMap(JsonObject obj, JsonDeserializationContext pContext, Class<T> pObjectType) {
         Map<String, T> map = new Object2ObjectOpenHashMap<>(obj.size());
 
         for (Map.Entry<String, JsonElement> entry : obj.entrySet()) {
-            map.put(entry.getKey(), context.deserialize(entry.getValue(), objectType));
+            map.put(entry.getKey(), pContext.deserialize(entry.getValue(), pObjectType));
         }
 
         return map;
     }
 
     @Nullable
-    public static Long getOptionalLong(JsonObject obj, String elementName) {
-        return obj.has(elementName) ? GsonHelper.getAsLong(obj, elementName) : null;
+    public static Long getOptionalLong(JsonObject pObj, String pElementName) {
+        return pObj.has(pElementName) ? GsonHelper.getAsLong(pObj, pElementName) : null;
     }
 
     @Nullable
-    public static Boolean getOptionalBoolean(JsonObject obj, String elementName) {
-        return obj.has(elementName) ? GsonHelper.getAsBoolean(obj, elementName) : null;
+    public static Boolean getOptionalBoolean(JsonObject pObj, String pElementName) {
+        return pObj.has(pElementName) ? GsonHelper.getAsBoolean(pObj, pElementName) : null;
     }
 
     @Nullable
-    public static Float getOptionalFloat(JsonObject obj, String elementName) {
-        return obj.has(elementName) ? GsonHelper.getAsFloat(obj, elementName) : null;
+    public static Float getOptionalFloat(JsonObject pObj, String pElementName) {
+        return pObj.has(pElementName) ? GsonHelper.getAsFloat(pObj, pElementName) : null;
     }
 
     @Nullable
-    public static Double getOptionalDouble(JsonObject obj, String elementName) {
-        return obj.has(elementName) ? GsonHelper.getAsDouble(obj, elementName) : null;
+    public static Double getOptionalDouble(JsonObject pObj, String pElementName) {
+        return pObj.has(pElementName) ? GsonHelper.getAsDouble(pObj, pElementName) : null;
     }
 
     @Nullable
-    public static Integer getOptionalInteger(JsonObject obj, String elementName) {
-        return obj.has(elementName) ? GsonHelper.getAsInt(obj, elementName) : null;
+    public static Integer getOptionalInteger(JsonObject pObj, String pElementName) {
+        return pObj.has(pElementName) ? GsonHelper.getAsInt(pObj, pElementName) : null;
     }
 }

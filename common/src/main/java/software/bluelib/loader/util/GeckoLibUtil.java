@@ -24,52 +24,53 @@ import software.bluelib.loader.constant.DataTickets;
 import software.bluelib.loader.constant.dataticket.SerializableDataTicket;
 import software.bluelib.loader.loading.object.BakedModelFactory;
 
+@SuppressWarnings("unused")
 public final class GeckoLibUtil {
 
     private static final Int2ObjectMap<String> ANIMATABLE_IDENTITIES = new Int2ObjectOpenHashMap<>();
     public static final Map<String, GeoAnimatable> SYNCED_ANIMATABLES = new Object2ObjectOpenHashMap<>();
 
-    public static AnimatableInstanceCache createInstanceCache(GeoAnimatable animatable) {
-        AnimatableInstanceCache cache = animatable.animatableCacheOverride();
+    public static AnimatableInstanceCache createInstanceCache(GeoAnimatable pAnimatable) {
+        AnimatableInstanceCache cache = pAnimatable.animatableCacheOverride();
 
-        return cache != null ? cache : createInstanceCache(animatable, !(animatable instanceof Entity) && !(animatable instanceof BlockEntity));
+        return cache != null ? cache : createInstanceCache(pAnimatable, !(pAnimatable instanceof Entity) && !(pAnimatable instanceof BlockEntity));
     }
 
-    public static AnimatableInstanceCache createInstanceCache(GeoAnimatable animatable, boolean singletonObject) {
-        AnimatableInstanceCache cache = animatable.animatableCacheOverride();
+    public static AnimatableInstanceCache createInstanceCache(GeoAnimatable pAnimatable, boolean pSingletonObject) {
+        AnimatableInstanceCache cache = pAnimatable.animatableCacheOverride();
 
         if (cache != null)
             return cache;
 
-        return singletonObject ? new SingletonAnimatableInstanceCache(animatable) : new InstancedAnimatableInstanceCache(animatable);
+        return pSingletonObject ? new SingletonAnimatableInstanceCache(pAnimatable) : new InstancedAnimatableInstanceCache(pAnimatable);
     }
 
-    synchronized public static Animation.LoopType addCustomLoopType(String name, Animation.LoopType loopType) {
-        return Animation.LoopType.register(name, loopType);
+    synchronized public static Animation.LoopType addCustomLoopType(String pName, Animation.LoopType pLoopType) {
+        return Animation.LoopType.register(pName, pLoopType);
     }
 
-    synchronized public static EasingType addCustomEasingType(String name, EasingType easingType) {
-        return EasingType.register(name, easingType);
+    synchronized public static EasingType addCustomEasingType(String pName, EasingType pEasingType) {
+        return EasingType.register(pName, pEasingType);
     }
 
-    synchronized public static void addCustomBakedModelFactory(String namespace, BakedModelFactory factory) {
-        BakedModelFactory.register(namespace, factory);
+    synchronized public static void addCustomBakedModelFactory(String pNamespace, BakedModelFactory pFactory) {
+        BakedModelFactory.register(pNamespace, pFactory);
     }
 
-    synchronized public static <D> SerializableDataTicket<D> addDataTicket(SerializableDataTicket<D> dataTicket) {
-        return DataTickets.registerSerializable(dataTicket);
+    synchronized public static <D> SerializableDataTicket<D> addDataTicket(SerializableDataTicket<D> pDataTicket) {
+        return DataTickets.registerSerializable(pDataTicket);
     }
 
-    synchronized public static void registerSyncedAnimatable(GeoAnimatable animatable) {
-        GeoAnimatable existing = SYNCED_ANIMATABLES.put(getSyncedSingletonAnimatableId(animatable), animatable);
+    synchronized public static void registerSyncedAnimatable(GeoAnimatable pAnimatable) {
+        GeoAnimatable existing = SYNCED_ANIMATABLES.put(getSyncedSingletonAnimatableId(pAnimatable), pAnimatable);
 
         //if (existing == null)
         //GeckoLibConstants.LOGGER.debug("Registered SyncedAnimatable for " + animatable.getClass());
     }
 
     @Nullable
-    public static GeoAnimatable getSyncedAnimatable(String syncedAnimatableId) {
-        GeoAnimatable animatable = SYNCED_ANIMATABLES.get(syncedAnimatableId);
+    public static GeoAnimatable getSyncedAnimatable(String pSyncedAnimatableId) {
+        GeoAnimatable animatable = SYNCED_ANIMATABLES.get(pSyncedAnimatableId);
 
         //if (animatable == null)
         //GeckoLibConstants.LOGGER.error("Attempting to retrieve unregistered synced animatable! (" + syncedAnimatableId + ")");
@@ -77,9 +78,9 @@ public final class GeckoLibUtil {
         return animatable;
     }
 
-    public static String getSyncedSingletonAnimatableId(GeoAnimatable animatable) {
-        return ANIMATABLE_IDENTITIES.computeIfAbsent(System.identityHashCode(animatable), i -> {
-            String baseId = animatable.getClass().getName();
+    public static String getSyncedSingletonAnimatableId(GeoAnimatable pAnimatable) {
+        return ANIMATABLE_IDENTITIES.computeIfAbsent(System.identityHashCode(pAnimatable), i -> {
+            String baseId = pAnimatable.getClass().getName();
             i = 0;
 
             while (SYNCED_ANIMATABLES.containsKey(baseId + i)) {

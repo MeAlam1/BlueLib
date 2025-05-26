@@ -25,54 +25,55 @@ import software.bluelib.BlueLibConstants;
 import software.bluelib.loader.animatable.client.GeoRenderProvider;
 import software.bluelib.loader.renderer.GeoArmorRenderer;
 
+@SuppressWarnings("unused")
 @ApiStatus.Internal
 public class InternalUtil {
 
-    public static <T extends LivingEntity, M extends HumanoidModel<T>, A extends HumanoidModel<T>> boolean tryRenderGeoArmorPiece(PoseStack poseStack, MultiBufferSource bufferSource, T entity, ItemStack stack, EquipmentSlot equipmentSlot, M parentModel, A baseModel,
-            float partialTick, int packedLight, float limbSwing, float limbSwingAmount, float lerpedTickCount, float netHeadYaw, float headPitch,
-            BiConsumer<A, EquipmentSlot> partVisibilitySetter) {
-        final Item item = stack.getItem();
+    public static <T extends LivingEntity, M extends HumanoidModel<T>, A extends HumanoidModel<T>> boolean tryRenderGeoArmorPiece(PoseStack pPoseStack, MultiBufferSource pBufferSource, T pEntity, ItemStack pStack, EquipmentSlot pEquipmentSlot, M pParentModel, A pBaseModel,
+            float pPartialTick, int pPackedLight, float pLimbSwing, float pLimbSwingAmount, float pLerpedTickCount, float pNetHeadYaw, float pHeadPitch,
+            BiConsumer<A, EquipmentSlot> pPartVisibilitySetter) {
+        final Item item = pStack.getItem();
 
-        if (!(item instanceof Equipable equipable) || equipable.getEquipmentSlot() != equipmentSlot)
+        if (!(item instanceof Equipable equipable) || equipable.getEquipmentSlot() != pEquipmentSlot)
             return false;
 
-        final HumanoidModel<?> geckolibModel = GeoRenderProvider.of(item).getGeoArmorRenderer(entity, stack, equipmentSlot, baseModel);
+        final HumanoidModel<?> geckolibModel = GeoRenderProvider.of(item).getGeoArmorRenderer(pEntity, pStack, pEquipmentSlot, pBaseModel);
 
         if (geckolibModel == null)
             return false;
 
-        parentModel.copyPropertiesTo(baseModel);
-        partVisibilitySetter.accept(baseModel, equipmentSlot);
+        pParentModel.copyPropertiesTo(pBaseModel);
+        pPartVisibilitySetter.accept(pBaseModel, pEquipmentSlot);
 
         if (geckolibModel instanceof GeoArmorRenderer<?> geoArmorRenderer)
-            geoArmorRenderer.prepForRender(entity, stack, equipmentSlot, baseModel, bufferSource, partialTick, limbSwing, limbSwingAmount, netHeadYaw, headPitch);
+            geoArmorRenderer.prepForRender(pEntity, pStack, pEquipmentSlot, pBaseModel, pBufferSource, pPartialTick, pLimbSwing, pLimbSwingAmount, pNetHeadYaw, pHeadPitch);
 
-        baseModel.copyPropertiesTo((A) geckolibModel);
-        geckolibModel.renderToBuffer(poseStack, null, packedLight, OverlayTexture.NO_OVERLAY, Color.WHITE.argbInt());
+        pBaseModel.copyPropertiesTo((A) geckolibModel);
+        geckolibModel.renderToBuffer(pPoseStack, null, pPackedLight, OverlayTexture.NO_OVERLAY, Color.WHITE.argbInt());
 
         return true;
     }
 
-    public static boolean areComponentsMatchingIgnoringGeckoLibId(PatchedDataComponentMap map1, PatchedDataComponentMap map2) {
+    public static boolean areComponentsMatchingIgnoringGeckoLibId(PatchedDataComponentMap pComponentMap, PatchedDataComponentMap pComponentMapTwo) {
         final DataComponentType<Long> stackId = BlueLibConstants.STACK_ANIMATABLE_ID_COMPONENT.get();
         boolean patched = false;
 
-        if (map1.has(stackId)) {
-            PatchedDataComponentMap prevMap = map1;
+        if (pComponentMap.has(stackId)) {
+            PatchedDataComponentMap prevMap = pComponentMap;
             boolean copyOnWrite = prevMap.copyOnWrite;
-            (map1 = map1.copy()).remove(stackId);
-            map1.copyOnWrite = copyOnWrite;
+            (pComponentMap = pComponentMap.copy()).remove(stackId);
+            pComponentMap.copyOnWrite = copyOnWrite;
             patched = true;
         }
 
-        if (map2.has(stackId)) {
-            PatchedDataComponentMap prevMap = map2;
+        if (pComponentMapTwo.has(stackId)) {
+            PatchedDataComponentMap prevMap = pComponentMapTwo;
             boolean copyOnWrite = prevMap.copyOnWrite;
-            (map2 = map2.copy()).remove(stackId);
-            map2.copyOnWrite = copyOnWrite;
+            (pComponentMapTwo = pComponentMapTwo.copy()).remove(stackId);
+            pComponentMapTwo.copyOnWrite = copyOnWrite;
             patched = true;
         }
 
-        return patched && Objects.equals(map1, map2);
+        return patched && Objects.equals(pComponentMap, pComponentMapTwo);
     }
 }

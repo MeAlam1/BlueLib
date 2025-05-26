@@ -29,7 +29,7 @@ public class FastBoneFilterGeoLayer<T extends GeoAnimatable> extends BoneFilterG
     }
 
     public FastBoneFilterGeoLayer(GeoRenderer<T> renderer, Supplier<List<String>> boneSupplier) {
-        this(renderer, boneSupplier, (bone, animatable, partialTick) -> {});
+        this(renderer, boneSupplier, (bone, animatable, pPartialTick) -> {});
     }
 
     public FastBoneFilterGeoLayer(GeoRenderer<T> renderer, Supplier<List<String>> boneSupplier, TriConsumer<GeoBone, T, Float> checkAndApply) {
@@ -43,10 +43,10 @@ public class FastBoneFilterGeoLayer<T extends GeoAnimatable> extends BoneFilterG
     };
 
     @Override
-    public void preRender(PoseStack poseStack, T animatable, BakedGeoModel bakedModel, @Nullable RenderType renderType, MultiBufferSource bufferSource,
-            @Nullable VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay) {
+    public void preRender(PoseStack pPoseStack, T animatable, BakedGeoModel bakedModel, @Nullable RenderType pRenderType, MultiBufferSource pBufferSource,
+            @Nullable VertexConsumer buffer, float pPartialTick, int pPackedLight, int pPackedOverlay) {
         for (String boneName : getAffectedBones()) {
-            this.renderer.getGeoModel().getBone(boneName).ifPresent(bone -> checkAndApply(bone, animatable, partialTick));
+            this.renderer.getGeoModel().getBone(boneName).ifPresent(bone -> checkAndApply(bone, animatable, pPartialTick));
         }
     }
 }

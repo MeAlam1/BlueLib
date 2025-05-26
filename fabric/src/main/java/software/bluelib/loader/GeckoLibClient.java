@@ -10,8 +10,10 @@ import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.profiling.ProfilerFiller;
 import org.jetbrains.annotations.ApiStatus;
+import software.bluelib.BlueLibCommon;
+import software.bluelib.BlueLibConstants;
 import software.bluelib.loader.cache.GeckoLibCache;
-import software.bluelib.loader.network.packet.MultiloaderPacket;
+import software.bluelib.loader.packet.MultiloaderPacket;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
@@ -24,7 +26,7 @@ public class GeckoLibClient implements ClientModInitializer {
                 .registerReloadListener(new IdentifiableResourceReloadListener() {
                     @Override
                     public ResourceLocation getFabricId() {
-                        return GeckoLibConstants.id("models_animations");
+                        return BlueLibCommon.Resource.resource("models_animations");
                     }
 
                     @Override

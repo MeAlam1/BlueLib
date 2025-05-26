@@ -43,14 +43,14 @@ public abstract class GeoRenderLayer<T extends GeoAnimatable> {
         return getRenderer().getTextureLocation(animatable);
     }
 
-    public void preRender(PoseStack poseStack, T animatable, BakedGeoModel bakedModel, @Nullable RenderType renderType,
-            MultiBufferSource bufferSource, @Nullable VertexConsumer buffer, float partialTick,
-            int packedLight, int packedOverlay) {}
+    public void preRender(PoseStack pPoseStack, T animatable, BakedGeoModel bakedModel, @Nullable RenderType pRenderType,
+            MultiBufferSource pBufferSource, @Nullable VertexConsumer buffer, float pPartialTick,
+            int pPackedLight, int pPackedOverlay) {}
 
-    public void render(PoseStack poseStack, T animatable, BakedGeoModel bakedModel, @Nullable RenderType renderType,
-            MultiBufferSource bufferSource, @Nullable VertexConsumer buffer, float partialTick,
-            int packedLight, int packedOverlay) {}
+    public void render(PoseStack pPoseStack, T animatable, BakedGeoModel bakedModel, @Nullable RenderType pRenderType,
+            MultiBufferSource pBufferSource, @Nullable VertexConsumer buffer, float pPartialTick,
+            int pPackedLight, int pPackedOverlay) {}
 
-    public void renderForBone(PoseStack poseStack, T animatable, GeoBone bone, RenderType renderType,
-            MultiBufferSource bufferSource, VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay) {}
+    public void renderForBone(PoseStack pPoseStack, T animatable, GeoBone bone, RenderType pRenderType,
+            MultiBufferSource pBufferSource, VertexConsumer buffer, float pPartialTick, int pPackedLight, int pPackedOverlay) {}
 }

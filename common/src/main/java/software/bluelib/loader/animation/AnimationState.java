@@ -26,11 +26,11 @@ public class AnimationState<T extends GeoAnimatable> {
     protected AnimationController<T> controller;
     public double animationTick;
 
-    public AnimationState(T animatable, float limbSwing, float limbSwingAmount, float partialTick, boolean isMoving) {
+    public AnimationState(T animatable, float limbSwing, float limbSwingAmount, float pPartialTick, boolean isMoving) {
         this.animatable = animatable;
         this.limbSwing = limbSwing;
         this.limbSwingAmount = limbSwingAmount;
-        this.partialTick = partialTick;
+        this.partialTick = pPartialTick;
         this.isMoving = isMoving;
     }
 

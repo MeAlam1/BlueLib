@@ -12,8 +12,8 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
-import software.bluelib.loader.GeckoLibConstants;
-import software.bluelib.loader.network.packet.MultiloaderPacket;
+import software.bluelib.BlueLibConstants;
+import software.bluelib.loader.packet.MultiloaderPacket;
 import software.bluelib.loader.service.GeckoLibNetworking;
 
 import java.util.function.Consumer;
@@ -24,7 +24,7 @@ public class GeckoLibNetworkingNeoForge implements GeckoLibNetworking {
 
     public static void init(IEventBus modBus) {
         modBus.addListener((Consumer<RegisterPayloadHandlersEvent>) event -> {
-            registrar = event.registrar(GeckoLibConstants.MODID);
+            registrar = event.registrar(BlueLibConstants.MOD_ID);
             GeckoLibNetworking.init();
             registrar = null;
         });

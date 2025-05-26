@@ -37,77 +37,72 @@ public interface GeckoLibNetworking {
     }
 
     @ApiStatus.Internal
-    private static <B extends FriendlyByteBuf, P extends MultiloaderPacket> void registerPacket(CustomPacketPayload.Type<P> payloadType, StreamCodec<B, P> codec, boolean isClientBound) {
-        GeckoLibServices.NETWORK.registerPacketInternal(payloadType, codec, isClientBound);
+    private static <B extends FriendlyByteBuf, P extends MultiloaderPacket> void registerPacket(CustomPacketPayload.Type<P> pPayloadType, StreamCodec<B, P> pCodec, boolean pIsClientBound) {
+        GeckoLibServices.NETWORK.registerPacketInternal(pPayloadType, pCodec, pIsClientBound);
     }
 
     @ApiStatus.Internal
-    <B extends FriendlyByteBuf, P extends MultiloaderPacket> void registerPacketInternal(CustomPacketPayload.Type<P> payloadType, StreamCodec<B, P> codec, boolean isClientBound);
+    <B extends FriendlyByteBuf, P extends MultiloaderPacket> void registerPacketInternal(CustomPacketPayload.Type<P> pPayloadType, StreamCodec<B, P> pCodec, boolean pIsClientBound);
 
-    void sendToAllPlayersTrackingEntity(MultiloaderPacket packet, Entity trackingEntity);
+    void sendToAllPlayersTrackingEntity(MultiloaderPacket pPacket, Entity pTrackingEntity);
 
-    void sendToAllPlayersTrackingBlock(MultiloaderPacket packet, ServerLevel level, BlockPos pos);
+    void sendToAllPlayersTrackingBlock(MultiloaderPacket pPacket, ServerLevel pLevel, BlockPos pPos);
 
-    void sendToPlayer(MultiloaderPacket packet, ServerPlayer player);
+    void sendToPlayer(MultiloaderPacket pPacket, ServerPlayer player);
 
-    default <D> void syncBlockEntityAnimData(BlockPos pos, SerializableDataTicket<D> dataTicket, D data, ServerLevel level) {
-        sendToAllPlayersTrackingBlock(new BlockEntityDataSyncPacket<>(pos, dataTicket, data), level, pos);
+    default <D> void syncBlockEntityAnimData(BlockPos pPos, SerializableDataTicket<D> pDataTicket, D pData, ServerLevel pLevel) {
+        sendToAllPlayersTrackingBlock(new BlockEntityDataSyncPacket<>(pPos, pDataTicket, pData), pLevel, pPos);
     }
 
-    default <D> void syncEntityAnimData(Entity entity, boolean isReplacedEntity, SerializableDataTicket<D> dataTicket, D data) {
-        sendToAllPlayersTrackingEntity(new EntityDataSyncPacket<>(entity.getId(), isReplacedEntity, dataTicket, data), entity);
+    default <D> void syncEntityAnimData(Entity entity, boolean pIsReplacedEntity, SerializableDataTicket<D> pDataTicket, D pData) {
+        sendToAllPlayersTrackingEntity(new EntityDataSyncPacket<>(entity.getId(), pIsReplacedEntity, pDataTicket, pData), entity);
     }
 
     @Deprecated(forRemoval = true)
-    default <D> void syncSingletonAnimData(long instanceId, SerializableDataTicket<D> dataTicket, D data, Entity entityToTrack) {
+    default <D> void syncSingletonAnimData(long pInstanceId, SerializableDataTicket<D> pDataTicket, D pData, Entity pEntityToTrack) {
         //sendToAllPlayersTrackingEntity(new SingletonDataSyncPacket<>(getClass().getName(), instanceId, dataTicket, data), entityToTrack);
     }
 
     @Deprecated(forRemoval = true)
-    default <D> void syncSingletonAnimData(Class<?> animatableClass, long instanceId, SerializableDataTicket<D> dataTicket, D data, Entity entityToTrack) {
+    default <D> void syncSingletonAnimData(Class<?> pAnimatableClass, long pInstanceId, SerializableDataTicket<D> pDataTicket, D pData, Entity pEntityToTrack) {
         //sendToAllPlayersTrackingEntity(new SingletonDataSyncPacket<>(animatableClass.getName(), instanceId, dataTicket, data), entityToTrack);
     }
 
-    default <D> void syncSingletonAnimData(GeoAnimatable animatable, long instanceId, SerializableDataTicket<D> dataTicket, D data, Entity entityToTrack) {
-        sendToAllPlayersTrackingEntity(new SingletonDataSyncPacket<>(GeckoLibUtil.getSyncedSingletonAnimatableId(animatable), instanceId, dataTicket, data), entityToTrack);
+    default <D> void syncSingletonAnimData(GeoAnimatable pAnimatable, long pInstanceId, SerializableDataTicket<D> pDataTicket, D pData, Entity pEntityToTrack) {
+        sendToAllPlayersTrackingEntity(new SingletonDataSyncPacket<>(GeckoLibUtil.getSyncedSingletonAnimatableId(pAnimatable), pInstanceId, pDataTicket, pData), pEntityToTrack);
     }
 
-    default void triggerBlockEntityAnim(BlockPos pos, @Nullable String controllerName, String animName, ServerLevel level) {
-        sendToAllPlayersTrackingBlock(new BlockEntityAnimTriggerPacket(pos, controllerName == null ? "" : controllerName, animName), level, pos);
+    default void triggerBlockEntityAnim(BlockPos pPos, @Nullable String pControllerName, String pAnimName, ServerLevel pLevel) {
+        sendToAllPlayersTrackingBlock(new BlockEntityAnimTriggerPacket(pPos, pControllerName == null ? "" : pControllerName, pAnimName), pLevel, pPos);
     }
 
-    default void triggerEntityAnim(Entity entity, boolean isReplacedEntity, @Nullable String controllerName, String animName) {
-        sendToAllPlayersTrackingEntity(new EntityAnimTriggerPacket(entity.getId(), isReplacedEntity, controllerName == null ? "" : controllerName, animName), entity);
-    }
-
-    @Deprecated(forRemoval = true)
-    default void triggerSingletonAnim(String animatableClassName, Entity entityToTrack, long instanceId, @Nullable String controllerName, String animName) {
-        sendToAllPlayersTrackingEntity(new SingletonAnimTriggerPacket(animatableClassName, instanceId, controllerName, animName), entityToTrack);
+    default void triggerEntityAnim(Entity pEntity, boolean pIsReplacedEntity, @Nullable String pControllerName, String pAnimName) {
+        sendToAllPlayersTrackingEntity(new EntityAnimTriggerPacket(pEntity.getId(), pIsReplacedEntity, pControllerName == null ? "" : pControllerName, pAnimName), pEntity);
     }
 
     @Deprecated(forRemoval = true)
-    default void triggerSingletonAnim(Class<?> animatableClass, Entity entityToTrack, long instanceId, @Nullable String controllerName, String animName) {
+    default void triggerSingletonAnim(String pAnimatableClassName, Entity pEntityToTrack, long pInstanceId, @Nullable String pControllerName, String pAnimName) {
+        sendToAllPlayersTrackingEntity(new SingletonAnimTriggerPacket(pAnimatableClassName, pInstanceId, pControllerName, pAnimName), pEntityToTrack);
+    }
+
+    @Deprecated(forRemoval = true)
+    default void triggerSingletonAnim(Class<?> pAnimatableClass, Entity pEntityToTrack, long pInstanceId, @Nullable String pControllerName, String pAnimName) {
         //triggerSingletonAnim(animatableClass.getName(), entityToTrack, instanceId, controllerName == null ? "" : controllerName, animName);
     }
 
-    default void triggerSingletonAnim(GeoAnimatable animatable, Entity entityToTrack, long instanceId, @Nullable String controllerName, String animName) {
-        triggerSingletonAnim(GeckoLibUtil.getSyncedSingletonAnimatableId(animatable), entityToTrack, instanceId, controllerName == null ? "" : controllerName, animName);
+    default void triggerSingletonAnim(GeoAnimatable pAnimatable, Entity pEntityToTrack, long pInstanceId, @Nullable String pControllerName, String pAnimName) {
+        triggerSingletonAnim(GeckoLibUtil.getSyncedSingletonAnimatableId(pAnimatable), pEntityToTrack, pInstanceId, pControllerName == null ? "" : pControllerName, pAnimName);
     }
 
-    default void stopTriggeredBlockEntityAnim(BlockPos pos, ServerLevel level, @Nullable String controllerName, @Nullable String animName) {
-        sendToAllPlayersTrackingBlock(new StopTriggeredBlockEntityAnimPacket(pos, controllerName == null ? "" : controllerName, animName == null ? "" : animName), level, pos);
+    default void stopTriggeredBlockEntityAnim(BlockPos pPos, ServerLevel pLevel, @Nullable String pControllerName, @Nullable String pAnimName) {
+        sendToAllPlayersTrackingBlock(new StopTriggeredBlockEntityAnimPacket(pPos, pControllerName == null ? "" : pControllerName, pAnimName == null ? "" : pAnimName), pLevel, pPos);
     }
 
-    default void stopTriggeredEntityAnim(Entity entity, boolean isReplacedEntity, @Nullable String controllerName, @Nullable String animName) {
-        sendToAllPlayersTrackingEntity(new StopTriggeredEntityAnimPacket(entity.getId(), isReplacedEntity, controllerName == null ? "" : controllerName, animName == null ? "" : animName), entity);
+    default void stopTriggeredEntityAnim(Entity pEntity, boolean pIsReplacedEntity, @Nullable String pControllerName, @Nullable String pAnimName) {
+        sendToAllPlayersTrackingEntity(new StopTriggeredEntityAnimPacket(pEntity.getId(), pIsReplacedEntity, pControllerName == null ? "" : pControllerName, pAnimName == null ? "" : pAnimName), pEntity);
     }
 
-    @Deprecated(forRemoval = true)
-    default void stopTriggeredSingletonAnim(Class<?> animatableClass, Entity entityToTrack, long instanceId, @Nullable String controllerName, @Nullable String animName) {
-        sendToAllPlayersTrackingEntity(new StopTriggeredSingletonAnimPacket(animatableClass.getName() + "0", instanceId, controllerName == null ? "" : controllerName, animName == null ? "" : animName), entityToTrack);
-    }
-
-    default void stopTriggeredSingletonAnim(GeoAnimatable animatable, Entity entityToTrack, long instanceId, @Nullable String controllerName, @Nullable String animName) {
-        sendToAllPlayersTrackingEntity(new StopTriggeredSingletonAnimPacket(GeckoLibUtil.getSyncedSingletonAnimatableId(animatable), instanceId, controllerName == null ? "" : controllerName, animName == null ? "" : animName), entityToTrack);
+    default void stopTriggeredSingletonAnim(GeoAnimatable pAnimatable, Entity pEntityToTrack, long pInstanceId, @Nullable String pControllerName, @Nullable String pAnimName) {
+        sendToAllPlayersTrackingEntity(new StopTriggeredSingletonAnimPacket(GeckoLibUtil.getSyncedSingletonAnimatableId(pAnimatable), pInstanceId, pControllerName == null ? "" : pControllerName, pAnimName == null ? "" : pAnimName), pEntityToTrack);
     }
 }

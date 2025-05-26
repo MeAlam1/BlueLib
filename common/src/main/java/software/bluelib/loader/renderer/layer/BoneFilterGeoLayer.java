@@ -23,7 +23,7 @@ public class BoneFilterGeoLayer<T extends GeoAnimatable> extends GeoRenderLayer<
     protected final TriConsumer<GeoBone, T, Float> checkAndApply;
 
     public BoneFilterGeoLayer(GeoRenderer<T> renderer) {
-        this(renderer, (bone, animatable, partialTick) -> {});
+        this(renderer, (bone, animatable, pPartialTick) -> {});
     }
 
     public BoneFilterGeoLayer(GeoRenderer<T> renderer, TriConsumer<GeoBone, T, Float> checkAndApply) {
@@ -32,22 +32,22 @@ public class BoneFilterGeoLayer<T extends GeoAnimatable> extends GeoRenderLayer<
         this.checkAndApply = checkAndApply;
     }
 
-    protected void checkAndApply(GeoBone bone, T animatable, float partialTick) {
-        this.checkAndApply.accept(bone, animatable, partialTick);
+    protected void checkAndApply(GeoBone bone, T animatable, float pPartialTick) {
+        this.checkAndApply.accept(bone, animatable, pPartialTick);
     }
 
     @Override
-    public void preRender(PoseStack poseStack, T animatable, BakedGeoModel bakedModel, @Nullable RenderType renderType, MultiBufferSource bufferSource, @Nullable VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay) {
+    public void preRender(PoseStack pPoseStack, T animatable, BakedGeoModel bakedModel, @Nullable RenderType pRenderType, MultiBufferSource pBufferSource, @Nullable VertexConsumer buffer, float pPartialTick, int pPackedLight, int pPackedOverlay) {
         for (GeoBone bone : bakedModel.topLevelBones()) {
-            checkChildBones(bone, animatable, partialTick);
+            checkChildBones(bone, animatable, pPartialTick);
         }
     }
 
-    private void checkChildBones(GeoBone parentBone, T animatable, float partialTick) {
-        checkAndApply(parentBone, animatable, partialTick);
+    private void checkChildBones(GeoBone parentBone, T animatable, float pPartialTick) {
+        checkAndApply(parentBone, animatable, pPartialTick);
 
         for (GeoBone bone : parentBone.getChildBones()) {
-            checkChildBones(bone, animatable, partialTick);
+            checkChildBones(bone, animatable, pPartialTick);
         }
     }
 }

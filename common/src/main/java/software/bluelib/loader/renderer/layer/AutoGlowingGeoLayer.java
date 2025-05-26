@@ -34,7 +34,7 @@ public class AutoGlowingGeoLayer<T extends GeoAnimatable> extends GeoRenderLayer
     }
 
     @Nullable
-    protected RenderType getRenderType(T animatable, @Nullable MultiBufferSource bufferSource) {
+    protected RenderType getRenderType(T animatable, @Nullable MultiBufferSource pBufferSource) {
         if (!(animatable instanceof Entity entity))
             return AutoGlowingTexture.getRenderType(getTextureResource(animatable));
 
@@ -55,13 +55,13 @@ public class AutoGlowingGeoLayer<T extends GeoAnimatable> extends GeoRenderLayer
     }
 
     @Override
-    public void render(PoseStack poseStack, T animatable, BakedGeoModel bakedModel, @Nullable RenderType renderType, MultiBufferSource bufferSource, @Nullable VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay) {
-        renderType = getRenderType(animatable);
+    public void render(PoseStack pPoseStack, T animatable, BakedGeoModel bakedModel, @Nullable RenderType pRenderType, MultiBufferSource pBufferSource, @Nullable VertexConsumer buffer, float pPartialTick, int pPackedLight, int pPackedOverlay) {
+        pRenderType = getRenderType(animatable);
 
-        if (renderType != null) {
-            getRenderer().reRender(bakedModel, poseStack, bufferSource, animatable, renderType,
-                    bufferSource.getBuffer(renderType), partialTick, LightTexture.FULL_SKY, packedOverlay,
-                    getRenderer().getRenderColor(animatable, partialTick, packedLight).argbInt());
+        if (pRenderType != null) {
+            getRenderer().reRender(bakedModel, pPoseStack, pBufferSource, animatable, pRenderType,
+                    pBufferSource.getBuffer(pRenderType), pPartialTick, LightTexture.FULL_SKY, pPackedOverlay,
+                    getRenderer().getRenderColor(animatable, pPartialTick, pPackedLight).argbInt());
         }
     }
 }

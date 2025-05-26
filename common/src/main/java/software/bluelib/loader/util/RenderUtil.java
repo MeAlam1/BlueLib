@@ -32,7 +32,6 @@ import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 import software.bluelib.BlueLibConstants;
-import software.bluelib.loader.GeckoLibServices;
 import software.bluelib.loader.animatable.GeoAnimatable;
 import software.bluelib.loader.cache.object.GeoBone;
 import software.bluelib.loader.cache.object.GeoCube;
@@ -40,198 +39,199 @@ import software.bluelib.loader.model.GeoModel;
 import software.bluelib.loader.renderer.GeoRenderer;
 import software.bluelib.loader.renderer.GeoReplacedEntityRenderer;
 
+@SuppressWarnings("unused")
 public final class RenderUtil {
 
-    public static void translateMatrixToBone(PoseStack poseStack, GeoBone bone) {
-        poseStack.translate(-bone.getPosX() / 16f, bone.getPosY() / 16f, bone.getPosZ() / 16f);
-    }
+	public static void translateMatrixToBone(PoseStack pPoseStack, GeoBone pBone) {
+		pPoseStack.translate(-pBone.getPosX() / 16f, pBone.getPosY() / 16f, pBone.getPosZ() / 16f);
+	}
 
-    public static void rotateMatrixAroundBone(PoseStack poseStack, GeoBone bone) {
-        if (bone.getRotZ() != 0)
-            poseStack.mulPose(Axis.ZP.rotation(bone.getRotZ()));
+	public static void rotateMatrixAroundBone(PoseStack pPoseStack, GeoBone pBone) {
+		if (pBone.getRotZ() != 0)
+			pPoseStack.mulPose(Axis.ZP.rotation(pBone.getRotZ()));
 
-        if (bone.getRotY() != 0)
-            poseStack.mulPose(Axis.YP.rotation(bone.getRotY()));
+		if (pBone.getRotY() != 0)
+			pPoseStack.mulPose(Axis.YP.rotation(pBone.getRotY()));
 
-        if (bone.getRotX() != 0)
-            poseStack.mulPose(Axis.XP.rotation(bone.getRotX()));
-    }
+		if (pBone.getRotX() != 0)
+			pPoseStack.mulPose(Axis.XP.rotation(pBone.getRotX()));
+	}
 
-    public static void rotateMatrixAroundCube(PoseStack poseStack, GeoCube cube) {
-        Vec3 rotation = cube.rotation();
+	public static void rotateMatrixAroundCube(PoseStack pPoseStack, GeoCube pCube) {
+		Vec3 rotation = pCube.rotation();
 
-        poseStack.mulPose(new Quaternionf().rotationXYZ(0, 0, (float) rotation.z()));
-        poseStack.mulPose(new Quaternionf().rotationXYZ(0, (float) rotation.y(), 0));
-        poseStack.mulPose(new Quaternionf().rotationXYZ((float) rotation.x(), 0, 0));
-    }
+		pPoseStack.mulPose(new Quaternionf().rotationXYZ(0, 0, (float) rotation.z()));
+		pPoseStack.mulPose(new Quaternionf().rotationXYZ(0, (float) rotation.y(), 0));
+		pPoseStack.mulPose(new Quaternionf().rotationXYZ((float) rotation.x(), 0, 0));
+	}
 
-    public static void scaleMatrixForBone(PoseStack poseStack, GeoBone bone) {
-        poseStack.scale(bone.getScaleX(), bone.getScaleY(), bone.getScaleZ());
-    }
+	public static void scaleMatrixForBone(PoseStack pPoseStack, GeoBone pBone) {
+		pPoseStack.scale(pBone.getScaleX(), pBone.getScaleY(), pBone.getScaleZ());
+	}
 
-    public static void translateToPivotPoint(PoseStack poseStack, GeoCube cube) {
-        Vec3 pivot = cube.pivot();
-        poseStack.translate(pivot.x() / 16f, pivot.y() / 16f, pivot.z() / 16f);
-    }
+	public static void translateToPivotPoint(PoseStack pPoseStack, GeoCube pCube) {
+		Vec3 pivot = pCube.pivot();
+		pPoseStack.translate(pivot.x() / 16f, pivot.y() / 16f, pivot.z() / 16f);
+	}
 
-    public static void translateToPivotPoint(PoseStack poseStack, GeoBone bone) {
-        poseStack.translate(bone.getPivotX() / 16f, bone.getPivotY() / 16f, bone.getPivotZ() / 16f);
-    }
+	public static void translateToPivotPoint(PoseStack pPoseStack, GeoBone pBone) {
+		pPoseStack.translate(pBone.getPivotX() / 16f, pBone.getPivotY() / 16f, pBone.getPivotZ() / 16f);
+	}
 
-    public static void translateAwayFromPivotPoint(PoseStack poseStack, GeoCube cube) {
-        Vec3 pivot = cube.pivot();
+	public static void translateAwayFromPivotPoint(PoseStack pPoseStack, GeoCube pCube) {
+		Vec3 pivot = pCube.pivot();
 
-        poseStack.translate(-pivot.x() / 16f, -pivot.y() / 16f, -pivot.z() / 16f);
-    }
+		pPoseStack.translate(-pivot.x() / 16f, -pivot.y() / 16f, -pivot.z() / 16f);
+	}
 
-    public static void translateAwayFromPivotPoint(PoseStack poseStack, GeoBone bone) {
-        poseStack.translate(-bone.getPivotX() / 16f, -bone.getPivotY() / 16f, -bone.getPivotZ() / 16f);
-    }
+	public static void translateAwayFromPivotPoint(PoseStack pPoseStack, GeoBone pBone) {
+		pPoseStack.translate(-pBone.getPivotX() / 16f, -pBone.getPivotY() / 16f, -pBone.getPivotZ() / 16f);
+	}
 
-    public static void translateAndRotateMatrixForBone(PoseStack poseStack, GeoBone bone) {
-        translateToPivotPoint(poseStack, bone);
-        rotateMatrixAroundBone(poseStack, bone);
-    }
+	public static void translateAndRotateMatrixForBone(PoseStack pPoseStack, GeoBone pBone) {
+		translateToPivotPoint(pPoseStack, pBone);
+		rotateMatrixAroundBone(pPoseStack, pBone);
+	}
 
-    public static void prepMatrixForBone(PoseStack poseStack, GeoBone bone) {
-        translateMatrixToBone(poseStack, bone);
-        translateToPivotPoint(poseStack, bone);
-        rotateMatrixAroundBone(poseStack, bone);
-        scaleMatrixForBone(poseStack, bone);
-        translateAwayFromPivotPoint(poseStack, bone);
-    }
+	public static void prepMatrixForBone(PoseStack pPoseStack, GeoBone pBone) {
+		translateMatrixToBone(pPoseStack, pBone);
+		translateToPivotPoint(pPoseStack, pBone);
+		rotateMatrixAroundBone(pPoseStack, pBone);
+		scaleMatrixForBone(pPoseStack, pBone);
+		translateAwayFromPivotPoint(pPoseStack, pBone);
+	}
 
-    public static Matrix4f invertAndMultiplyMatrices(Matrix4f baseMatrix, Matrix4f inputMatrix) {
-        inputMatrix = new Matrix4f(inputMatrix);
+	public static Matrix4f invertAndMultiplyMatrices(Matrix4f pBaseMatrix, Matrix4f pInputMatrix) {
+		pInputMatrix = new Matrix4f(pInputMatrix);
 
-        inputMatrix.invert();
-        inputMatrix.mul(baseMatrix);
+		pInputMatrix.invert();
+		pInputMatrix.mul(pBaseMatrix);
 
-        return inputMatrix;
-    }
+		return pInputMatrix;
+	}
 
-    public static void faceRotation(PoseStack poseStack, Entity animatable, float partialTick) {
-        poseStack.mulPose(Axis.YP.rotationDegrees(Mth.lerp(partialTick, animatable.yRotO, animatable.getYRot()) - 90));
-        poseStack.mulPose(Axis.ZP.rotationDegrees(Mth.lerp(partialTick, animatable.xRotO, animatable.getXRot())));
-    }
+	public static void faceRotation(PoseStack pPoseStack, Entity pAnimatable, float pPartialTick) {
+		pPoseStack.mulPose(Axis.YP.rotationDegrees(Mth.lerp(pPartialTick, pAnimatable.yRotO, pAnimatable.getYRot()) - 90));
+		pPoseStack.mulPose(Axis.ZP.rotationDegrees(Mth.lerp(pPartialTick, pAnimatable.xRotO, pAnimatable.getXRot())));
+	}
 
-    public static Matrix4f translateMatrix(Matrix4f matrix, Vector3f vector) {
-        return matrix.add(new Matrix4f().m30(vector.x).m31(vector.y).m32(vector.z));
-    }
+	public static Matrix4f translateMatrix(Matrix4f pMatrix, Vector3f pVector) {
+		return pMatrix.add(new Matrix4f().m30(pVector.x).m31(pVector.y).m32(pVector.z));
+	}
 
-    @Nullable
-    public static IntIntPair getTextureDimensions(ResourceLocation texture) {
-        if (texture == null)
-            return null;
+	@Nullable
+	public static IntIntPair getTextureDimensions(ResourceLocation pTexture) {
+		if (pTexture == null)
+			return null;
 
-        AbstractTexture originalTexture = null;
-        Minecraft mc = Minecraft.getInstance();
+		AbstractTexture originalTexture = null;
+		Minecraft mc = Minecraft.getInstance();
 
-        try {
-            originalTexture = mc.submit(() -> mc.getTextureManager().getTexture(texture)).get();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+		try {
+			originalTexture = mc.submit(() -> mc.getTextureManager().getTexture(pTexture)).get();
+		} catch (Exception pException) {
+			pException.printStackTrace();
+		}
 
-        if (originalTexture == null)
-            return null;
+		if (originalTexture == null)
+			return null;
 
-        NativeImage image = null;
+		NativeImage image = null;
 
-        try {
-            image = originalTexture instanceof DynamicTexture dynamicTexture ? dynamicTexture.getPixels()
-                    : NativeImage.read(mc.getResourceManager().getResource(texture).get().open());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+		try {
+			image = originalTexture instanceof DynamicTexture dynamicTexture ? dynamicTexture.getPixels()
+					: NativeImage.read(mc.getResourceManager().getResource(pTexture).get().open());
+		} catch (Exception pException) {
+			pException.printStackTrace();
+		}
 
-        return image == null ? null : IntIntImmutablePair.of(image.getWidth(), image.getHeight());
-    }
+		return image == null ? null : IntIntImmutablePair.of(image.getWidth(), image.getHeight());
+	}
 
-    public static double getCurrentSystemTick() {
-        return System.nanoTime() / 1E6 / 50d;
-    }
+	public static double getCurrentSystemTick() {
+		return System.nanoTime() / 1E6 / 50d;
+	}
 
-    public static double getCurrentTick() {
-        return Blaze3D.getTime() * 20d;
-    }
+	public static double getCurrentTick() {
+		return Blaze3D.getTime() * 20d;
+	}
 
-    public static float booleanToFloat(boolean input) {
-        return input ? 1f : 0f;
-    }
+	public static float booleanToFloat(boolean pInput) {
+		return pInput ? 1f : 0f;
+	}
 
-    public static Vec3 arrayToVec(double[] array) {
-        return new Vec3(array[0], array[1], array[2]);
-    }
+	public static Vec3 arrayToVec(double[] pArray) {
+		return new Vec3(pArray[0], pArray[1], pArray[2]);
+	}
 
-    public static void matchModelPartRot(ModelPart from, GeoBone to) {
-        to.updateRotation(-from.xRot, -from.yRot, from.zRot);
-    }
+	public static void matchModelPartRot(ModelPart pModelPart, GeoBone pBone) {
+		pBone.updateRotation(-pModelPart.xRot, -pModelPart.yRot, pModelPart.zRot);
+	}
 
-    public static void fixInvertedFlatCube(GeoCube cube, Vector3f normal) {
-        if (normal.x() < 0 && (cube.size().y() == 0 || cube.size().z() == 0))
-            normal.mul(-1, 1, 1);
+	public static void fixInvertedFlatCube(GeoCube pCube, Vector3f pNormal) {
+		if (pNormal.x() < 0 && (pCube.size().y() == 0 || pCube.size().z() == 0))
+			pNormal.mul(-1, 1, 1);
 
-        if (normal.y() < 0 && (cube.size().x() == 0 || cube.size().z() == 0))
-            normal.mul(1, -1, 1);
+		if (pNormal.y() < 0 && (pCube.size().x() == 0 || pCube.size().z() == 0))
+			pNormal.mul(1, -1, 1);
 
-        if (normal.z() < 0 && (cube.size().x() == 0 || cube.size().y() == 0))
-            normal.mul(1, 1, -1);
-    }
+		if (pNormal.z() < 0 && (pCube.size().x() == 0 || pCube.size().y() == 0))
+			pNormal.mul(1, 1, -1);
+	}
 
-    public static float getDirectionAngle(Direction direction) {
-        return switch (direction) {
-            case SOUTH -> 90f;
-            case NORTH -> 270f;
-            case EAST -> 180f;
-            default -> 0f;
-        };
-    }
+	public static float getDirectionAngle(Direction pDirection) {
+		return switch (pDirection) {
+			case SOUTH -> 90f;
+			case NORTH -> 270f;
+			case EAST -> 180f;
+			default -> 0f;
+		};
+	}
 
-    public static double lerpYaw(double delta, double start, double end) {
-        start = Mth.wrapDegrees(start);
-        end = Mth.wrapDegrees(end);
-        double diff = start - end;
-        end = diff > 180 || diff < -180 ? start + Math.copySign(360 - Math.abs(diff), diff) : end;
+	public static double lerpYaw(double pDelta, double pStart, double pEnd) {
+		pStart = Mth.wrapDegrees(pStart);
+		pEnd = Mth.wrapDegrees(pEnd);
+		double diff = pStart - pEnd;
+		pEnd = diff > 180 || diff < -180 ? pStart + Math.copySign(360 - Math.abs(diff), diff) : pEnd;
 
-        return Mth.lerp(delta, start, end);
-    }
+		return Mth.lerp(pDelta, pStart, pEnd);
+	}
 
-    @Nullable
-    public static GeoModel<?> getGeoModelForEntityType(EntityType<?> entityType) {
-        EntityRenderer<?> renderer = Minecraft.getInstance().getEntityRenderDispatcher().renderers.get(entityType);
+	@Nullable
+	public static GeoModel<?> getGeoModelForEntityType(EntityType<?> pEntityType) {
+		EntityRenderer<?> renderer = Minecraft.getInstance().getEntityRenderDispatcher().renderers.get(pEntityType);
 
-        return renderer instanceof GeoRenderer<?> geoRenderer ? geoRenderer.getGeoModel() : null;
-    }
+		return renderer instanceof GeoRenderer<?> geoRenderer ? geoRenderer.getGeoModel() : null;
+	}
 
-    @Nullable
-    public static GeoAnimatable getReplacedAnimatable(EntityType<?> entityType) {
-        EntityRenderer<?> renderer = Minecraft.getInstance().getEntityRenderDispatcher().renderers.get(entityType);
+	@Nullable
+	public static GeoAnimatable getReplacedAnimatable(EntityType<?> pEntityType) {
+		EntityRenderer<?> renderer = Minecraft.getInstance().getEntityRenderDispatcher().renderers.get(pEntityType);
 
-        return renderer instanceof GeoReplacedEntityRenderer<?, ?> replacedEntityRenderer ? replacedEntityRenderer.getAnimatable() : null;
-    }
+		return renderer instanceof GeoReplacedEntityRenderer<?, ?> replacedEntityRenderer ? replacedEntityRenderer.getAnimatable() : null;
+	}
 
-    @Nullable
-    public static GeoModel<?> getGeoModelForEntity(Entity entity) {
-        EntityRenderer<?> renderer = Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(entity);
+	@Nullable
+	public static GeoModel<?> getGeoModelForEntity(Entity pEntity) {
+		EntityRenderer<?> renderer = Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(pEntity);
 
-        return renderer instanceof GeoRenderer<?> geoRenderer ? geoRenderer.getGeoModel() : null;
-    }
+		return renderer instanceof GeoRenderer<?> geoRenderer ? geoRenderer.getGeoModel() : null;
+	}
 
-    @Nullable
-    public static GeoModel<?> getGeoModelForItem(ItemStack item) {
-        return BlueLibConstants.PlatformHelper.ITEM_RENDERING.getGeoModelForItem(item);
-    }
+	@Nullable
+	public static GeoModel<?> getGeoModelForItem(ItemStack pItem) {
+		return BlueLibConstants.PlatformHelper.ITEM_RENDERING.getGeoModelForItem(pItem);
+	}
 
-    @Nullable
-    public static GeoModel<?> getGeoModelForBlock(BlockEntity blockEntity) {
-        BlockEntityRenderer<?> renderer = Minecraft.getInstance().getBlockEntityRenderDispatcher().getRenderer(blockEntity);
+	@Nullable
+	public static GeoModel<?> getGeoModelForBlock(BlockEntity pBlockEntity) {
+		BlockEntityRenderer<?> renderer = Minecraft.getInstance().getBlockEntityRenderDispatcher().getRenderer(pBlockEntity);
 
-        return renderer instanceof GeoRenderer<?> geoRenderer ? geoRenderer.getGeoModel() : null;
-    }
+		return renderer instanceof GeoRenderer<?> geoRenderer ? geoRenderer.getGeoModel() : null;
+	}
 
-    @Nullable
-    public static GeoModel<?> getGeoModelForArmor(ItemStack stack) {
-        return BlueLibConstants.PlatformHelper.ITEM_RENDERING.getGeoModelForArmor(stack);
-    }
+	@Nullable
+	public static GeoModel<?> getGeoModelForArmor(ItemStack pStack) {
+		return BlueLibConstants.PlatformHelper.ITEM_RENDERING.getGeoModelForArmor(pStack);
+	}
 }

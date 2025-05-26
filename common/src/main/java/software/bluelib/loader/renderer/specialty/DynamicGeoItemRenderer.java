@@ -37,75 +37,75 @@ public abstract class DynamicGeoItemRenderer<T extends Item & GeoAnimatable> ext
     }
 
     @Nullable
-    protected ResourceLocation getTextureOverrideForBone(GeoBone bone, T animatable, float partialTick) {
+    protected ResourceLocation getTextureOverrideForBone(GeoBone bone, T animatable, float pPartialTick) {
         return null;
     }
 
     @Nullable
-    protected RenderType getRenderTypeOverrideForBone(GeoBone bone, T animatable, ResourceLocation texturePath, MultiBufferSource bufferSource, float partialTick) {
+    protected RenderType getRenderTypeOverrideForBone(GeoBone bone, T animatable, ResourceLocation texturePath, MultiBufferSource pBufferSource, float pPartialTick) {
         return null;
     }
 
-    protected boolean boneRenderOverride(PoseStack poseStack, GeoBone bone, MultiBufferSource bufferSource, VertexConsumer buffer,
-            float partialTick, int packedLight, int packedOverlay, int colour) {
+    protected boolean boneRenderOverride(PoseStack pPoseStack, GeoBone bone, MultiBufferSource pBufferSource, VertexConsumer buffer,
+            float pPartialTick, int pPackedLight, int pPackedOverlay, int colour) {
         return false;
     }
 
     @Override
-    public void renderRecursively(PoseStack poseStack, T animatable, GeoBone bone, RenderType renderType, MultiBufferSource bufferSource, VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, int colour) {
-        poseStack.pushPose();
-        RenderUtil.translateMatrixToBone(poseStack, bone);
-        RenderUtil.translateToPivotPoint(poseStack, bone);
-        RenderUtil.rotateMatrixAroundBone(poseStack, bone);
-        RenderUtil.scaleMatrixForBone(poseStack, bone);
+    public void renderRecursively(PoseStack pPoseStack, T animatable, GeoBone pBone, RenderType pRenderType, MultiBufferSource pBufferSource, VertexConsumer pBuffer, boolean pIsReRender, float pPartialTick, int pPackedLight, int pPackedOverlay, int pColour) {
+        pPoseStack.pushPose();
+        RenderUtil.translateMatrixToBone(pPoseStack, pBone);
+        RenderUtil.translateToPivotPoint(pPoseStack, pBone);
+        RenderUtil.rotateMatrixAroundBone(pPoseStack, pBone);
+        RenderUtil.scaleMatrixForBone(pPoseStack, pBone);
 
-        if (bone.isTrackingMatrices()) {
-            Matrix4f poseState = new Matrix4f(poseStack.last().pose());
+        if (pBone.isTrackingMatrices()) {
+            Matrix4f poseState = new Matrix4f(pPoseStack.last().pose());
 
-            bone.setModelSpaceMatrix(RenderUtil.invertAndMultiplyMatrices(poseState, this.modelRenderTranslations));
-            bone.setLocalSpaceMatrix(RenderUtil.invertAndMultiplyMatrices(poseState, this.itemRenderTranslations));
+            pBone.setModelSpaceMatrix(RenderUtil.invertAndMultiplyMatrices(poseState, this.modelRenderTranslations));
+            pBone.setLocalSpaceMatrix(RenderUtil.invertAndMultiplyMatrices(poseState, this.itemRenderTranslations));
         }
 
-        RenderUtil.translateAwayFromPivotPoint(poseStack, bone);
+        RenderUtil.translateAwayFromPivotPoint(pPoseStack, pBone);
 
-        this.textureOverride = getTextureOverrideForBone(bone, this.animatable, partialTick);
+        this.textureOverride = getTextureOverrideForBone(pBone, this.animatable, pPartialTick);
         ResourceLocation texture = this.textureOverride == null ? getTextureLocation(this.animatable) : this.textureOverride;
-        RenderType renderTypeOverride = getRenderTypeOverrideForBone(bone, this.animatable, texture, bufferSource, partialTick);
+        RenderType renderTypeOverride = getRenderTypeOverrideForBone(pBone, this.animatable, texture, pBufferSource, pPartialTick);
 
         if (texture != null && renderTypeOverride == null)
-            renderTypeOverride = getRenderType(this.animatable, texture, bufferSource, partialTick);
+            renderTypeOverride = getRenderType(this.animatable, texture, pBufferSource, pPartialTick);
 
         if (renderTypeOverride != null)
-            buffer = bufferSource.getBuffer(renderTypeOverride);
+            pBuffer = pBufferSource.getBuffer(renderTypeOverride);
 
-        if (!boneRenderOverride(poseStack, bone, bufferSource, buffer, partialTick, packedLight, packedOverlay, colour))
-            super.renderCubesOfBone(poseStack, bone, buffer, packedLight, packedOverlay, colour);
+        if (!boneRenderOverride(pPoseStack, pBone, pBufferSource, pBuffer, pPartialTick, pPackedLight, pPackedOverlay, pColour))
+            super.renderCubesOfBone(pPoseStack, pBone, pBuffer, pPackedLight, pPackedOverlay, pColour);
 
         if (renderTypeOverride != null)
-            buffer = bufferSource.getBuffer(renderType);
+            pBuffer = pBufferSource.getBuffer(pRenderType);
 
-        if (!isReRender)
-            applyRenderLayersForBone(poseStack, animatable, bone, renderType, bufferSource, buffer, partialTick, packedLight, packedOverlay);
+        if (!pIsReRender)
+            applyRenderLayersForBone(pPoseStack, animatable, pBone, pRenderType, pBufferSource, pBuffer, pPartialTick, pPackedLight, pPackedOverlay);
 
-        buffer = checkAndRefreshBuffer(isReRender, buffer, bufferSource, renderType);
+        pBuffer = checkAndRefreshBuffer(pIsReRender, pBuffer, pBufferSource, pRenderType);
 
-        super.renderChildBones(poseStack, animatable, bone, renderType, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, colour);
+        super.renderChildBones(pPoseStack, animatable, pBone, pRenderType, pBufferSource, pBuffer, pIsReRender, pPartialTick, pPackedLight, pPackedOverlay, pColour);
 
-        poseStack.popPose();
+        pPoseStack.popPose();
     }
 
     @Override
-    public void postRender(PoseStack poseStack, T animatable, BakedGeoModel model, MultiBufferSource bufferSource, @Nullable VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, int colour) {
+    public void postRender(PoseStack pPoseStack, T animatable, BakedGeoModel model, MultiBufferSource pBufferSource, @Nullable VertexConsumer buffer, boolean pIsReRender, float pPartialTick, int pPackedLight, int pPackedOverlay, int colour) {
         this.textureOverride = null;
 
-        super.postRender(poseStack, animatable, model, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, colour);
+        super.postRender(pPoseStack, animatable, model, pBufferSource, buffer, pIsReRender, pPartialTick, pPackedLight, pPackedOverlay, colour);
     }
 
     @Override
     public void createVerticesOfQuad(GeoQuad quad, Matrix4f poseState, Vector3f normal, VertexConsumer buffer,
-            int packedLight, int packedOverlay, int colour) {
+            int pPackedLight, int pPackedOverlay, int colour) {
         if (this.textureOverride == null) {
-            super.createVerticesOfQuad(quad, poseState, normal, buffer, packedLight, packedOverlay,
+            super.createVerticesOfQuad(quad, poseState, normal, buffer, pPackedLight, pPackedOverlay,
                     colour);
 
             return;
@@ -115,7 +115,7 @@ public abstract class DynamicGeoItemRenderer<T extends Item & GeoAnimatable> ext
         IntIntPair itemTextureSize = computeTextureSize(getTextureLocation(this.animatable));
 
         if (boneTextureSize == null || itemTextureSize == null) {
-            super.createVerticesOfQuad(quad, poseState, normal, buffer, packedLight, packedOverlay,
+            super.createVerticesOfQuad(quad, poseState, normal, buffer, pPackedLight, pPackedOverlay,
                     colour);
 
             return;
@@ -127,7 +127,7 @@ public abstract class DynamicGeoItemRenderer<T extends Item & GeoAnimatable> ext
             float texV = (vertex.texV() * itemTextureSize.secondInt()) / boneTextureSize.secondInt();
 
             buffer.addVertex(vector4f.x(), vector4f.y(), vector4f.z(), colour, texU, texV,
-                    packedOverlay, packedLight, normal.x(), normal.y(), normal.z());
+                    pPackedOverlay, pPackedLight, normal.x(), normal.y(), normal.z());
         }
     }
 

@@ -89,8 +89,8 @@ public class ItemArmorGeoLayer<T extends LivingEntity & GeoAnimatable> extends G
     }
 
     @Override
-    public void preRender(PoseStack poseStack, T animatable, BakedGeoModel bakedModel, @Nullable RenderType renderType, MultiBufferSource bufferSource,
-            @Nullable VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay) {
+    public void preRender(PoseStack pPoseStack, T animatable, BakedGeoModel bakedModel, @Nullable RenderType pRenderType, MultiBufferSource pBufferSource,
+            @Nullable VertexConsumer buffer, float pPartialTick, int pPackedLight, int pPackedOverlay) {
         this.mainHandStack = animatable.getItemBySlot(EquipmentSlot.MAINHAND);
         this.offhandStack = animatable.getItemBySlot(EquipmentSlot.OFFHAND);
         this.helmetStack = animatable.getItemBySlot(EquipmentSlot.HEAD);
@@ -100,67 +100,67 @@ public class ItemArmorGeoLayer<T extends LivingEntity & GeoAnimatable> extends G
     }
 
     @Override
-    public void renderForBone(PoseStack poseStack, T animatable, GeoBone bone, RenderType renderType, MultiBufferSource bufferSource,
-            VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay) {
+    public void renderForBone(PoseStack pPoseStack, T animatable, GeoBone bone, RenderType pRenderType, MultiBufferSource pBufferSource,
+            VertexConsumer buffer, float pPartialTick, int pPackedLight, int pPackedOverlay) {
         ItemStack armorStack = getArmorItemForBone(bone, animatable);
 
         if (armorStack == null)
             return;
 
         if (armorStack.getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof AbstractSkullBlock skullBlock) {
-            renderSkullAsArmor(poseStack, bone, armorStack, skullBlock, bufferSource, packedLight);
+            renderSkullAsArmor(pPoseStack, bone, armorStack, skullBlock, pBufferSource, pPackedLight);
         } else {
             EquipmentSlot slot = getEquipmentSlotForBone(bone, armorStack, animatable);
             HumanoidModel<?> model = getModelForItem(bone, slot, armorStack, animatable);
             ModelPart modelPart = getModelPartForBone(bone, slot, armorStack, animatable, model);
 
             if (!modelPart.cubes.isEmpty()) {
-                poseStack.pushPose();
-                poseStack.scale(-1, -1, 1);
+                pPoseStack.pushPose();
+                pPoseStack.scale(-1, -1, 1);
 
                 if (model instanceof GeoArmorRenderer<?> geoArmorRenderer) {
-                    prepModelPartForRender(poseStack, bone, modelPart);
+                    prepModelPartForRender(pPoseStack, bone, modelPart);
                     geoArmorRenderer.prepForRender(animatable, armorStack, slot, model);
                     geoArmorRenderer.applyBoneVisibilityByPart(slot, modelPart, model);
-                    geoArmorRenderer.renderToBuffer(poseStack, null, packedLight, packedOverlay, Color.WHITE.argbInt());
+                    geoArmorRenderer.renderToBuffer(pPoseStack, null, pPackedLight, pPackedOverlay, Color.WHITE.argbInt());
                 } else if (armorStack.getItem() instanceof ArmorItem) {
-                    prepModelPartForRender(poseStack, bone, modelPart);
-                    renderVanillaArmorPiece(poseStack, animatable, bone, slot, armorStack, modelPart, bufferSource, partialTick, packedLight, packedOverlay);
+                    prepModelPartForRender(pPoseStack, bone, modelPart);
+                    renderVanillaArmorPiece(pPoseStack, animatable, bone, slot, armorStack, modelPart, pBufferSource, pPartialTick, pPackedLight, pPackedOverlay);
                 }
 
-                poseStack.popPose();
+                pPoseStack.popPose();
             }
         }
     }
 
-    protected <I extends Item & GeoItem> void renderVanillaArmorPiece(PoseStack poseStack, T animatable, GeoBone bone, EquipmentSlot slot, ItemStack armorStack,
-            ModelPart modelPart, MultiBufferSource bufferSource, float partialTick, int packedLight, int packedOverlay) {
+    protected <I extends Item & GeoItem> void renderVanillaArmorPiece(PoseStack pPoseStack, T animatable, GeoBone bone, EquipmentSlot slot, ItemStack armorStack,
+            ModelPart modelPart, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight, int pPackedOverlay) {
         Holder<ArmorMaterial> material = ((ArmorItem) armorStack.getItem()).getMaterial();
 
         for (ArmorMaterial.Layer layer : material.value().layers()) {
             int color = armorStack.is(ItemTags.DYEABLE) ? DyedItemColor.getOrDefault(armorStack, -6265536) : -1;
-            VertexConsumer buffer = getVanillaArmorBuffer(bufferSource, animatable, armorStack, slot, bone, layer, packedLight, packedOverlay, false);
+            VertexConsumer buffer = getVanillaArmorBuffer(pBufferSource, animatable, armorStack, slot, bone, layer, pPackedLight, pPackedOverlay, false);
 
-            modelPart.render(poseStack, buffer, packedLight, packedOverlay, color);
+            modelPart.render(pPoseStack, buffer, pPackedLight, pPackedOverlay, color);
         }
 
         ArmorTrim trim = armorStack.get(DataComponents.TRIM);
 
         if (trim != null) {
             TextureAtlasSprite sprite = Minecraft.getInstance().getModelManager().getAtlas(Sheets.ARMOR_TRIMS_SHEET).getSprite(slot == EquipmentSlot.LEGS ? trim.innerTexture(material) : trim.outerTexture(material));
-            VertexConsumer buffer = sprite.wrap(bufferSource.getBuffer(Sheets.armorTrimsSheet(trim.pattern().value().decal())));
-            modelPart.render(poseStack, buffer, packedLight, packedOverlay);
+            VertexConsumer buffer = sprite.wrap(pBufferSource.getBuffer(Sheets.armorTrimsSheet(trim.pattern().value().decal())));
+            modelPart.render(pPoseStack, buffer, pPackedLight, pPackedOverlay);
         }
 
         if (armorStack.hasFoil())
-            modelPart.render(poseStack, getVanillaArmorBuffer(bufferSource, animatable, armorStack, slot, bone, null, packedLight, packedOverlay, true), packedLight, packedOverlay, Color.WHITE.argbInt());
+            modelPart.render(pPoseStack, getVanillaArmorBuffer(pBufferSource, animatable, armorStack, slot, bone, null, pPackedLight, pPackedOverlay, true), pPackedLight, pPackedOverlay, Color.WHITE.argbInt());
     }
 
-    protected VertexConsumer getVanillaArmorBuffer(MultiBufferSource bufferSource, T animatable, ItemStack stack, EquipmentSlot slot, GeoBone bone, @Nullable ArmorMaterial.Layer layer, int packedLight, int packedOverlay, boolean forGlint) {
+    protected VertexConsumer getVanillaArmorBuffer(MultiBufferSource pBufferSource, T animatable, ItemStack stack, EquipmentSlot slot, GeoBone bone, @Nullable ArmorMaterial.Layer layer, int pPackedLight, int pPackedOverlay, boolean forGlint) {
         if (forGlint)
-            return bufferSource.getBuffer(RenderType.armorEntityGlint());
+            return pBufferSource.getBuffer(RenderType.armorEntityGlint());
 
-        return bufferSource.getBuffer(RenderType.armorCutoutNoCull(layer.texture(slot == EquipmentSlot.LEGS)));
+        return pBufferSource.getBuffer(RenderType.armorCutoutNoCull(layer.texture(slot == EquipmentSlot.LEGS)));
     }
 
     @NotNull
@@ -170,20 +170,20 @@ public class ItemArmorGeoLayer<T extends LivingEntity & GeoAnimatable> extends G
         return BlueLibConstants.PlatformHelper.ITEM_RENDERING.getArmorModelForItem(animatable, stack, slot, defaultModel);
     }
 
-    protected void renderSkullAsArmor(PoseStack poseStack, GeoBone bone, ItemStack stack, AbstractSkullBlock skullBlock, MultiBufferSource bufferSource, int packedLight) {
+    protected void renderSkullAsArmor(PoseStack pPoseStack, GeoBone bone, ItemStack stack, AbstractSkullBlock skullBlock, MultiBufferSource pBufferSource, int pPackedLight) {
         SkullBlock.Type type = skullBlock.getType();
         SkullModelBase model = SkullBlockRenderer.createSkullRenderers(Minecraft.getInstance().getEntityModels()).get(type);
-        RenderType renderType = SkullBlockRenderer.getRenderType(type, stack.get(DataComponents.PROFILE));
+        RenderType pRenderType = SkullBlockRenderer.getRenderType(type, stack.get(DataComponents.PROFILE));
 
-        poseStack.pushPose();
-        RenderUtil.translateAndRotateMatrixForBone(poseStack, bone);
-        poseStack.scale(1.1875f, 1.1875f, 1.1875f);
-        poseStack.translate(-0.5f, 0, -0.5f);
-        SkullBlockRenderer.renderSkull(null, 0, 0, poseStack, bufferSource, packedLight, model, renderType);
-        poseStack.popPose();
+        pPoseStack.pushPose();
+        RenderUtil.translateAndRotateMatrixForBone(pPoseStack, bone);
+        pPoseStack.scale(1.1875f, 1.1875f, 1.1875f);
+        pPoseStack.translate(-0.5f, 0, -0.5f);
+        SkullBlockRenderer.renderSkull(null, 0, 0, pPoseStack, pBufferSource, pPackedLight, model, pRenderType);
+        pPoseStack.popPose();
     }
 
-    protected void prepModelPartForRender(PoseStack poseStack, GeoBone bone, ModelPart sourcePart) {
+    protected void prepModelPartForRender(PoseStack pPoseStack, GeoBone bone, ModelPart sourcePart) {
         final GeoCube firstCube = bone.getCubes().getFirst();
         final Cube armorCube = getReferenceCubeForModel(bone, sourcePart);
         final double armorBoneSizeX = firstCube.size().x();
@@ -204,7 +204,7 @@ public class ItemArmorGeoLayer<T extends LivingEntity & GeoAnimatable> extends G
         sourcePart.yRot = -bone.getRotY();
         sourcePart.zRot = bone.getRotZ();
 
-        poseStack.scale(scaleX, scaleY, scaleZ);
+        pPoseStack.scale(scaleX, scaleY, scaleZ);
     }
 
     protected Cube getReferenceCubeForModel(GeoBone bone, ModelPart sourcePart) {

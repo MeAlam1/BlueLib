@@ -34,22 +34,22 @@ public abstract class DyeableGeoArmorRenderer<T extends Item & GeoItem> extends 
     }
 
     @Override
-    public void preRender(PoseStack poseStack, T animatable, BakedGeoModel model, @Nullable MultiBufferSource bufferSource, @Nullable VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, int colour) {
-        super.preRender(poseStack, animatable, model, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, colour);
+    public void preRender(PoseStack pPoseStack, T pAnimatable, BakedGeoModel model, @Nullable MultiBufferSource pBufferSource, @Nullable VertexConsumer buffer, boolean pIsReRender, float pPartialTick, int pPackedLight, int pPackedOverlay, int colour) {
+        super.preRender(pPoseStack, pAnimatable, model, pBufferSource, buffer, pIsReRender, pPartialTick, pPackedLight, pPackedOverlay, colour);
 
-        if (!isReRender)
-            checkBoneDyeCache(animatable, model, partialTick, packedLight, packedOverlay, colour);
+        if (!pIsReRender)
+            checkBoneDyeCache(pAnimatable, model, pPartialTick, pPackedLight, pPackedOverlay, colour);
     }
 
     @Override
-    public void renderCubesOfBone(PoseStack poseStack, GeoBone bone, VertexConsumer buffer, int packedLight, int packedOverlay, int colour) {
+    public void renderCubesOfBone(PoseStack pPoseStack, GeoBone bone, VertexConsumer buffer, int pPackedLight, int pPackedOverlay, int colour) {
         if (this.dyeableBones.contains(bone)) {
             final Color color = getColorForBone(bone);
 
             colour = FastColor.ARGB32.multiply(colour, color.argbInt());
         }
 
-        super.renderCubesOfBone(poseStack, bone, buffer, packedLight, packedOverlay, colour);
+        super.renderCubesOfBone(pPoseStack, bone, buffer, pPackedLight, pPackedOverlay, colour);
     }
 
     protected abstract boolean isBoneDyeable(GeoBone bone);
@@ -57,7 +57,7 @@ public abstract class DyeableGeoArmorRenderer<T extends Item & GeoItem> extends 
     @NotNull
     protected abstract Color getColorForBone(GeoBone bone);
 
-    protected void checkBoneDyeCache(T animatable, BakedGeoModel model, float partialTick, int packedLight, int packedOverlay, int colour) {
+    protected void checkBoneDyeCache(T animatable, BakedGeoModel model, float pPartialTick, int pPackedLight, int pPackedOverlay, int colour) {
         if (model != this.lastModel) {
             this.dyeableBones.clear();
             this.lastModel = model;

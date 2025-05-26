@@ -10,6 +10,7 @@
  */
 package software.bluelib.loader.util;
 
+@SuppressWarnings("unused")
 public record Color(int argbInt) {
 
     public static final Color WHITE = new Color(0xFFFFFFFF);
@@ -26,32 +27,32 @@ public record Color(int argbInt) {
     public static final Color CYAN = new Color(0xFF00FFFF);
     public static final Color BLUE = new Color(0xFF0000FF);
 
-    public static Color ofOpaque(int color) {
-        return new Color(0xFF000000 | color);
+    public static Color ofOpaque(int pColor) {
+        return new Color(0xFF000000 | pColor);
     }
 
-    public static Color ofRGB(float red, float green, float blue) {
-        return ofRGBA(red, green, blue, 1f);
+    public static Color ofRGB(float pRed, float pGreen, float pBlue) {
+        return ofRGBA(pRed, pGreen, pBlue, 1f);
     }
 
-    public static Color ofRGB(int r, int g, int b) {
-        return ofRGBA(r, g, b, 255);
+    public static Color ofRGB(int pRed, int pGreen, int pBlue) {
+        return ofRGBA(pRed, pGreen, pBlue, 255);
     }
 
-    public static Color ofRGBA(float r, float g, float b, float a) {
-        return ofRGBA((int) (r * 255f + 0.5), (int) (g * 255f + 0.5f), (int) (b * 255f + 0.5f), (int) (a * 255f + 0.5f));
+    public static Color ofRGBA(float pRed, float pGreen, float pBlue, float a) {
+        return ofRGBA((int) (pRed * 255f + 0.5), (int) (pGreen * 255f + 0.5f), (int) (pBlue * 255f + 0.5f), (int) (a * 255f + 0.5f));
     }
 
-    public static Color ofRGBA(int r, int g, int b, int a) {
-        return new Color(((a & 0xFF) << 24) | ((r & 0xFF) << 16) | ((g & 0xFF) << 8) | (b & 0xFF));
+    public static Color ofRGBA(int pRed, int pGreen, int pBlue, int a) {
+        return new Color(((a & 0xFF) << 24) | ((pRed & 0xFF) << 16) | ((pGreen & 0xFF) << 8) | (pBlue & 0xFF));
     }
 
-    public static Color ofARGB(float a, float r, float g, float b) {
-        return ofARGB((int) (a * 255f + 0.5f), (int) (r * 255f + 0.5), (int) (g * 255f + 0.5f), (int) (b * 255f + 0.5f));
+    public static Color ofARGB(float a, float pRed, float pGreen, float pBlue) {
+        return ofARGB((int) (a * 255f + 0.5f), (int) (pRed * 255f + 0.5), (int) (pGreen * 255f + 0.5f), (int) (pBlue * 255f + 0.5f));
     }
 
-    public static Color ofARGB(int a, int r, int g, int b) {
-        return new Color(((a & 0xFF) << 24) | ((r & 0xFF) << 16) | ((g & 0xFF) << 8) | (b & 0xFF));
+    public static Color ofARGB(int a, int pRed, int pGreen, int pBlue) {
+        return new Color(((a & 0xFF) << 24) | ((pRed & 0xFF) << 16) | ((pGreen & 0xFF) << 8) | (pBlue & 0xFF));
     }
 
     public static Color ofHSB(float hue, float saturation, float brightness) {
@@ -59,12 +60,12 @@ public record Color(int argbInt) {
     }
 
     public static int HSBtoARGB(float hue, float saturation, float brightness) {
-        int r = 0;
-        int g = 0;
-        int b = 0;
+        int pRed = 0;
+        int pGreen = 0;
+        int pBlue = 0;
 
         if (saturation == 0) {
-            r = g = b = (int) (brightness * 255f + 0.5f);
+            pRed = pGreen = pBlue = (int) (brightness * 255f + 0.5f);
         } else {
             float h = (hue - (float) Math.floor(hue)) * 6f;
             float f = h - (float) Math.floor(h);
@@ -74,39 +75,39 @@ public record Color(int argbInt) {
 
             switch ((int) h) {
                 case 0 -> {
-                    r = (int) (brightness * 255f + 0.5f);
-                    g = (int) (t * 255f + 0.5f);
-                    b = (int) (p * 255f + 0.5f);
+                    pRed = (int) (brightness * 255f + 0.5f);
+                    pGreen = (int) (t * 255f + 0.5f);
+                    pBlue = (int) (p * 255f + 0.5f);
                 }
                 case 1 -> {
-                    r = (int) (q * 255f + 0.5f);
-                    g = (int) (brightness * 255f + 0.5f);
-                    b = (int) (p * 255f + 0.5f);
+                    pRed = (int) (q * 255f + 0.5f);
+                    pGreen = (int) (brightness * 255f + 0.5f);
+                    pBlue = (int) (p * 255f + 0.5f);
                 }
                 case 2 -> {
-                    r = (int) (p * 255f + 0.5f);
-                    g = (int) (brightness * 255f + 0.5f);
-                    b = (int) (t * 255f + 0.5f);
+                    pRed = (int) (p * 255f + 0.5f);
+                    pGreen = (int) (brightness * 255f + 0.5f);
+                    pBlue = (int) (t * 255f + 0.5f);
                 }
                 case 3 -> {
-                    r = (int) (p * 255f + 0.5f);
-                    g = (int) (q * 255f + 0.5f);
-                    b = (int) (brightness * 255f + 0.5f);
+                    pRed = (int) (p * 255f + 0.5f);
+                    pGreen = (int) (q * 255f + 0.5f);
+                    pBlue = (int) (brightness * 255f + 0.5f);
                 }
                 case 4 -> {
-                    r = (int) (t * 255f + 0.5f);
-                    g = (int) (p * 255f + 0.5f);
-                    b = (int) (brightness * 255f + 0.5f);
+                    pRed = (int) (t * 255f + 0.5f);
+                    pGreen = (int) (p * 255f + 0.5f);
+                    pBlue = (int) (brightness * 255f + 0.5f);
                 }
                 case 5 -> {
-                    r = (int) (brightness * 255f + 0.5f);
-                    g = (int) (p * 255f + 0.5f);
-                    b = (int) (q * 255f + 0.5f);
+                    pRed = (int) (brightness * 255f + 0.5f);
+                    pGreen = (int) (p * 255f + 0.5f);
+                    pBlue = (int) (q * 255f + 0.5f);
                 }
             }
         }
 
-        return 0xFF000000 | (r << 16) | (g << 8) | b;
+        return 0xFF000000 | (pRed << 16) | (pGreen << 8) | pBlue;
     }
 
     public int getColor() {
@@ -146,25 +147,25 @@ public record Color(int argbInt) {
     }
 
     public Color brighter(double factor) {
-        int r = getRed();
-        int g = getGreen();
-        int b = getBlue();
+        int pRed = getRed();
+        int pGreen = getGreen();
+        int pBlue = getBlue();
         int i = (int) (1 / (1 - (1 / factor)));
 
-        if (r == 0 && g == 0 && b == 0)
+        if (pRed == 0 && pGreen == 0 && pBlue == 0)
             return ofRGBA(i, i, i, getAlpha());
 
-        if (r > 0 && r < i)
-            r = i;
+        if (pRed > 0 && pRed < i)
+            pRed = i;
 
-        if (g > 0 && g < i)
-            g = i;
+        if (pGreen > 0 && pGreen < i)
+            pGreen = i;
 
-        if (b > 0 && b < i)
-            b = i;
+        if (pBlue > 0 && pBlue < i)
+            pBlue = i;
 
-        return ofRGBA(Math.min((int) (r / (1 / factor)), 255), Math.min((int) (g / (1 / factor)), 255),
-                Math.min((int) (b / (1 / factor)), 255), getAlpha());
+        return ofRGBA(Math.min((int) (pRed / (1 / factor)), 255), Math.min((int) (pGreen / (1 / factor)), 255),
+                Math.min((int) (pBlue / (1 / factor)), 255), getAlpha());
     }
 
     public Color darker(float factor) {
@@ -173,14 +174,14 @@ public record Color(int argbInt) {
     }
 
     @Override
-    public boolean equals(Object other) {
-        if (this == other)
+    public boolean equals(Object pOther) {
+        if (this == pOther)
             return true;
 
-        if (getClass() != other.getClass())
+        if (getClass() != pOther.getClass())
             return false;
 
-        return hashCode() == other.hashCode();
+        return hashCode() == pOther.hashCode();
     }
 
     @Override

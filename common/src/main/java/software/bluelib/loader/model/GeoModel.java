@@ -125,7 +125,7 @@ public abstract class GeoModel<T extends GeoAnimatable> {
     public void addAdditionalStateData(T animatable, long instanceId, BiConsumer<DataTicket<T>, T> dataConsumer) {}
 
     @ApiStatus.Internal
-    public void handleAnimations(T animatable, long instanceId, AnimationState<T> animationState, float partialTick) {
+    public void handleAnimations(T animatable, long instanceId, AnimationState<T> animationState, float pPartialTick) {
         Minecraft mc = Minecraft.getInstance();
         AnimatableManager<T> animatableManager = animatable.getAnimatableInstanceCache().getManagerForId(instanceId);
         Double currentTick = animationState.getData(DataTickets.TICK);
@@ -134,12 +134,12 @@ public abstract class GeoModel<T extends GeoAnimatable> {
             currentTick = animatable instanceof Entity entity ? (double) entity.tickCount : RenderUtil.getCurrentTick();
 
         if (animatableManager.getFirstTickTime() == -1)
-            animatableManager.startedAt(currentTick + partialTick);
+            animatableManager.startedAt(currentTick + pPartialTick);
 
-        double currentFrameTime = animatable instanceof Entity || animatable instanceof GeoReplacedEntity ? currentTick + partialTick : currentTick - animatableManager.getFirstTickTime();
-        boolean isReRender = !animatableManager.isFirstTick() && currentFrameTime == animatableManager.getLastUpdateTime();
+        double currentFrameTime = animatable instanceof Entity || animatable instanceof GeoReplacedEntity ? currentTick + pPartialTick : currentTick - animatableManager.getFirstTickTime();
+        boolean pIsReRender = !animatableManager.isFirstTick() && currentFrameTime == animatableManager.getLastUpdateTime();
 
-        if (isReRender && instanceId == this.lastRenderedInstance)
+        if (pIsReRender && instanceId == this.lastRenderedInstance)
             return;
 
         if (!mc.isPaused() || animatable.shouldPlayAnimsWhileGamePaused()) {
