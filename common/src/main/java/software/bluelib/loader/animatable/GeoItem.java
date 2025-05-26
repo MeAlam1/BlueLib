@@ -1,7 +1,16 @@
+/*
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
+ */
 package software.bluelib.loader.animatable;
 
+import java.util.EnumMap;
+import java.util.Map;
+import java.util.Optional;
 import net.minecraft.core.component.PatchedDataComponentMap;
-import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
@@ -15,90 +24,80 @@ import software.bluelib.loader.cache.AnimatableIdCache;
 import software.bluelib.loader.constant.DataTickets;
 import software.bluelib.loader.util.RenderUtil;
 
-import java.util.EnumMap;
-import java.util.Map;
-import java.util.Optional;
-
-
 public interface GeoItem extends SingletonGeoAnimatable {
-	
-	static void registerSyncedAnimatable(GeoAnimatable animatable) {
-		SingletonGeoAnimatable.registerSyncedAnimatable(animatable);
-	}
 
-	
-	static long getId(ItemStack stack) {
-		return Optional.ofNullable(stack.getComponentsPatch().get(GeckoLibConstants.STACK_ANIMATABLE_ID_COMPONENT.get()))
-				.filter(Optional::isPresent)
-				.<Long>map(Optional::get)
-				.orElse(Long.MAX_VALUE);
-	}
+    static void registerSyncedAnimatable(GeoAnimatable animatable) {
+        SingletonGeoAnimatable.registerSyncedAnimatable(animatable);
+    }
 
-	
-	static long getOrAssignId(ItemStack stack, ServerLevel level) {
-		if (!(stack.getComponents() instanceof PatchedDataComponentMap components))
-			return Long.MAX_VALUE;
+    static long getId(ItemStack stack) {
+        return Optional.ofNullable(stack.getComponentsPatch().get(GeckoLibConstants.STACK_ANIMATABLE_ID_COMPONENT.get()))
+                .filter(Optional::isPresent)
+                .<Long>map(Optional::get)
+                .orElse(Long.MAX_VALUE);
+    }
 
-		Long id = components.get(GeckoLibConstants.STACK_ANIMATABLE_ID_COMPONENT.get());
+    static long getOrAssignId(ItemStack stack, ServerLevel level) {
+        if (!(stack.getComponents() instanceof PatchedDataComponentMap components))
+            return Long.MAX_VALUE;
 
-		if (id == null)
-			components.set(GeckoLibConstants.STACK_ANIMATABLE_ID_COMPONENT.get(), id = AnimatableIdCache.getFreeId(level));
+        Long id = components.get(GeckoLibConstants.STACK_ANIMATABLE_ID_COMPONENT.get());
 
-		return id;
-	}
-	
-	
-	@Override
-	default double getTick(Object itemStack) {
-		return RenderUtil.getCurrentTick();
-	}
+        if (id == null)
+            components.set(GeckoLibConstants.STACK_ANIMATABLE_ID_COMPONENT.get(), id = AnimatableIdCache.getFreeId(level));
 
-	
-	default boolean isPerspectiveAware() {
-		return false;
-	}
+        return id;
+    }
 
-	
-	@Nullable
-	@Override
-	default AnimatableInstanceCache animatableCacheOverride() {
-		if (isPerspectiveAware())
-			return new ContextBasedAnimatableInstanceCache(this);
+    @Override
+    default double getTick(Object itemStack) {
+        return RenderUtil.getCurrentTick();
+    }
 
-		return SingletonGeoAnimatable.super.animatableCacheOverride();
-	}
+    default boolean isPerspectiveAware() {
+        return false;
+    }
 
-	
-	class ContextBasedAnimatableInstanceCache extends SingletonAnimatableInstanceCache {
-		public ContextBasedAnimatableInstanceCache(GeoAnimatable animatable) {
-			super(animatable);
-		}
+    @Nullable
+    @Override
+    default AnimatableInstanceCache animatableCacheOverride() {
+        if (isPerspectiveAware())
+            return new ContextBasedAnimatableInstanceCache(this);
 
-		
-		@Override
-		public AnimatableManager<?> getManagerForId(long uniqueId) {
-			if (!this.managers.containsKey(uniqueId))
-				this.managers.put(uniqueId, new ContextAwareAnimatableManager<GeoItem, ItemDisplayContext>(this.animatable) {
-					@Override
-					protected Map<ItemDisplayContext, AnimatableManager<GeoItem>> buildContextOptions(GeoAnimatable animatable) {
-						Map<ItemDisplayContext, AnimatableManager<GeoItem>> map = new EnumMap<>(ItemDisplayContext.class);
+        return SingletonGeoAnimatable.super.animatableCacheOverride();
+    }
 
-						for (ItemDisplayContext context : ItemDisplayContext.values()) {
-							map.put(context, new AnimatableManager<>(animatable));
-						}
+    class ContextBasedAnimatableInstanceCache extends SingletonAnimatableInstanceCache {
 
-						return map;
-					}
+        public ContextBasedAnimatableInstanceCache(GeoAnimatable animatable) {
+            super(animatable);
+        }
 
-					@Override
-					public ItemDisplayContext getCurrentContext() {
-						ItemDisplayContext context = getData(DataTickets.ITEM_RENDER_PERSPECTIVE);
+        @Override
+        public AnimatableManager<?> getManagerForId(long uniqueId) {
+            if (!this.managers.containsKey(uniqueId))
+                this.managers.put(uniqueId, new ContextAwareAnimatableManager<GeoItem, ItemDisplayContext>(this.animatable) {
 
-						return context == null ? ItemDisplayContext.NONE : context;
-					}
-				});
+                    @Override
+                    protected Map<ItemDisplayContext, AnimatableManager<GeoItem>> buildContextOptions(GeoAnimatable animatable) {
+                        Map<ItemDisplayContext, AnimatableManager<GeoItem>> map = new EnumMap<>(ItemDisplayContext.class);
 
-			return this.managers.get(uniqueId);
-		}
-	}
+                        for (ItemDisplayContext context : ItemDisplayContext.values()) {
+                            map.put(context, new AnimatableManager<>(animatable));
+                        }
+
+                        return map;
+                    }
+
+                    @Override
+                    public ItemDisplayContext getCurrentContext() {
+                        ItemDisplayContext context = getData(DataTickets.ITEM_RENDER_PERSPECTIVE);
+
+                        return context == null ? ItemDisplayContext.NONE : context;
+                    }
+                });
+
+            return this.managers.get(uniqueId);
+        }
+    }
 }

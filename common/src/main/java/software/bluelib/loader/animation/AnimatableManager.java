@@ -1,158 +1,152 @@
+/*
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
+ */
 package software.bluelib.loader.animation;
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.loader.animatable.GeoAnimatable;
 import software.bluelib.loader.animation.state.BoneSnapshot;
 import software.bluelib.loader.constant.dataticket.DataTicket;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-
-
 public class AnimatableManager<T extends GeoAnimatable> {
-	private final Map<String, BoneSnapshot> boneSnapshotCollection = new Object2ObjectOpenHashMap<>();
-	private final Map<String, AnimationController<T>> animationControllers;
-	private Map<DataTicket<?>, Object> extraData;
 
-	private double lastUpdateTime;
-	private boolean isFirstTick = true;
-	private double firstTickTime = -1;
+    private final Map<String, BoneSnapshot> boneSnapshotCollection = new Object2ObjectOpenHashMap<>();
+    private final Map<String, AnimationController<T>> animationControllers;
+    private Map<DataTicket<?>, Object> extraData;
 
-	
-	public AnimatableManager(GeoAnimatable animatable) {
-		ControllerRegistrar registrar = new ControllerRegistrar(new ObjectArrayList<>(2));
+    private double lastUpdateTime;
+    private boolean isFirstTick = true;
+    private double firstTickTime = -1;
 
-		animatable.registerControllers(registrar);
+    public AnimatableManager(GeoAnimatable animatable) {
+        ControllerRegistrar registrar = new ControllerRegistrar(new ObjectArrayList<>(2));
 
-		this.animationControllers = registrar.build();
-	}
+        animatable.registerControllers(registrar);
 
-	
-	public void addController(AnimationController controller) {
-		getAnimationControllers().put(controller.getName(), controller);
-	}
+        this.animationControllers = registrar.build();
+    }
 
-	
-	public void removeController(String name) {
-		getAnimationControllers().remove(name);
-	}
+    public void addController(AnimationController controller) {
+        getAnimationControllers().put(controller.getName(), controller);
+    }
 
-	public Map<String, AnimationController<T>> getAnimationControllers() {
-		return this.animationControllers;
-	}
+    public void removeController(String name) {
+        getAnimationControllers().remove(name);
+    }
 
-	public Map<String, BoneSnapshot> getBoneSnapshotCollection() {
-		return this.boneSnapshotCollection;
-	}
+    public Map<String, AnimationController<T>> getAnimationControllers() {
+        return this.animationControllers;
+    }
 
-	public void clearSnapshotCache() {
-		getBoneSnapshotCollection().clear();
-	}
+    public Map<String, BoneSnapshot> getBoneSnapshotCollection() {
+        return this.boneSnapshotCollection;
+    }
 
-	public double getLastUpdateTime() {
-		return this.lastUpdateTime;
-	}
+    public void clearSnapshotCache() {
+        getBoneSnapshotCollection().clear();
+    }
 
-	public void updatedAt(double updateTime) {
-		this.lastUpdateTime = updateTime;
-	}
+    public double getLastUpdateTime() {
+        return this.lastUpdateTime;
+    }
 
-	public double getFirstTickTime() {
-		return this.firstTickTime;
-	}
+    public void updatedAt(double updateTime) {
+        this.lastUpdateTime = updateTime;
+    }
 
-	public void startedAt(double time) {
-		this.firstTickTime = time;
-	}
+    public double getFirstTickTime() {
+        return this.firstTickTime;
+    }
 
-	public boolean isFirstTick() {
-		return this.isFirstTick;
-	}
+    public void startedAt(double time) {
+        this.firstTickTime = time;
+    }
 
-	protected void finishFirstTick() {
-		this.isFirstTick = false;
-	}
+    public boolean isFirstTick() {
+        return this.isFirstTick;
+    }
 
-	
-	public <D> void setData(DataTicket<D> dataTicket, D data) {
-		if (this.extraData == null)
-			this.extraData = new Object2ObjectOpenHashMap<>();
+    protected void finishFirstTick() {
+        this.isFirstTick = false;
+    }
 
-		this.extraData.put(dataTicket, data);
-	}
+    public <D> void setData(DataTicket<D> dataTicket, D data) {
+        if (this.extraData == null)
+            this.extraData = new Object2ObjectOpenHashMap<>();
 
-	
-	public <D> D getData(DataTicket<D> dataTicket) {
-		return this.extraData != null ? dataTicket.getData(this.extraData) : null;
-	}
+        this.extraData.put(dataTicket, data);
+    }
 
-	
-	public void tryTriggerAnimation(String animName) {
-		for (AnimationController<?> controller : getAnimationControllers().values()) {
-			if (controller.tryTriggerAnimation(animName))
-				return;
-		}
-	}
+    public <D> D getData(DataTicket<D> dataTicket) {
+        return this.extraData != null ? dataTicket.getData(this.extraData) : null;
+    }
 
-	
-	public void tryTriggerAnimation(String controllerName, String animName) {
-		AnimationController<?> controller = getAnimationControllers().get(controllerName);
+    public void tryTriggerAnimation(String animName) {
+        for (AnimationController<?> controller : getAnimationControllers().values()) {
+            if (controller.tryTriggerAnimation(animName))
+                return;
+        }
+    }
 
-		if (controller != null)
-			controller.tryTriggerAnimation(animName);
-	}
+    public void tryTriggerAnimation(String controllerName, String animName) {
+        AnimationController<?> controller = getAnimationControllers().get(controllerName);
 
-	
-	public void stopTriggeredAnimation(@Nullable String animName) {
-		for (AnimationController<?> controller : getAnimationControllers().values()) {
-			if ((animName == null || controller.triggerableAnimations.get(animName) == controller.getTriggeredAnimation()) && controller.stopTriggeredAnimation())
-				return;
-		}
-	}
+        if (controller != null)
+            controller.tryTriggerAnimation(animName);
+    }
 
-	
-	public void stopTriggeredAnimation(String controllerName, @Nullable String animName) {
-		AnimationController<?> controller = getAnimationControllers().get(controllerName);
+    public void stopTriggeredAnimation(@Nullable String animName) {
+        for (AnimationController<?> controller : getAnimationControllers().values()) {
+            if ((animName == null || controller.triggerableAnimations.get(animName) == controller.getTriggeredAnimation()) && controller.stopTriggeredAnimation())
+                return;
+        }
+    }
 
-		if (controller != null && (animName == null || controller.triggerableAnimations.get(animName) == controller.getTriggeredAnimation()))
-			controller.stopTriggeredAnimation();
-	}
+    public void stopTriggeredAnimation(String controllerName, @Nullable String animName) {
+        AnimationController<?> controller = getAnimationControllers().get(controllerName);
 
-	
-	public record ControllerRegistrar(List<AnimationController<? extends GeoAnimatable>> controllers) {
-		
-		public ControllerRegistrar add(AnimationController<?>... controllers) {
-			controllers().addAll(Arrays.asList(controllers));
+        if (controller != null && (animName == null || controller.triggerableAnimations.get(animName) == controller.getTriggeredAnimation()))
+            controller.stopTriggeredAnimation();
+    }
 
-			return this;
-		}
+    public record ControllerRegistrar(List<AnimationController<? extends GeoAnimatable>> controllers) {
 
-		
-		public ControllerRegistrar add(AnimationController<?> controller) {
-			controllers().add(controller);
+        public ControllerRegistrar add(AnimationController<?>... controllers) {
+            controllers().addAll(Arrays.asList(controllers));
 
-			return this;
-		}
+            return this;
+        }
 
-		
-		public ControllerRegistrar remove(String name) {
-			controllers().removeIf(controller -> controller.getName().equals(name));
+        public ControllerRegistrar add(AnimationController<?> controller) {
+            controllers().add(controller);
 
-			return this;
-		}
+            return this;
+        }
 
-		@ApiStatus.Internal
-		private <T extends GeoAnimatable> Object2ObjectArrayMap<String, AnimationController<T>> build() {
-			Object2ObjectArrayMap<String, AnimationController<?>> map = new Object2ObjectArrayMap<>(controllers().size());
+        public ControllerRegistrar remove(String name) {
+            controllers().removeIf(controller -> controller.getName().equals(name));
 
-			controllers().forEach(controller -> map.put(controller.getName(), controller));
+            return this;
+        }
 
-			return (Object2ObjectArrayMap)map;
-		}
-	}
+        @ApiStatus.Internal
+        private <T extends GeoAnimatable> Object2ObjectArrayMap<String, AnimationController<T>> build() {
+            Object2ObjectArrayMap<String, AnimationController<?>> map = new Object2ObjectArrayMap<>(controllers().size());
+
+            controllers().forEach(controller -> map.put(controller.getName(), controller));
+
+            return (Object2ObjectArrayMap) map;
+        }
+    }
 }

@@ -7,5 +7,4 @@
  */
 package software.bluelib.api.net;
 
-
 public interface UnsplittablePacket {}

@@ -13,7 +13,6 @@ import java.util.Random;
 import java.util.TreeMap;
 import org.jetbrains.annotations.ApiStatus;
 
-
 @SuppressWarnings("unused")
 @ApiStatus.Internal
 public class PityRandom {

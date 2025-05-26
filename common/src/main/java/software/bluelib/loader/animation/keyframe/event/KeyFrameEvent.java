@@ -1,46 +1,43 @@
 /*
- * Copyright (c) 2020.
- * Author: Bernie G. (Gecko)
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
  */
-
 package software.bluelib.loader.animation.keyframe.event;
 
 import software.bluelib.loader.animatable.GeoAnimatable;
 import software.bluelib.loader.animation.AnimationController;
-import software.bluelib.loader.animation.keyframe.Keyframe;
 import software.bluelib.loader.animation.keyframe.event.data.KeyFrameData;
 
-
 public abstract class KeyFrameEvent<T extends GeoAnimatable, E extends KeyFrameData> {
-	private final T animatable;
-	private final double animationTick;
-	private final AnimationController<T> controller;
-	private final E eventKeyFrame;
 
-	public KeyFrameEvent(T animatable, double animationTick, AnimationController<T> controller, E eventKeyFrame) {
-		this.animatable = animatable;
-		this.animationTick = animationTick;
-		this.controller = controller;
-		this.eventKeyFrame = eventKeyFrame;
-	}
+    private final T animatable;
+    private final double animationTick;
+    private final AnimationController<T> controller;
+    private final E eventKeyFrame;
 
-	
-	public double getAnimationTick() {
-		return animationTick;
-	}
+    public KeyFrameEvent(T animatable, double animationTick, AnimationController<T> controller, E eventKeyFrame) {
+        this.animatable = animatable;
+        this.animationTick = animationTick;
+        this.controller = controller;
+        this.eventKeyFrame = eventKeyFrame;
+    }
 
-	
-	public T getAnimatable() {
-		return animatable;
-	}
+    public double getAnimationTick() {
+        return animationTick;
+    }
 
-	
-	public AnimationController<T> getController() {
-		return controller;
-	}
+    public T getAnimatable() {
+        return animatable;
+    }
 
-	
-	public E getKeyframeData() {
-		return this.eventKeyFrame;
-	}
+    public AnimationController<T> getController() {
+        return controller;
+    }
+
+    public E getKeyframeData() {
+        return this.eventKeyFrame;
+    }
 }

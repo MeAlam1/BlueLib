@@ -1,14 +1,20 @@
+/*
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
+ */
 package software.bluelib.loader.loading.math.function.random;
 
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.loader.loading.math.MathValue;
 import software.bluelib.loader.loading.math.function.MathFunction;
 
-import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
-
-
 public final class RandomIntegerFunction extends MathFunction {
+
     private final MathValue valueA;
     @Nullable
     private final MathValue valueB;
@@ -34,25 +40,23 @@ public final class RandomIntegerFunction extends MathFunction {
     @Override
     public double compute() {
         int result;
-        int valueA = (int)Math.round(this.valueA.get());
+        int valueA = (int) Math.round(this.valueA.get());
         Random random;
 
         if (this.random != null) {
-            this.random.setSeed((long)this.seed.get());
+            this.random.setSeed((long) this.seed.get());
             random = this.random;
-        }
-        else {
+        } else {
             random = ThreadLocalRandom.current();
         }
 
         if (this.valueB != null) {
-            int valueB = (int)Math.round(this.valueB.get());
+            int valueB = (int) Math.round(this.valueB.get());
             int min = Math.min(valueA, valueB);
             int max = Math.max(valueA, valueB);
 
             result = min + random.nextInt(max + 1 - min);
-        }
-        else {
+        } else {
             result = random.nextInt(0, valueA + 1);
         }
 
@@ -75,11 +79,11 @@ public final class RandomIntegerFunction extends MathFunction {
     @Override
     public MathValue[] getArgs() {
         if (this.seed != null)
-            return new MathValue[] {this.valueA, this.valueB, this.seed};
+            return new MathValue[] { this.valueA, this.valueB, this.seed };
 
         if (this.valueB != null)
-            return new MathValue[] {this.valueA, this.valueB};
+            return new MathValue[] { this.valueA, this.valueB };
 
-        return new MathValue[] {this.valueA};
+        return new MathValue[] { this.valueA };
     }
 }

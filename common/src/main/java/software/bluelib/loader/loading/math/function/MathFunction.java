@@ -1,11 +1,17 @@
+/*
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
+ */
 package software.bluelib.loader.loading.math.function;
 
+import java.util.StringJoiner;
 import software.bluelib.loader.loading.math.MathValue;
 
-import java.util.StringJoiner;
-
-
 public abstract class MathFunction implements MathValue {
+
     private final boolean isMutable;
     private double cachedValue = Double.MIN_VALUE;
 
@@ -15,7 +21,6 @@ public abstract class MathFunction implements MathValue {
         this.isMutable = isMutable(values);
     }
 
-    
     public abstract String getName();
 
     @Override
@@ -29,10 +34,8 @@ public abstract class MathFunction implements MathValue {
         return this.cachedValue;
     }
 
-    
     public abstract double compute();
 
-    
     public boolean isMutable(MathValue... values) {
         for (MathValue value : values) {
             if (value.isMutable())
@@ -42,13 +45,10 @@ public abstract class MathFunction implements MathValue {
         return false;
     }
 
-    
     public abstract int getMinArgs();
 
-    
     public abstract MathValue[] getArgs();
 
-    
     public void validate(MathValue... inputs) throws IllegalArgumentException {
         final int minArgs = getMinArgs();
 
@@ -73,10 +73,9 @@ public abstract class MathFunction implements MathValue {
         return getName() + joiner;
     }
 
-    
     @FunctionalInterface
     public interface Factory<T extends MathFunction> {
-        
+
         T create(MathValue... values);
     }
 }

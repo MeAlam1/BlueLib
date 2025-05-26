@@ -1,19 +1,24 @@
+/*
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
+ */
 package software.bluelib.loader.loading.math;
 
 import it.unimi.dsi.fastutil.chars.CharOpenHashSet;
 import it.unimi.dsi.fastutil.chars.CharSet;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
-import net.minecraft.Util;
-import org.jetbrains.annotations.NotNull;
-
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.function.BiFunction;
-
+import net.minecraft.Util;
+import org.jetbrains.annotations.NotNull;
 
 public record Operator(String symbol, int precedence, Operation operation) implements Comparable<Operator> {
+
     private static final Map<String, Operator> OPERATORS = new Object2ObjectOpenHashMap<>(14);
     private static final CharSet OPERATOR_SYMBOLS = Util.make(new CharOpenHashSet(15), set -> set.addAll(Arrays.asList('?', ':', ',')));
     private static int LONGEST_OPERATOR;
@@ -34,7 +39,6 @@ public record Operator(String symbol, int precedence, Operation operation) imple
     public static final Operator NOT_EQUAL = register("!=", 5, (a, b) -> Math.abs(a - b) >= 0.00001 ? 1 : 0);
     public static final Operator ASSIGN_VARIABLE = register("=", Integer.MAX_VALUE, (a, b) -> 0);
 
-    
     public static Operator register(String symbol, int precedence, Operation operation) {
         final Operator operator = new Operator(symbol, precedence, operation);
 
@@ -50,27 +54,22 @@ public record Operator(String symbol, int precedence, Operation operation) imple
         return operator;
     }
 
-    
     public static boolean isOperator(String symbol) {
         return OPERATORS.containsKey(symbol);
     }
 
-    
     public static Optional<Operator> getOperatorFor(String symbol) {
         return Optional.ofNullable(OPERATORS.get(symbol));
     }
 
-    
     public static int maxOperatorLength() {
         return LONGEST_OPERATOR;
     }
 
-    
     public static boolean isOperativeSymbol(char symbol) {
         return OPERATOR_SYMBOLS.contains(symbol);
     }
 
-    
     public double compute(double argA, double argB) {
         return this.operation.compute(argA, argB);
     }
@@ -80,7 +79,6 @@ public record Operator(String symbol, int precedence, Operation operation) imple
         return Integer.compare(this.precedence, operator.precedence);
     }
 
-    
     public boolean takesPrecedenceOver(Operator operator) {
         return compareTo(operator) > 0;
     }
@@ -90,10 +88,9 @@ public record Operator(String symbol, int precedence, Operation operation) imple
         return Objects.hash(this.symbol);
     }
 
-    
     @FunctionalInterface
     public interface Operation {
-        
+
         double compute(double argA, double argB);
     }
 }

@@ -1,3 +1,10 @@
+/*
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
+ */
 package software.bluelib.loader.model;
 
 import net.minecraft.resources.ResourceLocation;
@@ -8,57 +15,52 @@ import software.bluelib.loader.cache.object.GeoBone;
 import software.bluelib.loader.constant.DataTickets;
 import software.bluelib.loader.model.data.EntityModelData;
 
-
 public class DefaultedEntityGeoModel<T extends GeoAnimatable> extends DefaultedGeoModel<T> {
-	protected final boolean turnsHead;
 
-	
-	public DefaultedEntityGeoModel(ResourceLocation assetSubpath) {
-		this(assetSubpath, false);
-	}
+    protected final boolean turnsHead;
 
-	public DefaultedEntityGeoModel(ResourceLocation assetSubpath, boolean turnsHead) {
-		super(assetSubpath);
+    public DefaultedEntityGeoModel(ResourceLocation assetSubpath) {
+        this(assetSubpath, false);
+    }
 
-		this.turnsHead = turnsHead;
-	}
+    public DefaultedEntityGeoModel(ResourceLocation assetSubpath, boolean turnsHead) {
+        super(assetSubpath);
 
-	
-	@Override
-	protected String subtype() {
-		return "entity";
-	}
+        this.turnsHead = turnsHead;
+    }
 
-	@Override
-	public void setCustomAnimations(T animatable, long instanceId, AnimationState<T> animationState) {
-		if (!this.turnsHead)
-			return;
+    @Override
+    protected String subtype() {
+        return "entity";
+    }
 
-		GeoBone head = getAnimationProcessor().getBone("head");
+    @Override
+    public void setCustomAnimations(T animatable, long instanceId, AnimationState<T> animationState) {
+        if (!this.turnsHead)
+            return;
 
-		if (head != null) {
-			EntityModelData entityData = animationState.getData(DataTickets.ENTITY_MODEL_DATA);
+        GeoBone head = getAnimationProcessor().getBone("head");
 
-			head.setRotX(entityData.headPitch() * Mth.DEG_TO_RAD);
-			head.setRotY(entityData.netHeadYaw() * Mth.DEG_TO_RAD);
-		}
-	}
+        if (head != null) {
+            EntityModelData entityData = animationState.getData(DataTickets.ENTITY_MODEL_DATA);
 
-	
-	@Override
-	public DefaultedEntityGeoModel<T> withAltModel(ResourceLocation altPath) {
-		return (DefaultedEntityGeoModel<T>)super.withAltModel(altPath);
-	}
+            head.setRotX(entityData.headPitch() * Mth.DEG_TO_RAD);
+            head.setRotY(entityData.netHeadYaw() * Mth.DEG_TO_RAD);
+        }
+    }
 
-	
-	@Override
-	public DefaultedEntityGeoModel<T> withAltAnimations(ResourceLocation altPath) {
-		return (DefaultedEntityGeoModel<T>)super.withAltAnimations(altPath);
-	}
+    @Override
+    public DefaultedEntityGeoModel<T> withAltModel(ResourceLocation altPath) {
+        return (DefaultedEntityGeoModel<T>) super.withAltModel(altPath);
+    }
 
-	
-	@Override
-	public DefaultedEntityGeoModel<T> withAltTexture(ResourceLocation altPath) {
-		return (DefaultedEntityGeoModel<T>)super.withAltTexture(altPath);
-	}
+    @Override
+    public DefaultedEntityGeoModel<T> withAltAnimations(ResourceLocation altPath) {
+        return (DefaultedEntityGeoModel<T>) super.withAltAnimations(altPath);
+    }
+
+    @Override
+    public DefaultedEntityGeoModel<T> withAltTexture(ResourceLocation altPath) {
+        return (DefaultedEntityGeoModel<T>) super.withAltTexture(altPath);
+    }
 }

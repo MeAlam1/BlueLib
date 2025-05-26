@@ -1,118 +1,109 @@
+/*
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
+ */
 package software.bluelib.loader.animation;
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+import java.util.Map;
+import java.util.Objects;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.loader.animatable.GeoAnimatable;
 import software.bluelib.loader.constant.dataticket.DataTicket;
 
-import java.util.Map;
-import java.util.Objects;
-
-
 public class AnimationState<T extends GeoAnimatable> {
-	private final T animatable;
-	private final float limbSwing;
-	private final float limbSwingAmount;
-	private final float partialTick;
-	private final boolean isMoving;
-	private final Map<DataTicket<?>, Object> extraData = new Object2ObjectOpenHashMap<>();
 
-	protected AnimationController<T> controller;
-	public double animationTick;
+    private final T animatable;
+    private final float limbSwing;
+    private final float limbSwingAmount;
+    private final float partialTick;
+    private final boolean isMoving;
+    private final Map<DataTicket<?>, Object> extraData = new Object2ObjectOpenHashMap<>();
 
-	public AnimationState(T animatable, float limbSwing, float limbSwingAmount, float partialTick, boolean isMoving) {
-		this.animatable = animatable;
-		this.limbSwing = limbSwing;
-		this.limbSwingAmount = limbSwingAmount;
-		this.partialTick = partialTick;
-		this.isMoving = isMoving;
-	}
+    protected AnimationController<T> controller;
+    public double animationTick;
 
-	
-	public double getAnimationTick() {
-		return this.animationTick;
-	}
+    public AnimationState(T animatable, float limbSwing, float limbSwingAmount, float partialTick, boolean isMoving) {
+        this.animatable = animatable;
+        this.limbSwing = limbSwing;
+        this.limbSwingAmount = limbSwingAmount;
+        this.partialTick = partialTick;
+        this.isMoving = isMoving;
+    }
 
-	
-	public T getAnimatable() {
-		return this.animatable;
-	}
+    public double getAnimationTick() {
+        return this.animationTick;
+    }
 
-	public float getLimbSwing() {
-		return this.limbSwing;
-	}
+    public T getAnimatable() {
+        return this.animatable;
+    }
 
-	public float getLimbSwingAmount() {
-		return this.limbSwingAmount;
-	}
+    public float getLimbSwing() {
+        return this.limbSwing;
+    }
 
-	
-	public float getPartialTick() {
-		return this.partialTick;
-	}
+    public float getLimbSwingAmount() {
+        return this.limbSwingAmount;
+    }
 
-	
-	public boolean isMoving() {
-		return this.isMoving;
-	}
+    public float getPartialTick() {
+        return this.partialTick;
+    }
 
-	
-	public AnimationController<T> getController() {
-		return this.controller;
-	}
+    public boolean isMoving() {
+        return this.isMoving;
+    }
 
-	
-	public AnimationState<T> withController(AnimationController<T> controller) {
-		this.controller = controller;
+    public AnimationController<T> getController() {
+        return this.controller;
+    }
 
-		return this;
-	}
+    public AnimationState<T> withController(AnimationController<T> controller) {
+        this.controller = controller;
 
-	
-	public Map<DataTicket<?>, ?> getExtraData() {
-		return this.extraData;
-	}
+        return this;
+    }
 
-	
-	@Nullable
-	public <D> D getData(DataTicket<D> dataTicket) {
-		return dataTicket.getData(this.extraData);
-	}
+    public Map<DataTicket<?>, ?> getExtraData() {
+        return this.extraData;
+    }
 
-	
-	public <D> void setData(DataTicket<D> dataTicket, D data) {
-		this.extraData.put(dataTicket, data);
-	}
+    @Nullable
+    public <D> D getData(DataTicket<D> dataTicket) {
+        return dataTicket.getData(this.extraData);
+    }
 
-	
-	public void setAnimation(RawAnimation animation) {
-		getController().setAnimation(animation);
-	}
+    public <D> void setData(DataTicket<D> dataTicket, D data) {
+        this.extraData.put(dataTicket, data);
+    }
 
-	
-	public PlayState setAndContinue(RawAnimation animation) {
-		getController().setAnimation(animation);
+    public void setAnimation(RawAnimation animation) {
+        getController().setAnimation(animation);
+    }
 
-		return PlayState.CONTINUE;
-	}
+    public PlayState setAndContinue(RawAnimation animation) {
+        getController().setAnimation(animation);
 
-	
-	public boolean isCurrentAnimation(RawAnimation animation) {
-		return Objects.equals(getController().currentRawAnimation, animation);
-	}
+        return PlayState.CONTINUE;
+    }
 
-	
-	public boolean isCurrentAnimationStage(String name) {
-		return getController().getCurrentAnimation() != null && getController().getCurrentAnimation().animation().name().equals(name);
-	}
+    public boolean isCurrentAnimation(RawAnimation animation) {
+        return Objects.equals(getController().currentRawAnimation, animation);
+    }
 
-	
-	public void resetCurrentAnimation() {
-		getController().forceAnimationReset();
-	}
+    public boolean isCurrentAnimationStage(String name) {
+        return getController().getCurrentAnimation() != null && getController().getCurrentAnimation().animation().name().equals(name);
+    }
 
-	
-	public void setControllerSpeed(float speed) {
-		getController().setAnimationSpeed(speed);
-	}
+    public void resetCurrentAnimation() {
+        getController().forceAnimationReset();
+    }
+
+    public void setControllerSpeed(float speed) {
+        getController().setAnimationSpeed(speed);
+    }
 }

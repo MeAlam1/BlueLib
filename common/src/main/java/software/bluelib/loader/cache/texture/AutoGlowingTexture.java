@@ -1,3 +1,10 @@
+/*
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
+ */
 package software.bluelib.loader.cache.texture;
 
 import com.mojang.blaze3d.pipeline.RenderCall;
@@ -6,6 +13,11 @@ import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;
+import java.io.IOException;
+import java.util.Optional;
+import java.util.concurrent.ExecutionException;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
@@ -22,139 +34,124 @@ import software.bluelib.loader.GeckoLibConstants;
 import software.bluelib.loader.GeckoLibServices;
 import software.bluelib.loader.resource.GeoGlowingTextureMeta;
 
-import java.io.IOException;
-import java.util.Optional;
-import java.util.concurrent.ExecutionException;
-import java.util.function.BiFunction;
-import java.util.function.Function;
-
-
 public class AutoGlowingTexture extends GeoAbstractTexture {
-	private static final RenderStateShard.ShaderStateShard SHADER_STATE = new RenderStateShard.ShaderStateShard(GameRenderer::getRendertypeEntityTranslucentEmissiveShader);
-	private static final RenderStateShard.TransparencyStateShard TRANSPARENCY_STATE = new RenderStateShard.TransparencyStateShard("translucent_transparency", () -> {
-		RenderSystem.enableBlend();
-		RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-	}, () -> {
-		RenderSystem.disableBlend();
-		RenderSystem.defaultBlendFunc();
-	});
-	private static final RenderStateShard.WriteMaskStateShard WRITE_MASK = new RenderStateShard.WriteMaskStateShard(true, true);
-	private static final BiFunction<ResourceLocation, Boolean, RenderType> GLOWING_RENDER_TYPE = Util.memoize((texture, isGlowing) -> {
-		RenderStateShard.TextureStateShard textureState = new RenderStateShard.TextureStateShard(texture, false, false);
 
-		return RenderType.create("geo_glowing_layer", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256, false, true,
-				RenderType.CompositeState.builder()
-						.setShaderState(SHADER_STATE)
-						.setTextureState(textureState)
-						.setTransparencyState(TRANSPARENCY_STATE)
-						.setOverlayState(new RenderStateShard.OverlayStateShard(true))
-						.setWriteMaskState(WRITE_MASK).createCompositeState(isGlowing));
-	});
-	
-	@Deprecated(forRemoval = true)
-	private static final Function<ResourceLocation, RenderType> RENDER_TYPE_FUNCTION = Util.memoize(texture -> GLOWING_RENDER_TYPE.apply(texture, false));
-	private static final String APPENDIX = "_glowmask";
-	
-	public static boolean PRINT_DEBUG_IMAGES = false;
+    private static final RenderStateShard.ShaderStateShard SHADER_STATE = new RenderStateShard.ShaderStateShard(GameRenderer::getRendertypeEntityTranslucentEmissiveShader);
+    private static final RenderStateShard.TransparencyStateShard TRANSPARENCY_STATE = new RenderStateShard.TransparencyStateShard("translucent_transparency", () -> {
+        RenderSystem.enableBlend();
+        RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+    }, () -> {
+        RenderSystem.disableBlend();
+        RenderSystem.defaultBlendFunc();
+    });
+    private static final RenderStateShard.WriteMaskStateShard WRITE_MASK = new RenderStateShard.WriteMaskStateShard(true, true);
+    private static final BiFunction<ResourceLocation, Boolean, RenderType> GLOWING_RENDER_TYPE = Util.memoize((texture, isGlowing) -> {
+        RenderStateShard.TextureStateShard textureState = new RenderStateShard.TextureStateShard(texture, false, false);
 
-	protected final ResourceLocation textureBase;
-	protected final ResourceLocation glowLayer;
+        return RenderType.create("geo_glowing_layer", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256, false, true,
+                RenderType.CompositeState.builder()
+                        .setShaderState(SHADER_STATE)
+                        .setTextureState(textureState)
+                        .setTransparencyState(TRANSPARENCY_STATE)
+                        .setOverlayState(new RenderStateShard.OverlayStateShard(true))
+                        .setWriteMaskState(WRITE_MASK).createCompositeState(isGlowing));
+    });
 
-	public AutoGlowingTexture(ResourceLocation originalLocation, ResourceLocation location) {
-		this.textureBase = originalLocation;
-		this.glowLayer = location;
-	}
+    @Deprecated(forRemoval = true)
+    private static final Function<ResourceLocation, RenderType> RENDER_TYPE_FUNCTION = Util.memoize(texture -> GLOWING_RENDER_TYPE.apply(texture, false));
+    private static final String APPENDIX = "_glowmask";
 
-	
-	public static ResourceLocation getEmissiveResource(ResourceLocation baseResource) {
-		ResourceLocation path = appendToPath(baseResource, APPENDIX);
+    public static boolean PRINT_DEBUG_IMAGES = false;
 
-		generateTexture(path, textureManager -> textureManager.register(path, new AutoGlowingTexture(baseResource, path)));
+    protected final ResourceLocation textureBase;
+    protected final ResourceLocation glowLayer;
 
-		return path;
-	}
+    public AutoGlowingTexture(ResourceLocation originalLocation, ResourceLocation location) {
+        this.textureBase = originalLocation;
+        this.glowLayer = location;
+    }
 
-	
-	@Nullable
-	@Override
-	protected RenderCall loadTexture(ResourceManager resourceManager, Minecraft mc) throws IOException {
-		AbstractTexture originalTexture;
+    public static ResourceLocation getEmissiveResource(ResourceLocation baseResource) {
+        ResourceLocation path = appendToPath(baseResource, APPENDIX);
 
-		try {
-			originalTexture = mc.submit(() -> mc.getTextureManager().getTexture(this.textureBase)).get();
-		}
-		catch (InterruptedException | ExecutionException e) {
-			throw new IOException("Failed to load original texture: " + this.textureBase, e);
-		}
+        generateTexture(path, textureManager -> textureManager.register(path, new AutoGlowingTexture(baseResource, path)));
 
-		Resource textureBaseResource = resourceManager.getResource(this.textureBase).get();
-		NativeImage baseImage = originalTexture instanceof DynamicTexture dynamicTexture ?
-								dynamicTexture.getPixels() : NativeImage.read(textureBaseResource.open());
-		NativeImage glowImage = null;
-		Optional<TextureMetadataSection> textureBaseMeta = textureBaseResource.metadata().getSection(TextureMetadataSection.SERIALIZER);
-		boolean blur = textureBaseMeta.isPresent() && textureBaseMeta.get().isBlur();
-		boolean clamp = textureBaseMeta.isPresent() && textureBaseMeta.get().isClamp();
+        return path;
+    }
 
-		try {
-			Optional<Resource> glowLayerResource = resourceManager.getResource(this.glowLayer);
-			GeoGlowingTextureMeta glowLayerMeta = null;
+    @Nullable
+    @Override
+    protected RenderCall loadTexture(ResourceManager resourceManager, Minecraft mc) throws IOException {
+        AbstractTexture originalTexture;
 
-			if (glowLayerResource.isPresent()) {
-				glowImage = NativeImage.read(glowLayerResource.get().open());
-				glowLayerMeta = GeoGlowingTextureMeta.fromExistingImage(glowImage);
-			}
-			else {
-				Optional<GeoGlowingTextureMeta> meta = textureBaseResource.metadata().getSection(GeoGlowingTextureMeta.DESERIALIZER);
+        try {
+            originalTexture = mc.submit(() -> mc.getTextureManager().getTexture(this.textureBase)).get();
+        } catch (InterruptedException | ExecutionException e) {
+            throw new IOException("Failed to load original texture: " + this.textureBase, e);
+        }
 
-				if (meta.isPresent()) {
-					glowLayerMeta = meta.get();
-					glowImage = new NativeImage(baseImage.getWidth(), baseImage.getHeight(), true);
-				}
-			}
+        Resource textureBaseResource = resourceManager.getResource(this.textureBase).get();
+        NativeImage baseImage = originalTexture instanceof DynamicTexture dynamicTexture ? dynamicTexture.getPixels() : NativeImage.read(textureBaseResource.open());
+        NativeImage glowImage = null;
+        Optional<TextureMetadataSection> textureBaseMeta = textureBaseResource.metadata().getSection(TextureMetadataSection.SERIALIZER);
+        boolean blur = textureBaseMeta.isPresent() && textureBaseMeta.get().isBlur();
+        boolean clamp = textureBaseMeta.isPresent() && textureBaseMeta.get().isClamp();
 
-			if (glowLayerMeta != null) {
-				glowLayerMeta.createImageMask(baseImage, glowImage);
+        try {
+            Optional<Resource> glowLayerResource = resourceManager.getResource(this.glowLayer);
+            GeoGlowingTextureMeta glowLayerMeta = null;
 
-				if (PRINT_DEBUG_IMAGES && GeckoLibServices.PLATFORM.isDevelopmentEnvironment()) {
-					printDebugImageToDisk(this.textureBase, baseImage);
-					printDebugImageToDisk(this.glowLayer, glowImage);
-				}
-			}
-		}
-		catch (IOException e) {
-			GeckoLibConstants.LOGGER.warn("Resource failed to open for glowlayer meta: {}", this.glowLayer, e);
-		}
+            if (glowLayerResource.isPresent()) {
+                glowImage = NativeImage.read(glowLayerResource.get().open());
+                glowLayerMeta = GeoGlowingTextureMeta.fromExistingImage(glowImage);
+            } else {
+                Optional<GeoGlowingTextureMeta> meta = textureBaseResource.metadata().getSection(GeoGlowingTextureMeta.DESERIALIZER);
 
-		NativeImage mask = glowImage;
+                if (meta.isPresent()) {
+                    glowLayerMeta = meta.get();
+                    glowImage = new NativeImage(baseImage.getWidth(), baseImage.getHeight(), true);
+                }
+            }
 
-		if (mask == null)
-			return null;
+            if (glowLayerMeta != null) {
+                glowLayerMeta.createImageMask(baseImage, glowImage);
 
-		boolean animated = originalTexture instanceof AnimatableTexture animatableTexture && animatableTexture.isAnimated();
+                if (PRINT_DEBUG_IMAGES && GeckoLibServices.PLATFORM.isDevelopmentEnvironment()) {
+                    printDebugImageToDisk(this.textureBase, baseImage);
+                    printDebugImageToDisk(this.glowLayer, glowImage);
+                }
+            }
+        } catch (IOException e) {
+            GeckoLibConstants.LOGGER.warn("Resource failed to open for glowlayer meta: {}", this.glowLayer, e);
+        }
 
-		if (animated)
-			((AnimatableTexture)originalTexture).animationContents.animatedTexture.setGlowMaskTexture(this, baseImage, mask);
+        NativeImage mask = glowImage;
 
-		return () -> {
-			if (!animated)
-				uploadSimple(getId(), mask, blur, clamp);
+        if (mask == null)
+            return null;
 
-			if (originalTexture instanceof DynamicTexture dynamicTexture) {
-				dynamicTexture.upload();
-			}
-			else {
-				uploadSimple(originalTexture.getId(), baseImage, blur, clamp);
-			}
-		};
-	}
+        boolean animated = originalTexture instanceof AnimatableTexture animatableTexture && animatableTexture.isAnimated();
 
-	
-	public static RenderType getRenderType(ResourceLocation texture) {
-		return GLOWING_RENDER_TYPE.apply(getEmissiveResource(texture), false);
-	}
+        if (animated)
+            ((AnimatableTexture) originalTexture).animationContents.animatedTexture.setGlowMaskTexture(this, baseImage, mask);
 
-	
-	public static RenderType getOutlineRenderType(ResourceLocation texture) {
-		return GLOWING_RENDER_TYPE.apply(getEmissiveResource(texture), true);
-	}
+        return () -> {
+            if (!animated)
+                uploadSimple(getId(), mask, blur, clamp);
+
+            if (originalTexture instanceof DynamicTexture dynamicTexture) {
+                dynamicTexture.upload();
+            } else {
+                uploadSimple(originalTexture.getId(), baseImage, blur, clamp);
+            }
+        };
+    }
+
+    public static RenderType getRenderType(ResourceLocation texture) {
+        return GLOWING_RENDER_TYPE.apply(getEmissiveResource(texture), false);
+    }
+
+    public static RenderType getOutlineRenderType(ResourceLocation texture) {
+        return GLOWING_RENDER_TYPE.apply(getEmissiveResource(texture), true);
+    }
 }

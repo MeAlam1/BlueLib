@@ -11,8 +11,6 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import software.bluelib.BlueLibCommon;
 import software.bluelib.api.net.NetworkPacket;
-import software.bluelib.net.serverHandling.TestPacketHandler;
-
 
 public record TestPacket(boolean value) implements NetworkPacket<TestPacket> {
 

@@ -1,191 +1,194 @@
+/*
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
+ */
 package software.bluelib.loader.animation.state;
 
-import software.bluelib.loader.animation.AnimationProcessor;
 import software.bluelib.loader.cache.object.GeoBone;
 
-
 public class BoneSnapshot {
-	private final GeoBone bone;
 
-	private float scaleX;
-	private float scaleY;
-	private float scaleZ;
+    private final GeoBone bone;
 
-	private float offsetPosX;
-	private float offsetPosY;
-	private float offsetPosZ;
+    private float scaleX;
+    private float scaleY;
+    private float scaleZ;
 
-	private float rotX;
-	private float rotY;
-	private float rotZ;
+    private float offsetPosX;
+    private float offsetPosY;
+    private float offsetPosZ;
 
-	private double lastResetRotationTick = 0;
-	private double lastResetPositionTick = 0;
-	private double lastResetScaleTick = 0;
+    private float rotX;
+    private float rotY;
+    private float rotZ;
 
-	private boolean rotAnimInProgress = true;
-	private boolean posAnimInProgress = true;
-	private boolean scaleAnimInProgress = true;
+    private double lastResetRotationTick = 0;
+    private double lastResetPositionTick = 0;
+    private double lastResetScaleTick = 0;
 
-	public BoneSnapshot(GeoBone bone) {
-		this.rotX = bone.getRotX();
-		this.rotY = bone.getRotY();
-		this.rotZ = bone.getRotZ();
+    private boolean rotAnimInProgress = true;
+    private boolean posAnimInProgress = true;
+    private boolean scaleAnimInProgress = true;
 
-		this.offsetPosX = bone.getPosX();
-		this.offsetPosY = bone.getPosY();
-		this.offsetPosZ = bone.getPosZ();
+    public BoneSnapshot(GeoBone bone) {
+        this.rotX = bone.getRotX();
+        this.rotY = bone.getRotY();
+        this.rotZ = bone.getRotZ();
 
-		this.scaleX = bone.getScaleX();
-		this.scaleY = bone.getScaleY();
-		this.scaleZ = bone.getScaleZ();
+        this.offsetPosX = bone.getPosX();
+        this.offsetPosY = bone.getPosY();
+        this.offsetPosZ = bone.getPosZ();
 
-		this.bone = bone;
-	}
+        this.scaleX = bone.getScaleX();
+        this.scaleY = bone.getScaleY();
+        this.scaleZ = bone.getScaleZ();
 
-	public static BoneSnapshot copy(BoneSnapshot snapshot) {
-		BoneSnapshot newSnapshot = new BoneSnapshot(snapshot.bone);
+        this.bone = bone;
+    }
 
-		newSnapshot.scaleX = snapshot.scaleX;
-		newSnapshot.scaleY = snapshot.scaleY;
-		newSnapshot.scaleZ = snapshot.scaleZ;
+    public static BoneSnapshot copy(BoneSnapshot snapshot) {
+        BoneSnapshot newSnapshot = new BoneSnapshot(snapshot.bone);
 
-		newSnapshot.offsetPosX = snapshot.offsetPosX;
-		newSnapshot.offsetPosY = snapshot.offsetPosY;
-		newSnapshot.offsetPosZ = snapshot.offsetPosZ;
+        newSnapshot.scaleX = snapshot.scaleX;
+        newSnapshot.scaleY = snapshot.scaleY;
+        newSnapshot.scaleZ = snapshot.scaleZ;
 
-		newSnapshot.rotX = snapshot.rotX;
-		newSnapshot.rotY = snapshot.rotY;
-		newSnapshot.rotZ = snapshot.rotZ;
+        newSnapshot.offsetPosX = snapshot.offsetPosX;
+        newSnapshot.offsetPosY = snapshot.offsetPosY;
+        newSnapshot.offsetPosZ = snapshot.offsetPosZ;
 
-		return newSnapshot;
-	}
+        newSnapshot.rotX = snapshot.rotX;
+        newSnapshot.rotY = snapshot.rotY;
+        newSnapshot.rotZ = snapshot.rotZ;
 
-	public GeoBone getBone() {
-		return this.bone;
-	}
+        return newSnapshot;
+    }
 
-	public float getScaleX() {
-		return this.scaleX;
-	}
+    public GeoBone getBone() {
+        return this.bone;
+    }
 
-	public float getScaleY() {
-		return this.scaleY;
-	}
+    public float getScaleX() {
+        return this.scaleX;
+    }
 
-	public float getScaleZ() {
-		return this.scaleZ;
-	}
+    public float getScaleY() {
+        return this.scaleY;
+    }
 
-	public float getOffsetX() {
-		return this.offsetPosX;
-	}
+    public float getScaleZ() {
+        return this.scaleZ;
+    }
 
-	public float getOffsetY() {
-		return this.offsetPosY;
-	}
+    public float getOffsetX() {
+        return this.offsetPosX;
+    }
 
-	public float getOffsetZ() {
-		return this.offsetPosZ;
-	}
+    public float getOffsetY() {
+        return this.offsetPosY;
+    }
 
-	public float getRotX() {
-		return this.rotX;
-	}
+    public float getOffsetZ() {
+        return this.offsetPosZ;
+    }
 
-	public float getRotY() {
-		return this.rotY;
-	}
+    public float getRotX() {
+        return this.rotX;
+    }
 
-	public float getRotZ() {
-		return this.rotZ;
-	}
+    public float getRotY() {
+        return this.rotY;
+    }
 
-	public double getLastResetRotationTick() {
-		return this.lastResetRotationTick;
-	}
+    public float getRotZ() {
+        return this.rotZ;
+    }
 
-	public double getLastResetPositionTick() {
-		return this.lastResetPositionTick;
-	}
+    public double getLastResetRotationTick() {
+        return this.lastResetRotationTick;
+    }
 
-	public double getLastResetScaleTick() {
-		return this.lastResetScaleTick;
-	}
+    public double getLastResetPositionTick() {
+        return this.lastResetPositionTick;
+    }
 
-	public boolean isRotAnimInProgress() {
-		return this.rotAnimInProgress;
-	}
+    public double getLastResetScaleTick() {
+        return this.lastResetScaleTick;
+    }
 
-	public boolean isPosAnimInProgress() {
-		return this.posAnimInProgress;
-	}
+    public boolean isRotAnimInProgress() {
+        return this.rotAnimInProgress;
+    }
 
-	public boolean isScaleAnimInProgress() {
-		return this.scaleAnimInProgress;
-	}
+    public boolean isPosAnimInProgress() {
+        return this.posAnimInProgress;
+    }
 
-	
-	public void updateScale(float scaleX, float scaleY, float scaleZ) {
-		this.scaleX = scaleX;
-		this.scaleY = scaleY;
-		this.scaleZ = scaleZ;
-	}
+    public boolean isScaleAnimInProgress() {
+        return this.scaleAnimInProgress;
+    }
 
-	
-	public void updateOffset(float offsetX, float offsetY, float offsetZ) {
-		this.offsetPosX = offsetX;
-		this.offsetPosY = offsetY;
-		this.offsetPosZ = offsetZ;
-	}
+    public void updateScale(float scaleX, float scaleY, float scaleZ) {
+        this.scaleX = scaleX;
+        this.scaleY = scaleY;
+        this.scaleZ = scaleZ;
+    }
 
-	
-	public void updateRotation(float rotX, float rotY, float rotZ) {
-		this.rotX = rotX;
-		this.rotY = rotY;
-		this.rotZ = rotZ;
-	}
+    public void updateOffset(float offsetX, float offsetY, float offsetZ) {
+        this.offsetPosX = offsetX;
+        this.offsetPosY = offsetY;
+        this.offsetPosZ = offsetZ;
+    }
 
-	public void startPosAnim() {
-		this.posAnimInProgress = true;
-	}
+    public void updateRotation(float rotX, float rotY, float rotZ) {
+        this.rotX = rotX;
+        this.rotY = rotY;
+        this.rotZ = rotZ;
+    }
 
-	public void stopPosAnim(double tick) {
-		this.posAnimInProgress = false;
-		this.lastResetPositionTick = tick;
-	}
+    public void startPosAnim() {
+        this.posAnimInProgress = true;
+    }
 
-	public void startRotAnim() {
-		this.rotAnimInProgress = true;
-	}
+    public void stopPosAnim(double tick) {
+        this.posAnimInProgress = false;
+        this.lastResetPositionTick = tick;
+    }
 
-	public void stopRotAnim(double tick) {
-		this.rotAnimInProgress = false;
-		this.lastResetRotationTick = tick;
-	}
+    public void startRotAnim() {
+        this.rotAnimInProgress = true;
+    }
 
-	public void startScaleAnim() {
-		this.scaleAnimInProgress = true;
-	}
+    public void stopRotAnim(double tick) {
+        this.rotAnimInProgress = false;
+        this.lastResetRotationTick = tick;
+    }
 
-	public void stopScaleAnim(double tick) {
-		this.scaleAnimInProgress = false;
-		this.lastResetScaleTick = tick;
-	}
+    public void startScaleAnim() {
+        this.scaleAnimInProgress = true;
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
+    public void stopScaleAnim(double tick) {
+        this.scaleAnimInProgress = false;
+        this.lastResetScaleTick = tick;
+    }
 
-		if (obj == null || getClass() != obj.getClass())
-			return false;
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
 
-		return hashCode() == obj.hashCode();
-	}
+        if (obj == null || getClass() != obj.getClass())
+            return false;
 
-	@Override
-	public int hashCode() {
-		return this.bone.getName().hashCode();
-	}
+        return hashCode() == obj.hashCode();
+    }
+
+    @Override
+    public int hashCode() {
+        return this.bone.getName().hashCode();
+    }
 }

@@ -15,7 +15,6 @@ import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
 import software.bluelib.net.messages.server.TestPacket;
 
-
 public class TestPacketHandler implements ServerNetworkPacketHandler<TestPacket> {
 
     @Override

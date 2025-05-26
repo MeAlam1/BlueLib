@@ -1,9 +1,24 @@
+/*
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
+ */
 package software.bluelib.loader.loading.math;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
 import com.mojang.datafixers.util.Either;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.DoubleSupplier;
+import java.util.function.Supplier;
+import java.util.regex.Pattern;
 import net.minecraft.Util;
 import org.apache.logging.log4j.Level;
 import org.jetbrains.annotations.NotNull;
@@ -25,17 +40,8 @@ import software.bluelib.loader.loading.math.function.round.*;
 import software.bluelib.loader.loading.math.value.*;
 import software.bluelib.loader.util.CompoundException;
 
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Optional;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.DoubleSupplier;
-import java.util.function.Supplier;
-import java.util.regex.Pattern;
-
-
 public class MathParser {
+
     private static final Pattern EXPRESSION_FORMAT = Pattern.compile("^[\\w\\s_+-/*%^&|<>=!?:.,()]+$");
     private static final Pattern WHITESPACE = Pattern.compile("\\s");
     private static final Pattern NUMERIC = Pattern.compile("^-?\\d+(\\.\\d+)?$");
@@ -74,12 +80,10 @@ public class MathParser {
         map.put("math.trunc", TruncateFunction::new);
     });
 
-    
     public static boolean isFunctionRegistered(String name) {
         return FUNCTION_FACTORIES.containsKey(name);
     }
 
-    
     public static void registerFunction(String name, MathFunction.Factory<?> factory) {
         if (FUNCTION_FACTORIES.put(name, factory) != null)
             GeckoLibConstants.LOGGER.log(Level.WARN, "Duplicate registration of MathFunction: '" + name + "'. Ignore if intentional override");
@@ -87,31 +91,26 @@ public class MathParser {
         GeckoLibConstants.LOGGER.log(Level.DEBUG, "Registered MathFunction '" + name + "'");
     }
 
-    
     @Nullable
     public static <T extends MathFunction> T buildFunction(String name, MathValue... values) {
         if (!FUNCTION_FACTORIES.containsKey(name))
             return null;
 
-        return (T)FUNCTION_FACTORIES.get(name).create(values);
+        return (T) FUNCTION_FACTORIES.get(name).create(values);
     }
 
-    
     public static void registerVariable(Variable variable) {
         MolangQueries.registerVariable(variable);
     }
 
-    
     public static Variable getVariableFor(String name) {
         return MolangQueries.getVariableFor(name);
     }
 
-    
     public static void setVariable(String name, DoubleSupplier value) {
         getVariableFor(name).set(value);
     }
 
-    
     public static MathValue parseJson(JsonElement element) {
         if (!(element instanceof JsonPrimitive primitive) || primitive.isBoolean())
             throw new CompoundException("Bad formatting on Molang expression, expected single value, received: " + element.getClass().getSimpleName());
@@ -131,15 +130,13 @@ public class MathParser {
         return new Constant(0);
     }
 
-    
     public static MathValue compileMolang(String expression) {
         if (expression.startsWith(MOLANG_RETURN)) {
             expression = expression.substring(MOLANG_RETURN.length());
 
             if (expression.contains(STATEMENT_DELIMITER))
                 expression = expression.substring(0, expression.indexOf(STATEMENT_DELIMITER));
-        }
-        else if (expression.contains(STATEMENT_DELIMITER)) {
+        } else if (expression.contains(STATEMENT_DELIMITER)) {
             final String[] subExpressions = expression.split(STATEMENT_DELIMITER);
             final List<MathValue> subValues = new ObjectArrayList<>(subExpressions.length);
 
@@ -161,17 +158,14 @@ public class MathParser {
         return compileExpression(expression);
     }
 
-    
     public static MathValue compileExpression(String expression) {
         try {
             return parseSymbols(compileSymbols(decomposeExpression(expression)));
-        }
-        catch (CompoundException ex) {
+        } catch (CompoundException ex) {
             throw ex.withMessage("Failed to parse expression '" + expression + "'");
         }
     }
 
-    
     public static char[] decomposeExpression(String expression) throws CompoundException {
         if (!EXPRESSION_FORMAT.matcher(expression).matches())
             throw new CompoundException("Invalid characters found in expression: '" + expression + "'");
@@ -182,22 +176,20 @@ public class MathParser {
         for (char character : chars) {
             if (character == '(') {
                 groupState++;
-            }
-            else if (character == ')') {
+            } else if (character == ')') {
                 groupState--;
             }
-            
+
             if (groupState < 0)
                 throw new CompoundException("Closing parenthesis before opening parenthesis in expression '" + expression + "'");
         }
-        
+
         if (groupState != 0)
             throw new CompoundException("Uneven parenthesis in expression, each opening brace must have a pairing close brace '" + expression + "'");
 
         return chars;
     }
 
-    
     @Nullable
     protected static String tryMergeOperativeSymbols(char[] chars, int index) {
         char ch = chars[index];
@@ -220,7 +212,6 @@ public class MathParser {
         return null;
     }
 
-    
     public static List<Either<String, List<MathValue>>> compileSymbols(char[] chars) {
         final List<Either<String, List<MathValue>>> symbols = new ObjectArrayList<>();
         final StringBuilder buffer = new StringBuilder();
@@ -247,8 +238,7 @@ public class MathParser {
 
                 symbols.add(Either.left(operator));
                 buffer.setLength(0);
-            }
-            else if (ch == '(') {
+            } else if (ch == '(') {
                 if (!buffer.isEmpty()) {
                     symbols.add(Either.left(buffer.toString()));
                     buffer.setLength(0);
@@ -262,11 +252,9 @@ public class MathParser {
 
                     if (groupChar == '(') {
                         groupState++;
-                    }
-                    else if (groupChar == ')') {
+                    } else if (groupChar == ')') {
                         groupState--;
-                    }
-                    else if (groupChar == ',' && groupState == 1) {
+                    } else if (groupChar == ',' && groupState == 1) {
                         subValues.add(parseSymbols(compileSymbols(buffer.toString().toCharArray())));
                         buffer.setLength(0);
 
@@ -283,13 +271,11 @@ public class MathParser {
                         buffer.setLength(0);
 
                         break;
-                    }
-                    else {
+                    } else {
                         buffer.append(groupChar);
                     }
                 }
-            }
-            else {
+            } else {
                 buffer.append(ch);
             }
         }
@@ -300,7 +286,6 @@ public class MathParser {
         return symbols;
     }
 
-    
     public static MathValue parseSymbols(List<Either<String, List<MathValue>>> symbols) throws CompoundException {
         if (symbols.size() == 2) {
             Optional<String> prefix = symbols.getFirst().left().filter(left -> left.startsWith("-") || left.startsWith("!") || isFunctionRegistered(left));
@@ -318,7 +303,6 @@ public class MathParser {
         throw new CompoundException("Unable to parse compiled symbols from expression: " + symbols);
     }
 
-    
     @Nullable
     protected static MathValue compileValue(List<Either<String, List<MathValue>>> symbols) throws CompoundException {
         if (symbols.size() == 1)
@@ -332,7 +316,6 @@ public class MathParser {
         return compileCalculation(symbols);
     }
 
-    
     @Nullable
     protected static MathValue compileSingleValue(Either<String, List<MathValue>> symbol) throws CompoundException {
         if (symbol.right().isPresent())
@@ -359,9 +342,8 @@ public class MathParser {
         }).orElse(null);
     }
 
-    
     @Nullable
-    protected static MathValue compileCalculation(List<Either<String, List<MathValue>>> symbols) throws CompoundException  {
+    protected static MathValue compileCalculation(List<Either<String, List<MathValue>>> symbols) throws CompoundException {
         final int symbolCount = symbols.size();
         int operatorIndex = -1;
         Operator lastOperator = null;
@@ -384,8 +366,7 @@ public class MathParser {
             if (lastOperator == null || !operator.takesPrecedenceOver(lastOperator)) {
                 operatorIndex = i;
                 lastOperator = operator;
-            }
-            else {
+            } else {
                 break;
             }
         }
@@ -393,9 +374,8 @@ public class MathParser {
         return lastOperator == null ? null : new Calculation(lastOperator, parseSymbols(symbols.subList(0, operatorIndex)), parseSymbols(symbols.subList(operatorIndex + 1, symbolCount)));
     }
 
-    
     @Nullable
-    protected static Ternary compileTernary(List<Either<String, List<MathValue>>> symbols) throws CompoundException  {
+    protected static Ternary compileTernary(List<Either<String, List<MathValue>>> symbols) throws CompoundException {
         final int symbolCount = symbols.size();
 
         if (symbolCount < 3)
@@ -418,8 +398,7 @@ public class MathParser {
                 }
 
                 ternaryState++;
-            }
-            else if (":".equals(string)) {
+            } else if (":".equals(string)) {
                 if (ternaryState == 1 && ifTrue == null && queryIndex > 0) {
                     final int queryIndex2 = queryIndex;
                     ifTrue = () -> parseSymbols(symbols.subList(queryIndex2, i2));
@@ -436,7 +415,6 @@ public class MathParser {
         return null;
     }
 
-    
     @Nullable
     protected static MathValue compileFunction(String name, List<MathValue> args) throws CompoundException {
         if (name.startsWith("!")) {
@@ -459,35 +437,29 @@ public class MathParser {
         return buildFunction(name, args.toArray(new MathValue[0]));
     }
 
-    
     @Deprecated(forRemoval = true)
     public static boolean isOperativeSymbol(char symbol) {
         return isOperativeSymbol(String.valueOf(symbol));
     }
 
-    
     @Deprecated(forRemoval = true)
     public static boolean isOperativeSymbol(@NotNull String symbol) {
         return Operator.isOperator(symbol) || symbol.equals("?") || symbol.equals(":");
     }
 
-    
     public static boolean isNumeric(String string) {
         return NUMERIC.matcher(string).matches();
     }
 
-    
     protected static Operator getOperatorFor(String op) throws CompoundException {
         return Operator.getOperatorFor(op).orElseThrow(() -> new CompoundException("Unknown operator symbol '" + op + "'"));
     }
 
-    
     @Deprecated(forRemoval = true)
     protected static boolean isQueryOrFunctionName(String string) {
         return !isNumeric(string) && !isOperativeSymbol(string);
     }
 
-    
     protected static boolean isLikelyVariable(String string) {
         if (MolangQueries.isExistingVariable(string))
             return true;

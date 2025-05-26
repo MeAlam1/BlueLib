@@ -1,3 +1,10 @@
+/*
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
+ */
 package software.bluelib.loader.renderer.layer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -12,45 +19,38 @@ import software.bluelib.loader.cache.object.GeoBone;
 import software.bluelib.loader.model.GeoModel;
 import software.bluelib.loader.renderer.GeoRenderer;
 
-
 public abstract class GeoRenderLayer<T extends GeoAnimatable> {
-	protected final GeoRenderer<T> renderer;
 
-	public GeoRenderLayer(GeoRenderer<T> entityRendererIn) {
-		this.renderer = entityRendererIn;
-	}
+    protected final GeoRenderer<T> renderer;
 
-	
-	public GeoModel<T> getGeoModel() {
-		return this.renderer.getGeoModel();
-	}
+    public GeoRenderLayer(GeoRenderer<T> entityRendererIn) {
+        this.renderer = entityRendererIn;
+    }
 
-	
-	public BakedGeoModel getDefaultBakedModel(T animatable) {
-		return getGeoModel().getBakedModel(getGeoModel().getModelResource(animatable, getRenderer()));
-	}
+    public GeoModel<T> getGeoModel() {
+        return this.renderer.getGeoModel();
+    }
 
-	
-	public GeoRenderer<T> getRenderer() {
-		return this.renderer;
-	}
+    public BakedGeoModel getDefaultBakedModel(T animatable) {
+        return getGeoModel().getBakedModel(getGeoModel().getModelResource(animatable, getRenderer()));
+    }
 
-	
-	protected ResourceLocation getTextureResource(T animatable) {
-		return getRenderer().getTextureLocation(animatable);
-	}
+    public GeoRenderer<T> getRenderer() {
+        return this.renderer;
+    }
 
-	
-	public void preRender(PoseStack poseStack, T animatable, BakedGeoModel bakedModel, @Nullable RenderType renderType,
-						  MultiBufferSource bufferSource, @Nullable VertexConsumer buffer, float partialTick,
-						  int packedLight, int packedOverlay) {}
+    protected ResourceLocation getTextureResource(T animatable) {
+        return getRenderer().getTextureLocation(animatable);
+    }
 
-	
-	public void render(PoseStack poseStack, T animatable, BakedGeoModel bakedModel, @Nullable RenderType renderType,
-								MultiBufferSource bufferSource, @Nullable VertexConsumer buffer, float partialTick,
-								int packedLight, int packedOverlay) {}
+    public void preRender(PoseStack poseStack, T animatable, BakedGeoModel bakedModel, @Nullable RenderType renderType,
+            MultiBufferSource bufferSource, @Nullable VertexConsumer buffer, float partialTick,
+            int packedLight, int packedOverlay) {}
 
-	
-	public void renderForBone(PoseStack poseStack, T animatable, GeoBone bone, RenderType renderType,
-							  MultiBufferSource bufferSource, VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay) {}
+    public void render(PoseStack poseStack, T animatable, BakedGeoModel bakedModel, @Nullable RenderType renderType,
+            MultiBufferSource bufferSource, @Nullable VertexConsumer buffer, float partialTick,
+            int packedLight, int packedOverlay) {}
+
+    public void renderForBone(PoseStack poseStack, T animatable, GeoBone bone, RenderType renderType,
+            MultiBufferSource bufferSource, VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay) {}
 }

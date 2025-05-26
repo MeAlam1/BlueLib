@@ -1,26 +1,30 @@
+/*
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
+ */
 package software.bluelib.loader.animation.keyframe.event.data;
-
-import software.bluelib.loader.animation.keyframe.Keyframe;
 
 import java.util.Objects;
 
-
 public class SoundKeyframeData extends KeyFrameData {
-	private final String sound;
 
-	public SoundKeyframeData(Double startTick, String sound) {
-		super(startTick);
+    private final String sound;
 
-		this.sound = sound;
-	}
+    public SoundKeyframeData(Double startTick, String sound) {
+        super(startTick);
 
-	
-	public String getSound() {
-		return this.sound;
-	}
+        this.sound = sound;
+    }
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(getStartTick(), this.sound);
-	}
+    public String getSound() {
+        return this.sound;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getStartTick(), this.sound);
+    }
 }

@@ -1,5 +1,14 @@
+/*
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
+ */
 package software.bluelib.loader.model;
 
+import java.util.Optional;
+import java.util.function.BiConsumer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
@@ -22,158 +31,138 @@ import software.bluelib.loader.loading.object.BakedAnimations;
 import software.bluelib.loader.renderer.GeoRenderer;
 import software.bluelib.loader.util.RenderUtil;
 
-import java.util.Optional;
-import java.util.function.BiConsumer;
-import java.util.function.DoubleSupplier;
-
-
 public abstract class GeoModel<T extends GeoAnimatable> {
-	private final AnimationProcessor<T> processor = new AnimationProcessor<>(this);
 
-	private BakedGeoModel currentModel = null;
-	private double animTime;
-	private double lastGameTickTime;
-	private long lastRenderedInstance = -1;
+    private final AnimationProcessor<T> processor = new AnimationProcessor<>(this);
 
-	
-	public ResourceLocation getModelResource(T animatable, @Nullable GeoRenderer<T> renderer) {
-		return getModelResource(animatable);
-	}
+    private BakedGeoModel currentModel = null;
+    private double animTime;
+    private double lastGameTickTime;
+    private long lastRenderedInstance = -1;
 
-	
-	@Deprecated
-	public abstract ResourceLocation getModelResource(T animatable);
+    public ResourceLocation getModelResource(T animatable, @Nullable GeoRenderer<T> renderer) {
+        return getModelResource(animatable);
+    }
 
-	
-	public ResourceLocation getTextureResource(T animatable, @Nullable GeoRenderer<T> renderer) {
-		return getTextureResource(animatable);
-	}
+    @Deprecated
+    public abstract ResourceLocation getModelResource(T animatable);
 
-	
-	@Deprecated
-	public abstract ResourceLocation getTextureResource(T animatable);
+    public ResourceLocation getTextureResource(T animatable, @Nullable GeoRenderer<T> renderer) {
+        return getTextureResource(animatable);
+    }
 
-	
-	public abstract ResourceLocation getAnimationResource(T animatable);
+    @Deprecated
+    public abstract ResourceLocation getTextureResource(T animatable);
 
-	
-	public ResourceLocation[] getAnimationResourceFallbacks(T animatable) {
-		return new ResourceLocation[0];
-	}
+    public abstract ResourceLocation getAnimationResource(T animatable);
 
-	
-	public boolean crashIfBoneMissing() {
-		return false;
-	}
+    public ResourceLocation[] getAnimationResourceFallbacks(T animatable) {
+        return new ResourceLocation[0];
+    }
 
-	
-	@Nullable
-	public RenderType getRenderType(T animatable, ResourceLocation texture) {
-		return RenderType.entityCutoutNoCull(texture);
-	}
+    public boolean crashIfBoneMissing() {
+        return false;
+    }
 
-	
-	public BakedGeoModel getBakedModel(ResourceLocation location) {
-		BakedGeoModel model = GeckoLibCache.getBakedModels().get(location);
+    @Nullable
+    public RenderType getRenderType(T animatable, ResourceLocation texture) {
+        return RenderType.entityCutoutNoCull(texture);
+    }
 
-		if (model == null) {
-			if (!location.getPath().contains("geo/"))
-				throw GeckoLibConstants.exception(location, "Invalid model resource path provided - GeckoLib models must be placed in assets/<modid>/geo/");
+    public BakedGeoModel getBakedModel(ResourceLocation location) {
+        BakedGeoModel model = GeckoLibCache.getBakedModels().get(location);
 
-			throw GeckoLibConstants.exception(location, "Unable to find model");
-		}
+        if (model == null) {
+            if (!location.getPath().contains("geo/"))
+                throw GeckoLibConstants.exception(location, "Invalid model resource path provided - GeckoLib models must be placed in assets/<modid>/geo/");
 
-		if (model != this.currentModel) {
-			this.processor.setActiveModel(model);
-			this.currentModel = model;
-		}
+            throw GeckoLibConstants.exception(location, "Unable to find model");
+        }
 
-		return this.currentModel;
-	}
+        if (model != this.currentModel) {
+            this.processor.setActiveModel(model);
+            this.currentModel = model;
+        }
 
-	
-	public Optional<GeoBone> getBone(String name) {
-		return Optional.ofNullable(getAnimationProcessor().getBone(name));
-	}
+        return this.currentModel;
+    }
 
-	
-	@Nullable
-	public Animation getAnimation(T animatable, String name) {
-		ResourceLocation location = getAnimationResource(animatable);
-		BakedAnimations bakedAnimations = GeckoLibCache.getBakedAnimations().get(location);
-		Animation animation = bakedAnimations != null ? bakedAnimations.getAnimation(name) : null;
+    public Optional<GeoBone> getBone(String name) {
+        return Optional.ofNullable(getAnimationProcessor().getBone(name));
+    }
 
-		if (animation != null)
-			return animation;
+    @Nullable
+    public Animation getAnimation(T animatable, String name) {
+        ResourceLocation location = getAnimationResource(animatable);
+        BakedAnimations bakedAnimations = GeckoLibCache.getBakedAnimations().get(location);
+        Animation animation = bakedAnimations != null ? bakedAnimations.getAnimation(name) : null;
 
-		for (ResourceLocation fallbackLocation : getAnimationResourceFallbacks(animatable)) {
-			bakedAnimations = GeckoLibCache.getBakedAnimations().get(location = fallbackLocation);
-			animation = bakedAnimations != null ? bakedAnimations.getAnimation(name) : null;
+        if (animation != null)
+            return animation;
 
-			if (animation != null)
-				return animation;
-		}
+        for (ResourceLocation fallbackLocation : getAnimationResourceFallbacks(animatable)) {
+            bakedAnimations = GeckoLibCache.getBakedAnimations().get(location = fallbackLocation);
+            animation = bakedAnimations != null ? bakedAnimations.getAnimation(name) : null;
 
-		if (bakedAnimations == null) {
-			if (!location.getPath().contains("animations/"))
-				throw GeckoLibConstants.exception(location, "Invalid animation resource path provided - GeckoLib animations must be placed in assets/<modid>/animations/");
+            if (animation != null)
+                return animation;
+        }
 
-			throw GeckoLibConstants.exception(location, "Unable to find animation file.");
-		}
+        if (bakedAnimations == null) {
+            if (!location.getPath().contains("animations/"))
+                throw GeckoLibConstants.exception(location, "Invalid animation resource path provided - GeckoLib animations must be placed in assets/<modid>/animations/");
 
-		return null;
-	}
+            throw GeckoLibConstants.exception(location, "Unable to find animation file.");
+        }
 
-	
-	public AnimationProcessor<T> getAnimationProcessor() {
-		return this.processor;
-	}
+        return null;
+    }
 
-	
-	public void addAdditionalStateData(T animatable, long instanceId, BiConsumer<DataTicket<T>, T> dataConsumer) {}
+    public AnimationProcessor<T> getAnimationProcessor() {
+        return this.processor;
+    }
 
-	
-	@ApiStatus.Internal
-	public void handleAnimations(T animatable, long instanceId, AnimationState<T> animationState, float partialTick) {
-		Minecraft mc = Minecraft.getInstance();
-		AnimatableManager<T> animatableManager = animatable.getAnimatableInstanceCache().getManagerForId(instanceId);
-		Double currentTick = animationState.getData(DataTickets.TICK);
+    public void addAdditionalStateData(T animatable, long instanceId, BiConsumer<DataTicket<T>, T> dataConsumer) {}
 
-		if (currentTick == null)
-			currentTick = animatable instanceof Entity entity ? (double)entity.tickCount : RenderUtil.getCurrentTick();
+    @ApiStatus.Internal
+    public void handleAnimations(T animatable, long instanceId, AnimationState<T> animationState, float partialTick) {
+        Minecraft mc = Minecraft.getInstance();
+        AnimatableManager<T> animatableManager = animatable.getAnimatableInstanceCache().getManagerForId(instanceId);
+        Double currentTick = animationState.getData(DataTickets.TICK);
 
-		if (animatableManager.getFirstTickTime() == -1)
-			animatableManager.startedAt(currentTick + partialTick);
+        if (currentTick == null)
+            currentTick = animatable instanceof Entity entity ? (double) entity.tickCount : RenderUtil.getCurrentTick();
 
-		double currentFrameTime = animatable instanceof Entity || animatable instanceof GeoReplacedEntity ? currentTick + partialTick : currentTick - animatableManager.getFirstTickTime();
-		boolean isReRender = !animatableManager.isFirstTick() && currentFrameTime == animatableManager.getLastUpdateTime();
+        if (animatableManager.getFirstTickTime() == -1)
+            animatableManager.startedAt(currentTick + partialTick);
 
-		if (isReRender && instanceId == this.lastRenderedInstance)
-			return;
+        double currentFrameTime = animatable instanceof Entity || animatable instanceof GeoReplacedEntity ? currentTick + partialTick : currentTick - animatableManager.getFirstTickTime();
+        boolean isReRender = !animatableManager.isFirstTick() && currentFrameTime == animatableManager.getLastUpdateTime();
 
-		if (!mc.isPaused() || animatable.shouldPlayAnimsWhileGamePaused()) {
-			animatableManager.updatedAt(currentFrameTime);
+        if (isReRender && instanceId == this.lastRenderedInstance)
+            return;
 
-			double lastUpdateTime = animatableManager.getLastUpdateTime();
-			this.animTime += lastUpdateTime - this.lastGameTickTime;
-			this.lastGameTickTime = lastUpdateTime;
-		}
+        if (!mc.isPaused() || animatable.shouldPlayAnimsWhileGamePaused()) {
+            animatableManager.updatedAt(currentFrameTime);
 
-		animationState.animationTick = this.animTime;
-		this.lastRenderedInstance = instanceId;
-		AnimationProcessor<T> processor = getAnimationProcessor();
+            double lastUpdateTime = animatableManager.getLastUpdateTime();
+            this.animTime += lastUpdateTime - this.lastGameTickTime;
+            this.lastGameTickTime = lastUpdateTime;
+        }
 
-		processor.preAnimationSetup(animationState, this.animTime);
+        animationState.animationTick = this.animTime;
+        this.lastRenderedInstance = instanceId;
+        AnimationProcessor<T> processor = getAnimationProcessor();
 
-		if (!processor.getRegisteredBones().isEmpty())
-			processor.tickAnimation(animatable, this, animatableManager, this.animTime, animationState, crashIfBoneMissing());
+        processor.preAnimationSetup(animationState, this.animTime);
 
-		setCustomAnimations(animatable, instanceId, animationState);
-	}
+        if (!processor.getRegisteredBones().isEmpty())
+            processor.tickAnimation(animatable, this, animatableManager, this.animTime, animationState, crashIfBoneMissing());
 
-	
-	public void setCustomAnimations(T animatable, long instanceId, AnimationState<T> animationState) {}
+        setCustomAnimations(animatable, instanceId, animationState);
+    }
 
-	
-	public void applyMolangQueries(AnimationState<T> animationState, double animTime) {}
+    public void setCustomAnimations(T animatable, long instanceId, AnimationState<T> animationState) {}
+
+    public void applyMolangQueries(AnimationState<T> animationState, double animTime) {}
 }

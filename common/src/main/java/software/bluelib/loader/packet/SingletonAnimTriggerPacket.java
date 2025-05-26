@@ -1,5 +1,13 @@
+/*
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
+ */
 package software.bluelib.loader.packet;
 
+import java.util.function.Consumer;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -10,9 +18,8 @@ import software.bluelib.loader.GeckoLibConstants;
 import software.bluelib.loader.animatable.GeoAnimatable;
 import software.bluelib.loader.util.GeckoLibUtil;
 
-import java.util.function.Consumer;
-
 public record SingletonAnimTriggerPacket(String syncableId, long instanceId, String controllerName, String animName) implements MultiloaderPacket {
+
     public static final Type<SingletonAnimTriggerPacket> TYPE = new Type<>(GeckoLibConstants.id("singleton_anim_trigger"));
     public static final StreamCodec<FriendlyByteBuf, SingletonAnimTriggerPacket> CODEC = StreamCodec.composite(
             ByteBufCodecs.STRING_UTF8, SingletonAnimTriggerPacket::syncableId,

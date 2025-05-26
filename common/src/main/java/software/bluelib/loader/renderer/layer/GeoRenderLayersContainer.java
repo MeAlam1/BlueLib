@@ -1,38 +1,41 @@
+/*
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
+ */
 package software.bluelib.loader.renderer.layer;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import java.util.List;
 import software.bluelib.loader.animatable.GeoAnimatable;
 import software.bluelib.loader.renderer.GeoRenderer;
 
-import java.util.List;
-
-
 public class GeoRenderLayersContainer<T extends GeoAnimatable> {
-	private final GeoRenderer<T> renderer;
-	private final List<GeoRenderLayer<T>> layers = new ObjectArrayList<>();
-	private boolean compiledLayers = false;
 
-	public GeoRenderLayersContainer(GeoRenderer<T> renderer) {
-		this.renderer = renderer;
-	}
+    private final GeoRenderer<T> renderer;
+    private final List<GeoRenderLayer<T>> layers = new ObjectArrayList<>();
+    private boolean compiledLayers = false;
 
-	
-	public List<GeoRenderLayer<T>> getRenderLayers() {
-		if (!this.compiledLayers)
-			fireCompileRenderLayersEvent();
+    public GeoRenderLayersContainer(GeoRenderer<T> renderer) {
+        this.renderer = renderer;
+    }
 
-		return this.layers;
-	}
+    public List<GeoRenderLayer<T>> getRenderLayers() {
+        if (!this.compiledLayers)
+            fireCompileRenderLayersEvent();
 
-	
-	public void addLayer(GeoRenderLayer<T> layer) {
-		this.layers.add(layer);
-	}
+        return this.layers;
+    }
 
-	
-	public void fireCompileRenderLayersEvent() {
-		this.compiledLayers = true;
+    public void addLayer(GeoRenderLayer<T> layer) {
+        this.layers.add(layer);
+    }
 
-		this.renderer.fireCompileRenderLayersEvent();
-	}
+    public void fireCompileRenderLayersEvent() {
+        this.compiledLayers = true;
+
+        this.renderer.fireCompileRenderLayersEvent();
+    }
 }

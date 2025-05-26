@@ -1,42 +1,47 @@
+/*
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
+ */
 package software.bluelib.loader.cache;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.saveddata.SavedData;
-import software.bluelib.loader.animatable.instance.SingletonAnimatableInstanceCache;
-
 
 public final class AnimatableIdCache extends SavedData {
-	private static final Factory<AnimatableIdCache> FACTORY = new Factory<>(AnimatableIdCache::new, AnimatableIdCache::new, null);
-	private static final String DATA_KEY = "geckolib_id_cache";
-	private long lastId;
 
-	private AnimatableIdCache() {}
+    private static final Factory<AnimatableIdCache> FACTORY = new Factory<>(AnimatableIdCache::new, AnimatableIdCache::new, null);
+    private static final String DATA_KEY = "geckolib_id_cache";
+    private long lastId;
 
-	private AnimatableIdCache(CompoundTag tag, HolderLookup.Provider registryLookup) {
-		this.lastId = tag.getLong("last_id");
-	}
+    private AnimatableIdCache() {}
 
-	
-	public static long getFreeId(ServerLevel level) {
-		return getCache(level).getNextId();
-	}
+    private AnimatableIdCache(CompoundTag tag, HolderLookup.Provider registryLookup) {
+        this.lastId = tag.getLong("last_id");
+    }
 
-	private long getNextId() {
-		setDirty();
+    public static long getFreeId(ServerLevel level) {
+        return getCache(level).getNextId();
+    }
 
-		return ++this.lastId;
-	}
+    private long getNextId() {
+        setDirty();
 
-	@Override
-	public CompoundTag save(CompoundTag tag, HolderLookup.Provider registryLookup) {
-		tag.putLong("last_id", this.lastId);
+        return ++this.lastId;
+    }
 
-		return tag;
-	}
+    @Override
+    public CompoundTag save(CompoundTag tag, HolderLookup.Provider registryLookup) {
+        tag.putLong("last_id", this.lastId);
 
-	private static AnimatableIdCache getCache(ServerLevel level) {
-		return level.getServer().overworld().getDataStorage().computeIfAbsent(FACTORY, DATA_KEY);
-	}
+        return tag;
+    }
+
+    private static AnimatableIdCache getCache(ServerLevel level) {
+        return level.getServer().overworld().getDataStorage().computeIfAbsent(FACTORY, DATA_KEY);
+    }
 }

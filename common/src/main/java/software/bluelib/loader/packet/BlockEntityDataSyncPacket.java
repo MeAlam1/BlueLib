@@ -1,5 +1,13 @@
+/*
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
+ */
 package software.bluelib.loader.packet;
 
+import java.util.function.Consumer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
@@ -11,14 +19,13 @@ import software.bluelib.loader.animatable.GeoBlockEntity;
 import software.bluelib.loader.constant.dataticket.SerializableDataTicket;
 import software.bluelib.loader.util.ClientUtil;
 
-import java.util.function.Consumer;
-
 public record BlockEntityDataSyncPacket<D>(BlockPos pos, SerializableDataTicket<D> dataTicket, D data) implements MultiloaderPacket {
+
     public static final Type<BlockEntityDataSyncPacket<?>> TYPE = new Type<>(GeckoLibConstants.id("blockentity_data_sync"));
     public static final StreamCodec<RegistryFriendlyByteBuf, BlockEntityDataSyncPacket<?>> CODEC = StreamCodec.of((buf, packet) -> {
         SerializableDataTicket.STREAM_CODEC.encode(buf, packet.dataTicket);
         buf.writeBlockPos(packet.pos);
-        ((StreamCodec)packet.dataTicket.streamCodec()).encode(buf, packet.data);
+        ((StreamCodec) packet.dataTicket.streamCodec()).encode(buf, packet.data);
     }, buf -> {
         final SerializableDataTicket dataTicket = SerializableDataTicket.STREAM_CODEC.decode(buf);
 

@@ -1,3 +1,10 @@
+/*
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
+ */
 package software.bluelib.loader.animation.keyframe.event.builtin;
 
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -13,8 +20,8 @@ import software.bluelib.loader.animation.AnimationController;
 import software.bluelib.loader.animation.keyframe.event.SoundKeyframeEvent;
 import software.bluelib.loader.util.ClientUtil;
 
-
 public class AutoPlayingSoundKeyframeHandler<A extends GeoAnimatable> implements AnimationController.SoundKeyframeHandler<A> {
+
     @Override
     public void handle(SoundKeyframeEvent<A> event) {
         String[] segments = event.getKeyframeData().getSound().split("\\|");

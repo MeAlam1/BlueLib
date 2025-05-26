@@ -1,40 +1,39 @@
 /*
- * Copyright (c) 2020.
- * Author: Bernie G. (Gecko)
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
  */
-
 package software.bluelib.loader.animation.keyframe.event.data;
-
-import software.bluelib.loader.animation.keyframe.Keyframe;
 
 import java.util.Objects;
 
-
 public abstract class KeyFrameData {
-	private final double startTick;
 
-	public KeyFrameData(double startTick) {
-		this.startTick = startTick;
-	}
+    private final double startTick;
 
-	
-	public double getStartTick() {
-		return this.startTick;
-	}
+    public KeyFrameData(double startTick) {
+        this.startTick = startTick;
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
+    public double getStartTick() {
+        return this.startTick;
+    }
 
-		if (obj == null || getClass() != obj.getClass())
-			return false;
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
 
-		return this.hashCode() == obj.hashCode();
-	}
+        if (obj == null || getClass() != obj.getClass())
+            return false;
 
-	@Override
-	public int hashCode() {
-		return Objects.hashCode(this.startTick);
-	}
+        return this.hashCode() == obj.hashCode();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(this.startTick);
+    }
 }

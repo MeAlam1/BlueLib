@@ -1,13 +1,19 @@
+/*
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
+ */
 package software.bluelib.loader.loading.math.value;
-
-import software.bluelib.loader.GeckoLibConstants;
-import software.bluelib.loader.loading.math.MathValue;
 
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.DoubleSupplier;
-
+import software.bluelib.loader.GeckoLibConstants;
+import software.bluelib.loader.loading.math.MathValue;
 
 public record Variable(String name, AtomicReference<DoubleSupplier> value) implements MathValue {
+
     public Variable(String name, double value) {
         this(name, () -> value);
     }
@@ -20,8 +26,7 @@ public record Variable(String name, AtomicReference<DoubleSupplier> value) imple
     public double get() {
         try {
             return this.value.get().getAsDouble();
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             GeckoLibConstants.LOGGER.error("Attempted to use Molang variable for incompatible animatable type (" + this.name + "). An animation json needs to be fixed", ex.getMessage());
 
             return 0;

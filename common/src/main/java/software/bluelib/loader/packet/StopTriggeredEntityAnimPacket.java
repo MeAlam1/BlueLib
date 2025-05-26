@@ -1,5 +1,13 @@
+/*
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
+ */
 package software.bluelib.loader.packet;
 
+import java.util.function.Consumer;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -13,9 +21,8 @@ import software.bluelib.loader.animatable.GeoReplacedEntity;
 import software.bluelib.loader.util.ClientUtil;
 import software.bluelib.loader.util.RenderUtil;
 
-import java.util.function.Consumer;
-
 public record StopTriggeredEntityAnimPacket(int entityId, boolean isReplacedEntity, String controllerName, String animName) implements MultiloaderPacket {
+
     public static final Type<StopTriggeredEntityAnimPacket> TYPE = new Type<>(GeckoLibConstants.id("stop_triggered_entity_anim"));
     public static final StreamCodec<FriendlyByteBuf, StopTriggeredEntityAnimPacket> CODEC = StreamCodec.composite(
             ByteBufCodecs.VAR_INT, StopTriggeredEntityAnimPacket::entityId,

@@ -1,116 +1,109 @@
 /*
- * Copyright (c) 2020.
- * Author: Bernie G. (Gecko)
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
  */
-
 package software.bluelib.loader.animation;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-
 import java.util.List;
 import java.util.Objects;
 
-
 public final class RawAnimation {
-	private final List<Stage> animationList = new ObjectArrayList<>();
 
-	// Private constructor to force usage of factory for logical operations
-	private RawAnimation() {}
+    private final List<Stage> animationList = new ObjectArrayList<>();
 
-	
-	public static RawAnimation begin() {
-		return new RawAnimation();
-	}
+    // Private constructor to force usage of factory for logical operations
+    private RawAnimation() {}
 
-	
-	public RawAnimation thenPlay(String animationName) {
-		return then(animationName, Animation.LoopType.DEFAULT);
-	}
+    public static RawAnimation begin() {
+        return new RawAnimation();
+    }
 
-	
-	public RawAnimation thenLoop(String animationName) {
-		return then(animationName, Animation.LoopType.LOOP);
-	}
+    public RawAnimation thenPlay(String animationName) {
+        return then(animationName, Animation.LoopType.DEFAULT);
+    }
 
-	
-	public RawAnimation thenWait(int ticks) {
-		this.animationList.add(new Stage(Stage.WAIT, Animation.LoopType.PLAY_ONCE, ticks));
+    public RawAnimation thenLoop(String animationName) {
+        return then(animationName, Animation.LoopType.LOOP);
+    }
 
-		return this;
-	}
+    public RawAnimation thenWait(int ticks) {
+        this.animationList.add(new Stage(Stage.WAIT, Animation.LoopType.PLAY_ONCE, ticks));
 
-	
-	public RawAnimation thenPlayAndHold(String animation) {
-		return then(animation, Animation.LoopType.HOLD_ON_LAST_FRAME);
-	}
+        return this;
+    }
 
-	
-	public RawAnimation thenPlayXTimes(String animationName, int playCount) {
-		for (int i = 0; i < playCount; i++) {
-			then(animationName, i == playCount - 1 ? Animation.LoopType.DEFAULT : Animation.LoopType.PLAY_ONCE);
-		}
+    public RawAnimation thenPlayAndHold(String animation) {
+        return then(animation, Animation.LoopType.HOLD_ON_LAST_FRAME);
+    }
 
-		return this;
-	}
+    public RawAnimation thenPlayXTimes(String animationName, int playCount) {
+        for (int i = 0; i < playCount; i++) {
+            then(animationName, i == playCount - 1 ? Animation.LoopType.DEFAULT : Animation.LoopType.PLAY_ONCE);
+        }
 
-	
-	public RawAnimation then(String animationName, Animation.LoopType loopType) {
-		this.animationList.add(new Stage(animationName, loopType));
+        return this;
+    }
 
-		return this;
-	}
+    public RawAnimation then(String animationName, Animation.LoopType loopType) {
+        this.animationList.add(new Stage(animationName, loopType));
 
-	public List<Stage> getAnimationStages() {
-		return this.animationList;
-	}
+        return this;
+    }
 
-	
-	public static RawAnimation copyOf(RawAnimation other) {
-		RawAnimation newInstance = RawAnimation.begin();
+    public List<Stage> getAnimationStages() {
+        return this.animationList;
+    }
 
-		newInstance.animationList.addAll(other.animationList);
+    public static RawAnimation copyOf(RawAnimation other) {
+        RawAnimation newInstance = RawAnimation.begin();
 
-		return newInstance;
-	}
+        newInstance.animationList.addAll(other.animationList);
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
+        return newInstance;
+    }
 
-		if (obj == null || getClass() != obj.getClass())
-			return false;
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
 
-		return hashCode() == obj.hashCode();
-	}
+        if (obj == null || getClass() != obj.getClass())
+            return false;
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(this.animationList);
-	}
+        return hashCode() == obj.hashCode();
+    }
 
-	
-	public record Stage(String animationName, Animation.LoopType loopType, int additionalTicks) {
-		static final String WAIT = "internal.wait";
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.animationList);
+    }
 
-		public Stage(String animationName, Animation.LoopType loopType) {
-			this(animationName, loopType, 0);
-		}
+    public record Stage(String animationName, Animation.LoopType loopType, int additionalTicks) {
 
-		@Override
-		public boolean equals(Object obj) {
-			if (this == obj)
-				return true;
+        static final String WAIT = "internal.wait";
 
-			if (obj == null || getClass() != obj.getClass())
-				return false;
+        public Stage(String animationName, Animation.LoopType loopType) {
+            this(animationName, loopType, 0);
+        }
 
-			return hashCode() == obj.hashCode();
-		}
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj)
+                return true;
 
-		@Override
-		public int hashCode() {
-			return Objects.hash(this.animationName, this.loopType);
-		}
-	}
+            if (obj == null || getClass() != obj.getClass())
+                return false;
+
+            return hashCode() == obj.hashCode();
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(this.animationName, this.loopType);
+        }
+    }
 }

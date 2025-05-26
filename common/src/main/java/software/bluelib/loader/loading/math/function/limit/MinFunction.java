@@ -1,10 +1,17 @@
+/*
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
+ */
 package software.bluelib.loader.loading.math.function.limit;
 
 import software.bluelib.loader.loading.math.MathValue;
 import software.bluelib.loader.loading.math.function.MathFunction;
 
-
 public final class MinFunction extends MathFunction {
+
     private final MathValue valueA;
     private final MathValue valueB;
 
@@ -32,6 +39,6 @@ public final class MinFunction extends MathFunction {
 
     @Override
     public MathValue[] getArgs() {
-        return new MathValue[] {this.valueA, this.valueB};
+        return new MathValue[] { this.valueA, this.valueB };
     }
 }

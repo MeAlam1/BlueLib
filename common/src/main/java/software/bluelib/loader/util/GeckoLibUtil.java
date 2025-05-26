@@ -1,8 +1,16 @@
+/*
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
+ */
 package software.bluelib.loader.util;
 
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+import java.util.Map;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import org.jetbrains.annotations.Nullable;
@@ -16,80 +24,69 @@ import software.bluelib.loader.constant.DataTickets;
 import software.bluelib.loader.constant.dataticket.SerializableDataTicket;
 import software.bluelib.loader.loading.object.BakedModelFactory;
 
-import java.util.Map;
-
-
 public final class GeckoLibUtil {
-	private static final Int2ObjectMap<String> ANIMATABLE_IDENTITIES = new Int2ObjectOpenHashMap<>();
-	public static final Map<String, GeoAnimatable> SYNCED_ANIMATABLES = new Object2ObjectOpenHashMap<>();
 
-	
-	public static AnimatableInstanceCache createInstanceCache(GeoAnimatable animatable) {
-		AnimatableInstanceCache cache = animatable.animatableCacheOverride();
+    private static final Int2ObjectMap<String> ANIMATABLE_IDENTITIES = new Int2ObjectOpenHashMap<>();
+    public static final Map<String, GeoAnimatable> SYNCED_ANIMATABLES = new Object2ObjectOpenHashMap<>();
 
-		return cache != null ? cache : createInstanceCache(animatable, !(animatable instanceof Entity) && !(animatable instanceof BlockEntity));
-	}
+    public static AnimatableInstanceCache createInstanceCache(GeoAnimatable animatable) {
+        AnimatableInstanceCache cache = animatable.animatableCacheOverride();
 
-	
-	public static AnimatableInstanceCache createInstanceCache(GeoAnimatable animatable, boolean singletonObject) {
-		AnimatableInstanceCache cache = animatable.animatableCacheOverride();
+        return cache != null ? cache : createInstanceCache(animatable, !(animatable instanceof Entity) && !(animatable instanceof BlockEntity));
+    }
 
-		if (cache != null)
-			return cache;
+    public static AnimatableInstanceCache createInstanceCache(GeoAnimatable animatable, boolean singletonObject) {
+        AnimatableInstanceCache cache = animatable.animatableCacheOverride();
 
-		return singletonObject ? new SingletonAnimatableInstanceCache(animatable) : new InstancedAnimatableInstanceCache(animatable);
-	}
+        if (cache != null)
+            return cache;
 
-	
-	synchronized public static Animation.LoopType addCustomLoopType(String name, Animation.LoopType loopType) {
-		return Animation.LoopType.register(name, loopType);
-	}
+        return singletonObject ? new SingletonAnimatableInstanceCache(animatable) : new InstancedAnimatableInstanceCache(animatable);
+    }
 
-	
-	synchronized public static EasingType addCustomEasingType(String name, EasingType easingType) {
-		return EasingType.register(name, easingType);
-	}
+    synchronized public static Animation.LoopType addCustomLoopType(String name, Animation.LoopType loopType) {
+        return Animation.LoopType.register(name, loopType);
+    }
 
-	
-	synchronized public static void addCustomBakedModelFactory(String namespace, BakedModelFactory factory) {
-		BakedModelFactory.register(namespace, factory);
-	}
+    synchronized public static EasingType addCustomEasingType(String name, EasingType easingType) {
+        return EasingType.register(name, easingType);
+    }
 
-	
-	synchronized public static <D> SerializableDataTicket<D> addDataTicket(SerializableDataTicket<D> dataTicket) {
-		return DataTickets.registerSerializable(dataTicket);
-	}
+    synchronized public static void addCustomBakedModelFactory(String namespace, BakedModelFactory factory) {
+        BakedModelFactory.register(namespace, factory);
+    }
 
-	
-	synchronized public static void registerSyncedAnimatable(GeoAnimatable animatable) {
-		GeoAnimatable existing = SYNCED_ANIMATABLES.put(getSyncedSingletonAnimatableId(animatable), animatable);
+    synchronized public static <D> SerializableDataTicket<D> addDataTicket(SerializableDataTicket<D> dataTicket) {
+        return DataTickets.registerSerializable(dataTicket);
+    }
 
-		//if (existing == null)
-			//GeckoLibConstants.LOGGER.debug("Registered SyncedAnimatable for " + animatable.getClass());
-	}
+    synchronized public static void registerSyncedAnimatable(GeoAnimatable animatable) {
+        GeoAnimatable existing = SYNCED_ANIMATABLES.put(getSyncedSingletonAnimatableId(animatable), animatable);
 
-	
-	@Nullable
-	public static GeoAnimatable getSyncedAnimatable(String syncedAnimatableId) {
-		GeoAnimatable animatable = SYNCED_ANIMATABLES.get(syncedAnimatableId);
+        //if (existing == null)
+        //GeckoLibConstants.LOGGER.debug("Registered SyncedAnimatable for " + animatable.getClass());
+    }
 
-		//if (animatable == null)
-			//GeckoLibConstants.LOGGER.error("Attempting to retrieve unregistered synced animatable! (" + syncedAnimatableId + ")");
+    @Nullable
+    public static GeoAnimatable getSyncedAnimatable(String syncedAnimatableId) {
+        GeoAnimatable animatable = SYNCED_ANIMATABLES.get(syncedAnimatableId);
 
-		return animatable;
-	}
+        //if (animatable == null)
+        //GeckoLibConstants.LOGGER.error("Attempting to retrieve unregistered synced animatable! (" + syncedAnimatableId + ")");
 
-	
-	public static String getSyncedSingletonAnimatableId(GeoAnimatable animatable) {
-		return ANIMATABLE_IDENTITIES.computeIfAbsent(System.identityHashCode(animatable), i -> {
-			String baseId = animatable.getClass().getName();
-			i = 0;
+        return animatable;
+    }
 
-			while (SYNCED_ANIMATABLES.containsKey(baseId + i)) {
-				i++;
-			}
+    public static String getSyncedSingletonAnimatableId(GeoAnimatable animatable) {
+        return ANIMATABLE_IDENTITIES.computeIfAbsent(System.identityHashCode(animatable), i -> {
+            String baseId = animatable.getClass().getName();
+            i = 0;
 
-			return baseId + i;
-		});
-	}
+            while (SYNCED_ANIMATABLES.containsKey(baseId + i)) {
+                i++;
+            }
+
+            return baseId + i;
+        });
+    }
 }

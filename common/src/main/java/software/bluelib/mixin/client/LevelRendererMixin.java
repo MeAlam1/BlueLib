@@ -1,3 +1,10 @@
+/*
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
+ */
 package software.bluelib.mixin.client;
 
 import net.minecraft.client.Camera;
@@ -14,9 +21,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import software.bluelib.loader.loading.math.MathParser;
 import software.bluelib.loader.loading.math.MolangQueries;
 
-
 @Mixin(LevelRenderer.class)
 public class LevelRendererMixin {
+
     @Shadow
     private int renderedEntities;
 

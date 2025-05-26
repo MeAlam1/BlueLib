@@ -1,5 +1,13 @@
+/*
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
+ */
 package software.bluelib.loader.packet;
 
+import java.util.function.Consumer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -11,9 +19,8 @@ import software.bluelib.loader.GeckoLibConstants;
 import software.bluelib.loader.animatable.GeoBlockEntity;
 import software.bluelib.loader.util.ClientUtil;
 
-import java.util.function.Consumer;
-
 public record BlockEntityAnimTriggerPacket(BlockPos pos, String controllerName, String animName) implements MultiloaderPacket {
+
     public static final Type<BlockEntityAnimTriggerPacket> TYPE = new Type<>(GeckoLibConstants.id("blockentity_anim_trigger"));
     public static final StreamCodec<FriendlyByteBuf, BlockEntityAnimTriggerPacket> CODEC = StreamCodec.composite(
             BlockPos.STREAM_CODEC, BlockEntityAnimTriggerPacket::pos,

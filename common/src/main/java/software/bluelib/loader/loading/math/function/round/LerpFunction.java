@@ -1,11 +1,18 @@
+/*
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
+ */
 package software.bluelib.loader.loading.math.function.round;
 
 import net.minecraft.util.Mth;
 import software.bluelib.loader.loading.math.MathValue;
 import software.bluelib.loader.loading.math.function.MathFunction;
 
-
 public final class LerpFunction extends MathFunction {
+
     private final MathValue min;
     private final MathValue max;
     private final MathValue delta;
@@ -35,6 +42,6 @@ public final class LerpFunction extends MathFunction {
 
     @Override
     public MathValue[] getArgs() {
-        return new MathValue[] {this.min, this.max, this.delta};
+        return new MathValue[] { this.min, this.max, this.delta };
     }
 }

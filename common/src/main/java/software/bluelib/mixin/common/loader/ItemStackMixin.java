@@ -1,3 +1,10 @@
+/*
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
+ */
 package software.bluelib.mixin.common.loader;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
@@ -9,10 +16,9 @@ import org.spongepowered.asm.mixin.injection.At;
 import software.bluelib.loader.GeckoLibConstants;
 import software.bluelib.loader.util.InternalUtil;
 
-
 @Mixin(ItemStack.class)
 public class ItemStackMixin {
-    
+
     @WrapOperation(method = "split", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;copyWithCount(I)Lnet/minecraft/world/item/ItemStack;"))
     public ItemStack geckolib$removeGeckolibIdOnCopy(ItemStack instance, int count, Operation<ItemStack> original) {
         ItemStack copy = original.call(instance, count);
@@ -23,7 +29,6 @@ public class ItemStackMixin {
         return copy;
     }
 
-    
     @WrapOperation(method = "isSameItemSameComponents", at = @At(value = "INVOKE", target = "Ljava/util/Objects;equals(Ljava/lang/Object;Ljava/lang/Object;)Z"))
     private static boolean geckolib$skipGeckolibIdOnCompare(Object a, Object b, Operation<Boolean> original) {
         if (original.call(a, b))

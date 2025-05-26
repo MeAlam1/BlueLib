@@ -1,14 +1,20 @@
+/*
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
+ */
 package software.bluelib.loader.loading.math.function.random;
 
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.loader.loading.math.MathValue;
 import software.bluelib.loader.loading.math.function.MathFunction;
 
-import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
-
-
 public final class DieRollFunction extends MathFunction {
+
     private final MathValue rolls;
     private final MathValue min;
     private final MathValue max;
@@ -34,7 +40,7 @@ public final class DieRollFunction extends MathFunction {
 
     @Override
     public double compute() {
-        final int rolls = (int)(Math.floor(this.rolls.get()));
+        final int rolls = (int) (Math.floor(this.rolls.get()));
         final double min = this.min.get();
         final double max = this.max.get();
         double sum = 0;
@@ -42,9 +48,8 @@ public final class DieRollFunction extends MathFunction {
 
         if (this.random != null) {
             random = this.random;
-            random.setSeed((long)this.seed.get());
-        }
-        else {
+            random.setSeed((long) this.seed.get());
+        } else {
             random = ThreadLocalRandom.current();
         }
 
@@ -71,8 +76,8 @@ public final class DieRollFunction extends MathFunction {
     @Override
     public MathValue[] getArgs() {
         if (this.seed != null)
-            return new MathValue[] {this.rolls, this.min, this.max, this.seed};
+            return new MathValue[] { this.rolls, this.min, this.max, this.seed };
 
-        return new MathValue[] {this.rolls, this.min, this.max};
+        return new MathValue[] { this.rolls, this.min, this.max };
     }
 }

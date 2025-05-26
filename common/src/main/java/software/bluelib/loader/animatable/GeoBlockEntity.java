@@ -1,3 +1,10 @@
+/*
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
+ */
 package software.bluelib.loader.animatable;
 
 import net.minecraft.server.level.ServerLevel;
@@ -8,94 +15,83 @@ import org.jetbrains.annotations.Nullable;
 import software.bluelib.loader.GeckoLibConstants;
 import software.bluelib.loader.GeckoLibServices;
 import software.bluelib.loader.animation.AnimatableManager;
-import software.bluelib.loader.animation.AnimationController;
 import software.bluelib.loader.constant.dataticket.SerializableDataTicket;
 import software.bluelib.loader.util.RenderUtil;
 
-
 public interface GeoBlockEntity extends GeoAnimatable {
-	
-	@ApiStatus.NonExtendable
-	@Nullable
-	default <D> D getAnimData(SerializableDataTicket<D> dataTicket) {
-		return getAnimatableInstanceCache().getManagerForId(0).getData(dataTicket);
-	}
 
-	
-	@ApiStatus.NonExtendable
-	default <D> void setAnimData(SerializableDataTicket<D> dataTicket, D data) {
-		BlockEntity blockEntity = (BlockEntity)this;
-		Level level = blockEntity.getLevel();
+    @ApiStatus.NonExtendable
+    @Nullable
+    default <D> D getAnimData(SerializableDataTicket<D> dataTicket) {
+        return getAnimatableInstanceCache().getManagerForId(0).getData(dataTicket);
+    }
 
-		if (level == null) {
-			GeckoLibConstants.LOGGER.error("Attempting to set animation data for BlockEntity too early! Must wait until after the BlockEntity has been set in the world. (" + blockEntity.getClass().toString() + ")");
+    @ApiStatus.NonExtendable
+    default <D> void setAnimData(SerializableDataTicket<D> dataTicket, D data) {
+        BlockEntity blockEntity = (BlockEntity) this;
+        Level level = blockEntity.getLevel();
 
-			return;
-		}
+        if (level == null) {
+            GeckoLibConstants.LOGGER.error("Attempting to set animation data for BlockEntity too early! Must wait until after the BlockEntity has been set in the world. (" + blockEntity.getClass().toString() + ")");
 
-		if (level.isClientSide()) {
-			getAnimatableInstanceCache().getManagerForId(0).setData(dataTicket, data);
-		}
-		else {
-			GeckoLibServices.NETWORK.syncBlockEntityAnimData(blockEntity.getBlockPos(), dataTicket, data, (ServerLevel)level);
-		}
-	}
+            return;
+        }
 
-	
-	@ApiStatus.NonExtendable
-	default void triggerAnim(@Nullable String controllerName, String animName) {
-		BlockEntity blockEntity = (BlockEntity)this;
-		Level level = blockEntity.getLevel();
+        if (level.isClientSide()) {
+            getAnimatableInstanceCache().getManagerForId(0).setData(dataTicket, data);
+        } else {
+            GeckoLibServices.NETWORK.syncBlockEntityAnimData(blockEntity.getBlockPos(), dataTicket, data, (ServerLevel) level);
+        }
+    }
 
-		if (level == null) {
-			GeckoLibConstants.LOGGER.error("Attempting to trigger an animation for a BlockEntity too early! Must wait until after the BlockEntity has been set in the world. (" + blockEntity.getClass().toString() + ")");
+    @ApiStatus.NonExtendable
+    default void triggerAnim(@Nullable String controllerName, String animName) {
+        BlockEntity blockEntity = (BlockEntity) this;
+        Level level = blockEntity.getLevel();
 
-			return;
-		}
+        if (level == null) {
+            GeckoLibConstants.LOGGER.error("Attempting to trigger an animation for a BlockEntity too early! Must wait until after the BlockEntity has been set in the world. (" + blockEntity.getClass().toString() + ")");
 
-		if (level.isClientSide()) {
-			if (controllerName != null) {
-				getAnimatableInstanceCache().getManagerForId(0).tryTriggerAnimation(controllerName, animName);
-			}
-			else {
-				getAnimatableInstanceCache().getManagerForId(0).tryTriggerAnimation(animName);
-			}
-		}
-		else {
-			GeckoLibServices.NETWORK.triggerBlockEntityAnim(blockEntity.getBlockPos(), controllerName, animName, (ServerLevel)level);
-		}
-	}
+            return;
+        }
 
-	
-	@ApiStatus.NonExtendable
-	default void stopTriggeredAnim(@Nullable String controllerName, @Nullable String animName) {
-		BlockEntity blockEntity = (BlockEntity)this;
-		Level level = blockEntity.getLevel();
+        if (level.isClientSide()) {
+            if (controllerName != null) {
+                getAnimatableInstanceCache().getManagerForId(0).tryTriggerAnimation(controllerName, animName);
+            } else {
+                getAnimatableInstanceCache().getManagerForId(0).tryTriggerAnimation(animName);
+            }
+        } else {
+            GeckoLibServices.NETWORK.triggerBlockEntityAnim(blockEntity.getBlockPos(), controllerName, animName, (ServerLevel) level);
+        }
+    }
 
-		if (level == null) {
-			GeckoLibConstants.LOGGER.error("Attempting to stop a triggered animation for a BlockEntity too early! Must wait until after the BlockEntity has been set in the world. (" + blockEntity.getClass().toString() + ")");
+    @ApiStatus.NonExtendable
+    default void stopTriggeredAnim(@Nullable String controllerName, @Nullable String animName) {
+        BlockEntity blockEntity = (BlockEntity) this;
+        Level level = blockEntity.getLevel();
 
-			return;
-		}
+        if (level == null) {
+            GeckoLibConstants.LOGGER.error("Attempting to stop a triggered animation for a BlockEntity too early! Must wait until after the BlockEntity has been set in the world. (" + blockEntity.getClass().toString() + ")");
 
-		if (level.isClientSide()) {
-			AnimatableManager<GeoAnimatable> animatableManager = getAnimatableInstanceCache().getManagerForId(0);
+            return;
+        }
 
-			if (controllerName != null) {
-				animatableManager.stopTriggeredAnimation(controllerName, animName);
-			}
-			else {
-				animatableManager.stopTriggeredAnimation(animName);
-			}
-		}
-		else {
-			GeckoLibServices.NETWORK.stopTriggeredBlockEntityAnim(blockEntity.getBlockPos(), (ServerLevel)level, controllerName, animName);
-		}
-	}
+        if (level.isClientSide()) {
+            AnimatableManager<GeoAnimatable> animatableManager = getAnimatableInstanceCache().getManagerForId(0);
 
-	
-	@Override
-	default double getTick(Object blockEntity) {
-		return RenderUtil.getCurrentTick();
-	}
+            if (controllerName != null) {
+                animatableManager.stopTriggeredAnimation(controllerName, animName);
+            } else {
+                animatableManager.stopTriggeredAnimation(animName);
+            }
+        } else {
+            GeckoLibServices.NETWORK.stopTriggeredBlockEntityAnim(blockEntity.getBlockPos(), (ServerLevel) level, controllerName, animName);
+        }
+    }
+
+    @Override
+    default double getTick(Object blockEntity) {
+        return RenderUtil.getCurrentTick();
+    }
 }

@@ -1,13 +1,19 @@
+/*
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
+ */
 package software.bluelib.loader.loading.math.function.random;
 
+import java.util.Random;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.loader.loading.math.MathValue;
 import software.bluelib.loader.loading.math.function.MathFunction;
 
-import java.util.Random;
-
-
 public final class RandomFunction extends MathFunction {
+
     private final MathValue valueA;
     @Nullable
     private final MathValue valueB;
@@ -36,11 +42,10 @@ public final class RandomFunction extends MathFunction {
         double valueA = this.valueA.get();
 
         if (this.random != null) {
-            this.random.setSeed((long)this.seed.get());
+            this.random.setSeed((long) this.seed.get());
 
             result = this.random.nextDouble();
-        }
-        else {
+        } else {
             result = Math.random();
         }
 
@@ -50,8 +55,7 @@ public final class RandomFunction extends MathFunction {
             double max = Math.max(valueA, valueB);
 
             result = min + result * (max - min);
-        }
-        else {
+        } else {
             result = result * valueA;
         }
 
@@ -74,11 +78,11 @@ public final class RandomFunction extends MathFunction {
     @Override
     public MathValue[] getArgs() {
         if (this.seed != null)
-            return new MathValue[] {this.valueA, this.valueB, this.seed};
+            return new MathValue[] { this.valueA, this.valueB, this.seed };
 
         if (this.valueB != null)
-            return new MathValue[] {this.valueA, this.valueB};
+            return new MathValue[] { this.valueA, this.valueB };
 
-        return new MathValue[] {this.valueA};
+        return new MathValue[] { this.valueA };
     }
 }

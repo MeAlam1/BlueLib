@@ -1,3 +1,10 @@
+/*
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
+ */
 package software.bluelib.loader.renderer.layer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -36,178 +43,170 @@ import software.bluelib.loader.renderer.GeoRenderer;
 import software.bluelib.loader.util.Color;
 import software.bluelib.loader.util.RenderUtil;
 
-
 public class ItemArmorGeoLayer<T extends LivingEntity & GeoAnimatable> extends GeoRenderLayer<T> {
-	protected static final HumanoidModel<LivingEntity> INNER_ARMOR_MODEL = new HumanoidModel<>(Minecraft.getInstance().getEntityModels().bakeLayer(ModelLayers.PLAYER_INNER_ARMOR));
-	protected static final HumanoidModel<LivingEntity> OUTER_ARMOR_MODEL = new HumanoidModel<>(Minecraft.getInstance().getEntityModels().bakeLayer(ModelLayers.PLAYER_OUTER_ARMOR));
 
-	@Nullable
-	protected ItemStack mainHandStack;
-	@Nullable protected ItemStack offhandStack;
-	@Nullable protected ItemStack helmetStack;
-	@Nullable protected ItemStack chestplateStack;
-	@Nullable protected ItemStack leggingsStack;
-	@Nullable protected ItemStack bootsStack;
+    protected static final HumanoidModel<LivingEntity> INNER_ARMOR_MODEL = new HumanoidModel<>(Minecraft.getInstance().getEntityModels().bakeLayer(ModelLayers.PLAYER_INNER_ARMOR));
+    protected static final HumanoidModel<LivingEntity> OUTER_ARMOR_MODEL = new HumanoidModel<>(Minecraft.getInstance().getEntityModels().bakeLayer(ModelLayers.PLAYER_OUTER_ARMOR));
 
-	public ItemArmorGeoLayer(GeoRenderer<T> geoRenderer) {
-		super(geoRenderer);
-	}
+    @Nullable
+    protected ItemStack mainHandStack;
+    @Nullable
+    protected ItemStack offhandStack;
+    @Nullable
+    protected ItemStack helmetStack;
+    @Nullable
+    protected ItemStack chestplateStack;
+    @Nullable
+    protected ItemStack leggingsStack;
+    @Nullable
+    protected ItemStack bootsStack;
 
-	
-	@NotNull
-	protected EquipmentSlot getEquipmentSlotForBone(GeoBone bone, ItemStack stack, T animatable) {
-		for (EquipmentSlot slot : EquipmentSlot.values()) {
-			if (slot.getType() == EquipmentSlot.Type.HUMANOID_ARMOR) {
-				if (stack == animatable.getItemBySlot(slot))
-					return slot;
-			}
-		}
+    public ItemArmorGeoLayer(GeoRenderer<T> geoRenderer) {
+        super(geoRenderer);
+    }
 
-		return EquipmentSlot.CHEST;
-	}
+    @NotNull
+    protected EquipmentSlot getEquipmentSlotForBone(GeoBone bone, ItemStack stack, T animatable) {
+        for (EquipmentSlot slot : EquipmentSlot.values()) {
+            if (slot.getType() == EquipmentSlot.Type.HUMANOID_ARMOR) {
+                if (stack == animatable.getItemBySlot(slot))
+                    return slot;
+            }
+        }
 
-	
-	@NotNull
-	protected ModelPart getModelPartForBone(GeoBone bone, EquipmentSlot slot, ItemStack stack, T animatable, HumanoidModel<?> baseModel) {
-		return baseModel.body;
-	}
+        return EquipmentSlot.CHEST;
+    }
 
-	
-	@Nullable
-	protected ItemStack getArmorItemForBone(GeoBone bone, T animatable) {
-		return null;
-	}
+    @NotNull
+    protected ModelPart getModelPartForBone(GeoBone bone, EquipmentSlot slot, ItemStack stack, T animatable, HumanoidModel<?> baseModel) {
+        return baseModel.body;
+    }
 
-	
-	@Override
-	public void preRender(PoseStack poseStack, T animatable, BakedGeoModel bakedModel, @Nullable RenderType renderType, MultiBufferSource bufferSource,
-						  @Nullable VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay) {
-		this.mainHandStack = animatable.getItemBySlot(EquipmentSlot.MAINHAND);
-		this.offhandStack = animatable.getItemBySlot(EquipmentSlot.OFFHAND);
-		this.helmetStack = animatable.getItemBySlot(EquipmentSlot.HEAD);
-		this.chestplateStack = animatable.getItemBySlot(EquipmentSlot.CHEST);
-		this.leggingsStack = animatable.getItemBySlot(EquipmentSlot.LEGS);
-		this.bootsStack = animatable.getItemBySlot(EquipmentSlot.FEET);
-	}
+    @Nullable
+    protected ItemStack getArmorItemForBone(GeoBone bone, T animatable) {
+        return null;
+    }
 
-	
-	@Override
-	public void renderForBone(PoseStack poseStack, T animatable, GeoBone bone, RenderType renderType, MultiBufferSource bufferSource,
-							  VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay) {
-		ItemStack armorStack = getArmorItemForBone(bone, animatable);
+    @Override
+    public void preRender(PoseStack poseStack, T animatable, BakedGeoModel bakedModel, @Nullable RenderType renderType, MultiBufferSource bufferSource,
+            @Nullable VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay) {
+        this.mainHandStack = animatable.getItemBySlot(EquipmentSlot.MAINHAND);
+        this.offhandStack = animatable.getItemBySlot(EquipmentSlot.OFFHAND);
+        this.helmetStack = animatable.getItemBySlot(EquipmentSlot.HEAD);
+        this.chestplateStack = animatable.getItemBySlot(EquipmentSlot.CHEST);
+        this.leggingsStack = animatable.getItemBySlot(EquipmentSlot.LEGS);
+        this.bootsStack = animatable.getItemBySlot(EquipmentSlot.FEET);
+    }
 
-		if (armorStack == null)
-			return;
+    @Override
+    public void renderForBone(PoseStack poseStack, T animatable, GeoBone bone, RenderType renderType, MultiBufferSource bufferSource,
+            VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay) {
+        ItemStack armorStack = getArmorItemForBone(bone, animatable);
 
-		if (armorStack.getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof AbstractSkullBlock skullBlock) {
-			renderSkullAsArmor(poseStack, bone, armorStack, skullBlock, bufferSource, packedLight);
-		}
-		else {
-			EquipmentSlot slot = getEquipmentSlotForBone(bone, armorStack, animatable);
-			HumanoidModel<?> model = getModelForItem(bone, slot, armorStack, animatable);
-			ModelPart modelPart = getModelPartForBone(bone, slot, armorStack, animatable, model);
+        if (armorStack == null)
+            return;
 
-			if (!modelPart.cubes.isEmpty()) {
-				poseStack.pushPose();
-				poseStack.scale(-1, -1, 1);
+        if (armorStack.getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof AbstractSkullBlock skullBlock) {
+            renderSkullAsArmor(poseStack, bone, armorStack, skullBlock, bufferSource, packedLight);
+        } else {
+            EquipmentSlot slot = getEquipmentSlotForBone(bone, armorStack, animatable);
+            HumanoidModel<?> model = getModelForItem(bone, slot, armorStack, animatable);
+            ModelPart modelPart = getModelPartForBone(bone, slot, armorStack, animatable, model);
 
-				if (model instanceof GeoArmorRenderer<?> geoArmorRenderer) {
-					prepModelPartForRender(poseStack, bone, modelPart);
-					geoArmorRenderer.prepForRender(animatable, armorStack, slot, model);
-					geoArmorRenderer.applyBoneVisibilityByPart(slot, modelPart, model);
-					geoArmorRenderer.renderToBuffer(poseStack, null, packedLight, packedOverlay, Color.WHITE.argbInt());
-				}
-				else if (armorStack.getItem() instanceof ArmorItem) {
-					prepModelPartForRender(poseStack, bone, modelPart);
-					renderVanillaArmorPiece(poseStack, animatable, bone, slot, armorStack, modelPart, bufferSource, partialTick, packedLight, packedOverlay);
-				}
+            if (!modelPart.cubes.isEmpty()) {
+                poseStack.pushPose();
+                poseStack.scale(-1, -1, 1);
 
-				poseStack.popPose();
-			}
-		}
-	}
+                if (model instanceof GeoArmorRenderer<?> geoArmorRenderer) {
+                    prepModelPartForRender(poseStack, bone, modelPart);
+                    geoArmorRenderer.prepForRender(animatable, armorStack, slot, model);
+                    geoArmorRenderer.applyBoneVisibilityByPart(slot, modelPart, model);
+                    geoArmorRenderer.renderToBuffer(poseStack, null, packedLight, packedOverlay, Color.WHITE.argbInt());
+                } else if (armorStack.getItem() instanceof ArmorItem) {
+                    prepModelPartForRender(poseStack, bone, modelPart);
+                    renderVanillaArmorPiece(poseStack, animatable, bone, slot, armorStack, modelPart, bufferSource, partialTick, packedLight, packedOverlay);
+                }
 
-	
-	protected <I extends Item & GeoItem> void renderVanillaArmorPiece(PoseStack poseStack, T animatable, GeoBone bone, EquipmentSlot slot, ItemStack armorStack,
-															   ModelPart modelPart, MultiBufferSource bufferSource, float partialTick, int packedLight, int packedOverlay) {
-		Holder<ArmorMaterial> material = ((ArmorItem)armorStack.getItem()).getMaterial();
+                poseStack.popPose();
+            }
+        }
+    }
 
-		for (ArmorMaterial.Layer layer : material.value().layers()) {
-			int color = armorStack.is(ItemTags.DYEABLE) ? DyedItemColor.getOrDefault(armorStack, -6265536) : -1;
-			VertexConsumer buffer = getVanillaArmorBuffer(bufferSource, animatable, armorStack, slot, bone, layer, packedLight, packedOverlay, false);
+    protected <I extends Item & GeoItem> void renderVanillaArmorPiece(PoseStack poseStack, T animatable, GeoBone bone, EquipmentSlot slot, ItemStack armorStack,
+            ModelPart modelPart, MultiBufferSource bufferSource, float partialTick, int packedLight, int packedOverlay) {
+        Holder<ArmorMaterial> material = ((ArmorItem) armorStack.getItem()).getMaterial();
 
-			modelPart.render(poseStack, buffer, packedLight, packedOverlay, color);
-		}
+        for (ArmorMaterial.Layer layer : material.value().layers()) {
+            int color = armorStack.is(ItemTags.DYEABLE) ? DyedItemColor.getOrDefault(armorStack, -6265536) : -1;
+            VertexConsumer buffer = getVanillaArmorBuffer(bufferSource, animatable, armorStack, slot, bone, layer, packedLight, packedOverlay, false);
 
-		ArmorTrim trim = armorStack.get(DataComponents.TRIM);
+            modelPart.render(poseStack, buffer, packedLight, packedOverlay, color);
+        }
 
-		if (trim != null) {
-			TextureAtlasSprite sprite = Minecraft.getInstance().getModelManager().getAtlas(Sheets.ARMOR_TRIMS_SHEET).getSprite(slot == EquipmentSlot.LEGS ? trim.innerTexture(material) : trim.outerTexture(material));
-			VertexConsumer buffer = sprite.wrap(bufferSource.getBuffer(Sheets.armorTrimsSheet(trim.pattern().value().decal())));
-			modelPart.render(poseStack, buffer, packedLight, packedOverlay);
-		}
+        ArmorTrim trim = armorStack.get(DataComponents.TRIM);
 
-		if (armorStack.hasFoil())
-			modelPart.render(poseStack, getVanillaArmorBuffer(bufferSource, animatable, armorStack, slot, bone, null, packedLight, packedOverlay, true), packedLight, packedOverlay, Color.WHITE.argbInt());
-	}
+        if (trim != null) {
+            TextureAtlasSprite sprite = Minecraft.getInstance().getModelManager().getAtlas(Sheets.ARMOR_TRIMS_SHEET).getSprite(slot == EquipmentSlot.LEGS ? trim.innerTexture(material) : trim.outerTexture(material));
+            VertexConsumer buffer = sprite.wrap(bufferSource.getBuffer(Sheets.armorTrimsSheet(trim.pattern().value().decal())));
+            modelPart.render(poseStack, buffer, packedLight, packedOverlay);
+        }
 
-	
-	protected VertexConsumer getVanillaArmorBuffer(MultiBufferSource bufferSource, T animatable, ItemStack stack, EquipmentSlot slot, GeoBone bone, @Nullable ArmorMaterial.Layer layer, int packedLight, int packedOverlay, boolean forGlint) {
-		if (forGlint)
-			return bufferSource.getBuffer(RenderType.armorEntityGlint());
+        if (armorStack.hasFoil())
+            modelPart.render(poseStack, getVanillaArmorBuffer(bufferSource, animatable, armorStack, slot, bone, null, packedLight, packedOverlay, true), packedLight, packedOverlay, Color.WHITE.argbInt());
+    }
 
-		return bufferSource.getBuffer(RenderType.armorCutoutNoCull(layer.texture(slot == EquipmentSlot.LEGS)));
-	}
+    protected VertexConsumer getVanillaArmorBuffer(MultiBufferSource bufferSource, T animatable, ItemStack stack, EquipmentSlot slot, GeoBone bone, @Nullable ArmorMaterial.Layer layer, int packedLight, int packedOverlay, boolean forGlint) {
+        if (forGlint)
+            return bufferSource.getBuffer(RenderType.armorEntityGlint());
 
-	
-	@NotNull
-	protected HumanoidModel<?> getModelForItem(GeoBone bone, EquipmentSlot slot, ItemStack stack, T animatable) {
-		HumanoidModel<LivingEntity> defaultModel = slot == EquipmentSlot.LEGS ? INNER_ARMOR_MODEL : OUTER_ARMOR_MODEL;
-		
-		return GeckoLibServices.Client.ITEM_RENDERING.getArmorModelForItem(animatable, stack, slot, defaultModel);
-	}
+        return bufferSource.getBuffer(RenderType.armorCutoutNoCull(layer.texture(slot == EquipmentSlot.LEGS)));
+    }
 
-	
-	protected void renderSkullAsArmor(PoseStack poseStack, GeoBone bone, ItemStack stack, AbstractSkullBlock skullBlock, MultiBufferSource bufferSource, int packedLight) {
-		SkullBlock.Type type = skullBlock.getType();
-		SkullModelBase model = SkullBlockRenderer.createSkullRenderers(Minecraft.getInstance().getEntityModels()).get(type);
-		RenderType renderType = SkullBlockRenderer.getRenderType(type, stack.get(DataComponents.PROFILE));
+    @NotNull
+    protected HumanoidModel<?> getModelForItem(GeoBone bone, EquipmentSlot slot, ItemStack stack, T animatable) {
+        HumanoidModel<LivingEntity> defaultModel = slot == EquipmentSlot.LEGS ? INNER_ARMOR_MODEL : OUTER_ARMOR_MODEL;
 
-		poseStack.pushPose();
-		RenderUtil.translateAndRotateMatrixForBone(poseStack, bone);
-		poseStack.scale(1.1875f, 1.1875f, 1.1875f);
-		poseStack.translate(-0.5f, 0, -0.5f);
-		SkullBlockRenderer.renderSkull(null, 0, 0, poseStack, bufferSource, packedLight, model, renderType);
-		poseStack.popPose();
-	}
+        return GeckoLibServices.Client.ITEM_RENDERING.getArmorModelForItem(animatable, stack, slot, defaultModel);
+    }
 
-	
-	protected void prepModelPartForRender(PoseStack poseStack, GeoBone bone, ModelPart sourcePart) {
-		final GeoCube firstCube = bone.getCubes().getFirst();
-		final Cube armorCube = getReferenceCubeForModel(bone, sourcePart);
-		final double armorBoneSizeX = firstCube.size().x();
-		final double armorBoneSizeY = firstCube.size().y();
-		final double armorBoneSizeZ = firstCube.size().z();
-		final double actualArmorSizeX = Math.abs(armorCube.maxX - armorCube.minX);
-		final double actualArmorSizeY = Math.abs(armorCube.maxY - armorCube.minY);
-		final double actualArmorSizeZ = Math.abs(armorCube.maxZ - armorCube.minZ);
-		float scaleX = (float)(armorBoneSizeX / actualArmorSizeX);
-		float scaleY = (float)(armorBoneSizeY / actualArmorSizeY);
-		float scaleZ = (float)(armorBoneSizeZ / actualArmorSizeZ);
+    protected void renderSkullAsArmor(PoseStack poseStack, GeoBone bone, ItemStack stack, AbstractSkullBlock skullBlock, MultiBufferSource bufferSource, int packedLight) {
+        SkullBlock.Type type = skullBlock.getType();
+        SkullModelBase model = SkullBlockRenderer.createSkullRenderers(Minecraft.getInstance().getEntityModels()).get(type);
+        RenderType renderType = SkullBlockRenderer.getRenderType(type, stack.get(DataComponents.PROFILE));
 
-		sourcePart.setPos(-(bone.getPivotX() - ((bone.getPivotX() * scaleX) - bone.getPivotX()) / scaleX),
-				-(bone.getPivotY() - ((bone.getPivotY() * scaleY) - bone.getPivotY()) / scaleY),
-				(bone.getPivotZ() - ((bone.getPivotZ() * scaleZ) - bone.getPivotZ()) / scaleZ));
+        poseStack.pushPose();
+        RenderUtil.translateAndRotateMatrixForBone(poseStack, bone);
+        poseStack.scale(1.1875f, 1.1875f, 1.1875f);
+        poseStack.translate(-0.5f, 0, -0.5f);
+        SkullBlockRenderer.renderSkull(null, 0, 0, poseStack, bufferSource, packedLight, model, renderType);
+        poseStack.popPose();
+    }
 
-		sourcePart.xRot = -bone.getRotX();
-		sourcePart.yRot = -bone.getRotY();
-		sourcePart.zRot = bone.getRotZ();
+    protected void prepModelPartForRender(PoseStack poseStack, GeoBone bone, ModelPart sourcePart) {
+        final GeoCube firstCube = bone.getCubes().getFirst();
+        final Cube armorCube = getReferenceCubeForModel(bone, sourcePart);
+        final double armorBoneSizeX = firstCube.size().x();
+        final double armorBoneSizeY = firstCube.size().y();
+        final double armorBoneSizeZ = firstCube.size().z();
+        final double actualArmorSizeX = Math.abs(armorCube.maxX - armorCube.minX);
+        final double actualArmorSizeY = Math.abs(armorCube.maxY - armorCube.minY);
+        final double actualArmorSizeZ = Math.abs(armorCube.maxZ - armorCube.minZ);
+        float scaleX = (float) (armorBoneSizeX / actualArmorSizeX);
+        float scaleY = (float) (armorBoneSizeY / actualArmorSizeY);
+        float scaleZ = (float) (armorBoneSizeZ / actualArmorSizeZ);
 
-		poseStack.scale(scaleX, scaleY, scaleZ);
-	}
+        sourcePart.setPos(-(bone.getPivotX() - ((bone.getPivotX() * scaleX) - bone.getPivotX()) / scaleX),
+                -(bone.getPivotY() - ((bone.getPivotY() * scaleY) - bone.getPivotY()) / scaleY),
+                (bone.getPivotZ() - ((bone.getPivotZ() * scaleZ) - bone.getPivotZ()) / scaleZ));
 
-	
-	protected Cube getReferenceCubeForModel(GeoBone bone, ModelPart sourcePart) {
-		return sourcePart.cubes.getFirst();
-	}
+        sourcePart.xRot = -bone.getRotX();
+        sourcePart.yRot = -bone.getRotY();
+        sourcePart.zRot = bone.getRotZ();
+
+        poseStack.scale(scaleX, scaleY, scaleZ);
+    }
+
+    protected Cube getReferenceCubeForModel(GeoBone bone, ModelPart sourcePart) {
+        return sourcePart.cubes.getFirst();
+    }
 }

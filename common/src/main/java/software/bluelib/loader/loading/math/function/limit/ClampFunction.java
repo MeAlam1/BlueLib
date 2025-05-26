@@ -1,11 +1,18 @@
+/*
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
+ */
 package software.bluelib.loader.loading.math.function.limit;
 
 import net.minecraft.util.Mth;
 import software.bluelib.loader.loading.math.MathValue;
 import software.bluelib.loader.loading.math.function.MathFunction;
 
-
 public final class ClampFunction extends MathFunction {
+
     private final MathValue value;
     private final MathValue min;
     private final MathValue max;
@@ -35,6 +42,6 @@ public final class ClampFunction extends MathFunction {
 
     @Override
     public MathValue[] getArgs() {
-        return new MathValue[] {this.value, this.min, this.max};
+        return new MathValue[] { this.value, this.min, this.max };
     }
 }

@@ -1,3 +1,10 @@
+/*
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
+ */
 package software.bluelib.loader.renderer.layer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -15,49 +22,46 @@ import software.bluelib.loader.cache.texture.AutoGlowingTexture;
 import software.bluelib.loader.renderer.GeoRenderer;
 import software.bluelib.loader.util.ClientUtil;
 
-
 public class AutoGlowingGeoLayer<T extends GeoAnimatable> extends GeoRenderLayer<T> {
-	public AutoGlowingGeoLayer(GeoRenderer<T> renderer) {
-		super(renderer);
-	}
 
-	
-	@Deprecated(forRemoval = true)
-	protected RenderType getRenderType(T animatable) {
-		return getRenderType(animatable, null);
-	}
+    public AutoGlowingGeoLayer(GeoRenderer<T> renderer) {
+        super(renderer);
+    }
 
-	
-	@Nullable
-	protected RenderType getRenderType(T animatable, @Nullable MultiBufferSource bufferSource) {
-		if (!(animatable instanceof Entity entity))
-			return AutoGlowingTexture.getRenderType(getTextureResource(animatable));
+    @Deprecated(forRemoval = true)
+    protected RenderType getRenderType(T animatable) {
+        return getRenderType(animatable, null);
+    }
 
-		boolean invisible = entity.isInvisible();
-		ResourceLocation texture = AutoGlowingTexture.getEmissiveResource(getTextureResource(animatable));
+    @Nullable
+    protected RenderType getRenderType(T animatable, @Nullable MultiBufferSource bufferSource) {
+        if (!(animatable instanceof Entity entity))
+            return AutoGlowingTexture.getRenderType(getTextureResource(animatable));
 
-		if (invisible && !entity.isInvisibleTo(ClientUtil.getClientPlayer()))
-			return RenderType.itemEntityTranslucentCull(texture);
+        boolean invisible = entity.isInvisible();
+        ResourceLocation texture = AutoGlowingTexture.getEmissiveResource(getTextureResource(animatable));
 
-		if (Minecraft.getInstance().shouldEntityAppearGlowing(entity)) {
-			if (invisible)
-				return RenderType.outline(texture);
+        if (invisible && !entity.isInvisibleTo(ClientUtil.getClientPlayer()))
+            return RenderType.itemEntityTranslucentCull(texture);
 
-			return AutoGlowingTexture.getOutlineRenderType(getTextureResource(animatable));
-		}
+        if (Minecraft.getInstance().shouldEntityAppearGlowing(entity)) {
+            if (invisible)
+                return RenderType.outline(texture);
 
-		return invisible ? null : AutoGlowingTexture.getRenderType(getTextureResource(animatable));
-	}
+            return AutoGlowingTexture.getOutlineRenderType(getTextureResource(animatable));
+        }
 
-	
-	@Override
-	public void render(PoseStack poseStack, T animatable, BakedGeoModel bakedModel, @Nullable RenderType renderType, MultiBufferSource bufferSource, @Nullable VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay) {
-		renderType = getRenderType(animatable);
+        return invisible ? null : AutoGlowingTexture.getRenderType(getTextureResource(animatable));
+    }
 
-		if (renderType != null) {
-			getRenderer().reRender(bakedModel, poseStack, bufferSource, animatable, renderType,
-								   bufferSource.getBuffer(renderType), partialTick, LightTexture.FULL_SKY, packedOverlay,
-					getRenderer().getRenderColor(animatable, partialTick, packedLight).argbInt());
-		}
-	}
+    @Override
+    public void render(PoseStack poseStack, T animatable, BakedGeoModel bakedModel, @Nullable RenderType renderType, MultiBufferSource bufferSource, @Nullable VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay) {
+        renderType = getRenderType(animatable);
+
+        if (renderType != null) {
+            getRenderer().reRender(bakedModel, poseStack, bufferSource, animatable, renderType,
+                    bufferSource.getBuffer(renderType), partialTick, LightTexture.FULL_SKY, packedOverlay,
+                    getRenderer().getRenderColor(animatable, partialTick, packedLight).argbInt());
+        }
+    }
 }

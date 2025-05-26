@@ -1,6 +1,15 @@
+/*
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
+ */
 package software.bluelib.loader.util;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import java.util.Objects;
+import java.util.function.BiConsumer;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -16,16 +25,12 @@ import software.bluelib.BlueLibConstants;
 import software.bluelib.loader.animatable.client.GeoRenderProvider;
 import software.bluelib.loader.renderer.GeoArmorRenderer;
 
-import java.util.Objects;
-import java.util.function.BiConsumer;
-
-
 @ApiStatus.Internal
 public class InternalUtil {
-    
+
     public static <T extends LivingEntity, M extends HumanoidModel<T>, A extends HumanoidModel<T>> boolean tryRenderGeoArmorPiece(PoseStack poseStack, MultiBufferSource bufferSource, T entity, ItemStack stack, EquipmentSlot equipmentSlot, M parentModel, A baseModel,
-                                                                                                                                  float partialTick, int packedLight, float limbSwing, float limbSwingAmount, float lerpedTickCount, float netHeadYaw, float headPitch,
-                                                                                                                                  BiConsumer<A, EquipmentSlot> partVisibilitySetter) {
+            float partialTick, int packedLight, float limbSwing, float limbSwingAmount, float lerpedTickCount, float netHeadYaw, float headPitch,
+            BiConsumer<A, EquipmentSlot> partVisibilitySetter) {
         final Item item = stack.getItem();
 
         if (!(item instanceof Equipable equipable) || equipable.getEquipmentSlot() != equipmentSlot)
@@ -42,13 +47,12 @@ public class InternalUtil {
         if (geckolibModel instanceof GeoArmorRenderer<?> geoArmorRenderer)
             geoArmorRenderer.prepForRender(entity, stack, equipmentSlot, baseModel, bufferSource, partialTick, limbSwing, limbSwingAmount, netHeadYaw, headPitch);
 
-        baseModel.copyPropertiesTo((A)geckolibModel);
+        baseModel.copyPropertiesTo((A) geckolibModel);
         geckolibModel.renderToBuffer(poseStack, null, packedLight, OverlayTexture.NO_OVERLAY, Color.WHITE.argbInt());
 
         return true;
     }
 
-    
     public static boolean areComponentsMatchingIgnoringGeckoLibId(PatchedDataComponentMap map1, PatchedDataComponentMap map2) {
         final DataComponentType<Long> stackId = BlueLibConstants.STACK_ANIMATABLE_ID_COMPONENT.get();
         boolean patched = false;
