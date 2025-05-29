@@ -5,9 +5,9 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.*;
 import software.bluelib.BlueLibConstants;
-import software.bluelib.api.registry.builders.RegistryBuilder;
-import software.bluelib.api.registry.datagen.items.BddItemModelGenerator;
-import software.bluelib.api.registry.datagen.items.BddItemModelTemplates;
+import software.bluelib.api.registry.AbstractRegistryBuilder;
+import software.bluelib.api.registry.datagen.items.ItemModelGenerator;
+import software.bluelib.api.registry.datagen.items.ItemModelTemplates;
 import software.bluelib.api.registry.helpers.ArmorSetConfig;
 import software.bluelib.api.registry.helpers.ToolsetConfig;
 
@@ -24,13 +24,13 @@ import java.util.stream.Collectors;
 public class ItemBuilder<T extends Item> {
 
     public static final List<String> generatedItems = new ArrayList<>();
-    public static final Map<String, BddItemModelTemplates> customModelMap = new HashMap<>();
+    public static final Map<String, ItemModelTemplates> customModelMap = new HashMap<>();
     public static String itemName;
     public final Function<Item.Properties, T> itemConstructor;
     public Consumer<Item.Properties> propertiesConsumer = props -> {};
     public static final Map<String, List<Supplier<Item>>> TOOLSETS = new HashMap<>();
     public static final Map<String, List<Supplier<Item>>> ARMORSETS = new HashMap<>();
-    private static final String modId = RegistryBuilder.getModID();
+    private static final String modId = AbstractRegistryBuilder.getModID();
 
     public ItemBuilder(String name, Function<Item.Properties, T> itemConstructor) {
         itemName = name;
@@ -43,15 +43,15 @@ public class ItemBuilder<T extends Item> {
 
     public static void doItemModelGen(String modId) {
         for (String itemName : generatedItems) {
-            BddItemModelTemplates template = customModelMap.getOrDefault(itemName, BddItemModelTemplates.HANDHELD);
+            ItemModelTemplates template = customModelMap.getOrDefault(itemName, ItemModelTemplates.HANDHELD);
 
             if (itemName.endsWith("_sword") || itemName.endsWith("_pickaxe") || itemName.endsWith("_axe") || itemName.endsWith("_shovel") || itemName.endsWith("_hoe")) {
-                template = BddItemModelTemplates.HANDHELD;
+                template = ItemModelTemplates.HANDHELD;
             } else if (itemName.endsWith("_helmet") || itemName.endsWith("_chestplate") || itemName.endsWith("_leggings") || itemName.endsWith("_boots")) {
-                template = BddItemModelTemplates.GENERATED;
+                template = ItemModelTemplates.GENERATED;
             }
 
-            BddItemModelGenerator.generateItemModel(modId, itemName, template);
+            ItemModelGenerator.generateItemModel(modId, itemName, template);
         }
     }
 
@@ -60,7 +60,7 @@ public class ItemBuilder<T extends Item> {
         return this;
     }
 
-    public ItemBuilder<T> model(BddItemModelTemplates template) {
+    public ItemBuilder<T> model(ItemModelTemplates template) {
         customModelMap.put(itemName, template);
         return this;
     }

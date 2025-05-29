@@ -9,7 +9,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import software.bluelib.BlueLibConstants;
-import software.bluelib.api.registry.builders.RegistryBuilder;
+import software.bluelib.api.registry.AbstractRegistryBuilder;
 import software.bluelib.api.registry.builders.entity.EntityBuilder;
 import software.bluelib.api.registry.builders.items.ItemBuilder;
 import software.bluelib.api.utils.logging.BaseLogLevel;
@@ -23,7 +23,7 @@ import java.util.function.Supplier;
 public class CreativeTabBuilder {
 
     private final String id;
-    private static String modId = RegistryBuilder.getModID();
+    private static String modId = AbstractRegistryBuilder.getModID();
     private Supplier<Item> iconSupplier;
     private CreativeModeTab.DisplayItemsGenerator displayItemsGenerator;
     private String backgroundSuffix;

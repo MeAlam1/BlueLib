@@ -8,7 +8,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
-import software.bluelib.api.registry.builders.RegistryBuilder;
+import software.bluelib.api.registry.AbstractRegistryBuilder;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -41,7 +41,7 @@ public class EntityTagBuilder {
     public TagKey<EntityType<?>> build() {
         generatedTags.add(name);
         tagEntityTypes.put(name, new ArrayList<>(entityTypes));
-        return TagKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(RegistryBuilder.getModID(), name));
+        return TagKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(AbstractRegistryBuilder.getModID(), name));
     }
 
     public static void doTagJsonGen() {
@@ -52,7 +52,7 @@ public class EntityTagBuilder {
     }
 
     private static void generateTagJson(String tagName, List<EntityType<?>> entityTypes) {
-        Path tagPath = findProjectRoot().resolve(RegistryBuilder.getModID() + "/tags/entity_type/" + tagName + ".json");
+        Path tagPath = findProjectRoot().resolve(AbstractRegistryBuilder.getModID() + "/tags/entity_type/" + tagName + ".json");
 
         try {
             if (Files.exists(tagPath)) {

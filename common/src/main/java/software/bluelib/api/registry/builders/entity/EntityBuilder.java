@@ -9,8 +9,8 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SpawnEggItem;
 import software.bluelib.BlueLibConstants;
-import software.bluelib.api.registry.datagen.items.BddItemModelGenerator;
-import software.bluelib.api.registry.datagen.items.BddItemModelTemplates;
+import software.bluelib.api.registry.datagen.items.ItemModelGenerator;
+import software.bluelib.api.registry.datagen.items.ItemModelTemplates;
 import software.bluelib.api.registry.helpers.entity.AttributeHelper;
 import software.bluelib.api.registry.helpers.entity.RenderHelper;
 
@@ -115,7 +115,7 @@ public class EntityBuilder<T extends Mob> {
     public static void doSpawnEggDatagen(String modId) {
         if (hasSpawnEgg) {
             String spawnEggName = name + "_spawn_egg";
-            BddItemModelGenerator.generateItemModel(modId, spawnEggName, BddItemModelTemplates.SPAWN_EGG);
+            ItemModelGenerator.generateItemModel(modId, spawnEggName, ItemModelTemplates.SPAWN_EGG);
         }
     }
 

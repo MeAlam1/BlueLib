@@ -1,9 +1,10 @@
-package software.bluelib.api.registry.builders;
+package software.bluelib.api.registry;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -18,12 +19,16 @@ import software.bluelib.api.registry.builders.tabs.CreativeTabBuilder;
 import software.bluelib.api.registry.datagen.entity.EntityTagBuilder;
 
 import java.util.function.Function;
+import java.util.function.Supplier;
 
-public class RegistryBuilder {
+public abstract class AbstractRegistryBuilder {
+    private static String modID;
 
-    public static String modID;
+    public AbstractRegistryBuilder(String modId) {
+        modID = modId;
+    }
 
-    public RegistryBuilder(String modId) {
+    public static void setModID(String modId) {
         modID = modId;
     }
 
@@ -60,9 +65,9 @@ public class RegistryBuilder {
     }
 
     public static void doDatagen() {
-        ItemBuilder.doItemModelGen(getModID());
-        BlockBuilder.doBlockModelGen(getModID());
-        EntityBuilder.doSpawnEggDatagen(getModID());
+        ItemBuilder.doItemModelGen(modID);
+        BlockBuilder.doBlockModelGen(modID);
+        EntityBuilder.doSpawnEggDatagen(modID);
         EntityTagBuilder.doTagJsonGen();
     }
 }

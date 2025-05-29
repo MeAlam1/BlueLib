@@ -2,7 +2,7 @@ package software.bluelib.api.registry.builders.keybinds;
 
 import net.minecraft.client.KeyMapping;
 import software.bluelib.BlueLibConstants;
-import software.bluelib.api.registry.builders.RegistryBuilder;
+import software.bluelib.api.registry.AbstractRegistryBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +12,7 @@ public class KeybindBuilder {
     public static final List<KeybindBuilder> REGISTERED_BUILDERS = new ArrayList<>();
     private final String name;
     private final int keyCode;
-    private String category = "key.categories." + RegistryBuilder.getModID();
+    private String category = "key.categories." + AbstractRegistryBuilder.getModID();
     private Supplier<KeyMapping> keyMappingSupplier;
 
     private KeybindBuilder(String name, int keyCode) {
@@ -31,7 +31,7 @@ public class KeybindBuilder {
 
     public Supplier<KeyMapping> register() {
         keyMappingSupplier = BlueLibConstants.PlatformHelper.REGISTRY.registerKeybind(name, () -> new KeyMapping(
-                "key." + RegistryBuilder.getModID() + "." + name,
+                "key." + AbstractRegistryBuilder.getModID() + "." + name,
                 keyCode,
                 category
         ));

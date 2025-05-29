@@ -4,13 +4,14 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import software.bluelib.BlueLibConstants;
-import software.bluelib.api.registry.builders.RegistryBuilder;
-import software.bluelib.api.registry.datagen.blocks.BddBlockModelGenerator;
-import software.bluelib.api.registry.datagen.blocks.BddBlockModelTemplates;
-import software.bluelib.api.registry.datagen.blockstates.BddBlockstateGenerator;
-import software.bluelib.api.registry.datagen.blockstates.BddBlockstateTemplates;
-import software.bluelib.api.registry.datagen.items.BddItemModelGenerator;
-import software.bluelib.api.registry.datagen.items.BddItemModelTemplates;
+import software.bluelib.api.registry.AbstractRegistryBuilder;
+import software.bluelib.api.registry.datagen.blocks.BlockModelGenerator;
+import software.bluelib.api.registry.datagen.blocks.BlockModelTemplates;
+import software.bluelib.api.registry.datagen.blockstates.BlockstateGenerator;
+import software.bluelib.api.registry.datagen.blockstates.BlockstateTemplates;
+import software.bluelib.api.registry.datagen.items.ItemModelGenerator;
+import software.bluelib.api.registry.datagen.items.ItemModelTemplates;
+import software.bluelib.api.registry.helpers.blocks.BlockstateBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,14 +21,14 @@ import java.util.function.Supplier;
 public class BlockBuilder<T extends Block> {
 
     public static final List<BlockBuilder<?>> REGISTERED_BUILDERS = new ArrayList<>();
-    private static final String modId = RegistryBuilder.getModID();
+    private static final String modId = AbstractRegistryBuilder.getModID();
     public static String blockName;
     public final Function<Block.Properties, T> blockConstructor;
     public Block.Properties properties;
     public static boolean createDefaultItem = false;
     public T registeredBlock;
-    public static BddBlockstateTemplates blockstateTemplate;
-    public static BddBlockModelTemplates blockModelTemplate;
+    public static BlockstateTemplates blockstateTemplate;
+    public static BlockModelTemplates blockModelTemplate;
 
     public BlockBuilder(String name, Function<Block.Properties, T> blockConstructor) {
         blockName = name;
@@ -46,83 +47,83 @@ public class BlockBuilder<T extends Block> {
 
     public BlockBuilder<T> defaultBlockstate() {
         return this.datagen()
-                .blockstate(BddBlockstateTemplates.SIMPLE_BLOCK)
-                .model(BddBlockModelTemplates.CUBE_ALL)
+                .blockstate(BlockstateTemplates.SIMPLE_BLOCK)
+                .model(BlockModelTemplates.CUBE_ALL)
                 .finish();
     }
 
     public BlockBuilder<T> button() {
-        generate(blockName, BddBlockstateTemplates.BUTTON_BLOCK, BddBlockModelTemplates.BUTTON, BddItemModelTemplates.BLOCK_WITH_INVENTORY_MODEL);
+        generate(blockName, BlockstateTemplates.BUTTON_BLOCK, BlockModelTemplates.BUTTON, ItemModelTemplates.BLOCK_WITH_INVENTORY_MODEL);
         return this;
     }
 
     public BlockBuilder<T> log() {
-        generate(blockName, BddBlockstateTemplates.ORIENTED_BLOCK, BddBlockModelTemplates.COLUMN, BddItemModelTemplates.BLOCK_ITEM);
+        generate(blockName, BlockstateTemplates.ORIENTED_BLOCK, BlockModelTemplates.COLUMN, ItemModelTemplates.BLOCK_ITEM);
         return this;
     }
 
     public BlockBuilder<T> slab() {
-        generate(blockName, BddBlockstateTemplates.SLAB_BLOCK, BddBlockModelTemplates.SLAB, BddItemModelTemplates.BLOCK_SPRITE);
+        generate(blockName, BlockstateTemplates.SLAB_BLOCK, BlockModelTemplates.SLAB, ItemModelTemplates.BLOCK_SPRITE);
         return this;
     }
 
     public BlockBuilder<T> door() {
-        generate(blockName, BddBlockstateTemplates.DOOR_BLOCK, BddBlockModelTemplates.DOOR, BddItemModelTemplates.BLOCK_SPRITE);
+        generate(blockName, BlockstateTemplates.DOOR_BLOCK, BlockModelTemplates.DOOR, ItemModelTemplates.BLOCK_SPRITE);
         return this;
     }
 
     public BlockBuilder<T> fence() {
-        generate(blockName, BddBlockstateTemplates.FENCE_BLOCK, BddBlockModelTemplates.FENCE, BddItemModelTemplates.BLOCK_WITH_INVENTORY_MODEL);
-        BddItemModelGenerator.generateItemModel(modId, blockName, BddItemModelTemplates.GENERATED); // Extra model
+        generate(blockName, BlockstateTemplates.FENCE_BLOCK, BlockModelTemplates.FENCE, ItemModelTemplates.BLOCK_WITH_INVENTORY_MODEL);
+        ItemModelGenerator.generateItemModel(modId, blockName, ItemModelTemplates.GENERATED); // Extra model
         return this;
     }
 
     public BlockBuilder<T> fenceGate() {
-        generate(blockName, BddBlockstateTemplates.FENCE_GATE_BLOCK, BddBlockModelTemplates.FENCE_GATE, BddItemModelTemplates.BLOCK_SPRITE);
+        generate(blockName, BlockstateTemplates.FENCE_GATE_BLOCK, BlockModelTemplates.FENCE_GATE, ItemModelTemplates.BLOCK_SPRITE);
         return this;
     }
 
     public BlockBuilder<T> trapdoor() {
-        generate(blockName, BddBlockstateTemplates.TRAPDOOR_BLOCK, BddBlockModelTemplates.TRAPDOOR, BddItemModelTemplates.BLOCK_SPRITE);
+        generate(blockName, BlockstateTemplates.TRAPDOOR_BLOCK, BlockModelTemplates.TRAPDOOR, ItemModelTemplates.BLOCK_SPRITE);
         return this;
     }
 
     public BlockBuilder<T> stairs() {
-        generate(blockName, BddBlockstateTemplates.STAIRS_BLOCK, BddBlockModelTemplates.STAIRS, BddItemModelTemplates.BLOCK_SPRITE);
+        generate(blockName, BlockstateTemplates.STAIRS_BLOCK, BlockModelTemplates.STAIRS, ItemModelTemplates.BLOCK_SPRITE);
         return this;
     }
 
     public BlockBuilder<T> pressurePlate() {
-        generate(blockName, BddBlockstateTemplates.PRESSURE_PLATE_BLOCK, BddBlockModelTemplates.PRESSURE_PLATE, BddItemModelTemplates.BLOCK_SPRITE);
+        generate(blockName, BlockstateTemplates.PRESSURE_PLATE_BLOCK, BlockModelTemplates.PRESSURE_PLATE, ItemModelTemplates.BLOCK_SPRITE);
         return this;
     }
 
     public BlockBuilder<T> tree() {
-        generate(blockName + "_log", BddBlockstateTemplates.ORIENTED_BLOCK, BddBlockModelTemplates.COLUMN, BddItemModelTemplates.BLOCK_ITEM);
-        generate(blockName + "_planks", BddBlockstateTemplates.SIMPLE_BLOCK, BddBlockModelTemplates.CUBE_ALL, BddItemModelTemplates.BLOCK_ITEM);
-        generate(blockName + "_leaves", BddBlockstateTemplates.SIMPLE_BLOCK, BddBlockModelTemplates.CUBE_ALL, BddItemModelTemplates.BLOCK_ITEM);
+        generate(blockName + "_log", BlockstateTemplates.ORIENTED_BLOCK, BlockModelTemplates.COLUMN, ItemModelTemplates.BLOCK_ITEM);
+        generate(blockName + "_planks", BlockstateTemplates.SIMPLE_BLOCK, BlockModelTemplates.CUBE_ALL, ItemModelTemplates.BLOCK_ITEM);
+        generate(blockName + "_leaves", BlockstateTemplates.SIMPLE_BLOCK, BlockModelTemplates.CUBE_ALL, ItemModelTemplates.BLOCK_ITEM);
         return this;
     }
 
     public BlockBuilder<T> wood() {
-        generate(blockName + "_log", BddBlockstateTemplates.ORIENTED_BLOCK, BddBlockModelTemplates.COLUMN, BddItemModelTemplates.BLOCK_ITEM);
-        generate(blockName + "_planks", BddBlockstateTemplates.SIMPLE_BLOCK, BddBlockModelTemplates.CUBE_ALL, BddItemModelTemplates.BLOCK_ITEM);
-        generate(blockName + "_fence", BddBlockstateTemplates.FENCE_BLOCK, BddBlockModelTemplates.FENCE, BddItemModelTemplates.BLOCK_WITH_INVENTORY_MODEL);
-        BddItemModelGenerator.generateItemModel(modId, blockName + "_fence", BddItemModelTemplates.GENERATED); // extra
-        generate(blockName + "_door", BddBlockstateTemplates.DOOR_BLOCK, BddBlockModelTemplates.DOOR, BddItemModelTemplates.BLOCK_SPRITE);
-        generate(blockName + "_button", BddBlockstateTemplates.BUTTON_BLOCK, BddBlockModelTemplates.BUTTON, BddItemModelTemplates.BLOCK_WITH_INVENTORY_MODEL);
-        generate(blockName + "_slab", BddBlockstateTemplates.SLAB_BLOCK, BddBlockModelTemplates.SLAB, BddItemModelTemplates.BLOCK_SPRITE);
-        generate(blockName + "_pressure_plate", BddBlockstateTemplates.PRESSURE_PLATE_BLOCK, BddBlockModelTemplates.PRESSURE_PLATE, BddItemModelTemplates.BLOCK_SPRITE);
-        generate(blockName + "_stairs", BddBlockstateTemplates.STAIRS_BLOCK, BddBlockModelTemplates.STAIRS, BddItemModelTemplates.BLOCK_SPRITE);
-        generate(blockName + "_trapdoor", BddBlockstateTemplates.TRAPDOOR_BLOCK, BddBlockModelTemplates.TRAPDOOR, BddItemModelTemplates.BLOCK_SPRITE);
-        generate(blockName + "_fence_gate", BddBlockstateTemplates.FENCE_GATE_BLOCK, BddBlockModelTemplates.FENCE_GATE, BddItemModelTemplates.BLOCK_SPRITE);
+        generate(blockName + "_log", BlockstateTemplates.ORIENTED_BLOCK, BlockModelTemplates.COLUMN, ItemModelTemplates.BLOCK_ITEM);
+        generate(blockName + "_planks", BlockstateTemplates.SIMPLE_BLOCK, BlockModelTemplates.CUBE_ALL, ItemModelTemplates.BLOCK_ITEM);
+        generate(blockName + "_fence", BlockstateTemplates.FENCE_BLOCK, BlockModelTemplates.FENCE, ItemModelTemplates.BLOCK_WITH_INVENTORY_MODEL);
+        ItemModelGenerator.generateItemModel(modId, blockName + "_fence", ItemModelTemplates.GENERATED); // extra
+        generate(blockName + "_door", BlockstateTemplates.DOOR_BLOCK, BlockModelTemplates.DOOR, ItemModelTemplates.BLOCK_SPRITE);
+        generate(blockName + "_button", BlockstateTemplates.BUTTON_BLOCK, BlockModelTemplates.BUTTON, ItemModelTemplates.BLOCK_WITH_INVENTORY_MODEL);
+        generate(blockName + "_slab", BlockstateTemplates.SLAB_BLOCK, BlockModelTemplates.SLAB, ItemModelTemplates.BLOCK_SPRITE);
+        generate(blockName + "_pressure_plate", BlockstateTemplates.PRESSURE_PLATE_BLOCK, BlockModelTemplates.PRESSURE_PLATE, ItemModelTemplates.BLOCK_SPRITE);
+        generate(blockName + "_stairs", BlockstateTemplates.STAIRS_BLOCK, BlockModelTemplates.STAIRS, ItemModelTemplates.BLOCK_SPRITE);
+        generate(blockName + "_trapdoor", BlockstateTemplates.TRAPDOOR_BLOCK, BlockModelTemplates.TRAPDOOR, ItemModelTemplates.BLOCK_SPRITE);
+        generate(blockName + "_fence_gate", BlockstateTemplates.FENCE_GATE_BLOCK, BlockModelTemplates.FENCE_GATE, ItemModelTemplates.BLOCK_SPRITE);
         return this;
     }
 
-    private void generate(String blockName, BddBlockstateTemplates state, BddBlockModelTemplates model, BddItemModelTemplates item) {
-        BddBlockstateGenerator.generateBlockstate(modId, blockName, state);
-        BddBlockModelGenerator.generateBlockModel(modId, blockName, model);
-        BddItemModelGenerator.generateItemModel(modId, blockName, item);
+    private void generate(String blockName, BlockstateTemplates state, BlockModelTemplates model, ItemModelTemplates item) {
+        BlockstateGenerator.generateBlockstate(modId, blockName, state);
+        BlockModelGenerator.generateBlockModel(modId, blockName, model);
+        ItemModelGenerator.generateItemModel(modId, blockName, item);
     }
 
     public BlockstateBuilder datagen() {
@@ -151,28 +152,11 @@ public class BlockBuilder<T extends Block> {
 
     public static void doBlockModelGen(String modId) {
         if (createDefaultItem) {
-            BddItemModelGenerator.generateItemModel(modId, blockName, BddItemModelTemplates.BLOCK_ITEM);
+            ItemModelGenerator.generateItemModel(modId, blockName, ItemModelTemplates.BLOCK_ITEM);
         }
         if (blockstateTemplate != null) {
-            BddBlockstateGenerator.generateBlockstate(modId, blockName, blockstateTemplate);
-            BddBlockModelGenerator.generateBlockModel(modId, blockName, blockModelTemplate);
-        }
-    }
-
-    public class BlockstateBuilder {
-
-        public BlockstateBuilder blockstate(BddBlockstateTemplates blockstates) {
-            blockstateTemplate = blockstates;
-            return this;
-        }
-
-        public BlockstateBuilder model(BddBlockModelTemplates models) {
-            blockModelTemplate = models;
-            return this;
-        }
-
-        public BlockBuilder<T> finish() {
-            return BlockBuilder.this;
+            BlockstateGenerator.generateBlockstate(modId, blockName, blockstateTemplate);
+            BlockModelGenerator.generateBlockModel(modId, blockName, blockModelTemplate);
         }
     }
 }

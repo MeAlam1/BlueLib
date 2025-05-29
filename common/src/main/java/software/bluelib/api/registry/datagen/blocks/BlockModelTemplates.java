@@ -6,11 +6,11 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class BddBlockModelTemplates {
+public abstract class BlockModelTemplates {
 
     public abstract Map<String, JsonObject> generateBlockModel(String modId, String blockName, Map<String, String> properties);
 
-    public static final BddBlockModelTemplates CUBE_ALL = new BddBlockModelTemplates() {
+    public static final BlockModelTemplates CUBE_ALL = new BlockModelTemplates() {
 
         @Override
         public Map<String, JsonObject> generateBlockModel(String modId, String blockName, Map<String, String> properties) {
@@ -24,7 +24,7 @@ public abstract class BddBlockModelTemplates {
         }
     };
 
-    public static final BddBlockModelTemplates COLUMN = new BddBlockModelTemplates() {
+    public static final BlockModelTemplates COLUMN = new BlockModelTemplates() {
 
         @Override
         public Map<String, JsonObject> generateBlockModel(String modId, String blockName, Map<String, String> properties) {
@@ -40,7 +40,7 @@ public abstract class BddBlockModelTemplates {
         }
     };
 
-    public static final BddBlockModelTemplates CUBE = new BddBlockModelTemplates() {
+    public static final BlockModelTemplates CUBE = new BlockModelTemplates() {
 
         @Override
         public Map<String, JsonObject> generateBlockModel(String modId, String blockName, Map<String, String> properties) {
@@ -58,7 +58,7 @@ public abstract class BddBlockModelTemplates {
         }
     };
 
-    public static final BddBlockModelTemplates DOOR = new BddBlockModelTemplates() {
+    public static final BlockModelTemplates DOOR = new BlockModelTemplates() {
 
         @Override
         public Map<String, JsonObject> generateBlockModel(String modId, String blockName, Map<String, String> properties) {
@@ -90,7 +90,7 @@ public abstract class BddBlockModelTemplates {
         }
     };
 
-    public static final BddBlockModelTemplates FENCE = new BddBlockModelTemplates() {
+    public static final BlockModelTemplates FENCE = new BlockModelTemplates() {
 
         @Override
         public Map<String, JsonObject> generateBlockModel(String modId, String blockName, Map<String, String> properties) {
@@ -124,7 +124,7 @@ public abstract class BddBlockModelTemplates {
         }
     };
 
-    public static final BddBlockModelTemplates BUTTON = new BddBlockModelTemplates() {
+    public static final BlockModelTemplates BUTTON = new BlockModelTemplates() {
 
         @Override
         public Map<String, JsonObject> generateBlockModel(String modId, String blockName, Map<String, String> properties) {
@@ -156,7 +156,7 @@ public abstract class BddBlockModelTemplates {
         }
     };
 
-    public static final BddBlockModelTemplates SLAB = new BddBlockModelTemplates() {
+    public static final BlockModelTemplates SLAB = new BlockModelTemplates() {
 
         @Override
         public Map<String, JsonObject> generateBlockModel(String modId, String blockName, Map<String, String> properties) {
@@ -185,7 +185,7 @@ public abstract class BddBlockModelTemplates {
         }
     };
 
-    public static final BddBlockModelTemplates TRAPDOOR = new BddBlockModelTemplates() {
+    public static final BlockModelTemplates TRAPDOOR = new BlockModelTemplates() {
 
         @Override
         public Map<String, JsonObject> generateBlockModel(String modId, String blockName, Map<String, String> properties) {
@@ -217,7 +217,7 @@ public abstract class BddBlockModelTemplates {
         }
     };
 
-    public static final BddBlockModelTemplates STAIRS = new BddBlockModelTemplates() {
+    public static final BlockModelTemplates STAIRS = new BlockModelTemplates() {
 
         @Override
         public Map<String, JsonObject> generateBlockModel(String modId, String blockName, Map<String, String> properties) {
@@ -255,7 +255,7 @@ public abstract class BddBlockModelTemplates {
         }
     };
 
-    public static final BddBlockModelTemplates PRESSURE_PLATE = new BddBlockModelTemplates() {
+    public static final BlockModelTemplates PRESSURE_PLATE = new BlockModelTemplates() {
 
         @Override
         public Map<String, JsonObject> generateBlockModel(String modId, String blockName, Map<String, String> properties) {
@@ -280,7 +280,7 @@ public abstract class BddBlockModelTemplates {
         }
     };
 
-    public static final BddBlockModelTemplates FENCE_GATE = new BddBlockModelTemplates() {
+    public static final BlockModelTemplates FENCE_GATE = new BlockModelTemplates() {
 
         @Override
         public Map<String, JsonObject> generateBlockModel(String modId, String blockName, Map<String, String> properties) {

@@ -7,6 +7,12 @@
  */
 package software.bluelib;
 
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -17,7 +23,10 @@ import net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 import net.neoforged.fml.loading.FMLEnvironment;
 import org.spongepowered.asm.launch.MixinBootstrap;
-import software.bluelib.api.registry.builders.RegistryBuilder;
+import software.bluelib.api.registry.BlueRegistryBuilder;
+import software.bluelib.api.registry.AbstractRegistryBuilder;
+import software.bluelib.api.registry.builders.menu.MenuBuilder;
+import software.bluelib.api.registry.helpers.menu.BlueMenuTypeExtension;
 import software.bluelib.client.BlueLibClient;
 import software.bluelib.config.ConfigHolder;
 import software.bluelib.event.ReloadHandler;
@@ -25,11 +34,13 @@ import software.bluelib.example.event.VariantProvider;
 import software.bluelib.net.NeoForgeNetworkManager;
 import software.bluelib.platform.NeoForgeRegistryHelper;
 
+import java.util.function.Supplier;
+
 @Mod(BlueLibConstants.MOD_ID)
 public class BlueLib {
 
     /**
-     * Initializes the {@link RegistryBuilder} instance with the mod ID. Replace {@link BlueLibConstants#MOD_ID} with your mod's unique mod ID to register content under your mod's namespace.
+     * Initializes the {@link AbstractRegistryBuilder} instance with the mod ID. Replace {@link BlueLibConstants#MOD_ID} with your mod's unique mod ID to register content under your mod's namespace.
      * <p>
      * This is essential for registering mod content such as items, blocks, and entities.
      * <p>
@@ -37,7 +48,7 @@ public class BlueLib {
      * <p>
      * Do not use this, you need to add this line into your own mod.
      */
-    public static RegistryBuilder REGISTRY = new RegistryBuilder(BlueLibConstants.MOD_ID);
+    public static AbstractRegistryBuilder REGISTRY = new BlueRegistryBuilder(BlueLibConstants.MOD_ID);
 
     public BlueLib(IEventBus pModEventBus, ModContainer pModContainer) {
         BlueLibCommon.doRegistration();
@@ -61,6 +72,6 @@ public class BlueLib {
     }
 
     private void onGatherData(GatherDataEvent event) {
-        RegistryBuilder.doDatagen();
+        AbstractRegistryBuilder.doDatagen();
     }
 }

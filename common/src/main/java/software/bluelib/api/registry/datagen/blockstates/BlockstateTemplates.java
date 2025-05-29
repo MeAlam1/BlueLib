@@ -5,11 +5,11 @@ import com.google.gson.JsonObject;
 
 import java.util.Map;
 
-public abstract class BddBlockstateTemplates {
+public abstract class BlockstateTemplates {
 
     public abstract JsonObject generateBlockstate(String modId, String blockName, Map<String, String> properties);
 
-    public static final BddBlockstateTemplates SIMPLE_BLOCK = new BddBlockstateTemplates() {
+    public static final BlockstateTemplates SIMPLE_BLOCK = new BlockstateTemplates() {
 
         @Override
         public JsonObject generateBlockstate(String modId, String blockName, Map<String, String> properties) {
@@ -23,7 +23,7 @@ public abstract class BddBlockstateTemplates {
         }
     };
 
-    public static final BddBlockstateTemplates ORIENTED_BLOCK = new BddBlockstateTemplates() {
+    public static final BlockstateTemplates ORIENTED_BLOCK = new BlockstateTemplates() {
 
         @Override
         public JsonObject generateBlockstate(String modId, String blockName, Map<String, String> properties) {
@@ -53,7 +53,7 @@ public abstract class BddBlockstateTemplates {
         }
     };
 
-    public static final BddBlockstateTemplates VARIANT_BLOCK = new BddBlockstateTemplates() {
+    public static final BlockstateTemplates VARIANT_BLOCK = new BlockstateTemplates() {
 
         @Override
         public JsonObject generateBlockstate(String modId, String blockName, Map<String, String> properties) {
@@ -71,7 +71,7 @@ public abstract class BddBlockstateTemplates {
         }
     };
 
-    public static final BddBlockstateTemplates MULTIPART_BLOCK = new BddBlockstateTemplates() {
+    public static final BlockstateTemplates MULTIPART_BLOCK = new BlockstateTemplates() {
 
         @Override
         public JsonObject generateBlockstate(String modId, String blockName, Map<String, String> properties) {
@@ -99,7 +99,7 @@ public abstract class BddBlockstateTemplates {
         }
     };
 
-    public static final BddBlockstateTemplates DOOR_BLOCK = new BddBlockstateTemplates() {
+    public static final BlockstateTemplates DOOR_BLOCK = new BlockstateTemplates() {
 
         @Override
         public JsonObject generateBlockstate(String modId, String blockName, Map<String, String> properties) {
@@ -152,7 +152,7 @@ public abstract class BddBlockstateTemplates {
         }
     };
 
-    public static final BddBlockstateTemplates FENCE_BLOCK = new BddBlockstateTemplates() {
+    public static final BlockstateTemplates FENCE_BLOCK = new BlockstateTemplates() {
 
         @Override
         public JsonObject generateBlockstate(String modId, String blockName, Map<String, String> properties) {
@@ -188,7 +188,7 @@ public abstract class BddBlockstateTemplates {
         }
     };
 
-    public static final BddBlockstateTemplates BUTTON_BLOCK = new BddBlockstateTemplates() {
+    public static final BlockstateTemplates BUTTON_BLOCK = new BlockstateTemplates() {
 
         @Override
         public JsonObject generateBlockstate(String modId, String blockName, Map<String, String> properties) {
@@ -240,7 +240,7 @@ public abstract class BddBlockstateTemplates {
         }
     };
 
-    public static final BddBlockstateTemplates SLAB_BLOCK = new BddBlockstateTemplates() {
+    public static final BlockstateTemplates SLAB_BLOCK = new BlockstateTemplates() {
 
         @Override
         public JsonObject generateBlockstate(String modId, String blockName, Map<String, String> properties) {
@@ -265,7 +265,7 @@ public abstract class BddBlockstateTemplates {
         }
     };
 
-    public static final BddBlockstateTemplates TRAPDOOR_BLOCK = new BddBlockstateTemplates() {
+    public static final BlockstateTemplates TRAPDOOR_BLOCK = new BlockstateTemplates() {
 
         @Override
         public JsonObject generateBlockstate(String modId, String blockName, Map<String, String> properties) {
@@ -307,7 +307,7 @@ public abstract class BddBlockstateTemplates {
         }
     };
 
-    public static final BddBlockstateTemplates STAIRS_BLOCK = new BddBlockstateTemplates() {
+    public static final BlockstateTemplates STAIRS_BLOCK = new BlockstateTemplates() {
 
         @Override
         public JsonObject generateBlockstate(String modId, String blockName, Map<String, String> properties) {
@@ -367,7 +367,7 @@ public abstract class BddBlockstateTemplates {
         }
     };
 
-    public static final BddBlockstateTemplates PRESSURE_PLATE_BLOCK = new BddBlockstateTemplates() {
+    public static final BlockstateTemplates PRESSURE_PLATE_BLOCK = new BlockstateTemplates() {
 
         @Override
         public JsonObject generateBlockstate(String modId, String blockName, Map<String, String> properties) {
@@ -387,7 +387,7 @@ public abstract class BddBlockstateTemplates {
         }
     };
 
-    public static final BddBlockstateTemplates FENCE_GATE_BLOCK = new BddBlockstateTemplates() {
+    public static final BlockstateTemplates FENCE_GATE_BLOCK = new BlockstateTemplates() {
 
         @Override
         public JsonObject generateBlockstate(String modId, String blockName, Map<String, String> properties) {

@@ -9,9 +9,9 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Map;
 import java.util.Optional;
 
-public abstract class BddItemModelTemplates {
+public abstract class ItemModelTemplates {
 
-    public static final BddItemModelTemplates BLOCK_ITEM = new BddItemModelTemplates() {
+    public static final ItemModelTemplates BLOCK_ITEM = new ItemModelTemplates() {
 
         @Override
         public ModelTemplate getTemplate() {
@@ -30,7 +30,7 @@ public abstract class BddItemModelTemplates {
         }
     };
 
-    public static final BddItemModelTemplates BLOCK_WITH_INVENTORY_MODEL = new BddItemModelTemplates() {
+    public static final ItemModelTemplates BLOCK_WITH_INVENTORY_MODEL = new ItemModelTemplates() {
 
         @Override
         public ModelTemplate getTemplate() {
@@ -50,7 +50,7 @@ public abstract class BddItemModelTemplates {
         }
     };
 
-    public static final BddItemModelTemplates BLOCK_SPRITE = new BddItemModelTemplates() {
+    public static final ItemModelTemplates BLOCK_SPRITE = new ItemModelTemplates() {
 
         @Override
         public ModelTemplate getTemplate() {
@@ -74,7 +74,7 @@ public abstract class BddItemModelTemplates {
         }
     };
 
-    public static final BddItemModelTemplates GENERATED = new BddItemModelTemplates() {
+    public static final ItemModelTemplates GENERATED = new ItemModelTemplates() {
 
         @Override
         public ModelTemplate getTemplate() {
@@ -105,7 +105,7 @@ public abstract class BddItemModelTemplates {
         }
     };
 
-    public static final BddItemModelTemplates HANDHELD = new BddItemModelTemplates() {
+    public static final ItemModelTemplates HANDHELD = new ItemModelTemplates() {
 
         @Override
         public ModelTemplate getTemplate() {
@@ -129,7 +129,7 @@ public abstract class BddItemModelTemplates {
         }
     };
 
-    public static final BddItemModelTemplates SPAWN_EGG = new BddItemModelTemplates() {
+    public static final ItemModelTemplates SPAWN_EGG = new ItemModelTemplates() {
 
         @Override
         public ModelTemplate getTemplate() {

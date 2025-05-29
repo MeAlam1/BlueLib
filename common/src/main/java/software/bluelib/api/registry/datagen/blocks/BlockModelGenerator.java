@@ -12,18 +12,18 @@ import java.nio.file.StandardOpenOption;
 import java.util.Collections;
 import java.util.Map;
 
-public class BddBlockModelGenerator {
+public class BlockModelGenerator {
 
     private static final Gson GSON = new GsonBuilder()
             .setPrettyPrinting()
             .disableHtmlEscaping()
             .create();
 
-    public static void generateBlockModel(String modId, String name, BddBlockModelTemplates blockModelTemplate) {
+    public static void generateBlockModel(String modId, String name, BlockModelTemplates blockModelTemplate) {
         generateBlockModel(modId, name, blockModelTemplate, Collections.emptyMap());
     }
 
-    public static void generateBlockModel(String modId, String name, BddBlockModelTemplates blockModelTemplate, Map<String, String> properties) {
+    public static void generateBlockModel(String modId, String name, BlockModelTemplates blockModelTemplate, Map<String, String> properties) {
         Map<String, JsonObject> blockModelJsons = blockModelTemplate.generateBlockModel(modId, name, properties);
 
         for (Map.Entry<String, JsonObject> entry : blockModelJsons.entrySet()) {

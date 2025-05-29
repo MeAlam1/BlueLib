@@ -15,11 +15,11 @@ import java.nio.file.StandardOpenOption;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
-public class BddItemModelGenerator {
+public class ItemModelGenerator {
 
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
-    public static void generateItemModel(String modId, String name, BddItemModelTemplates modelTemplate) {
+    public static void generateItemModel(String modId, String name, ItemModelTemplates modelTemplate) {
         Path itemModelPath = findProjectRoot().resolve(modId + "/models/item/" + name + ".json");
 
         try {
@@ -39,7 +39,7 @@ public class BddItemModelGenerator {
         }
     }
 
-    private static JsonElement generateModelJson(String modId, String name, BddItemModelTemplates modelTemplate) {
+    private static JsonElement generateModelJson(String modId, String name, ItemModelTemplates modelTemplate) {
         ResourceLocation modelLocation = ResourceLocation.fromNamespaceAndPath(modId, "item/" + name);
         ModelTemplate template = modelTemplate.getTemplate();
 

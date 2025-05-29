@@ -7,9 +7,11 @@
  */
 package software.bluelib.platform;
 
+import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
 import net.minecraft.client.KeyMapping;
+import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -23,24 +25,25 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
+import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import software.bluelib.BlueLibConstants;
-import software.bluelib.api.registry.builders.RegistryBuilder;
+import software.bluelib.api.registry.AbstractRegistryBuilder;
 import software.bluelib.api.registry.builders.keybinds.KeybindBuilder;
 import software.bluelib.api.registry.helpers.entity.AttributeHelper;
 import software.bluelib.api.registry.helpers.entity.RenderHelper;
+import software.bluelib.api.registry.helpers.menu.MenuScreenHelper;
 import software.bluelib.net.NeoForgeNetworkManager;
 
 public class NeoForgeRegistryHelper implements IRegistryHelper {
-
-    private static final DeferredRegister<Item> itemRegistry = DeferredRegister.create(Registries.ITEM, RegistryBuilder.getModID());
-    private static final DeferredRegister<Block> blockRegistry = DeferredRegister.create(Registries.BLOCK, RegistryBuilder.getModID());
-    private static final DeferredRegister<EntityType<?>> entityRegistry = DeferredRegister.create(Registries.ENTITY_TYPE, RegistryBuilder.getModID());
-    private static final DeferredRegister<CreativeModeTab> tabRegistry = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, RegistryBuilder.getModID());
-    private static final DeferredRegister<MenuType<?>> menuRegistry = DeferredRegister.create(Registries.MENU, RegistryBuilder.getModID());
-    private static final DeferredRegister<BlockEntityType<?>> blockEntityRegistry = DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, RegistryBuilder.getModID());
-    private static final DeferredRegister<Biome> biomeRegistry = DeferredRegister.create(Registries.BIOME, RegistryBuilder.getModID());
+    private static final DeferredRegister<Item> itemRegistry = DeferredRegister.create(Registries.ITEM, AbstractRegistryBuilder.getModID());
+    private static final DeferredRegister<Block> blockRegistry = DeferredRegister.create(Registries.BLOCK, AbstractRegistryBuilder.getModID());
+    private static final DeferredRegister<EntityType<?>> entityRegistry = DeferredRegister.create(Registries.ENTITY_TYPE, AbstractRegistryBuilder.getModID());
+    private static final DeferredRegister<CreativeModeTab> tabRegistry = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, AbstractRegistryBuilder.getModID());
+    private static final DeferredRegister<MenuType<?>> menuRegistry = DeferredRegister.create(Registries.MENU, AbstractRegistryBuilder.getModID());
+    private static final DeferredRegister<BlockEntityType<?>> blockEntityRegistry = DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, AbstractRegistryBuilder.getModID());
+    private static final DeferredRegister<Biome> biomeRegistry = DeferredRegister.create(Registries.BIOME, AbstractRegistryBuilder.getModID());
 
     @Override
     public BlueLibConstants.NetworkManager getNetwork() {
@@ -98,5 +101,10 @@ public class NeoForgeRegistryHelper implements IRegistryHelper {
         modEventBus.<EntityAttributeCreationEvent>addListener(pEvent -> AttributeHelper.registerAttributes(pEvent::put));
         modEventBus.<RegisterKeyMappingsEvent>addListener(event -> KeybindBuilder.REGISTERED_BUILDERS.forEach(builder -> event.register(builder.getKeyMapping().get())));
         modEventBus.<EntityRenderersEvent.RegisterRenderers>addListener(event -> RenderHelper.registerRenderers(event::registerEntityRenderer, event::registerBlockEntityRenderer));
+        modEventBus.<RegisterMenuScreensEvent>addListener(event ->
+                MenuScreenHelper.registerScreens((menuType, screenConstructor) ->
+                        event.register(menuType, (MenuScreens.ScreenConstructor) screenConstructor)
+                )
+        );
     }
 }

@@ -13,18 +13,18 @@ import java.nio.file.StandardOpenOption;
 import java.util.Collections;
 import java.util.Map;
 
-public class BddBlockstateGenerator {
+public class BlockstateGenerator {
 
     private static final Gson GSON = new GsonBuilder()
             .setPrettyPrinting()
             .disableHtmlEscaping() // Prevent escaping of =, <, >, etc.
             .create();
 
-    public static void generateBlockstate(String modId, String name, BddBlockstateTemplates blockstateTemplate) {
+    public static void generateBlockstate(String modId, String name, BlockstateTemplates blockstateTemplate) {
         generateBlockstate(modId, name, blockstateTemplate, Collections.emptyMap());
     }
 
-    public static void generateBlockstate(String modId, String name, BddBlockstateTemplates blockstateTemplate, Map<String, String> properties) {
+    public static void generateBlockstate(String modId, String name, BlockstateTemplates blockstateTemplate, Map<String, String> properties) {
         Path blockstatePath = findProjectRoot().resolve(modId + "/blockstates/" + name + ".json");
 
         try {
@@ -44,7 +44,7 @@ public class BddBlockstateGenerator {
         }
     }
 
-    private static JsonElement generateBlockstateJson(String modId, String name, BddBlockstateTemplates blockstateTemplate, Map<String, String> properties) {
+    private static JsonElement generateBlockstateJson(String modId, String name, BlockstateTemplates blockstateTemplate, Map<String, String> properties) {
         JsonObject blockstateJson = blockstateTemplate.generateBlockstate(modId, name, properties);
         System.out.println("Generated JSON for '" + modId + ":blockstates/" + name + "':\n" + GSON.toJson(blockstateJson));
         return blockstateJson;

@@ -18,10 +18,9 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.message.v1.ServerMessageEvents;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.client.KeyMapping;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
-import org.lwjgl.glfw.GLFW;
-import software.bluelib.api.registry.builders.RegistryBuilder;
+import software.bluelib.api.registry.BlueRegistryBuilder;
+import software.bluelib.api.registry.AbstractRegistryBuilder;
 import software.bluelib.api.registry.helpers.entity.AttributeHelper;
 import software.bluelib.api.registry.helpers.entity.RenderHelper;
 import software.bluelib.config.ConfigLoader;
@@ -31,12 +30,10 @@ import software.bluelib.event.ReloadHandler;
 import software.bluelib.example.event.VariantProvider;
 import software.bluelib.net.FabricNetworkManager;
 
-import java.util.function.Supplier;
-
 public class BlueLib implements ModInitializer, DataGeneratorEntrypoint {
 
     /**
-     * Initializes the {@link RegistryBuilder} instance with the mod ID. Replace {@link BlueLibConstants#MOD_ID} with your mod's unique mod ID to register content under your mod's namespace.
+     * Initializes the {@link AbstractRegistryBuilder} instance with the mod ID. Replace {@link BlueLibConstants#MOD_ID} with your mod's unique mod ID to register content under your mod's namespace.
      * <p>
      * This is essential for registering mod content such as items, blocks, and entities.
      * <p>
@@ -44,7 +41,7 @@ public class BlueLib implements ModInitializer, DataGeneratorEntrypoint {
      * <p>
      * Do not use this, you need to add this line into your own mod.
      */
-    public static RegistryBuilder REGISTRY = new RegistryBuilder(BlueLibConstants.MOD_ID);
+    public static AbstractRegistryBuilder REGISTRY = new BlueRegistryBuilder(BlueLibConstants.MOD_ID);
 
     private boolean hasInitialized = false;
 
@@ -78,6 +75,6 @@ public class BlueLib implements ModInitializer, DataGeneratorEntrypoint {
 
     @Override
     public void onInitializeDataGenerator(FabricDataGenerator fabricDataGenerator) {
-        RegistryBuilder.doDatagen();
+        AbstractRegistryBuilder.doDatagen();
     }
 }
