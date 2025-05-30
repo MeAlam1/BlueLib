@@ -21,6 +21,7 @@ import net.minecraft.util.profiling.ProfilerFiller;
 import org.jetbrains.annotations.ApiStatus;
 import software.bluelib.client.loader.cache.ResourceCache;
 import software.bluelib.loader.packet.MultiloaderPacket;
+import software.bluelib.BlueLibCommon;
 import software.bluelib.net.FabricNetworkManager;
 
 import java.util.concurrent.CompletableFuture;
@@ -32,6 +33,7 @@ public class BlueLibClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         FabricNetworkManager.registerClientHandlers();
+        BlueLibCommon.doClientRegistration();
 
         ResourceManagerHelper.get(PackType.CLIENT_RESOURCES)
                 .registerReloadListener(new IdentifiableResourceReloadListener() {

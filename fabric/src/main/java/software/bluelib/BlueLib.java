@@ -33,7 +33,7 @@ public class BlueLib implements ModInitializer {
         GeckoLibNetworking.init();
         
         ReloadHandler.registerProvider(new VariantProvider());
-        BlueLibCommon.doRegistration();
+        BlueLibCommon.doServerRegistration();
         FabricNetworkManager.registerMessages();
         FabricNetworkManager.registerServerHandlers();
         registerModEventListeners();
