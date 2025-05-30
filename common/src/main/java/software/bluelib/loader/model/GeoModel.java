@@ -68,12 +68,23 @@ public abstract class GeoModel<T extends GeoAnimatable> {
         return RenderType.entityCutoutNoCull(texture);
     }
 
+    public static ResourceLocation stripSuffix(String pSuffix, ResourceLocation pLocation) {
+        String path = pLocation.getPath();
+	    if (path.endsWith(pSuffix)) {
+            String newPath = path.substring(0, path.length() - pSuffix.length());
+            return pLocation.withPath(newPath);
+        } else {
+            throw new RuntimeException("Invalid file type: expected a " + pSuffix + " file, got: " + path);
+        }
+    }
+    
     public ModelCache getBakedModel(ResourceLocation location) {
+        location = stripSuffix(".geo.json", location);
         ModelCache model = ResourceCache.getBakedModels().get(location);
 
         if (model == null) {
-            if (!location.getPath().contains("geo/"))
-                throw new RuntimeException("Invalid model resource path provided - GeckoLib models must be placed in assets/<modid>/geo/");
+            if (!location.getPath().contains("models/"))
+                throw new RuntimeException("Invalid model resource path provided - GeckoLib models must be placed in assets/<modid>/models/");
 
             throw new RuntimeException("Unable to find model file: " + location);
         }
@@ -93,6 +104,7 @@ public abstract class GeoModel<T extends GeoAnimatable> {
     @Nullable
     public Animation getAnimation(T animatable, String name) {
         ResourceLocation location = getAnimationResource(animatable);
+        location = stripSuffix(".animation.json", location);
         BakedAnimations bakedAnimations = ResourceCache.getBakedAnimations().get(location);
         Animation animation = bakedAnimations != null ? bakedAnimations.getAnimation(name) : null;
 

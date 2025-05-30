@@ -1,3 +1,10 @@
+/*
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
+ */
 package software.bluelib.client.net.loader;
 
 import net.minecraft.client.Minecraft;
@@ -8,15 +15,16 @@ import software.bluelib.loader.util.GeckoLibUtil;
 import software.bluelib.net.messages.client.loader.StopTriggeredSingletonAnimPacket;
 
 public class StopTriggeredSingletonAnimPacketHandler implements ClientNetworkPacketHandler<StopTriggeredSingletonAnimPacket> {
-	@Override
-	public void handle(StopTriggeredSingletonAnimPacket pPacket, Minecraft pClient) {
-		GeoAnimatable animatable = GeckoLibUtil.getSyncedAnimatable(pPacket.syncableId());
 
-		if (animatable != null) {
-			AnimatableManager<GeoAnimatable> animatableManager = animatable.getAnimatableInstanceCache().getManagerForId(pPacket.instanceId());
+    @Override
+    public void handle(StopTriggeredSingletonAnimPacket pPacket, Minecraft pClient) {
+        GeoAnimatable animatable = GeckoLibUtil.getSyncedAnimatable(pPacket.syncableId());
 
-			if (animatableManager != null)
-				animatableManager.stopTriggeredAnimation(pPacket.controllerName().isEmpty() ? null : pPacket.controllerName(), pPacket.animName().isEmpty() ? null : pPacket.animName());
-		}
-	}
+        if (animatable != null) {
+            AnimatableManager<GeoAnimatable> animatableManager = animatable.getAnimatableInstanceCache().getManagerForId(pPacket.instanceId());
+
+            if (animatableManager != null)
+                animatableManager.stopTriggeredAnimation(pPacket.controllerName().isEmpty() ? null : pPacket.controllerName(), pPacket.animName().isEmpty() ? null : pPacket.animName());
+        }
+    }
 }

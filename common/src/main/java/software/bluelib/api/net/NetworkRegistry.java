@@ -9,7 +9,6 @@ package software.bluelib.api.net;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -40,11 +39,11 @@ public class NetworkRegistry {
             sendPacketToPlayer(player, pPacket);
         }
     }
-    
+
     public static void sendToAllPlayersTrackingEntity(Entity pTrackingEntity, NetworkPacket<?> pPacket) {
         BlueLibConstants.PlatformHelper.REGISTRY.getNetwork().sendToAllPlayersTrackingEntity(pTrackingEntity, pPacket);
     }
-    
+
     public static void sendToAllPlayersTrackingBlock(ServerLevel pLevel, BlockPos pBlockPos, NetworkPacket<?> pPacket) {
         BlueLibConstants.PlatformHelper.REGISTRY.getNetwork().sendToAllPlayersTrackingBlock(pLevel, pBlockPos, pPacket);
     }

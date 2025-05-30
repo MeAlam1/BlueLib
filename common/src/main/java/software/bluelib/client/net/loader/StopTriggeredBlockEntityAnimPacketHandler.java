@@ -1,3 +1,10 @@
+/*
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
+ */
 package software.bluelib.client.net.loader;
 
 import net.minecraft.client.Minecraft;
@@ -7,9 +14,10 @@ import software.bluelib.loader.util.ClientUtil;
 import software.bluelib.net.messages.client.loader.StopTriggeredBlockEntityAnimPacket;
 
 public class StopTriggeredBlockEntityAnimPacketHandler implements ClientNetworkPacketHandler<StopTriggeredBlockEntityAnimPacket> {
-	@Override
-	public void handle(StopTriggeredBlockEntityAnimPacket pPacket, Minecraft pClient) {
-		if (ClientUtil.getLevel().getBlockEntity(pPacket.pos()) instanceof GeoBlockEntity blockEntity)
-			blockEntity.stopTriggeredAnim(pPacket.controllerName().isEmpty() ? null : pPacket.controllerName(), pPacket.animName().isEmpty() ? null : pPacket.animName());
-	}
+
+    @Override
+    public void handle(StopTriggeredBlockEntityAnimPacket pPacket, Minecraft pClient) {
+        if (ClientUtil.getLevel().getBlockEntity(pPacket.pos()) instanceof GeoBlockEntity blockEntity)
+            blockEntity.stopTriggeredAnim(pPacket.controllerName().isEmpty() ? null : pPacket.controllerName(), pPacket.animName().isEmpty() ? null : pPacket.animName());
+    }
 }

@@ -35,8 +35,7 @@ import net.minecraft.util.GsonHelper;
 import net.minecraft.util.profiling.ProfilerFiller;
 import org.jetbrains.annotations.NotNull;
 import software.bluelib.BlueLibCommon;
-import software.bluelib.api.utils.logging.BaseLogLevel;
-import software.bluelib.api.utils.logging.BaseLogger;
+import software.bluelib.BlueLibConstants;
 import software.bluelib.client.loader.cache.model.ModelCache;
 import software.bluelib.client.loader.json.model.ModelCacheFactory;
 import software.bluelib.client.loader.json.model.ModelFormatVersion;
@@ -50,7 +49,7 @@ import software.bluelib.loader.util.CompoundException;
 public final class ResourceCache {
 
     public static final ResourceLocation RELOAD_LISTENER_ID = BlueLibCommon.Resource.resource("models_animations");
-    public static final ResourceLocation ANIMATIONS_PATH = BlueLibCommon.Resource.resource("bluelib/animations");
+    public static final ResourceLocation ANIMATIONS_PATH = BlueLibCommon.Resource.resource("animations");
     public static final ResourceLocation MODELS_PATH = BlueLibCommon.Resource.resource("models");
     public static final Pattern SUFFIX_STRIPPER = Pattern.compile("((\\.geo)|((\\.animation)s?))?(\\.json)$");
     public static final Pattern PREFIX_STRIPPER = Pattern.compile("^(bluelib/)((animations/)|(models/))?");
@@ -74,18 +73,27 @@ public final class ResourceCache {
             pResourceManager.registerReloadListener(ResourceCache::reload);
     }
 
-    public static CompletableFuture<Void> reload(PreparationBarrier pStage, ResourceManager pResourceManager, ProfilerFiller pProfilerFiller, ProfilerFiller pProfilerFiller1, Executor pBackgroundExecutor, Executor pGameExecutor) {
+    public static CompletableFuture<Void> reload(
+            PreparationBarrier pStage,
+            ResourceManager pResourceManager,
+            ProfilerFiller pProfilerFiller,
+            ProfilerFiller pProfilerFiller1,
+            Executor pBackgroundExecutor,
+            Executor pGameExecutor) {
         CompletableFuture<Map<ResourceLocation, BakedAnimations>> animations = loadAnimations(pBackgroundExecutor, pResourceManager);
         CompletableFuture<Map<ResourceLocation, ModelCache>> models = loadModels(pBackgroundExecutor, pResourceManager);
 
-        BaseLogger.log(BaseLogLevel.ERROR, "Models: " + models);
-
         return CompletableFuture.runAsync(() -> BakedAnimationsAdapter.COMPRESSION_CACHE = new ConcurrentHashMap<>(), pBackgroundExecutor)
-                .thenCompose(ignored -> CompletableFuture.allOf(animations, models).thenCompose(pStage::wait).thenRunAsync(() -> {
-                    ResourceCache.ANIMATIONS = animations.join();
-                    ResourceCache.MODELS = models.join();
-                    BakedAnimationsAdapter.COMPRESSION_CACHE = null;
-                }, pGameExecutor));
+                .thenCompose(ignored -> CompletableFuture.allOf(animations, models)
+                        .thenCompose(pStage::wait)
+                        .thenRunAsync(() -> {
+                            ResourceCache.ANIMATIONS = animations.join();
+                            ResourceCache.MODELS = models.join();
+                            BakedAnimationsAdapter.COMPRESSION_CACHE = null;
+
+                            System.out.println("Model Cache: " + ResourceCache.MODELS);
+                            System.out.println("Animations Cache: " + ResourceCache.ANIMATIONS);
+                        }, pGameExecutor));
     }
 
     public static ResourceLocation stripPrefixAndSuffix(ResourceLocation pResourceLocation) {

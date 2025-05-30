@@ -7,9 +7,14 @@
  */
 package software.bluelib.platform;
 
+import java.util.function.Supplier;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import software.bluelib.BlueLibConstants;
 
 public interface IRegistryHelper {
 
     BlueLibConstants.NetworkManager getNetwork();
+
+    <T extends Entity> Supplier<EntityType<T>> registerEntity(String pId, Supplier<EntityType<T>> pEntity);
 }

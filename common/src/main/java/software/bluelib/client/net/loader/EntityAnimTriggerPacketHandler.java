@@ -1,3 +1,10 @@
+/*
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
+ */
 package software.bluelib.client.net.loader;
 
 import net.minecraft.client.Minecraft;
@@ -10,22 +17,23 @@ import software.bluelib.loader.util.RenderUtil;
 import software.bluelib.net.messages.client.loader.EntityAnimTriggerPacket;
 
 public class EntityAnimTriggerPacketHandler implements ClientNetworkPacketHandler<EntityAnimTriggerPacket> {
-	@Override
-	public void handle(EntityAnimTriggerPacket pPacket, Minecraft pClient) {
-		Entity entity = ClientUtil.getLevel().getEntity(pPacket.entityId());
 
-		if (entity == null)
-			return;
+    @Override
+    public void handle(EntityAnimTriggerPacket pPacket, Minecraft pClient) {
+        Entity entity = ClientUtil.getLevel().getEntity(pPacket.entityId());
 
-		String controllerName = pPacket.controllerName().isEmpty() ? null : pPacket.controllerName();
-		if (!pPacket.isReplacedEntity()) {
-			if (entity instanceof GeoEntity geoEntity)
-				geoEntity.triggerAnim(controllerName, pPacket.animName());
+        if (entity == null)
+            return;
 
-			return;
-		}
+        String controllerName = pPacket.controllerName().isEmpty() ? null : pPacket.controllerName();
+        if (!pPacket.isReplacedEntity()) {
+            if (entity instanceof GeoEntity geoEntity)
+                geoEntity.triggerAnim(controllerName, pPacket.animName());
 
-		if (RenderUtil.getReplacedAnimatable(entity.getType()) instanceof GeoReplacedEntity replacedEntity)
-			replacedEntity.triggerAnim(entity, controllerName, pPacket.animName());
-	}
+            return;
+        }
+
+        if (RenderUtil.getReplacedAnimatable(entity.getType()) instanceof GeoReplacedEntity replacedEntity)
+            replacedEntity.triggerAnim(entity, controllerName, pPacket.animName());
+    }
 }
