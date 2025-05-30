@@ -20,6 +20,6 @@ public class BlueLib {
         ENTITIES.register(pModEventBus);
         pModEventBus.<EntityAttributeCreationEvent>addListener(event -> EntityRegistry.registerEntityAttributes(event::put));
 
-        BlueLibCommon.doRegistrations();
+        BlueLibCommon.doServerRegistration();
     }
 }

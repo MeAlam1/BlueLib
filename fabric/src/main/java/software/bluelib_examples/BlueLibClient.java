@@ -10,5 +10,6 @@ public class BlueLibClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         BlueLibCommonClient.registerRenderers(EntityRendererRegistry::register, BlockEntityRenderers::register);
+        BlueLibCommon.doClientRegistration();
     }
 }

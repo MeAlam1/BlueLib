@@ -13,5 +13,6 @@ public class BlueLibClient {
     @SubscribeEvent
     public static void registerRenderers(final EntityRenderersEvent.RegisterRenderers event) {
         BlueLibCommonClient.registerRenderers(event::registerEntityRenderer, event::registerBlockEntityRenderer);
+        BlueLibCommon.doClientRegistration();
     }
 }

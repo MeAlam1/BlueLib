@@ -9,7 +9,7 @@ public class BlueLib implements ModInitializer {
 
     @Override
     public void onInitialize() {
-        BlueLibCommon.doRegistrations();
+        BlueLibCommon.doServerRegistration();
         EntityRegistry.registerEntityAttributes(FabricDefaultAttributeRegistry::register);
     }
 }
