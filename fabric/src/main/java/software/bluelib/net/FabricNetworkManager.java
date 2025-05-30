@@ -8,8 +8,13 @@
 package software.bluelib.net;
 
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.ChunkPos;
 import software.bluelib.BlueLibConstants;
 import software.bluelib.api.net.NetworkPacket;
 import software.bluelib.api.net.NetworkRegistry;
@@ -34,12 +39,29 @@ public class FabricNetworkManager implements BlueLibConstants.NetworkManager {
     }
 
     @Override
-    public void sendPacketToPlayer(ServerPlayer pPlayer, NetworkPacket<?> pPacket) {
+    public void sendToPlayer(ServerPlayer pPlayer, NetworkPacket<?> pPacket) {
         ServerPlayNetworking.send(pPlayer, pPacket);
     }
 
     @Override
     public void sendToServer(NetworkPacket<?> pPacket) {
         ClientPlayNetworking.send(pPacket);
+    }
+
+    @Override
+    public void sendToAllPlayersTrackingEntity(Entity pTrackingEntity, NetworkPacket<?> pPacket) {
+        if (pTrackingEntity instanceof ServerPlayer pl)
+            sendToPlayer(pl, pPacket);
+
+        for (ServerPlayer player : PlayerLookup.tracking(pTrackingEntity)) {
+            sendToPlayer(player, pPacket);
+        }
+    }
+
+    @Override
+    public void sendToAllPlayersTrackingBlock(ServerLevel pLevel, BlockPos pBlockPos, NetworkPacket<?> pPacket) {
+        for (ServerPlayer player : PlayerLookup.tracking(pLevel, pBlockPos)) {
+            sendToPlayer(player, pPacket);
+        }
     }
 }

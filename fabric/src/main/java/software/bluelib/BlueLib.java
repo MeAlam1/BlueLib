@@ -19,40 +19,35 @@ import software.bluelib.event.ChatHandler;
 import software.bluelib.event.CommandHandler;
 import software.bluelib.event.ReloadHandler;
 import software.bluelib.example.event.VariantProvider;
-import software.bluelib.loader.service.GeckoLibNetworking;
 import software.bluelib.net.FabricNetworkManager;
 
 public class BlueLib implements ModInitializer {
 
-    private boolean hasInitialized = false;
+	private boolean hasInitialized = false;
 
-    @Override
-    public void onInitialize() {
+	@Override
+	public void onInitialize() {
+		ReloadHandler.registerProvider(new VariantProvider());
+		BlueLibCommon.doServerRegistration();
+		FabricNetworkManager.registerMessages();
+		FabricNetworkManager.registerServerHandlers();
+		registerModEventListeners();
+		if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
+			ClientTickEvents.END_CLIENT_TICK.register(client -> {
+				if (!hasInitialized) {
+					hasInitialized = true;
+					BlueLibCommon.init();
+				}
+			});
+		}
+	}
 
-        // TODO: Remove this 
-        GeckoLibNetworking.init();
-        
-        ReloadHandler.registerProvider(new VariantProvider());
-        BlueLibCommon.doServerRegistration();
-        FabricNetworkManager.registerMessages();
-        FabricNetworkManager.registerServerHandlers();
-        registerModEventListeners();
-        if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
-            ClientTickEvents.END_CLIENT_TICK.register(client -> {
-                if (!hasInitialized) {
-                    hasInitialized = true;
-                    BlueLibCommon.init();
-                }
-            });
-        }
-    }
-
-    public static void registerModEventListeners() {
-        ServerLifecycleEvents.SERVER_STARTING.register(ReloadHandler::onServerStart);
-        ServerLifecycleEvents.SERVER_STARTED.register(ConfigLoader::createConfigs);
-        ServerLifecycleEvents.END_DATA_PACK_RELOAD.register(ConfigLoader::reloadConfigs);
-        ServerLifecycleEvents.END_DATA_PACK_RELOAD.register(ReloadHandler::onReload);
-        ServerMessageEvents.ALLOW_CHAT_MESSAGE.register(ChatHandler::onAllowChat);
-        CommandRegistrationCallback.EVENT.register(CommandHandler::registerCommands);
-    }
+	public static void registerModEventListeners() {
+		ServerLifecycleEvents.SERVER_STARTING.register(ReloadHandler::onServerStart);
+		ServerLifecycleEvents.SERVER_STARTED.register(ConfigLoader::createConfigs);
+		ServerLifecycleEvents.END_DATA_PACK_RELOAD.register(ConfigLoader::reloadConfigs);
+		ServerLifecycleEvents.END_DATA_PACK_RELOAD.register(ReloadHandler::onReload);
+		ServerMessageEvents.ALLOW_CHAT_MESSAGE.register(ChatHandler::onAllowChat);
+		CommandRegistrationCallback.EVENT.register(CommandHandler::registerCommands);
+	}
 }

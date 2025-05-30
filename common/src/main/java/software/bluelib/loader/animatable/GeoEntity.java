@@ -10,7 +10,7 @@ package software.bluelib.loader.animatable;
 import net.minecraft.world.entity.Entity;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
-import software.bluelib.loader.GeckoLibServices;
+import software.bluelib.api.net.loader.LoaderNetwork;
 import software.bluelib.loader.animation.AnimatableManager;
 import software.bluelib.loader.constant.dataticket.SerializableDataTicket;
 
@@ -29,7 +29,7 @@ public interface GeoEntity extends GeoAnimatable {
         if (entity.level().isClientSide()) {
             getAnimatableInstanceCache().getManagerForId(entity.getId()).setData(dataTicket, data);
         } else {
-            GeckoLibServices.NETWORK.syncEntityAnimData(entity, false, dataTicket, data);
+            LoaderNetwork.syncEntityAnimData(entity, false, dataTicket, data);
         }
     }
 
@@ -44,7 +44,7 @@ public interface GeoEntity extends GeoAnimatable {
                 getAnimatableInstanceCache().getManagerForId(entity.getId()).tryTriggerAnimation(animName);
             }
         } else {
-            GeckoLibServices.NETWORK.triggerEntityAnim(entity, false, controllerName, animName);
+            LoaderNetwork.triggerEntityAnim(entity, false, controllerName, animName);
         }
     }
 
@@ -64,7 +64,7 @@ public interface GeoEntity extends GeoAnimatable {
                 animatableManager.stopTriggeredAnimation(animName);
             }
         } else {
-            GeckoLibServices.NETWORK.stopTriggeredEntityAnim(entity, false, controllerName, animName);
+            LoaderNetwork.stopTriggeredEntityAnim(entity, false, controllerName, animName);
         }
     }
 

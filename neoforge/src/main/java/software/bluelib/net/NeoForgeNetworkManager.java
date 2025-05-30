@@ -10,8 +10,13 @@ package software.bluelib.net;
 import java.util.HashSet;
 import java.util.Objects;
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.ChunkPos;
+import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.HandlerThread;
 import software.bluelib.BlueLibConstants;
@@ -52,12 +57,22 @@ public class NeoForgeNetworkManager implements BlueLibConstants.NetworkManager {
     }
 
     @Override
-    public void sendPacketToPlayer(ServerPlayer pPlayer, NetworkPacket<?> pPacket) {
+    public void sendToPlayer(ServerPlayer pPlayer, NetworkPacket<?> pPacket) {
         pPlayer.connection.send(pPacket);
     }
 
     @Override
     public void sendToServer(NetworkPacket<?> pPacket) {
         Objects.requireNonNull(Minecraft.getInstance().getConnection()).send(pPacket);
+    }
+
+    @Override
+    public void sendToAllPlayersTrackingEntity(Entity pTrackingEntity, NetworkPacket<?> pPacket) {
+        PacketDistributor.sendToPlayersTrackingEntityAndSelf(pTrackingEntity, pPacket);
+    }
+
+    @Override
+    public void sendToAllPlayersTrackingBlock(ServerLevel pLevel, BlockPos pBlockPos, NetworkPacket<?> pPacket) {
+        PacketDistributor.sendToPlayersTrackingChunk(pLevel, new ChunkPos(pBlockPos), pPacket);
     }
 }

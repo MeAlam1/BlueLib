@@ -9,7 +9,11 @@ package software.bluelib.api.net;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
 import software.bluelib.BlueLibConstants;
 import software.bluelib.net.PacketRegisterInfo;
 
@@ -24,7 +28,7 @@ public class NetworkRegistry {
     }
 
     public static void sendPacketToPlayer(ServerPlayer pPlayer, NetworkPacket<?> pPacket) {
-        BlueLibConstants.PlatformHelper.REGISTRY.getNetwork().sendPacketToPlayer(pPlayer, pPacket);
+        BlueLibConstants.PlatformHelper.REGISTRY.getNetwork().sendToPlayer(pPlayer, pPacket);
     }
 
     public static void sendToAllPlayers(NetworkPacket<?> pPacket) {
@@ -35,6 +39,14 @@ public class NetworkRegistry {
         for (ServerPlayer player : pPlayers) {
             sendPacketToPlayer(player, pPacket);
         }
+    }
+    
+    public static void sendToAllPlayersTrackingEntity(Entity pTrackingEntity, NetworkPacket<?> pPacket) {
+        BlueLibConstants.PlatformHelper.REGISTRY.getNetwork().sendToAllPlayersTrackingEntity(pTrackingEntity, pPacket);
+    }
+    
+    public static void sendToAllPlayersTrackingBlock(ServerLevel pLevel, BlockPos pBlockPos, NetworkPacket<?> pPacket) {
+        BlueLibConstants.PlatformHelper.REGISTRY.getNetwork().sendToAllPlayersTrackingBlock(pLevel, pBlockPos, pPacket);
     }
 
     private static final List<PacketProvider.C2SPacketProvider> c2sProviders = new ArrayList<>();

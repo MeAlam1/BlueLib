@@ -11,7 +11,7 @@ import java.util.function.Consumer;
 import net.minecraft.world.entity.Entity;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
-import software.bluelib.loader.GeckoLibServices;
+import software.bluelib.api.net.loader.LoaderNetwork;
 import software.bluelib.loader.animatable.client.GeoRenderProvider;
 import software.bluelib.loader.animatable.instance.AnimatableInstanceCache;
 import software.bluelib.loader.animatable.instance.SingletonAnimatableInstanceCache;
@@ -42,7 +42,7 @@ public interface SingletonGeoAnimatable extends GeoAnimatable {
 
     @ApiStatus.NonExtendable
     default <D> void syncAnimData(long instanceId, SerializableDataTicket<D> dataTicket, D data, Entity entityToTrack) {
-        GeckoLibServices.NETWORK.syncSingletonAnimData(this, instanceId, dataTicket, data, entityToTrack);
+        LoaderNetwork.syncSingletonAnimData(this, instanceId, dataTicket, data, entityToTrack);
     }
 
     @ApiStatus.NonExtendable
@@ -54,7 +54,7 @@ public interface SingletonGeoAnimatable extends GeoAnimatable {
                 getAnimatableInstanceCache().getManagerForId(instanceId).tryTriggerAnimation(animName);
             }
         } else {
-            GeckoLibServices.NETWORK.triggerSingletonAnim(this, relatedEntity, instanceId, controllerName, animName);
+            LoaderNetwork.triggerSingletonAnim(this, relatedEntity, instanceId, controllerName, animName);
         }
     }
 
@@ -72,7 +72,7 @@ public interface SingletonGeoAnimatable extends GeoAnimatable {
                 animatableManager.stopTriggeredAnimation(animName);
             }
         } else {
-            GeckoLibServices.NETWORK.stopTriggeredSingletonAnim(this, relatedEntity, instanceId, controllerName, animName);
+            LoaderNetwork.stopTriggeredSingletonAnim(this, relatedEntity, instanceId, controllerName, animName);
         }
     }
 

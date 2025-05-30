@@ -22,34 +22,32 @@ import software.bluelib.client.BlueLibClient;
 import software.bluelib.config.ConfigHolder;
 import software.bluelib.event.ReloadHandler;
 import software.bluelib.example.event.VariantProvider;
-import software.bluelib.loader.network.GeckoLibNetworkingNeoForge;
 import software.bluelib.net.NeoForgeNetworkManager;
 
 @Mod(BlueLibConstants.MOD_ID)
 public class BlueLib {
-    public static final DeferredRegister.DataComponents DATA_COMPONENTS_REGISTER = DeferredRegister.createDataComponents(Registries.DATA_COMPONENT_TYPE, BlueLibConstants.MOD_ID);
+	public static final DeferredRegister.DataComponents DATA_COMPONENTS_REGISTER = DeferredRegister.createDataComponents(Registries.DATA_COMPONENT_TYPE, BlueLibConstants.MOD_ID);
 
-    
-    public BlueLib(IEventBus pModEventBus, ModContainer pModContainer) {
-        GeckoLibNetworkingNeoForge.init(pModEventBus); //Commented this out so the game would boot.
-        DATA_COMPONENTS_REGISTER.register(pModEventBus);
-        BlueLibConstants.init();
 
-        BlueLibCommon.doServerRegistration();
-        ReloadHandler.registerProvider(new VariantProvider());
-        pModEventBus.register(this);
-        MixinBootstrap.init();
-        pModEventBus.addListener(NeoForgeNetworkManager::registerMessages);
+	public BlueLib(IEventBus pModEventBus, ModContainer pModContainer) {
+		DATA_COMPONENTS_REGISTER.register(pModEventBus);
+		BlueLibConstants.init();
 
-        if (FMLEnvironment.dist == Dist.CLIENT)
-            BlueLibClient.init(pModContainer);
-        
-        pModContainer.registerConfig(ModConfig.Type.SERVER, ConfigHolder.MARKDOWN_SPEC, BlueLibConstants.MOD_ID + "-markdown.toml");
-        pModContainer.registerConfig(ModConfig.Type.SERVER, ConfigHolder.LOGGER_SPEC, BlueLibConstants.MOD_ID + "-logger.toml");
-    }
+		BlueLibCommon.doServerRegistration();
+		ReloadHandler.registerProvider(new VariantProvider());
+		pModEventBus.register(this);
+		MixinBootstrap.init();
+		pModEventBus.addListener(NeoForgeNetworkManager::registerMessages);
 
-    @SubscribeEvent
-    public void onLoadComplete(FMLClientSetupEvent pEvent) {
-        BlueLibCommon.init();
-    }
+		if (FMLEnvironment.dist == Dist.CLIENT)
+			BlueLibClient.init(pModContainer);
+
+		pModContainer.registerConfig(ModConfig.Type.SERVER, ConfigHolder.MARKDOWN_SPEC, BlueLibConstants.MOD_ID + "-markdown.toml");
+		pModContainer.registerConfig(ModConfig.Type.SERVER, ConfigHolder.LOGGER_SPEC, BlueLibConstants.MOD_ID + "-logger.toml");
+	}
+
+	@SubscribeEvent
+	public void onLoadComplete(FMLClientSetupEvent pEvent) {
+		BlueLibCommon.init();
+	}
 }

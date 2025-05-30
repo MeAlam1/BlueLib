@@ -12,7 +12,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
-import software.bluelib.loader.GeckoLibServices;
+import software.bluelib.api.net.loader.LoaderNetwork;
 import software.bluelib.loader.animatable.client.GeoRenderProvider;
 import software.bluelib.loader.animation.AnimatableManager;
 import software.bluelib.loader.constant.dataticket.SerializableDataTicket;
@@ -32,7 +32,7 @@ public interface GeoReplacedEntity extends SingletonGeoAnimatable {
         if (relatedEntity.level().isClientSide()) {
             getAnimatableInstanceCache().getManagerForId(relatedEntity.getId()).setData(dataTicket, data);
         } else {
-            GeckoLibServices.NETWORK.syncEntityAnimData(relatedEntity, true, dataTicket, data);
+            LoaderNetwork.syncEntityAnimData(relatedEntity, true, dataTicket, data);
         }
     }
 
@@ -45,7 +45,7 @@ public interface GeoReplacedEntity extends SingletonGeoAnimatable {
                 getAnimatableInstanceCache().getManagerForId(relatedEntity.getId()).tryTriggerAnimation(animName);
             }
         } else {
-            GeckoLibServices.NETWORK.triggerEntityAnim(relatedEntity, true, controllerName, animName);
+            LoaderNetwork.triggerEntityAnim(relatedEntity, true, controllerName, animName);
         }
     }
 
@@ -63,7 +63,7 @@ public interface GeoReplacedEntity extends SingletonGeoAnimatable {
                 animatableManager.stopTriggeredAnimation(animName);
             }
         } else {
-            GeckoLibServices.NETWORK.stopTriggeredEntityAnim(relatedEntity, true, controllerName, animName);
+            LoaderNetwork.stopTriggeredEntityAnim(relatedEntity, true, controllerName, animName);
         }
     }
 

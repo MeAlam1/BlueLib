@@ -12,7 +12,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
-import software.bluelib.loader.GeckoLibServices;
+import software.bluelib.api.net.loader.LoaderNetwork;
 import software.bluelib.loader.animation.AnimatableManager;
 import software.bluelib.loader.constant.dataticket.SerializableDataTicket;
 import software.bluelib.loader.util.RenderUtil;
@@ -39,7 +39,7 @@ public interface GeoBlockEntity extends GeoAnimatable {
         if (level.isClientSide()) {
             getAnimatableInstanceCache().getManagerForId(0).setData(dataTicket, data);
         } else {
-            GeckoLibServices.NETWORK.syncBlockEntityAnimData(blockEntity.getBlockPos(), dataTicket, data, (ServerLevel) level);
+            LoaderNetwork.syncBlockEntityAnimData(blockEntity.getBlockPos(), dataTicket, data, (ServerLevel) level);
         }
     }
 
@@ -61,7 +61,7 @@ public interface GeoBlockEntity extends GeoAnimatable {
                 getAnimatableInstanceCache().getManagerForId(0).tryTriggerAnimation(animName);
             }
         } else {
-            GeckoLibServices.NETWORK.triggerBlockEntityAnim(blockEntity.getBlockPos(), controllerName, animName, (ServerLevel) level);
+            LoaderNetwork.triggerBlockEntityAnim(blockEntity.getBlockPos(), controllerName, animName, (ServerLevel) level);
         }
     }
 
@@ -85,7 +85,7 @@ public interface GeoBlockEntity extends GeoAnimatable {
                 animatableManager.stopTriggeredAnimation(animName);
             }
         } else {
-            GeckoLibServices.NETWORK.stopTriggeredBlockEntityAnim(blockEntity.getBlockPos(), (ServerLevel) level, controllerName, animName);
+            LoaderNetwork.stopTriggeredBlockEntityAnim(blockEntity.getBlockPos(), (ServerLevel) level, controllerName, animName);
         }
     }
 
