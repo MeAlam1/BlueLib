@@ -15,9 +15,7 @@ import software.bluelib.api.registry.builders.items.ItemBuilder;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Supplier;
 
 public class CreativeTabBuilder {
@@ -73,23 +71,33 @@ public class CreativeTabBuilder {
                     return item != null ? new ItemStack(item) : ItemStack.EMPTY;
                 })
                 .displayItems((parameters, output) -> {
+                    Set<Item> addedItems = new HashSet<>(); // Track added items
                     if (displayItemsGenerator != null) {
-                        displayItemsGenerator.accept(parameters, output);
+                        displayItemsGenerator.accept(parameters, (stack, tabVisibility) -> {
+                            Item item = stack.getItem();
+                            if (item != null && addedItems.add(item)) {
+                                output.accept(stack, tabVisibility);
+                                BaseLogger.log(BaseLogLevel.INFO, "Adding item from displayItemsGenerator: " + BuiltInRegistries.ITEM.getKey(item));
+                            }
+                        });
                     }
-
                     Item item = iconSupplier.get();
                     if (item != null) {
                         List<Supplier<Item>> toolsetItems = ItemBuilder.TOOLSETS.get(item.getDescriptionId());
                         if (toolsetItems != null) {
                             for (Supplier<Item> tool : toolsetItems) {
-                                output.accept(tool.get());
+                                Item toolItem = tool.get();
+                                if (toolItem != null && addedItems.add(toolItem)) {
+                                    output.accept(new ItemStack(toolItem), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+                                    BaseLogger.log(BaseLogLevel.INFO, "Adding icon toolset item: " + BuiltInRegistries.ITEM.getKey(toolItem));
+                                }
                             }
-                        } else {
-                            output.accept(item);
+                        } else if (addedItems.add(item)) {
+                            output.accept(new ItemStack(item), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+                            BaseLogger.log(BaseLogLevel.INFO, "Adding icon item: " + BuiltInRegistries.ITEM.getKey(item));
                         }
                     }
-                })
-                .backgroundTexture(ResourceLocation.fromNamespaceAndPath(modId, backgroundSuffix));
+                });
 
         CreativeModeTab tab = tabBuilder.build();
         Supplier<CreativeModeTab> tabSupplier = () -> tab;
@@ -100,8 +108,8 @@ public class CreativeTabBuilder {
 
     public static void addToolset(Item item, CreativeModeTab.Output populator) {
         if (item != null) {
+            Set<Item> addedItems = new HashSet<>(); // Track added items
             String fullId = BuiltInRegistries.ITEM.getKey(item).getPath();
-
             String[] toolSuffixes = { "_sword", "_pickaxe", "_axe", "_shovel", "_hoe" };
             String baseId = fullId;
             for (String suffix : toolSuffixes) {
@@ -114,19 +122,26 @@ public class CreativeTabBuilder {
             List<Supplier<Item>> toolset = ItemBuilder.TOOLSETS.get(baseId);
             if (toolset != null) {
                 for (Supplier<Item> tool : toolset) {
-                    populator.accept(tool.get());
+                    Item toolItem = tool.get();
+                    if (toolItem != null && addedItems.add(toolItem)) { // Only add if not already present
+                        populator.accept(new ItemStack(toolItem), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+                        BaseLogger.log(BaseLogLevel.INFO, "Adding toolset item: " + BuiltInRegistries.ITEM.getKey(toolItem));
+                    }
                 }
                 return;
             }
 
-            populator.accept(item);
+            if (addedItems.add(item)) { // Only add if not already present
+                populator.accept(new ItemStack(item), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+                BaseLogger.log(BaseLogLevel.INFO, "Adding single toolset item: " + fullId);
+            }
         }
     }
 
     public static void addArmorSet(Item item, CreativeModeTab.Output populator) {
         if (item != null) {
+            Set<Item> addedItems = new HashSet<>(); // Track added items
             String fullId = BuiltInRegistries.ITEM.getKey(item).getPath();
-
             String[] toolSuffixes = { "_helmet", "_chestplate", "_leggings", "_boots" };
             String baseId = fullId;
             for (String suffix : toolSuffixes) {
@@ -139,12 +154,19 @@ public class CreativeTabBuilder {
             List<Supplier<Item>> armorSets = ItemBuilder.ARMORSETS.get(baseId);
             if (armorSets != null) {
                 for (Supplier<Item> armor : armorSets) {
-                    populator.accept(armor.get());
+                    Item armorItem = armor.get();
+                    if (armorItem != null && addedItems.add(armorItem)) { // Only add if not already present
+                        populator.accept(new ItemStack(armorItem), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+                        BaseLogger.log(BaseLogLevel.INFO, "Adding armor item: " + BuiltInRegistries.ITEM.getKey(armorItem));
+                    }
                 }
                 return;
             }
 
-            populator.accept(item);
+            if (addedItems.add(item)) { // Only add if not already present
+                populator.accept(new ItemStack(item), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+                BaseLogger.log(BaseLogLevel.INFO, "Adding single armor item: " + fullId);
+            }
         }
     }
 

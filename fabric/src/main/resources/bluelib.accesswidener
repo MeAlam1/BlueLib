@@ -6,3 +6,4 @@ accessible class net/minecraft/world/inventory/MenuType$MenuSupplier
 accessible class net/minecraft/world/inventory/MenuType
 accessible class net/minecraft/client/gui/screens/MenuScreens$ScreenConstructor
 accessible method net/minecraft/world/inventory/MenuType <init> (Lnet/minecraft/world/inventory/MenuType$MenuSupplier;Lnet/minecraft/world/flag/FeatureFlagSet;)V
+accessible class net/minecraft/world/item/CreativeModeTab$TabVisibility
