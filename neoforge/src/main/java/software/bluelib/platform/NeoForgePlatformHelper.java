@@ -74,11 +74,6 @@ public class NeoForgePlatformHelper implements IPlatformHelper {
     }
 
     @Override
-    public <T> Supplier<DataComponentType<T>> registerDataComponent(String pId, UnaryOperator<DataComponentType.Builder<T>> pBuilder) {
-        return BlueLib.DATA_COMPONENTS_REGISTER.registerComponentType(pId, pBuilder);
-    }
-
-    @Override
     public BlueLibConstants.Environment getEnvironment() {
         return FMLEnvironment.dist.isClient() ? BlueLibConstants.Environment.CLIENT : BlueLibConstants.Environment.SERVER;
     }
@@ -91,5 +86,10 @@ public class NeoForgePlatformHelper implements IPlatformHelper {
     @Override
     public MinecraftServer getServer() {
         return ServerLifecycleHooks.getCurrentServer();
+    }
+
+    @Override
+    public <T> Supplier<DataComponentType<T>> registerDataComponent(String pId, UnaryOperator<DataComponentType.Builder<T>> pBuilder) {
+        return BlueLib.DATA_COMPONENTS_REGISTER.registerComponentType(pId, pBuilder);
     }
 }

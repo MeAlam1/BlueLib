@@ -31,9 +31,10 @@ public class BlueLib {
 
     
     public BlueLib(IEventBus pModEventBus, ModContainer pModContainer) {
+        //GeckoLibNetworkingNeoForge.init(pModEventBus); //Commented this out so the game would boot.
         DATA_COMPONENTS_REGISTER.register(pModEventBus);
-        GeckoLibNetworkingNeoForge.init(pModEventBus);
-        
+        BlueLibConstants.init();
+
         BlueLibCommon.doRegistration();
         ReloadHandler.registerProvider(new VariantProvider());
         pModEventBus.register(this);

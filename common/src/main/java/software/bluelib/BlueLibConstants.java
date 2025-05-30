@@ -39,6 +39,8 @@ public class BlueLibConstants {
 
     public static final Supplier<DataComponentType<Long>> STACK_ANIMATABLE_ID_COMPONENT = PlatformHelper.PLATFORM.registerDataComponent("stack_animatable_id", builder -> builder.persistent(Codec.LONG).networkSynchronized(ByteBufCodecs.VAR_LONG));
 
+    public static void init() {}
+
     public static final String MOD_ID = "bluelib";
 
     public static final String MOD_NAME = "BlueLib";
