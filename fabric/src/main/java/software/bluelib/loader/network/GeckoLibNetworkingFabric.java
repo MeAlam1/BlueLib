@@ -11,6 +11,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import software.bluelib.BlueLibConstants;
+import software.bluelib.client.BlueLibClient;
 import software.bluelib.loader.packet.MultiloaderPacket;
 import software.bluelib.loader.service.GeckoLibNetworking;
 
@@ -23,7 +24,7 @@ public final class GeckoLibNetworkingFabric implements GeckoLibNetworking {
             PayloadTypeRegistry.playS2C().register(payloadType, (StreamCodec<FriendlyByteBuf, P>)codec);
 
             if (BlueLibConstants.PlatformHelper.PLATFORM.isPhysicalClient())
-                GeckoLibClient.registerPacket(payloadType);
+                BlueLibClient.registerPacket(payloadType);
         }
         else {
             PayloadTypeRegistry.playC2S().register(payloadType, (StreamCodec<FriendlyByteBuf, P>)codec);

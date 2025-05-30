@@ -19,6 +19,7 @@ import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.profiling.ProfilerFiller;
 import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.NotNull;
 import software.bluelib.client.loader.cache.ResourceCache;
 import software.bluelib.loader.packet.MultiloaderPacket;
 import software.bluelib.BlueLibCommon;
@@ -43,9 +44,9 @@ public class BlueLibClient implements ClientModInitializer {
                     }
 
                     @Override
-                    public CompletableFuture<Void> reload(PreparationBarrier pSynchronizer, ResourceManager pResourceManager,
-                                                          ProfilerFiller pPrepareProfiler, ProfilerFiller pApplyProfiler, Executor pPrepareExecutor,
-                                                          Executor pApplyExecutor) {
+                    public @NotNull CompletableFuture<Void> reload(PreparationBarrier pSynchronizer, ResourceManager pResourceManager,
+                                                                   ProfilerFiller pPrepareProfiler, ProfilerFiller pApplyProfiler, Executor pPrepareExecutor,
+                                                                   Executor pApplyExecutor) {
                         return ResourceCache.reload(pSynchronizer, pResourceManager, pPrepareProfiler, pApplyProfiler, pPrepareExecutor, pApplyExecutor);
                     }
                 });

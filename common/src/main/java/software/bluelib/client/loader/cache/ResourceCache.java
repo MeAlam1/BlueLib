@@ -74,7 +74,7 @@ public final class ResourceCache {
             pResourceManager.registerReloadListener(ResourceCache::reload);
     }
 
-    private static CompletableFuture<Void> reload(PreparationBarrier pStage, ResourceManager pResourceManager, ProfilerFiller pProfilerFiller, ProfilerFiller pProfilerFiller1, Executor pBackgroundExecutor, Executor pGameExecutor) {
+    public static CompletableFuture<Void> reload(PreparationBarrier pStage, ResourceManager pResourceManager, ProfilerFiller pProfilerFiller, ProfilerFiller pProfilerFiller1, Executor pBackgroundExecutor, Executor pGameExecutor) {
         CompletableFuture<Map<ResourceLocation, BakedAnimations>> animations = loadAnimations(pBackgroundExecutor, pResourceManager);
         CompletableFuture<Map<ResourceLocation, ModelCache>> models = loadModels(pBackgroundExecutor, pResourceManager);
 
