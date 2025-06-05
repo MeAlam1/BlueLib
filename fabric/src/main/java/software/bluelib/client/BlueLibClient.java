@@ -18,7 +18,5 @@ public class BlueLibClient implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-        FabricNetworkManager.registerClientHandlers();
-        BlueLibCommon.doClientRegistration();
     }
 }

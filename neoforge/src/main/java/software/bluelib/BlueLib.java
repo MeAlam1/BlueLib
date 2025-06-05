@@ -30,13 +30,14 @@ public class BlueLib {
         ReloadHandler.registerProvider(new VariantProvider());
         pModEventBus.register(this);
         MixinBootstrap.init();
-        pModEventBus.addListener(NeoForgeNetworkManager::registerMessages);
 
         if (FMLEnvironment.dist == Dist.CLIENT)
             BlueLibClient.init(pModContainer);
         
         pModContainer.registerConfig(ModConfig.Type.SERVER, ConfigHolder.MARKDOWN_SPEC, BlueLibConstants.MOD_ID + "-markdown.toml");
         pModContainer.registerConfig(ModConfig.Type.SERVER, ConfigHolder.LOGGER_SPEC, BlueLibConstants.MOD_ID + "-logger.toml");
+
+        pModEventBus.addListener(NeoForgeNetworkManager::registerMessages);
     }
 
     @SubscribeEvent
