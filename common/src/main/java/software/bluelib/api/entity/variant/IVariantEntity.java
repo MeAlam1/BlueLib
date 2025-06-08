@@ -23,12 +23,12 @@ public interface IVariantEntity {
 
     default String getRandomVariant(List<String> pVariantNamesList, String pDefaultVariant) {
         if (pVariantNamesList.isEmpty()) {
-            BaseLogger.log(BaseLogLevel.INFO, BlueLibCommon.Translation.log("variant.list.empty", pDefaultVariant), true);
+            BaseLogger.log(true, BaseLogLevel.INFO, BlueLibCommon.Translation.log("variant.list.empty", pDefaultVariant));
             return pDefaultVariant;
         }
         int index = random.nextInt(pVariantNamesList.size());
         String selectedVariant = pVariantNamesList.get(index);
-        BaseLogger.log(BaseLogLevel.SUCCESS, BlueLibCommon.Translation.log("variant.random", selectedVariant, pVariantNamesList.size()), true);
+        BaseLogger.log(true, BaseLogLevel.SUCCESS, BlueLibCommon.Translation.log("variant.random", selectedVariant, pVariantNamesList.size()));
         return selectedVariant;
     }
 

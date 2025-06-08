@@ -20,7 +20,7 @@ public class CopyToClipboard {
 
     public MutableComponent apply(MutableComponent pMessage, String pTextToCopy) {
         if (!MarkdownConfig.isCopyToClipboardEnabled) {
-            BaseLogger.log(BaseLogLevel.INFO, BlueLibCommon.Translation.log("markdown.copyToClipboard.disabled"), true);
+            BaseLogger.log(true, BaseLogLevel.INFO, BlueLibCommon.Translation.log("markdown.copyToClipboard.disabled"));
             return pMessage;
         }
         MutableComponent result = Component.empty();

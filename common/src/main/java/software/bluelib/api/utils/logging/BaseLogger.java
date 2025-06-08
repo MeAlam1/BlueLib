@@ -7,10 +7,10 @@
  */
 package software.bluelib.api.utils.logging;
 
+import java.util.function.Supplier;
 import java.util.logging.Level;
 import net.minecraft.network.chat.Component;
 import software.bluelib.BlueLibConstants;
-import software.bluelib.api.utils.minecraft.ClientUtils;
 
 @SuppressWarnings("unused")
 public class BaseLogger {
@@ -21,19 +21,47 @@ public class BaseLogger {
         LoggerConfig.configureLogger(BlueLibConstants.LOGGER, new DefaultLogColorProvider());
     }
 
-    public static void log(Level pLogLevel, Component pMessage, Throwable pThrowable, boolean pIsBlueLib) {
+    // --- Supplier-based logging ---
+
+    public static void log(boolean pIsBlueLib, Level pLogLevel, Supplier<String> messageSupplier, Throwable... pThrowable) {
+        if (shouldLogBlueLib(pLogLevel, pIsBlueLib)) {
+            logBoth(pLogLevel, Component.literal(messageSupplier.get()), pThrowable);
+        }
+    }
+
+    public static void log(boolean pIsBlueLib, Level pLogLevel, Supplier<String> messageSupplier) {
+        if (shouldLogBlueLib(pLogLevel, pIsBlueLib)) {
+            logBoth(pLogLevel, Component.literal(messageSupplier.get()));
+        }
+    }
+
+    public static void log(Level pLogLevel, Supplier<String> messageSupplier, Throwable... pThrowable) {
+        if (shouldLog(pLogLevel)) {
+            logBoth(pLogLevel, Component.literal(messageSupplier.get()), pThrowable);
+        }
+    }
+
+    public static void log(Level pLogLevel, Supplier<String> messageSupplier) {
+        if (shouldLog(pLogLevel)) {
+            logBoth(pLogLevel, Component.literal(messageSupplier.get()));
+        }
+    }
+
+    // --- Existing methods (String and Component overloads) ---
+
+    public static void log(boolean pIsBlueLib, Level pLogLevel, Component pMessage, Throwable... pThrowable) {
         if (shouldLogBlueLib(pLogLevel, pIsBlueLib)) {
             logBoth(pLogLevel, pMessage, pThrowable);
         }
     }
 
-    public static void log(Level pLogLevel, Component pMessage, boolean pIsBlueLib) {
+    public static void log(boolean pIsBlueLib, Level pLogLevel, Component pMessage) {
         if (shouldLogBlueLib(pLogLevel, pIsBlueLib)) {
             logBoth(pLogLevel, pMessage);
         }
     }
 
-    public static void log(Level pLogLevel, Component pMessage, Throwable pThrowable) {
+    public static void log(Level pLogLevel, Component pMessage, Throwable... pThrowable) {
         if (shouldLog(pLogLevel)) {
             logBoth(pLogLevel, pMessage, pThrowable);
         }
@@ -45,16 +73,33 @@ public class BaseLogger {
         }
     }
 
+    public static void log(boolean pIsBlueLib, Level pLogLevel, String message, Throwable... pThrowable) {
+        log(pIsBlueLib, pLogLevel, Component.literal(message), pThrowable);
+    }
+
+    public static void log(boolean pIsBlueLib, Level pLogLevel, String message) {
+        log(pIsBlueLib, pLogLevel, Component.literal(message));
+    }
+
+    public static void log(Level pLogLevel, String message, Throwable... pThrowable) {
+        log(pLogLevel, Component.literal(message), pThrowable);
+    }
+
+    public static void log(Level pLogLevel, String message) {
+        log(pLogLevel, Component.literal(message));
+    }
+
     public static void logBlueLib(Component pMessage) {
         String translatedMessage = pMessage.getString();
         BlueLibConstants.LOGGER.log(BaseLogLevel.BLUELIB, translatedMessage);
     }
 
+    // --- Internal helpers ---
+
     private static boolean shouldLogBlueLib(Level pLogLevel, boolean pIsBlueLib) {
         return pLogLevel == BaseLogLevel.ERROR ||
                 pLogLevel == BaseLogLevel.WARNING ||
                 pLogLevel == BaseLogLevel.BLUELIB ||
-                !ClientUtils.isInWorld() ||
                 pIsBlueLib && software.bluelib.config.LoggerConfig.isBlueLibLoggingEnabled ||
                 !pIsBlueLib && software.bluelib.config.LoggerConfig.isLoggingEnabled;
     }
@@ -63,7 +108,6 @@ public class BaseLogger {
         return pLogLevel == BaseLogLevel.ERROR ||
                 pLogLevel == BaseLogLevel.WARNING ||
                 pLogLevel == BaseLogLevel.BLUELIB ||
-                !ClientUtils.isInWorld() ||
                 software.bluelib.config.LoggerConfig.isLoggingEnabled;
     }
 
@@ -72,7 +116,7 @@ public class BaseLogger {
         BlueLibConstants.LOGGER.log(pLogLevel, translatedMessage);
     }
 
-    private static void logBoth(Level pLogLevel, Component pMessage, Throwable pThrowable) {
+    private static void logBoth(Level pLogLevel, Component pMessage, Throwable... pThrowable) {
         String translatedMessage = pMessage.getString();
         BlueLibConstants.LOGGER.log(pLogLevel, translatedMessage, pThrowable);
     }

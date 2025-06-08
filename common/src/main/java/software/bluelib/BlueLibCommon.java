@@ -40,16 +40,24 @@ public class BlueLibCommon {
     }
 
     @ApiStatus.Internal
-    public static void doRegistration() {
-        var networkRegistry = new BlueNetworkRegistry();
-        NetworkRegistry.registerC2SPacketProvider(networkRegistry);
-        NetworkRegistry.registerS2CPacketProvider(networkRegistry);
+    public static BlueNetworkRegistry getRegistry() {
+        return new BlueNetworkRegistry();
+    }
+
+    @ApiStatus.Internal
+    public static void doServerRegistration() {
+        NetworkRegistry.registerC2SPacketProvider(getRegistry());
+    }
+
+    @ApiStatus.Internal
+    public static void doClientRegistration() {
+        NetworkRegistry.registerS2CPacketProvider(getRegistry());
     }
 
     public static boolean isDeveloperMode() {
         boolean isDevMode = BlueLibConstants.PlatformHelper.PLATFORM.isDevelopmentEnvironment();
         if (isDevMode) {
-            BaseLogger.log(BaseLogLevel.INFO, Component.literal("Running in Developer mode."), true);
+            BaseLogger.log(true, BaseLogLevel.INFO, Component.literal("Running in Developer mode."));
         }
         return isDevMode;
     }

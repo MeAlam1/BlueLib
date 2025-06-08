@@ -7,14 +7,14 @@
  */
 package software.bluelib.entity.variant;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import net.minecraft.server.packs.resources.ResourceManager;
 import software.bluelib.BlueLibCommon;
 import software.bluelib.BlueLibConstants;
+import software.bluelib.api.entity.variant.IVariantProvider;
 import software.bluelib.api.json.JSONParser;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
@@ -22,36 +22,59 @@ import software.bluelib.api.utils.variant.ParameterUtils;
 
 public class VariantLoader extends JSONParser {
 
-    public static final Map<String, JsonObject> AllVariants = new HashMap<>();
+    // entityName -> (variantName -> Variants)
+    public static final Map<String, Map<String, Variants>> AllVariants = new HashMap<>();
 
     private static final VariantLoader LOADER = new VariantLoader();
 
+    public static void loadEntityVariants(ResourceManager pResourceManager, List<IVariantProvider> pProviders) {
+        for (IVariantProvider provider : pProviders) {
+            List<String> entityNames = provider.getEntityNames();
+            String basePath = provider.getBasePath();
+
+            for (String entityName : entityNames) {
+                String folderPath = basePath + entityName;
+                VariantLoader.loadVariants(folderPath, pResourceManager, entityName);
+                BaseLogger.log(true, BaseLogLevel.INFO, BlueLibCommon.Translation.log("variants.loaded.entity", entityName));
+            }
+        }
+    }
+
     public static void loadVariants(String pFolderPath, ResourceManager pResourceManager, String pEntityName) {
         LOADER.loadData(pFolderPath, pResourceManager);
-        AllVariants.putAll(LOADER.getDataMap());
         parseVariants(pEntityName, LOADER.getMergedJsonObject());
     }
 
     private static void parseVariants(String pEntityName, JsonObject pVariantsJson) {
         if (BlueLibConstants.PlatformHelper.EVENT_PROXY.allVariantsLoadedPre(pEntityName)) {
-            BaseLogger.log(BaseLogLevel.INFO, BlueLibCommon.Translation.log("variants.load.cancelled"), true);
+            BaseLogger.log(true, BaseLogLevel.INFO, BlueLibCommon.Translation.log("variants.load.cancelled"));
             return;
         }
 
         if (!AllVariants.containsKey(pEntityName)) {
+            Map<String, Variants> variantMap = new HashMap<>();
             for (String variantKey : pVariantsJson.keySet()) {
                 if (BlueLibConstants.PlatformHelper.EVENT_PROXY.variantLoadedPre(variantKey, pEntityName)) {
-                    BaseLogger.log(BaseLogLevel.INFO, BlueLibCommon.Translation.log("variant.load.cancelled", variantKey, pEntityName), true);
+                    BaseLogger.log(true, BaseLogLevel.INFO, BlueLibCommon.Translation.log("variant.load.cancelled", variantKey, pEntityName));
                     return;
+                }
+                JsonArray variantArray = pVariantsJson.getAsJsonArray(variantKey);
+                if (variantArray != null && !variantArray.isEmpty()) {
+                    for (JsonElement variantElement : variantArray) {
+                        if (variantElement.isJsonObject()) {
+                            Variants record = new Variants(pEntityName, variantKey, variantElement.getAsJsonObject());
+                            variantMap.put(variantKey, record);
+                        }
+                    }
                 }
                 BlueLibConstants.PlatformHelper.EVENT_PROXY.variantLoadedPost(pEntityName, variantKey);
             }
-            AllVariants.put(pEntityName, pVariantsJson);
+            AllVariants.put(pEntityName, variantMap);
         }
 
         BlueLibConstants.PlatformHelper.EVENT_PROXY.allVariantsLoadedPost(pEntityName);
 
-        BaseLogger.log(BaseLogLevel.INFO, BlueLibCommon.Translation.log("variants.entities", Arrays.toString(ParameterUtils.getAllEntities().toArray())), true);
-        BaseLogger.log(BaseLogLevel.INFO, BlueLibCommon.Translation.log("variants.variants", pEntityName, Arrays.toString(Objects.requireNonNull(ParameterUtils.getVariantsOfEntity(pEntityName)).toArray())), true);
+        BaseLogger.log(true, BaseLogLevel.INFO, BlueLibCommon.Translation.log("variants.entities", Arrays.toString(ParameterUtils.getAllEntities().toArray())));
+        BaseLogger.log(true, BaseLogLevel.INFO, BlueLibCommon.Translation.log("variants.variants", pEntityName, Arrays.toString(Objects.requireNonNull(ParameterUtils.getVariantsOfEntity(pEntityName)).toArray())));
     }
 }
