@@ -28,7 +28,7 @@ public class BlueLibEventProxy implements IEventProxy {
 
     @Override
     public boolean variantLoadedPre(String pEntityName, String pVariant) {
-        return VariantLoadedEvent.ALLOW_VARIANT_TO_LOAD.invoker().allowVariantToLoad(pEntityName, pVariant);
+        return !VariantLoadedEvent.ALLOW_VARIANT_TO_LOAD.invoker().allowVariantToLoad(pEntityName, pVariant);
     }
 
     @Override
@@ -38,7 +38,7 @@ public class BlueLibEventProxy implements IEventProxy {
 
     @Override
     public boolean allVariantsLoadedPre(String pEntityName) {
-        return AllVariantsLoadedEvent.ALLOW_ALL_VARIANTS_TO_LOAD.invoker().allowAllVariantsToLoad(pEntityName);
+        return !AllVariantsLoadedEvent.ALLOW_ALL_VARIANTS_TO_LOAD.invoker().allowAllVariantsToLoad(pEntityName);
     }
 
     @Override

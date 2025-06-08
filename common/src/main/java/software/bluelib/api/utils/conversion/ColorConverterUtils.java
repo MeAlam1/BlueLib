@@ -85,7 +85,7 @@ public class ColorConverterUtils {
                 return Optional.of(Color.decode(pColor));
             return Optional.of(new Color(DyeColor.valueOf(pColor.toUpperCase(Locale.ROOT)).getTextColor()));
         } catch (IllegalArgumentException pException) {
-            BaseLogger.log(BaseLogLevel.ERROR, BlueLibCommon.Translation.log("color.notvalid", pColor), true);
+            BaseLogger.log(true, BaseLogLevel.ERROR, BlueLibCommon.Translation.log("color.notvalid", pColor));
             return Optional.empty();
         }
     }
@@ -97,7 +97,7 @@ public class ColorConverterUtils {
                 return Optional.of(DyeColor.valueOf(pColor.toUpperCase(Locale.ROOT)).getName());
             }
         } catch (IllegalArgumentException pException) {
-            BaseLogger.log(BaseLogLevel.ERROR, BlueLibCommon.Translation.log("color.notvalid", pColor), true);
+            BaseLogger.log(true, BaseLogLevel.ERROR, BlueLibCommon.Translation.log("color.notvalid", pColor));
             return Optional.empty();
         }
         return Optional.empty();

@@ -14,10 +14,10 @@ val mcVersion = libs.versions.minecraft.asProvider().get()
 val parchmentMcVersion = libs.versions.parchment.minecraft.get()
 val parchmentVersion = libs.versions.parchment.asProvider().get()
 
-version = libs.versions.bluelib.get()
+version = ""
 
 base {
-    archivesName = "${version}-fabric-${mcVersion}-bluelib"
+    archivesName = "${libs.versions.bluelib.get()}-fabric-${mcVersion}-bluelib"
 }
 
 repositories {

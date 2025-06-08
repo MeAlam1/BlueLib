@@ -20,7 +20,7 @@ public class MarkdownParser {
 
     public static MutableComponent parseMarkdown(Component pMessage) {
         if (!MarkdownConfig.isMarkdownEnabled) {
-            BaseLogger.log(BaseLogLevel.INFO, BlueLibCommon.Translation.log("markdown.disabled"), true);
+            BaseLogger.log(true, BaseLogLevel.INFO, BlueLibCommon.Translation.log("markdown.disabled"));
             return pMessage.copy();
         }
 
@@ -36,7 +36,7 @@ public class MarkdownParser {
         formattedMessage = new Color().apply(formattedMessage);
         formattedMessage = new CopyToClipboard().apply(formattedMessage, text);
 
-        BaseLogger.log(BaseLogLevel.INFO, BlueLibCommon.Translation.log("markdown.message"), true);
+        BaseLogger.log(true, BaseLogLevel.INFO, BlueLibCommon.Translation.log("markdown.message"));
         return formattedMessage;
     }
 }

@@ -40,7 +40,7 @@ public abstract class JSONParser {
 
         Collection<ResourceLocation> resources = pResourceManager.listResources(pFolderPath, path -> path.getPath().endsWith(".json")).keySet();
 
-        BaseLogger.log(BaseLogLevel.SUCCESS, BlueLibCommon.Translation.log("json.found", pFolderPath), true);
+        BaseLogger.log(true, BaseLogLevel.SUCCESS, BlueLibCommon.Translation.log("json.found", pFolderPath));
 
         for (ResourceLocation resourceLocation : resources) {
             try {
@@ -58,7 +58,7 @@ public abstract class JSONParser {
                     }
                 }
             } catch (Exception pException) {
-                BaseLogger.log(BaseLogLevel.ERROR, BlueLibCommon.Translation.log("json.failed", resourceLocation.toString()), pException, true);
+                BaseLogger.log(true, BaseLogLevel.ERROR, BlueLibCommon.Translation.log("json.failed", resourceLocation.toString()), pException);
             }
         }
     }
