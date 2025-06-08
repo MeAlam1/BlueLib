@@ -11,6 +11,8 @@ import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 
 public interface BlueJeiProvider {
-	void registerCategory(IRecipeCategoryRegistration pRegistration);
-	void registerRecipes(IRecipeRegistration pRegistration);
+
+    void registerCategory(IRecipeCategoryRegistration pRegistration);
+
+    void registerRecipes(IRecipeRegistration pRegistration);
 }

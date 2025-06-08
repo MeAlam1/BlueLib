@@ -7,6 +7,8 @@
  */
 package software.bluelib.compat.jei.brewing;
 
+import java.util.List;
+import java.util.stream.Collectors;
 import mezz.jei.api.constants.RecipeTypes;
 import mezz.jei.api.recipe.vanilla.IJeiBrewingRecipe;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
@@ -16,30 +18,26 @@ import net.minecraft.world.item.crafting.RecipeManager;
 import software.bluelib.compat.jei.BlueJeiProvider;
 import software.bluelib.registry.BlueRecipeTypeRegistry;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 public class BrewingJeiProvider implements BlueJeiProvider {
 
-	@Override
-	public void registerCategory(IRecipeCategoryRegistration pRegistration) {
-	}
+    @Override
+    public void registerCategory(IRecipeCategoryRegistration pRegistration) {}
 
-	@Override
-	public void registerRecipes(IRecipeRegistration pRegistration) {
-		RecipeManager recipeManager = Minecraft.getInstance().level != null
-				? Minecraft.getInstance().level.getRecipeManager()
-				: null;
+    @Override
+    public void registerRecipes(IRecipeRegistration pRegistration) {
+        RecipeManager recipeManager = Minecraft.getInstance().level != null
+                ? Minecraft.getInstance().level.getRecipeManager()
+                : null;
 
-		if (recipeManager == null) {
-			throw new IllegalStateException("Recipe manager not found");
-		}
+        if (recipeManager == null) {
+            throw new IllegalStateException("Recipe manager not found");
+        }
 
-		List<IJeiBrewingRecipe> jeiRecipes = recipeManager.getAllRecipesFor(BlueRecipeTypeRegistry.BREWING.get())
-				.stream()
-				.map(recipe -> new BrewingJeiRecipe(recipe.value(), recipe.id()))
-				.collect(Collectors.toList());
+        List<IJeiBrewingRecipe> jeiRecipes = recipeManager.getAllRecipesFor(BlueRecipeTypeRegistry.BREWING.get())
+                .stream()
+                .map(recipe -> new BrewingJeiRecipe(recipe.value(), recipe.id()))
+                .collect(Collectors.toList());
 
-		pRegistration.addRecipes(RecipeTypes.BREWING, jeiRecipes);
-	}
+        pRegistration.addRecipes(RecipeTypes.BREWING, jeiRecipes);
+    }
 }
