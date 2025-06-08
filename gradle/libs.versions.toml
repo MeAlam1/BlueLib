@@ -29,7 +29,7 @@ mixinextras-range = "[0.3.5,)"
 examplemod = "2.0.0"
 
 # Plugins
-plugin-moddevgradle = "2.0.78"
+plugin-moddevgradle = "2.0.91"
 plugin-minotaur = "2.8.7"
 plugin-curseforge-gradle = "1.1.26"
 plugin-idea-ext = "1.1.10"
