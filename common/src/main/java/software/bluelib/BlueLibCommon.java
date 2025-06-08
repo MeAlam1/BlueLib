@@ -18,6 +18,8 @@ import software.bluelib.api.net.NetworkRegistry;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
 import software.bluelib.registry.BlueNetworkRegistry;
+import software.bluelib.registry.BlueRecipeSerializerRegistry;
+import software.bluelib.registry.BlueRecipeTypeRegistry;
 
 public class BlueLibCommon {
 
@@ -40,18 +42,15 @@ public class BlueLibCommon {
     }
 
     @ApiStatus.Internal
-    public static BlueNetworkRegistry getRegistry() {
-        return new BlueNetworkRegistry();
-    }
-
-    @ApiStatus.Internal
-    public static void doServerRegistration() {
-        NetworkRegistry.registerC2SPacketProvider(getRegistry());
+    public static void doRegistration() {
+        InternalNetworkRegistry.networkServer();
+        BlueRecipeTypeRegistry.init();
+        BlueRecipeSerializerRegistry.init();
     }
 
     @ApiStatus.Internal
     public static void doClientRegistration() {
-        NetworkRegistry.registerS2CPacketProvider(getRegistry());
+        InternalNetworkRegistry.networkClient();
     }
 
     public static boolean isDeveloperMode() {
@@ -60,6 +59,22 @@ public class BlueLibCommon {
             BaseLogger.log(true, BaseLogLevel.INFO, Component.literal("Running in Developer mode."));
         }
         return isDevMode;
+    }
+
+    @ApiStatus.Internal
+    protected static class InternalNetworkRegistry {
+
+        private static BlueNetworkRegistry getNetwork() {
+            return new BlueNetworkRegistry();
+        }
+
+        private static void networkServer() {
+            NetworkRegistry.registerC2SPacketProvider(getNetwork());
+        }
+
+        private static void networkClient() {
+            NetworkRegistry.registerS2CPacketProvider(getNetwork());
+        }
     }
 
     @ApiStatus.Internal
