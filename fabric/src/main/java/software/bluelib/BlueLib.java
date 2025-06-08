@@ -28,7 +28,7 @@ public class BlueLib implements ModInitializer {
     @Override
     public void onInitialize() {
         ReloadHandler.registerProvider(new VariantProvider());
-        BlueLibCommon.doServerRegistration();
+        BlueLibCommon.doRegistration();
         registerModEventListeners();
         if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
             BlueLibCommon.doClientRegistration();

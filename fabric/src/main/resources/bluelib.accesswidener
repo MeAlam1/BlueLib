@@ -1,1 +1,5 @@
-accessWidener v1 named
+accessWidener v2 named
+
+transitive-accessible class net/minecraft/world/inventory/BrewingStandMenu$IngredientsSlot
+transitive-accessible class net/minecraft/world/inventory/BrewingStandMenu$FuelSlot
+transitive-accessible class net/minecraft/world/inventory/BrewingStandMenu$PotionSlot

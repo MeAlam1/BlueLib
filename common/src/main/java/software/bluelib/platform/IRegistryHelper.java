@@ -7,9 +7,16 @@
  */
 package software.bluelib.platform;
 
+import java.util.function.Supplier;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
 import software.bluelib.BlueLibConstants;
 
 public interface IRegistryHelper {
 
     BlueLibConstants.NetworkManager getNetwork();
+
+    <T extends RecipeType<?>> Supplier<T> registerRecipeType(String pId, Supplier<T> pRecipeType);
+
+    <T extends RecipeSerializer<?>> Supplier<T> registerRecipeSerializer(String pId, Supplier<T> pRecipeSerializer);
 }
