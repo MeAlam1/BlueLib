@@ -33,14 +33,14 @@ public class JSONMerger {
                         targetArray.add(element);
                     }
 
-                    BaseLogger.log(BaseLogLevel.INFO, BlueLibCommon.Translation.log("json.merge", key), true);
+                    BaseLogger.log(true, BaseLogLevel.INFO, BlueLibCommon.Translation.log("json.merge", key));
                 } else {
                     pTarget.add(key, sourceElement);
-                    BaseLogger.log(BaseLogLevel.WARNING, BlueLibCommon.Translation.log("json.overwrite", key), true);
+                    BaseLogger.log(true, BaseLogLevel.WARNING, BlueLibCommon.Translation.log("json.overwrite", key));
                 }
             } else {
                 pTarget.add(key, sourceElement);
-                BaseLogger.log(BaseLogLevel.SUCCESS, BlueLibCommon.Translation.log("json.add", key), true);
+                BaseLogger.log(true, BaseLogLevel.SUCCESS, BlueLibCommon.Translation.log("json.add", key));
             }
         }
     }

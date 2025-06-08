@@ -26,7 +26,7 @@ public class ChunkUtils {
         try {
             return pLevel.getBiome(pChunkPos.getWorldPosition()).value();
         } catch (Exception pException) {
-            BaseLogger.log(BaseLogLevel.ERROR, BlueLibCommon.Translation.log("chunk.biome.error"), pException, true);
+            BaseLogger.log(true, BaseLogLevel.ERROR, BlueLibCommon.Translation.log("chunk.biome.error"), pException);
             throw pException;
         }
     }
@@ -36,7 +36,7 @@ public class ChunkUtils {
             LevelChunk chunk = pLevel.getChunk(pChunkPos.x, pChunkPos.z);
             return chunk.getBlockEntities().values();
         } catch (Exception pException) {
-            BaseLogger.log(BaseLogLevel.ERROR, BlueLibCommon.Translation.log("chunk.tile.error"), pException, true);
+            BaseLogger.log(true, BaseLogLevel.ERROR, BlueLibCommon.Translation.log("chunk.tile.error"), pException);
             throw pException;
         }
     }

@@ -16,10 +16,10 @@ val parchmentMcVersion = libs.versions.parchment.minecraft.get()
 val parchmentVersion = libs.versions.parchment.asProvider().get()
 val neoforgeVersion = libs.versions.neoforge.asProvider().get()
 
-version = libs.versions.bluelib.get()
+version = ""
 
 base {
-    archivesName = "${version}-neoforge-${mcVersion}-bluelib"
+    archivesName = "${libs.versions.bluelib.get()}-neoforge-${mcVersion}-bluelib"
 }
 
 neoForge {

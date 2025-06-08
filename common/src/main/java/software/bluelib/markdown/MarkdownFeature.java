@@ -26,7 +26,7 @@ public abstract class MarkdownFeature {
 
     public MutableComponent apply(MutableComponent pComponent) {
         if (!isFeatureEnabled()) {
-            BaseLogger.log(BaseLogLevel.INFO, BlueLibCommon.Translation.log("markdown.feature.disabled", getFeatureName()), true);
+            BaseLogger.log(true, BaseLogLevel.INFO, BlueLibCommon.Translation.log("markdown.feature.disabled", getFeatureName()));
             return pComponent;
         }
 

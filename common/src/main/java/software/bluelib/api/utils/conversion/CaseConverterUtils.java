@@ -32,7 +32,7 @@ public class CaseConverterUtils {
             return convertUsingDelimiter(pInput, "-", true);
         }
 
-        BaseLogger.log(BaseLogLevel.WARNING, BlueLibCommon.Translation.translate("notfound"), true);
+        BaseLogger.log(true, BaseLogLevel.WARNING, BlueLibCommon.Translation.translate("notfound"));
         return pInput;
     }
 
@@ -50,7 +50,7 @@ public class CaseConverterUtils {
             return convertUsingDelimiter(pInput, "-", false);
         }
 
-        BaseLogger.log(BaseLogLevel.WARNING, BlueLibCommon.Translation.translate("notfound"), true);
+        BaseLogger.log(true, BaseLogLevel.WARNING, BlueLibCommon.Translation.translate("notfound"));
         return pInput;
     }
 
