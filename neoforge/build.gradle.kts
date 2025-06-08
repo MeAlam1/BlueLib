@@ -47,12 +47,14 @@ neoForge {
 
 repositories {
     maven(url = "${rootProject.projectDir}/deps")
+    maven("https://maven.blamejared.com/")
 }
 
 dependencies {
     compileOnly(project(":common"))
     jarJar(libs.molang)
     compileOnly(libs.molang)
+    runtimeOnly(libs.jei.neoforge)
 }
 
 tasks.withType<Test>().configureEach {

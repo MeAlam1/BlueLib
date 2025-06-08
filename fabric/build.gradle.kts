@@ -29,6 +29,7 @@ repositories {
         }
     }
     maven(url = "${rootProject.projectDir}/deps")
+    maven("https://maven.blamejared.com/")
 }
 
 dependencies {
@@ -42,7 +43,7 @@ dependencies {
     compileOnly(project(":common"))
     include(libs.molang)
     modCompileOnly(libs.molang)
-    
+    runtimeOnly(libs.jei.fabric)
 
     // ExampleMod
     //modLocalRuntime(libs.examplemod.fabric)

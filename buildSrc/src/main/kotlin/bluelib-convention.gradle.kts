@@ -19,20 +19,6 @@ idea {
     }
 }
 
-repositories {
-    exclusiveContent {
-        forRepository {
-            maven {
-                name = "Modrinth"
-                url = uri("https://api.modrinth.com/maven")
-            }
-        }
-        filter {
-            includeGroup("maven.modrinth")
-        }
-    }
-}
-
 val libs = project.versionCatalogs.find("libs")
 
 val modId: String by project
@@ -50,6 +36,7 @@ val fabricVersionRange = libs.get().findVersion("fabric.range").get()
 val neoforgeVersionRange = libs.get().findVersion("neoforge.range").get()
 val neoforgeLoaderVersionRange = libs.get().findVersion("neoforge.loader.range").get()
 val molangVersion = libs.get().findVersion("molang").get()
+val jeiApiVersion = libs.get().findVersion("jei.api").get()
 
 tasks.withType<Jar>().configureEach {
     from(rootProject.file("LICENSE")) {
@@ -57,16 +44,18 @@ tasks.withType<Jar>().configureEach {
     }
 
     manifest {
-        attributes(mapOf(
-            "Specification-Title"     to modDisplayName,
-            "Specification-Vendor"    to modAuthors,
-            "Specification-Version"   to modVersion,
-            "Implementation-Title"    to modDisplayName,
-            "Implementation-Version"  to modVersion,
-            "Implementation-Vendor"   to modAuthors,
-            "Built-On-Minecraft"      to mcVersion,
-            "MixinConfigs"            to "$modId.mixins.json"
-        ))
+        attributes(
+            mapOf(
+                "Specification-Title" to modDisplayName,
+                "Specification-Vendor" to modAuthors,
+                "Specification-Version" to modVersion,
+                "Implementation-Title" to modDisplayName,
+                "Implementation-Version" to modVersion,
+                "Implementation-Vendor" to modAuthors,
+                "Built-On-Minecraft" to mcVersion,
+                "MixinConfigs" to "$modId.mixins.json"
+            )
+        )
     }
 }
 
@@ -93,6 +82,7 @@ tasks.withType<ProcessResources>().configureEach {
         "neoforge_version_range" to neoforgeVersionRange,
         "neoforge_loader_range" to neoforgeLoaderVersionRange,
         "molang_version" to molangVersion,
+        "jei_api_version" to jeiApiVersion
     )
 
     filesMatching(listOf("pack.mcmeta", "fabric.mod.json", "META-INF/neoforge.mods.toml", "*.mixins.json")) {
