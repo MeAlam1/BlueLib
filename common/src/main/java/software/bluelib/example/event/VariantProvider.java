@@ -16,6 +16,6 @@ public class VariantProvider implements IVariantProvider {
 
     @Override
     public List<String> getEntityNames() {
-        return List.of("exampleone", "exampletwo");
+        return List.of();
     }
 }
