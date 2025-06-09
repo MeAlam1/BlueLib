@@ -10,13 +10,9 @@ package software.bluelib;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
-import net.fabricmc.fabric.api.message.v1.ServerMessageEvents;
 import net.fabricmc.loader.api.FabricLoader;
-import software.bluelib.config.ConfigLoader;
-import software.bluelib.event.ChatHandler;
-import software.bluelib.event.CommandHandler;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.world.entity.EntityType;
 import software.bluelib.event.ReloadHandler;
 import software.bluelib.example.event.VariantProvider;
 import software.bluelib.net.FabricNetworkManager;
@@ -29,9 +25,10 @@ public class BlueLib implements ModInitializer {
 	public void onInitialize() {
 		ReloadHandler.registerProvider(new VariantProvider());
 		BlueLibCommon.doRegistration();
+		FabricEvents.register();
 		BlueLibConstants.init();
-		registerModEventListeners();
-		if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
+
+		if (isClientEnvironment()) {
 			BlueLibCommon.doClientRegistration();
 			ClientTickEvents.END_CLIENT_TICK.register(client -> {
 				FabricNetworkManager.registerClientHandlers();
@@ -46,12 +43,7 @@ public class BlueLib implements ModInitializer {
 		FabricNetworkManager.registerServerHandlers();
 	}
 
-	public static void registerModEventListeners() {
-		ServerLifecycleEvents.SERVER_STARTING.register(ReloadHandler::onServerStart);
-		ServerLifecycleEvents.SERVER_STARTED.register(ConfigLoader::createConfigs);
-		ServerLifecycleEvents.END_DATA_PACK_RELOAD.register(ConfigLoader::reloadConfigs);
-		ServerLifecycleEvents.END_DATA_PACK_RELOAD.register(ReloadHandler::onReload);
-		ServerMessageEvents.ALLOW_CHAT_MESSAGE.register(ChatHandler::onAllowChat);
-		CommandRegistrationCallback.EVENT.register(CommandHandler::registerCommands);
+	private boolean isClientEnvironment() {
+		return FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT;
 	}
 }

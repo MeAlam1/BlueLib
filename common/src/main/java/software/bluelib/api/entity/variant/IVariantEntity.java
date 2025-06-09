@@ -11,10 +11,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import net.minecraft.util.RandomSource;
-import software.bluelib.BlueLibCommon;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
 import software.bluelib.api.utils.variant.ParameterUtils;
+import software.bluelib.internal.Translation;
 
 @SuppressWarnings("unused")
 public interface IVariantEntity {
@@ -23,12 +23,12 @@ public interface IVariantEntity {
 
     default String getRandomVariant(List<String> pVariantNamesList, String pDefaultVariant) {
         if (pVariantNamesList.isEmpty()) {
-            BaseLogger.log(true, BaseLogLevel.INFO, BlueLibCommon.Translation.log("variant.list.empty", pDefaultVariant));
+            BaseLogger.log(true, BaseLogLevel.INFO, Translation.log("variant.list.empty", pDefaultVariant));
             return pDefaultVariant;
         }
         int index = random.nextInt(pVariantNamesList.size());
         String selectedVariant = pVariantNamesList.get(index);
-        BaseLogger.log(true, BaseLogLevel.SUCCESS, BlueLibCommon.Translation.log("variant.random", selectedVariant, pVariantNamesList.size()));
+        BaseLogger.log(true, BaseLogLevel.SUCCESS, Translation.log("variant.random", selectedVariant, pVariantNamesList.size()));
         return selectedVariant;
     }
 

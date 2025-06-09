@@ -11,30 +11,31 @@ import static software.bluelib.BlueLibConstants.SCHEDULER;
 
 import java.util.concurrent.TimeUnit;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.ApiStatus;
+import org.spongepowered.asm.launch.MixinBootstrap;
 import software.bluelib.api.event.mod.ModIntegration;
 import software.bluelib.api.net.NetworkRegistry;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
-import software.bluelib.registry.BlueEntityRegistry;
-import software.bluelib.registry.BlueNetworkRegistry;
-import software.bluelib.registry.BlueRecipeSerializerRegistry;
-import software.bluelib.registry.BlueRecipeTypeRegistry;
+import software.bluelib.internal.Translation;
+import software.bluelib.internal.registry.BlueEntityRegistry;
+import software.bluelib.internal.registry.BlueNetworkRegistry;
+import software.bluelib.internal.registry.BlueRecipeSerializerRegistry;
+import software.bluelib.internal.registry.BlueRecipeTypeRegistry;
 
+@ApiStatus.Internal
 public class BlueLibCommon {
 
     private BlueLibCommon() {}
 
-    @ApiStatus.Internal
     public static void init() {
         if (isDeveloperMode()) {
             SCHEDULER.schedule(() -> {
                 ModIntegration.checkSupportMods();
                 BaseLogger.logBlueLib(Component.literal("**************************************************"));
                 BaseLogger.logBlueLib(Component.literal("                                                  "));
-                BaseLogger.logBlueLib(BlueLibCommon.Translation.translate("mod.thank_you"));
-                BaseLogger.logBlueLib(BlueLibCommon.Translation.translate("mod.thank_you.subtitle"));
+                BaseLogger.logBlueLib(Translation.translate("mod.thank_you"));
+                BaseLogger.logBlueLib(Translation.translate("mod.thank_you.subtitle"));
                 BaseLogger.logBlueLib(Component.literal("                                                  "));
                 BaseLogger.logBlueLib(Component.literal("**************************************************"));
                 SCHEDULER.shutdown();
@@ -42,15 +43,14 @@ public class BlueLibCommon {
         }
     }
 
-    @ApiStatus.Internal
     public static void doRegistration() {
+        MixinBootstrap.init();
         InternalNetworkRegistry.networkServer();
-        BlueEntityRegistry.init();
-        BlueRecipeTypeRegistry.init();
+	    BlueEntityRegistry.init();
+		BlueRecipeTypeRegistry.init();
         BlueRecipeSerializerRegistry.init();
     }
 
-    @ApiStatus.Internal
     public static void doClientRegistration() {
         InternalNetworkRegistry.networkClient();
     }
@@ -63,7 +63,6 @@ public class BlueLibCommon {
         return isDevMode;
     }
 
-    @ApiStatus.Internal
     protected static class InternalNetworkRegistry {
 
         private static BlueNetworkRegistry getNetwork() {
@@ -76,42 +75,6 @@ public class BlueLibCommon {
 
         private static void networkClient() {
             NetworkRegistry.registerS2CPacketProvider(getNetwork());
-        }
-    }
-
-    @ApiStatus.Internal
-    public static class Resource {
-
-        public static ResourceLocation resource(String pPath) {
-            return ResourceLocation.fromNamespaceAndPath(BlueLibConstants.MOD_ID, pPath);
-        }
-    }
-
-    @ApiStatus.Internal
-    public static class Translation {
-
-        public static Component translate(String pString) {
-            return Component.translatable(BlueLibConstants.MOD_ID + "." + pString);
-        }
-
-        public static Component translate(String pString, Object... pArgs) {
-            return Component.translatable(BlueLibConstants.MOD_ID + "." + pString, pArgs);
-        }
-
-        public static Component log(String pString) {
-            return Component.translatable(BlueLibConstants.MOD_ID + ".log." + pString);
-        }
-
-        public static Component log(String pString, Object... pArgs) {
-            return Component.translatable(BlueLibConstants.MOD_ID + ".log." + pString, pArgs);
-        }
-
-        public static Component config(String pString) {
-            return Component.translatable(BlueLibConstants.MOD_ID + ".config." + pString);
-        }
-
-        public static Component config(String pString, Object... pArgs) {
-            return Component.translatable(BlueLibConstants.MOD_ID + ".config." + pString, pArgs);
         }
     }
 }

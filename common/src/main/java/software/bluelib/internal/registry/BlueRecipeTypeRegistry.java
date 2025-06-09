@@ -5,13 +5,15 @@
  * If a copy of the MIT License was not distributed with this file,
  * You can obtain one at https://opensource.org/licenses/MIT.
  */
-package software.bluelib.registry;
+package software.bluelib.internal.registry;
 
 import java.util.function.Supplier;
 import net.minecraft.world.item.crafting.RecipeType;
+import org.jetbrains.annotations.ApiStatus;
 import software.bluelib.BlueLibConstants;
 import software.bluelib.recipe.brewing.BrewingRecipe;
 
+@ApiStatus.Internal
 public class BlueRecipeTypeRegistry {
 
     public static void init() {}

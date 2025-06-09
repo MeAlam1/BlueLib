@@ -9,11 +9,11 @@ package software.bluelib.markdown.syntax;
 
 import java.util.regex.Pattern;
 import net.minecraft.network.chat.*;
-import software.bluelib.BlueLibCommon;
 import software.bluelib.api.utils.IsValidUtils;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
 import software.bluelib.config.MarkdownConfig;
+import software.bluelib.internal.Translation;
 import software.bluelib.markdown.MarkdownFeature;
 
 @SuppressWarnings("unused")
@@ -21,7 +21,7 @@ public class Hyperlink extends MarkdownFeature {
 
     public MutableComponent apply(MutableComponent pComponent) {
         if (!MarkdownConfig.isHyperlinkEnabled) {
-            BaseLogger.log(true, BaseLogLevel.INFO, BlueLibCommon.Translation.log("markdown.hyperlink.disabled"));
+            BaseLogger.log(true, BaseLogLevel.INFO, Translation.log("markdown.hyperlink.disabled"));
             return pComponent;
         }
 

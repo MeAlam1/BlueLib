@@ -13,12 +13,12 @@ import java.util.Map;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
-import software.bluelib.BlueLibCommon;
 import software.bluelib.api.net.NetworkPacket;
+import software.bluelib.internal.Resource;
 
 public record AllDataPacket(Map<String, JsonObject> allData) implements NetworkPacket<AllDataPacket> {
 
-    public static final ResourceLocation ID = BlueLibCommon.Resource.resource("all_data_packet");
+    public static final ResourceLocation ID = Resource.resource("all_data_packet");
 
     @Override
     public void encode(RegistryFriendlyByteBuf pBuffer) {

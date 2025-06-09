@@ -12,8 +12,8 @@ import com.mojang.brigadier.context.CommandContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.server.level.ServerPlayer;
-import software.bluelib.BlueLibCommon;
 import software.bluelib.api.net.NetworkRegistry;
+import software.bluelib.internal.Translation;
 import software.bluelib.net.messages.client.OpenLoggerPacket;
 
 public class OpenLoggerScreenCommand {
@@ -30,7 +30,7 @@ public class OpenLoggerScreenCommand {
         if (player.hasPermissions(3)) {
             NetworkRegistry.sendPacketToPlayer(player, new OpenLoggerPacket());
         } else {
-            pContext.getSource().sendFailure(BlueLibCommon.Translation.translate("command.logger.no_permission"));
+            pContext.getSource().sendFailure(Translation.translate("command.logger.no_permission"));
         }
         return 1;
     }

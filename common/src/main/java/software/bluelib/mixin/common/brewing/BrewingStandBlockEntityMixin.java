@@ -25,9 +25,9 @@ import net.minecraft.world.level.block.entity.BrewingStandBlockEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
+import software.bluelib.internal.registry.BlueRecipeTypeRegistry;
 import software.bluelib.recipe.brewing.BrewingInput;
 import software.bluelib.recipe.brewing.BrewingRecipe;
-import software.bluelib.registry.BlueRecipeTypeRegistry;
 
 @Mixin(BrewingStandBlockEntity.class)
 public class BrewingStandBlockEntityMixin {

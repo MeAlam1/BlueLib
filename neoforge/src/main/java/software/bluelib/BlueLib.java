@@ -27,35 +27,31 @@ import software.bluelib.config.ConfigHolder;
 import software.bluelib.event.ReloadHandler;
 import software.bluelib.example.event.VariantProvider;
 import software.bluelib.net.NeoForgeNetworkManager;
-import software.bluelib.registry.BlueEntityRegistry;
 
 @Mod(BlueLibConstants.MOD_ID)
 public class BlueLib {
-	public static final DeferredRegister<RecipeType<?>> RECIPE_TYPES = DeferredRegister.create(Registries.RECIPE_TYPE, BlueLibConstants.MOD_ID);
-	public static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(Registries.RECIPE_SERIALIZER, BlueLibConstants.MOD_ID);
-
-	public static final DeferredRegister.DataComponents DATA_COMPONENTS_REGISTER = DeferredRegister.createDataComponents(Registries.DATA_COMPONENT_TYPE, BlueLibConstants.MOD_ID);
-	public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(Registries.ENTITY_TYPE, BlueLibConstants.MOD_ID);
-
+	
 	public BlueLib(IEventBus pModEventBus, ModContainer pModContainer) {
 		BlueLibConstants.init();
 		BlueLibCommon.doRegistration();
+		NeoRegistries.register(pModEventBus);
+		
 		if (FMLEnvironment.dist == Dist.CLIENT)
 			BlueLibClient.init(pModContainer);
+
+		registerConfigs(pModContainer);
+		setupEventListeners(pModEventBus);
+
 		ReloadHandler.registerProvider(new VariantProvider());
-		pModEventBus.register(this);
-		MixinBootstrap.init();
+	}
 
-		DATA_COMPONENTS_REGISTER.register(pModEventBus);
-		ENTITIES.register(pModEventBus);
-		RECIPE_TYPES.register(pModEventBus);
-		RECIPE_SERIALIZERS.register(pModEventBus);
-
-		pModEventBus.<EntityAttributeCreationEvent>addListener(event -> BlueEntityRegistry.registerEntityAttributes(event::put));
-
+	private void registerConfigs(ModContainer pModContainer) {
 		pModContainer.registerConfig(ModConfig.Type.SERVER, ConfigHolder.MARKDOWN_SPEC, BlueLibConstants.MOD_ID + "-markdown.toml");
 		pModContainer.registerConfig(ModConfig.Type.SERVER, ConfigHolder.LOGGER_SPEC, BlueLibConstants.MOD_ID + "-logger.toml");
+	}
 
+	private void setupEventListeners(IEventBus pModEventBus) {
+		pModEventBus.register(this);
 		pModEventBus.addListener(NeoForgeNetworkManager::registerMessages);
 	}
 
