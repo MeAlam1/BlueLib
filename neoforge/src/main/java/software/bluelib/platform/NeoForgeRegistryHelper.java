@@ -38,11 +38,11 @@ public class NeoForgeRegistryHelper implements IRegistryHelper {
 
 	@Override
 	public <T extends Entity> Supplier<EntityType<T>> registerEntity(String pId, Supplier<EntityType<T>> pEntity) {
-		return BlueLib.ENTITIES.register(pId, pEntity);
+		return NeoRegistries.ENTITIES.register(pId, pEntity);
 	}
 
 	@Override
 	public <T> Supplier<DataComponentType<T>> registerDataComponent(String pId, UnaryOperator<DataComponentType.Builder<T>> pBuilder) {
-		return BlueLib.DATA_COMPONENTS_REGISTER.registerComponentType(pId, pBuilder);
+		return NeoRegistries.DATA_COMPONENTS_REGISTER.registerComponentType(pId, pBuilder);
 	}
 }

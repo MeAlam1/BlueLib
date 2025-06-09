@@ -12,11 +12,12 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import software.bluelib.BlueLibCommon;
 import software.bluelib.api.net.NetworkPacket;
+import software.bluelib.internal.Resource;
 
 public record SingletonAnimTriggerPacket(String syncableId, long instanceId, String controllerName,
         String animName) implements NetworkPacket<SingletonAnimTriggerPacket> {
 
-    public static final ResourceLocation ID = BlueLibCommon.Resource.resource("singleton_anim_trigger");
+    public static final ResourceLocation ID = Resource.resource("singleton_anim_trigger");
 
     @Override
     public void encode(RegistryFriendlyByteBuf pBuffer) {

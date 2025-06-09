@@ -8,11 +8,14 @@
 package software.bluelib;
 
 import net.minecraft.core.registries.Registries;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.jetbrains.annotations.ApiStatus;
+import software.bluelib.internal.registry.BlueEntityRegistry;
 
 @ApiStatus.Internal
 public class NeoRegistries {
@@ -23,8 +26,17 @@ public class NeoRegistries {
 	public static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS =
 			DeferredRegister.create(Registries.RECIPE_SERIALIZER, BlueLibConstants.MOD_ID);
 
+	public static final DeferredRegister.DataComponents DATA_COMPONENTS_REGISTER = DeferredRegister.createDataComponents(Registries.DATA_COMPONENT_TYPE, BlueLibConstants.MOD_ID);
+
+	public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(Registries.ENTITY_TYPE, BlueLibConstants.MOD_ID);
+
 	public static void register(IEventBus pModEventBus) {
 		RECIPE_TYPES.register(pModEventBus);
 		RECIPE_SERIALIZERS.register(pModEventBus);
+		DATA_COMPONENTS_REGISTER.register(pModEventBus);
+		ENTITIES.register(pModEventBus);
+
+		pModEventBus.<EntityAttributeCreationEvent>addListener(event -> BlueEntityRegistry.registerEntityAttributes(event::put));
+
 	}
 }

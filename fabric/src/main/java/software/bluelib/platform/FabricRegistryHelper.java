@@ -16,8 +16,8 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
-import software.bluelib.BlueLibCommon;
 import software.bluelib.BlueLibConstants;
+import software.bluelib.internal.Resource;
 import software.bluelib.net.FabricNetworkManager;
 
 import java.util.function.Supplier;
@@ -47,7 +47,7 @@ public class FabricRegistryHelper implements IRegistryHelper {
 
 	@Override
 	public <T> Supplier<DataComponentType<T>> registerDataComponent(String pId, UnaryOperator<DataComponentType.Builder<T>> pBuilder) {
-		final DataComponentType<T> componentType = Registry.register(BuiltInRegistries.DATA_COMPONENT_TYPE, BlueLibCommon.Resource.resource(pId).toString(), pBuilder.apply(DataComponentType.builder()).build());
+		final DataComponentType<T> componentType = Registry.register(BuiltInRegistries.DATA_COMPONENT_TYPE, Resource.resource(pId).toString(), pBuilder.apply(DataComponentType.builder()).build());
 
 		return () -> componentType;
 	}

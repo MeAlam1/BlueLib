@@ -13,10 +13,11 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import software.bluelib.BlueLibCommon;
 import software.bluelib.api.net.NetworkPacket;
+import software.bluelib.internal.Resource;
 
 public record StopTriggeredBlockEntityAnimPacket(BlockPos pos, String controllerName, String animName) implements NetworkPacket<StopTriggeredBlockEntityAnimPacket> {
 
-    public static final ResourceLocation ID = BlueLibCommon.Resource.resource("stop_triggered_blockentity_anim");
+    public static final ResourceLocation ID = Resource.resource("stop_triggered_blockentity_anim");
 
     @Override
     public void encode(RegistryFriendlyByteBuf pBuffer) {

@@ -11,12 +11,13 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import software.bluelib.BlueLibCommon;
 import software.bluelib.api.net.NetworkPacket;
+import software.bluelib.internal.Resource;
 import software.bluelib.loader.constant.dataticket.SerializableDataTicket;
 
 public record EntityDataSyncPacket<D>(int entityId, boolean isReplacedEntity, SerializableDataTicket<D> dataTicket,
         D data) implements NetworkPacket<EntityDataSyncPacket<D>> {
 
-    public static final ResourceLocation ID = BlueLibCommon.Resource.resource("entity_data_sync");
+    public static final ResourceLocation ID = Resource.resource("entity_data_sync");
 
     @Override
     public void encode(RegistryFriendlyByteBuf pBuffer) {

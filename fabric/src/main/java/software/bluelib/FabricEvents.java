@@ -10,11 +10,13 @@ package software.bluelib;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.message.v1.ServerMessageEvents;
+import org.jetbrains.annotations.ApiStatus;
 import software.bluelib.config.ConfigLoader;
 import software.bluelib.event.ChatHandler;
 import software.bluelib.event.CommandHandler;
 import software.bluelib.event.ReloadHandler;
 
+@ApiStatus.Internal
 public class FabricEvents {
 
 	public static void register() {

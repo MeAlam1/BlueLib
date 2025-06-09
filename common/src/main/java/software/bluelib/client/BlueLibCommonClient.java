@@ -15,7 +15,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import software.bluelib.example.render.entity.ExampleRender;
-import software.bluelib.registry.BlueEntityRegistry;
+import software.bluelib.internal.registry.BlueEntityRegistry;
 
 public class BlueLibCommonClient {
 

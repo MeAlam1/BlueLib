@@ -11,8 +11,6 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.world.entity.EntityType;
 import software.bluelib.event.ReloadHandler;
 import software.bluelib.example.event.VariantProvider;
 import software.bluelib.net.FabricNetworkManager;
@@ -23,10 +21,9 @@ public class BlueLib implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		ReloadHandler.registerProvider(new VariantProvider());
+		BlueLibConstants.init();
 		BlueLibCommon.doRegistration();
 		FabricEvents.register();
-		BlueLibConstants.init();
 
 		if (isClientEnvironment()) {
 			BlueLibCommon.doClientRegistration();
@@ -39,6 +36,12 @@ public class BlueLib implements ModInitializer {
 			});
 		}
 
+		registerNetwork();
+		
+		ReloadHandler.registerProvider(new VariantProvider());
+	}
+
+	private void registerNetwork() {
 		FabricNetworkManager.registerMessages();
 		FabricNetworkManager.registerServerHandlers();
 	}
