@@ -24,17 +24,7 @@ public class BlueLib implements ModInitializer {
 		BlueLibCommon.doRegistration();
 		FabricEvents.register();
 
-		if (isClientEnvironment()) {
-			BlueLibCommon.doClientRegistration();
-			ClientTickEvents.END_CLIENT_TICK.register(client -> {
-				FabricNetworkManager.registerClientHandlers();
-				if (!hasInitialized) {
-					hasInitialized = true;
-					BlueLibCommon.init();
-				}
-			});
-		}
-
+		clientEndTick();
 		registerNetwork();
 
 		ReloadHandler.registerProvider(new VariantProvider());
@@ -47,5 +37,18 @@ public class BlueLib implements ModInitializer {
 
 	private boolean isClientEnvironment() {
 		return FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT;
+	}
+
+	private void clientEndTick() {
+		if (isClientEnvironment()) {
+			BlueLibCommon.doClientRegistration();
+			ClientTickEvents.END_CLIENT_TICK.register(client -> {
+				FabricNetworkManager.registerClientHandlers();
+				if (!hasInitialized) {
+					hasInitialized = true;
+					BlueLibCommon.init();
+				}
+			});
+		}
 	}
 }
