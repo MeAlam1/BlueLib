@@ -33,15 +33,15 @@ import net.minecraft.world.level.block.SkullBlock;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.BlueLibConstants;
+import software.bluelib.api.utils.Color;
 import software.bluelib.client.loader.cache.model.BoneCache;
 import software.bluelib.client.loader.cache.model.CubeCache;
 import software.bluelib.client.loader.cache.model.ModelCache;
+import software.bluelib.client.utils.RenderUtils;
 import software.bluelib.loader.animatable.GeoAnimatable;
 import software.bluelib.loader.animatable.GeoItem;
 import software.bluelib.loader.renderer.GeoArmorRenderer;
 import software.bluelib.loader.renderer.GeoRenderer;
-import software.bluelib.loader.util.Color;
-import software.bluelib.loader.util.RenderUtil;
 
 public class ItemArmorGeoLayer<T extends LivingEntity & GeoAnimatable> extends GeoRenderLayer<T> {
 
@@ -175,7 +175,7 @@ public class ItemArmorGeoLayer<T extends LivingEntity & GeoAnimatable> extends G
         RenderType pRenderType = SkullBlockRenderer.getRenderType(type, stack.get(DataComponents.PROFILE));
 
         pPoseStack.pushPose();
-        RenderUtil.translateAndRotateMatrixForBone(pPoseStack, bone);
+        RenderUtils.translateAndRotateMatrixForBone(pPoseStack, bone);
         pPoseStack.scale(1.1875f, 1.1875f, 1.1875f);
         pPoseStack.translate(-0.5f, 0, -0.5f);
         SkullBlockRenderer.renderSkull(null, 0, 0, pPoseStack, pBufferSource, pPackedLight, model, pRenderType);

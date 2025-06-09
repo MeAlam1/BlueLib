@@ -20,13 +20,13 @@ import org.joml.Matrix4f;
 import software.bluelib.BlueLibConstants;
 import software.bluelib.client.loader.cache.model.BoneCache;
 import software.bluelib.client.loader.cache.model.ModelCache;
+import software.bluelib.client.loader.cache.texture.AnimatableTexture;
+import software.bluelib.client.utils.RenderUtils;
 import software.bluelib.loader.animatable.GeoAnimatable;
 import software.bluelib.loader.animation.AnimationState;
-import software.bluelib.loader.cache.texture.AnimatableTexture;
 import software.bluelib.loader.model.GeoModel;
 import software.bluelib.loader.renderer.layer.GeoRenderLayer;
 import software.bluelib.loader.renderer.layer.GeoRenderLayersContainer;
-import software.bluelib.loader.util.RenderUtil;
 
 public class GeoObjectRenderer<T extends GeoAnimatable> implements GeoRenderer<T> {
 
@@ -136,8 +136,8 @@ public class GeoObjectRenderer<T extends GeoAnimatable> implements GeoRenderer<T
         if (pBone.isTrackingMatrices()) {
             Matrix4f poseState = new Matrix4f(pPoseStack.last().pose());
 
-            pBone.setModelSpaceMatrix(RenderUtil.invertAndMultiplyMatrices(poseState, this.modelRenderTranslations));
-            pBone.setLocalSpaceMatrix(RenderUtil.invertAndMultiplyMatrices(poseState, this.objectRenderTranslations));
+            pBone.setModelSpaceMatrix(RenderUtils.invertAndMultiplyMatrices(poseState, this.modelRenderTranslations));
+            pBone.setLocalSpaceMatrix(RenderUtils.invertAndMultiplyMatrices(poseState, this.objectRenderTranslations));
         }
 
         GeoRenderer.super.renderRecursively(pPoseStack, pAnimatable, pBone, pRenderType, pBufferSource, pBuffer, pIsReRender, pPartialTick, pPackedLight, pPackedOverlay,

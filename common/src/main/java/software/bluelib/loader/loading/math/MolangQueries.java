@@ -24,95 +24,95 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import software.bluelib.client.utils.PlayerUtils;
 import software.bluelib.loader.animatable.GeoAnimatable;
 import software.bluelib.loader.animation.AnimationState;
 import software.bluelib.loader.constant.DataTickets;
 import software.bluelib.loader.loading.math.value.Variable;
-import software.bluelib.loader.util.ClientUtil;
 
 public final class MolangQueries {
 
-    public static final String ACTOR_COUNT = "query.actor_count";
-    public static final String ANIM_TIME = "query.anim_time";
-    public static final String BLOCKING = "query.blocking";
-    public static final String BLOCK_STATE = "query.block_state";
-    public static final String BODY_X_ROTATION = "query.body_x_rotation";
-    public static final String BODY_Y_ROTATION = "query.body_y_rotation";
-    public static final String CAN_CLIMB = "query.can_climb";
-    public static final String CAN_FLY = "query.can_fly";
-    public static final String CAN_SWIM = "query.can_swim";
-    public static final String CAN_WALK = "query.can_walk";
-    public static final String CARDINAL_FACING = "query.cardinal_facing";
-    public static final String CARDINAL_FACING_2D = "query.cardinal_facing_2d";
-    public static final String CARDINAL_PLAYER_FACING = "query.cardinal_player_facing";
-    public static final String CONTROLLER_SPEED = "query.controller_speed";
-    public static final String DAY = "query.day";
-    public static final String DEATH_TICKS = "query.death_ticks";
-    public static final String DISTANCE_FROM_CAMERA = "query.distance_from_camera";
-    public static final String EQUIPMENT_COUNT = "query.equipment_count";
-    public static final String FRAME_ALPHA = "query.frame_alpha";
-    public static final String GET_ACTOR_INFO_ID = "query.get_actor_info_id";
-    public static final String GROUND_SPEED = "query.ground_speed";
-    public static final String HAS_CAPE = "query.has_cape";
-    public static final String HAS_COLLISION = "query.has_collision";
-    public static final String HAS_GRAVITY = "query.has_gravity";
-    public static final String HAS_HEAD_GEAR = "query.has_head_gear";
-    public static final String HAS_OWNER = "query.has_owner";
-    public static final String HAS_PLAYER_RIDER = "query.has_player_rider";
-    public static final String HAS_RIDER = "query.has_rider";
-    public static final String HEAD_X_ROTATION = "query.head_x_rotation";
-    public static final String HEAD_Y_ROTATION = "query.head_y_rotation";
-    public static final String HEALTH = "query.health";
-    public static final String HURT_TIME = "query.hurt_time";
-    public static final String INVULNERABLE_TICKS = "query.invulnerable_ticks";
-    public static final String IS_ALIVE = "query.is_alive";
-    public static final String IS_ANGRY = "query.is_angry";
-    public static final String IS_BABY = "query.is_baby";
-    public static final String IS_BREATHING = "query.is_breathing";
-    public static final String IS_ENCHANTED = "query.is_enchanted";
-    public static final String IS_FIRE_IMMUNE = "query.is_fire_immune";
-    public static final String IS_FIRST_PERSON = "query.is_first_person";
-    public static final String IS_INVISIBLE = "query.is_invisible";
-    public static final String IS_IN_CONTACT_WITH_WATER = "query.is_in_contact_with_water";
-    public static final String IS_IN_LAVA = "query.is_in_lava";
-    public static final String IS_IN_WATER = "query.is_in_water";
-    public static final String IS_IN_WATER_OR_RAIN = "query.is_in_water_or_rain";
-    public static final String IS_LEASHED = "query.is_leashed";
-    public static final String IS_MOVING = "query.is_moving";
-    public static final String IS_ON_FIRE = "query.is_on_fire";
-    public static final String IS_ON_GROUND = "query.is_on_ground";
-    public static final String IS_POWERED = "query.is_powered";
-    public static final String IS_RIDING = "query.is_riding";
-    public static final String IS_SADDLED = "query.is_saddled";
-    public static final String IS_SILENT = "query.is_silent";
-    public static final String IS_SLEEPING = "query.is_sleeping";
-    public static final String IS_SNEAKING = "query.is_sneaking";
-    public static final String IS_SPRINTING = "query.is_sprinting";
-    public static final String IS_STACKABLE = "query.is_stackable";
-    public static final String IS_SWIMMING = "query.is_swimming";
-    public static final String IS_USING_ITEM = "query.is_using_item";
-    public static final String IS_WALL_CLIMBING = "query.is_wall_climbing";
-    public static final String ITEM_MAX_USE_DURATION = "query.item_max_use_duration";
-    public static final String LIFE_TIME = "query.life_time";
-    public static final String MAIN_HAND_ITEM_MAX_DURATION = "query.main_hand_item_max_duration";
-    public static final String MAIN_HAND_ITEM_USE_DURATION = "query.main_hand_item_use_duration";
-    public static final String MAX_DURABILITY = "query.max_durability";
-    public static final String MAX_HEALTH = "query.max_health";
-    public static final String MOON_BRIGHTNESS = "query.moon_brightness";
-    public static final String MOON_PHASE = "query.moon_phase";
-    public static final String MOVEMENT_DIRECTION = "query.movement_direction";
-    public static final String PLAYER_LEVEL = "query.player_level";
-    public static final String REMAINING_DURABILITY = "query.remaining_durability";
-    public static final String RIDER_BODY_X_ROTATION = "query.rider_body_x_rotation";
-    public static final String RIDER_BODY_Y_ROTATION = "query.rider_body_y_rotation";
-    public static final String RIDER_HEAD_X_ROTATION = "query.rider_head_x_rotation";
-    public static final String RIDER_HEAD_Y_ROTATION = "query.rider_head_y_rotation";
-    public static final String SCALE = "query.scale";
-    public static final String SLEEP_ROTATION = "query.sleep_rotation";
-    public static final String TIME_OF_DAY = "query.time_of_day";
-    public static final String TIME_STAMP = "query.time_stamp";
-    public static final String VERTICAL_SPEED = "query.vertical_speed";
-    public static final String YAW_SPEED = "query.yaw_speed";
+    public static final String ACTOR_COUNT = "q.actor_count";
+    public static final String ANIM_TIME = "q.anim_time";
+    public static final String BLOCKING = "q.blocking";
+    public static final String BLOCK_STATE = "q.block_state";
+    public static final String BODY_X_ROTATION = "q.body_x_rotation";
+    public static final String BODY_Y_ROTATION = "q.body_y_rotation";
+    public static final String CAN_CLIMB = "q.can_climb";
+    public static final String CAN_FLY = "q.can_fly";
+    public static final String CAN_SWIM = "q.can_swim";
+    public static final String CAN_WALK = "q.can_walk";
+    public static final String CARDINAL_FACING = "q.cardinal_facing";
+    public static final String CARDINAL_FACING_2D = "q.cardinal_facing_2d";
+    public static final String CARDINAL_PLAYER_FACING = "q.cardinal_player_facing";
+    public static final String CONTROLLER_SPEED = "q.controller_speed";
+    public static final String DAY = "q.day";
+    public static final String DEATH_TICKS = "q.death_ticks";
+    public static final String DISTANCE_FROM_CAMERA = "q.distance_from_camera";
+    public static final String EQUIPMENT_COUNT = "q.equipment_count";
+    public static final String FRAME_ALPHA = "q.frame_alpha";
+    public static final String GET_ACTOR_INFO_ID = "q.get_actor_info_id";
+    public static final String GROUND_SPEED = "q.ground_speed";
+    public static final String HAS_CAPE = "q.has_cape";
+    public static final String HAS_COLLISION = "q.has_collision";
+    public static final String HAS_GRAVITY = "q.has_gravity";
+    public static final String HAS_HEAD_GEAR = "q.has_head_gear";
+    public static final String HAS_OWNER = "q.has_owner";
+    public static final String HAS_PLAYER_RIDER = "q.has_player_rider";
+    public static final String HAS_RIDER = "q.has_rider";
+    public static final String HEAD_X_ROTATION = "q.head_x_rotation";
+    public static final String HEAD_Y_ROTATION = "q.head_y_rotation";
+    public static final String HEALTH = "q.health";
+    public static final String HURT_TIME = "q.hurt_time";
+    public static final String INVULNERABLE_TICKS = "q.invulnerable_ticks";
+    public static final String IS_ALIVE = "q.is_alive";
+    public static final String IS_ANGRY = "q.is_angry";
+    public static final String IS_BABY = "q.is_baby";
+    public static final String IS_BREATHING = "q.is_breathing";
+    public static final String IS_ENCHANTED = "q.is_enchanted";
+    public static final String IS_FIRE_IMMUNE = "q.is_fire_immune";
+    public static final String IS_FIRST_PERSON = "q.is_first_person";
+    public static final String IS_INVISIBLE = "q.is_invisible";
+    public static final String IS_IN_CONTACT_WITH_WATER = "q.is_in_contact_with_water";
+    public static final String IS_IN_LAVA = "q.is_in_lava";
+    public static final String IS_IN_WATER = "q.is_in_water";
+    public static final String IS_IN_WATER_OR_RAIN = "q.is_in_water_or_rain";
+    public static final String IS_LEASHED = "q.is_leashed";
+    public static final String IS_MOVING = "q.is_moving";
+    public static final String IS_ON_FIRE = "q.is_on_fire";
+    public static final String IS_ON_GROUND = "q.is_on_ground";
+    public static final String IS_POWERED = "q.is_powered";
+    public static final String IS_RIDING = "q.is_riding";
+    public static final String IS_SADDLED = "q.is_saddled";
+    public static final String IS_SILENT = "q.is_silent";
+    public static final String IS_SLEEPING = "q.is_sleeping";
+    public static final String IS_SNEAKING = "q.is_sneaking";
+    public static final String IS_SPRINTING = "q.is_sprinting";
+    public static final String IS_STACKABLE = "q.is_stackable";
+    public static final String IS_SWIMMING = "q.is_swimming";
+    public static final String IS_USING_ITEM = "q.is_using_item";
+    public static final String IS_WALL_CLIMBING = "q.is_wall_climbing";
+    public static final String ITEM_MAX_USE_DURATION = "q.item_max_use_duration";
+    public static final String LIFE_TIME = "q.life_time";
+    public static final String MAIN_HAND_ITEM_MAX_DURATION = "q.main_hand_item_max_duration";
+    public static final String MAIN_HAND_ITEM_USE_DURATION = "q.main_hand_item_use_duration";
+    public static final String MAX_DURABILITY = "q.max_durability";
+    public static final String MAX_HEALTH = "q.max_health";
+    public static final String MOON_BRIGHTNESS = "q.moon_brightness";
+    public static final String MOON_PHASE = "q.moon_phase";
+    public static final String MOVEMENT_DIRECTION = "q.movement_direction";
+    public static final String PLAYER_LEVEL = "q.player_level";
+    public static final String REMAINING_DURABILITY = "q.remaining_durability";
+    public static final String RIDER_BODY_X_ROTATION = "q.rider_body_x_rotation";
+    public static final String RIDER_BODY_Y_ROTATION = "q.rider_body_y_rotation";
+    public static final String RIDER_HEAD_X_ROTATION = "q.rider_head_x_rotation";
+    public static final String RIDER_HEAD_Y_ROTATION = "q.rider_head_y_rotation";
+    public static final String SCALE = "q.scale";
+    public static final String SLEEP_ROTATION = "q.sleep_rotation";
+    public static final String TIME_OF_DAY = "q.time_of_day";
+    public static final String TIME_STAMP = "q.time_stamp";
+    public static final String VERTICAL_SPEED = "q.vertical_speed";
+    public static final String YAW_SPEED = "q.yaw_speed";
 
     private static final Map<String, Variable> VARIABLES = new ConcurrentHashMap<>();
     private static Actor<?> ACTOR = null;
@@ -130,7 +130,7 @@ public final class MolangQueries {
     }
 
     static Variable getVariableFor(String name) {
-        return VARIABLES.computeIfAbsent(applyPrefixAliases(name, "query.", "q."), key -> new Variable(key, 0));
+        return VARIABLES.computeIfAbsent(applyPrefixAliases(name, "q.", "q."), key -> new Variable(key, 0));
     }
 
     private static String applyPrefixAliases(String text, String properName, String... aliases) {
@@ -150,7 +150,8 @@ public final class MolangQueries {
         ACTOR = null;
     }
 
-    public record Actor<T>(AnimationState<? extends GeoAnimatable> animationState, T animatable, double animTime, Minecraft mc, Level level) {}
+    public record Actor<T>(AnimationState<? extends GeoAnimatable> animationState, T animatable, double animTime,
+            Minecraft mc, Level level) {}
 
     public static <T> void setActorVariable(String name, ToDoubleFunction<Actor<T>> value) {
         getVariableFor(name).set(() -> value.applyAsDouble((Actor) getActor()));
@@ -264,7 +265,7 @@ public final class MolangQueries {
     private static void setDefaultItemQueryValues() {
         MolangQueries.<Item>setActorVariable(IS_ENCHANTED, actor -> actor.animationState.getData(DataTickets.ITEMSTACK).isEnchanted() ? 1 : 0);
         MolangQueries.<Item>setActorVariable(IS_STACKABLE, actor -> actor.animationState.getData(DataTickets.ITEMSTACK).isStackable() ? 1 : 0);
-        MolangQueries.<Item>setActorVariable(ITEM_MAX_USE_DURATION, actor -> actor.animationState.getData(DataTickets.ITEMSTACK).getUseDuration(ClientUtil.getClientPlayer()));
+        MolangQueries.<Item>setActorVariable(ITEM_MAX_USE_DURATION, actor -> actor.animationState.getData(DataTickets.ITEMSTACK).getUseDuration(PlayerUtils.getClientPlayer()));
         MolangQueries.<Item>setActorVariable(MAX_DURABILITY, actor -> actor.animationState.getData(DataTickets.ITEMSTACK).getMaxDamage());
         MolangQueries.<Item>setActorVariable(REMAINING_DURABILITY, actor -> {
             ItemStack stack = actor.animationState.getData(DataTickets.ITEMSTACK);

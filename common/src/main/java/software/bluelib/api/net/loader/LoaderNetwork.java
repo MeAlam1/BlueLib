@@ -12,9 +12,9 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.net.NetworkRegistry;
+import software.bluelib.api.utils.LoaderUtils;
 import software.bluelib.loader.animatable.GeoAnimatable;
 import software.bluelib.loader.constant.dataticket.SerializableDataTicket;
-import software.bluelib.loader.util.GeckoLibUtil;
 import software.bluelib.net.messages.client.loader.*;
 
 public class LoaderNetwork extends NetworkRegistry {
@@ -28,7 +28,7 @@ public class LoaderNetwork extends NetworkRegistry {
     }
 
     public static <D> void syncSingletonAnimData(GeoAnimatable pAnimatable, long pInstanceId, SerializableDataTicket<D> pDataTicket, D pData, Entity pEntityToTrack) {
-        String syncedId = GeckoLibUtil.getSyncedSingletonAnimatableId(pAnimatable);
+        String syncedId = LoaderUtils.getSyncedSingletonAnimatableId(pAnimatable);
         sendToAllPlayersTrackingEntity(pEntityToTrack, new SingletonDataSyncPacket<>(syncedId, pInstanceId, pDataTicket, pData));
     }
 
@@ -45,7 +45,7 @@ public class LoaderNetwork extends NetworkRegistry {
     }
 
     public static void triggerSingletonAnim(GeoAnimatable pAnimatable, Entity pEntityToTrack, long pInstanceId, @Nullable String pControllerName, String pAnimName) {
-        String syncedId = GeckoLibUtil.getSyncedSingletonAnimatableId(pAnimatable);
+        String syncedId = LoaderUtils.getSyncedSingletonAnimatableId(pAnimatable);
         triggerSingletonAnim(syncedId, pEntityToTrack, pInstanceId, pControllerName == null ? "" : pControllerName, pAnimName);
     }
 
@@ -58,7 +58,7 @@ public class LoaderNetwork extends NetworkRegistry {
     }
 
     public static void stopTriggeredSingletonAnim(GeoAnimatable pAnimatable, Entity pEntityToTrack, long pInstanceId, @Nullable String pControllerName, @Nullable String pAnimName) {
-        String syncedId = GeckoLibUtil.getSyncedSingletonAnimatableId(pAnimatable);
+        String syncedId = LoaderUtils.getSyncedSingletonAnimatableId(pAnimatable);
         sendToAllPlayersTrackingEntity(pEntityToTrack, new StopTriggeredSingletonAnimPacket(syncedId, pInstanceId, pControllerName == null ? "" : pControllerName, pAnimName == null ? "" : pAnimName));
     }
 }

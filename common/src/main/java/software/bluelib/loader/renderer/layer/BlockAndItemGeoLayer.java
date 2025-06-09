@@ -20,9 +20,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.client.loader.cache.model.BoneCache;
+import software.bluelib.client.utils.RenderUtils;
 import software.bluelib.loader.animatable.GeoAnimatable;
 import software.bluelib.loader.renderer.GeoRenderer;
-import software.bluelib.loader.util.RenderUtil;
 
 public class BlockAndItemGeoLayer<T extends GeoAnimatable> extends GeoRenderLayer<T> {
 
@@ -64,7 +64,7 @@ public class BlockAndItemGeoLayer<T extends GeoAnimatable> extends GeoRenderLaye
             return;
 
         pPoseStack.pushPose();
-        RenderUtil.translateAndRotateMatrixForBone(pPoseStack, bone);
+        RenderUtils.translateAndRotateMatrixForBone(pPoseStack, bone);
 
         if (stack != null)
             renderStackForBone(pPoseStack, bone, stack, animatable, pBufferSource, pPartialTick, pPackedLight, pPackedOverlay);

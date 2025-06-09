@@ -36,16 +36,16 @@ import org.joml.Matrix4f;
 import software.bluelib.BlueLibConstants;
 import software.bluelib.client.loader.cache.model.BoneCache;
 import software.bluelib.client.loader.cache.model.ModelCache;
+import software.bluelib.client.loader.cache.texture.AnimatableTexture;
+import software.bluelib.client.utils.PlayerUtils;
+import software.bluelib.client.utils.RenderUtils;
 import software.bluelib.loader.animatable.GeoAnimatable;
 import software.bluelib.loader.animation.AnimationState;
-import software.bluelib.loader.cache.texture.AnimatableTexture;
 import software.bluelib.loader.constant.DataTickets;
 import software.bluelib.loader.model.GeoModel;
 import software.bluelib.loader.model.data.EntityModelData;
 import software.bluelib.loader.renderer.layer.GeoRenderLayer;
 import software.bluelib.loader.renderer.layer.GeoRenderLayersContainer;
-import software.bluelib.loader.util.ClientUtil;
-import software.bluelib.loader.util.RenderUtil;
 
 public class GeoReplacedEntityRenderer<E extends Entity, T extends GeoAnimatable> extends EntityRenderer<E> implements GeoRenderer<T> {
 
@@ -118,7 +118,7 @@ public class GeoReplacedEntityRenderer<E extends Entity, T extends GeoAnimatable
     public RenderType getRenderType(T pAnimatable, ResourceLocation pTexture, @Nullable MultiBufferSource pBufferSource, float pPartialTick) {
         final boolean invisible = this.currentEntity != null && this.currentEntity.isInvisible();
 
-        if (invisible && !this.currentEntity.isInvisibleTo(ClientUtil.getClientPlayer()))
+        if (invisible && !this.currentEntity.isInvisibleTo(PlayerUtils.getClientPlayer()))
             return RenderType.itemEntityTranslucentCull(pTexture);
 
         if (!invisible)
@@ -270,21 +270,21 @@ public class GeoReplacedEntityRenderer<E extends Entity, T extends GeoAnimatable
     public void renderRecursively(PoseStack pPoseStack, T pAnimatable, BoneCache bone, RenderType pRenderType, MultiBufferSource pBufferSource, VertexConsumer pBuffer, boolean pIsReRender, float pPartialTick, int pPackedLight,
             int pPackedOverlay, int pColour) {
         pPoseStack.pushPose();
-        RenderUtil.translateMatrixToBone(pPoseStack, bone);
-        RenderUtil.translateToPivotPoint(pPoseStack, bone);
-        RenderUtil.rotateMatrixAroundBone(pPoseStack, bone);
-        RenderUtil.scaleMatrixForBone(pPoseStack, bone);
+        RenderUtils.translateMatrixToBone(pPoseStack, bone);
+        RenderUtils.translateToPivotPoint(pPoseStack, bone);
+        RenderUtils.rotateMatrixAroundBone(pPoseStack, bone);
+        RenderUtils.scaleMatrixForBone(pPoseStack, bone);
 
         if (bone.isTrackingMatrices()) {
             Matrix4f poseState = new Matrix4f(pPoseStack.last().pose());
-            Matrix4f localMatrix = RenderUtil.invertAndMultiplyMatrices(poseState, this.entityRenderTranslations);
+            Matrix4f localMatrix = RenderUtils.invertAndMultiplyMatrices(poseState, this.entityRenderTranslations);
 
-            bone.setModelSpaceMatrix(RenderUtil.invertAndMultiplyMatrices(poseState, this.modelRenderTranslations));
-            bone.setLocalSpaceMatrix(RenderUtil.translateMatrix(localMatrix, getRenderOffset(this.currentEntity, 1).toVector3f()));
-            bone.setWorldSpaceMatrix(RenderUtil.translateMatrix(new Matrix4f(localMatrix), this.currentEntity.position().toVector3f()));
+            bone.setModelSpaceMatrix(RenderUtils.invertAndMultiplyMatrices(poseState, this.modelRenderTranslations));
+            bone.setLocalSpaceMatrix(RenderUtils.translateMatrix(localMatrix, getRenderOffset(this.currentEntity, 1).toVector3f()));
+            bone.setWorldSpaceMatrix(RenderUtils.translateMatrix(new Matrix4f(localMatrix), this.currentEntity.position().toVector3f()));
         }
 
-        RenderUtil.translateAwayFromPivotPoint(pPoseStack, bone);
+        RenderUtils.translateAwayFromPivotPoint(pPoseStack, bone);
 
         pBuffer = checkAndRefreshBuffer(pIsReRender, pBuffer, pBufferSource, pRenderType);
 
@@ -323,7 +323,7 @@ public class GeoReplacedEntityRenderer<E extends Entity, T extends GeoAnimatable
             } else if (livingEntity.hasPose(Pose.SLEEPING)) {
                 Direction bedOrientation = livingEntity.getBedOrientation();
 
-                pPoseStack.mulPose(Axis.YP.rotationDegrees(bedOrientation != null ? RenderUtil.getDirectionAngle(bedOrientation) : rotationYaw));
+                pPoseStack.mulPose(Axis.YP.rotationDegrees(bedOrientation != null ? RenderUtils.getDirectionAngle(bedOrientation) : rotationYaw));
                 pPoseStack.mulPose(Axis.ZP.rotationDegrees(getDeathMaxRotation(pAnimatable)));
                 pPoseStack.mulPose(Axis.YP.rotationDegrees(270f));
             } else if (LivingEntityRenderer.isEntityUpsideDown(livingEntity)) {

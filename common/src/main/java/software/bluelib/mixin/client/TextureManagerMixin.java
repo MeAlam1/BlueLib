@@ -17,7 +17,7 @@ import net.minecraft.resources.ResourceLocation;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
-import software.bluelib.loader.cache.texture.AnimatableTexture;
+import software.bluelib.client.loader.cache.texture.AnimatableTexture;
 
 @Mixin(value = TextureManager.class, priority = 2000)
 public abstract class TextureManagerMixin {

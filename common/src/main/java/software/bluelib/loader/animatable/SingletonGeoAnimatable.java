@@ -12,17 +12,17 @@ import net.minecraft.world.entity.Entity;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.net.loader.LoaderNetwork;
+import software.bluelib.api.utils.LoaderUtils;
 import software.bluelib.loader.animatable.client.GeoRenderProvider;
 import software.bluelib.loader.animatable.instance.AnimatableInstanceCache;
 import software.bluelib.loader.animatable.instance.SingletonAnimatableInstanceCache;
 import software.bluelib.loader.animation.AnimatableManager;
 import software.bluelib.loader.constant.dataticket.SerializableDataTicket;
-import software.bluelib.loader.util.GeckoLibUtil;
 
 public interface SingletonGeoAnimatable extends GeoAnimatable {
 
     static void registerSyncedAnimatable(GeoAnimatable animatable) {
-        GeckoLibUtil.registerSyncedAnimatable(animatable);
+        LoaderUtils.registerSyncedAnimatable(animatable);
     }
 
     @ApiStatus.NonExtendable

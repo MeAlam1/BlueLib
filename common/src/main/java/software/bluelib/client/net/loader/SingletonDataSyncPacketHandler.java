@@ -9,19 +9,19 @@ package software.bluelib.client.net.loader;
 
 import net.minecraft.client.Minecraft;
 import software.bluelib.api.net.ClientNetworkPacketHandler;
+import software.bluelib.api.utils.LoaderUtils;
+import software.bluelib.client.utils.PlayerUtils;
 import software.bluelib.loader.animatable.GeoAnimatable;
 import software.bluelib.loader.animatable.SingletonGeoAnimatable;
-import software.bluelib.loader.util.ClientUtil;
-import software.bluelib.loader.util.GeckoLibUtil;
 import software.bluelib.net.messages.client.loader.SingletonDataSyncPacket;
 
 public class SingletonDataSyncPacketHandler<D> implements ClientNetworkPacketHandler<SingletonDataSyncPacket<D>> {
 
     @Override
     public void handle(SingletonDataSyncPacket<D> pPacket, Minecraft pClient) {
-        GeoAnimatable animatable = GeckoLibUtil.getSyncedAnimatable(pPacket.syncableId());
+        GeoAnimatable animatable = LoaderUtils.getSyncedAnimatable(pPacket.syncableId());
 
         if (animatable instanceof SingletonGeoAnimatable singleton)
-            singleton.setAnimData(ClientUtil.getClientPlayer(), pPacket.instanceId(), pPacket.dataTicket(), pPacket.data());
+            singleton.setAnimData(PlayerUtils.getClientPlayer(), pPacket.instanceId(), pPacket.dataTicket(), pPacket.data());
     }
 }

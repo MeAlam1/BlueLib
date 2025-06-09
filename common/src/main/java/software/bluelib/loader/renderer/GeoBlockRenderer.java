@@ -27,14 +27,14 @@ import org.joml.Vector3f;
 import software.bluelib.BlueLibConstants;
 import software.bluelib.client.loader.cache.model.BoneCache;
 import software.bluelib.client.loader.cache.model.ModelCache;
+import software.bluelib.client.loader.cache.texture.AnimatableTexture;
+import software.bluelib.client.utils.RenderUtils;
 import software.bluelib.loader.animatable.GeoAnimatable;
 import software.bluelib.loader.animation.AnimationState;
-import software.bluelib.loader.cache.texture.AnimatableTexture;
 import software.bluelib.loader.constant.DataTickets;
 import software.bluelib.loader.model.GeoModel;
 import software.bluelib.loader.renderer.layer.GeoRenderLayer;
 import software.bluelib.loader.renderer.layer.GeoRenderLayersContainer;
-import software.bluelib.loader.util.RenderUtil;
 
 public class GeoBlockRenderer<T extends BlockEntity & GeoAnimatable> implements GeoRenderer<T>, BlockEntityRenderer<T> {
 
@@ -141,11 +141,11 @@ public class GeoBlockRenderer<T extends BlockEntity & GeoAnimatable> implements 
             int pPackedOverlay, int colour) {
         if (bone.isTrackingMatrices()) {
             Matrix4f poseState = new Matrix4f(pPoseStack.last().pose());
-            Matrix4f localMatrix = RenderUtil.invertAndMultiplyMatrices(poseState, this.blockRenderTranslations);
+            Matrix4f localMatrix = RenderUtils.invertAndMultiplyMatrices(poseState, this.blockRenderTranslations);
             Matrix4f worldState = new Matrix4f(localMatrix);
             BlockPos pos = this.animatable.getBlockPos();
 
-            bone.setModelSpaceMatrix(RenderUtil.invertAndMultiplyMatrices(poseState, this.modelRenderTranslations));
+            bone.setModelSpaceMatrix(RenderUtils.invertAndMultiplyMatrices(poseState, this.modelRenderTranslations));
             bone.setLocalSpaceMatrix(localMatrix);
             bone.setWorldSpaceMatrix(worldState.translate(new Vector3f(pos.getX(), pos.getY(), pos.getZ())));
         }

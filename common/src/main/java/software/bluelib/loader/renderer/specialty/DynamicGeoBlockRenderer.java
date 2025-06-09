@@ -25,10 +25,10 @@ import software.bluelib.client.loader.cache.model.BoneCache;
 import software.bluelib.client.loader.cache.model.ModelCache;
 import software.bluelib.client.loader.json.model.object.QuadData;
 import software.bluelib.client.loader.json.model.object.VertexData;
+import software.bluelib.client.utils.RenderUtils;
 import software.bluelib.loader.animatable.GeoAnimatable;
 import software.bluelib.loader.model.GeoModel;
 import software.bluelib.loader.renderer.GeoBlockRenderer;
-import software.bluelib.loader.util.RenderUtil;
 
 public abstract class DynamicGeoBlockRenderer<T extends BlockEntity & GeoAnimatable> extends GeoBlockRenderer<T> {
 
@@ -58,23 +58,23 @@ public abstract class DynamicGeoBlockRenderer<T extends BlockEntity & GeoAnimata
     @Override
     public void renderRecursively(PoseStack pPoseStack, T animatable, BoneCache bone, RenderType pRenderType, MultiBufferSource pBufferSource, VertexConsumer buffer, boolean pIsReRender, float pPartialTick, int pPackedLight, int pPackedOverlay, int colour) {
         pPoseStack.pushPose();
-        RenderUtil.translateMatrixToBone(pPoseStack, bone);
-        RenderUtil.translateToPivotPoint(pPoseStack, bone);
-        RenderUtil.rotateMatrixAroundBone(pPoseStack, bone);
-        RenderUtil.scaleMatrixForBone(pPoseStack, bone);
+        RenderUtils.translateMatrixToBone(pPoseStack, bone);
+        RenderUtils.translateToPivotPoint(pPoseStack, bone);
+        RenderUtils.rotateMatrixAroundBone(pPoseStack, bone);
+        RenderUtils.scaleMatrixForBone(pPoseStack, bone);
 
         if (bone.isTrackingMatrices()) {
             Matrix4f poseState = new Matrix4f(pPoseStack.last().pose());
-            Matrix4f localMatrix = RenderUtil.invertAndMultiplyMatrices(poseState, this.blockRenderTranslations);
+            Matrix4f localMatrix = RenderUtils.invertAndMultiplyMatrices(poseState, this.blockRenderTranslations);
             Matrix4f worldState = new Matrix4f(localMatrix);
             BlockPos pos = this.animatable.getBlockPos();
 
-            bone.setModelSpaceMatrix(RenderUtil.invertAndMultiplyMatrices(poseState, this.modelRenderTranslations));
+            bone.setModelSpaceMatrix(RenderUtils.invertAndMultiplyMatrices(poseState, this.modelRenderTranslations));
             bone.setLocalSpaceMatrix(localMatrix);
             bone.setWorldSpaceMatrix(worldState.translate(new Vector3f(pos.getX(), pos.getY(), pos.getZ())));
         }
 
-        RenderUtil.translateAwayFromPivotPoint(pPoseStack, bone);
+        RenderUtils.translateAwayFromPivotPoint(pPoseStack, bone);
 
         this.textureOverride = getTextureOverrideForBone(bone, this.animatable, pPartialTick);
         ResourceLocation texture = this.textureOverride == null ? getTextureLocation(this.animatable) : this.textureOverride;
@@ -140,6 +140,6 @@ public abstract class DynamicGeoBlockRenderer<T extends BlockEntity & GeoAnimata
     }
 
     protected IntIntPair computeTextureSize(ResourceLocation texture) {
-        return TEXTURE_DIMENSIONS_CACHE.computeIfAbsent(texture, RenderUtil::getTextureDimensions);
+        return TEXTURE_DIMENSIONS_CACHE.computeIfAbsent(texture, RenderUtils::getTextureDimensions);
     }
 }

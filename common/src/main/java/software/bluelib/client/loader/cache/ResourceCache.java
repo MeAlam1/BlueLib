@@ -35,7 +35,8 @@ import net.minecraft.util.GsonHelper;
 import net.minecraft.util.profiling.ProfilerFiller;
 import org.jetbrains.annotations.NotNull;
 import software.bluelib.BlueLibCommon;
-import software.bluelib.BlueLibConstants;
+import software.bluelib.api.exception.CompoundException;
+import software.bluelib.client.loader.cache.animations.AnimationsCache;
 import software.bluelib.client.loader.cache.model.ModelCache;
 import software.bluelib.client.loader.json.model.ModelCacheFactory;
 import software.bluelib.client.loader.json.model.ModelFormatVersion;
@@ -43,8 +44,6 @@ import software.bluelib.client.loader.json.model.deserialize.Model;
 import software.bluelib.client.loader.json.model.object.BoneTree;
 import software.bluelib.client.loader.model.ModelLoader;
 import software.bluelib.loader.loading.json.typeadapter.BakedAnimationsAdapter;
-import software.bluelib.loader.loading.object.BakedAnimations;
-import software.bluelib.loader.util.CompoundException;
 
 public final class ResourceCache {
 
@@ -55,10 +54,10 @@ public final class ResourceCache {
     public static final Pattern PREFIX_STRIPPER = Pattern.compile("^(bluelib/)((animations/)|(models/))?");
     private static final List<String> SKIPPED_NAMESPACES = List.of("minecraft", "geckolib", "neoforge");
 
-    private static Map<ResourceLocation, BakedAnimations> ANIMATIONS = Collections.emptyMap();
+    private static Map<ResourceLocation, AnimationsCache> ANIMATIONS = Collections.emptyMap();
     private static Map<ResourceLocation, ModelCache> MODELS = Collections.emptyMap();
 
-    public static Map<ResourceLocation, BakedAnimations> getBakedAnimations() {
+    public static Map<ResourceLocation, AnimationsCache> getBakedAnimations() {
         return ANIMATIONS;
     }
 
@@ -80,7 +79,7 @@ public final class ResourceCache {
             ProfilerFiller pProfilerFiller1,
             Executor pBackgroundExecutor,
             Executor pGameExecutor) {
-        CompletableFuture<Map<ResourceLocation, BakedAnimations>> animations = loadAnimations(pBackgroundExecutor, pResourceManager);
+        CompletableFuture<Map<ResourceLocation, AnimationsCache>> animations = loadAnimations(pBackgroundExecutor, pResourceManager);
         CompletableFuture<Map<ResourceLocation, ModelCache>> models = loadModels(pBackgroundExecutor, pResourceManager);
 
         return CompletableFuture.runAsync(() -> BakedAnimationsAdapter.COMPRESSION_CACHE = new ConcurrentHashMap<>(), pBackgroundExecutor)
@@ -106,9 +105,9 @@ public final class ResourceCache {
         return newPath.length() == pResourceLocation.getPath().length() ? pResourceLocation : pResourceLocation.withPath(newPath);
     }
 
-    private static CompletableFuture<Map<ResourceLocation, BakedAnimations>> loadAnimations(Executor pBackgroundExecutor, ResourceManager pResourceManager) {
+    private static CompletableFuture<Map<ResourceLocation, AnimationsCache>> loadAnimations(Executor pBackgroundExecutor, ResourceManager pResourceManager) {
         return bakeJsonResources(pBackgroundExecutor, pResourceManager, ANIMATIONS_PATH.getPath(), ResourceCache::bakeAnimations,
-                ex -> new BakedAnimations(new Object2ObjectOpenHashMap<>()));
+                ex -> new AnimationsCache(new Object2ObjectOpenHashMap<>()));
     }
 
     private static CompletableFuture<Map<ResourceLocation, ModelCache>> loadModels(Executor pBackgroundExecutor, ResourceManager pResourceManager) {
@@ -183,12 +182,12 @@ public final class ResourceCache {
     }
 
     @NotNull
-    private static BakedAnimations bakeAnimations(ResourceLocation pResourceLocation, JsonObject pJsonObject) {
+    private static AnimationsCache bakeAnimations(ResourceLocation pResourceLocation, JsonObject pJsonObject) {
         if (pResourceLocation.getPath().endsWith(".geo.json"))
             throw new RuntimeException("Found model file in animations folder! '" + pResourceLocation + "'");
 
         try {
-            return ModelLoader.MODEL_GSON.fromJson(GsonHelper.getAsJsonObject(pJsonObject, "animations"), BakedAnimations.class);
+            return ModelLoader.MODEL_GSON.fromJson(GsonHelper.getAsJsonObject(pJsonObject, "animations"), AnimationsCache.class);
         } catch (CompoundException ex) {
             throw ex.withMessage(pResourceLocation + ": Error building animations from JSON");
         } catch (Exception pException) {

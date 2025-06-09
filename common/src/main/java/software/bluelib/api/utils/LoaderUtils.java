@@ -5,7 +5,7 @@
  * If a copy of the MIT License was not distributed with this file,
  * You can obtain one at https://opensource.org/licenses/MIT.
  */
-package software.bluelib.loader.util;
+package software.bluelib.api.utils;
 
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
@@ -25,7 +25,7 @@ import software.bluelib.loader.constant.DataTickets;
 import software.bluelib.loader.constant.dataticket.SerializableDataTicket;
 
 @SuppressWarnings("unused")
-public final class GeckoLibUtil {
+public final class LoaderUtils {
 
     private static final Int2ObjectMap<String> ANIMATABLE_IDENTITIES = new Int2ObjectOpenHashMap<>();
     public static final Map<String, GeoAnimatable> SYNCED_ANIMATABLES = new Object2ObjectOpenHashMap<>();
@@ -63,19 +63,11 @@ public final class GeckoLibUtil {
 
     synchronized public static void registerSyncedAnimatable(GeoAnimatable pAnimatable) {
         GeoAnimatable existing = SYNCED_ANIMATABLES.put(getSyncedSingletonAnimatableId(pAnimatable), pAnimatable);
-
-        //if (existing == null)
-        ////GeckoLibConstants.LOGGER.debug("Registered SyncedAnimatable for " + animatable.getClass());
     }
 
     @Nullable
     public static GeoAnimatable getSyncedAnimatable(String pSyncedAnimatableId) {
-        GeoAnimatable animatable = SYNCED_ANIMATABLES.get(pSyncedAnimatableId);
-
-        //if (animatable == null)
-        ////GeckoLibConstants.LOGGER.error("Attempting to retrieve unregistered synced animatable! (" + syncedAnimatableId + ")");
-
-        return animatable;
+        return SYNCED_ANIMATABLES.get(pSyncedAnimatableId);
     }
 
     public static String getSyncedSingletonAnimatableId(GeoAnimatable pAnimatable) {

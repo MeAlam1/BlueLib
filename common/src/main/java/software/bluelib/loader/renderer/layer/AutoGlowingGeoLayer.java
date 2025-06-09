@@ -17,10 +17,10 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.client.loader.cache.model.ModelCache;
+import software.bluelib.client.loader.cache.texture.AutoGlowingTexture;
+import software.bluelib.client.utils.PlayerUtils;
 import software.bluelib.loader.animatable.GeoAnimatable;
-import software.bluelib.loader.cache.texture.AutoGlowingTexture;
 import software.bluelib.loader.renderer.GeoRenderer;
-import software.bluelib.loader.util.ClientUtil;
 
 public class AutoGlowingGeoLayer<T extends GeoAnimatable> extends GeoRenderLayer<T> {
 
@@ -41,7 +41,7 @@ public class AutoGlowingGeoLayer<T extends GeoAnimatable> extends GeoRenderLayer
         boolean invisible = entity.isInvisible();
         ResourceLocation texture = AutoGlowingTexture.getEmissiveResource(getTextureResource(animatable));
 
-        if (invisible && !entity.isInvisibleTo(ClientUtil.getClientPlayer()))
+        if (invisible && !entity.isInvisibleTo(PlayerUtils.getClientPlayer()))
             return RenderType.itemEntityTranslucentCull(texture);
 
         if (Minecraft.getInstance().shouldEntityAppearGlowing(entity)) {

@@ -17,7 +17,9 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentMap;
 import net.minecraft.util.GsonHelper;
 import org.apache.commons.lang3.math.NumberUtils;
+import software.bluelib.api.exception.CompoundException;
 import software.bluelib.api.utils.JsonUtils;
+import software.bluelib.client.loader.cache.animations.AnimationsCache;
 import software.bluelib.loader.animation.Animation;
 import software.bluelib.loader.animation.EasingType;
 import software.bluelib.loader.animation.keyframe.BoneAnimation;
@@ -26,15 +28,13 @@ import software.bluelib.loader.animation.keyframe.KeyframeStack;
 import software.bluelib.loader.loading.math.MathParser;
 import software.bluelib.loader.loading.math.MathValue;
 import software.bluelib.loader.loading.math.value.Constant;
-import software.bluelib.loader.loading.object.BakedAnimations;
-import software.bluelib.loader.util.CompoundException;
 
-public class BakedAnimationsAdapter implements JsonDeserializer<BakedAnimations> {
+public class BakedAnimationsAdapter implements JsonDeserializer<AnimationsCache> {
 
     public static ConcurrentMap<Double, Constant> COMPRESSION_CACHE = null;
 
     @Override
-    public BakedAnimations deserialize(JsonElement json, Type type, JsonDeserializationContext context) throws RuntimeException {
+    public AnimationsCache deserialize(JsonElement json, Type type, JsonDeserializationContext context) throws RuntimeException {
         JsonObject obj = json.getAsJsonObject();
         Map<String, Animation> animations = new Object2ObjectOpenHashMap<>(obj.size());
 
@@ -52,7 +52,7 @@ public class BakedAnimationsAdapter implements JsonDeserializer<BakedAnimations>
             }
         }
 
-        return new BakedAnimations(animations);
+        return new AnimationsCache(animations);
     }
 
     private Animation bakeAnimation(String name, JsonObject animationObj, JsonDeserializationContext context) throws CompoundException {

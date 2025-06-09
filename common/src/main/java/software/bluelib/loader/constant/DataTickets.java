@@ -17,10 +17,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.BlueLibCommon;
+import software.bluelib.api.utils.LoaderUtils;
 import software.bluelib.loader.constant.dataticket.DataTicket;
 import software.bluelib.loader.constant.dataticket.SerializableDataTicket;
 import software.bluelib.loader.model.data.EntityModelData;
-import software.bluelib.loader.util.GeckoLibUtil;
 
 public final class DataTickets {
 
@@ -38,13 +38,13 @@ public final class DataTickets {
 
     // Builtin serializable tickets
     // These are not used anywhere by default, but are provided as examples and for ease of use
-    public static final SerializableDataTicket<Integer> ANIM_STATE = GeckoLibUtil.addDataTicket(SerializableDataTicket.ofInt(BlueLibCommon.Resource.resource("anim_state")));
-    public static final SerializableDataTicket<String> ANIM = GeckoLibUtil.addDataTicket(SerializableDataTicket.ofString(BlueLibCommon.Resource.resource("anim")));
-    public static final SerializableDataTicket<Integer> USE_TICKS = GeckoLibUtil.addDataTicket(SerializableDataTicket.ofInt(BlueLibCommon.Resource.resource("use_ticks")));
-    public static final SerializableDataTicket<Boolean> ACTIVE = GeckoLibUtil.addDataTicket(SerializableDataTicket.ofBoolean(BlueLibCommon.Resource.resource("active")));
-    public static final SerializableDataTicket<Boolean> OPEN = GeckoLibUtil.addDataTicket(SerializableDataTicket.ofBoolean(BlueLibCommon.Resource.resource("open")));
-    public static final SerializableDataTicket<Boolean> CLOSED = GeckoLibUtil.addDataTicket(SerializableDataTicket.ofBoolean(BlueLibCommon.Resource.resource("closed")));
-    public static final SerializableDataTicket<Direction> DIRECTION = GeckoLibUtil.addDataTicket(SerializableDataTicket.ofEnum(BlueLibCommon.Resource.resource("direction"), Direction.class));
+    public static final SerializableDataTicket<Integer> ANIM_STATE = LoaderUtils.addDataTicket(SerializableDataTicket.ofInt(BlueLibCommon.Resource.resource("anim_state")));
+    public static final SerializableDataTicket<String> ANIM = LoaderUtils.addDataTicket(SerializableDataTicket.ofString(BlueLibCommon.Resource.resource("anim")));
+    public static final SerializableDataTicket<Integer> USE_TICKS = LoaderUtils.addDataTicket(SerializableDataTicket.ofInt(BlueLibCommon.Resource.resource("use_ticks")));
+    public static final SerializableDataTicket<Boolean> ACTIVE = LoaderUtils.addDataTicket(SerializableDataTicket.ofBoolean(BlueLibCommon.Resource.resource("active")));
+    public static final SerializableDataTicket<Boolean> OPEN = LoaderUtils.addDataTicket(SerializableDataTicket.ofBoolean(BlueLibCommon.Resource.resource("open")));
+    public static final SerializableDataTicket<Boolean> CLOSED = LoaderUtils.addDataTicket(SerializableDataTicket.ofBoolean(BlueLibCommon.Resource.resource("closed")));
+    public static final SerializableDataTicket<Direction> DIRECTION = LoaderUtils.addDataTicket(SerializableDataTicket.ofEnum(BlueLibCommon.Resource.resource("direction"), Direction.class));
 
     @Nullable
     public static SerializableDataTicket<?> byName(String id) {

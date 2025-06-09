@@ -10,17 +10,17 @@ package software.bluelib.client.net.loader;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.Entity;
 import software.bluelib.api.net.ClientNetworkPacketHandler;
+import software.bluelib.client.utils.LevelUtils;
+import software.bluelib.client.utils.RenderUtils;
 import software.bluelib.loader.animatable.GeoEntity;
 import software.bluelib.loader.animatable.GeoReplacedEntity;
-import software.bluelib.loader.util.ClientUtil;
-import software.bluelib.loader.util.RenderUtil;
 import software.bluelib.net.messages.client.loader.EntityAnimTriggerPacket;
 
 public class EntityAnimTriggerPacketHandler implements ClientNetworkPacketHandler<EntityAnimTriggerPacket> {
 
     @Override
     public void handle(EntityAnimTriggerPacket pPacket, Minecraft pClient) {
-        Entity entity = ClientUtil.getLevel().getEntity(pPacket.entityId());
+        Entity entity = LevelUtils.getLevel().getEntity(pPacket.entityId());
 
         if (entity == null)
             return;
@@ -33,7 +33,7 @@ public class EntityAnimTriggerPacketHandler implements ClientNetworkPacketHandle
             return;
         }
 
-        if (RenderUtil.getReplacedAnimatable(entity.getType()) instanceof GeoReplacedEntity replacedEntity)
+        if (RenderUtils.getReplacedAnimatable(entity.getType()) instanceof GeoReplacedEntity replacedEntity)
             replacedEntity.triggerAnim(entity, controllerName, pPacket.animName());
     }
 }

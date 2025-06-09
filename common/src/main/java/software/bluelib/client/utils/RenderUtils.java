@@ -5,7 +5,7 @@
  * If a copy of the MIT License was not distributed with this file,
  * You can obtain one at https://opensource.org/licenses/MIT.
  */
-package software.bluelib.loader.util;
+package software.bluelib.client.utils;
 
 import com.mojang.blaze3d.Blaze3D;
 import com.mojang.blaze3d.platform.NativeImage;
@@ -14,17 +14,25 @@ import com.mojang.math.Axis;
 import it.unimi.dsi.fastutil.ints.IntIntImmutablePair;
 import it.unimi.dsi.fastutil.ints.IntIntPair;
 import java.util.List;
+import java.util.function.BiConsumer;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.texture.AbstractTexture;
 import net.minecraft.client.renderer.texture.DynamicTexture;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.Equipable;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.Vec3;
@@ -33,15 +41,18 @@ import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 import software.bluelib.BlueLibConstants;
+import software.bluelib.api.utils.Color;
 import software.bluelib.client.loader.cache.model.BoneCache;
 import software.bluelib.client.loader.cache.model.CubeCache;
 import software.bluelib.loader.animatable.GeoAnimatable;
+import software.bluelib.loader.animatable.client.GeoRenderProvider;
 import software.bluelib.loader.model.GeoModel;
+import software.bluelib.loader.renderer.GeoArmorRenderer;
 import software.bluelib.loader.renderer.GeoRenderer;
 import software.bluelib.loader.renderer.GeoReplacedEntityRenderer;
 
 @SuppressWarnings("unused")
-public final class RenderUtil {
+public final class RenderUtils {
 
     public static void translateMatrixToBone(PoseStack pPoseStack, BoneCache pBone) {
         pPoseStack.translate(-pBone.getPosX() / 16f, pBone.getPosY() / 16f, pBone.getPosZ() / 16f);
@@ -126,10 +137,9 @@ public final class RenderUtil {
             return null;
 
         AbstractTexture originalTexture = null;
-        Minecraft mc = Minecraft.getInstance();
 
         try {
-            originalTexture = mc.submit(() -> mc.getTextureManager().getTexture(pTexture)).get();
+            originalTexture = Minecraft.getInstance().submit(() -> TextureUtils.getTexture(pTexture)).get();
         } catch (Exception pException) {
             pException.printStackTrace();
         }
@@ -141,7 +151,7 @@ public final class RenderUtil {
 
         try {
             image = originalTexture instanceof DynamicTexture dynamicTexture ? dynamicTexture.getPixels()
-                    : NativeImage.read(mc.getResourceManager().getResource(pTexture).get().open());
+                    : NativeImage.read(ResourceUtils.getResource(pTexture).get().open());
         } catch (Exception pException) {
             pException.printStackTrace();
         }
@@ -235,5 +245,30 @@ public final class RenderUtil {
     @Nullable
     public static GeoModel<?> getGeoModelForArmor(ItemStack pStack) {
         return BlueLibConstants.PlatformHelper.ITEM_RENDERING.getGeoModelForArmor(pStack);
+    }
+
+    public static <T extends LivingEntity, M extends HumanoidModel<T>, A extends HumanoidModel<T>> boolean tryRenderArmorPiece(PoseStack pPoseStack, MultiBufferSource pBufferSource, T pEntity, ItemStack pStack, EquipmentSlot pEquipmentSlot, M pParentModel, A pBaseModel,
+            float pPartialTick, int pPackedLight, float pLimbSwing, float pLimbSwingAmount, float pLerpedTickCount, float pNetHeadYaw, float pHeadPitch,
+            BiConsumer<A, EquipmentSlot> pPartVisibilitySetter) {
+        final Item item = pStack.getItem();
+
+        if (!(item instanceof Equipable equipable) || equipable.getEquipmentSlot() != pEquipmentSlot)
+            return false;
+
+        final HumanoidModel<?> model = GeoRenderProvider.of(item).getGeoArmorRenderer(pEntity, pStack, pEquipmentSlot, pBaseModel);
+
+        if (model == null)
+            return false;
+
+        pParentModel.copyPropertiesTo(pBaseModel);
+        pPartVisibilitySetter.accept(pBaseModel, pEquipmentSlot);
+
+        if (model instanceof GeoArmorRenderer<?> geoArmorRenderer)
+            geoArmorRenderer.prepForRender(pEntity, pStack, pEquipmentSlot, pBaseModel, pBufferSource, pPartialTick, pLimbSwing, pLimbSwingAmount, pNetHeadYaw, pHeadPitch);
+
+        pBaseModel.copyPropertiesTo((A) model);
+        model.renderToBuffer(pPoseStack, null, pPackedLight, OverlayTexture.NO_OVERLAY, Color.WHITE.argbInt());
+
+        return true;
     }
 }

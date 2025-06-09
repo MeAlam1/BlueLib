@@ -14,7 +14,7 @@ import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import software.bluelib.BlueLibConstants;
-import software.bluelib.loader.util.InternalUtil;
+import software.bluelib.api.utils.DataUtils;
 
 @Mixin(ItemStack.class)
 public class ItemStackMixin {
@@ -37,6 +37,6 @@ public class ItemStackMixin {
         if (!(a instanceof PatchedDataComponentMap components) || !(b instanceof PatchedDataComponentMap components2))
             return false;
 
-        return InternalUtil.areComponentsMatchingIgnoringGeckoLibId(components, components2);
+        return DataUtils.areComponentsMatchingIgnoringBlueId(components, components2);
     }
 }

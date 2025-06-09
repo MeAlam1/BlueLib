@@ -23,17 +23,17 @@ import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
+import software.bluelib.api.utils.Color;
 import software.bluelib.client.loader.cache.model.BoneCache;
 import software.bluelib.client.loader.cache.model.CubeCache;
 import software.bluelib.client.loader.cache.model.ModelCache;
 import software.bluelib.client.loader.json.model.object.QuadData;
 import software.bluelib.client.loader.json.model.object.VertexData;
+import software.bluelib.client.utils.RenderUtils;
 import software.bluelib.loader.animatable.GeoAnimatable;
 import software.bluelib.loader.loading.math.MolangQueries;
 import software.bluelib.loader.model.GeoModel;
 import software.bluelib.loader.renderer.layer.GeoRenderLayer;
-import software.bluelib.loader.util.Color;
-import software.bluelib.loader.util.RenderUtil;
 
 // TODO Split sources support
 
@@ -171,7 +171,7 @@ public interface GeoRenderer<T extends GeoAnimatable> {
             VertexConsumer pBuffer, boolean pIsReRender, float pPartialTick, int pPackedLight,
             int pPackedOverlay, int pColour) {
         pPoseStack.pushPose();
-        RenderUtil.prepMatrixForBone(pPoseStack, pBone);
+        RenderUtils.prepMatrixForBone(pPoseStack, pBone);
 
         pBuffer = checkAndRefreshBuffer(pIsReRender, pBuffer, pBufferSource, pRenderType);
 
@@ -208,9 +208,9 @@ public interface GeoRenderer<T extends GeoAnimatable> {
 
     default void renderCube(PoseStack pPoseStack, CubeCache pCube, VertexConsumer pBuffer, int pPackedLight,
             int pPackedOverlay, int pColour) {
-        RenderUtil.translateToPivotPoint(pPoseStack, pCube);
-        RenderUtil.rotateMatrixAroundCube(pPoseStack, pCube);
-        RenderUtil.translateAwayFromPivotPoint(pPoseStack, pCube);
+        RenderUtils.translateToPivotPoint(pPoseStack, pCube);
+        RenderUtils.rotateMatrixAroundCube(pPoseStack, pCube);
+        RenderUtils.translateAwayFromPivotPoint(pPoseStack, pCube);
 
         Matrix3f normalisedPoseState = pPoseStack.last().normal();
         Matrix4f poseState = new Matrix4f(pPoseStack.last().pose());
@@ -221,7 +221,7 @@ public interface GeoRenderer<T extends GeoAnimatable> {
 
             Vector3f normal = normalisedPoseState.transform(new Vector3f(quad.normal()));
 
-            RenderUtil.fixInvertedFlatCube(pCube, normal);
+            RenderUtils.fixInvertedFlatCube(pCube, normal);
             createVerticesOfQuad(quad, poseState, normal, pBuffer, pPackedLight, pPackedOverlay, pColour);
         }
     }

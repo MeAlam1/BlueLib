@@ -7,9 +7,9 @@
  */
 package software.bluelib.loader.loading.math.function.round;
 
+import software.bluelib.client.utils.RenderUtils;
 import software.bluelib.loader.loading.math.MathValue;
 import software.bluelib.loader.loading.math.function.MathFunction;
-import software.bluelib.loader.util.RenderUtil;
 
 public final class LerpRotFunction extends MathFunction {
 
@@ -32,7 +32,7 @@ public final class LerpRotFunction extends MathFunction {
 
     @Override
     public double compute() {
-        return RenderUtil.lerpYaw(this.delta.get(), this.min.get(), this.max.get());
+        return RenderUtils.lerpYaw(this.delta.get(), this.min.get(), this.max.get());
     }
 
     @Override

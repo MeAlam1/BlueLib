@@ -13,9 +13,9 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.net.loader.LoaderNetwork;
+import software.bluelib.client.utils.RenderUtils;
 import software.bluelib.loader.animation.AnimatableManager;
 import software.bluelib.loader.constant.dataticket.SerializableDataTicket;
-import software.bluelib.loader.util.RenderUtil;
 
 public interface GeoBlockEntity extends GeoAnimatable {
 
@@ -91,6 +91,6 @@ public interface GeoBlockEntity extends GeoAnimatable {
 
     @Override
     default double getTick(Object blockEntity) {
-        return RenderUtil.getCurrentTick();
+        return RenderUtils.getCurrentTick();
     }
 }

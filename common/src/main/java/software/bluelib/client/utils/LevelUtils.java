@@ -5,17 +5,12 @@
  * If a copy of the MIT License was not distributed with this file,
  * You can obtain one at https://opensource.org/licenses/MIT.
  */
-package software.bluelib.loader.util;
+package software.bluelib.client.utils;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
-public final class ClientUtil {
-
-    public static Player getClientPlayer() {
-        return Minecraft.getInstance().player;
-    }
+public final class LevelUtils {
 
     public static Level getLevel() {
         return Minecraft.getInstance().level;

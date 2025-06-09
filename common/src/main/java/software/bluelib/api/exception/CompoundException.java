@@ -5,7 +5,7 @@
  * If a copy of the MIT License was not distributed with this file,
  * You can obtain one at https://opensource.org/licenses/MIT.
  */
-package software.bluelib.loader.util;
+package software.bluelib.api.exception;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import java.util.List;

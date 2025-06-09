@@ -5,7 +5,7 @@
  * If a copy of the MIT License was not distributed with this file,
  * You can obtain one at https://opensource.org/licenses/MIT.
  */
-package software.bluelib.loader.cache.texture;
+package software.bluelib.client.loader.cache.texture;
 
 import com.mojang.blaze3d.pipeline.RenderCall;
 import com.mojang.blaze3d.platform.NativeImage;
@@ -14,30 +14,31 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import java.io.File;
 import java.io.IOException;
 import java.util.function.Consumer;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.AbstractTexture;
 import net.minecraft.client.renderer.texture.MissingTextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.BlueLibConstants;
+import software.bluelib.client.utils.TextureUtils;
 
-public abstract class GeoAbstractTexture extends AbstractTexture {
+public abstract class BlueAbstractTexture extends AbstractTexture {
 
-    protected static void generateTexture(ResourceLocation texturePath, Consumer<TextureManager> textureManagerConsumer) {
+    protected static void generateTexture(ResourceLocation pTexturePath, Consumer<TextureManager> pTextureManagerConsumer) {
         if (!RenderSystem.isOnRenderThreadOrInit())
             throw new IllegalThreadStateException("Texture loading called outside of the render thread! This should DEFINITELY not be happening.");
 
-        TextureManager textureManager = Minecraft.getInstance().getTextureManager();
+        TextureManager textureManager = TextureUtils.getTextureManager();
 
-        if (!(textureManager.getTexture(texturePath, MissingTextureAtlasSprite.getTexture()) instanceof GeoAbstractTexture))
-            textureManagerConsumer.accept(textureManager);
+        if (!(textureManager.getTexture(pTexturePath, MissingTextureAtlasSprite.getTexture()) instanceof BlueAbstractTexture))
+            pTextureManagerConsumer.accept(textureManager);
     }
 
     @Override
-    public final void load(ResourceManager resourceManager) throws IOException {
-        RenderCall renderCall = loadTexture(resourceManager, Minecraft.getInstance());
+    public final void load(@NotNull ResourceManager pResourceManager) throws IOException {
+        RenderCall renderCall = loadTexture(pResourceManager);
 
         if (renderCall == null)
             return;
@@ -49,7 +50,7 @@ public abstract class GeoAbstractTexture extends AbstractTexture {
         }
     }
 
-    protected void printDebugImageToDisk(ResourceLocation id, NativeImage newImage) {
+    protected void printDebugImageToDisk(ResourceLocation pId, NativeImage pNewImage) {
         try {
             File file = new File(BlueLibConstants.PlatformHelper.PLATFORM.getGameDir().toFile(), "GeoTexture Debug Printouts");
 
@@ -60,29 +61,29 @@ public abstract class GeoAbstractTexture extends AbstractTexture {
                 file.mkdirs();
             }
 
-            file = new File(file, id.getPath().replace('/', '.'));
+            file = new File(file, pId.getPath().replace('/', '.'));
 
             if (!file.exists())
                 file.createNewFile();
 
-            newImage.writeToFile(file);
-        } catch (IOException ex) {
-            ex.printStackTrace();
+            pNewImage.writeToFile(file);
+        } catch (IOException pIoException) {
+            pIoException.printStackTrace();
         }
     }
 
     @Nullable
-    protected abstract RenderCall loadTexture(ResourceManager resourceManager, Minecraft mc) throws IOException;
+    protected abstract RenderCall loadTexture(ResourceManager pResourceManager) throws IOException;
 
-    public static void uploadSimple(int texture, NativeImage image, boolean blur, boolean clamp) {
-        TextureUtil.prepareImage(texture, 0, image.getWidth(), image.getHeight());
-        image.upload(0, 0, 0, 0, 0, image.getWidth(), image.getHeight(), blur, clamp, false, true);
+    public static void uploadSimple(int pTexture, NativeImage pImage, boolean pBlur, boolean pClamp) {
+        TextureUtil.prepareImage(pTexture, 0, pImage.getWidth(), pImage.getHeight());
+        pImage.upload(0, 0, 0, 0, 0, pImage.getWidth(), pImage.getHeight(), pBlur, pClamp, false, true);
     }
 
-    public static ResourceLocation appendToPath(ResourceLocation location, String suffix) {
-        String path = location.getPath();
+    public static ResourceLocation appendToPath(ResourceLocation pLocation, String pSuffix) {
+        String path = pLocation.getPath();
         int i = path.lastIndexOf('.');
 
-        return ResourceLocation.fromNamespaceAndPath(location.getNamespace(), path.substring(0, i) + suffix + path.substring(i));
+        return ResourceLocation.fromNamespaceAndPath(pLocation.getNamespace(), path.substring(0, i) + pSuffix + path.substring(i));
     }
 }

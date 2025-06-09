@@ -9,11 +9,11 @@ package software.bluelib.client.loader.model;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import software.bluelib.client.loader.cache.animations.AnimationsCache;
 import software.bluelib.client.loader.json.model.deserialize.*;
 import software.bluelib.loader.animation.Animation;
 import software.bluelib.loader.loading.json.typeadapter.BakedAnimationsAdapter;
 import software.bluelib.loader.loading.json.typeadapter.KeyFramesAdapter;
-import software.bluelib.loader.loading.object.BakedAnimations;
 
 public class ModelLoader {
 
@@ -32,6 +32,6 @@ public class ModelLoader {
             .registerTypeAdapter(UVFaces.class, UVFaces.deserializer())
             .registerTypeAdapter(UVUnion.class, UVUnion.deserializer())
             .registerTypeAdapter(Animation.Keyframes.class, new KeyFramesAdapter())
-            .registerTypeAdapter(BakedAnimations.class, new BakedAnimationsAdapter())
+            .registerTypeAdapter(AnimationsCache.class, new BakedAnimationsAdapter())
             .create();
 }

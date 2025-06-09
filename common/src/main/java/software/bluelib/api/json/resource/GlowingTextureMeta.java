@@ -5,7 +5,7 @@
  * If a copy of the MIT License was not distributed with this file,
  * You can obtain one at https://opensource.org/licenses/MIT.
  */
-package software.bluelib.loader.resource;
+package software.bluelib.api.json.resource;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -20,9 +20,9 @@ import net.minecraft.util.GsonHelper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class GeoGlowingTextureMeta {
+public class GlowingTextureMeta {
 
-    public static final MetadataSectionSerializer<GeoGlowingTextureMeta> DESERIALIZER = new MetadataSectionSerializer<>() {
+    public static final MetadataSectionSerializer<GlowingTextureMeta> DESERIALIZER = new MetadataSectionSerializer<>() {
 
         @Override
         public @NotNull String getMetadataSectionName() {
@@ -30,13 +30,13 @@ public class GeoGlowingTextureMeta {
         }
 
         @Override
-        public @NotNull GeoGlowingTextureMeta fromJson(@NotNull JsonObject pJson) {
+        public @NotNull GlowingTextureMeta fromJson(@NotNull JsonObject pJson) {
             List<Pixel> pixels = fromSections(GsonHelper.getAsJsonArray(pJson, "sections", null));
 
             if (pixels.isEmpty())
                 throw new JsonParseException("Empty glowlayer sections file. Must have at least one glow section!");
 
-            return new GeoGlowingTextureMeta(pixels);
+            return new GlowingTextureMeta(pixels);
         }
 
         private List<Pixel> fromSections(@Nullable JsonArray pSectionsArray) {
@@ -71,11 +71,11 @@ public class GeoGlowingTextureMeta {
 
     private final List<Pixel> pixels;
 
-    public GeoGlowingTextureMeta(List<Pixel> pPixels) {
+    public GlowingTextureMeta(List<Pixel> pPixels) {
         this.pixels = pPixels;
     }
 
-    public static GeoGlowingTextureMeta fromExistingImage(NativeImage pGlowLayer) {
+    public static GlowingTextureMeta fromExistingImage(NativeImage pGlowLayer) {
         List<Pixel> pixels = new ObjectArrayList<>();
 
         for (int x = 0; x < pGlowLayer.getWidth(); x++) {
@@ -90,7 +90,7 @@ public class GeoGlowingTextureMeta {
         if (pixels.isEmpty())
             throw new IllegalStateException("Invalid glow layer texture provided, must have at least one pixel!");
 
-        return new GeoGlowingTextureMeta(pixels);
+        return new GlowingTextureMeta(pixels);
     }
 
     public void createImageMask(NativeImage pOriginalImage, NativeImage pNewImage) {

@@ -24,10 +24,10 @@ import software.bluelib.client.loader.cache.model.BoneCache;
 import software.bluelib.client.loader.cache.model.ModelCache;
 import software.bluelib.client.loader.json.model.object.QuadData;
 import software.bluelib.client.loader.json.model.object.VertexData;
+import software.bluelib.client.utils.RenderUtils;
 import software.bluelib.loader.animatable.GeoAnimatable;
 import software.bluelib.loader.model.GeoModel;
 import software.bluelib.loader.renderer.GeoItemRenderer;
-import software.bluelib.loader.util.RenderUtil;
 
 public abstract class DynamicGeoItemRenderer<T extends Item & GeoAnimatable> extends GeoItemRenderer<T> {
 
@@ -57,19 +57,19 @@ public abstract class DynamicGeoItemRenderer<T extends Item & GeoAnimatable> ext
     @Override
     public void renderRecursively(PoseStack pPoseStack, T animatable, BoneCache pBone, RenderType pRenderType, MultiBufferSource pBufferSource, VertexConsumer pBuffer, boolean pIsReRender, float pPartialTick, int pPackedLight, int pPackedOverlay, int pColour) {
         pPoseStack.pushPose();
-        RenderUtil.translateMatrixToBone(pPoseStack, pBone);
-        RenderUtil.translateToPivotPoint(pPoseStack, pBone);
-        RenderUtil.rotateMatrixAroundBone(pPoseStack, pBone);
-        RenderUtil.scaleMatrixForBone(pPoseStack, pBone);
+        RenderUtils.translateMatrixToBone(pPoseStack, pBone);
+        RenderUtils.translateToPivotPoint(pPoseStack, pBone);
+        RenderUtils.rotateMatrixAroundBone(pPoseStack, pBone);
+        RenderUtils.scaleMatrixForBone(pPoseStack, pBone);
 
         if (pBone.isTrackingMatrices()) {
             Matrix4f poseState = new Matrix4f(pPoseStack.last().pose());
 
-            pBone.setModelSpaceMatrix(RenderUtil.invertAndMultiplyMatrices(poseState, this.modelRenderTranslations));
-            pBone.setLocalSpaceMatrix(RenderUtil.invertAndMultiplyMatrices(poseState, this.itemRenderTranslations));
+            pBone.setModelSpaceMatrix(RenderUtils.invertAndMultiplyMatrices(poseState, this.modelRenderTranslations));
+            pBone.setLocalSpaceMatrix(RenderUtils.invertAndMultiplyMatrices(poseState, this.itemRenderTranslations));
         }
 
-        RenderUtil.translateAwayFromPivotPoint(pPoseStack, pBone);
+        RenderUtils.translateAwayFromPivotPoint(pPoseStack, pBone);
 
         this.textureOverride = getTextureOverrideForBone(pBone, this.animatable, pPartialTick);
         ResourceLocation texture = this.textureOverride == null ? getTextureLocation(this.animatable) : this.textureOverride;
@@ -135,6 +135,6 @@ public abstract class DynamicGeoItemRenderer<T extends Item & GeoAnimatable> ext
     }
 
     protected IntIntPair computeTextureSize(ResourceLocation texture) {
-        return TEXTURE_DIMENSIONS_CACHE.computeIfAbsent(texture, RenderUtil::getTextureDimensions);
+        return TEXTURE_DIMENSIONS_CACHE.computeIfAbsent(texture, RenderUtils::getTextureDimensions);
     }
 }

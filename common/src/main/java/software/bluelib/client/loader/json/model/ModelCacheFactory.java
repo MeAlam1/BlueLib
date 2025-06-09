@@ -23,7 +23,7 @@ import software.bluelib.client.loader.json.model.object.BoneStructure;
 import software.bluelib.client.loader.json.model.object.BoneTree;
 import software.bluelib.client.loader.json.model.object.QuadData;
 import software.bluelib.client.loader.json.model.object.VertexData;
-import software.bluelib.loader.util.RenderUtil;
+import software.bluelib.client.utils.RenderUtils;
 
 public interface ModelCacheFactory {
 
@@ -140,8 +140,8 @@ public interface ModelCacheFactory {
         public BoneCache constructBone(BoneStructure pBoneStructure, ModelDescription pModelDescription, BoneCache pParent) {
             Bone bone = pBoneStructure.self();
             BoneCache newBone = new BoneCache(pParent, bone.name(), bone.mirror(), bone.inflate(), bone.neverRender(), bone.reset());
-            Vec3 rotation = RenderUtil.listToVec(bone.rotation());
-            Vec3 pivot = RenderUtil.listToVec(bone.pivot());
+            Vec3 rotation = RenderUtils.listToVec(bone.rotation());
+            Vec3 pivot = RenderUtils.listToVec(bone.pivot());
 
             newBone.updateRotation((float) Math.toRadians(-rotation.x), (float) Math.toRadians(-rotation.y), (float) Math.toRadians(rotation.z));
             newBone.updatePivot((float) -pivot.x, (float) pivot.y, (float) pivot.z);
@@ -161,10 +161,10 @@ public interface ModelCacheFactory {
         public CubeCache constructCube(Cube pCube, ModelDescription pModelDescription, BoneCache pBone) {
             boolean mirror = pCube.mirror() == Boolean.TRUE;
             double inflate = pCube.inflate() != null ? pCube.inflate() / 16f : (pBone.getInflate() == null ? 0 : pBone.getInflate() / 16f);
-            Vec3 size = RenderUtil.listToVec(pCube.size());
-            Vec3 origin = RenderUtil.listToVec(pCube.origin());
-            Vec3 rotation = RenderUtil.listToVec(pCube.rotation());
-            Vec3 pivot = RenderUtil.listToVec(pCube.pivot());
+            Vec3 size = RenderUtils.listToVec(pCube.size());
+            Vec3 origin = RenderUtils.listToVec(pCube.origin());
+            Vec3 rotation = RenderUtils.listToVec(pCube.rotation());
+            Vec3 pivot = RenderUtils.listToVec(pCube.pivot());
             origin = new Vec3(-(origin.x + size.x) / 16d, origin.y / 16d, origin.z / 16d);
             Vec3 vertexSize = size.multiply(1 / 16d, 1 / 16d, 1 / 16d);
 

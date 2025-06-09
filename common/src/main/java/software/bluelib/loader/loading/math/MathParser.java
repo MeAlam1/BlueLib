@@ -22,6 +22,7 @@ import java.util.regex.Pattern;
 import net.minecraft.Util;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import software.bluelib.api.exception.CompoundException;
 import software.bluelib.loader.loading.math.function.MathFunction;
 import software.bluelib.loader.loading.math.function.generic.*;
 import software.bluelib.loader.loading.math.function.limit.ClampFunction;
@@ -36,7 +37,6 @@ import software.bluelib.loader.loading.math.function.random.RandomFunction;
 import software.bluelib.loader.loading.math.function.random.RandomIntegerFunction;
 import software.bluelib.loader.loading.math.function.round.*;
 import software.bluelib.loader.loading.math.value.*;
-import software.bluelib.loader.util.CompoundException;
 
 public class MathParser {
 

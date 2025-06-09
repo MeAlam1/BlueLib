@@ -16,13 +16,13 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.BlueLibConstants;
+import software.bluelib.client.loader.cache.item.IdCache;
+import software.bluelib.client.utils.RenderUtils;
 import software.bluelib.loader.animatable.instance.AnimatableInstanceCache;
 import software.bluelib.loader.animatable.instance.SingletonAnimatableInstanceCache;
 import software.bluelib.loader.animation.AnimatableManager;
 import software.bluelib.loader.animation.ContextAwareAnimatableManager;
-import software.bluelib.loader.cache.AnimatableIdCache;
 import software.bluelib.loader.constant.DataTickets;
-import software.bluelib.loader.util.RenderUtil;
 
 public interface GeoItem extends SingletonGeoAnimatable {
 
@@ -44,14 +44,14 @@ public interface GeoItem extends SingletonGeoAnimatable {
         Long id = components.get(BlueLibConstants.STACK_ANIMATABLE_ID_COMPONENT.get());
 
         if (id == null)
-            components.set(BlueLibConstants.STACK_ANIMATABLE_ID_COMPONENT.get(), id = AnimatableIdCache.getFreeId(level));
+            components.set(BlueLibConstants.STACK_ANIMATABLE_ID_COMPONENT.get(), id = IdCache.getFreeId(level));
 
         return id;
     }
 
     @Override
     default double getTick(Object itemStack) {
-        return RenderUtil.getCurrentTick();
+        return RenderUtils.getCurrentTick();
     }
 
     default boolean isPerspectiveAware() {

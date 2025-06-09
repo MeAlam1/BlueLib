@@ -17,12 +17,12 @@ import net.minecraft.util.FastColor;
 import net.minecraft.world.item.Item;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import software.bluelib.api.utils.Color;
 import software.bluelib.client.loader.cache.model.BoneCache;
 import software.bluelib.client.loader.cache.model.ModelCache;
 import software.bluelib.loader.animatable.GeoItem;
 import software.bluelib.loader.model.GeoModel;
 import software.bluelib.loader.renderer.GeoArmorRenderer;
-import software.bluelib.loader.util.Color;
 
 public abstract class DyeableGeoArmorRenderer<T extends Item & GeoItem> extends GeoArmorRenderer<T> {
 

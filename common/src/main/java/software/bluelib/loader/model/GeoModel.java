@@ -16,8 +16,10 @@ import net.minecraft.world.entity.Entity;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.client.loader.cache.ResourceCache;
+import software.bluelib.client.loader.cache.animations.AnimationsCache;
 import software.bluelib.client.loader.cache.model.BoneCache;
 import software.bluelib.client.loader.cache.model.ModelCache;
+import software.bluelib.client.utils.RenderUtils;
 import software.bluelib.loader.animatable.GeoAnimatable;
 import software.bluelib.loader.animatable.GeoReplacedEntity;
 import software.bluelib.loader.animation.AnimatableManager;
@@ -26,9 +28,7 @@ import software.bluelib.loader.animation.AnimationProcessor;
 import software.bluelib.loader.animation.AnimationState;
 import software.bluelib.loader.constant.DataTickets;
 import software.bluelib.loader.constant.dataticket.DataTicket;
-import software.bluelib.loader.loading.object.BakedAnimations;
 import software.bluelib.loader.renderer.GeoRenderer;
-import software.bluelib.loader.util.RenderUtil;
 
 public abstract class GeoModel<T extends GeoAnimatable> {
 
@@ -70,14 +70,14 @@ public abstract class GeoModel<T extends GeoAnimatable> {
 
     public static ResourceLocation stripSuffix(String pSuffix, ResourceLocation pLocation) {
         String path = pLocation.getPath();
-	    if (path.endsWith(pSuffix)) {
+        if (path.endsWith(pSuffix)) {
             String newPath = path.substring(0, path.length() - pSuffix.length());
             return pLocation.withPath(newPath);
         } else {
             throw new RuntimeException("Invalid file type: expected a " + pSuffix + " file, got: " + path);
         }
     }
-    
+
     public ModelCache getBakedModel(ResourceLocation location) {
         location = stripSuffix(".geo.json", location);
         ModelCache model = ResourceCache.getBakedModels().get(location);
@@ -105,21 +105,21 @@ public abstract class GeoModel<T extends GeoAnimatable> {
     public Animation getAnimation(T animatable, String name) {
         ResourceLocation location = getAnimationResource(animatable);
         location = stripSuffix(".animation.json", location);
-        BakedAnimations bakedAnimations = ResourceCache.getBakedAnimations().get(location);
-        Animation animation = bakedAnimations != null ? bakedAnimations.getAnimation(name) : null;
+        AnimationsCache animationsCache = ResourceCache.getBakedAnimations().get(location);
+        Animation animation = animationsCache != null ? animationsCache.getAnimation(name) : null;
 
         if (animation != null)
             return animation;
 
         for (ResourceLocation fallbackLocation : getAnimationResourceFallbacks(animatable)) {
-            bakedAnimations = ResourceCache.getBakedAnimations().get(location = fallbackLocation);
-            animation = bakedAnimations != null ? bakedAnimations.getAnimation(name) : null;
+            animationsCache = ResourceCache.getBakedAnimations().get(location = fallbackLocation);
+            animation = animationsCache != null ? animationsCache.getAnimation(name) : null;
 
             if (animation != null)
                 return animation;
         }
 
-        if (bakedAnimations == null) {
+        if (animationsCache == null) {
             if (!location.getPath().contains("animations/"))
                 throw new RuntimeException("Invalid animation resource path provided - GeckoLib animations must be placed in assets/<modid>/animations/");
 
@@ -142,7 +142,7 @@ public abstract class GeoModel<T extends GeoAnimatable> {
         Double currentTick = animationState.getData(DataTickets.TICK);
 
         if (currentTick == null)
-            currentTick = animatable instanceof Entity entity ? (double) entity.tickCount : RenderUtil.getCurrentTick();
+            currentTick = animatable instanceof Entity entity ? (double) entity.tickCount : RenderUtils.getCurrentTick();
 
         if (animatableManager.getFirstTickTime() == -1)
             animatableManager.startedAt(currentTick + pPartialTick);

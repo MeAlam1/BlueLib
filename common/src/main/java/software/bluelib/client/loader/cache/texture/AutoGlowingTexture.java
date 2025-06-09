@@ -5,7 +5,7 @@
  * If a copy of the MIT License was not distributed with this file,
  * You can obtain one at https://opensource.org/licenses/MIT.
  */
-package software.bluelib.loader.cache.texture;
+package software.bluelib.client.loader.cache.texture;
 
 import com.mojang.blaze3d.pipeline.RenderCall;
 import com.mojang.blaze3d.platform.GlStateManager;
@@ -17,7 +17,6 @@ import java.io.IOException;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 import java.util.function.BiFunction;
-import java.util.function.Function;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
@@ -31,9 +30,10 @@ import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.BlueLibConstants;
-import software.bluelib.loader.resource.GeoGlowingTextureMeta;
+import software.bluelib.api.json.resource.GlowingTextureMeta;
+import software.bluelib.client.utils.TextureUtils;
 
-public class AutoGlowingTexture extends GeoAbstractTexture {
+public class AutoGlowingTexture extends BlueAbstractTexture {
 
     private static final RenderStateShard.ShaderStateShard SHADER_STATE = new RenderStateShard.ShaderStateShard(GameRenderer::getRendertypeEntityTranslucentEmissiveShader);
     private static final RenderStateShard.TransparencyStateShard TRANSPARENCY_STATE = new RenderStateShard.TransparencyStateShard("translucent_transparency", () -> {
@@ -47,7 +47,7 @@ public class AutoGlowingTexture extends GeoAbstractTexture {
     private static final BiFunction<ResourceLocation, Boolean, RenderType> GLOWING_RENDER_TYPE = Util.memoize((texture, isGlowing) -> {
         RenderStateShard.TextureStateShard textureState = new RenderStateShard.TextureStateShard(texture, false, false);
 
-        return RenderType.create("geo_glowing_layer", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256, false, true,
+        return RenderType.create("glowing_layer", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256, false, true,
                 RenderType.CompositeState.builder()
                         .setShaderState(SHADER_STATE)
                         .setTextureState(textureState)
@@ -56,8 +56,6 @@ public class AutoGlowingTexture extends GeoAbstractTexture {
                         .setWriteMaskState(WRITE_MASK).createCompositeState(isGlowing));
     });
 
-    @Deprecated(forRemoval = true)
-    private static final Function<ResourceLocation, RenderType> RENDER_TYPE_FUNCTION = Util.memoize(texture -> GLOWING_RENDER_TYPE.apply(texture, false));
     private static final String APPENDIX = "_glowmask";
 
     public static boolean PRINT_DEBUG_IMAGES = false;
@@ -65,31 +63,31 @@ public class AutoGlowingTexture extends GeoAbstractTexture {
     protected final ResourceLocation textureBase;
     protected final ResourceLocation glowLayer;
 
-    public AutoGlowingTexture(ResourceLocation originalLocation, ResourceLocation location) {
-        this.textureBase = originalLocation;
-        this.glowLayer = location;
+    public AutoGlowingTexture(ResourceLocation pOriginalLocation, ResourceLocation pLocation) {
+        this.textureBase = pOriginalLocation;
+        this.glowLayer = pLocation;
     }
 
-    public static ResourceLocation getEmissiveResource(ResourceLocation baseResource) {
-        ResourceLocation path = appendToPath(baseResource, APPENDIX);
+    public static ResourceLocation getEmissiveResource(ResourceLocation pBaseResource) {
+        ResourceLocation path = appendToPath(pBaseResource, APPENDIX);
 
-        generateTexture(path, textureManager -> textureManager.register(path, new AutoGlowingTexture(baseResource, path)));
+        generateTexture(path, textureManager -> textureManager.register(path, new AutoGlowingTexture(pBaseResource, path)));
 
         return path;
     }
 
     @Nullable
     @Override
-    protected RenderCall loadTexture(ResourceManager resourceManager, Minecraft mc) throws IOException {
+    protected RenderCall loadTexture(ResourceManager pResourceManager) throws IOException {
         AbstractTexture originalTexture;
 
         try {
-            originalTexture = mc.submit(() -> mc.getTextureManager().getTexture(this.textureBase)).get();
+            originalTexture = Minecraft.getInstance().submit(() -> TextureUtils.getTexture(this.textureBase)).get();
         } catch (InterruptedException | ExecutionException e) {
             throw new IOException("Failed to load original texture: " + this.textureBase, e);
         }
 
-        Resource textureBaseResource = resourceManager.getResource(this.textureBase).get();
+        Resource textureBaseResource = pResourceManager.getResource(this.textureBase).get();
         NativeImage baseImage = originalTexture instanceof DynamicTexture dynamicTexture ? dynamicTexture.getPixels() : NativeImage.read(textureBaseResource.open());
         NativeImage glowImage = null;
         Optional<TextureMetadataSection> textureBaseMeta = textureBaseResource.metadata().getSection(TextureMetadataSection.SERIALIZER);
@@ -97,14 +95,14 @@ public class AutoGlowingTexture extends GeoAbstractTexture {
         boolean clamp = textureBaseMeta.isPresent() && textureBaseMeta.get().isClamp();
 
         try {
-            Optional<Resource> glowLayerResource = resourceManager.getResource(this.glowLayer);
-            GeoGlowingTextureMeta glowLayerMeta = null;
+            Optional<Resource> glowLayerResource = pResourceManager.getResource(this.glowLayer);
+            GlowingTextureMeta glowLayerMeta = null;
 
             if (glowLayerResource.isPresent()) {
                 glowImage = NativeImage.read(glowLayerResource.get().open());
-                glowLayerMeta = GeoGlowingTextureMeta.fromExistingImage(glowImage);
+                glowLayerMeta = GlowingTextureMeta.fromExistingImage(glowImage);
             } else {
-                Optional<GeoGlowingTextureMeta> meta = textureBaseResource.metadata().getSection(GeoGlowingTextureMeta.DESERIALIZER);
+                Optional<GlowingTextureMeta> meta = textureBaseResource.metadata().getSection(GlowingTextureMeta.DESERIALIZER);
 
                 if (meta.isPresent()) {
                     glowLayerMeta = meta.get();
@@ -146,11 +144,11 @@ public class AutoGlowingTexture extends GeoAbstractTexture {
         };
     }
 
-    public static RenderType getRenderType(ResourceLocation texture) {
-        return GLOWING_RENDER_TYPE.apply(getEmissiveResource(texture), false);
+    public static RenderType getRenderType(ResourceLocation pTexture) {
+        return GLOWING_RENDER_TYPE.apply(getEmissiveResource(pTexture), false);
     }
 
-    public static RenderType getOutlineRenderType(ResourceLocation texture) {
-        return GLOWING_RENDER_TYPE.apply(getEmissiveResource(texture), true);
+    public static RenderType getOutlineRenderType(ResourceLocation pTexture) {
+        return GLOWING_RENDER_TYPE.apply(getEmissiveResource(pTexture), true);
     }
 }

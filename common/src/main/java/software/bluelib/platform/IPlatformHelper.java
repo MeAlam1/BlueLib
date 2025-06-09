@@ -10,9 +10,6 @@ package software.bluelib.platform;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Set;
-import java.util.function.Supplier;
-import java.util.function.UnaryOperator;
-import net.minecraft.core.component.DataComponentType;
 import net.minecraft.server.MinecraftServer;
 import software.bluelib.BlueLibConstants;
 import software.bluelib.api.event.mod.ModMeta;
@@ -33,7 +30,7 @@ public interface IPlatformHelper {
     boolean isPhysicalClient();
 
     Path getGameDir();
-    
+
     default String getEnvironmentName() {
         return isDevelopmentEnvironment() ? "development" : "production";
     }
