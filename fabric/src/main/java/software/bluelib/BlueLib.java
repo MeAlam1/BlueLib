@@ -21,7 +21,6 @@ public class BlueLib implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		ReloadHandler.registerProvider(new VariantProvider());
 		BlueLibCommon.doRegistration();
 		FabricEvents.register();
 
@@ -36,6 +35,12 @@ public class BlueLib implements ModInitializer {
 			});
 		}
 
+		registerNetwork();
+
+		ReloadHandler.registerProvider(new VariantProvider());
+	}
+
+	private void registerNetwork() {
 		FabricNetworkManager.registerMessages();
 		FabricNetworkManager.registerServerHandlers();
 	}
