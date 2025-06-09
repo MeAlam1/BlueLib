@@ -26,12 +26,9 @@ import java.util.concurrent.Executor;
 
 @Environment(EnvType.CLIENT)
 public class BlueLibClient implements ClientModInitializer {
-
+	
 	@Override
 	public void onInitializeClient() {
-		FabricNetworkManager.registerClientHandlers();
-		BlueLibCommon.doClientRegistration();
-
 		ResourceManagerHelper.get(PackType.CLIENT_RESOURCES)
 				.registerReloadListener(new IdentifiableResourceReloadListener() {
 					@Override

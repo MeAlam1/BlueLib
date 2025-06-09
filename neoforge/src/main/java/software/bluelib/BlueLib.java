@@ -9,6 +9,8 @@ package software.bluelib;
 
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -29,26 +31,32 @@ import software.bluelib.registry.BlueEntityRegistry;
 
 @Mod(BlueLibConstants.MOD_ID)
 public class BlueLib {
+	public static final DeferredRegister<RecipeType<?>> RECIPE_TYPES = DeferredRegister.create(Registries.RECIPE_TYPE, BlueLibConstants.MOD_ID);
+	public static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(Registries.RECIPE_SERIALIZER, BlueLibConstants.MOD_ID);
+
 	public static final DeferredRegister.DataComponents DATA_COMPONENTS_REGISTER = DeferredRegister.createDataComponents(Registries.DATA_COMPONENT_TYPE, BlueLibConstants.MOD_ID);
 	public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(Registries.ENTITY_TYPE, BlueLibConstants.MOD_ID);
 
 	public BlueLib(IEventBus pModEventBus, ModContainer pModContainer) {
-		DATA_COMPONENTS_REGISTER.register(pModEventBus);
 		BlueLibConstants.init();
-		ENTITIES.register(pModEventBus);
-		pModEventBus.<EntityAttributeCreationEvent>addListener(event -> BlueEntityRegistry.registerEntityAttributes(event::put));
-
-		BlueLibCommon.doServerRegistration();
+		BlueLibCommon.doRegistration();
+		if (FMLEnvironment.dist == Dist.CLIENT)
+			BlueLibClient.init(pModContainer);
 		ReloadHandler.registerProvider(new VariantProvider());
 		pModEventBus.register(this);
 		MixinBootstrap.init();
-		pModEventBus.addListener(NeoForgeNetworkManager::registerMessages);
 
-		if (FMLEnvironment.dist == Dist.CLIENT)
-			BlueLibClient.init(pModContainer);
+		DATA_COMPONENTS_REGISTER.register(pModEventBus);
+		ENTITIES.register(pModEventBus);
+		RECIPE_TYPES.register(pModEventBus);
+		RECIPE_SERIALIZERS.register(pModEventBus);
+
+		pModEventBus.<EntityAttributeCreationEvent>addListener(event -> BlueEntityRegistry.registerEntityAttributes(event::put));
 
 		pModContainer.registerConfig(ModConfig.Type.SERVER, ConfigHolder.MARKDOWN_SPEC, BlueLibConstants.MOD_ID + "-markdown.toml");
 		pModContainer.registerConfig(ModConfig.Type.SERVER, ConfigHolder.LOGGER_SPEC, BlueLibConstants.MOD_ID + "-logger.toml");
+
+		pModEventBus.addListener(NeoForgeNetworkManager::registerMessages);
 	}
 
 	@SubscribeEvent

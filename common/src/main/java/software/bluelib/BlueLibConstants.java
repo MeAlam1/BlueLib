@@ -8,11 +8,6 @@
 package software.bluelib;
 
 import com.mojang.serialization.Codec;
-import java.util.ServiceLoader;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.function.Supplier;
-import java.util.logging.Logger;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -26,60 +21,68 @@ import software.bluelib.platform.IPlatformClient;
 import software.bluelib.platform.IPlatformHelper;
 import software.bluelib.platform.IRegistryHelper;
 
+import java.util.ServiceLoader;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.function.Supplier;
+import java.util.logging.Logger;
+
 public class BlueLibConstants {
 
-    private BlueLibConstants() {}
+	private BlueLibConstants() {
+	}
 
-    public static <T> T load(Class<T> pClazz) {
-        return ServiceLoader.load(pClazz)
-                .findFirst()
-                .orElseThrow(() -> new NullPointerException("Failed to load service for " + pClazz.getName()));
-    }
+	public static void init() {
+	}
 
-    public static final Logger LOGGER = Logger.getLogger(BlueLibConstants.MOD_NAME);
+	public static <T> T load(Class<T> pClazz) {
+		return ServiceLoader.load(pClazz)
+				.findFirst()
+				.orElseThrow(() -> new NullPointerException("Failed to load service for " + pClazz.getName()));
+	}
 
-    public static ScheduledExecutorService SCHEDULER = Executors.newScheduledThreadPool(1);
+	public static final Logger LOGGER = Logger.getLogger(BlueLibConstants.MOD_NAME);
 
-    public static final Supplier<DataComponentType<Long>> STACK_ANIMATABLE_ID_COMPONENT = PlatformHelper.PLATFORM.registerDataComponent("stack_animatable_id", builder -> builder.persistent(Codec.LONG).networkSynchronized(ByteBufCodecs.VAR_LONG));
+	public static ScheduledExecutorService SCHEDULER = Executors.newScheduledThreadPool(1);
 
-    public static void init() {}
+	public static final Supplier<DataComponentType<Long>> STACK_ANIMATABLE_ID_COMPONENT = PlatformHelper.REGISTRY.registerDataComponent("stack_animatable_id", builder -> builder.persistent(Codec.LONG).networkSynchronized(ByteBufCodecs.VAR_LONG));
 
-    public static final String MOD_ID = "bluelib";
+	public static final String MOD_ID = "bluelib";
 
-    public static final String MOD_NAME = "BlueLib";
+	public static final String MOD_NAME = "BlueLib";
 
-    public static MinecraftServer server;
+	public static MinecraftServer server;
 
-    public static class PlatformHelper {
+	public static class PlatformHelper {
 
-        public static final IPlatformHelper PLATFORM = load(IPlatformHelper.class);
+		public static final IPlatformHelper PLATFORM = load(IPlatformHelper.class);
 
-        public static final IEventProxy EVENT_PROXY = load(IEventProxy.class);
+		public static final IEventProxy EVENT_PROXY = load(IEventProxy.class);
 
-        public static final IRegistryHelper REGISTRY = load(IRegistryHelper.class);
+		public static final IRegistryHelper REGISTRY = load(IRegistryHelper.class);
 
-        public static final IPlatformClient ITEM_RENDERING = load(IPlatformClient.class);
-    }
+		public static final IPlatformClient ITEM_RENDERING = load(IPlatformClient.class);
+	}
 
-    public enum ModAPI {
-        FABRIC,
-        FORGE,
-        NEOFORGE
-    }
+	public enum ModAPI {
+		FABRIC,
+		FORGE,
+		NEOFORGE
+	}
 
-    public interface NetworkManager {
+	public interface NetworkManager {
 
-        void sendToPlayer(ServerPlayer pPlayer, NetworkPacket<?> pPacket);
+		void sendToPlayer(ServerPlayer pPlayer, NetworkPacket<?> pPacket);
 
-        void sendToServer(NetworkPacket<?> pPacket);
+		void sendToServer(NetworkPacket<?> pPacket);
 
-        void sendToAllPlayersTrackingEntity(Entity pTrackingEntity, NetworkPacket<?> pPacket);
+		void sendToAllPlayersTrackingEntity(Entity pTrackingEntity, NetworkPacket<?> pPacket);
 
-        void sendToAllPlayersTrackingBlock(ServerLevel pLevel, BlockPos pBlockPos, NetworkPacket<?> pPacket);
-    }
+		void sendToAllPlayersTrackingBlock(ServerLevel pLevel, BlockPos pBlockPos, NetworkPacket<?> pPacket);
+	}
 
-    public enum Environment {
-        CLIENT,
-        SERVER
-    }
+	public enum Environment {
+		CLIENT,
+		SERVER
+	}
 }

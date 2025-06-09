@@ -2,11 +2,14 @@
   "required": true,
   "minVersion": "0.8.0",
   "package": "software.bluelib.mixin",
+  "compatibilityLevel": "JAVA_21",
   "refmap": "bluelib.refmap.json",
   "mixins": [
-    "common.variant.LivingEntityMixin",
-    "common.loader.AbstractContainerMenuMixin",
-    "common.loader.ItemStackMixin"
+    "common.brewing.BrewingStandBlockEntityMixin",
+    "common.brewing.BrewingStandMenuMixin",
+    "common.brewing.IngredientSlotMixin",
+    "common.brewing.PotionSlotMixin",
+    "common.variant.LivingEntityMixin"
   ],
   "client": [
     "client.BlockEntityWithoutLevelRendererMixin",
@@ -15,6 +18,6 @@
   ],
   "server": [],
   "injectors": {
-    "defaultRequire": 1
+    "maxShiftBy": 2
   }
 }

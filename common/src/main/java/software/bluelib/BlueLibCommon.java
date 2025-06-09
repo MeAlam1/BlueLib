@@ -7,9 +7,6 @@
  */
 package software.bluelib;
 
-import static software.bluelib.BlueLibConstants.SCHEDULER;
-
-import java.util.concurrent.TimeUnit;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.ApiStatus;
@@ -19,84 +16,104 @@ import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
 import software.bluelib.registry.BlueEntityRegistry;
 import software.bluelib.registry.BlueNetworkRegistry;
+import software.bluelib.registry.BlueRecipeSerializerRegistry;
+import software.bluelib.registry.BlueRecipeTypeRegistry;
+
+import java.util.concurrent.TimeUnit;
+
+import static software.bluelib.BlueLibConstants.SCHEDULER;
 
 public class BlueLibCommon {
 
-    private BlueLibCommon() {}
+	private BlueLibCommon() {
+	}
 
-    @ApiStatus.Internal
-    public static void init() {
-        if (isDeveloperMode()) {
-            SCHEDULER.schedule(() -> {
-                ModIntegration.checkSupportMods();
-                BaseLogger.logBlueLib(Component.literal("**************************************************"));
-                BaseLogger.logBlueLib(Component.literal("                                                  "));
-                BaseLogger.logBlueLib(BlueLibCommon.Translation.translate("mod.thank_you"));
-                BaseLogger.logBlueLib(BlueLibCommon.Translation.translate("mod.thank_you.subtitle"));
-                BaseLogger.logBlueLib(Component.literal("                                                  "));
-                BaseLogger.logBlueLib(Component.literal("**************************************************"));
-                SCHEDULER.shutdown();
-            }, 5, TimeUnit.SECONDS);
-        }
-    }
+	@ApiStatus.Internal
+	public static void init() {
+		if (isDeveloperMode()) {
+			SCHEDULER.schedule(() -> {
+				ModIntegration.checkSupportMods();
+				BaseLogger.logBlueLib(Component.literal("**************************************************"));
+				BaseLogger.logBlueLib(Component.literal("                                                  "));
+				BaseLogger.logBlueLib(BlueLibCommon.Translation.translate("mod.thank_you"));
+				BaseLogger.logBlueLib(BlueLibCommon.Translation.translate("mod.thank_you.subtitle"));
+				BaseLogger.logBlueLib(Component.literal("                                                  "));
+				BaseLogger.logBlueLib(Component.literal("**************************************************"));
+				SCHEDULER.shutdown();
+			}, 5, TimeUnit.SECONDS);
+		}
+	}
 
-    @ApiStatus.Internal
-    public static BlueNetworkRegistry getRegistry() {
-        return new BlueNetworkRegistry();
-    }
+	@ApiStatus.Internal
+	public static void doRegistration() {
+		InternalNetworkRegistry.networkServer();
+		BlueEntityRegistry.init();
+		BlueRecipeTypeRegistry.init();
+		BlueRecipeSerializerRegistry.init();
+	}
 
-    @ApiStatus.Internal
-    public static void doServerRegistration() {
-        BlueEntityRegistry.init();
-        NetworkRegistry.registerC2SPacketProvider(getRegistry());
-    }
+	@ApiStatus.Internal
+	public static void doClientRegistration() {
+		InternalNetworkRegistry.networkClient();
+	}
 
-    @ApiStatus.Internal
-    public static void doClientRegistration() {
-        NetworkRegistry.registerS2CPacketProvider(getRegistry());
-    }
+	public static boolean isDeveloperMode() {
+		boolean isDevMode = BlueLibConstants.PlatformHelper.PLATFORM.isDevelopmentEnvironment();
+		if (isDevMode) {
+			BaseLogger.log(true, BaseLogLevel.INFO, Component.literal("Running in Developer mode."));
+		}
+		return isDevMode;
+	}
 
-    public static boolean isDeveloperMode() {
-        boolean isDevMode = BlueLibConstants.PlatformHelper.PLATFORM.isDevelopmentEnvironment();
-        if (isDevMode) {
-            BaseLogger.log(true, BaseLogLevel.INFO, Component.literal("Running in Developer mode."));
-        }
-        return isDevMode;
-    }
+	@ApiStatus.Internal
+	protected static class InternalNetworkRegistry {
 
-    @ApiStatus.Internal
-    public static class Resource {
+		private static BlueNetworkRegistry getNetwork() {
+			return new BlueNetworkRegistry();
+		}
 
-        public static ResourceLocation resource(String pPath) {
-            return ResourceLocation.fromNamespaceAndPath(BlueLibConstants.MOD_ID, pPath);
-        }
-    }
+		private static void networkServer() {
+			NetworkRegistry.registerC2SPacketProvider(getNetwork());
+		}
 
-    @ApiStatus.Internal
-    public static class Translation {
+		private static void networkClient() {
+			NetworkRegistry.registerS2CPacketProvider(getNetwork());
+		}
+	}
 
-        public static Component translate(String pString) {
-            return Component.translatable(BlueLibConstants.MOD_ID + "." + pString);
-        }
+	@ApiStatus.Internal
+	public static class Resource {
 
-        public static Component translate(String pString, Object... pArgs) {
-            return Component.translatable(BlueLibConstants.MOD_ID + "." + pString, pArgs);
-        }
+		public static ResourceLocation resource(String pPath) {
+			return ResourceLocation.fromNamespaceAndPath(BlueLibConstants.MOD_ID, pPath);
+		}
+	}
 
-        public static Component log(String pString) {
-            return Component.translatable(BlueLibConstants.MOD_ID + ".log." + pString);
-        }
+	@ApiStatus.Internal
+	public static class Translation {
 
-        public static Component log(String pString, Object... pArgs) {
-            return Component.translatable(BlueLibConstants.MOD_ID + ".log." + pString, pArgs);
-        }
+		public static Component translate(String pString) {
+			return Component.translatable(BlueLibConstants.MOD_ID + "." + pString);
+		}
 
-        public static Component config(String pString) {
-            return Component.translatable(BlueLibConstants.MOD_ID + ".config." + pString);
-        }
+		public static Component translate(String pString, Object... pArgs) {
+			return Component.translatable(BlueLibConstants.MOD_ID + "." + pString, pArgs);
+		}
 
-        public static Component config(String pString, Object... pArgs) {
-            return Component.translatable(BlueLibConstants.MOD_ID + ".config." + pString, pArgs);
-        }
-    }
+		public static Component log(String pString) {
+			return Component.translatable(BlueLibConstants.MOD_ID + ".log." + pString);
+		}
+
+		public static Component log(String pString, Object... pArgs) {
+			return Component.translatable(BlueLibConstants.MOD_ID + ".log." + pString, pArgs);
+		}
+
+		public static Component config(String pString) {
+			return Component.translatable(BlueLibConstants.MOD_ID + ".config." + pString);
+		}
+
+		public static Component config(String pString, Object... pArgs) {
+			return Component.translatable(BlueLibConstants.MOD_ID + ".config." + pString, pArgs);
+		}
+	}
 }

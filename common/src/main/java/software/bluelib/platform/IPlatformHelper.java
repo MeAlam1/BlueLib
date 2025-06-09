@@ -33,9 +33,7 @@ public interface IPlatformHelper {
     boolean isPhysicalClient();
 
     Path getGameDir();
-
-    <T> Supplier<DataComponentType<T>> registerDataComponent(String pId, UnaryOperator<DataComponentType.Builder<T>> pBuilder);
-
+    
     default String getEnvironmentName() {
         return isDevelopmentEnvironment() ? "development" : "production";
     }

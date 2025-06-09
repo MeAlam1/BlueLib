@@ -28,18 +28,22 @@ public class BlueLib implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		ReloadHandler.registerProvider(new VariantProvider());
-		BlueLibCommon.doServerRegistration();
-		FabricNetworkManager.registerMessages();
-		FabricNetworkManager.registerServerHandlers();
+		BlueLibCommon.doRegistration();
+		BlueLibConstants.init();
 		registerModEventListeners();
 		if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
+			BlueLibCommon.doClientRegistration();
 			ClientTickEvents.END_CLIENT_TICK.register(client -> {
+				FabricNetworkManager.registerClientHandlers();
 				if (!hasInitialized) {
 					hasInitialized = true;
 					BlueLibCommon.init();
 				}
 			});
 		}
+
+		FabricNetworkManager.registerMessages();
+		FabricNetworkManager.registerServerHandlers();
 	}
 
 	public static void registerModEventListeners() {
