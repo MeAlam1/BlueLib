@@ -32,17 +32,6 @@ import software.bluelib.net.FabricNetworkManager;
 
 public class BlueLib implements ModInitializer, DataGeneratorEntrypoint {
 
-    /**
-     * Initializes the {@link AbstractRegistryBuilder} instance with the mod ID. Replace {@link BlueLibConstants#MOD_ID} with your mod's unique mod ID to register content under your mod's namespace.
-     * <p>
-     * This is essential for registering mod content such as items, blocks, and entities.
-     * <p>
-     * <strong>Do not remove</strong>, as it will break the mod's registration system.
-     * <p>
-     * Do not use this, you need to add this line into your own mod.
-     */
-    public static AbstractRegistryBuilder REGISTRY = new BlueRegistryBuilder(BlueLibConstants.MOD_ID);
-
     private boolean hasInitialized = false;
 
     @Override

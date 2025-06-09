@@ -7,3 +7,5 @@ accessible class net/minecraft/world/inventory/MenuType
 accessible class net/minecraft/client/gui/screens/MenuScreens$ScreenConstructor
 accessible method net/minecraft/world/inventory/MenuType <init> (Lnet/minecraft/world/inventory/MenuType$MenuSupplier;Lnet/minecraft/world/flag/FeatureFlagSet;)V
 accessible class net/minecraft/world/item/CreativeModeTab$TabVisibility
+accessible method net/minecraft/data/recipes/RecipeProvider has (Lnet/minecraft/advancements/critereon/MinMaxBounds$Ints;Lnet/minecraft/world/level/ItemLike;)Lnet/minecraft/advancements/Criterion;
+accessible method net/minecraft/data/recipes/RecipeProvider has (Lnet/minecraft/world/level/ItemLike;)Lnet/minecraft/advancements/Criterion;

@@ -7,16 +7,26 @@
  */
 package software.bluelib.platform;
 
+import java.nio.file.Path;
 import java.util.*;
+import java.util.function.BiConsumer;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
+
+import com.google.gson.JsonElement;
+import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.server.MinecraftServer;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.fml.loading.FMLLoader;
+import net.neoforged.fml.loading.FMLPaths;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import net.neoforged.neoforgespi.language.IModInfo;
 import software.bluelib.BlueLibConstants;
 import software.bluelib.api.event.mod.ModMeta;
+import software.bluelib.api.registry.NeoRecipeGenerator;
+
+import static software.bluelib.api.registry.AbstractRegistryBuilder.getModID;
 
 public class NeoForgePlatformHelper implements IPlatformHelper {
 
@@ -69,5 +79,26 @@ public class NeoForgePlatformHelper implements IPlatformHelper {
     @Override
     public MinecraftServer getServer() {
         return ServerLifecycleHooks.getCurrentServer();
+    }
+
+    @Override
+    public JsonElement generateRecipeJson(String modId, String name, BiConsumer<RecipeOutput, Supplier<JsonElement>> recipeConsumer) {
+        return NeoRecipeGenerator.generateRecipeJson(recipeConsumer);
+    }
+
+    @Override
+    public Path getAssetsDir(boolean isCommon) {
+        if(isCommon) {
+            return FMLPaths.GAMEDIR.get().getParent().getParent().resolve("common/src/main/resources/assets/"+ getModID());
+        }
+        return FMLPaths.GAMEDIR.get().getParent().getParent().resolve("src/main/resources/assets/" + getModID());
+    }
+
+    @Override
+    public Path getDataDir(boolean isCommon) {
+        if(isCommon) {
+            return FMLPaths.GAMEDIR.get().getParent().getParent().resolve("common/src/main/resources/data/"+ getModID());
+        }
+        return FMLPaths.GAMEDIR.get().getParent().getParent().resolve("src/main/resources/data/" + getModID());
     }
 }

@@ -211,14 +211,12 @@ public abstract class BlockstateTemplates {
                         variant.addProperty("model", model);
 
                         int xRotation = face.equals("ceiling") ? 180 : face.equals("wall") ? 90 : 0;
-                        int yRotation = 0;
-                        if (face.equals("ceiling")) {
-                            yRotation = ceilingRotations[0][f];
-                        } else if (face.equals("floor")) {
-                            yRotation = floorRotations[0][f];
-                        } else if (face.equals("wall")) {
-                            yRotation = wallRotations[0][f];
-                        }
+                        int yRotation = switch (face) {
+                            case "ceiling" -> ceilingRotations[0][f];
+                            case "floor" -> floorRotations[0][f];
+                            case "wall" -> wallRotations[0][f];
+                            default -> 0;
+                        };
 
                         if (xRotation != 0) {
                             variant.addProperty("x", xRotation);
@@ -332,22 +330,20 @@ public abstract class BlockstateTemplates {
                         boolean uvlock = !shape.equals("straight");
 
                         if (half.equals("bottom")) {
-                            if (shape.equals("inner_left") || shape.equals("outer_left")) {
-                                yRotation = bottomRotations[0][facingIndex];
-                            } else if (shape.equals("inner_right") || shape.equals("outer_right")) {
-                                yRotation = bottomRotations[1][facingIndex];
-                            } else if (shape.equals("straight")) {
-                                yRotation = bottomRotations[1][facingIndex];
-                            }
+                            yRotation = switch (shape) {
+                                case "inner_left", "outer_left" -> bottomRotations[0][facingIndex];
+                                case "inner_right", "outer_right" -> bottomRotations[1][facingIndex];
+                                case "straight" -> bottomRotations[1][facingIndex];
+                                default -> yRotation;
+                            };
                         } else {
                             variant.addProperty("x", 180);
-                            if (shape.equals("inner_left") || shape.equals("outer_left")) {
-                                yRotation = topRotations[0][facingIndex];
-                            } else if (shape.equals("inner_right") || shape.equals("outer_right")) {
-                                yRotation = topRotations[1][facingIndex];
-                            } else if (shape.equals("straight")) {
-                                yRotation = topRotations[1][facingIndex];
-                            }
+                            yRotation = switch (shape) {
+                                case "inner_left", "outer_left" -> topRotations[0][facingIndex];
+                                case "inner_right", "outer_right" -> topRotations[1][facingIndex];
+                                case "straight" -> topRotations[1][facingIndex];
+                                default -> yRotation;
+                            };
                         }
 
                         if (yRotation != 0) {

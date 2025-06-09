@@ -65,9 +65,12 @@ public abstract class AbstractRegistryBuilder {
     }
 
     public static void doDatagen() {
-        ItemBuilder.doItemModelGen(modID);
-        BlockBuilder.doBlockModelGen(modID);
-        EntityBuilder.doSpawnEggDatagen(modID);
-        EntityTagBuilder.doTagJsonGen();
+        ItemBuilder.doItemModelGen(getModID());
+        BlockBuilder.doBlockModelGen(getModID());
+        EntityBuilder.doSpawnEggDatagen(getModID());
+        EntityTagBuilder.doTagJsonGen(getModID());
+
+        ItemBuilder.doRecipeGen(getModID());
+        BlockBuilder.doRecipeGen(getModID());
     }
 }

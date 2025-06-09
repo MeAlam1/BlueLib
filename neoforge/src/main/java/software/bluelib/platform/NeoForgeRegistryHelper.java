@@ -7,11 +7,9 @@
  */
 package software.bluelib.platform;
 
-import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
 import net.minecraft.client.KeyMapping;
-import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -25,7 +23,6 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
-import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import software.bluelib.BlueLibConstants;
@@ -33,7 +30,6 @@ import software.bluelib.api.registry.AbstractRegistryBuilder;
 import software.bluelib.api.registry.builders.keybinds.KeybindBuilder;
 import software.bluelib.api.registry.helpers.entity.AttributeHelper;
 import software.bluelib.api.registry.helpers.entity.RenderHelper;
-import software.bluelib.api.registry.helpers.menu.MenuScreenHelper;
 import software.bluelib.net.NeoForgeNetworkManager;
 
 public class NeoForgeRegistryHelper implements IRegistryHelper {
@@ -101,10 +97,5 @@ public class NeoForgeRegistryHelper implements IRegistryHelper {
         modEventBus.<EntityAttributeCreationEvent>addListener(pEvent -> AttributeHelper.registerAttributes(pEvent::put));
         modEventBus.<RegisterKeyMappingsEvent>addListener(event -> KeybindBuilder.REGISTERED_BUILDERS.forEach(builder -> event.register(builder.getKeyMapping().get())));
         modEventBus.<EntityRenderersEvent.RegisterRenderers>addListener(event -> RenderHelper.registerRenderers(event::registerEntityRenderer, event::registerBlockEntityRenderer));
-        modEventBus.<RegisterMenuScreensEvent>addListener(event ->
-                MenuScreenHelper.registerScreens((menuType, screenConstructor) ->
-                        event.register(menuType, (MenuScreens.ScreenConstructor) screenConstructor)
-                )
-        );
     }
 }

@@ -6,21 +6,23 @@ import com.google.gson.JsonElement;
 import net.minecraft.data.models.model.ModelTemplate;
 import net.minecraft.data.models.model.TextureMapping;
 import net.minecraft.resources.ResourceLocation;
+import software.bluelib.BlueLibConstants;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
 public class ItemModelGenerator {
-
-    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+    public static final Gson GSON = new GsonBuilder()
+            .setPrettyPrinting()
+            .disableHtmlEscaping() //Prevent escaping of =, <, >, etc.
+            .create();
 
     public static void generateItemModel(String modId, String name, ItemModelTemplates modelTemplate) {
-        Path itemModelPath = findProjectRoot().resolve(modId + "/models/item/" + name + ".json");
+        Path itemModelPath = Path.of(BlueLibConstants.PlatformHelper.PLATFORM.getAssetsDir(true) + "/models/item/" + name + ".json");
 
         try {
             if (Files.exists(itemModelPath)) {
@@ -51,41 +53,5 @@ public class ItemModelGenerator {
 
         template.create(modelLocation, TextureMapping.layer0(ResourceLocation.fromNamespaceAndPath(modId, "item/" + name)), tempConsumer);
         return capturedJson[0];
-    }
-
-    public static Path findProjectRoot() {
-        Path current = Paths.get(System.getProperty("user.dir")).toAbsolutePath();
-        while (current != null) {
-            Path resources = findResourcesPath(current);
-            if (resources != null) return resources;
-            current = current.getParent();
-        }
-        throw new IllegalStateException("Could not locate project root");
-    }
-
-    private static Path findResourcesPath(Path current) {
-        String[] potentialPaths = {
-                "src/main/resources/assets",
-                "common/src/main/resources/assets"
-        };
-
-        for (String path : potentialPaths) {
-            Path resources = current.resolve(path);
-            if (Files.exists(resources) && Files.isDirectory(resources)) {
-                return resources;
-            }
-        }
-
-        String currentDirName = current.getFileName() != null ? current.getFileName().toString() : "";
-        if (currentDirName.matches("fabric|forge|neoforge|quilt")) {
-            for (String path : potentialPaths) {
-                Path parentResources = current.getParent().resolve(path);
-                if (Files.exists(parentResources) && Files.isDirectory(parentResources)) {
-                    return parentResources;
-                }
-            }
-        }
-
-        return null;
     }
 }

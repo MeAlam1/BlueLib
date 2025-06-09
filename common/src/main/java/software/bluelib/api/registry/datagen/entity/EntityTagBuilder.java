@@ -44,15 +44,15 @@ public class EntityTagBuilder {
         return TagKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(AbstractRegistryBuilder.getModID(), name));
     }
 
-    public static void doTagJsonGen() {
+    public static void doTagJsonGen(String modId) {
         for (String tagName : generatedTags) {
             List<EntityType<?>> entities = tagEntityTypes.getOrDefault(tagName, new ArrayList<>());
-            generateTagJson(tagName, entities);
+            generateTagJson(modId, tagName, entities);
         }
     }
 
-    private static void generateTagJson(String tagName, List<EntityType<?>> entityTypes) {
-        Path tagPath = findProjectRoot().resolve(AbstractRegistryBuilder.getModID() + "/tags/entity_type/" + tagName + ".json");
+    private static void generateTagJson(String modId, String tagName, List<EntityType<?>> entityTypes) {
+        Path tagPath = findProjectRoot().resolve(modId + "/tags/entity_type/" + tagName + ".json");
 
         try {
             if (Files.exists(tagPath)) {

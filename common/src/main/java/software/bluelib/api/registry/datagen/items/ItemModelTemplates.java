@@ -20,7 +20,7 @@ public abstract class ItemModelTemplates {
                     Optional.empty()) {
 
                 @Override
-                public JsonObject createBaseTemplate(ResourceLocation modelLocation, Map<TextureSlot, ResourceLocation> modelGetter) {
+                public @NotNull JsonObject createBaseTemplate(@NotNull ResourceLocation modelLocation, @NotNull Map<TextureSlot, ResourceLocation> modelGetter) {
                     JsonObject jsonObject = new JsonObject();
                     String blockName = modelLocation.getPath().replace("item/", "block/");
                     jsonObject.addProperty("parent", modelLocation.getNamespace() + ":" + blockName);
@@ -37,7 +37,7 @@ public abstract class ItemModelTemplates {
             return new ModelTemplate(Optional.empty(), Optional.empty()) {
 
                 @Override
-                public JsonObject createBaseTemplate(ResourceLocation modelLocation, Map<TextureSlot, ResourceLocation> modelGetter) {
+                public @NotNull JsonObject createBaseTemplate(@NotNull ResourceLocation modelLocation, @NotNull Map<TextureSlot, ResourceLocation> modelGetter) {
                     JsonObject jsonObject = new JsonObject();
                     String path = modelLocation.getPath().startsWith("item/")
                             ? modelLocation.getPath().substring(5)
@@ -60,7 +60,7 @@ public abstract class ItemModelTemplates {
                     TextureSlot.LAYER0) {
 
                 @Override
-                public JsonObject createBaseTemplate(ResourceLocation modelLocation, Map<TextureSlot, ResourceLocation> modelGetter) {
+                public @NotNull JsonObject createBaseTemplate(@NotNull ResourceLocation modelLocation, @NotNull Map<TextureSlot, ResourceLocation> modelGetter) {
                     JsonObject jsonObject = new JsonObject();
                     jsonObject.addProperty("parent", "minecraft:item/generated");
                     JsonObject textures = new JsonObject();
@@ -84,7 +84,7 @@ public abstract class ItemModelTemplates {
                     TextureSlot.LAYER0) {
 
                 @Override
-                public JsonObject createBaseTemplate(ResourceLocation modelLocation, Map<TextureSlot, ResourceLocation> modelGetter) {
+                public @NotNull JsonObject createBaseTemplate(@NotNull ResourceLocation modelLocation, @NotNull Map<TextureSlot, ResourceLocation> modelGetter) {
                     JsonObject jsonObject = new JsonObject();
                     jsonObject.addProperty("parent", "minecraft:item/generated");
                     JsonObject textures = new JsonObject();
@@ -115,7 +115,7 @@ public abstract class ItemModelTemplates {
                     TextureSlot.LAYER0) {
 
                 @Override
-                public JsonObject createBaseTemplate(ResourceLocation modelLocation, Map<TextureSlot, ResourceLocation> modelGetter) {
+                public @NotNull JsonObject createBaseTemplate(@NotNull ResourceLocation modelLocation, @NotNull Map<TextureSlot, ResourceLocation> modelGetter) {
                     JsonObject jsonObject = new JsonObject();
                     jsonObject.addProperty("parent", "minecraft:item/handheld");
                     JsonObject textures = new JsonObject();
