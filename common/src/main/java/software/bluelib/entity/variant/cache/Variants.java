@@ -5,7 +5,7 @@
  * If a copy of the MIT License was not distributed with this file,
  * You can obtain one at https://opensource.org/licenses/MIT.
  */
-package software.bluelib.entity.variant;
+package software.bluelib.entity.variant.cache;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;

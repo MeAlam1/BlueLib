@@ -16,8 +16,8 @@ import mezz.jei.api.runtime.IJeiRuntime;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
-import software.bluelib.BlueLibCommon;
 import software.bluelib.compat.jei.brewing.BrewingJeiProvider;
+import software.bluelib.internal.Resource;
 
 @ApiStatus.Internal
 @JeiPlugin
@@ -27,7 +27,7 @@ public class BlueJeiPlugin implements IModPlugin {
             new BrewingJeiProvider());
 
     public static IJeiRuntime jeiRuntime = null;
-    public static final ResourceLocation ID = BlueLibCommon.Resource.resource("jei_plugin");
+    public static final ResourceLocation ID = Resource.resource("jei_plugin");
 
     @Override
     public @NotNull ResourceLocation getPluginUid() {

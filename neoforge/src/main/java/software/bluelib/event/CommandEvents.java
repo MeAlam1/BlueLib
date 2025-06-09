@@ -10,7 +10,7 @@ package software.bluelib.event;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
-import software.bluelib.registry.BlueCommandRegistry;
+import software.bluelib.internal.registry.BlueCommandRegistry;
 
 @EventBusSubscriber
 public class CommandEvents {

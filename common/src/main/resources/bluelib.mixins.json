@@ -5,11 +5,11 @@
   "compatibilityLevel": "JAVA_21",
   "refmap": "bluelib.refmap.json",
   "mixins": [
-    "brewing.BrewingStandBlockEntityMixin",
-    "brewing.BrewingStandMenuMixin",
-    "brewing.IngredientSlotMixin",
-    "brewing.PotionSlotMixin",
-    "variant.LivingEntityMixin"
+    "common.brewing.BrewingStandBlockEntityMixin",
+    "common.brewing.BrewingStandMenuMixin",
+    "common.brewing.IngredientSlotMixin",
+    "common.brewing.PotionSlotMixin",
+    "common.variant.LivingEntityMixin"
   ],
   "client": [],
   "server": [],

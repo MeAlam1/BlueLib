@@ -16,7 +16,7 @@ import mezz.jei.api.registration.IRecipeRegistration;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.item.crafting.RecipeManager;
 import software.bluelib.compat.jei.BlueJeiProvider;
-import software.bluelib.registry.BlueRecipeTypeRegistry;
+import software.bluelib.internal.registry.BlueRecipeTypeRegistry;
 
 public class BrewingJeiProvider implements BlueJeiProvider {
 

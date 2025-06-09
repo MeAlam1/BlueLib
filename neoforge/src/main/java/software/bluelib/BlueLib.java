@@ -7,9 +7,6 @@
  */
 package software.bluelib;
 
-import net.minecraft.core.registries.Registries;
-import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.RecipeType;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -18,8 +15,6 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.loading.FMLEnvironment;
-import net.neoforged.neoforge.registries.DeferredRegister;
-import org.spongepowered.asm.launch.MixinBootstrap;
 import software.bluelib.client.BlueLibClient;
 import software.bluelib.config.ConfigHolder;
 import software.bluelib.event.ReloadHandler;
@@ -28,24 +23,27 @@ import software.bluelib.net.NeoForgeNetworkManager;
 
 @Mod(BlueLibConstants.MOD_ID)
 public class BlueLib {
-	public static final DeferredRegister<RecipeType<?>> RECIPE_TYPES = DeferredRegister.create(Registries.RECIPE_TYPE, BlueLibConstants.MOD_ID);
-	public static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(Registries.RECIPE_SERIALIZER, BlueLibConstants.MOD_ID);
-
 
 	public BlueLib(IEventBus pModEventBus, ModContainer pModContainer) {
 		BlueLibCommon.doRegistration();
+		NeoRegistries.register(pModEventBus);
+		
 		if (FMLEnvironment.dist == Dist.CLIENT)
 			BlueLibClient.init(pModContainer);
-		ReloadHandler.registerProvider(new VariantProvider());
-		pModEventBus.register(this);
-		MixinBootstrap.init();
-		
-		RECIPE_TYPES.register(pModEventBus);
-		RECIPE_SERIALIZERS.register(pModEventBus);
 
+		registerConfigs(pModContainer);
+		setupEventListeners(pModEventBus);
+
+		ReloadHandler.registerProvider(new VariantProvider());
+	}
+
+	private void registerConfigs(ModContainer pModContainer) {
 		pModContainer.registerConfig(ModConfig.Type.SERVER, ConfigHolder.MARKDOWN_SPEC, BlueLibConstants.MOD_ID + "-markdown.toml");
 		pModContainer.registerConfig(ModConfig.Type.SERVER, ConfigHolder.LOGGER_SPEC, BlueLibConstants.MOD_ID + "-logger.toml");
+	}
 
+	private void setupEventListeners(IEventBus pModEventBus) {
+		pModEventBus.register(this);
 		pModEventBus.addListener(NeoForgeNetworkManager::registerMessages);
 	}
 

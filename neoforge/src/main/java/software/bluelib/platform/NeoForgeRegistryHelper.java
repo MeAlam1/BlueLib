@@ -9,8 +9,8 @@ package software.bluelib.platform;
 
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
-import software.bluelib.BlueLib;
 import software.bluelib.BlueLibConstants;
+import software.bluelib.NeoRegistries;
 import software.bluelib.net.NeoForgeNetworkManager;
 
 import java.util.function.Supplier;
@@ -24,11 +24,11 @@ public class NeoForgeRegistryHelper implements IRegistryHelper {
 
 	@Override
 	public <T extends RecipeType<?>> Supplier<T> registerRecipeType(String pId, Supplier<T> pRecipeType) {
-		return BlueLib.RECIPE_TYPES.register(pId, pRecipeType);
+		return NeoRegistries.RECIPE_TYPES.register(pId, pRecipeType);
 	}
 
 	@Override
 	public <T extends RecipeSerializer<?>> Supplier<T> registerRecipeSerializer(String pId, Supplier<T> pRecipeSerializer) {
-		return BlueLib.RECIPE_SERIALIZERS.register(pId, pRecipeSerializer);
+		return NeoRegistries.RECIPE_SERIALIZERS.register(pId, pRecipeSerializer);
 	}
 }

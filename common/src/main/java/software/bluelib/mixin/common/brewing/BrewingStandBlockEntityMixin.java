@@ -5,7 +5,7 @@
  * If a copy of the MIT License was not distributed with this file,
  * You can obtain one at https://opensource.org/licenses/MIT.
  */
-package software.bluelib.mixin.brewing;
+package software.bluelib.mixin.common.brewing;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
@@ -25,9 +25,9 @@ import net.minecraft.world.level.block.entity.BrewingStandBlockEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
+import software.bluelib.internal.registry.BlueRecipeTypeRegistry;
 import software.bluelib.recipe.brewing.BrewingInput;
 import software.bluelib.recipe.brewing.BrewingRecipe;
-import software.bluelib.registry.BlueRecipeTypeRegistry;
 
 @Mixin(BrewingStandBlockEntity.class)
 public class BrewingStandBlockEntityMixin {

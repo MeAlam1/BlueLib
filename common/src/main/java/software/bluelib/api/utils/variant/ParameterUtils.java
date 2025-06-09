@@ -12,11 +12,11 @@ import java.util.Map;
 import java.util.Set;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import software.bluelib.BlueLibCommon;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
 import software.bluelib.entity.variant.VariantLoader;
-import software.bluelib.entity.variant.Variants;
+import software.bluelib.entity.variant.cache.Variants;
+import software.bluelib.internal.Translation;
 
 @SuppressWarnings("unused")
 public class ParameterUtils {
@@ -32,7 +32,7 @@ public class ParameterUtils {
     public static Set<String> getVariantsOfEntity(String pEntityName) {
         Map<String, Variants> entityVariants = VariantLoader.AllVariants.get(pEntityName);
         if (entityVariants == null) {
-            BaseLogger.log(true, BaseLogLevel.WARNING, BlueLibCommon.Translation.log("entity.notfound", pEntityName));
+            BaseLogger.log(true, BaseLogLevel.WARNING, Translation.log("entity.notfound", pEntityName));
             return null;
         }
         return entityVariants.keySet();
@@ -51,17 +51,17 @@ public class ParameterUtils {
     public static JsonElement getParameterDataForVariant(String pEntityName, String pVariantName, String pParameter) {
         Map<String, Variants> entityVariants = VariantLoader.AllVariants.get(pEntityName);
         if (entityVariants == null) {
-            BaseLogger.log(true, BaseLogLevel.WARNING, BlueLibCommon.Translation.log("entity.notfound", pEntityName));
+            BaseLogger.log(true, BaseLogLevel.WARNING, Translation.log("entity.notfound", pEntityName));
             return null;
         }
         Variants record = entityVariants.get(pVariantName);
         if (record == null) {
-            BaseLogger.log(true, BaseLogLevel.WARNING, BlueLibCommon.Translation.log("entity.variantsNotfound", pVariantName, pEntityName));
+            BaseLogger.log(true, BaseLogLevel.WARNING, Translation.log("entity.variantsNotfound", pVariantName, pEntityName));
             return null;
         }
         JsonElement parameterElement = record.getParameter(pParameter);
         if (parameterElement == null) {
-            BaseLogger.log(true, BaseLogLevel.INFO, BlueLibCommon.Translation.log("entity.parameterNotfound", pParameter, pVariantName, pEntityName));
+            BaseLogger.log(true, BaseLogLevel.INFO, Translation.log("entity.parameterNotfound", pParameter, pVariantName, pEntityName));
         }
         return parameterElement;
     }

@@ -12,12 +12,12 @@ import java.util.Set;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
-import software.bluelib.BlueLibCommon;
 import software.bluelib.api.net.NetworkPacket;
+import software.bluelib.internal.Resource;
 
 public record VariantsPacket(Set<String> allVariants) implements NetworkPacket<VariantsPacket> {
 
-    public static final ResourceLocation ID = BlueLibCommon.Resource.resource("variants_packet");
+    public static final ResourceLocation ID = Resource.resource("variants_packet");
 
     @Override
     public void encode(RegistryFriendlyByteBuf pBuffer) {

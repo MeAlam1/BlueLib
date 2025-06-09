@@ -5,7 +5,7 @@
  * If a copy of the MIT License was not distributed with this file,
  * You can obtain one at https://opensource.org/licenses/MIT.
  */
-package software.bluelib.mixin.brewing;
+package software.bluelib.mixin.common.brewing;
 
 import net.minecraft.world.inventory.BrewingStandMenu;
 import net.minecraft.world.item.ItemStack;
@@ -18,19 +18,20 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import software.bluelib.recipe.brewing.BrewingRecipe;
 import software.bluelib.recipe.brewing.RecipeAwareSlot;
 
-@Mixin(BrewingStandMenu.PotionSlot.class)
-public class PotionSlotMixin implements RecipeAwareSlot {
+@Mixin(BrewingStandMenu.IngredientsSlot.class)
+public class IngredientSlotMixin implements RecipeAwareSlot {
 
     @Unique
     private RecipeManager bluelib$recipeManager;
 
+    @Override
     public void blueLib$setRecipeManager(RecipeManager pRecipeManager) {
         this.bluelib$recipeManager = pRecipeManager;
     }
 
     @Inject(method = "mayPlace", at = @At("HEAD"), cancellable = true)
     private void blueLib$mayPlace(ItemStack pStack, CallbackInfoReturnable<Boolean> pCir) {
-        if (BrewingRecipe.isBottle(pStack, bluelib$recipeManager)) {
+        if (BrewingRecipe.isInput(pStack, bluelib$recipeManager)) {
             pCir.setReturnValue(true);
         }
     }
