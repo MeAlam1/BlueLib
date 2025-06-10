@@ -17,7 +17,7 @@ import software.bluelib.api.event.mod.ModIntegration;
 import software.bluelib.api.net.NetworkRegistry;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
-import software.bluelib.internal.Translation;
+import software.bluelib.internal.BlueTranslation;
 import software.bluelib.internal.registry.BlueEntityRegistry;
 import software.bluelib.internal.registry.BlueNetworkRegistry;
 import software.bluelib.internal.registry.BlueRecipeSerializerRegistry;
@@ -34,8 +34,8 @@ public class BlueLibCommon {
                 ModIntegration.checkSupportMods();
                 BaseLogger.logBlueLib(Component.literal("**************************************************"));
                 BaseLogger.logBlueLib(Component.literal("                                                  "));
-                BaseLogger.logBlueLib(Translation.translate("mod.thank_you"));
-                BaseLogger.logBlueLib(Translation.translate("mod.thank_you.subtitle"));
+                BaseLogger.logBlueLib(BlueTranslation.translate("mod.thank_you"));
+                BaseLogger.logBlueLib(BlueTranslation.translate("mod.thank_you.subtitle"));
                 BaseLogger.logBlueLib(Component.literal("                                                  "));
                 BaseLogger.logBlueLib(Component.literal("**************************************************"));
                 SCHEDULER.shutdown();
@@ -44,6 +44,7 @@ public class BlueLibCommon {
     }
 
     public static void doRegistration() {
+        BlueLibConstants.init();
         MixinBootstrap.init();
         InternalNetworkRegistry.networkServer();
 	    BlueEntityRegistry.init();

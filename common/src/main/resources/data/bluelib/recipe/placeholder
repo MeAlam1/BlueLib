@@ -1,0 +1,12 @@
+{
+  "type": "bluelib:brewing",
+  "input": {
+    "item": "minecraft:grass_block"
+  },
+  "bottle": {
+    "item": "minecraft:glass_bottle"
+  },
+  "result": {
+    "id": "minecraft:slime_ball"
+  }
+}

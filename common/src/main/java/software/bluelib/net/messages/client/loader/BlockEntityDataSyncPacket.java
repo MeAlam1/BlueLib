@@ -12,13 +12,13 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import software.bluelib.BlueLibCommon;
 import software.bluelib.api.net.NetworkPacket;
-import software.bluelib.internal.Resource;
+import software.bluelib.internal.BlueResource;
 import software.bluelib.loader.constant.dataticket.SerializableDataTicket;
 
 public record BlockEntityDataSyncPacket<D>(BlockPos pos, SerializableDataTicket<D> dataTicket,
         D data) implements NetworkPacket<BlockEntityDataSyncPacket<D>> {
 
-    public static final ResourceLocation ID = Resource.resource("blockentity_data_sync");
+    public static final ResourceLocation ID = BlueResource.resource("blockentity_data_sync");
 
     @Override
     public void encode(RegistryFriendlyByteBuf pBuffer) {

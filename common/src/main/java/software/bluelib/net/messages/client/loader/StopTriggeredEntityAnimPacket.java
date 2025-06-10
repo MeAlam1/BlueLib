@@ -12,11 +12,11 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import software.bluelib.BlueLibCommon;
 import software.bluelib.api.net.NetworkPacket;
-import software.bluelib.internal.Resource;
+import software.bluelib.internal.BlueResource;
 
 public record StopTriggeredEntityAnimPacket(int entityId, boolean isReplacedEntity, String controllerName, String animName) implements NetworkPacket<StopTriggeredEntityAnimPacket> {
 
-    public static final ResourceLocation ID = Resource.resource("stop_triggered_entity_anim");
+    public static final ResourceLocation ID = BlueResource.resource("stop_triggered_entity_anim");
 
     @Override
     public void encode(RegistryFriendlyByteBuf pBuffer) {

@@ -12,7 +12,7 @@ import net.minecraft.network.chat.MutableComponent;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
 import software.bluelib.config.MarkdownConfig;
-import software.bluelib.internal.Translation;
+import software.bluelib.internal.BlueTranslation;
 import software.bluelib.markdown.syntax.*;
 
 @SuppressWarnings("unused")
@@ -20,7 +20,7 @@ public class MarkdownParser {
 
     public static MutableComponent parseMarkdown(Component pMessage) {
         if (!MarkdownConfig.isMarkdownEnabled) {
-            BaseLogger.log(true, BaseLogLevel.INFO, Translation.log("markdown.disabled"));
+            BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("markdown.disabled"));
             return pMessage.copy();
         }
 
@@ -36,7 +36,7 @@ public class MarkdownParser {
         formattedMessage = new Color().apply(formattedMessage);
         formattedMessage = new CopyToClipboard().apply(formattedMessage, text);
 
-        BaseLogger.log(true, BaseLogLevel.INFO, Translation.log("markdown.message"));
+        BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("markdown.message"));
         return formattedMessage;
     }
 }

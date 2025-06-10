@@ -14,7 +14,7 @@ import software.bluelib.api.entity.variant.IVariantProvider;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
 import software.bluelib.entity.variant.VariantLoader;
-import software.bluelib.internal.Translation;
+import software.bluelib.internal.BlueTranslation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,13 +35,13 @@ public class ReloadHandler {
 		BlueLibConstants.SCHEDULER = new ScheduledThreadPoolExecutor(1);
 		BlueLibConstants.server = pServer;
 		VariantLoader.loadEntityVariants(pServer.getResourceManager(), providers);
-		BaseLogger.log(true, BaseLogLevel.INFO, Translation.log("variants.loaded"));
+		BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("variants.loaded"));
 	}
 
 	public static void onReload(MinecraftServer pServer, CloseableResourceManager pCloseableResourceManager, boolean pBoolean) {
 		if (providers.isEmpty()) return;
 
 		VariantLoader.loadEntityVariants(pServer.getResourceManager(), providers);
-		BaseLogger.log(true, BaseLogLevel.INFO, Translation.log("variants.reloaded"));
+		BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("variants.reloaded"));
 	}
 }

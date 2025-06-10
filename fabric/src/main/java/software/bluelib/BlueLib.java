@@ -21,9 +21,8 @@ public class BlueLib implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		BlueLibConstants.init();
-		BlueLibCommon.doRegistration();
 		FabricEvents.register();
+		BlueLibCommon.doRegistration();
 
 		clientEndTick();
 		registerNetwork();

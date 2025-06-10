@@ -12,11 +12,11 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import software.bluelib.BlueLibCommon;
 import software.bluelib.api.net.NetworkPacket;
-import software.bluelib.internal.Resource;
+import software.bluelib.internal.BlueResource;
 
 public record EntityAnimTriggerPacket(int entityId, boolean isReplacedEntity, String controllerName, String animName) implements NetworkPacket<EntityAnimTriggerPacket> {
 
-    public static final ResourceLocation ID = Resource.resource("entity_anim_trigger");
+    public static final ResourceLocation ID = BlueResource.resource("entity_anim_trigger");
 
     @Override
     public void encode(RegistryFriendlyByteBuf pBuffer) {

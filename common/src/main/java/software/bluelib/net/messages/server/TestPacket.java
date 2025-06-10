@@ -10,11 +10,15 @@ package software.bluelib.net.messages.server;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import software.bluelib.api.net.NetworkPacket;
-import software.bluelib.internal.Resource;
+import software.bluelib.internal.BlueResource;
+import software.bluelib.net.serverHandling.TestPacketHandler;
 
+/**
+ * {@link TestPacketHandler}
+ */
 public record TestPacket(boolean value) implements NetworkPacket<TestPacket> {
 
-    public static final ResourceLocation ID = Resource.resource("test_packet");
+    public static final ResourceLocation ID = BlueResource.resource("test_packet");
 
     @Override
     public void encode(RegistryFriendlyByteBuf pBuffer) {

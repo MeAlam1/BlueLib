@@ -28,6 +28,7 @@ import software.bluelib.client.loader.json.model.ModelFormatVersion;
 import software.bluelib.client.loader.json.model.deserialize.Model;
 import software.bluelib.client.loader.json.model.object.BoneTree;
 import software.bluelib.client.loader.model.ModelLoader;
+import software.bluelib.internal.BlueResource;
 import software.bluelib.loader.loading.json.typeadapter.BakedAnimationsAdapter;
 
 import java.io.IOException;
@@ -47,9 +48,9 @@ import java.util.stream.Collectors;
 
 public final class ResourceCache {
 
-	public static final ResourceLocation RELOAD_LISTENER_ID = software.bluelib.internal.Resource.resource("models_animations");
-	public static final ResourceLocation ANIMATIONS_PATH = software.bluelib.internal.Resource.resource("animations");
-	public static final ResourceLocation MODELS_PATH = software.bluelib.internal.Resource.resource("models");
+	public static final ResourceLocation RELOAD_LISTENER_ID = BlueResource.resource("models_animations");
+	public static final ResourceLocation ANIMATIONS_PATH = BlueResource.resource("animations");
+	public static final ResourceLocation MODELS_PATH = BlueResource.resource("models");
 	public static final Pattern SUFFIX_STRIPPER = Pattern.compile("((\\.geo)|((\\.animation)s?))?(\\.json)$");
 	public static final Pattern PREFIX_STRIPPER = Pattern.compile("^(bluelib/)((animations/)|(models/))?");
 	private static final List<String> SKIPPED_NAMESPACES = List.of("minecraft", "geckolib", "neoforge");

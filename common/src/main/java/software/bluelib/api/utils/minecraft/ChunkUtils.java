@@ -15,7 +15,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.chunk.LevelChunk;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
-import software.bluelib.internal.Translation;
+import software.bluelib.internal.BlueTranslation;
 
 @SuppressWarnings("unused")
 public class ChunkUtils {
@@ -26,7 +26,7 @@ public class ChunkUtils {
         try {
             return pLevel.getBiome(pChunkPos.getWorldPosition()).value();
         } catch (Exception pException) {
-            BaseLogger.log(true, BaseLogLevel.ERROR, Translation.log("chunk.biome.error"), pException);
+            BaseLogger.log(true, BaseLogLevel.ERROR, BlueTranslation.log("chunk.biome.error"), pException);
             throw pException;
         }
     }
@@ -36,7 +36,7 @@ public class ChunkUtils {
             LevelChunk chunk = pLevel.getChunk(pChunkPos.x, pChunkPos.z);
             return chunk.getBlockEntities().values();
         } catch (Exception pException) {
-            BaseLogger.log(true, BaseLogLevel.ERROR, Translation.log("chunk.tile.error"), pException);
+            BaseLogger.log(true, BaseLogLevel.ERROR, BlueTranslation.log("chunk.tile.error"), pException);
             throw pException;
         }
     }

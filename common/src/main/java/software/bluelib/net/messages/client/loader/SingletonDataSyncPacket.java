@@ -11,13 +11,13 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import software.bluelib.BlueLibCommon;
 import software.bluelib.api.net.NetworkPacket;
-import software.bluelib.internal.Resource;
+import software.bluelib.internal.BlueResource;
 import software.bluelib.loader.constant.dataticket.SerializableDataTicket;
 
 public record SingletonDataSyncPacket<D>(String syncableId, long instanceId, SerializableDataTicket<D> dataTicket,
         D data) implements NetworkPacket<SingletonDataSyncPacket<D>> {
 
-    public static final ResourceLocation ID = Resource.resource("singleton_data_sync");
+    public static final ResourceLocation ID = BlueResource.resource("singleton_data_sync");
 
     @Override
     public void encode(RegistryFriendlyByteBuf pBuffer) {

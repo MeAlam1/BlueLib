@@ -11,7 +11,7 @@ import java.util.Objects;
 import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
-import software.bluelib.internal.Translation;
+import software.bluelib.internal.BlueTranslation;
 
 @SuppressWarnings("unused")
 public class CaseConverterUtils {
@@ -32,7 +32,7 @@ public class CaseConverterUtils {
             return convertUsingDelimiter(pInput, "-", true);
         }
 
-        BaseLogger.log(true, BaseLogLevel.WARNING, Translation.translate("notfound"));
+        BaseLogger.log(true, BaseLogLevel.WARNING, BlueTranslation.translate("notfound"));
         return pInput;
     }
 
@@ -50,7 +50,7 @@ public class CaseConverterUtils {
             return convertUsingDelimiter(pInput, "-", false);
         }
 
-        BaseLogger.log(true, BaseLogLevel.WARNING, Translation.translate("notfound"));
+        BaseLogger.log(true, BaseLogLevel.WARNING, BlueTranslation.translate("notfound"));
         return pInput;
     }
 

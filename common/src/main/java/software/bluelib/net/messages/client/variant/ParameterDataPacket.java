@@ -13,11 +13,11 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import software.bluelib.api.net.NetworkPacket;
-import software.bluelib.internal.Resource;
+import software.bluelib.internal.BlueResource;
 
 public record ParameterDataPacket(JsonElement parameterData) implements NetworkPacket<ParameterDataPacket> {
 
-    public static final ResourceLocation ID = Resource.resource("parameter_data_packet");
+    public static final ResourceLocation ID = BlueResource.resource("parameter_data_packet");
 
     @Override
     public void encode(RegistryFriendlyByteBuf pBuffer) {

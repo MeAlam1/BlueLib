@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
-import software.bluelib.internal.Translation;
+import software.bluelib.internal.BlueTranslation;
 
 @SuppressWarnings("unused")
 public class IsValidUtils {
@@ -22,11 +22,11 @@ public class IsValidUtils {
     public static boolean isValidURL(@Nullable String pUrl) {
         try {
             if (pUrl == null) {
-                BaseLogger.log(true, BaseLogLevel.WARNING, Translation.translate("null"));
+                BaseLogger.log(true, BaseLogLevel.WARNING, BlueTranslation.translate("null"));
                 return false;
             }
             if (!pUrl.startsWith("http://") && !pUrl.startsWith("https://")) {
-                BaseLogger.log(true, BaseLogLevel.WARNING, Translation.log("invalid_url.begin", pUrl));
+                BaseLogger.log(true, BaseLogLevel.WARNING, BlueTranslation.log("invalid_url.begin", pUrl));
                 return false;
             }
 
@@ -38,7 +38,7 @@ public class IsValidUtils {
 
             return uri.isAbsolute() && (pattern.matcher(host).matches());
         } catch (Exception pException) {
-            BaseLogger.log(true, BaseLogLevel.ERROR, Translation.log("invalid_url", pUrl));
+            BaseLogger.log(true, BaseLogLevel.ERROR, BlueTranslation.log("invalid_url", pUrl));
             return false;
         }
     }
@@ -50,7 +50,7 @@ public class IsValidUtils {
 
     public static boolean isValidColor(@Nullable String pInput) {
         if (pInput == null) {
-            BaseLogger.log(true, BaseLogLevel.WARNING, Translation.translate("null"));
+            BaseLogger.log(true, BaseLogLevel.WARNING, BlueTranslation.translate("null"));
             return false;
         }
 
