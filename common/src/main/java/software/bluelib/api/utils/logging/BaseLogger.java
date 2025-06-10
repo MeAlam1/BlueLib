@@ -11,7 +11,6 @@ import java.util.function.Supplier;
 import java.util.logging.Level;
 import net.minecraft.network.chat.Component;
 import software.bluelib.BlueLibConstants;
-import software.bluelib.api.utils.minecraft.ClientUtils;
 
 @SuppressWarnings("unused")
 public class BaseLogger {
@@ -101,7 +100,6 @@ public class BaseLogger {
         return pLogLevel == BaseLogLevel.ERROR ||
                 pLogLevel == BaseLogLevel.WARNING ||
                 pLogLevel == BaseLogLevel.BLUELIB ||
-                !ClientUtils.isInWorld() ||
                 pIsBlueLib && software.bluelib.config.LoggerConfig.isBlueLibLoggingEnabled ||
                 !pIsBlueLib && software.bluelib.config.LoggerConfig.isLoggingEnabled;
     }
@@ -110,7 +108,6 @@ public class BaseLogger {
         return pLogLevel == BaseLogLevel.ERROR ||
                 pLogLevel == BaseLogLevel.WARNING ||
                 pLogLevel == BaseLogLevel.BLUELIB ||
-                !ClientUtils.isInWorld() ||
                 software.bluelib.config.LoggerConfig.isLoggingEnabled;
     }
 

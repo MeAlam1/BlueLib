@@ -8,6 +8,7 @@ plugins {
 
 repositories {
     maven(url = "${rootProject.projectDir}/deps")
+    maven("https://maven.blamejared.com/")
 }
 
 version = ""
@@ -30,6 +31,7 @@ dependencies {
     compileOnly(libs.mixinextras.common)
     jarJar(libs.molang)
     compileOnly(libs.molang)
+    compileOnlyApi(libs.jei.api)
 
     // Only enable for testing as needed
     // Disable before publishing

@@ -9,9 +9,9 @@ package software.bluelib.api.utils.conversion;
 
 import java.util.Objects;
 import org.jetbrains.annotations.NotNull;
-import software.bluelib.BlueLibCommon;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
+import software.bluelib.internal.Translation;
 
 @SuppressWarnings("unused")
 public class CaseConverterUtils {
@@ -32,7 +32,7 @@ public class CaseConverterUtils {
             return convertUsingDelimiter(pInput, "-", true);
         }
 
-        BaseLogger.log(true, BaseLogLevel.WARNING, BlueLibCommon.Translation.translate("notfound"));
+        BaseLogger.log(true, BaseLogLevel.WARNING, Translation.translate("notfound"));
         return pInput;
     }
 
@@ -50,7 +50,7 @@ public class CaseConverterUtils {
             return convertUsingDelimiter(pInput, "-", false);
         }
 
-        BaseLogger.log(true, BaseLogLevel.WARNING, BlueLibCommon.Translation.translate("notfound"));
+        BaseLogger.log(true, BaseLogLevel.WARNING, Translation.translate("notfound"));
         return pInput;
     }
 

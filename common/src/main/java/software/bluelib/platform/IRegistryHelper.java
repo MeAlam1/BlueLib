@@ -19,6 +19,9 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import java.util.function.Supplier;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
 import software.bluelib.BlueLibConstants;
 
 public interface IRegistryHelper {
@@ -40,4 +43,8 @@ public interface IRegistryHelper {
     <T extends Biome> Supplier<T> registerBiome(String pId, Supplier<T> pBiome);
 
    Supplier<KeyMapping> registerKeybind(String pId, Supplier<KeyMapping> pKeybind);
+
+    <T extends RecipeType<?>> Supplier<T> registerRecipeType(String pId, Supplier<T> pRecipeType);
+
+    <T extends RecipeSerializer<?>> Supplier<T> registerRecipeSerializer(String pId, Supplier<T> pRecipeSerializer);
 }

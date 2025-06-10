@@ -1,11 +1,15 @@
-accessWidener v1 named
-accessible class net/minecraft/world/level/block/entity/BlockEntityType$BlockEntitySupplier
-accessible method net/minecraft/core/registries/BuiltInRegistries registerSimple (Lnet/minecraft/resources/ResourceKey;Lnet/minecraft/core/registries/BuiltInRegistries$RegistryBootstrap;)Lnet/minecraft/core/Registry;
-accessible class net/minecraft/core/registries/BuiltInRegistries$RegistryBootstrap
-accessible class net/minecraft/world/inventory/MenuType$MenuSupplier
-accessible class net/minecraft/world/inventory/MenuType
-accessible class net/minecraft/client/gui/screens/MenuScreens$ScreenConstructor
-accessible method net/minecraft/world/inventory/MenuType <init> (Lnet/minecraft/world/inventory/MenuType$MenuSupplier;Lnet/minecraft/world/flag/FeatureFlagSet;)V
-accessible class net/minecraft/world/item/CreativeModeTab$TabVisibility
-accessible method net/minecraft/data/recipes/RecipeProvider has (Lnet/minecraft/advancements/critereon/MinMaxBounds$Ints;Lnet/minecraft/world/level/ItemLike;)Lnet/minecraft/advancements/Criterion;
-accessible method net/minecraft/data/recipes/RecipeProvider has (Lnet/minecraft/world/level/ItemLike;)Lnet/minecraft/advancements/Criterion;
+accessWidener v2 named
+transitive-accessible class net/minecraft/world/level/block/entity/BlockEntityType$BlockEntitySupplier
+transitive-accessible method net/minecraft/core/registries/BuiltInRegistries registerSimple (Lnet/minecraft/resources/ResourceKey;Lnet/minecraft/core/registries/BuiltInRegistries$RegistryBootstrap;)Lnet/minecraft/core/Registry;
+transitive-accessible class net/minecraft/core/registries/BuiltInRegistries$RegistryBootstrap
+transitive-accessible class net/minecraft/world/inventory/MenuType$MenuSupplier
+transitive-accessible class net/minecraft/world/inventory/MenuType
+transitive-accessible class net/minecraft/client/gui/screens/MenuScreens$ScreenConstructor
+transitive-accessible method net/minecraft/world/inventory/MenuType <init> (Lnet/minecraft/world/inventory/MenuType$MenuSupplier;Lnet/minecraft/world/flag/FeatureFlagSet;)V
+transitive-accessible class net/minecraft/world/item/CreativeModeTab$TabVisibility
+transitive-accessible method net/minecraft/data/recipes/RecipeProvider has (Lnet/minecraft/advancements/critereon/MinMaxBounds$Ints;Lnet/minecraft/world/level/ItemLike;)Lnet/minecraft/advancements/Criterion;
+transitive-accessible method net/minecraft/data/recipes/RecipeProvider has (Lnet/minecraft/world/level/ItemLike;)Lnet/minecraft/advancements/Criterion;
+
+transitive-accessible class net/minecraft/world/inventory/BrewingStandMenu$IngredientsSlot
+transitive-accessible class net/minecraft/world/inventory/BrewingStandMenu$FuelSlot
+transitive-accessible class net/minecraft/world/inventory/BrewingStandMenu$PotionSlot

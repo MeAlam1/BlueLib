@@ -8,9 +8,9 @@
 package software.bluelib.config;
 
 import net.neoforged.fml.config.ModConfig;
-import software.bluelib.BlueLibCommon;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
+import software.bluelib.internal.Translation;
 
 public class BlueLibConfig {
 
@@ -39,9 +39,9 @@ public class BlueLibConfig {
             MarkdownConfig.colorSuffix = ConfigHolder.MARKDOWN.colorSuffix.get();
             MarkdownConfig.isColorEnabled = ConfigHolder.MARKDOWN.isColorEnabled.get();
             MarkdownConfig.isCopyToClipboardEnabled = ConfigHolder.MARKDOWN.isCopyToClipboardEnabled.get();
-            BaseLogger.log(true, BaseLogLevel.INFO, BlueLibCommon.Translation.config("markdown.loaded"));
+            BaseLogger.log(true, BaseLogLevel.INFO, Translation.config("markdown.loaded"));
         } catch (Exception pException) {
-            BaseLogger.log(true, BaseLogLevel.ERROR, BlueLibCommon.Translation.config("markdown.failed", pException.getMessage()));
+            BaseLogger.log(true, BaseLogLevel.ERROR, Translation.config("markdown.failed", pException.getMessage()));
         }
     }
 
@@ -49,9 +49,9 @@ public class BlueLibConfig {
         try {
             LoggerConfig.isBlueLibLoggingEnabled = ConfigHolder.LOGGER.isBlueLibLoggingEnabled.get();
             LoggerConfig.isLoggingEnabled = ConfigHolder.LOGGER.isLoggingEnabled.get();
-            BaseLogger.log(true, BaseLogLevel.INFO, BlueLibCommon.Translation.config("markdown.loaded"));
+            BaseLogger.log(true, BaseLogLevel.INFO, Translation.config("markdown.loaded"));
         } catch (Exception pException) {
-            BaseLogger.log(true, BaseLogLevel.ERROR, BlueLibCommon.Translation.config("markdown.failed", pException.getMessage()));
+            BaseLogger.log(true, BaseLogLevel.ERROR, Translation.config("markdown.failed", pException.getMessage()));
         }
     }
 }

@@ -11,12 +11,12 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.OnDatapackSyncEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
-import software.bluelib.BlueLibCommon;
 import software.bluelib.BlueLibConstants;
 import software.bluelib.api.entity.variant.IVariantProvider;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
 import software.bluelib.entity.variant.VariantLoader;
+import software.bluelib.internal.Translation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +38,7 @@ public class ReloadHandler {
 		BlueLibConstants.SCHEDULER = new ScheduledThreadPoolExecutor(1);
 		BlueLibConstants.server = pEvent.getServer();
 		VariantLoader.loadEntityVariants(pEvent.getServer().getResourceManager(), providers);
-		BaseLogger.log(true, BaseLogLevel.INFO, BlueLibCommon.Translation.log("variants.loaded"));
+		BaseLogger.log(true, BaseLogLevel.INFO, Translation.log("variants.loaded"));
 	}
 
 	@SubscribeEvent
@@ -46,6 +46,6 @@ public class ReloadHandler {
 		if (providers.isEmpty()) return;
 
 		VariantLoader.loadEntityVariants(pEvent.getPlayerList().getServer().getResourceManager(), providers);
-		BaseLogger.log(true, BaseLogLevel.INFO, BlueLibCommon.Translation.log("variants.reloaded"));
+		BaseLogger.log(true, BaseLogLevel.INFO, Translation.log("variants.reloaded"));
 	}
 }

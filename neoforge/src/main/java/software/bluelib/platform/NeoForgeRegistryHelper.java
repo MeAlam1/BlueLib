@@ -25,12 +25,17 @@ import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
 import software.bluelib.BlueLibConstants;
+import software.bluelib.NeoRegistries;
 import software.bluelib.api.registry.AbstractRegistryBuilder;
 import software.bluelib.api.registry.builders.keybinds.KeybindBuilder;
 import software.bluelib.api.registry.helpers.entity.AttributeHelper;
 import software.bluelib.api.registry.helpers.entity.RenderHelper;
 import software.bluelib.net.NeoForgeNetworkManager;
+
+import java.util.function.Supplier;
 
 public class NeoForgeRegistryHelper implements IRegistryHelper {
     private static final DeferredRegister<Item> itemRegistry = DeferredRegister.create(Registries.ITEM, AbstractRegistryBuilder.getModID());
@@ -41,6 +46,20 @@ public class NeoForgeRegistryHelper implements IRegistryHelper {
     private static final DeferredRegister<BlockEntityType<?>> blockEntityRegistry = DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, AbstractRegistryBuilder.getModID());
     private static final DeferredRegister<Biome> biomeRegistry = DeferredRegister.create(Registries.BIOME, AbstractRegistryBuilder.getModID());
 
+	@Override
+	public BlueLibConstants.NetworkManager getNetwork() {
+		return new NeoForgeNetworkManager();
+	}
+
+	@Override
+	public <T extends RecipeType<?>> Supplier<T> registerRecipeType(String pId, Supplier<T> pRecipeType) {
+		return NeoRegistries.RECIPE_TYPES.register(pId, pRecipeType);
+	}
+
+	@Override
+	public <T extends RecipeSerializer<?>> Supplier<T> registerRecipeSerializer(String pId, Supplier<T> pRecipeSerializer) {
+		return NeoRegistries.RECIPE_SERIALIZERS.register(pId, pRecipeSerializer);
+	}
     @Override
     public BlueLibConstants.NetworkManager getNetwork() {
         return new NeoForgeNetworkManager();

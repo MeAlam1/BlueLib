@@ -9,19 +9,24 @@ package software.bluelib.client.gui.logging;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import org.jetbrains.annotations.NotNull;
-import software.bluelib.BlueLibCommon;
 import software.bluelib.api.utils.logging.LogCache;
+import software.bluelib.internal.Translation;
 
 public class LoggerScreen extends Screen {
 
     private int scrollOffset = 0;
     private static final int LINE_HEIGHT = 10;
 
+    private boolean isDragging = false;
+    private int dragStartY = 0;
+    private int initialScrollOffset = 0;
+
     public LoggerScreen() {
-        super(BlueLibCommon.Translation.translate("ui.logger.title"));
+        super(Translation.translate("ui.logger.title"));
     }
 
     @Override
@@ -116,6 +121,64 @@ public class LoggerScreen extends Screen {
             }
         }
         return pWord.length();
+    }
+
+    @Override
+    public boolean mouseClicked(double pMouseX, double pMouseY, int pButton) {
+        int boxWidth = (int) (this.width * 0.9);
+        int boxHeight = (int) (this.height * 0.9);
+        int boxX = (this.width - boxWidth) / 2;
+        int boxY = (this.height - boxHeight) / 2;
+
+        int maxVisibleLines = (boxHeight - 10) / LINE_HEIGHT;
+        List<LogCache.LogEntry> logEntries = LogCache.getLogs();
+        List<RenderedLine> renderedLines = logEntries.stream().map(entry -> new RenderedLine(entry.message(), entry.color())).collect(Collectors.toList());
+
+        if (renderedLines.size() <= maxVisibleLines) {
+            return super.mouseClicked(pMouseX, pMouseY, pButton);
+        }
+
+        int scrollbarXStart = boxX + boxWidth - 6;
+        int scrollbarXEnd = boxX + boxWidth - 3;
+        int scrollbarHeight = (int) ((float) maxVisibleLines / renderedLines.size() * (boxHeight - 10));
+        int scrollbarYStart = boxY + 5 + (int) ((float) scrollOffset / renderedLines.size() * (boxHeight - 10));
+        int scrollbarYEnd = scrollbarYStart + scrollbarHeight;
+
+        if (!(pMouseX >= scrollbarXStart) || !(pMouseX <= scrollbarXEnd) || !(pMouseY >= scrollbarYStart) || !(pMouseY <= scrollbarYEnd)) {
+            return super.mouseClicked(pMouseX, pMouseY, pButton);
+        }
+        isDragging = true;
+        dragStartY = (int) pMouseY;
+        initialScrollOffset = scrollOffset;
+        return true;
+    }
+
+    @Override
+    public boolean mouseReleased(double pMouseX, double pMouseY, int pButton) {
+        isDragging = false;
+        return super.mouseReleased(pMouseX, pMouseY, pButton);
+    }
+
+    @Override
+    public boolean mouseDragged(double pMouseX, double pMouseY, int pButton, double pDragX, double pDragY) {
+        if (!isDragging) {
+            return super.mouseDragged(pMouseX, pMouseY, pButton, pDragX, pDragY);
+        }
+        int boxHeight = (int) (this.height * 0.9);
+        List<LogCache.LogEntry> logEntries = LogCache.getLogs();
+        List<RenderedLine> renderedLines = new ArrayList<>();
+        for (LogCache.LogEntry entry : logEntries) {
+            renderedLines.add(new RenderedLine(entry.message(), entry.color()));
+        }
+
+        int maxVisibleLines = (boxHeight - 10) / LINE_HEIGHT;
+        int maxOffset = Math.max(0, renderedLines.size() - maxVisibleLines);
+
+        int deltaY = (int) pMouseY - dragStartY;
+        int scrollableHeight = boxHeight - 10;
+        scrollOffset = initialScrollOffset + (int) ((float) deltaY / scrollableHeight * renderedLines.size());
+        scrollOffset = Math.max(0, Math.min(scrollOffset, maxOffset));
+        return true;
     }
 
     @Override

@@ -13,6 +13,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 import net.neoforged.fml.loading.FMLEnvironment;
@@ -46,6 +47,23 @@ public class BlueLib {
         pModContainer.registerConfig(ModConfig.Type.SERVER, ConfigHolder.MARKDOWN_SPEC, BlueLibConstants.MOD_ID + "-markdown.toml");
         pModContainer.registerConfig(ModConfig.Type.SERVER, ConfigHolder.LOGGER_SPEC, BlueLibConstants.MOD_ID + "-logger.toml");
     }
+	public BlueLib(IEventBus pModEventBus, ModContainer pModContainer) {
+		BlueLibCommon.doRegistration();
+		NeoRegistries.register(pModEventBus);
+
+		if (FMLEnvironment.dist == Dist.CLIENT)
+			BlueLibClient.init(pModContainer);
+
+		registerConfigs(pModContainer);
+		setupEventListeners(pModEventBus);
+
+		ReloadHandler.registerProvider(new VariantProvider());
+	}
+
+	private void registerConfigs(ModContainer pModContainer) {
+		pModContainer.registerConfig(ModConfig.Type.SERVER, ConfigHolder.MARKDOWN_SPEC, BlueLibConstants.MOD_ID + "-markdown.toml");
+		pModContainer.registerConfig(ModConfig.Type.SERVER, ConfigHolder.LOGGER_SPEC, BlueLibConstants.MOD_ID + "-logger.toml");
+	}
 
     @SubscribeEvent
     public void onLoadComplete(FMLLoadCompleteEvent pEvent) {
@@ -57,4 +75,13 @@ public class BlueLib {
         AbstractRegistryBuilder.doDatagen();
         LOGGER.info("Data providers registered");
     }
+	private void setupEventListeners(IEventBus pModEventBus) {
+		pModEventBus.register(this);
+		pModEventBus.addListener(NeoForgeNetworkManager::registerMessages);
+	}
+
+	@SubscribeEvent
+	public void onLoadComplete(FMLClientSetupEvent pEvent) {
+		BlueLibCommon.init();
+	}
 }

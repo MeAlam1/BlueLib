@@ -32,8 +32,40 @@ import software.bluelib.net.FabricNetworkManager;
 
 public class BlueLib implements ModInitializer, DataGeneratorEntrypoint {
 
-    private boolean hasInitialized = false;
+	private boolean hasInitialized = false;
 
+	@Override
+	public void onInitialize() {
+		BlueLibCommon.doRegistration();
+		FabricEvents.register();
+
+		clientEndTick();
+		registerNetwork();
+
+		ReloadHandler.registerProvider(new VariantProvider());
+	}
+
+	private void registerNetwork() {
+		FabricNetworkManager.registerMessages();
+		FabricNetworkManager.registerServerHandlers();
+	}
+
+	private boolean isClientEnvironment() {
+		return FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT;
+	}
+
+	private void clientEndTick() {
+		if (isClientEnvironment()) {
+			BlueLibCommon.doClientRegistration();
+			ClientTickEvents.END_CLIENT_TICK.register(client -> {
+				FabricNetworkManager.registerClientHandlers();
+				if (!hasInitialized) {
+					hasInitialized = true;
+					BlueLibCommon.init();
+				}
+			});
+		}
+	}
     @Override
     public void onInitialize() {
         ReloadHandler.registerProvider(new VariantProvider());
