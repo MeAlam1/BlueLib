@@ -23,6 +23,7 @@ import net.neoforged.neoforge.common.conditions.ICondition;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -108,6 +109,22 @@ public class NeoRecipeGenerator {
                     json.addProperty("experience", cooking.getExperience());
                     json.addProperty("cookingtime", cooking.getCookingTime());
                     capturedJson[0] = json;
+                } else if (pRecipe instanceof SmithingTransformRecipe smithingTransform) {
+                    JsonObject json = new JsonObject();
+                    json.addProperty("type", "minecraft:smithing_transform");
+                    json.add("template", serializeIngredient(smithingTransform.template));
+                    json.add("base", serializeIngredient(smithingTransform.base));
+                    json.add("addition", serializeIngredient(smithingTransform.addition));
+                    json.add("result", serializeResult(smithingTransform.getResultItem(null)));
+                    capturedJson[0] = json;
+                } else if (pRecipe instanceof SmithingTrimRecipe smithingTrim) {
+                    JsonObject json = new JsonObject();
+                    json.addProperty("type", "minecraft:smithing_trim");
+                    json.add("template", serializeIngredient(smithingTrim.template));
+                    json.add("base", serializeIngredient(smithingTrim.base));
+                    json.add("addition", serializeIngredient(smithingTrim.addition));
+                    json.add("result", serializeResult(getSmithingRecipeResult(smithingTrim)));
+                    capturedJson[0] = json;
                 } else {
                     JsonObject json = new JsonObject();
                     json.addProperty("type", pRecipe.getSerializer().toString());
@@ -137,5 +154,17 @@ public class NeoRecipeGenerator {
             result.addProperty("count", stack.getCount());
         }
         return result;
+    }
+
+    private static ItemStack getSmithingRecipeResult(Recipe<?> recipe) {
+        try {
+            Field resultField = recipe.getClass().getDeclaredField("result");
+            resultField.setAccessible(true);
+            Object value = resultField.get(recipe);
+            if (value instanceof ItemStack stack) {
+                return stack;
+            }
+        } catch (Exception ignored) {}
+        return ItemStack.EMPTY;
     }
 }

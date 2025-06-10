@@ -13,3 +13,11 @@ transitive-accessible method net/minecraft/data/recipes/RecipeProvider has (Lnet
 transitive-accessible class net/minecraft/world/inventory/BrewingStandMenu$IngredientsSlot
 transitive-accessible class net/minecraft/world/inventory/BrewingStandMenu$FuelSlot
 transitive-accessible class net/minecraft/world/inventory/BrewingStandMenu$PotionSlot
+
+transitive-accessible field net/minecraft/world/item/crafting/SmithingTransformRecipe template Lnet/minecraft/world/item/crafting/Ingredient;
+transitive-accessible field net/minecraft/world/item/crafting/SmithingTransformRecipe base Lnet/minecraft/world/item/crafting/Ingredient;
+transitive-accessible field net/minecraft/world/item/crafting/SmithingTransformRecipe addition Lnet/minecraft/world/item/crafting/Ingredient;
+
+transitive-accessible field net/minecraft/world/item/crafting/SmithingTrimRecipe template Lnet/minecraft/world/item/crafting/Ingredient;
+transitive-accessible field net/minecraft/world/item/crafting/SmithingTrimRecipe base Lnet/minecraft/world/item/crafting/Ingredient;
+transitive-accessible field net/minecraft/world/item/crafting/SmithingTrimRecipe addition Lnet/minecraft/world/item/crafting/Ingredient;

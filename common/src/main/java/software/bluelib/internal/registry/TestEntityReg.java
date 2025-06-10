@@ -1,10 +1,13 @@
 package software.bluelib.internal.registry;
 
 import static software.bluelib.BlueLibCommon.REGISTRIES;
+import static software.bluelib.api.registry.AbstractRegistryBuilder.getModID;
 
 import java.util.function.Supplier;
 import net.minecraft.client.renderer.entity.PigRenderer;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.recipes.*;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.animal.Pig;
@@ -58,4 +61,20 @@ public class TestEntityReg {
                     .unlockedBy("has_diamond", RecipeProvider.has(Items.DIAMOND))
                     .save(prov))
             .register();
+
+    public static final Supplier<Item> TASTE_TEST_ITEM = REGISTRIES.item("taste_test_item", Item::new)
+            .recipe((ctx, prov) ->
+                    SmithingTransformRecipeBuilder.smithing(Ingredient.of(Items.COOKIE), Ingredient.of(Items.COOKIE),
+                            Ingredient.of(Items.COOKIE), RecipeCategory.MISC, ctx.getEntry())
+                            .unlocks("has_diamond", RecipeProvider.has(Items.DIAMOND))
+                            .save(prov, ResourceLocation.fromNamespaceAndPath(getModID(), "taste_test_item")))
+            .register();
+
+    public static final Supplier<Item> TASTEE_ITEM = REGISTRIES.item("tastee_item", Item::new)
+            .recipe((ctx, prov) -> SmithingTrimRecipeBuilder.smithingTrim(Ingredient.of(Items.COOKIE), Ingredient.of(Items.COOKIE),
+                            Ingredient.of(Items.COOKIE), RecipeCategory.MISC)
+                    .unlocks("has_diamond", RecipeProvider.has(Items.DIAMOND))
+                    .save(prov, ResourceLocation.fromNamespaceAndPath(getModID(), "tastee_item")))
+            .register();
+
 }
