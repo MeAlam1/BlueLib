@@ -12,8 +12,8 @@ import net.minecraft.world.entity.Entity;
 import software.bluelib.api.net.ClientNetworkPacketHandler;
 import software.bluelib.client.utils.LevelUtils;
 import software.bluelib.client.utils.RenderUtils;
-import software.bluelib.loader.animatable.GeoEntity;
-import software.bluelib.loader.animatable.GeoReplacedEntity;
+import software.bluelib.loader.animatable.BlueEntity;
+import software.bluelib.loader.animatable.BlueReplacedEntity;
 import software.bluelib.net.messages.client.loader.StopTriggeredEntityAnimPacket;
 
 public class StopTriggeredEntityAnimPacketHandler implements ClientNetworkPacketHandler<StopTriggeredEntityAnimPacket> {
@@ -28,13 +28,13 @@ public class StopTriggeredEntityAnimPacketHandler implements ClientNetworkPacket
         String controllerName = pPacket.controllerName().isEmpty() ? null : pPacket.controllerName();
         String animName = pPacket.animName().isEmpty() ? null : pPacket.animName();
         if (!pPacket.isReplacedEntity()) {
-            if (entity instanceof GeoEntity geoEntity)
-                geoEntity.stopTriggeredAnim(controllerName, animName);
+            if (entity instanceof BlueEntity BlueEntity)
+                BlueEntity.stopTriggeredAnim(controllerName, animName);
 
             return;
         }
 
-        if (RenderUtils.getReplacedAnimatable(entity.getType()) instanceof GeoReplacedEntity replacedEntity)
+        if (RenderUtils.getReplacedAnimatable(entity.getType()) instanceof BlueReplacedEntity replacedEntity)
             replacedEntity.stopTriggeredAnim(entity, controllerName, animName);
     }
 }

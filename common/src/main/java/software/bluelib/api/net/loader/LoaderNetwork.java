@@ -13,7 +13,7 @@ import net.minecraft.world.entity.Entity;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.net.NetworkRegistry;
 import software.bluelib.api.utils.LoaderUtils;
-import software.bluelib.loader.animatable.GeoAnimatable;
+import software.bluelib.loader.animatable.BlueAnimatable;
 import software.bluelib.loader.constant.dataticket.SerializableDataTicket;
 import software.bluelib.net.messages.client.loader.*;
 
@@ -27,7 +27,7 @@ public class LoaderNetwork extends NetworkRegistry {
         sendToAllPlayersTrackingEntity(entity, new EntityDataSyncPacket<>(entity.getId(), pIsReplacedEntity, pDataTicket, pData));
     }
 
-    public static <D> void syncSingletonAnimData(GeoAnimatable pAnimatable, long pInstanceId, SerializableDataTicket<D> pDataTicket, D pData, Entity pEntityToTrack) {
+    public static <D> void syncSingletonAnimData(BlueAnimatable pAnimatable, long pInstanceId, SerializableDataTicket<D> pDataTicket, D pData, Entity pEntityToTrack) {
         String syncedId = LoaderUtils.getSyncedSingletonAnimatableId(pAnimatable);
         sendToAllPlayersTrackingEntity(pEntityToTrack, new SingletonDataSyncPacket<>(syncedId, pInstanceId, pDataTicket, pData));
     }
@@ -44,7 +44,7 @@ public class LoaderNetwork extends NetworkRegistry {
         sendToAllPlayersTrackingEntity(pEntityToTrack, new SingletonAnimTriggerPacket(pAnimatableClassName, pInstanceId, pControllerName == null ? "" : pControllerName, pAnimName));
     }
 
-    public static void triggerSingletonAnim(GeoAnimatable pAnimatable, Entity pEntityToTrack, long pInstanceId, @Nullable String pControllerName, String pAnimName) {
+    public static void triggerSingletonAnim(BlueAnimatable pAnimatable, Entity pEntityToTrack, long pInstanceId, @Nullable String pControllerName, String pAnimName) {
         String syncedId = LoaderUtils.getSyncedSingletonAnimatableId(pAnimatable);
         triggerSingletonAnim(syncedId, pEntityToTrack, pInstanceId, pControllerName == null ? "" : pControllerName, pAnimName);
     }
@@ -57,7 +57,7 @@ public class LoaderNetwork extends NetworkRegistry {
         sendToAllPlayersTrackingEntity(pEntity, new StopTriggeredEntityAnimPacket(pEntity.getId(), pIsReplacedEntity, pControllerName == null ? "" : pControllerName, pAnimName == null ? "" : pAnimName));
     }
 
-    public static void stopTriggeredSingletonAnim(GeoAnimatable pAnimatable, Entity pEntityToTrack, long pInstanceId, @Nullable String pControllerName, @Nullable String pAnimName) {
+    public static void stopTriggeredSingletonAnim(BlueAnimatable pAnimatable, Entity pEntityToTrack, long pInstanceId, @Nullable String pControllerName, @Nullable String pAnimName) {
         String syncedId = LoaderUtils.getSyncedSingletonAnimatableId(pAnimatable);
         sendToAllPlayersTrackingEntity(pEntityToTrack, new StopTriggeredSingletonAnimPacket(syncedId, pInstanceId, pControllerName == null ? "" : pControllerName, pAnimName == null ? "" : pAnimName));
     }

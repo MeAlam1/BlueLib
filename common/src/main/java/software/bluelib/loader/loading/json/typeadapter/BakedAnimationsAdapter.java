@@ -43,9 +43,9 @@ public class BakedAnimationsAdapter implements JsonDeserializer<AnimationsCache>
                 animations.put(entry.getKey(), bakeAnimation(entry.getKey(), entry.getValue().getAsJsonObject(), context));
             } catch (Exception ex) {
                 if (ex instanceof CompoundException compoundEx) {
-                    //GeckoLibConstants.LOGGER.error(compoundEx.withMessage("Unable to parse animation: " + entry.getKey()).getLocalizedMessage());
+                    //BlueLibConstants.LOGGER.error(compoundEx.withMessage("Unable to parse animation: " + entry.getKey()).getLocalizedMessage());
                 } else {
-                    //GeckoLibConstants.LOGGER.error("Unable to parse animation: " + entry.getKey());
+                    //BlueLibConstants.LOGGER.error("Unable to parse animation: " + entry.getKey());
                 }
 
                 ex.printStackTrace();

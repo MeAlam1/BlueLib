@@ -11,17 +11,17 @@ import net.minecraft.client.Minecraft;
 import software.bluelib.api.net.ClientNetworkPacketHandler;
 import software.bluelib.api.utils.LoaderUtils;
 import software.bluelib.client.utils.PlayerUtils;
-import software.bluelib.loader.animatable.GeoAnimatable;
-import software.bluelib.loader.animatable.SingletonGeoAnimatable;
+import software.bluelib.loader.animatable.BlueAnimatable;
+import software.bluelib.loader.animatable.SingletonBlueAnimatable;
 import software.bluelib.net.messages.client.loader.SingletonDataSyncPacket;
 
 public class SingletonDataSyncPacketHandler<D> implements ClientNetworkPacketHandler<SingletonDataSyncPacket<D>> {
 
     @Override
     public void handle(SingletonDataSyncPacket<D> pPacket, Minecraft pClient) {
-        GeoAnimatable animatable = LoaderUtils.getSyncedAnimatable(pPacket.syncableId());
+        BlueAnimatable animatable = LoaderUtils.getSyncedAnimatable(pPacket.syncableId());
 
-        if (animatable instanceof SingletonGeoAnimatable singleton)
+        if (animatable instanceof SingletonBlueAnimatable singleton)
             singleton.setAnimData(PlayerUtils.getClientPlayer(), pPacket.instanceId(), pPacket.dataTicket(), pPacket.data());
     }
 }

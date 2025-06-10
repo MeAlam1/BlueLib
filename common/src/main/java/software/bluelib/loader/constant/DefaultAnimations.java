@@ -11,7 +11,7 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import software.bluelib.loader.animatable.GeoAnimatable;
+import software.bluelib.loader.animatable.BlueAnimatable;
 import software.bluelib.loader.animation.AnimationController;
 import software.bluelib.loader.animation.AnimationState;
 import software.bluelib.loader.animation.PlayState;
@@ -53,7 +53,7 @@ public final class DefaultAnimations {
     public static final RawAnimation ATTACK_CHARGE_END = RawAnimation.begin().thenPlay("attack.charge_end");
     public static final RawAnimation ATTACK_POWERUP = RawAnimation.begin().thenPlay("attack.powerup");
 
-    public static <T extends GeoAnimatable> AnimationController<T> basicPredicateController(T animatable, RawAnimation optionA, RawAnimation optionB, BiFunction<T, AnimationState<T>, Boolean> predicate) {
+    public static <T extends BlueAnimatable> AnimationController<T> basicPredicateController(T animatable, RawAnimation optionA, RawAnimation optionB, BiFunction<T, AnimationState<T>, Boolean> predicate) {
         return new AnimationController<T>(animatable, "Generic", 10, state -> {
             Boolean result = predicate.apply(animatable, state);
 
@@ -64,19 +64,19 @@ public final class DefaultAnimations {
         });
     }
 
-    public static <T extends GeoAnimatable> AnimationController<T> genericLivingController(T animatable) {
+    public static <T extends BlueAnimatable> AnimationController<T> genericLivingController(T animatable) {
         return new AnimationController<>(animatable, "Living", 10, state -> state.setAndContinue(LIVING));
     }
 
-    public static <T extends LivingEntity & GeoAnimatable> AnimationController<T> genericDeathController(T animatable) {
+    public static <T extends LivingEntity & BlueAnimatable> AnimationController<T> genericDeathController(T animatable) {
         return new AnimationController<>(animatable, "Death", 0, state -> state.getAnimatable().isDeadOrDying() ? state.setAndContinue(DIE) : PlayState.STOP);
     }
 
-    public static <T extends GeoAnimatable> AnimationController<T> genericIdleController(T animatable) {
+    public static <T extends BlueAnimatable> AnimationController<T> genericIdleController(T animatable) {
         return new AnimationController<T>(animatable, "Idle", 10, state -> state.setAndContinue(IDLE));
     }
 
-    public static <T extends GeoAnimatable> AnimationController<T> getSpawnController(T animatable, Function<AnimationState<T>, Object> objectSupplier, int ticks) {
+    public static <T extends BlueAnimatable> AnimationController<T> getSpawnController(T animatable, Function<AnimationState<T>, Object> objectSupplier, int ticks) {
         return new AnimationController<T>(animatable, "Spawn", 0, state -> {
             if (animatable.getTick(objectSupplier.apply(state)) <= ticks)
                 return state.setAndContinue(DefaultAnimations.SPAWN);
@@ -85,7 +85,7 @@ public final class DefaultAnimations {
         });
     }
 
-    public static <T extends GeoAnimatable> AnimationController<T> genericWalkController(T animatable) {
+    public static <T extends BlueAnimatable> AnimationController<T> genericWalkController(T animatable) {
         return new AnimationController<T>(animatable, "Walk", 0, state -> {
             if (state.isMoving())
                 return state.setAndContinue(WALK);
@@ -94,7 +94,7 @@ public final class DefaultAnimations {
         });
     }
 
-    public static <T extends LivingEntity & GeoAnimatable> AnimationController<T> genericAttackAnimation(T animatable, RawAnimation attackAnimation) {
+    public static <T extends LivingEntity & BlueAnimatable> AnimationController<T> genericAttackAnimation(T animatable, RawAnimation attackAnimation) {
         return new AnimationController<>(animatable, "Attack", 5, state -> {
             if (animatable.swinging)
                 return state.setAndContinue(attackAnimation);
@@ -105,11 +105,11 @@ public final class DefaultAnimations {
         });
     }
 
-    public static <T extends GeoAnimatable> AnimationController<T> genericWalkIdleController(T animatable) {
+    public static <T extends BlueAnimatable> AnimationController<T> genericWalkIdleController(T animatable) {
         return new AnimationController<T>(animatable, "Walk/Idle", 0, state -> state.setAndContinue(state.isMoving() ? WALK : IDLE));
     }
 
-    public static <T extends GeoAnimatable> AnimationController<T> genericSwimController(T entity) {
+    public static <T extends BlueAnimatable> AnimationController<T> genericSwimController(T entity) {
         return new AnimationController<T>(entity, "Swim", 0, state -> {
             if (state.isMoving())
                 return state.setAndContinue(SWIM);
@@ -118,19 +118,19 @@ public final class DefaultAnimations {
         });
     }
 
-    public static <T extends GeoAnimatable> AnimationController<T> genericSwimIdleController(T animatable) {
+    public static <T extends BlueAnimatable> AnimationController<T> genericSwimIdleController(T animatable) {
         return new AnimationController<T>(animatable, "Swim/Idle", 0, state -> state.setAndContinue(state.isMoving() ? SWIM : IDLE));
     }
 
-    public static <T extends GeoAnimatable> AnimationController<T> genericFlyController(T animatable) {
+    public static <T extends BlueAnimatable> AnimationController<T> genericFlyController(T animatable) {
         return new AnimationController<T>(animatable, "Fly", 0, state -> state.setAndContinue(FLY));
     }
 
-    public static <T extends GeoAnimatable> AnimationController<T> genericFlyIdleController(T animatable) {
+    public static <T extends BlueAnimatable> AnimationController<T> genericFlyIdleController(T animatable) {
         return new AnimationController<T>(animatable, "Fly/Idle", 0, state -> state.setAndContinue(state.isMoving() ? FLY : IDLE));
     }
 
-    public static <T extends Entity & GeoAnimatable> AnimationController<T> genericWalkRunIdleController(T entity) {
+    public static <T extends Entity & BlueAnimatable> AnimationController<T> genericWalkRunIdleController(T entity) {
         return new AnimationController<T>(entity, "Walk/Run/Idle", 0, state -> {
             if (state.isMoving()) {
                 return state.setAndContinue(entity.isSprinting() ? RUN : WALK);

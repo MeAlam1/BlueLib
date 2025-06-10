@@ -25,7 +25,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import software.bluelib.client.utils.PlayerUtils;
-import software.bluelib.loader.animatable.GeoAnimatable;
+import software.bluelib.loader.animatable.BlueAnimatable;
 import software.bluelib.loader.animation.AnimationState;
 import software.bluelib.loader.constant.DataTickets;
 import software.bluelib.loader.loading.math.value.Variable;
@@ -142,7 +142,7 @@ public final class MolangQueries {
         return text;
     }
 
-    public static void updateActor(AnimationState<? extends GeoAnimatable> animationState, double animTime) {
+    public static void updateActor(AnimationState<? extends BlueAnimatable> animationState, double animTime) {
         ACTOR = new Actor<>(animationState, animationState.getAnimatable(), animTime, Minecraft.getInstance(), Minecraft.getInstance().level);
     }
 
@@ -150,8 +150,8 @@ public final class MolangQueries {
         ACTOR = null;
     }
 
-    public record Actor<T>(AnimationState<? extends GeoAnimatable> animationState, T animatable, double animTime,
-            Minecraft mc, Level level) {}
+    public record Actor<T>(AnimationState<? extends BlueAnimatable> animationState, T animatable, double animTime,
+                           Minecraft mc, Level level) {}
 
     public static <T> void setActorVariable(String name, ToDoubleFunction<Actor<T>> value) {
         getVariableFor(name).set(() -> value.applyAsDouble((Actor) getActor()));

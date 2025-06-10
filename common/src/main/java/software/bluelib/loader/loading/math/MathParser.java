@@ -84,9 +84,9 @@ public class MathParser {
 
     public static void registerFunction(String name, MathFunction.Factory<?> factory) {
         //if (FUNCTION_FACTORIES.put(name, factory) != null)
-        //GeckoLibConstants.LOGGER.log(Level.WARN, "Duplicate registration of MathFunction: '" + name + "'. Ignore if intentional override");
+        //BlueLibConstants.LOGGER.log(Level.WARN, "Duplicate registration of MathFunction: '" + name + "'. Ignore if intentional override");
 
-        //GeckoLibConstants.LOGGER.log(Level.DEBUG, "Registered MathFunction '" + name + "'");
+        //BlueLibConstants.LOGGER.log(Level.DEBUG, "Registered MathFunction '" + name + "'");
     }
 
     @Nullable
@@ -189,7 +189,7 @@ public class MathParser {
     }
 
     @Nullable
-    protected static String tryMergeOperativeSymbols(char[] chars, int index) {
+    protected static String tryMerBlueperativeSymbols(char[] chars, int index) {
         char ch = chars[index];
 
         if (!Operator.isOperativeSymbol(ch))
@@ -224,7 +224,7 @@ public class MathParser {
                 continue;
             }
 
-            final String operator = tryMergeOperativeSymbols(chars, i);
+            final String operator = tryMerBlueperativeSymbols(chars, i);
 
             if (operator != null) {
                 i += operator.length() - 1;

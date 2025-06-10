@@ -30,7 +30,7 @@ public interface ModelCacheFactory {
     Map<String, ModelCacheFactory> FACTORIES = new Object2ObjectOpenHashMap<>(1);
     ModelCacheFactory DEFAULT_FACTORY = new Builtin();
 
-    ModelCache constructGeoModel(BoneTree pBoneTree);
+    ModelCache constructBlueModel(BoneTree pBoneTree);
 
     BoneCache constructBone(BoneStructure pBoneStructure, ModelDescription pModelDescription, @Nullable BoneCache pParent);
 
@@ -126,7 +126,7 @@ public interface ModelCacheFactory {
     final class Builtin implements ModelCacheFactory {
 
         @Override
-        public ModelCache constructGeoModel(BoneTree pBoneTree) {
+        public ModelCache constructBlueModel(BoneTree pBoneTree) {
             List<BoneCache> bones = new ObjectArrayList<>();
 
             for (BoneStructure boneStructure : pBoneTree.topLevelBones().values()) {

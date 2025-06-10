@@ -7,11 +7,11 @@
  */
 package software.bluelib.loader.animation.keyframe.event;
 
-import software.bluelib.loader.animatable.GeoAnimatable;
+import software.bluelib.loader.animatable.BlueAnimatable;
 import software.bluelib.loader.animation.AnimationController;
 import software.bluelib.loader.animation.keyframe.event.data.KeyFrameData;
 
-public abstract class KeyFrameEvent<T extends GeoAnimatable, E extends KeyFrameData> {
+public abstract class KeyFrameEvent<T extends BlueAnimatable, E extends KeyFrameData> {
 
     private final T animatable;
     private final double animationTick;

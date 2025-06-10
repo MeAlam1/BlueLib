@@ -28,7 +28,7 @@ public final class DataTickets {
     private static final Map<String, SerializableDataTicket<?>> SERIALIZABLE_TICKETS = new ConcurrentHashMap<>();
 
     // Builtin tickets
-    // These tickets are used by GeckoLib by default, usually added in by the GeoRenderer for use in animations
+    // These tickets are used by BlueLib by default, usually added in by the BlueRenderer for use in animations
     public static final DataTicket<BlockEntity> BLOCK_ENTITY = new DataTicket<>("block_entity", BlockEntity.class);
     public static final DataTicket<ItemStack> ITEMSTACK = new DataTicket<>("itemstack", ItemStack.class);
     public static final DataTicket<Entity> ENTITY = new DataTicket<>("entity", Entity.class);
@@ -56,7 +56,7 @@ public final class DataTickets {
         SerializableDataTicket<?> existingTicket = SERIALIZABLE_TICKETS.putIfAbsent(ticket.id(), ticket);
 
         //if (existingTicket != null)
-        //GeckoLibConstants.LOGGER.error("Duplicate SerializableDataTicket registered! This will cause issues. Existing: " + existingTicket.id() + ", New: " + ticket.id());
+        //BlueLibConstants.LOGGER.error("Duplicate SerializableDataTicket registered! This will cause issues. Existing: " + existingTicket.id() + ", New: " + ticket.id());
 
         return ticket;
     }

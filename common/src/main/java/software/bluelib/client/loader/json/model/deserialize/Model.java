@@ -17,17 +17,17 @@ import software.bluelib.api.utils.JsonUtils;
 
 public record Model(
         String modelFormatVersion,
-        List<ModelGeometry> modelGeometry) {
+        List<ModelGeometry> ModelGeometry) {
 
     public static JsonDeserializer<Model> deserializer() throws JsonParseException {
         return (json, type, context) -> {
             JsonObject obj = json.getAsJsonObject();
             String formatVersion = obj.get("format_version").getAsString();
-            List<ModelGeometry> modelGeometry = JsonUtils.jsonArrayToObjectList(GsonHelper.getAsJsonArray(obj, "minecraft:geometry", new JsonArray(0)), context, ModelGeometry.class);
+            List<ModelGeometry> ModelGeometry = JsonUtils.jsonArrayToObjectList(GsonHelper.getAsJsonArray(obj, "minecraft:geometry", new JsonArray(0)), context, ModelGeometry.class);
 
             return new Model(
                     formatVersion,
-                    modelGeometry);
+                    ModelGeometry);
         };
     }
 }

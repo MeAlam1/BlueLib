@@ -13,17 +13,17 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import software.bluelib.loader.animatable.GeoAnimatable;
-import software.bluelib.loader.model.GeoModel;
+import software.bluelib.loader.animatable.BlueAnimatable;
+import software.bluelib.loader.model.BlueModel;
 
 public interface IPlatformClient {
 
     @NotNull
-    <T extends LivingEntity & GeoAnimatable> HumanoidModel<?> getArmorModelForItem(T pAnimatable, ItemStack pStack, EquipmentSlot pSlot, HumanoidModel<LivingEntity> pDefaultModel);
+    <T extends LivingEntity & BlueAnimatable> HumanoidModel<?> getArmorModelForItem(T pAnimatable, ItemStack pStack, EquipmentSlot pSlot, HumanoidModel<LivingEntity> pDefaultModel);
 
     @Nullable
-    GeoModel<?> getGeoModelForItem(ItemStack pItem);
+    BlueModel<?> getBlueModelForItem(ItemStack pItem);
 
     @Nullable
-    GeoModel<?> getGeoModelForArmor(ItemStack pArmour);
+    BlueModel<?> getBlueModelForArmor(ItemStack pArmour);
 }

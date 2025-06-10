@@ -35,47 +35,47 @@ public interface IEventProxy {
     // Render Events
 
     // Block
-    void fireCompileBlockRenderLayers(GeoBlockRenderer<?> pRenderer);
+    void fireCompileBlockRenderLayers(BlueBlockRenderer<?> pRenderer);
 
-    boolean fireBlockPreRender(GeoBlockRenderer<?> pRenderer, PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight);
+    boolean fireBlockPreRender(BlueBlockRenderer<?> pRenderer, PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight);
 
-    void fireBlockPostRender(GeoBlockRenderer<?> pRenderer, PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight);
+    void fireBlockPostRender(BlueBlockRenderer<?> pRenderer, PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight);
 
     // Armor
 
-    void fireCompileArmorRenderLayers(GeoArmorRenderer<?> pRenderer);
+    void fireCompileArmorRenderLayers(BlueArmorRenderer<?> pRenderer);
 
-    boolean fireArmorPreRender(GeoArmorRenderer<?> pRenderer, PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight);
+    boolean fireArmorPreRender(BlueArmorRenderer<?> pRenderer, PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight);
 
-    void fireArmorPostRender(GeoArmorRenderer<?> pRenderer, PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight);
+    void fireArmorPostRender(BlueArmorRenderer<?> pRenderer, PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight);
 
     // Entity
 
-    void fireCompileEntityRenderLayers(GeoEntityRenderer<?> pRenderer);
+    void fireCompileEntityRenderLayers(BlueEntityRenderer<?> pRenderer);
 
-    boolean fireEntityPreRender(GeoEntityRenderer<?> pRenderer, PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight);
+    boolean fireEntityPreRender(BlueEntityRenderer<?> pRenderer, PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight);
 
-    void fireEntityPostRender(GeoEntityRenderer<?> pRenderer, PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight);
+    void fireEntityPostRender(BlueEntityRenderer<?> pRenderer, PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight);
 
-    void fireCompileReplacedEntityRenderLayers(GeoReplacedEntityRenderer<?, ?> pRenderer);
+    void fireCompileReplacedEntityRenderLayers(BlueReplacedEntityRenderer<?, ?> pRenderer);
 
-    boolean fireReplacedEntityPreRender(GeoReplacedEntityRenderer<?, ?> pRenderer, PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight);
+    boolean fireReplacedEntityPreRender(BlueReplacedEntityRenderer<?, ?> pRenderer, PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight);
 
-    void fireReplacedEntityPostRender(GeoReplacedEntityRenderer<?, ?> pRenderer, PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight);
+    void fireReplacedEntityPostRender(BlueReplacedEntityRenderer<?, ?> pRenderer, PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight);
 
     // Item
 
-    void fireCompileItemRenderLayers(GeoItemRenderer<?> pRenderer);
+    void fireCompileItemRenderLayers(BlueItemRenderer<?> pRenderer);
 
-    boolean fireItemPreRender(GeoItemRenderer<?> pRenderer, PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight);
+    boolean fireItemPreRender(BlueItemRenderer<?> pRenderer, PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight);
 
-    void fireItemPostRender(GeoItemRenderer<?> pRenderer, PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight);
+    void fireItemPostRender(BlueItemRenderer<?> pRenderer, PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight);
 
     // Object
 
-    void fireCompileObjectRenderLayers(GeoObjectRenderer<?> pRenderer);
+    void fireCompileObjectRenderLayers(BlueObjectRenderer<?> pRenderer);
 
-    boolean fireObjectPreRender(GeoObjectRenderer<?> pRenderer, PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight);
+    boolean fireObjectPreRender(BlueObjectRenderer<?> pRenderer, PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight);
 
-    void fireObjectPostRender(GeoObjectRenderer<?> pRenderer, PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight);
+    void fireObjectPostRender(BlueObjectRenderer<?> pRenderer, PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight);
 }

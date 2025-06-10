@@ -21,8 +21,8 @@ public record BoneTree(
 
     public static BoneTree fromModel(Model pModel) {
         final Map<String, BoneStructure> topLevelBones = new Object2ObjectOpenHashMap<>();
-        final ModelGeometry geometry = pModel.modelGeometry().getFirst();
-        final List<Bone> bones = geometry.bones();
+        final ModelGeometry Bluemetry = pModel.ModelGeometry().getFirst();
+        final List<Bone> bones = Bluemetry.bones();
         final Map<String, BoneStructure> lookup = new Object2ObjectOpenHashMap<>(bones.size());
 
         for (Bone bone : bones) {
@@ -52,6 +52,6 @@ public record BoneTree(
             }
         }
 
-        return new BoneTree(topLevelBones, geometry.modelDescription());
+        return new BoneTree(topLevelBones, Bluemetry.modelDescription());
     }
 }

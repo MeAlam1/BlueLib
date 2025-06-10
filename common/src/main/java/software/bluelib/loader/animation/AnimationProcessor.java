@@ -15,21 +15,21 @@ import java.util.Queue;
 import net.minecraft.util.Mth;
 import software.bluelib.client.loader.cache.model.BoneCache;
 import software.bluelib.client.loader.cache.model.ModelCache;
-import software.bluelib.loader.animatable.GeoAnimatable;
+import software.bluelib.loader.animatable.BlueAnimatable;
 import software.bluelib.loader.animation.keyframe.AnimationPoint;
 import software.bluelib.loader.animation.keyframe.BoneAnimationQueue;
 import software.bluelib.loader.animation.state.BoneSnapshot;
 import software.bluelib.loader.loading.math.MolangQueries;
-import software.bluelib.loader.model.GeoModel;
+import software.bluelib.loader.model.BlueModel;
 
-public class AnimationProcessor<T extends GeoAnimatable> {
+public class AnimationProcessor<T extends BlueAnimatable> {
 
     private final Map<String, BoneCache> bones = new Object2ObjectOpenHashMap<>();
-    private final GeoModel<T> model;
+    private final BlueModel<T> model;
 
     public boolean reloadAnimations = false;
 
-    public AnimationProcessor(GeoModel<T> model) {
+    public AnimationProcessor(BlueModel<T> model) {
         this.model = model;
     }
 
@@ -46,7 +46,7 @@ public class AnimationProcessor<T extends GeoAnimatable> {
                 try {
                     animation = this.model.getAnimation(animatable, stage.animationName());
                 } catch (RuntimeException ex) {
-                    //GeckoLibConstants.LOGGER.log(Level.ERROR, "Unable to find animation: " + stage.animationName() + " for " + animatable.getClass().getSimpleName());
+                    //BlueLibConstants.LOGGER.log(Level.ERROR, "Unable to find animation: " + stage.animationName() + " for " + animatable.getClass().getSimpleName());
 
                     error = true;
                     ex.printStackTrace();
@@ -60,7 +60,7 @@ public class AnimationProcessor<T extends GeoAnimatable> {
         return error ? null : animations;
     }
 
-    public void tickAnimation(T animatable, GeoModel<T> model, AnimatableManager<T> animatableManager, double animTime, AnimationState<T> state, boolean crashWhenCantFindBone) {
+    public void tickAnimation(T animatable, BlueModel<T> model, AnimatableManager<T> animatableManager, double animTime, AnimationState<T> state, boolean crashWhenCantFindBone) {
         Map<String, BoneSnapshot> boneSnapshots = updateBoneSnapshots(animatableManager.getBoneSnapshotCollection());
 
         for (AnimationController<T> controller : animatableManager.getAnimationControllers().values()) {
@@ -228,12 +228,12 @@ public class AnimationProcessor<T extends GeoAnimatable> {
         return this.bones.get(boneName);
     }
 
-    public void registerGeoBone(BoneCache bone) {
+    public void registerBlueBone(BoneCache bone) {
         bone.saveInitialSnapshot();
         this.bones.put(bone.getName(), bone);
 
         for (BoneCache child : bone.getChildBones()) {
-            registerGeoBone(child);
+            registerBlueBone(child);
         }
     }
 
@@ -241,7 +241,7 @@ public class AnimationProcessor<T extends GeoAnimatable> {
         this.bones.clear();
 
         for (BoneCache bone : model.topLevelBones()) {
-            registerGeoBone(bone);
+            registerBlueBone(bone);
         }
     }
 

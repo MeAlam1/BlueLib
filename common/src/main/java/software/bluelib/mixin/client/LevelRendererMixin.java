@@ -28,7 +28,7 @@ public class LevelRendererMixin {
     private int renderedEntities;
 
     @Inject(method = "renderLevel", at = @At(value = "HEAD"))
-    public void geckolib$captureRenderedEntities(DeltaTracker deltaTracker, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightTexture lightTexture, Matrix4f frustumMatrix, Matrix4f projectionMatrix, CallbackInfo ci) {
+    public void BlueLib$captureRenderedEntities(DeltaTracker deltaTracker, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightTexture lightTexture, Matrix4f frustumMatrix, Matrix4f projectionMatrix, CallbackInfo ci) {
         final int renderedEntityCount = this.renderedEntities;
 
         MathParser.setVariable(MolangQueries.ACTOR_COUNT, () -> renderedEntityCount);

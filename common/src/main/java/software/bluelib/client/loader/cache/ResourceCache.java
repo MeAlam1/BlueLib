@@ -51,9 +51,9 @@ public final class ResourceCache {
 	public static final ResourceLocation RELOAD_LISTENER_ID = BlueResource.resource("models_animations");
 	public static final ResourceLocation ANIMATIONS_PATH = BlueResource.resource("animations");
 	public static final ResourceLocation MODELS_PATH = BlueResource.resource("models");
-	public static final Pattern SUFFIX_STRIPPER = Pattern.compile("((\\.geo)|((\\.animation)s?))?(\\.json)$");
+	public static final Pattern SUFFIX_STRIPPER = Pattern.compile("((\\.Blue)|((\\.animation)s?))?(\\.json)$");
 	public static final Pattern PREFIX_STRIPPER = Pattern.compile("^(bluelib/)((animations/)|(models/))?");
-	private static final List<String> SKIPPED_NAMESPACES = List.of("minecraft", "geckolib", "neoforge");
+	private static final List<String> SKIPPED_NAMESPACES = List.of("minecraft", "BlueLib", "neoforge");
 
 	private static Map<ResourceLocation, AnimationsCache> ANIMATIONS = Collections.emptyMap();
 	private static Map<ResourceLocation, ModelCache> MODELS = Collections.emptyMap();
@@ -174,12 +174,12 @@ public final class ResourceCache {
 		ModelFormatVersion matchedVersion = ModelFormatVersion.match(model.modelFormatVersion());
 
 		if (matchedVersion == null) {
-			System.out.printf("%s: Unknown geo model format version: '%s'. This may not work correctly%n", pResourceLocation, model.modelFormatVersion());
+			System.out.printf("%s: Unknown Blue model format version: '%s'. This may not work correctly%n", pResourceLocation, model.modelFormatVersion());
 		} else if (!matchedVersion.isSupported()) {
-			System.out.printf("%s: Unsupported geo model format version: '%s'. %s%n", pResourceLocation, model.modelFormatVersion(), matchedVersion.getErrorMessage());
+			System.out.printf("%s: Unsupported Blue model format version: '%s'. %s%n", pResourceLocation, model.modelFormatVersion(), matchedVersion.getErrorMessage());
 		}
 
-		return ModelCacheFactory.getForNamespace(pResourceLocation.getNamespace()).constructGeoModel(BoneTree.fromModel(model));
+		return ModelCacheFactory.getForNamespace(pResourceLocation.getNamespace()).constructBlueModel(BoneTree.fromModel(model));
 	}
 
 	@NotNull

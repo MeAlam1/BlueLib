@@ -119,7 +119,7 @@ public class AutoGlowingTexture extends BlueAbstractTexture {
                 }
             }
         } catch (IOException e) {
-            //GeckoLibConstants.LOGGER.warn("Resource failed to open for glowlayer meta: {}", this.glowLayer, e);
+            //BlueLibConstants.LOGGER.warn("Resource failed to open for glowlayer meta: {}", this.glowLayer, e);
         }
 
         NativeImage mask = glowImage;

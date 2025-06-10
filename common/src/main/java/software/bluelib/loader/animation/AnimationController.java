@@ -14,7 +14,7 @@ import java.util.function.Function;
 import net.minecraft.core.Direction.Axis;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.client.loader.cache.model.BoneCache;
-import software.bluelib.loader.animatable.GeoAnimatable;
+import software.bluelib.loader.animatable.BlueAnimatable;
 import software.bluelib.loader.animation.keyframe.*;
 import software.bluelib.loader.animation.keyframe.event.CustomInstructionKeyframeEvent;
 import software.bluelib.loader.animation.keyframe.event.ParticleKeyframeEvent;
@@ -28,9 +28,9 @@ import software.bluelib.loader.loading.math.MathParser;
 import software.bluelib.loader.loading.math.MathValue;
 import software.bluelib.loader.loading.math.MolangQueries;
 import software.bluelib.loader.loading.math.value.Constant;
-import software.bluelib.loader.model.GeoModel;
+import software.bluelib.loader.model.BlueModel;
 
-public class AnimationController<T extends GeoAnimatable> {
+public class AnimationController<T extends BlueAnimatable> {
 
     protected final T animatable;
     protected final String name;
@@ -62,7 +62,7 @@ public class AnimationController<T extends GeoAnimatable> {
     protected Function<T, Double> animationSpeedModifier = animatable -> 1d;
     protected Function<T, EasingType> overrideEasingTypeFunction = animatable -> null;
     private final Set<KeyFrameData> executedKeyFrames = new ObjectOpenHashSet<>();
-    protected GeoModel<T> lastModel;
+    protected BlueModel<T> lastModel;
 
     public AnimationController(T animatable, AnimationStateHandler<T> animationHandler) {
         this(animatable, "base_controller", 0, animationHandler);
@@ -261,7 +261,7 @@ public class AnimationController<T extends GeoAnimatable> {
         return this.stateHandler.handle(state);
     }
 
-    public void process(GeoModel<T> model, AnimationState<T> state, Map<String, BoneCache> bones, Map<String, BoneSnapshot> snapshots, final double seekTime, boolean crashWhenCantFindBone) {
+    public void process(BlueModel<T> model, AnimationState<T> state, Map<String, BoneCache> bones, Map<String, BoneSnapshot> snapshots, final double seekTime, boolean crashWhenCantFindBone) {
         double adjustedTick = adjustTick(seekTime);
         this.lastModel = model;
 
@@ -433,7 +433,7 @@ public class AnimationController<T extends GeoAnimatable> {
         for (SoundKeyframeData keyframeData : this.currentAnimation.animation().keyFrames().sounds()) {
             if (adjustedTick >= keyframeData.getStartTick() && this.executedKeyFrames.add(keyframeData)) {
                 if (this.soundKeyframeHandler == null) {
-                    //GeckoLibConstants.LOGGER.log(Level.WARN, "Sound Keyframe found for " + this.animatable.getClass().getSimpleName() + " -> " + getName() + ", but no keyframe handler registered");
+                    //BlueLibConstants.LOGGER.log(Level.WARN, "Sound Keyframe found for " + this.animatable.getClass().getSimpleName() + " -> " + getName() + ", but no keyframe handler registered");
 
                     break;
                 }
@@ -445,7 +445,7 @@ public class AnimationController<T extends GeoAnimatable> {
         for (ParticleKeyframeData keyframeData : this.currentAnimation.animation().keyFrames().particles()) {
             if (adjustedTick >= keyframeData.getStartTick() && this.executedKeyFrames.add(keyframeData)) {
                 if (this.particleKeyframeHandler == null) {
-                    //GeckoLibConstants.LOGGER.log(Level.WARN, "Particle Keyframe found for " + this.animatable.getClass().getSimpleName() + " -> " + getName() + ", but no keyframe handler registered");
+                    //BlueLibConstants.LOGGER.log(Level.WARN, "Particle Keyframe found for " + this.animatable.getClass().getSimpleName() + " -> " + getName() + ", but no keyframe handler registered");
 
                     break;
                 }
@@ -457,7 +457,7 @@ public class AnimationController<T extends GeoAnimatable> {
         for (CustomInstructionKeyframeData keyframeData : this.currentAnimation.animation().keyFrames().customInstructions()) {
             if (adjustedTick >= keyframeData.getStartTick() && this.executedKeyFrames.add(keyframeData)) {
                 if (this.customKeyframeHandler == null) {
-                    //GeckoLibConstants.LOGGER.log(Level.WARN, "Custom Instruction Keyframe found for " + this.animatable.getClass().getSimpleName() + " -> " + getName() + ", but no keyframe handler registered");
+                    //BlueLibConstants.LOGGER.log(Level.WARN, "Custom Instruction Keyframe found for " + this.animatable.getClass().getSimpleName() + " -> " + getName() + ", but no keyframe handler registered");
 
                     break;
                 }
@@ -549,25 +549,25 @@ public class AnimationController<T extends GeoAnimatable> {
     }
 
     @FunctionalInterface
-    public interface AnimationStateHandler<A extends GeoAnimatable> {
+    public interface AnimationStateHandler<A extends BlueAnimatable> {
 
         PlayState handle(AnimationState<A> state);
     }
 
     @FunctionalInterface
-    public interface SoundKeyframeHandler<A extends GeoAnimatable> {
+    public interface SoundKeyframeHandler<A extends BlueAnimatable> {
 
         void handle(SoundKeyframeEvent<A> event);
     }
 
     @FunctionalInterface
-    public interface ParticleKeyframeHandler<A extends GeoAnimatable> {
+    public interface ParticleKeyframeHandler<A extends BlueAnimatable> {
 
         void handle(ParticleKeyframeEvent<A> event);
     }
 
     @FunctionalInterface
-    public interface CustomKeyframeHandler<A extends GeoAnimatable> {
+    public interface CustomKeyframeHandler<A extends BlueAnimatable> {
 
         void handle(CustomInstructionKeyframeEvent<A> event);
     }

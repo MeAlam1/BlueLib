@@ -15,11 +15,11 @@ import java.util.List;
 import java.util.Map;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
-import software.bluelib.loader.animatable.GeoAnimatable;
+import software.bluelib.loader.animatable.BlueAnimatable;
 import software.bluelib.loader.animation.state.BoneSnapshot;
 import software.bluelib.loader.constant.dataticket.DataTicket;
 
-public class AnimatableManager<T extends GeoAnimatable> {
+public class AnimatableManager<T extends BlueAnimatable> {
 
     private final Map<String, BoneSnapshot> boneSnapshotCollection = new Object2ObjectOpenHashMap<>();
     private final Map<String, AnimationController<T>> animationControllers;
@@ -29,7 +29,7 @@ public class AnimatableManager<T extends GeoAnimatable> {
     private boolean isFirstTick = true;
     private double firstTickTime = -1;
 
-    public AnimatableManager(GeoAnimatable animatable) {
+    public AnimatableManager(BlueAnimatable animatable) {
         ControllerRegistrar registrar = new ControllerRegistrar(new ObjectArrayList<>(2));
 
         animatable.registerControllers(registrar);
@@ -120,7 +120,7 @@ public class AnimatableManager<T extends GeoAnimatable> {
             controller.stopTriggeredAnimation();
     }
 
-    public record ControllerRegistrar(List<AnimationController<? extends GeoAnimatable>> controllers) {
+    public record ControllerRegistrar(List<AnimationController<? extends BlueAnimatable>> controllers) {
 
         public ControllerRegistrar add(AnimationController<?>... controllers) {
             controllers().addAll(Arrays.asList(controllers));
@@ -141,7 +141,7 @@ public class AnimatableManager<T extends GeoAnimatable> {
         }
 
         @ApiStatus.Internal
-        private <T extends GeoAnimatable> Object2ObjectArrayMap<String, AnimationController<T>> build() {
+        private <T extends BlueAnimatable> Object2ObjectArrayMap<String, AnimationController<T>> build() {
             Object2ObjectArrayMap<String, AnimationController<?>> map = new Object2ObjectArrayMap<>(controllers().size());
 
             controllers().forEach(controller -> map.put(controller.getName(), controller));

@@ -10,14 +10,14 @@ package software.bluelib.client.net.loader;
 import net.minecraft.client.Minecraft;
 import software.bluelib.api.net.ClientNetworkPacketHandler;
 import software.bluelib.client.utils.LevelUtils;
-import software.bluelib.loader.animatable.GeoBlockEntity;
+import software.bluelib.loader.animatable.BlueBlockEntity;
 import software.bluelib.net.messages.client.loader.BlockEntityDataSyncPacket;
 
 public class BlockEntityDataSyncPacketHandler<D> implements ClientNetworkPacketHandler<BlockEntityDataSyncPacket<D>> {
 
     @Override
     public void handle(BlockEntityDataSyncPacket<D> pPacket, Minecraft pClient) {
-        if (LevelUtils.getLevel().getBlockEntity(pPacket.pos()) instanceof GeoBlockEntity blockEntity) {
+        if (LevelUtils.getLevel().getBlockEntity(pPacket.pos()) instanceof BlueBlockEntity blockEntity) {
             blockEntity.setAnimData(pPacket.dataTicket(), pPacket.data());
         }
     }

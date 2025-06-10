@@ -16,17 +16,17 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import software.bluelib.loader.animatable.client.GeoRenderProvider;
+import software.bluelib.loader.animatable.client.BlueRenderProvider;
 
 @Mixin(BlockEntityWithoutLevelRenderer.class)
 public class BlockEntityWithoutLevelRendererMixin {
 
     @Inject(method = "renderByItem", at = @At("HEAD"), cancellable = true)
-    public void geckolib$renderGeckolibItem(ItemStack stack, ItemDisplayContext displayContext, PoseStack pPoseStack, MultiBufferSource pBufferSource, int pPackedLight, int pPackedOverlay, CallbackInfo ci) {
-        final BlockEntityWithoutLevelRenderer geckolibRenderer = GeoRenderProvider.of(stack).getGeoItemRenderer();
+    public void BlueLib$renderBlueLibItem(ItemStack stack, ItemDisplayContext displayContext, PoseStack pPoseStack, MultiBufferSource pBufferSource, int pPackedLight, int pPackedOverlay, CallbackInfo ci) {
+        final BlockEntityWithoutLevelRenderer BlueLibRenderer = BlueRenderProvider.of(stack).getBlueItemRenderer();
 
-        if (geckolibRenderer != null) {
-            geckolibRenderer.renderByItem(stack, displayContext, pPoseStack, pBufferSource, pPackedLight, pPackedOverlay);
+        if (BlueLibRenderer != null) {
+            BlueLibRenderer.renderByItem(stack, displayContext, pPoseStack, pBufferSource, pPackedLight, pPackedOverlay);
 
             ci.cancel();
         }

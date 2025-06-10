@@ -112,7 +112,7 @@ public class AnimatableTexture extends SimpleTexture {
 
         private Texture generateAnimatedTexture(NativeImage pImage, AnimationMetadataSection pAnimMeta) {
             if (!Mth.isMultipleOf(pImage.getWidth(), this.frameSize.width()) || !Mth.isMultipleOf(pImage.getHeight(), this.frameSize.height())) {
-                //GeckoLibConstants.LOGGER.error("Image {} size {},{} is not multiple of frame size {},{}", AnimatableTexture.this.location, image.getWidth(), image.getHeight(), this.frameSize.width(), this.frameSize.height());
+                //BlueLibConstants.LOGGER.error("Image {} size {},{} is not multiple of frame size {},{}", AnimatableTexture.this.location, image.getWidth(), image.getHeight(), this.frameSize.width(), this.frameSize.height());
 
                 return null;
             }
@@ -134,10 +134,10 @@ public class AnimatableTexture extends SimpleTexture {
 
                 for (Frame frame : frames) {
                     if (frame.time <= 0) {
-                        //GeckoLibConstants.LOGGER.warn("Invalid frame duration on sprite {} frame {}: {}", AnimatableTexture.this.location, index, frame.time);
+                        //BlueLibConstants.LOGGER.warn("Invalid frame duration on sprite {} frame {}: {}", AnimatableTexture.this.location, index, frame.time);
                         unusedFrames.add(frame.index);
                     } else if (frame.index < 0 || frame.index >= frameCount) {
-                        //GeckoLibConstants.LOGGER.warn("Invalid frame index on sprite {} frame {}: {}", AnimatableTexture.this.location, index, frame.index);
+                        //BlueLibConstants.LOGGER.warn("Invalid frame index on sprite {} frame {}: {}", AnimatableTexture.this.location, index, frame.index);
                         unusedFrames.add(frame.index);
                     }
 
@@ -145,7 +145,7 @@ public class AnimatableTexture extends SimpleTexture {
                 }
 
                 //if (!unusedFrames.isEmpty())
-                //GeckoLibConstants.LOGGER.warn("Unused frames in sprite {}: {}", AnimatableTexture.this.location, Arrays.toString(unusedFrames.toArray()));
+                //BlueLibConstants.LOGGER.warn("Unused frames in sprite {}: {}", AnimatableTexture.this.location, Arrays.toString(unusedFrames.toArray()));
             }
 
             return frames.size() <= 1 ? null : new Texture(pImage, frames.toArray(new Frame[0]), columns, pAnimMeta.isInterpolatedFrames());

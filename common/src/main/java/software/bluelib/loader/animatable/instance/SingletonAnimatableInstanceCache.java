@@ -9,14 +9,14 @@ package software.bluelib.loader.animatable.instance;
 
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
-import software.bluelib.loader.animatable.GeoAnimatable;
+import software.bluelib.loader.animatable.BlueAnimatable;
 import software.bluelib.loader.animation.AnimatableManager;
 
 public class SingletonAnimatableInstanceCache extends AnimatableInstanceCache {
 
     protected final Long2ObjectMap<AnimatableManager<?>> managers = new Long2ObjectOpenHashMap<>();
 
-    public SingletonAnimatableInstanceCache(GeoAnimatable animatable) {
+    public SingletonAnimatableInstanceCache(BlueAnimatable animatable) {
         super(animatable);
     }
 

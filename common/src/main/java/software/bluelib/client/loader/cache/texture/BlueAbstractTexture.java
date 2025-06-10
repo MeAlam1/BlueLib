@@ -52,7 +52,7 @@ public abstract class BlueAbstractTexture extends AbstractTexture {
 
     protected void printDebugImageToDisk(ResourceLocation pId, NativeImage pNewImage) {
         try {
-            File file = new File(BlueLibConstants.PlatformHelper.PLATFORM.getGameDir().toFile(), "GeoTexture Debug Printouts");
+            File file = new File(BlueLibConstants.PlatformHelper.PLATFORM.getGameDir().toFile(), "BlueTexture Debug Printouts");
 
             if (!file.exists()) {
                 file.mkdirs();

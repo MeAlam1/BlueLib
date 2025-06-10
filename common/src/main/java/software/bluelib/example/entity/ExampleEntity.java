@@ -13,11 +13,11 @@ import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.level.Level;
 import software.bluelib.api.utils.LoaderUtils;
-import software.bluelib.loader.animatable.GeoEntity;
+import software.bluelib.loader.animatable.BlueEntity;
 import software.bluelib.loader.animatable.instance.AnimatableInstanceCache;
 import software.bluelib.loader.animation.*;
 
-public class ExampleEntity extends PathfinderMob implements GeoEntity {
+public class ExampleEntity extends PathfinderMob implements BlueEntity {
 
     private final AnimatableInstanceCache cache = LoaderUtils.createInstanceCache(this);
     public final String entityName = "test";

@@ -11,7 +11,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import software.bluelib.loader.animatable.GeoAnimatable;
+import software.bluelib.loader.animatable.BlueAnimatable;
 import software.bluelib.loader.animation.keyframe.BoneAnimation;
 import software.bluelib.loader.animation.keyframe.event.data.CustomInstructionKeyframeData;
 import software.bluelib.loader.animation.keyframe.event.data.ParticleKeyframeData;
@@ -40,7 +40,7 @@ public record Animation(String name, double length, LoopType loopType, BoneAnima
         });
         LoopType LOOP = register("loop", register("true", (animatable, controller, currentAnimation) -> true));
 
-        boolean shouldPlayAgain(GeoAnimatable animatable, AnimationController<? extends GeoAnimatable> controller, Animation currentAnimation);
+        boolean shouldPlayAgain(BlueAnimatable animatable, AnimationController<? extends BlueAnimatable> controller, Animation currentAnimation);
 
         static LoopType fromJson(JsonElement json) {
             if (json == null || !json.isJsonPrimitive())

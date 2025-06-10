@@ -11,32 +11,32 @@ import com.google.common.base.Suppliers;
 import java.util.function.Supplier;
 import org.apache.commons.lang3.mutable.MutableObject;
 import software.bluelib.BlueLibConstants;
-import software.bluelib.loader.animatable.GeoAnimatable;
-import software.bluelib.loader.animatable.SingletonGeoAnimatable;
-import software.bluelib.loader.animatable.client.GeoRenderProvider;
+import software.bluelib.loader.animatable.BlueAnimatable;
+import software.bluelib.loader.animatable.SingletonBlueAnimatable;
+import software.bluelib.loader.animatable.client.BlueRenderProvider;
 import software.bluelib.loader.animation.AnimatableManager;
 import software.bluelib.loader.constant.dataticket.DataTicket;
 
 public abstract class AnimatableInstanceCache {
 
-    protected final GeoAnimatable animatable;
-    protected final Supplier<GeoRenderProvider> renderProvider;
+    protected final BlueAnimatable animatable;
+    protected final Supplier<BlueRenderProvider> renderProvider;
 
-    public AnimatableInstanceCache(GeoAnimatable animatable) {
+    public AnimatableInstanceCache(BlueAnimatable animatable) {
         this.animatable = animatable;
         this.renderProvider = Suppliers.memoize(() -> {
-            if (!(this.animatable instanceof SingletonGeoAnimatable singleton) || !BlueLibConstants.PlatformHelper.PLATFORM.isPhysicalClient())
+            if (!(this.animatable instanceof SingletonBlueAnimatable singleton) || !BlueLibConstants.PlatformHelper.PLATFORM.isPhysicalClient())
                 return null;
 
-            final MutableObject<GeoRenderProvider> consumer = new MutableObject<>(GeoRenderProvider.DEFAULT);
+            final MutableObject<BlueRenderProvider> consumer = new MutableObject<>(BlueRenderProvider.DEFAULT);
 
-            singleton.createGeoRenderer(consumer::setValue);
+            singleton.createBlueRenderer(consumer::setValue);
 
             return consumer.getValue();
         });
     }
 
-    public abstract <T extends GeoAnimatable> AnimatableManager<T> getManagerForId(long uniqueId);
+    public abstract <T extends BlueAnimatable> AnimatableManager<T> getManagerForId(long uniqueId);
 
     public <D> void addDataPoint(long uniqueId, DataTicket<D> dataTicket, D data) {
         getManagerForId(uniqueId).setData(dataTicket, data);

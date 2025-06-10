@@ -14,7 +14,7 @@ accessible class net/minecraft/client/renderer/RenderStateShard$WriteMaskStateSh
 accessible class net/minecraft/client/renderer/RenderStateShard$OverlayStateShard
 accessible class net/minecraft/client/renderer/RenderType$CompositeState
 
-accessible field net/minecraft/client/model/geom/ModelPart cubes Ljava/util/List;
+accessible field net/minecraft/client/model/Bluem/ModelPart cubes Ljava/util/List;
 accessible field net/minecraft/client/model/AgeableListModel scaleHead Z
 accessible field net/minecraft/client/model/AgeableListModel babyYHeadOffset F
 accessible field net/minecraft/client/model/AgeableListModel babyZHeadOffset F

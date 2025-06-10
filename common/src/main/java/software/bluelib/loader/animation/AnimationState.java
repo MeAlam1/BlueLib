@@ -11,10 +11,10 @@ import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import java.util.Map;
 import java.util.Objects;
 import org.jetbrains.annotations.Nullable;
-import software.bluelib.loader.animatable.GeoAnimatable;
+import software.bluelib.loader.animatable.BlueAnimatable;
 import software.bluelib.loader.constant.dataticket.DataTicket;
 
-public class AnimationState<T extends GeoAnimatable> {
+public class AnimationState<T extends BlueAnimatable> {
 
     private final T animatable;
     private final float limbSwing;

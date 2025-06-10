@@ -12,8 +12,8 @@ import net.minecraft.world.entity.Entity;
 import software.bluelib.api.net.ClientNetworkPacketHandler;
 import software.bluelib.client.utils.LevelUtils;
 import software.bluelib.client.utils.RenderUtils;
-import software.bluelib.loader.animatable.GeoEntity;
-import software.bluelib.loader.animatable.GeoReplacedEntity;
+import software.bluelib.loader.animatable.BlueEntity;
+import software.bluelib.loader.animatable.BlueReplacedEntity;
 import software.bluelib.net.messages.client.loader.EntityDataSyncPacket;
 
 public class EntityDataSyncPacketHandler<D> implements ClientNetworkPacketHandler<EntityDataSyncPacket<D>> {
@@ -26,13 +26,13 @@ public class EntityDataSyncPacketHandler<D> implements ClientNetworkPacketHandle
             return;
 
         if (!pPacket.isReplacedEntity()) {
-            if (entity instanceof GeoEntity geoEntity)
-                geoEntity.setAnimData(pPacket.dataTicket(), pPacket.data());
+            if (entity instanceof BlueEntity BlueEntity)
+                BlueEntity.setAnimData(pPacket.dataTicket(), pPacket.data());
 
             return;
         }
 
-        if (RenderUtils.getReplacedAnimatable(entity.getType()) instanceof GeoReplacedEntity replacedEntity)
+        if (RenderUtils.getReplacedAnimatable(entity.getType()) instanceof BlueReplacedEntity replacedEntity)
             replacedEntity.setAnimData(entity, pPacket.dataTicket(), pPacket.data());
     }
 }

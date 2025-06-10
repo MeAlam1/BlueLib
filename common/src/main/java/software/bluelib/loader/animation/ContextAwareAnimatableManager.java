@@ -9,21 +9,21 @@ package software.bluelib.loader.animation;
 
 import java.util.Map;
 import org.jetbrains.annotations.Nullable;
-import software.bluelib.loader.animatable.GeoAnimatable;
+import software.bluelib.loader.animatable.BlueAnimatable;
 import software.bluelib.loader.animation.state.BoneSnapshot;
 import software.bluelib.loader.constant.dataticket.DataTicket;
 
-public abstract class ContextAwareAnimatableManager<T extends GeoAnimatable, C> extends AnimatableManager<T> {
+public abstract class ContextAwareAnimatableManager<T extends BlueAnimatable, C> extends AnimatableManager<T> {
 
     private final Map<C, AnimatableManager<T>> managers;
 
-    public ContextAwareAnimatableManager(GeoAnimatable animatable) {
+    public ContextAwareAnimatableManager(BlueAnimatable animatable) {
         super(animatable);
 
         this.managers = buildContextOptions(animatable);
     }
 
-    protected abstract Map<C, AnimatableManager<T>> buildContextOptions(GeoAnimatable animatable);
+    protected abstract Map<C, AnimatableManager<T>> buildContextOptions(BlueAnimatable animatable);
 
     public abstract C getCurrentContext();
 

@@ -8,23 +8,23 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import software.bluelib.loader.animatable.GeoAnimatable;
-import software.bluelib.loader.animatable.client.GeoRenderProvider;
-import software.bluelib.loader.model.GeoModel;
-import software.bluelib.loader.renderer.GeoArmorRenderer;
-import software.bluelib.loader.renderer.GeoRenderer;
+import software.bluelib.loader.animatable.BlueAnimatable;
+import software.bluelib.loader.animatable.client.BlueRenderProvider;
+import software.bluelib.loader.model.BlueModel;
+import software.bluelib.loader.renderer.BlueArmorRenderer;
+import software.bluelib.loader.renderer.BlueRenderer;
 
 public class NeoForgePlatformClientHelper implements IPlatformClient {
 
 
 	@NotNull
 	@Override
-	public <T extends LivingEntity & GeoAnimatable> HumanoidModel<?> getArmorModelForItem(T pAnimatable, ItemStack pStack, EquipmentSlot pSlot, HumanoidModel<LivingEntity> pDefaultModel) {
+	public <T extends LivingEntity & BlueAnimatable> HumanoidModel<?> getArmorModelForItem(T pAnimatable, ItemStack pStack, EquipmentSlot pSlot, HumanoidModel<LivingEntity> pDefaultModel) {
 		Item item = pStack.getItem();
 		HumanoidModel<?> model = IClientItemExtensions.of(item).getHumanoidArmorModel(pAnimatable, pStack, pSlot, pDefaultModel);
 
-		if (model == pDefaultModel && GeoRenderProvider.of(item).getGeoArmorRenderer(pAnimatable, pStack, pSlot, pDefaultModel) instanceof GeoArmorRenderer<?> geoArmorRenderer)
-			return geoArmorRenderer;
+		if (model == pDefaultModel && BlueRenderProvider.of(item).getBlueArmorRenderer(pAnimatable, pStack, pSlot, pDefaultModel) instanceof BlueArmorRenderer<?> BlueArmorRenderer)
+			return BlueArmorRenderer;
 
 		return model;
 	}
@@ -32,12 +32,12 @@ public class NeoForgePlatformClientHelper implements IPlatformClient {
 
 	@Nullable
 	@Override
-	public GeoModel<?> getGeoModelForItem(ItemStack pItem) {
-		if (IClientItemExtensions.of(pItem).getCustomRenderer() instanceof GeoRenderer<?> geoRenderer)
-			return geoRenderer.getGeoModel();
+	public BlueModel<?> getBlueModelForItem(ItemStack pItem) {
+		if (IClientItemExtensions.of(pItem).getCustomRenderer() instanceof BlueRenderer<?> blueRenderer)
+			return blueRenderer.getBlueModel();
 
-		if (GeoRenderProvider.of(pItem).getGeoItemRenderer() instanceof GeoRenderer<?> geoRenderer)
-			return geoRenderer.getGeoModel();
+		if (BlueRenderProvider.of(pItem).getBlueItemRenderer() instanceof BlueRenderer<?> blueRenderer)
+			return blueRenderer.getBlueModel();
 
 		return null;
 	}
@@ -45,12 +45,12 @@ public class NeoForgePlatformClientHelper implements IPlatformClient {
 
 	@Nullable
 	@Override
-	public GeoModel<?> getGeoModelForArmor(ItemStack pArmour) {
-		if (IClientItemExtensions.of(pArmour).getHumanoidArmorModel(null, pArmour, null, null) instanceof GeoArmorRenderer<?> armorRenderer)
-			return armorRenderer.getGeoModel();
+	public BlueModel<?> getBlueModelForArmor(ItemStack pArmour) {
+		if (IClientItemExtensions.of(pArmour).getHumanoidArmorModel(null, pArmour, null, null) instanceof BlueArmorRenderer<?> armorRenderer)
+			return armorRenderer.getBlueModel();
 
-		if (GeoRenderProvider.of(pArmour).getGeoArmorRenderer(null, pArmour, null, null) instanceof GeoArmorRenderer<?> armorRenderer)
-			return armorRenderer.getGeoModel();
+		if (BlueRenderProvider.of(pArmour).getBlueArmorRenderer(null, pArmour, null, null) instanceof BlueArmorRenderer<?> armorRenderer)
+			return armorRenderer.getBlueModel();
 
 		return null;
 	}

@@ -44,12 +44,12 @@ import software.bluelib.BlueLibConstants;
 import software.bluelib.api.utils.Color;
 import software.bluelib.client.loader.cache.model.BoneCache;
 import software.bluelib.client.loader.cache.model.CubeCache;
-import software.bluelib.loader.animatable.GeoAnimatable;
-import software.bluelib.loader.animatable.client.GeoRenderProvider;
-import software.bluelib.loader.model.GeoModel;
-import software.bluelib.loader.renderer.GeoArmorRenderer;
-import software.bluelib.loader.renderer.GeoRenderer;
-import software.bluelib.loader.renderer.GeoReplacedEntityRenderer;
+import software.bluelib.loader.animatable.BlueAnimatable;
+import software.bluelib.loader.animatable.client.BlueRenderProvider;
+import software.bluelib.loader.model.BlueModel;
+import software.bluelib.loader.renderer.BlueRenderer;
+import software.bluelib.loader.renderer.BlueReplacedEntityRenderer;
+import software.bluelib.loader.renderer.BlueArmorRenderer;
 
 @SuppressWarnings("unused")
 public final class RenderUtils {
@@ -210,41 +210,41 @@ public final class RenderUtils {
     }
 
     @Nullable
-    public static GeoModel<?> getGeoModelForEntityType(EntityType<?> pEntityType) {
+    public static BlueModel<?> getBlueModelForEntityType(EntityType<?> pEntityType) {
         EntityRenderer<?> renderer = Minecraft.getInstance().getEntityRenderDispatcher().renderers.get(pEntityType);
 
-        return renderer instanceof GeoRenderer<?> geoRenderer ? geoRenderer.getGeoModel() : null;
+        return renderer instanceof BlueRenderer<?> blueRenderer ? blueRenderer.getBlueModel() : null;
     }
 
     @Nullable
-    public static GeoAnimatable getReplacedAnimatable(EntityType<?> pEntityType) {
+    public static BlueAnimatable getReplacedAnimatable(EntityType<?> pEntityType) {
         EntityRenderer<?> renderer = Minecraft.getInstance().getEntityRenderDispatcher().renderers.get(pEntityType);
 
-        return renderer instanceof GeoReplacedEntityRenderer<?, ?> replacedEntityRenderer ? replacedEntityRenderer.getAnimatable() : null;
+        return renderer instanceof BlueReplacedEntityRenderer<?, ?> replacedEntityRenderer ? replacedEntityRenderer.getAnimatable() : null;
     }
 
     @Nullable
-    public static GeoModel<?> getGeoModelForEntity(Entity pEntity) {
+    public static BlueModel<?> getBlueModelForEntity(Entity pEntity) {
         EntityRenderer<?> renderer = Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(pEntity);
 
-        return renderer instanceof GeoRenderer<?> geoRenderer ? geoRenderer.getGeoModel() : null;
+        return renderer instanceof BlueRenderer<?> blueRenderer ? blueRenderer.getBlueModel() : null;
     }
 
     @Nullable
-    public static GeoModel<?> getGeoModelForItem(ItemStack pItem) {
-        return BlueLibConstants.PlatformHelper.ITEM_RENDERING.getGeoModelForItem(pItem);
+    public static BlueModel<?> getBlueModelForItem(ItemStack pItem) {
+        return BlueLibConstants.PlatformHelper.ITEM_RENDERING.getBlueModelForItem(pItem);
     }
 
     @Nullable
-    public static GeoModel<?> getGeoModelForBlock(BlockEntity pBlockEntity) {
+    public static BlueModel<?> getBlueModelForBlock(BlockEntity pBlockEntity) {
         BlockEntityRenderer<?> renderer = Minecraft.getInstance().getBlockEntityRenderDispatcher().getRenderer(pBlockEntity);
 
-        return renderer instanceof GeoRenderer<?> geoRenderer ? geoRenderer.getGeoModel() : null;
+        return renderer instanceof BlueRenderer<?> blueRenderer ? blueRenderer.getBlueModel() : null;
     }
 
     @Nullable
-    public static GeoModel<?> getGeoModelForArmor(ItemStack pStack) {
-        return BlueLibConstants.PlatformHelper.ITEM_RENDERING.getGeoModelForArmor(pStack);
+    public static BlueModel<?> getBlueModelForArmor(ItemStack pStack) {
+        return BlueLibConstants.PlatformHelper.ITEM_RENDERING.getBlueModelForArmor(pStack);
     }
 
     public static <T extends LivingEntity, M extends HumanoidModel<T>, A extends HumanoidModel<T>> boolean tryRenderArmorPiece(PoseStack pPoseStack, MultiBufferSource pBufferSource, T pEntity, ItemStack pStack, EquipmentSlot pEquipmentSlot, M pParentModel, A pBaseModel,
@@ -255,7 +255,7 @@ public final class RenderUtils {
         if (!(item instanceof Equipable equipable) || equipable.getEquipmentSlot() != pEquipmentSlot)
             return false;
 
-        final HumanoidModel<?> model = GeoRenderProvider.of(item).getGeoArmorRenderer(pEntity, pStack, pEquipmentSlot, pBaseModel);
+        final HumanoidModel<?> model = BlueRenderProvider.of(item).getBlueArmorRenderer(pEntity, pStack, pEquipmentSlot, pBaseModel);
 
         if (model == null)
             return false;
@@ -263,8 +263,8 @@ public final class RenderUtils {
         pParentModel.copyPropertiesTo(pBaseModel);
         pPartVisibilitySetter.accept(pBaseModel, pEquipmentSlot);
 
-        if (model instanceof GeoArmorRenderer<?> geoArmorRenderer)
-            geoArmorRenderer.prepForRender(pEntity, pStack, pEquipmentSlot, pBaseModel, pBufferSource, pPartialTick, pLimbSwing, pLimbSwingAmount, pNetHeadYaw, pHeadPitch);
+        if (model instanceof BlueArmorRenderer<?> BlueArmorRenderer)
+            BlueArmorRenderer.prepForRender(pEntity, pStack, pEquipmentSlot, pBaseModel, pBufferSource, pPartialTick, pLimbSwing, pLimbSwingAmount, pNetHeadYaw, pHeadPitch);
 
         pBaseModel.copyPropertiesTo((A) model);
         model.renderToBuffer(pPoseStack, null, pPackedLight, OverlayTexture.NO_OVERLAY, Color.WHITE.argbInt());

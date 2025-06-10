@@ -20,7 +20,7 @@ import software.bluelib.api.utils.DataUtils;
 public class ItemStackMixin {
 
     @WrapOperation(method = "split", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;copyWithCount(I)Lnet/minecraft/world/item/ItemStack;"))
-    public ItemStack geckolib$removeGeckolibIdOnCopy(ItemStack instance, int count, Operation<ItemStack> original) {
+    public ItemStack BlueLib$removeBlueLibIdOnCopy(ItemStack instance, int count, Operation<ItemStack> original) {
         ItemStack copy = original.call(instance, count);
 
         if (count < instance.getCount() && copy.has(BlueLibConstants.STACK_ANIMATABLE_ID_COMPONENT.get()))
@@ -30,7 +30,7 @@ public class ItemStackMixin {
     }
 
     @WrapOperation(method = "isSameItemSameComponents", at = @At(value = "INVOKE", target = "Ljava/util/Objects;equals(Ljava/lang/Object;Ljava/lang/Object;)Z"))
-    private static boolean geckolib$skipGeckolibIdOnCompare(Object a, Object b, Operation<Boolean> original) {
+    private static boolean BlueLib$skipBlueLibIdOnCompare(Object a, Object b, Operation<Boolean> original) {
         if (original.call(a, b))
             return true;
 

@@ -7,14 +7,14 @@
  */
 package software.bluelib.loader.animatable.instance;
 
-import software.bluelib.loader.animatable.GeoAnimatable;
+import software.bluelib.loader.animatable.BlueAnimatable;
 import software.bluelib.loader.animation.AnimatableManager;
 
 public class InstancedAnimatableInstanceCache extends AnimatableInstanceCache {
 
     protected AnimatableManager<?> manager;
 
-    public InstancedAnimatableInstanceCache(GeoAnimatable animatable) {
+    public InstancedAnimatableInstanceCache(BlueAnimatable animatable) {
         super(animatable);
     }
 

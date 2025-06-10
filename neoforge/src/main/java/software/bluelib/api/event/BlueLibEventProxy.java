@@ -17,7 +17,7 @@ import software.bluelib.api.event.mod.AllModsLoadedEvent;
 import software.bluelib.api.event.mod.ModLoadedEvent;
 import software.bluelib.api.event.mod.ModMeta;
 import software.bluelib.client.loader.cache.model.ModelCache;
-import software.bluelib.loader.event.GeoRenderEvent;
+import software.bluelib.loader.event.BlueRenderEvent;
 import software.bluelib.loader.renderer.*;
 
 import java.util.List;
@@ -58,92 +58,92 @@ public class BlueLibEventProxy implements IEventProxy {
 	}
 
 	@Override
-	public void fireCompileBlockRenderLayers(GeoBlockRenderer<?> pRenderer) {
-		NeoForge.EVENT_BUS.post(new GeoRenderEvent.Block.CompileRenderLayers(pRenderer));
+	public void fireCompileBlockRenderLayers(BlueBlockRenderer<?> pRenderer) {
+		NeoForge.EVENT_BUS.post(new BlueRenderEvent.Block.CompileRenderLayers(pRenderer));
 	}
 	
 	@Override
-	public boolean fireBlockPreRender(GeoBlockRenderer<?> pRenderer, PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight) {
-		return !NeoForge.EVENT_BUS.post(new GeoRenderEvent.Block.Pre(pRenderer, pPoseStack, pModel, pBufferSource, pPartialTick, pPackedLight)).isCanceled();
+	public boolean fireBlockPreRender(BlueBlockRenderer<?> pRenderer, PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight) {
+		return !NeoForge.EVENT_BUS.post(new BlueRenderEvent.Block.Pre(pRenderer, pPoseStack, pModel, pBufferSource, pPartialTick, pPackedLight)).isCanceled();
 	}
 	
 	@Override
-	public void fireBlockPostRender(GeoBlockRenderer<?> pRenderer, PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight) {
-		NeoForge.EVENT_BUS.post(new GeoRenderEvent.Block.Post(pRenderer, pPoseStack, pModel, pBufferSource, pPartialTick, pPackedLight));
+	public void fireBlockPostRender(BlueBlockRenderer<?> pRenderer, PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight) {
+		NeoForge.EVENT_BUS.post(new BlueRenderEvent.Block.Post(pRenderer, pPoseStack, pModel, pBufferSource, pPartialTick, pPackedLight));
 	}
 	
 	@Override
-	public void fireCompileArmorRenderLayers(GeoArmorRenderer<?> pRenderer) {
-		NeoForge.EVENT_BUS.post(new GeoRenderEvent.Armor.CompileRenderLayers(pRenderer));
+	public void fireCompileArmorRenderLayers(BlueArmorRenderer<?> pRenderer) {
+		NeoForge.EVENT_BUS.post(new BlueRenderEvent.Armor.CompileRenderLayers(pRenderer));
 	}
 	
 	@Override
-	public boolean fireArmorPreRender(GeoArmorRenderer<?> pRenderer, PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight) {
-		return !NeoForge.EVENT_BUS.post(new GeoRenderEvent.Armor.Pre(pRenderer, pPoseStack, pModel, pBufferSource, pPartialTick, pPackedLight)).isCanceled();
+	public boolean fireArmorPreRender(BlueArmorRenderer<?> pRenderer, PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight) {
+		return !NeoForge.EVENT_BUS.post(new BlueRenderEvent.Armor.Pre(pRenderer, pPoseStack, pModel, pBufferSource, pPartialTick, pPackedLight)).isCanceled();
 	}
 	
 	@Override
-	public void fireArmorPostRender(GeoArmorRenderer<?> pRenderer, PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight) {
-		NeoForge.EVENT_BUS.post(new GeoRenderEvent.Armor.Post(pRenderer, pPoseStack, pModel, pBufferSource, pPartialTick, pPackedLight));
+	public void fireArmorPostRender(BlueArmorRenderer<?> pRenderer, PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight) {
+		NeoForge.EVENT_BUS.post(new BlueRenderEvent.Armor.Post(pRenderer, pPoseStack, pModel, pBufferSource, pPartialTick, pPackedLight));
 	}
 	
 	@Override
-	public void fireCompileEntityRenderLayers(GeoEntityRenderer<?> pRenderer) {
-		NeoForge.EVENT_BUS.post(new GeoRenderEvent.Entity.CompileRenderLayers(pRenderer));
+	public void fireCompileEntityRenderLayers(BlueEntityRenderer<?> pRenderer) {
+		NeoForge.EVENT_BUS.post(new BlueRenderEvent.Entity.CompileRenderLayers(pRenderer));
 	}
 	
 	@Override
-	public boolean fireEntityPreRender(GeoEntityRenderer<?> pRenderer, PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight) {
-		return !NeoForge.EVENT_BUS.post(new GeoRenderEvent.Entity.Pre(pRenderer, pPoseStack, pModel, pBufferSource, pPartialTick, pPackedLight)).isCanceled();
+	public boolean fireEntityPreRender(BlueEntityRenderer<?> pRenderer, PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight) {
+		return !NeoForge.EVENT_BUS.post(new BlueRenderEvent.Entity.Pre(pRenderer, pPoseStack, pModel, pBufferSource, pPartialTick, pPackedLight)).isCanceled();
 	}
 	
 	@Override
-	public void fireEntityPostRender(GeoEntityRenderer<?> pRenderer, PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight) {
-		NeoForge.EVENT_BUS.post(new GeoRenderEvent.Entity.Post(pRenderer, pPoseStack, pModel, pBufferSource, pPartialTick, pPackedLight));
+	public void fireEntityPostRender(BlueEntityRenderer<?> pRenderer, PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight) {
+		NeoForge.EVENT_BUS.post(new BlueRenderEvent.Entity.Post(pRenderer, pPoseStack, pModel, pBufferSource, pPartialTick, pPackedLight));
 	}
 	
 	@Override
-	public void fireCompileReplacedEntityRenderLayers(GeoReplacedEntityRenderer<?, ?> pRenderer) {
-		NeoForge.EVENT_BUS.post(new GeoRenderEvent.ReplacedEntity.CompileRenderLayers(pRenderer));
+	public void fireCompileReplacedEntityRenderLayers(BlueReplacedEntityRenderer<?, ?> pRenderer) {
+		NeoForge.EVENT_BUS.post(new BlueRenderEvent.ReplacedEntity.CompileRenderLayers(pRenderer));
 	}
 	
 	@Override
-	public boolean fireReplacedEntityPreRender(GeoReplacedEntityRenderer<?, ?> pRenderer, PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight) {
-		return !NeoForge.EVENT_BUS.post(new GeoRenderEvent.ReplacedEntity.Pre(pRenderer, pPoseStack, pModel, pBufferSource, pPartialTick, pPackedLight)).isCanceled();
+	public boolean fireReplacedEntityPreRender(BlueReplacedEntityRenderer<?, ?> pRenderer, PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight) {
+		return !NeoForge.EVENT_BUS.post(new BlueRenderEvent.ReplacedEntity.Pre(pRenderer, pPoseStack, pModel, pBufferSource, pPartialTick, pPackedLight)).isCanceled();
 	}
 	
 	@Override
-	public void fireReplacedEntityPostRender(GeoReplacedEntityRenderer<?, ?> pRenderer, PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight) {
-		NeoForge.EVENT_BUS.post(new GeoRenderEvent.ReplacedEntity.Post(pRenderer, pPoseStack, pModel, pBufferSource, pPartialTick, pPackedLight));
+	public void fireReplacedEntityPostRender(BlueReplacedEntityRenderer<?, ?> pRenderer, PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight) {
+		NeoForge.EVENT_BUS.post(new BlueRenderEvent.ReplacedEntity.Post(pRenderer, pPoseStack, pModel, pBufferSource, pPartialTick, pPackedLight));
 	}
 	
 	@Override
-	public void fireCompileItemRenderLayers(GeoItemRenderer<?> pRenderer) {
-		NeoForge.EVENT_BUS.post(new GeoRenderEvent.Item.CompileRenderLayers(pRenderer));
+	public void fireCompileItemRenderLayers(BlueItemRenderer<?> pRenderer) {
+		NeoForge.EVENT_BUS.post(new BlueRenderEvent.Item.CompileRenderLayers(pRenderer));
 	}
 	
 	@Override
-	public boolean fireItemPreRender(GeoItemRenderer<?> pRenderer, PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight) {
-		return !NeoForge.EVENT_BUS.post(new GeoRenderEvent.Item.Pre(pRenderer, pPoseStack, pModel, pBufferSource, pPartialTick, pPackedLight)).isCanceled();
+	public boolean fireItemPreRender(BlueItemRenderer<?> pRenderer, PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight) {
+		return !NeoForge.EVENT_BUS.post(new BlueRenderEvent.Item.Pre(pRenderer, pPoseStack, pModel, pBufferSource, pPartialTick, pPackedLight)).isCanceled();
 	}
 	
 	@Override
-	public void fireItemPostRender(GeoItemRenderer<?> pRenderer, PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight) {
-		NeoForge.EVENT_BUS.post(new GeoRenderEvent.Item.Post(pRenderer, pPoseStack, pModel, pBufferSource, pPartialTick, pPackedLight));
+	public void fireItemPostRender(BlueItemRenderer<?> pRenderer, PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight) {
+		NeoForge.EVENT_BUS.post(new BlueRenderEvent.Item.Post(pRenderer, pPoseStack, pModel, pBufferSource, pPartialTick, pPackedLight));
 	}
 	
 	@Override
-	public void fireCompileObjectRenderLayers(GeoObjectRenderer<?> pRenderer) {
-		NeoForge.EVENT_BUS.post(new GeoRenderEvent.Object.CompileRenderLayers(pRenderer));
+	public void fireCompileObjectRenderLayers(BlueObjectRenderer<?> pRenderer) {
+		NeoForge.EVENT_BUS.post(new BlueRenderEvent.Object.CompileRenderLayers(pRenderer));
 	}
 	
 	@Override
-	public boolean fireObjectPreRender(GeoObjectRenderer<?> pRenderer, PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight) {
-		return !NeoForge.EVENT_BUS.post(new GeoRenderEvent.Object.Pre(pRenderer, pPoseStack, pModel, pBufferSource, pPartialTick, pPackedLight)).isCanceled();
+	public boolean fireObjectPreRender(BlueObjectRenderer<?> pRenderer, PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight) {
+		return !NeoForge.EVENT_BUS.post(new BlueRenderEvent.Object.Pre(pRenderer, pPoseStack, pModel, pBufferSource, pPartialTick, pPackedLight)).isCanceled();
 	}
 	
 	@Override
-	public void fireObjectPostRender(GeoObjectRenderer<?> pRenderer, PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight) {
-		NeoForge.EVENT_BUS.post(new GeoRenderEvent.Object.Post(pRenderer, pPoseStack, pModel, pBufferSource, pPartialTick, pPackedLight));
+	public void fireObjectPostRender(BlueObjectRenderer<?> pRenderer, PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight) {
+		NeoForge.EVENT_BUS.post(new BlueRenderEvent.Object.Post(pRenderer, pPoseStack, pModel, pBufferSource, pPartialTick, pPackedLight));
 	}
 }

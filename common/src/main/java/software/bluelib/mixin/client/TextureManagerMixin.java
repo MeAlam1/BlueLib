@@ -26,7 +26,7 @@ public abstract class TextureManagerMixin {
     public abstract void register(ResourceLocation path, AbstractTexture texture);
 
     @WrapOperation(method = "getTexture(Lnet/minecraft/resources/ResourceLocation;)Lnet/minecraft/client/renderer/texture/AbstractTexture;", at = @At(value = "NEW", target = "(Lnet/minecraft/resources/ResourceLocation;)Lnet/minecraft/client/renderer/texture/SimpleTexture;"), require = 0)
-    private SimpleTexture geckolib$replaceAnimatableTexture(ResourceLocation location, Operation<SimpleTexture> original) {
+    private SimpleTexture BlueLib$replaceAnimatableTexture(ResourceLocation location, Operation<SimpleTexture> original) {
         AnimatableTexture animatableTexture = new AnimatableTexture(location);
 
         register(location, animatableTexture);
@@ -35,7 +35,7 @@ public abstract class TextureManagerMixin {
     }
 
     @WrapWithCondition(method = "getTexture(Lnet/minecraft/resources/ResourceLocation;)Lnet/minecraft/client/renderer/texture/AbstractTexture;", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/texture/TextureManager;register(Lnet/minecraft/resources/ResourceLocation;Lnet/minecraft/client/renderer/texture/AbstractTexture;)V"), require = 0)
-    private boolean geckolib$skipAnimatableTextureRegistration(TextureManager textureManager, ResourceLocation location, AbstractTexture texture) {
+    private boolean BlueLib$skipAnimatableTextureRegistration(TextureManager textureManager, ResourceLocation location, AbstractTexture texture) {
         return !(texture instanceof AnimatableTexture);
     }
 }

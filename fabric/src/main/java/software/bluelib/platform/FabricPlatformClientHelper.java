@@ -6,26 +6,26 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import software.bluelib.loader.animatable.GeoAnimatable;
-import software.bluelib.loader.animatable.client.GeoRenderProvider;
-import software.bluelib.loader.model.GeoModel;
-import software.bluelib.loader.renderer.GeoArmorRenderer;
-import software.bluelib.loader.renderer.GeoRenderer;
+import software.bluelib.loader.animatable.BlueAnimatable;
+import software.bluelib.loader.animatable.client.BlueRenderProvider;
+import software.bluelib.loader.model.BlueModel;
+import software.bluelib.loader.renderer.BlueArmorRenderer;
+import software.bluelib.loader.renderer.BlueRenderer;
 
 public class FabricPlatformClientHelper implements IPlatformClient {
 
 	@NotNull
 	@Override
-	public <T extends LivingEntity & GeoAnimatable> HumanoidModel<?> getArmorModelForItem(T pAnimatable, ItemStack pStack, EquipmentSlot pSlot, HumanoidModel<LivingEntity> pDefaultModel) {
-		return GeoRenderProvider.of(pStack).getGeoArmorRenderer(pAnimatable, pStack, pSlot, pDefaultModel) instanceof GeoArmorRenderer<?> geoArmorRenderer ? geoArmorRenderer : pDefaultModel;
+	public <T extends LivingEntity & BlueAnimatable> HumanoidModel<?> getArmorModelForItem(T pAnimatable, ItemStack pStack, EquipmentSlot pSlot, HumanoidModel<LivingEntity> pDefaultModel) {
+		return BlueRenderProvider.of(pStack).getBlueArmorRenderer(pAnimatable, pStack, pSlot, pDefaultModel) instanceof BlueArmorRenderer<?> BlueArmorRenderer ? BlueArmorRenderer : pDefaultModel;
 	}
 
 
 	@Nullable
 	@Override
-	public GeoModel<?> getGeoModelForItem(ItemStack pItem) {
-		if (GeoRenderProvider.of(pItem).getGeoItemRenderer() instanceof GeoRenderer<?> geoItemRenderer)
-			return geoItemRenderer.getGeoModel();
+	public BlueModel<?> getBlueModelForItem(ItemStack pItem) {
+		if (BlueRenderProvider.of(pItem).getBlueItemRenderer() instanceof BlueRenderer<?> BlueItemRenderer)
+			return BlueItemRenderer.getBlueModel();
 
 		return null;
 	}
@@ -33,9 +33,9 @@ public class FabricPlatformClientHelper implements IPlatformClient {
 
 	@Nullable
 	@Override
-	public GeoModel<?> getGeoModelForArmor(ItemStack pArmour) {
-		if (GeoRenderProvider.of(pArmour).getGeoArmorRenderer(null, pArmour, null, null) instanceof GeoArmorRenderer<?> armorRenderer)
-			return armorRenderer.getGeoModel();
+	public BlueModel<?> getBlueModelForArmor(ItemStack pArmour) {
+		if (BlueRenderProvider.of(pArmour).getBlueArmorRenderer(null, pArmour, null, null) instanceof BlueArmorRenderer<?> armorRenderer)
+			return armorRenderer.getBlueModel();
 
 		return null;
 	}
