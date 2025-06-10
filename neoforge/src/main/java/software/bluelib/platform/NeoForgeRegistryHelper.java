@@ -7,16 +7,21 @@
  */
 package software.bluelib.platform;
 
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.registries.DeferredRegister;
 import software.bluelib.BlueLibConstants;
-import software.bluelib.NeoRegistries;
 import software.bluelib.net.NeoForgeNetworkManager;
 
 import java.util.function.Supplier;
 
 public class NeoForgeRegistryHelper implements IRegistryHelper {
 
+	public static final DeferredRegister<RecipeType<?>> RECIPE_TYPES = DeferredRegister.create(Registries.RECIPE_TYPE, BlueLibConstants.MOD_ID);
+	public static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(Registries.RECIPE_SERIALIZER, BlueLibConstants.MOD_ID);
+	
 	@Override
 	public BlueLibConstants.NetworkManager getNetwork() {
 		return new NeoForgeNetworkManager();
@@ -24,11 +29,16 @@ public class NeoForgeRegistryHelper implements IRegistryHelper {
 
 	@Override
 	public <T extends RecipeType<?>> Supplier<T> registerRecipeType(String pId, Supplier<T> pRecipeType) {
-		return NeoRegistries.RECIPE_TYPES.register(pId, pRecipeType);
+		return RECIPE_TYPES.register(pId, pRecipeType);
 	}
 
 	@Override
 	public <T extends RecipeSerializer<?>> Supplier<T> registerRecipeSerializer(String pId, Supplier<T> pRecipeSerializer) {
-		return NeoRegistries.RECIPE_SERIALIZERS.register(pId, pRecipeSerializer);
+		return RECIPE_SERIALIZERS.register(pId, pRecipeSerializer);
+	}
+
+	public static void register(IEventBus pModEventBus) {
+		RECIPE_TYPES.register(pModEventBus);
+		RECIPE_SERIALIZERS.register(pModEventBus);
 	}
 }

@@ -43,6 +43,7 @@ public class BlueLibCommon {
     }
 
     public static void doRegistration() {
+        BlueLibConstants.init();
         MixinBootstrap.init();
         InternalNetworkRegistry.networkServer();
         BlueRecipeTypeRegistry.init();

@@ -20,14 +20,16 @@ import software.bluelib.config.ConfigHolder;
 import software.bluelib.event.ReloadHandler;
 import software.bluelib.example.event.VariantProvider;
 import software.bluelib.net.NeoForgeNetworkManager;
+import software.bluelib.platform.NeoForgeRegistryHelper;
 
 @Mod(BlueLibConstants.MOD_ID)
 public class BlueLib {
 
 	public BlueLib(IEventBus pModEventBus, ModContainer pModContainer) {
-		BlueLibCommon.doRegistration();
-		NeoRegistries.register(pModEventBus);
+		NeoForgeRegistryHelper.register(pModEventBus);
 		
+		BlueLibCommon.doRegistration();
+
 		if (FMLEnvironment.dist == Dist.CLIENT)
 			BlueLibClient.init(pModContainer);
 

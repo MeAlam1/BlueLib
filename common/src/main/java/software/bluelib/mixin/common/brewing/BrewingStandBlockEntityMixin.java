@@ -15,7 +15,6 @@ import java.util.Optional;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.Containers;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.alchemy.PotionBrewing;
 import net.minecraft.world.item.crafting.RecipeHolder;
@@ -40,24 +39,27 @@ public class BrewingStandBlockEntityMixin {
             pOriginal.call(pLevel, pPos, pSlots);
             return;
         }
-        ItemStack result = recipe.getResult().copy();
+        ItemStack itemStack = pSlots.get(3);
         for (int i = 0; i < 3; ++i) {
-            pSlots.set(i, result);
+            pSlots.set(i, recipe.getResult().copy());
         }
 
-        ItemStack ingredient = pSlots.get(3);
-        ingredient.shrink(1);
-        Item craftingRemaining = ingredient.getItem().getCraftingRemainingItem();
-        if (ingredient.getItem().hasCraftingRemainingItem() && craftingRemaining != null) {
-            ItemStack rem = new ItemStack(craftingRemaining);
-            if (ingredient.isEmpty()) {
-                ingredient = rem;
-            } else {
-                Containers.dropItemStack(pLevel, pPos.getX(), pPos.getY(), pPos.getZ(), rem);
+        itemStack.shrink(1);
+        ItemStack remaining = null;
+        if (itemStack.getItem().hasCraftingRemainingItem()) {
+            var remainingItem = itemStack.getItem().getCraftingRemainingItem();
+            if (remainingItem != null) {
+                remaining = new ItemStack(remainingItem);
+            }
+            if (itemStack.isEmpty()) {
+                itemStack = remaining;
+            } else if (remaining != null) {
+                Containers.dropItemStack(pLevel, pPos.getX(), pPos.getY(), pPos.getZ(), remaining);
             }
         }
-
-        pSlots.set(3, ingredient);
+        if (itemStack != null) {
+            pSlots.set(3, itemStack);
+        }
         pLevel.levelEvent(LevelEvent.SOUND_BREWING_STAND_BREW, pPos, 0);
     }
 
