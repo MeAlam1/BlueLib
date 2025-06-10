@@ -11,7 +11,6 @@ import static software.bluelib.BlueLibConstants.SCHEDULER;
 
 import java.nio.file.Path;
 import java.util.concurrent.TimeUnit;
-
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.ApiStatus;
 import org.spongepowered.asm.launch.MixinBootstrap;
@@ -63,10 +62,7 @@ public class BlueLibCommon {
         InternalNetworkRegistry.networkServer();
         BlueRecipeTypeRegistry.init();
         BlueRecipeSerializerRegistry.init();
-    }
 
-    public static void doClientRegistration() {
-        InternalNetworkRegistry.networkClient();
         TestEntityReg.init();
 
         Path assetsPath = BlueLibConstants.PlatformHelper.PLATFORM.getAssetsDir(false);
@@ -74,6 +70,10 @@ public class BlueLibCommon {
 
         Path dataPath = BlueLibConstants.PlatformHelper.PLATFORM.getDataDir(false);
         System.out.println("Data path at:" + dataPath);
+    }
+
+    public static void doClientRegistration() {
+        InternalNetworkRegistry.networkClient();
     }
 
     public static boolean isDeveloperMode() {

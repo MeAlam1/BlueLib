@@ -50,6 +50,7 @@ public class BlueLib {
 	public BlueLib(IEventBus pModEventBus, ModContainer pModContainer) {
 		BlueLibCommon.doRegistration();
 		NeoRegistries.register(pModEventBus);
+		NeoForgeRegistryHelper.register(pModEventBus);
 
 		if (FMLEnvironment.dist == Dist.CLIENT)
 			BlueLibClient.init(pModContainer);

@@ -11,6 +11,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.serialization.JsonOps;
+import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.recipes.RecipeOutput;
@@ -21,9 +22,9 @@ import net.minecraft.world.item.crafting.*;
 import net.neoforged.neoforge.common.conditions.ICondition;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import software.bluelib.api.registry.helpers.recipe.PatternKeyProvider;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
@@ -39,50 +40,35 @@ public class NeoRecipeGenerator {
                     JsonObject json = new JsonObject();
                     json.addProperty("type", "minecraft:crafting_shaped");
                     json.addProperty("category", "misc");
-
-                    // Try to get original pattern/key if available
-                    java.util.List<String> patternList = null;
-                    java.util.Map<Character, Ingredient> keyMap = null;
-                    if (pRecipe instanceof PatternKeyProvider provider) {
-                        patternList = provider.getPattern();
-                        keyMap = provider.getKey();
-                    }
-
+                    List<String> patternList = null;
+                    Map<Character, Ingredient> keyMap;
                     JsonArray pattern = new JsonArray();
                     JsonObject key = new JsonObject();
 
-                    if (patternList != null && keyMap != null) {
-                        // Use captured pattern/key
-                        for (String row : patternList) pattern.add(row);
-                        for (var entry : keyMap.entrySet())
-                            key.add(String.valueOf(entry.getKey()), serializeIngredient(entry.getValue()));
-                    } else {
-                        // Fallback: reconstruct pattern/key with generic letters
-                        int width = shaped.getWidth();
-                        int height = shaped.getHeight();
-                        char symbol = 'A';
-                        char[][] symbols = new char[height][width];
-                        Map<Ingredient, Character> ingredientSymbols = new HashMap<>();
-                        for (int i = 0; i < height; i++) {
-                            StringBuilder row = new StringBuilder();
-                            for (int j = 0; j < width; j++) {
-                                Ingredient ingredient = shaped.getIngredients().get(i * width + j);
-                                if (ingredient.isEmpty()) {
-                                    row.append(' ');
-                                    symbols[i][j] = ' ';
-                                } else {
-                                    ingredientSymbols.putIfAbsent(ingredient, symbol);
-                                    char c = ingredientSymbols.get(ingredient);
-                                    row.append(c);
-                                    symbols[i][j] = c;
-                                    symbol++;
-                                }
+                    int width = shaped.getWidth();
+                    int height = shaped.getHeight();
+                    char symbol = 'A';
+                    char[][] symbols = new char[height][width];
+                    Map<Ingredient, Character> ingredientSymbols = new HashMap<>();
+                    for (int i = 0; i < height; i++) {
+                        StringBuilder row = new StringBuilder();
+                        for (int j = 0; j < width; j++) {
+                            Ingredient ingredient = shaped.getIngredients().get(i * width + j);
+                            if (ingredient.isEmpty()) {
+                                row.append(' ');
+                                symbols[i][j] = ' ';
+                            } else {
+                                ingredientSymbols.putIfAbsent(ingredient, symbol);
+                                char c = ingredientSymbols.get(ingredient);
+                                row.append(c);
+                                symbols[i][j] = c;
+                                symbol++;
                             }
-                            pattern.add(row.toString());
                         }
-                        for (var entry : ingredientSymbols.entrySet())
-                            key.add(String.valueOf(entry.getValue()), serializeIngredient(entry.getKey()));
+                        pattern.add(row.toString());
                     }
+                    for (var entry : ingredientSymbols.entrySet())
+                        key.add(String.valueOf(entry.getValue()), serializeIngredient(entry.getKey()));
 
                     json.add("pattern", pattern);
                     json.add("key", key);
@@ -99,6 +85,29 @@ public class NeoRecipeGenerator {
                     json.add("ingredients", ingredients);
                     json.add("result", serializeResult(shapeless.getResultItem(null)));
                     capturedJson[0] = json;
+                } else if (pRecipe instanceof AbstractCookingRecipe cooking) {
+                    JsonObject json = new JsonObject();
+                    String type;
+                    if (cooking.getSerializer().equals(RecipeSerializer.SMELTING_RECIPE)) {
+                        type = "minecraft:smelting";
+                    } else if (cooking.getSerializer().equals(RecipeSerializer.BLASTING_RECIPE)) {
+                        type = "minecraft:blasting";
+                    } else if (cooking.getSerializer().equals(RecipeSerializer.SMOKING_RECIPE)) {
+                        type = "minecraft:smoking";
+                    } else if (cooking.getSerializer().equals(RecipeSerializer.CAMPFIRE_COOKING_RECIPE)) {
+                        type = "minecraft:campfire_cooking";
+                    } else {
+                        type = cooking.getSerializer().toString();
+                    }
+                    json.addProperty("type", type);
+                    json.addProperty("category", "misc");
+                    JsonArray ingredients = new JsonArray();
+                    ingredients.add(serializeIngredient(cooking.getIngredients().get(0)));
+                    json.add("ingredient", ingredients.get(0));
+                    json.add("result", serializeResult(cooking.getResultItem(null)));
+                    json.addProperty("experience", cooking.getExperience());
+                    json.addProperty("cookingtime", cooking.getCookingTime());
+                    capturedJson[0] = json;
                 } else {
                     JsonObject json = new JsonObject();
                     json.addProperty("type", pRecipe.getSerializer().toString());
@@ -106,8 +115,8 @@ public class NeoRecipeGenerator {
                 }
             }
             @Override
-            public net.minecraft.advancements.Advancement.@NotNull Builder advancement() {
-                return net.minecraft.advancements.Advancement.Builder.advancement();
+            public Advancement.@NotNull Builder advancement() {
+                return Advancement.Builder.advancement();
             }
         };
 
@@ -123,7 +132,7 @@ public class NeoRecipeGenerator {
     private static JsonObject serializeResult(ItemStack stack) {
         JsonObject result = new JsonObject();
         ResourceLocation id = BuiltInRegistries.ITEM.getKey(stack.getItem());
-        result.addProperty("item", id.toString());
+        result.addProperty("id", id.toString());
         if (stack.getCount() > 1) {
             result.addProperty("count", stack.getCount());
         }

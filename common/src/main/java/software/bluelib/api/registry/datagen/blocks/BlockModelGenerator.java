@@ -3,16 +3,16 @@ package software.bluelib.api.registry.datagen.blocks;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
-import software.bluelib.BlueLibConstants;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.Collections;
 import java.util.Map;
+import software.bluelib.BlueLibConstants;
 
 public class BlockModelGenerator {
+
     public static final Gson GSON = new GsonBuilder()
             .setPrettyPrinting()
             .disableHtmlEscaping() //Prevent escaping of =, <, >, etc.

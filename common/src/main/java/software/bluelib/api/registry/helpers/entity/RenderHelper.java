@@ -1,15 +1,14 @@
 package software.bluelib.api.registry.helpers.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.BiConsumer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.BiConsumer;
 
 public class RenderHelper {
 

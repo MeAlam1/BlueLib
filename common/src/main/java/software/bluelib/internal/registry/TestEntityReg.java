@@ -1,22 +1,20 @@
 package software.bluelib.internal.registry;
 
+import static software.bluelib.BlueLibCommon.REGISTRIES;
+
+import java.util.function.Supplier;
 import net.minecraft.client.renderer.entity.PigRenderer;
-import net.minecraft.data.recipes.RecipeCategory;
-import net.minecraft.data.recipes.RecipeProvider;
-import net.minecraft.data.recipes.ShapedRecipeBuilder;
-import net.minecraft.data.recipes.ShapelessRecipeBuilder;
+import net.minecraft.data.recipes.*;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.animal.Pig;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Block;
 
-import java.util.function.Supplier;
-
-import static software.bluelib.BlueLibCommon.REGISTRIES;
-
 public class TestEntityReg {
+
     public static void init() {
         //BaseLogger.log(BaseLogLevel.SUCCESS, "Registered Entities!");
     }
@@ -31,19 +29,32 @@ public class TestEntityReg {
             .properties(Block.Properties.of().strength(1.0F, 1.0F))
             .defaultItem()
             .recipe((ctx, prov) -> ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ctx.getEntry())
-                    .requires(Items.DIAMOND, 5)
+                    .requires(Items.APPLE)
                     .unlockedBy("has_diamond", RecipeProvider.has(Items.DIAMOND))
                     .save(prov))
-            //.defaultBlockstate()
+            .defaultBlockstate()
             .register();
 
     public static final Supplier<Item> TEST_ITEM = REGISTRIES.item("test_item", Item::new)
-            .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ctx.getEntry())
-                    .pattern("XXX")
+            .recipe((ctx, prov) -> ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ctx.getEntry(), 5)
+                    .pattern(" X ")
                     .pattern("XWX")
-                    .pattern("XXX")
+                    .pattern(" X ")
                     .define('X', Items.RABBIT_FOOT)
                     .define('W', Items.APPLE)
+                    .unlockedBy("has_diamond", RecipeProvider.has(Items.DIAMOND))
+                    .save(prov))
+            .register();
+
+    public static final Supplier<Item> TEXT_ITEM = REGISTRIES.item("text_item", Item::new)
+            .recipe((ctx, prov) -> SimpleCookingRecipeBuilder.smoking(Ingredient.of(TEST_BLOCK.get()), RecipeCategory.MISC, ctx.getEntry(), 5, 3)
+                    .unlockedBy("has_diamond", RecipeProvider.has(Items.DIAMOND))
+                    .save(prov))
+            .register();
+
+    public static final Supplier<Item> TASTE_ITEM = REGISTRIES.item("taste_item", Item::new)
+            .recipe((ctx, prov) -> ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ctx.getEntry())
+                    .requires(Items.CARROT)
                     .unlockedBy("has_diamond", RecipeProvider.has(Items.DIAMOND))
                     .save(prov))
             .register();

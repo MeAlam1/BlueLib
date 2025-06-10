@@ -1,8 +1,11 @@
 package software.bluelib.api.registry.builders.blocks;
 
-import net.minecraft.data.recipes.RecipeCategory;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
+import java.util.function.Supplier;
 import net.minecraft.data.recipes.RecipeOutput;
-import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -15,35 +18,22 @@ import software.bluelib.api.registry.datagen.blockstates.BlockstateGenerator;
 import software.bluelib.api.registry.datagen.blockstates.BlockstateTemplates;
 import software.bluelib.api.registry.datagen.items.ItemModelGenerator;
 import software.bluelib.api.registry.datagen.items.ItemModelTemplates;
-import software.bluelib.api.registry.helpers.blocks.BlockstateBuilder;
-import net.minecraft.data.recipes.RecipeProvider;
-import net.minecraft.data.recipes.packs.VanillaRecipeProvider;
-import net.minecraft.world.level.ItemLike;
-import net.minecraft.data.DataProvider;
-import net.minecraft.resources.ResourceLocation;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.BiConsumer;
-import java.util.function.Function;
-import java.util.function.Supplier;
-import java.util.function.Consumer;
 
 public class BlockBuilder<T extends Block> {
 
     public static final List<BlockBuilder<?>> REGISTERED_BUILDERS = new ArrayList<>();
     private static final String modId = AbstractRegistryBuilder.getModID();
-    public static String blockName;
+    public final String blockName;
     public final Function<Block.Properties, T> blockConstructor;
     public Block.Properties properties;
-    public static boolean createDefaultItem = false;
+    public boolean createDefaultItem = false;
     public T registeredBlock;
     public static BlockstateTemplates blockstateTemplate;
     public static BlockModelTemplates blockModelTemplate;
     private BiConsumer<RecipeContext, RecipeOutput> recipeConsumer;
 
     public BlockBuilder(String name, Function<Block.Properties, T> blockConstructor) {
-        blockName = name;
+        this.blockName = name;
         this.blockConstructor = blockConstructor;
     }
 
@@ -53,7 +43,7 @@ public class BlockBuilder<T extends Block> {
     }
 
     public BlockBuilder<T> defaultItem() {
-        createDefaultItem = true;
+        this.createDefaultItem = true;
         return this;
     }
 
@@ -168,19 +158,21 @@ public class BlockBuilder<T extends Block> {
     }
 
     public static void doBlockModelGen(String modId) {
-        if (createDefaultItem) {
-            ItemModelGenerator.generateItemModel(modId, blockName, ItemModelTemplates.BLOCK_ITEM);
-        }
-        if (blockstateTemplate != null) {
-            BlockstateGenerator.generateBlockstate(modId, blockName, blockstateTemplate);
-            BlockModelGenerator.generateBlockModel(modId, blockName, blockModelTemplate);
+        for (BlockBuilder<?> builder : REGISTERED_BUILDERS) {
+            if (builder.createDefaultItem) {
+                ItemModelGenerator.generateItemModel(modId, builder.blockName, ItemModelTemplates.BLOCK_ITEM);
+            }
+            if (blockstateTemplate != null) {
+                BlockstateGenerator.generateBlockstate(modId, builder.blockName, blockstateTemplate);
+                BlockModelGenerator.generateBlockModel(modId, builder.blockName, blockModelTemplate);
+            }
         }
     }
 
     public static void doRecipeGen(String modId) {
         for (BlockBuilder<?> builder : REGISTERED_BUILDERS) {
             if (builder.recipeConsumer != null) {
-                RecipeGenerator.generateRecipe(modId, blockName, (recipeOutput, jsonSupplier) -> {
+                RecipeGenerator.generateRecipe(modId, builder.blockName, (recipeOutput, jsonSupplier) -> {
                     RecipeContext ctx = new RecipeContext(builder.registeredBlock);
                     builder.recipeConsumer.accept(ctx, recipeOutput);
                 });
@@ -189,6 +181,7 @@ public class BlockBuilder<T extends Block> {
     }
 
     public static class RecipeContext {
+
         private final Block block;
 
         public RecipeContext(Block block) {
@@ -197,6 +190,29 @@ public class BlockBuilder<T extends Block> {
 
         public Block getEntry() {
             return block;
+        }
+    }
+
+    public class BlockstateBuilder {
+
+        private final BlockBuilder<T> parent;
+
+        public BlockstateBuilder() {
+            this.parent = BlockBuilder.this;
+        }
+
+        public BlockstateBuilder blockstate(BlockstateTemplates blockstates) {
+            blockstateTemplate = blockstates;
+            return this;
+        }
+
+        public BlockstateBuilder model(BlockModelTemplates models) {
+            blockModelTemplate = models;
+            return this;
+        }
+
+        public BlockBuilder<T> finish() {
+            return parent;
         }
     }
 }

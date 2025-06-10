@@ -4,20 +4,21 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import software.bluelib.BlueLibConstants;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.Collections;
 import java.util.Map;
+import software.bluelib.BlueLibConstants;
 
 public class BlockstateGenerator {
+
     public static final Gson GSON = new GsonBuilder()
             .setPrettyPrinting()
             .disableHtmlEscaping() //Prevent escaping of =, <, >, etc.
             .create();
+
     public static void generateBlockstate(String modId, String name, BlockstateTemplates blockstateTemplate) {
         generateBlockstate(modId, name, blockstateTemplate, Collections.emptyMap());
     }

@@ -1,13 +1,12 @@
 package software.bluelib.api.registry.datagen.items;
 
 import com.google.gson.JsonObject;
+import java.util.Map;
+import java.util.Optional;
 import net.minecraft.data.models.model.ModelTemplate;
 import net.minecraft.data.models.model.TextureSlot;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Map;
-import java.util.Optional;
 
 public abstract class ItemModelTemplates {
 

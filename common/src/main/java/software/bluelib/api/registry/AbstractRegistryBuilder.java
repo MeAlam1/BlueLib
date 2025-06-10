@@ -1,10 +1,10 @@
 package software.bluelib.api.registry;
 
+import java.util.function.Function;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobCategory;
-import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -18,10 +18,8 @@ import software.bluelib.api.registry.builders.keybinds.KeybindBuilder;
 import software.bluelib.api.registry.builders.tabs.CreativeTabBuilder;
 import software.bluelib.api.registry.datagen.entity.EntityTagBuilder;
 
-import java.util.function.Function;
-import java.util.function.Supplier;
-
 public abstract class AbstractRegistryBuilder {
+
     private static String modID;
 
     public AbstractRegistryBuilder(String modId) {

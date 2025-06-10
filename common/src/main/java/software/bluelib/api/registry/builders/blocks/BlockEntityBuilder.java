@@ -1,16 +1,15 @@
 package software.bluelib.api.registry.builders.blocks;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.function.Supplier;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import software.bluelib.BlueLibConstants;
 import software.bluelib.api.registry.helpers.entity.RenderHelper;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.function.Supplier;
 
 public class BlockEntityBuilder<T extends BlockEntity> {
 

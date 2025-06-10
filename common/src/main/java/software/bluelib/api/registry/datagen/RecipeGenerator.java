@@ -10,24 +10,24 @@ package software.bluelib.api.registry.datagen;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
-import net.minecraft.data.recipes.RecipeOutput;
-import software.bluelib.BlueLibConstants;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
+import net.minecraft.data.recipes.RecipeOutput;
+import software.bluelib.BlueLibConstants;
 
 public class RecipeGenerator {
+
     public static final Gson GSON = new GsonBuilder()
             .setPrettyPrinting()
             .disableHtmlEscaping() // Prevent escaping of =, <, >, etc.
             .create();
 
     public static void generateRecipe(String modId, String name, BiConsumer<RecipeOutput, Supplier<JsonElement>> recipeConsumer) {
-        Path recipePath = Path.of(BlueLibConstants.PlatformHelper.PLATFORM.getDataDir(true) + "/recipes/" + name + ".json");
+        Path recipePath = Path.of(BlueLibConstants.PlatformHelper.PLATFORM.getDataDir(true) + "/recipe/" + name + ".json");
 
         try {
             if (Files.exists(recipePath)) {

@@ -1,10 +1,17 @@
 package software.bluelib.api.registry.builders.items;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
-import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.*;
 import software.bluelib.BlueLibConstants;
@@ -15,23 +22,13 @@ import software.bluelib.api.registry.datagen.items.ItemModelTemplates;
 import software.bluelib.api.registry.helpers.ArmorSetConfig;
 import software.bluelib.api.registry.helpers.ToolsetConfig;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
-
 @SuppressWarnings("unchecked")
 public class ItemBuilder<T extends Item> {
 
     public static final List<String> generatedItems = new ArrayList<>();
     public static final Map<String, ItemModelTemplates> customModelMap = new HashMap<>();
     public static final List<ItemBuilder<?>> REGISTERED_BUILDERS = new ArrayList<>();
-    public static String itemName;
+    public final String itemName;
     public final Function<Item.Properties, T> itemConstructor;
     public Consumer<Item.Properties> propertiesConsumer = props -> {};
     public static final Map<String, List<Supplier<Item>>> TOOLSETS = new HashMap<>();
@@ -41,7 +38,7 @@ public class ItemBuilder<T extends Item> {
     private T registeredItem;
 
     public ItemBuilder(String name, Function<Item.Properties, T> itemConstructor) {
-        itemName = name;
+        this.itemName = name;
         this.itemConstructor = itemConstructor;
     }
 
@@ -66,7 +63,7 @@ public class ItemBuilder<T extends Item> {
     public static void doRecipeGen(String modId) {
         for (ItemBuilder<?> builder : REGISTERED_BUILDERS) {
             if (builder.registeredItem != null && builder.recipeConsumer != null) {
-                RecipeGenerator.generateRecipe(modId, itemName, (jsonConsumer, jsonSupplier) -> {
+                RecipeGenerator.generateRecipe(modId, builder.itemName, (jsonConsumer, jsonSupplier) -> {
                     RecipeContext ctx = new RecipeContext(builder.registeredItem);
                     builder.recipeConsumer.accept(ctx, jsonConsumer);
                 });
@@ -212,6 +209,7 @@ public class ItemBuilder<T extends Item> {
     }
 
     public static class RecipeContext {
+
         private final Item item;
 
         public RecipeContext(Item item) {

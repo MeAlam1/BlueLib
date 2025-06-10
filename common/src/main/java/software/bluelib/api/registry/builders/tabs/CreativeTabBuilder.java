@@ -1,5 +1,7 @@
 package software.bluelib.api.registry.builders.tabs;
 
+import java.util.*;
+import java.util.function.Supplier;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -15,9 +17,6 @@ import software.bluelib.api.registry.builders.items.ItemBuilder;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
 
-import java.util.*;
-import java.util.function.Supplier;
-
 public class CreativeTabBuilder {
 
     private final String id;
@@ -29,7 +28,6 @@ public class CreativeTabBuilder {
 
     public CreativeTabBuilder(String id) {
         this.id = id;
-
     }
 
     public CreativeTabBuilder icon(Supplier<Item> iconSupplier) {
@@ -43,7 +41,8 @@ public class CreativeTabBuilder {
     }
 
     public static Supplier<Item> useSpawnEgg(Supplier<? extends EntityType<?>> entityTypeSupplier) {
-        return () -> {EntityType<?> entityType = entityTypeSupplier.get();
+        return () -> {
+            EntityType<?> entityType = entityTypeSupplier.get();
             if (entityType != null) {
                 String entityId = BuiltInRegistries.ENTITY_TYPE.getKey(entityType).getPath();
                 String spawnEggId = entityId + "_spawn_egg";
