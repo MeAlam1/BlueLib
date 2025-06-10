@@ -16,7 +16,7 @@ import net.minecraft.world.item.DyeColor;
 import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
-import software.bluelib.internal.Translation;
+import software.bluelib.internal.BlueTranslation;
 
 @SuppressWarnings("unused")
 public class ColorConverterUtils {
@@ -85,7 +85,7 @@ public class ColorConverterUtils {
                 return Optional.of(Color.decode(pColor));
             return Optional.of(new Color(DyeColor.valueOf(pColor.toUpperCase(Locale.ROOT)).getTextColor()));
         } catch (IllegalArgumentException pException) {
-            BaseLogger.log(true, BaseLogLevel.ERROR, Translation.log("color.notvalid", pColor));
+            BaseLogger.log(true, BaseLogLevel.ERROR, BlueTranslation.log("color.notvalid", pColor));
             return Optional.empty();
         }
     }
@@ -97,7 +97,7 @@ public class ColorConverterUtils {
                 return Optional.of(DyeColor.valueOf(pColor.toUpperCase(Locale.ROOT)).getName());
             }
         } catch (IllegalArgumentException pException) {
-            BaseLogger.log(true, BaseLogLevel.ERROR, Translation.log("color.notvalid", pColor));
+            BaseLogger.log(true, BaseLogLevel.ERROR, BlueTranslation.log("color.notvalid", pColor));
             return Optional.empty();
         }
         return Optional.empty();

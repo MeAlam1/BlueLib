@@ -13,14 +13,14 @@ import net.minecraft.network.chat.MutableComponent;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
 import software.bluelib.config.MarkdownConfig;
-import software.bluelib.internal.Translation;
+import software.bluelib.internal.BlueTranslation;
 
 @SuppressWarnings("unused")
 public class CopyToClipboard {
 
     public MutableComponent apply(MutableComponent pMessage, String pTextToCopy) {
         if (!MarkdownConfig.isCopyToClipboardEnabled) {
-            BaseLogger.log(true, BaseLogLevel.INFO, Translation.log("markdown.copyToClipboard.disabled"));
+            BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("markdown.copyToClipboard.disabled"));
             return pMessage;
         }
         MutableComponent result = Component.empty();

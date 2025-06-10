@@ -12,7 +12,7 @@ import org.jetbrains.annotations.ApiStatus;
 import software.bluelib.BlueLibConstants;
 
 @ApiStatus.Internal
-public class Resource {
+public class BlueResource {
 
     public static ResourceLocation resource(String pPath) {
         return ResourceLocation.fromNamespaceAndPath(BlueLibConstants.MOD_ID, pPath);

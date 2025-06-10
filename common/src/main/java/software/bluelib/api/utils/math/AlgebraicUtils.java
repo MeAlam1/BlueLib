@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Set;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
-import software.bluelib.internal.Translation;
+import software.bluelib.internal.BlueTranslation;
 
 @SuppressWarnings("unused")
 public class AlgebraicUtils {
@@ -24,7 +24,7 @@ public class AlgebraicUtils {
         double discriminant = pB * pB - 4 * pA * pC;
         if (discriminant < 0) {
             Throwable throwable = new IllegalArgumentException("Number must be non-negative.");
-            BaseLogger.log(true, BaseLogLevel.WARNING, Translation.log("math.error.calc", "quadratic"), throwable);
+            BaseLogger.log(true, BaseLogLevel.WARNING, BlueTranslation.log("math.error.calc", "quadratic"), throwable);
             return new double[0];
         }
 
@@ -38,7 +38,7 @@ public class AlgebraicUtils {
     public static long factorial(int pNumber) {
         if (pNumber < 0) {
             Throwable throwable = new IllegalArgumentException("Number must be non-negative.");
-            BaseLogger.log(true, BaseLogLevel.WARNING, Translation.log("math.error.calc", "factorial"), throwable);
+            BaseLogger.log(true, BaseLogLevel.WARNING, BlueTranslation.log("math.error.calc", "factorial"), throwable);
             return 0;
         }
 

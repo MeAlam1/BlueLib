@@ -11,11 +11,11 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import software.bluelib.api.net.NetworkPacket;
-import software.bluelib.internal.Resource;
+import software.bluelib.internal.BlueResource;
 
 public record OpenLoggerPacket() implements NetworkPacket<OpenLoggerPacket> {
 
-    public static final ResourceLocation ID = Resource.resource("open_screen_packet");
+    public static final ResourceLocation ID = BlueResource.resource("open_screen_packet");
 
     @Override
     public void encode(RegistryFriendlyByteBuf pBuffer) {}

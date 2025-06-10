@@ -20,7 +20,7 @@ import software.bluelib.api.utils.conversion.ColorConverterUtils;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
 import software.bluelib.config.MarkdownConfig;
-import software.bluelib.internal.Translation;
+import software.bluelib.internal.BlueTranslation;
 import software.bluelib.markdown.MarkdownFeature;
 
 @SuppressWarnings("unused")
@@ -28,7 +28,7 @@ public class Color extends MarkdownFeature {
 
     public MutableComponent apply(MutableComponent pComponent) {
         if (!MarkdownConfig.isColorEnabled) {
-            BaseLogger.log(true, BaseLogLevel.INFO, Translation.log("markdown.color.disabled"));
+            BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("markdown.color.disabled"));
             return pComponent;
         }
 
@@ -67,7 +67,7 @@ public class Color extends MarkdownFeature {
                 if (IsValidUtils.isValidColor(color)) {
                     colors.add(ColorConverterUtils.parseColorToHexString(color));
                 } else {
-                    BaseLogger.log(true, BaseLogLevel.WARNING, Translation.log("markdown.color.invalid", color));
+                    BaseLogger.log(true, BaseLogLevel.WARNING, BlueTranslation.log("markdown.color.invalid", color));
                     return colorGroup;
                 }
             }
@@ -115,7 +115,7 @@ public class Color extends MarkdownFeature {
                 }
             }
         } else {
-            BaseLogger.log(true, BaseLogLevel.WARNING, Translation.log("markdown.color.list.invalid", pColors));
+            BaseLogger.log(true, BaseLogLevel.WARNING, BlueTranslation.log("markdown.color.list.invalid", pColors));
             pResult.append(Component.literal(MarkdownConfig.colorPrefix + pColors + MarkdownConfig.colorSuffix + "(" + pColorText + ")")
                     .setStyle(pOriginalStyle));
         }

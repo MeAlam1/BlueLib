@@ -17,7 +17,7 @@ import org.jetbrains.annotations.NotNull;
 import software.bluelib.BlueLibConstants;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
-import software.bluelib.internal.Translation;
+import software.bluelib.internal.BlueTranslation;
 
 public interface NetworkPacket<T extends NetworkPacket<T>> extends CustomPacketPayload, Encodable {
 
@@ -44,7 +44,7 @@ public interface NetworkPacket<T extends NetworkPacket<T>> extends CustomPacketP
     default void sendToPlayersAround(double pX, double pY, double pZ, double pDistance, ResourceKey<Level> pWorldKey, Predicate<ServerPlayer> pExclusionCondition) {
         var server = BlueLibConstants.PlatformHelper.PLATFORM.getServer();
         if (server == null) {
-            BaseLogger.log(true, BaseLogLevel.ERROR, Translation.translate("server.null"));
+            BaseLogger.log(true, BaseLogLevel.ERROR, BlueTranslation.translate("server.null"));
             return;
         }
 

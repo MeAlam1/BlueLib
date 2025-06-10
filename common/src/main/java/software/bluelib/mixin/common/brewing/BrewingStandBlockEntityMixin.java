@@ -15,6 +15,7 @@ import java.util.Optional;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.Containers;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.alchemy.PotionBrewing;
 import net.minecraft.world.item.crafting.RecipeHolder;
@@ -39,23 +40,24 @@ public class BrewingStandBlockEntityMixin {
             pOriginal.call(pLevel, pPos, pSlots);
             return;
         }
-
-        ItemStack itemStack = pSlots.get(3);
+        ItemStack result = recipe.getResult().copy();
         for (int i = 0; i < 3; ++i) {
-            pSlots.set(i, recipe.getResult().copy());
+            pSlots.set(i, result);
         }
 
-        itemStack.shrink(1);
-        if (itemStack.getItem().hasCraftingRemainingItem()) {
-            ItemStack itemStack2 = new ItemStack(itemStack.getItem().getCraftingRemainingItem());
-            if (itemStack.isEmpty()) {
-                itemStack = itemStack2;
+        ItemStack ingredient = pSlots.get(3);
+        ingredient.shrink(1);
+        Item craftingRemaining = ingredient.getItem().getCraftingRemainingItem();
+        if (ingredient.getItem().hasCraftingRemainingItem() && craftingRemaining != null) {
+            ItemStack rem = new ItemStack(craftingRemaining);
+            if (ingredient.isEmpty()) {
+                ingredient = rem;
             } else {
-                Containers.dropItemStack(pLevel, pPos.getX(), pPos.getY(), pPos.getZ(), itemStack2);
+                Containers.dropItemStack(pLevel, pPos.getX(), pPos.getY(), pPos.getZ(), rem);
             }
         }
 
-        pSlots.set(3, itemStack);
+        pSlots.set(3, ingredient);
         pLevel.levelEvent(LevelEvent.SOUND_BREWING_STAND_BREW, pPos, 0);
     }
 

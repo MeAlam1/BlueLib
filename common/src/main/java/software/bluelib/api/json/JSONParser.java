@@ -23,7 +23,7 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.GsonHelper;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
-import software.bluelib.internal.Translation;
+import software.bluelib.internal.BlueTranslation;
 
 public abstract class JSONParser {
 
@@ -40,7 +40,7 @@ public abstract class JSONParser {
 
         Collection<ResourceLocation> resources = pResourceManager.listResources(pFolderPath, path -> path.getPath().endsWith(".json")).keySet();
 
-        BaseLogger.log(true, BaseLogLevel.SUCCESS, Translation.log("json.found", pFolderPath));
+        BaseLogger.log(true, BaseLogLevel.SUCCESS, BlueTranslation.log("json.found", pFolderPath));
 
         for (ResourceLocation resourceLocation : resources) {
             try {
@@ -58,7 +58,7 @@ public abstract class JSONParser {
                     }
                 }
             } catch (Exception pException) {
-                BaseLogger.log(true, BaseLogLevel.ERROR, Translation.log("json.failed", resourceLocation.toString()), pException);
+                BaseLogger.log(true, BaseLogLevel.ERROR, BlueTranslation.log("json.failed", resourceLocation.toString()), pException);
             }
         }
     }

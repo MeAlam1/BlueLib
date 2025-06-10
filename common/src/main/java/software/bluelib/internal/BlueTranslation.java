@@ -12,7 +12,7 @@ import org.jetbrains.annotations.ApiStatus;
 import software.bluelib.BlueLibConstants;
 
 @ApiStatus.Internal
-public class Translation {
+public class BlueTranslation {
 
     public static Component translate(String pString) {
         return Component.translatable(BlueLibConstants.MOD_ID + "." + pString);
