@@ -66,7 +66,7 @@ public class BlueLib implements ModInitializer, DataGeneratorEntrypoint {
 			});
 		}
 	}
-    @Override
+    /*@Override
     public void onInitialize() {
         ReloadHandler.registerProvider(new VariantProvider());
         BlueLibCommon.doRegistration();
@@ -83,16 +83,7 @@ public class BlueLib implements ModInitializer, DataGeneratorEntrypoint {
                 }
             });
         }
-    }
-
-    public static void registerModEventListeners() {
-        ServerLifecycleEvents.SERVER_STARTING.register(ReloadHandler::onServerStart);
-        ServerLifecycleEvents.SERVER_STARTED.register(ConfigLoader::createConfigs);
-        ServerLifecycleEvents.END_DATA_PACK_RELOAD.register(ConfigLoader::reloadConfigs);
-        ServerLifecycleEvents.END_DATA_PACK_RELOAD.register(ReloadHandler::onReload);
-        ServerMessageEvents.ALLOW_CHAT_MESSAGE.register(ChatHandler::onAllowChat);
-        CommandRegistrationCallback.EVENT.register(CommandHandler::registerCommands);
-    }
+    }*/
 
     @Override
     public void onInitializeDataGenerator(FabricDataGenerator fabricDataGenerator) {

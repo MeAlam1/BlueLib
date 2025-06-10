@@ -96,22 +96,22 @@ public abstract class BlockModelTemplates {
         public Map<String, JsonObject> generateBlockModel(String modId, String blockName, Map<String, String> properties) {
             Map<String, JsonObject> models = new HashMap<>();
             String prefix = properties.getOrDefault("prefix", "");
-            String modelPath = prefix.isEmpty() ? blockName : prefix + "/" + blockName;
-            String texture = properties.getOrDefault("texture", modId + ":block/" + (prefix.isEmpty() ? blockName : prefix + "/" + blockName));
+            String s = prefix.isEmpty() ? blockName : prefix + "/" + blockName;
+            String texture = properties.getOrDefault("texture", modId + ":block/" + s);
 
             JsonObject postModel = new JsonObject();
             postModel.addProperty("parent", "minecraft:block/fence_post");
             JsonObject postTextures = new JsonObject();
             postTextures.addProperty("texture", texture);
             postModel.add("textures", postTextures);
-            models.put(modelPath + "_fence_post", postModel);
+            models.put(s + "_fence_post", postModel);
 
             JsonObject sideModel = new JsonObject();
             sideModel.addProperty("parent", "minecraft:block/fence_side");
             JsonObject sideTextures = new JsonObject();
             sideTextures.addProperty("texture", texture);
             sideModel.add("textures", sideTextures);
-            models.put(modelPath + "_fence_side", sideModel);
+            models.put(s + "_fence_side", sideModel);
 
             JsonObject inventoryModel = new JsonObject();
             inventoryModel.addProperty("parent", "minecraft:block/fence_inventory");

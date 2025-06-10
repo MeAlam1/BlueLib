@@ -12,7 +12,6 @@ import static software.bluelib.BlueLibConstants.SCHEDULER;
 import java.nio.file.Path;
 import java.util.concurrent.TimeUnit;
 
-import net.minecraft.client.main.GameConfig;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.ApiStatus;
 import org.spongepowered.asm.launch.MixinBootstrap;
@@ -22,12 +21,11 @@ import software.bluelib.api.registry.AbstractRegistryBuilder;
 import software.bluelib.api.registry.BlueRegistryBuilder;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
-import software.bluelib.registry.BlueNetworkRegistry;
-import software.bluelib.registry.TestEntityReg;
 import software.bluelib.internal.Translation;
 import software.bluelib.internal.registry.BlueNetworkRegistry;
 import software.bluelib.internal.registry.BlueRecipeSerializerRegistry;
 import software.bluelib.internal.registry.BlueRecipeTypeRegistry;
+import software.bluelib.internal.registry.TestEntityReg;
 
 @ApiStatus.Internal
 public class BlueLibCommon {
@@ -69,10 +67,6 @@ public class BlueLibCommon {
 
     public static void doClientRegistration() {
         InternalNetworkRegistry.networkClient();
-        var networkRegistry = new BlueNetworkRegistry();
-        NetworkRegistry.registerC2SPacketProvider(networkRegistry);
-        NetworkRegistry.registerS2CPacketProvider(networkRegistry);
-
         TestEntityReg.init();
 
         Path assetsPath = BlueLibConstants.PlatformHelper.PLATFORM.getAssetsDir(false);

@@ -46,10 +46,10 @@ public class NeoForgeRegistryHelper implements IRegistryHelper {
     private static final DeferredRegister<BlockEntityType<?>> blockEntityRegistry = DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, AbstractRegistryBuilder.getModID());
     private static final DeferredRegister<Biome> biomeRegistry = DeferredRegister.create(Registries.BIOME, AbstractRegistryBuilder.getModID());
 
-	@Override
-	public BlueLibConstants.NetworkManager getNetwork() {
-		return new NeoForgeNetworkManager();
-	}
+    @Override
+    public BlueLibConstants.NetworkManager getNetwork() {
+        return new NeoForgeNetworkManager();
+    }
 
 	@Override
 	public <T extends RecipeType<?>> Supplier<T> registerRecipeType(String pId, Supplier<T> pRecipeType) {
@@ -60,10 +60,6 @@ public class NeoForgeRegistryHelper implements IRegistryHelper {
 	public <T extends RecipeSerializer<?>> Supplier<T> registerRecipeSerializer(String pId, Supplier<T> pRecipeSerializer) {
 		return NeoRegistries.RECIPE_SERIALIZERS.register(pId, pRecipeSerializer);
 	}
-    @Override
-    public BlueLibConstants.NetworkManager getNetwork() {
-        return new NeoForgeNetworkManager();
-    }
 
     @Override
     public <T extends CreativeModeTab> Supplier<T> registerTab(String pId, Supplier<T> pTab) {

@@ -32,7 +32,7 @@ import software.bluelib.platform.NeoForgeRegistryHelper;
 public class BlueLib {
     private static final Logger LOGGER = LogManager.getLogger();
 
-    public BlueLib(IEventBus pModEventBus, ModContainer pModContainer) {
+    /*public BlueLib(IEventBus pModEventBus, ModContainer pModContainer) {
         BlueLibCommon.doRegistration();
         ReloadHandler.registerProvider(new VariantProvider());
         NeoForgeRegistryHelper.register(pModEventBus);
@@ -46,7 +46,7 @@ public class BlueLib {
 
         pModContainer.registerConfig(ModConfig.Type.SERVER, ConfigHolder.MARKDOWN_SPEC, BlueLibConstants.MOD_ID + "-markdown.toml");
         pModContainer.registerConfig(ModConfig.Type.SERVER, ConfigHolder.LOGGER_SPEC, BlueLibConstants.MOD_ID + "-logger.toml");
-    }
+    }*/
 	public BlueLib(IEventBus pModEventBus, ModContainer pModContainer) {
 		BlueLibCommon.doRegistration();
 		NeoRegistries.register(pModEventBus);
@@ -78,6 +78,7 @@ public class BlueLib {
 	private void setupEventListeners(IEventBus pModEventBus) {
 		pModEventBus.register(this);
 		pModEventBus.addListener(NeoForgeNetworkManager::registerMessages);
+        pModEventBus.addListener(GatherDataEvent.class, this::onGatherData);
 	}
 
 	@SubscribeEvent
