@@ -14,7 +14,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.utils.logging.LogCache;
-import software.bluelib.internal.Translation;
+import software.bluelib.internal.BlueTranslation;
 
 public class LoggerScreen extends Screen {
 
@@ -26,7 +26,7 @@ public class LoggerScreen extends Screen {
     private int initialScrollOffset = 0;
 
     public LoggerScreen() {
-        super(Translation.translate("ui.logger.title"));
+        super(BlueTranslation.translate("ui.logger.title"));
     }
 
     @Override

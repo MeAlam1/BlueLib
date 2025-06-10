@@ -14,7 +14,7 @@ import net.minecraft.util.RandomSource;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
 import software.bluelib.api.utils.variant.ParameterUtils;
-import software.bluelib.internal.Translation;
+import software.bluelib.internal.BlueTranslation;
 
 @SuppressWarnings("unused")
 public interface IVariantEntity {
@@ -23,12 +23,12 @@ public interface IVariantEntity {
 
     default String getRandomVariant(List<String> pVariantNamesList, String pDefaultVariant) {
         if (pVariantNamesList.isEmpty()) {
-            BaseLogger.log(true, BaseLogLevel.INFO, Translation.log("variant.list.empty", pDefaultVariant));
+            BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("variant.list.empty", pDefaultVariant));
             return pDefaultVariant;
         }
         int index = random.nextInt(pVariantNamesList.size());
         String selectedVariant = pVariantNamesList.get(index);
-        BaseLogger.log(true, BaseLogLevel.SUCCESS, Translation.log("variant.random", selectedVariant, pVariantNamesList.size()));
+        BaseLogger.log(true, BaseLogLevel.SUCCESS, BlueTranslation.log("variant.random", selectedVariant, pVariantNamesList.size()));
         return selectedVariant;
     }
 

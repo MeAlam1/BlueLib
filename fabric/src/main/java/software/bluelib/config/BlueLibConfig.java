@@ -9,7 +9,7 @@ package software.bluelib.config;
 
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
-import software.bluelib.internal.Translation;
+import software.bluelib.internal.BlueTranslation;
 
 public class BlueLibConfig {
 
@@ -38,9 +38,9 @@ public class BlueLibConfig {
             MarkdownConfig.colorSuffix = pConfig.colorSuffix;
             MarkdownConfig.isColorEnabled = pConfig.isColorEnabled;
             MarkdownConfig.isCopyToClipboardEnabled = pConfig.isCopyToClipboardEnabled;
-            BaseLogger.log(true, BaseLogLevel.INFO, Translation.config("markdown.loaded"));
+            BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.config("markdown.loaded"));
         } catch (Exception pException) {
-            BaseLogger.log(true, BaseLogLevel.ERROR, Translation.config("markdown.failed", pException.getMessage()));
+            BaseLogger.log(true, BaseLogLevel.ERROR, BlueTranslation.config("markdown.failed", pException.getMessage()));
         }
     }
 
@@ -48,9 +48,9 @@ public class BlueLibConfig {
         try {
             LoggerConfig.isLoggingEnabled = pConfig.isLoggingEnabled;
             LoggerConfig.isBlueLibLoggingEnabled = pConfig.isBlueLibLoggingEnabled;
-            BaseLogger.log(true, BaseLogLevel.INFO, Translation.config("markdown.loaded"));
+            BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.config("markdown.loaded"));
         } catch (Exception pException) {
-            BaseLogger.log(true, BaseLogLevel.ERROR, Translation.config("markdown.failed", pException.getMessage()));
+            BaseLogger.log(true, BaseLogLevel.ERROR, BlueTranslation.config("markdown.failed", pException.getMessage()));
         }
     }
 }

@@ -39,23 +39,27 @@ public class BrewingStandBlockEntityMixin {
             pOriginal.call(pLevel, pPos, pSlots);
             return;
         }
-
         ItemStack itemStack = pSlots.get(3);
         for (int i = 0; i < 3; ++i) {
             pSlots.set(i, recipe.getResult().copy());
         }
 
         itemStack.shrink(1);
+        ItemStack remaining = null;
         if (itemStack.getItem().hasCraftingRemainingItem()) {
-            ItemStack itemStack2 = new ItemStack(itemStack.getItem().getCraftingRemainingItem());
+            var remainingItem = itemStack.getItem().getCraftingRemainingItem();
+            if (remainingItem != null) {
+                remaining = new ItemStack(remainingItem);
+            }
             if (itemStack.isEmpty()) {
-                itemStack = itemStack2;
-            } else {
-                Containers.dropItemStack(pLevel, pPos.getX(), pPos.getY(), pPos.getZ(), itemStack2);
+                itemStack = remaining;
+            } else if (remaining != null) {
+                Containers.dropItemStack(pLevel, pPos.getX(), pPos.getY(), pPos.getZ(), remaining);
             }
         }
-
-        pSlots.set(3, itemStack);
+        if (itemStack != null) {
+            pSlots.set(3, itemStack);
+        }
         pLevel.levelEvent(LevelEvent.SOUND_BREWING_STAND_BREW, pPos, 0);
     }
 

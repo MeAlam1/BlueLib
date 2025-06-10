@@ -22,6 +22,8 @@ public class BlueLibConstants {
 
     private BlueLibConstants() {}
 
+    public static void init() {}
+
     public static <T> T load(Class<T> pClazz) {
         return ServiceLoader.load(pClazz)
                 .findFirst()

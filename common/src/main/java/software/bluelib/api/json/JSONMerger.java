@@ -13,7 +13,7 @@ import com.google.gson.JsonObject;
 import java.util.Map;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
-import software.bluelib.internal.Translation;
+import software.bluelib.internal.BlueTranslation;
 
 public class JSONMerger {
 
@@ -33,14 +33,14 @@ public class JSONMerger {
                         targetArray.add(element);
                     }
 
-                    BaseLogger.log(true, BaseLogLevel.INFO, Translation.log("json.merge", key));
+                    BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("json.merge", key));
                 } else {
                     pTarget.add(key, sourceElement);
-                    BaseLogger.log(true, BaseLogLevel.WARNING, Translation.log("json.overwrite", key));
+                    BaseLogger.log(true, BaseLogLevel.WARNING, BlueTranslation.log("json.overwrite", key));
                 }
             } else {
                 pTarget.add(key, sourceElement);
-                BaseLogger.log(true, BaseLogLevel.SUCCESS, Translation.log("json.add", key));
+                BaseLogger.log(true, BaseLogLevel.SUCCESS, BlueTranslation.log("json.add", key));
             }
         }
     }

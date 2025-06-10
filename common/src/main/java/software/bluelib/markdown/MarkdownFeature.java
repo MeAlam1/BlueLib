@@ -16,7 +16,7 @@ import net.minecraft.network.chat.Style;
 import software.bluelib.api.utils.QuadConsumer;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
-import software.bluelib.internal.Translation;
+import software.bluelib.internal.BlueTranslation;
 
 public abstract class MarkdownFeature {
 
@@ -26,7 +26,7 @@ public abstract class MarkdownFeature {
 
     public MutableComponent apply(MutableComponent pComponent) {
         if (!isFeatureEnabled()) {
-            BaseLogger.log(true, BaseLogLevel.INFO, Translation.log("markdown.feature.disabled", getFeatureName()));
+            BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("markdown.feature.disabled", getFeatureName()));
             return pComponent;
         }
 

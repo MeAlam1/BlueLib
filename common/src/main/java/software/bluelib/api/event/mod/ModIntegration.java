@@ -15,7 +15,7 @@ import net.minecraft.network.chat.Component;
 import software.bluelib.BlueLibConstants;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
-import software.bluelib.internal.Translation;
+import software.bluelib.internal.BlueTranslation;
 
 public class ModIntegration {
 
@@ -95,10 +95,10 @@ public class ModIntegration {
                 modsMessage.append(mod).append("\n");
             }
             BlueLibConstants.PlatformHelper.EVENT_PROXY.onAllModsLoaded(loadedModMetas);
-            BaseLogger.log(true, BaseLogLevel.INFO, Translation.translate("mod.loaded", Component.literal(modsMessage.toString())));
+            BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.translate("mod.loaded", Component.literal(modsMessage.toString())));
         } else {
             BlueLibConstants.PlatformHelper.EVENT_PROXY.onAllModsLoaded(loadedModMetas);
-            BaseLogger.log(true, BaseLogLevel.INFO, Translation.translate("mod.loaded.empty"));
+            BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.translate("mod.loaded.empty"));
         }
     }
 
