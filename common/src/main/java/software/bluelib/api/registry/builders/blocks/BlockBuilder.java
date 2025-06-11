@@ -11,7 +11,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import software.bluelib.BlueLibConstants;
 import software.bluelib.api.registry.AbstractRegistryBuilder;
-import software.bluelib.api.registry.datagen.RecipeGenerator;
+import software.bluelib.api.registry.datagen.recipe.RecipeGenerator;
 import software.bluelib.api.registry.datagen.blocks.BlockModelGenerator;
 import software.bluelib.api.registry.datagen.blocks.BlockModelTemplates;
 import software.bluelib.api.registry.datagen.blockstates.BlockstateGenerator;

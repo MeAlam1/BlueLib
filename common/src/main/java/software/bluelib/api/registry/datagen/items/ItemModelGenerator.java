@@ -13,13 +13,9 @@ import net.minecraft.data.models.model.ModelTemplate;
 import net.minecraft.data.models.model.TextureMapping;
 import net.minecraft.resources.ResourceLocation;
 import software.bluelib.BlueLibConstants;
+import software.bluelib.api.registry.datagen.DataGenUtils;
 
-public class ItemModelGenerator {
-
-    public static final Gson GSON = new GsonBuilder()
-            .setPrettyPrinting()
-            .disableHtmlEscaping() //Prevent escaping of =, <, >, etc.
-            .create();
+public class ItemModelGenerator extends DataGenUtils {
 
     public static void generateItemModel(String modId, String name, ItemModelTemplates modelTemplate) {
         Path itemModelPath = Path.of(BlueLibConstants.PlatformHelper.PLATFORM.getAssetsDir(true) + "/models/item/" + name + ".json");

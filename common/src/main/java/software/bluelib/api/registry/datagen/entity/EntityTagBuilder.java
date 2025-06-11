@@ -1,7 +1,5 @@
 package software.bluelib.api.registry.datagen.entity;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import java.io.IOException;
@@ -15,10 +13,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import software.bluelib.api.registry.AbstractRegistryBuilder;
+import software.bluelib.api.registry.datagen.DataGenUtils;
 
-public class EntityTagBuilder {
-
-    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+public class EntityTagBuilder extends DataGenUtils {
     private static final List<String> generatedTags = new ArrayList<>();
     private static final Map<String, List<EntityType<?>>> tagEntityTypes = new HashMap<>();
     private final String name;

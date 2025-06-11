@@ -5,10 +5,8 @@
  * If a copy of the MIT License was not distributed with this file,
  * You can obtain one at https://opensource.org/licenses/MIT.
  */
-package software.bluelib.api.registry.datagen;
+package software.bluelib.api.registry.datagen.recipe;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -18,14 +16,9 @@ import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 import net.minecraft.data.recipes.RecipeOutput;
 import software.bluelib.BlueLibConstants;
+import software.bluelib.api.registry.datagen.DataGenUtils;
 
-public class RecipeGenerator {
-
-    public static final Gson GSON = new GsonBuilder()
-            .setPrettyPrinting()
-            .disableHtmlEscaping() // Prevent escaping of =, <, >, etc.
-            .create();
-
+public class RecipeGenerator extends DataGenUtils {
     public static void generateRecipe(String modId, String name, BiConsumer<RecipeOutput, Supplier<JsonElement>> recipeConsumer) {
         Path recipePath = Path.of(BlueLibConstants.PlatformHelper.PLATFORM.getDataDir(true) + "/recipe/" + name + ".json");
 

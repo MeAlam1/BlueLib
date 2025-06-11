@@ -69,12 +69,4 @@ public class TestEntityReg {
                             .unlocks("has_diamond", RecipeProvider.has(Items.DIAMOND))
                             .save(prov, ResourceLocation.fromNamespaceAndPath(getModID(), "taste_test_item")))
             .register();
-
-    public static final Supplier<Item> TASTEE_ITEM = REGISTRIES.item("tastee_item", Item::new)
-            .recipe((ctx, prov) -> SmithingTrimRecipeBuilder.smithingTrim(Ingredient.of(Items.COOKIE), Ingredient.of(Items.COOKIE),
-                            Ingredient.of(Items.COOKIE), RecipeCategory.MISC)
-                    .unlocks("has_diamond", RecipeProvider.has(Items.DIAMOND))
-                    .save(prov, ResourceLocation.fromNamespaceAndPath(getModID(), "tastee_item")))
-            .register();
-
 }

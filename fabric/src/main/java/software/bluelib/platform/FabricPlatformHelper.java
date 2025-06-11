@@ -21,6 +21,7 @@ import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.server.MinecraftServer;
 import software.bluelib.BlueLibConstants;
 import software.bluelib.api.event.mod.ModMeta;
+import software.bluelib.api.registry.FabricRecipeGenerator;
 
 import static software.bluelib.api.registry.AbstractRegistryBuilder.getModID;
 
@@ -82,7 +83,7 @@ public class FabricPlatformHelper implements IPlatformHelper {
 
     @Override
     public JsonElement generateRecipeJson(String modId, String name, BiConsumer<RecipeOutput, Supplier<JsonElement>> recipeConsumer) {
-        return null;
+        return FabricRecipeGenerator.generateRecipeJson(recipeConsumer);
     }
 
     @Override

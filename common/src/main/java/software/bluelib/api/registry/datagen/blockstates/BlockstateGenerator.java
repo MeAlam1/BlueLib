@@ -1,7 +1,5 @@
 package software.bluelib.api.registry.datagen.blockstates;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import java.io.IOException;
@@ -11,14 +9,9 @@ import java.nio.file.StandardOpenOption;
 import java.util.Collections;
 import java.util.Map;
 import software.bluelib.BlueLibConstants;
+import software.bluelib.api.registry.datagen.DataGenUtils;
 
-public class BlockstateGenerator {
-
-    public static final Gson GSON = new GsonBuilder()
-            .setPrettyPrinting()
-            .disableHtmlEscaping() //Prevent escaping of =, <, >, etc.
-            .create();
-
+public class BlockstateGenerator extends DataGenUtils {
     public static void generateBlockstate(String modId, String name, BlockstateTemplates blockstateTemplate) {
         generateBlockstate(modId, name, blockstateTemplate, Collections.emptyMap());
     }

@@ -1,10 +1,3 @@
-/*
- * Copyright (C) 2024 BlueLib Contributors
- *
- * This Source Code Form is subject to the terms of the MIT License.
- * If a copy of the MIT License was not distributed with this file,
- * You can obtain one at https://opensource.org/licenses/MIT.
- */
 package software.bluelib.api.registry;
 
 import com.google.gson.JsonArray;
@@ -14,30 +7,32 @@ import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.*;
-import net.neoforged.neoforge.common.conditions.ICondition;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
+
 import static software.bluelib.api.registry.datagen.recipe.RecipeUtils.*;
 
-public class NeoRecipeGenerator {
+public class FabricRecipeGenerator {
     public static JsonElement generateRecipeJson(BiConsumer<RecipeOutput, Supplier<JsonElement>> recipeConsumer) {
         final JsonElement[] capturedJson = new JsonElement[1];
 
         RecipeOutput tempOutput = new RecipeOutput() {
             @Override
-            public void accept(@NotNull ResourceLocation pPath, @NotNull Recipe<?> pRecipe, @Nullable AdvancementHolder pAdvancement, ICondition @NotNull ... iConditions) {
+            public void accept(ResourceLocation pPath, Recipe<?> pRecipe, @Nullable AdvancementHolder pAdvancement) {
                 switch (pRecipe) {
                     case ShapedRecipe shaped -> {
                         JsonObject json = new JsonObject();
                         json.addProperty("type", "minecraft:crafting_shaped");
                         json.addProperty("category", "misc");
+                        List<String> patternList = null;
+                        Map<Character, Ingredient> keyMap;
                         JsonArray pattern = new JsonArray();
                         JsonObject key = new JsonObject();
 
@@ -116,16 +111,15 @@ public class NeoRecipeGenerator {
                         json.add("result", serializeResult(smithingTransform.getResultItem(null)));
                         capturedJson[0] = json;
                     }
-                    //Figure out how to make this work.
-                    /*case SmithingTrimRecipe smithingTrim -> {
+                    case SmithingTrimRecipe smithingTrim -> {
                         JsonObject json = new JsonObject();
                         json.addProperty("type", "minecraft:smithing_trim");
                         json.add("template", serializeIngredient(smithingTrim.template));
                         json.add("base", serializeIngredient(smithingTrim.base));
                         json.add("addition", serializeIngredient(smithingTrim.addition));
-                        json.add("result", serializeResult(smithingTrim.getResultItem(null)));
+                        json.add("result", serializeResult(getSmithingRecipeResult(smithingTrim)));
                         capturedJson[0] = json;
-                    }*/
+                    }
                     default -> {
                         JsonObject json = new JsonObject();
                         json.addProperty("type", pRecipe.getSerializer().toString());
@@ -133,6 +127,7 @@ public class NeoRecipeGenerator {
                     }
                 }
             }
+
             @Override
             public Advancement.@NotNull Builder advancement() {
                 return Advancement.Builder.advancement();

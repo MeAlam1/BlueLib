@@ -6,9 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
@@ -18,8 +16,9 @@ import software.bluelib.api.registry.datagen.items.ItemModelGenerator;
 import software.bluelib.api.registry.datagen.items.ItemModelTemplates;
 import software.bluelib.api.registry.helpers.entity.AttributeHelper;
 import software.bluelib.api.registry.helpers.entity.RenderHelper;
+import software.bluelib.api.registry.helpers.items.BlueSpawnEggItem;
 
-public class EntityBuilder<T extends Mob> {
+public class EntityBuilder<T extends LivingEntity> {
 
     public static String name;
     public final EntityType.EntityFactory<T> factory;
@@ -123,7 +122,7 @@ public class EntityBuilder<T extends Mob> {
     }
 
     public Supplier<Item> registerSpawnEgg(String name, Supplier<EntityType<T>> entityType, int primaryColor, int secondaryColor, Supplier<CreativeModeTab> tabSupplier) {
-        Supplier<Item> spawnEggSupplier = BlueLibConstants.PlatformHelper.REGISTRY.registerItem(name + "_spawn_egg", () -> new SpawnEggItem(
+        Supplier<Item> spawnEggSupplier = BlueLibConstants.PlatformHelper.REGISTRY.registerItem(name + "_spawn_egg", () -> new BlueSpawnEggItem(
                 entityType.get(),
                 primaryColor,
                 secondaryColor,

@@ -16,7 +16,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.*;
 import software.bluelib.BlueLibConstants;
 import software.bluelib.api.registry.AbstractRegistryBuilder;
-import software.bluelib.api.registry.datagen.RecipeGenerator;
+import software.bluelib.api.registry.datagen.recipe.RecipeGenerator;
 import software.bluelib.api.registry.datagen.items.ItemModelGenerator;
 import software.bluelib.api.registry.datagen.items.ItemModelTemplates;
 import software.bluelib.api.registry.helpers.ArmorSetConfig;
