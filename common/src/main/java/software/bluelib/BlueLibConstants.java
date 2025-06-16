@@ -8,20 +8,26 @@
 package software.bluelib;
 
 import com.mojang.serialization.Codec;
+
+import java.util.List;
 import java.util.ServiceLoader;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.function.Supplier;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import software.bluelib.api.event.IEventProxy;
 import software.bluelib.api.net.NetworkPacket;
+import software.bluelib.internal.BlueResource;
 import software.bluelib.platform.IPlatformClient;
 import software.bluelib.platform.IPlatformHelper;
 import software.bluelib.platform.IRegistryHelper;
@@ -49,6 +55,15 @@ public class BlueLibConstants {
     public static final String MOD_NAME = "BlueLib";
 
     public static MinecraftServer server;
+    
+    public static class BlueLoader {
+        public static final ResourceLocation RELOAD_LISTENER_ID = BlueResource.resource("models_animations");
+        public static final ResourceLocation ANIMATIONS_PATH = BlueResource.resource("animations");
+        public static final ResourceLocation MODELS_PATH = BlueResource.resource("models");
+        public static final Pattern SUFFIX_STRIPPER = Pattern.compile("((\\.Blue)|((\\.animation)s?))?(\\.json)$");
+        public static final Pattern PREFIX_STRIPPER = Pattern.compile("^(bluelib/)((animations/)|(models/))?");
+        public static final List<String> SKIPPED_NAMESPACES = List.of("minecraft", "BlueLib", "neoforge");
+    }
 
     public static class PlatformHelper {
 

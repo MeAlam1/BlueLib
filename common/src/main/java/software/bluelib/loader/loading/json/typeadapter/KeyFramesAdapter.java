@@ -12,8 +12,7 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import java.lang.reflect.Type;
 import java.util.Map;
 import net.minecraft.util.GsonHelper;
-import software.bluelib.client.loader.json.model.deserialize.*;
-import software.bluelib.client.loader.model.ModelLoader;
+import software.bluelib.client.loader.BlueLoader;
 import software.bluelib.loader.animation.Animation;
 import software.bluelib.loader.animation.keyframe.event.data.CustomInstructionKeyframeData;
 import software.bluelib.loader.animation.keyframe.event.data.ParticleKeyframeData;
@@ -71,7 +70,7 @@ public class KeyFramesAdapter implements JsonDeserializer<Animation.Keyframes> {
             String instructions = "";
 
             if (entry.getValue() instanceof JsonArray array) {
-                instructions = ModelLoader.MODEL_GSON.fromJson(array, ObjectArrayList.class).toString();
+                instructions = BlueLoader.MODEL_GSON.fromJson(array, ObjectArrayList.class).toString();
             } else if (entry.getValue() instanceof JsonPrimitive primitive) {
                 instructions = primitive.getAsString();
             }
