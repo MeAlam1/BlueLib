@@ -5,7 +5,6 @@ import static software.bluelib.api.registry.AbstractRegistryBuilder.getModID;
 
 import java.util.function.Supplier;
 import net.minecraft.client.renderer.entity.PigRenderer;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
@@ -22,7 +21,7 @@ public class TestEntityReg {
         //BaseLogger.log(BaseLogLevel.SUCCESS, "Registered Entities!");
     }
 
-    public static final Supplier<EntityType<Pig>> TEST_ENTITY = REGISTRIES.entity("test", Pig::new, MobCategory.CREATURE)
+    public static final Supplier<EntityType<Pig>> TEST_ENTITY = REGISTRIES.livingEntity("test", Pig::new, MobCategory.CREATURE)
             .attributes(Pig::createAttributes)
             .renderer(PigRenderer::new)
             .spawnEgg(0x0000, 0x0000)
