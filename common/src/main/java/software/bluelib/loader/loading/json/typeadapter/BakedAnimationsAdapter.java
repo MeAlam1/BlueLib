@@ -181,6 +181,7 @@ public class BakedAnimationsAdapter implements JsonDeserializer<AnimationsCache>
             double timeDelta = curTime - prevTime;
 
             JsonArray keyFrameVector = element instanceof JsonArray array ? array : GsonHelper.getAsJsonArray(element.getAsJsonObject(), "vector");
+            // TODO: Found Keyframe handler for molang
             MathValue rawXValue = MathParser.parseJson(keyFrameVector.get(0));
             MathValue rawYValue = MathParser.parseJson(keyFrameVector.get(1));
             MathValue rawZValue = MathParser.parseJson(keyFrameVector.get(2));

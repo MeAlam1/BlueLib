@@ -1,6 +1,6 @@
 package software.bluelib.api.molang;
 
-public class MoLangConstants {
+public class MoLang {
 
 	public static final MoLangService service = new MoLangService();
 
@@ -14,6 +14,10 @@ public class MoLangConstants {
 
 	public static Object livingEntityMoLang(String pExpression) {
 		return service.getRuntimeFor(MoLangType.LIVING_ENTITY).evaluate(pExpression);
+	}
+
+	public static Object animatableMoLang(String pExpression) {
+		return service.getRuntimeFor(MoLangType.ANIMATABLE).evaluate(pExpression);
 	}
 
 

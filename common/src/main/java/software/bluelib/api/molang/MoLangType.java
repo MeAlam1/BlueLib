@@ -35,4 +35,5 @@ public record MoLangType(String id, String name) {
     public static final MoLangType GENERAL = new MoLangType("g", "general");
     public static final MoLangType MATH = new MoLangType("m", "math");
     public static final MoLangType LIVING_ENTITY = new MoLangType("le", "living_entity");
+    public static final MoLangType ANIMATABLE = new MoLangType("q", "animatable");
 }

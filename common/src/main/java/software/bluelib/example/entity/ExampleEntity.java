@@ -9,19 +9,23 @@
 package software.bluelib.example.entity;
 
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import org.jetbrains.annotations.Nullable;
-import software.bluelib.api.molang.MoLangConstants;
+import software.bluelib.api.molang.MoLang;
 import software.bluelib.api.utils.LoaderUtils;
 import software.bluelib.loader.animatable.BlueEntity;
 import software.bluelib.loader.animatable.instance.AnimatableInstanceCache;
 import software.bluelib.loader.animation.*;
+import software.bluelib.loader.loading.math.MathParser;
 
 public class ExampleEntity extends PathfinderMob implements BlueEntity {
 
@@ -38,8 +42,8 @@ public class ExampleEntity extends PathfinderMob implements BlueEntity {
 
 	@Override
 	public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData spawnGroupData) {
-		MoLangConstants.generalMoLang("g.print('hello')");
-		System.out.println(MoLangConstants.livingEntityMoLang("le.health"));
+		MoLang.generalMoLang("g.print('hello')");
+		System.out.println(MoLang.livingEntityMoLang("le.health"));
 		return super.finalizeSpawn(level, difficulty, spawnType, spawnGroupData);
 	}
 
