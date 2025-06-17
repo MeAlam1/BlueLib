@@ -15,7 +15,7 @@ public class MoLangService {
 
     private void setupRuntimes() {
         MoLangRuntime general = getRuntimeFor(MoLangType.GENERAL);
-        general.registerContext("q", new GeneralMoLang());
+        general.registerContext("g", new GeneralMoLang());
     }
 
     public void register(MoLangType pType, MoLangRuntime pRuntime) {
