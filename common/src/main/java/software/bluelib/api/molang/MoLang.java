@@ -12,8 +12,8 @@ public class MoLang {
 		return service.getRuntimeFor(MoLangType.MATH).evaluate(pExpression);
 	}
 
-	public static Object livingEntityMoLang(String pExpression) {
-		return service.getRuntimeFor(MoLangType.LIVING_ENTITY).evaluate(pExpression);
+	public static Object entityMoLang(String pExpression) {
+		return service.getRuntimeFor(MoLangType.ENTITY).evaluate(pExpression);
 	}
 
 	public static Object animatableMoLang(String pExpression) {

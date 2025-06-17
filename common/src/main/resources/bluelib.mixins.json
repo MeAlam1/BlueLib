@@ -11,6 +11,7 @@
     "common.brewing.PotionSlotMixin",
     "common.loader.AbstractContainerMenuMixin",
     "common.loader.ItemStackMixin",
+    "common.molang.EntityMixin",
     "common.variant.LivingEntityMixin"
   ],
   "client": [

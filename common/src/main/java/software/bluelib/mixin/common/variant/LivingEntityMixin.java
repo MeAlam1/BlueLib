@@ -19,9 +19,6 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import software.bluelib.api.molang.MoLang;
-import software.bluelib.api.molang.MoLangType;
-import software.bluelib.api.molang.context.LivingEntityMoLang;
 import software.bluelib.entity.variant.IVariantAccessor;
 
 @Mixin(LivingEntity.class)
@@ -29,12 +26,6 @@ public class LivingEntityMixin implements IVariantAccessor {
 
 	@Unique
 	private static final EntityDataAccessor<String> bluelib$VARIANT = SynchedEntityData.defineId(LivingEntity.class, EntityDataSerializers.STRING);
-
-	@Inject(method = "<init>", at = @At("TAIL"))
-	private void onConstructed(CallbackInfo pCi) {
-		LivingEntity self = (LivingEntity) (Object) this;
-		MoLang.service.getRuntimeFor(MoLangType.LIVING_ENTITY).registerContext("le", new LivingEntityMoLang(self));
-	}
 
 	@Inject(method = "defineSynchedData", at = @At("HEAD"))
 	protected void defineSynchedData(SynchedEntityData.@NotNull Builder pBuilder, CallbackInfo pCi) {

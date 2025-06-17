@@ -76,7 +76,7 @@ public class AnimationProcessor<T extends BlueAnimatable> {
 			controller.isJustStarting = animatableManager.isFirstTick();
 
 			state.withController(controller);
-			MoLang.service.getRuntimeFor(MoLangType.ANIMATABLE).registerContext("q", new AnimatableMoLang(state));
+			MoLang.service.getRuntimeFor(MoLangType.ANIMATABLE).registerContext(MoLangType.ANIMATABLE.id(), new AnimatableMoLang(state));
 			controller.process(model, state, this.bones, boneSnapshots, animTime, crashWhenCantFindBone);
 
 			for (BoneAnimationQueue boneAnimation : controller.getBoneAnimationQueues().values()) {
