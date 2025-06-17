@@ -9,6 +9,8 @@
     "common.brewing.BrewingStandMenuMixin",
     "common.brewing.IngredientSlotMixin",
     "common.brewing.PotionSlotMixin",
+    "common.loader.AbstractContainerMenuMixin",
+    "common.loader.ItemStackMixin",
     "common.variant.LivingEntityMixin"
   ],
   "client": [
