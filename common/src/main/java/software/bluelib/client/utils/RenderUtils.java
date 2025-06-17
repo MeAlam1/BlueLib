@@ -47,9 +47,9 @@ import software.bluelib.client.loader.cache.model.CubeCache;
 import software.bluelib.loader.animatable.BlueAnimatable;
 import software.bluelib.loader.animatable.client.BlueRenderProvider;
 import software.bluelib.loader.model.BlueModel;
+import software.bluelib.loader.renderer.BlueArmorRenderer;
 import software.bluelib.loader.renderer.BlueRenderer;
 import software.bluelib.loader.renderer.BlueReplacedEntityRenderer;
-import software.bluelib.loader.renderer.BlueArmorRenderer;
 
 @SuppressWarnings("unused")
 public final class RenderUtils {

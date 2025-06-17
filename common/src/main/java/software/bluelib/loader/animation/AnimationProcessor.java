@@ -19,7 +19,7 @@ import software.bluelib.loader.animatable.BlueAnimatable;
 import software.bluelib.loader.animation.keyframe.AnimationPoint;
 import software.bluelib.loader.animation.keyframe.BoneAnimationQueue;
 import software.bluelib.loader.animation.state.BoneSnapshot;
-import software.bluelib.loader.loading.math.MolangQueries;
+import software.bluelib.loader.loading.math.MoLangQueries;
 import software.bluelib.loader.model.BlueModel;
 
 public class AnimationProcessor<T extends BlueAnimatable> {
@@ -250,7 +250,7 @@ public class AnimationProcessor<T extends BlueAnimatable> {
     }
 
     public void preAnimationSetup(AnimationState<T> animationState, double animTime) {
-        MolangQueries.updateActor(animationState, animTime);
+        MoLangQueries.updateActor(animationState, animTime);
         this.model.applyMolangQueries(animationState, animTime);
     }
 

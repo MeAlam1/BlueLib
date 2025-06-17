@@ -40,8 +40,8 @@ import software.bluelib.client.loader.cache.model.ModelCache;
 import software.bluelib.client.utils.RenderUtils;
 import software.bluelib.loader.animatable.BlueAnimatable;
 import software.bluelib.loader.animatable.BlueItem;
-import software.bluelib.loader.renderer.BlueRenderer;
 import software.bluelib.loader.renderer.BlueArmorRenderer;
+import software.bluelib.loader.renderer.BlueRenderer;
 
 public class ItemArmorBlueLayer<T extends LivingEntity & BlueAnimatable> extends BlueRenderLayer<T> {
 
@@ -133,7 +133,7 @@ public class ItemArmorBlueLayer<T extends LivingEntity & BlueAnimatable> extends
     }
 
     protected <I extends Item & BlueItem> void renderVanillaArmorPiece(PoseStack pPoseStack, T animatable, BoneCache bone, EquipmentSlot slot, ItemStack armorStack,
-                                                                       ModelPart modelPart, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight, int pPackedOverlay) {
+            ModelPart modelPart, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight, int pPackedOverlay) {
         Holder<ArmorMaterial> material = ((ArmorItem) armorStack.getItem()).getMaterial();
 
         for (ArmorMaterial.Layer layer : material.value().layers()) {

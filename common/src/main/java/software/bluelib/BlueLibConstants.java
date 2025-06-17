@@ -8,7 +8,6 @@
 package software.bluelib;
 
 import com.mojang.serialization.Codec;
-
 import java.util.List;
 import java.util.ServiceLoader;
 import java.util.concurrent.Executors;
@@ -16,7 +15,6 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.function.Supplier;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -55,8 +53,9 @@ public class BlueLibConstants {
     public static final String MOD_NAME = "BlueLib";
 
     public static MinecraftServer server;
-    
+
     public static class BlueLoader {
+
         public static final ResourceLocation RELOAD_LISTENER_ID = BlueResource.resource("models_animations");
         public static final ResourceLocation ANIMATIONS_PATH = BlueResource.resource("animations");
         public static final ResourceLocation MODELS_PATH = BlueResource.resource("models");

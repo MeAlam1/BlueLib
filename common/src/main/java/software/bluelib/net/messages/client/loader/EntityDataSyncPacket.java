@@ -9,7 +9,6 @@ package software.bluelib.net.messages.client.loader;
 
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
-import software.bluelib.BlueLibCommon;
 import software.bluelib.api.net.NetworkPacket;
 import software.bluelib.internal.BlueResource;
 import software.bluelib.loader.constant.dataticket.SerializableDataTicket;

@@ -98,11 +98,11 @@ public class MathParser {
     }
 
     public static void registerVariable(Variable variable) {
-        MolangQueries.registerVariable(variable);
+        MoLangQueries.registerVariable(variable);
     }
 
     public static Variable getVariableFor(String name) {
-        return MolangQueries.getVariableFor(name);
+        return MoLangQueries.getVariableFor(name);
     }
 
     public static void setVariable(String name, DoubleSupplier value) {
@@ -459,7 +459,7 @@ public class MathParser {
     }
 
     protected static boolean isLikelyVariable(String string) {
-        if (MolangQueries.isExistingVariable(string))
+        if (MoLangQueries.isExistingVariable(string))
             return true;
 
         return !isNumeric(string) && !isFunctionRegistered(string) && !Operator.isOperator(string) && !string.equals("?") && !string.equals(":");

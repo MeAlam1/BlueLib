@@ -31,7 +31,7 @@ import software.bluelib.client.loader.json.model.object.QuadData;
 import software.bluelib.client.loader.json.model.object.VertexData;
 import software.bluelib.client.utils.RenderUtils;
 import software.bluelib.loader.animatable.BlueAnimatable;
-import software.bluelib.loader.loading.math.MolangQueries;
+import software.bluelib.loader.loading.math.MoLangQueries;
 import software.bluelib.loader.model.BlueModel;
 import software.bluelib.loader.renderer.layer.BlueRenderLayer;
 
@@ -103,7 +103,7 @@ public interface BlueRenderer<T extends BlueAnimatable> {
 
         renderFinal(pPoseStack, pAnimatable, pModel, pBufferSource, pBuffer, pPartialTick, pPackedLight, pPackedOverlay, renderColor);
         doPostRenderCleanup();
-        MolangQueries.clearActor();
+        MoLangQueries.clearActor();
     }
 
     default void reRender(ModelCache pModel, PoseStack pPoseStack, MultiBufferSource pBufferSource, T pAnimatable,

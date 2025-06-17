@@ -16,7 +16,6 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import org.jetbrains.annotations.Nullable;
-import software.bluelib.BlueLibCommon;
 import software.bluelib.api.utils.LoaderUtils;
 import software.bluelib.internal.BlueResource;
 import software.bluelib.loader.constant.dataticket.DataTicket;
@@ -56,7 +55,7 @@ public final class DataTickets {
         SerializableDataTicket<?> existingTicket = SERIALIZABLE_TICKETS.putIfAbsent(ticket.id(), ticket);
 
         //if (existingTicket != null)
-        //BlueLibConstants.LOGGER.error("Duplicate SerializableDataTicket registered! This will cause issues. Existing: " + existingTicket.id() + ", New: " + ticket.id());
+        //BlueLibConstants.LOGGER.error("Duplicate SerializableDataTicket registered! This will cause issues. Existing: " + existingTicket.pId() + ", New: " + ticket.pId());
 
         return ticket;
     }

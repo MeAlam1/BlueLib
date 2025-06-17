@@ -52,6 +52,7 @@ spotless {
         endWithNewline()
         removeUnusedImports()
         toggleOffOn()
+        indentWithTabs()
 
         // Pin version to 4.31 due to Spotless bug https://github.com/diffplug/spotless/issues/1992
         eclipse("4.31").configFile(rootProject.file("codeformat/formatter-config.xml"))

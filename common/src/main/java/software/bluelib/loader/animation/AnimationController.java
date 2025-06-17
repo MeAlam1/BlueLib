@@ -26,7 +26,7 @@ import software.bluelib.loader.animation.keyframe.event.data.SoundKeyframeData;
 import software.bluelib.loader.animation.state.BoneSnapshot;
 import software.bluelib.loader.loading.math.MathParser;
 import software.bluelib.loader.loading.math.MathValue;
-import software.bluelib.loader.loading.math.MolangQueries;
+import software.bluelib.loader.loading.math.MoLangQueries;
 import software.bluelib.loader.loading.math.value.Constant;
 import software.bluelib.loader.model.BlueModel;
 
@@ -315,7 +315,7 @@ public class AnimationController<T extends BlueAnimatable> {
             }
 
             if (this.currentAnimation != null) {
-                MathParser.setVariable(MolangQueries.ANIM_TIME, () -> 0);
+                MathParser.setVariable(MoLangQueries.ANIM_TIME, () -> 0);
 
                 for (BoneAnimation boneAnimation : this.currentAnimation.animation().boneAnimations()) {
                     BoneAnimationQueue boneAnimationQueue = this.boneAnimationQueues.get(boneAnimation.boneName());
@@ -390,7 +390,7 @@ public class AnimationController<T extends BlueAnimatable> {
 
         final double finalAdjustedTick = adjustedTick;
 
-        MathParser.setVariable(MolangQueries.ANIM_TIME, () -> finalAdjustedTick / 20d);
+        MathParser.setVariable(MoLangQueries.ANIM_TIME, () -> finalAdjustedTick / 20d);
 
         for (BoneAnimation boneAnimation : this.currentAnimation.animation().boneAnimations()) {
             BoneAnimationQueue boneAnimationQueue = this.boneAnimationQueues.get(boneAnimation.boneName());

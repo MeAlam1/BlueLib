@@ -7,6 +7,8 @@
  */
 package software.bluelib.loader.model;
 
+import java.util.Optional;
+import java.util.function.BiConsumer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
@@ -28,162 +30,156 @@ import software.bluelib.loader.constant.DataTickets;
 import software.bluelib.loader.constant.dataticket.DataTicket;
 import software.bluelib.loader.renderer.BlueRenderer;
 
-import java.util.Optional;
-import java.util.function.BiConsumer;
-
 public abstract class BlueModel<T extends BlueAnimatable> {
 
-	private final AnimationProcessor<T> processor = new AnimationProcessor<>(this);
+    private final AnimationProcessor<T> processor = new AnimationProcessor<>(this);
 
-	private ModelCache currentModel = null;
-	private double animTime;
-	private double lastGameTickTime;
-	private long lastRenderedInstance = -1;
+    private ModelCache currentModel = null;
+    private double animTime;
+    private double lastGameTickTime;
+    private long lastRenderedInstance = -1;
 
-	public ResourceLocation getModelResource(T pAnimatable, @Nullable BlueRenderer<T> pRenderer) {
-		return getModelResource(pAnimatable);
-	}
+    public ResourceLocation getModelResource(T pAnimatable, @Nullable BlueRenderer<T> pRenderer) {
+        return getModelResource(pAnimatable);
+    }
 
-	@Deprecated
-	public abstract ResourceLocation getModelResource(T pAnimatable);
+    @Deprecated
+    public abstract ResourceLocation getModelResource(T pAnimatable);
 
-	public ResourceLocation getTextureResource(T pAnimatable, @Nullable BlueRenderer<T> pRenderer) {
-		return getTextureResource(pAnimatable);
-	}
+    public ResourceLocation getTextureResource(T pAnimatable, @Nullable BlueRenderer<T> pRenderer) {
+        return getTextureResource(pAnimatable);
+    }
 
-	@Deprecated
-	public abstract ResourceLocation getTextureResource(T pAnimatable);
+    @Deprecated
+    public abstract ResourceLocation getTextureResource(T pAnimatable);
 
-	public abstract ResourceLocation getAnimationResource(T pAnimatable);
+    public abstract ResourceLocation getAnimationResource(T pAnimatable);
 
-	public ResourceLocation[] getAnimationResourceFallbacks(T pAnimatable) {
-		return new ResourceLocation[0];
-	}
+    public ResourceLocation[] getAnimationResourceFallbacks(T pAnimatable) {
+        return new ResourceLocation[0];
+    }
 
-	public boolean crashIfBoneMissing() {
-		return false;
-	}
+    public boolean crashIfBoneMissing() {
+        return false;
+    }
 
-	@Nullable
-	public RenderType getRenderType(T pAnimatable, ResourceLocation pTexture) {
-		return RenderType.entityCutoutNoCull(pTexture);
-	}
+    @Nullable
+    public RenderType getRenderType(T pAnimatable, ResourceLocation pTexture) {
+        return RenderType.entityCutoutNoCull(pTexture);
+    }
 
-	public static ResourceLocation stripSuffix(String pSuffix, ResourceLocation pLocation) {
-		String path = pLocation.getPath();
-		if (path.endsWith(pSuffix)) {
-			String newPath = path.substring(0, path.length() - pSuffix.length());
-			return pLocation.withPath(newPath);
-		} else {
-			throw new RuntimeException("Invalid file type: expected a " + pSuffix + " file, got: " + path);
-		}
-	}
+    public static ResourceLocation stripSuffix(String pSuffix, ResourceLocation pLocation) {
+        String path = pLocation.getPath();
+        if (path.endsWith(pSuffix)) {
+            String newPath = path.substring(0, path.length() - pSuffix.length());
+            return pLocation.withPath(newPath);
+        } else {
+            throw new RuntimeException("Invalid file type: expected a " + pSuffix + " file, got: " + path);
+        }
+    }
 
-	public ModelCache getBakedModel(ResourceLocation pLocation) {
-		ResourceLocation[] attempts = new ResourceLocation[]{
-				pLocation,
-				stripSuffix(".json", pLocation),
-				stripSuffix(".geo.json", pLocation)
-		};
+    public ModelCache getBakedModel(ResourceLocation pLocation) {
+        ResourceLocation[] attempts = new ResourceLocation[] {
+                pLocation,
+                stripSuffix(".json", pLocation),
+                stripSuffix(".geo.json", pLocation)
+        };
 
-		for (ResourceLocation loc : attempts) {
-			ModelCache model = ResourceCache.getBakedModels().get(loc);
-			if (model != null) {
-				if (model != this.currentModel) {
-					this.processor.setActiveModel(model);
-					this.currentModel = model;
-				}
-				return this.currentModel;
-			}
-		}
+        for (ResourceLocation loc : attempts) {
+            ModelCache model = ResourceCache.getBakedModels().get(loc);
+            if (model != null) {
+                if (model != this.currentModel) {
+                    this.processor.setActiveModel(model);
+                    this.currentModel = model;
+                }
+                return this.currentModel;
+            }
+        }
 
-		if (!pLocation.getPath().contains("models/"))
-			throw new RuntimeException("Invalid model resource path provided - BlueLib models must be placed in assets/<modid>/models/");
+        if (!pLocation.getPath().contains("models/"))
+            throw new RuntimeException("Invalid model resource path provided - BlueLib models must be placed in assets/<modid>/models/");
 
-		throw new RuntimeException("Unable to find model file: " + pLocation);
-	}
+        throw new RuntimeException("Unable to find model file: " + pLocation);
+    }
 
-	public Optional<BoneCache> getBone(String pName) {
-		return Optional.ofNullable(getAnimationProcessor().getBone(pName));
-	}
+    public Optional<BoneCache> getBone(String pName) {
+        return Optional.ofNullable(getAnimationProcessor().getBone(pName));
+    }
 
-	@Nullable
-	public Animation getAnimation(T pAnimatable, String pName) {
-		ResourceLocation location = getAnimationResource(pAnimatable);
-		ResourceLocation[] attempts = new ResourceLocation[]{
-				location,
-				stripSuffix(".json", location),
-				stripSuffix(".animation.json", location)
-		};
+    @Nullable
+    public Animation getAnimation(T pAnimatable, String pName) {
+        ResourceLocation location = getAnimationResource(pAnimatable);
+        ResourceLocation[] attempts = new ResourceLocation[] {
+                location,
+                stripSuffix(".json", location),
+                stripSuffix(".animation.json", location)
+        };
 
-		for (ResourceLocation loc : attempts) {
-			AnimationsCache animationsCache = ResourceCache.getBakedAnimations().get(loc);
-			Animation animation = animationsCache != null ? animationsCache.getAnimation(pName) : null;
-			if (animation != null)
-				return animation;
-		}
+        for (ResourceLocation loc : attempts) {
+            AnimationsCache animationsCache = ResourceCache.getBakedAnimations().get(loc);
+            Animation animation = animationsCache != null ? animationsCache.getAnimation(pName) : null;
+            if (animation != null)
+                return animation;
+        }
 
-		for (ResourceLocation fallbackLocation : getAnimationResourceFallbacks(pAnimatable)) {
-			AnimationsCache animationsCache = ResourceCache.getBakedAnimations().get(fallbackLocation);
-			Animation animation = animationsCache != null ? animationsCache.getAnimation(pName) : null;
-			if (animation != null)
-				return animation;
-		}
+        for (ResourceLocation fallbackLocation : getAnimationResourceFallbacks(pAnimatable)) {
+            AnimationsCache animationsCache = ResourceCache.getBakedAnimations().get(fallbackLocation);
+            Animation animation = animationsCache != null ? animationsCache.getAnimation(pName) : null;
+            if (animation != null)
+                return animation;
+        }
 
-		if (!location.getPath().contains("animations/"))
-			throw new RuntimeException("Invalid animation resource path provided - BlueLib animations must be placed in assets/<modid>/animations/");
+        if (!location.getPath().contains("animations/"))
+            throw new RuntimeException("Invalid animation resource path provided - BlueLib animations must be placed in assets/<modid>/animations/");
 
-		throw new RuntimeException("Unable to find animation file: " + location);
-	}
+        throw new RuntimeException("Unable to find animation file: " + location);
+    }
 
-	public AnimationProcessor<T> getAnimationProcessor() {
-		return this.processor;
-	}
+    public AnimationProcessor<T> getAnimationProcessor() {
+        return this.processor;
+    }
 
-	public void addAdditionalStateData(T pAnimatable, long pInstanceId, BiConsumer<DataTicket<T>, T> pDataConsumer) {
-	}
+    public void addAdditionalStateData(T pAnimatable, long pInstanceId, BiConsumer<DataTicket<T>, T> pDataConsumer) {}
 
-	@ApiStatus.Internal
-	public void handleAnimations(T pAnimatable, long pInstanceId, AnimationState<T> pAnimationState, float pPartialTick) {
-		Minecraft mc = Minecraft.getInstance();
-		AnimatableManager<T> animatableManager = pAnimatable.getAnimatableInstanceCache().getManagerForId(pInstanceId);
-		Double currentTick = pAnimationState.getData(DataTickets.TICK);
+    @ApiStatus.Internal
+    public void handleAnimations(T pAnimatable, long pInstanceId, AnimationState<T> pAnimationState, float pPartialTick) {
+        Minecraft mc = Minecraft.getInstance();
+        AnimatableManager<T> animatableManager = pAnimatable.getAnimatableInstanceCache().getManagerForId(pInstanceId);
+        Double currentTick = pAnimationState.getData(DataTickets.TICK);
 
-		if (currentTick == null)
-			currentTick = pAnimatable instanceof Entity entity ? (double) entity.tickCount : RenderUtils.getCurrentTick();
+        if (currentTick == null)
+            currentTick = pAnimatable instanceof Entity entity ? (double) entity.tickCount : RenderUtils.getCurrentTick();
 
-		if (animatableManager.getFirstTickTime() == -1)
-			animatableManager.startedAt(currentTick + pPartialTick);
+        if (animatableManager.getFirstTickTime() == -1)
+            animatableManager.startedAt(currentTick + pPartialTick);
 
-		double currentFrameTime = pAnimatable instanceof Entity || pAnimatable instanceof BlueReplacedEntity ? currentTick + pPartialTick : currentTick - animatableManager.getFirstTickTime();
-		boolean pIsReRender = !animatableManager.isFirstTick() && currentFrameTime == animatableManager.getLastUpdateTime();
+        double currentFrameTime = pAnimatable instanceof Entity || pAnimatable instanceof BlueReplacedEntity ? currentTick + pPartialTick : currentTick - animatableManager.getFirstTickTime();
+        boolean pIsReRender = !animatableManager.isFirstTick() && currentFrameTime == animatableManager.getLastUpdateTime();
 
-		if (pIsReRender && pInstanceId == this.lastRenderedInstance)
-			return;
+        if (pIsReRender && pInstanceId == this.lastRenderedInstance)
+            return;
 
-		if (!mc.isPaused() || pAnimatable.shouldPlayAnimsWhileGamePaused()) {
-			animatableManager.updatedAt(currentFrameTime);
+        if (!mc.isPaused() || pAnimatable.shouldPlayAnimsWhileGamePaused()) {
+            animatableManager.updatedAt(currentFrameTime);
 
-			double lastUpdateTime = animatableManager.getLastUpdateTime();
-			this.animTime += lastUpdateTime - this.lastGameTickTime;
-			this.lastGameTickTime = lastUpdateTime;
-		}
+            double lastUpdateTime = animatableManager.getLastUpdateTime();
+            this.animTime += lastUpdateTime - this.lastGameTickTime;
+            this.lastGameTickTime = lastUpdateTime;
+        }
 
-		pAnimationState.animationTick = this.animTime;
-		this.lastRenderedInstance = pInstanceId;
-		AnimationProcessor<T> processor = getAnimationProcessor();
+        pAnimationState.animationTick = this.animTime;
+        this.lastRenderedInstance = pInstanceId;
+        AnimationProcessor<T> processor = getAnimationProcessor();
 
-		processor.preAnimationSetup(pAnimationState, this.animTime);
+        processor.preAnimationSetup(pAnimationState, this.animTime);
 
-		if (!processor.getRegisteredBones().isEmpty())
-			processor.tickAnimation(pAnimatable, this, animatableManager, this.animTime, pAnimationState, crashIfBoneMissing());
+        if (!processor.getRegisteredBones().isEmpty())
+            processor.tickAnimation(pAnimatable, this, animatableManager, this.animTime, pAnimationState, crashIfBoneMissing());
 
-		setCustomAnimations(pAnimatable, pInstanceId, pAnimationState);
-	}
+        setCustomAnimations(pAnimatable, pInstanceId, pAnimationState);
+    }
 
-	public void setCustomAnimations(T pAnimatable, long pInstanceId, AnimationState<T> pAnimationState) {
-	}
+    public void setCustomAnimations(T pAnimatable, long pInstanceId, AnimationState<T> pAnimationState) {}
 
-	public void applyMolangQueries(AnimationState<T> pAnimationState, double pAnimTime) {
-	}
+    public void applyMolangQueries(AnimationState<T> pAnimationState, double pAnimTime) {}
 }

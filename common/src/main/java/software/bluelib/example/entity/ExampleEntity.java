@@ -8,10 +8,17 @@
 
 package software.bluelib.example.entity;
 
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
+import org.jetbrains.annotations.Nullable;
+import software.bluelib.api.molang.MoLangConstants;
+import software.bluelib.api.molang.MoLangType;
 import software.bluelib.api.utils.LoaderUtils;
 import software.bluelib.loader.animatable.BlueEntity;
 import software.bluelib.loader.animatable.instance.AnimatableInstanceCache;
@@ -28,6 +35,12 @@ public class ExampleEntity extends PathfinderMob implements BlueEntity {
 
     public static AttributeSupplier.Builder createAttributes() {
         return createMobAttributes();
+    }
+
+    @Override
+    public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData spawnGroupData) {
+        MoLangConstants.service.getRuntimeFor(MoLangType.GENERAL).evaluate("q.say('hello')");
+        return super.finalizeSpawn(level, difficulty, spawnType, spawnGroupData);
     }
 
     @Override

@@ -19,7 +19,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import software.bluelib.loader.loading.math.MathParser;
-import software.bluelib.loader.loading.math.MolangQueries;
+import software.bluelib.loader.loading.math.MoLangQueries;
 
 @Mixin(LevelRenderer.class)
 public class LevelRendererMixin {
@@ -31,6 +31,6 @@ public class LevelRendererMixin {
     public void BlueLib$captureRenderedEntities(DeltaTracker deltaTracker, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightTexture lightTexture, Matrix4f frustumMatrix, Matrix4f projectionMatrix, CallbackInfo ci) {
         final int renderedEntityCount = this.renderedEntities;
 
-        MathParser.setVariable(MolangQueries.ACTOR_COUNT, () -> renderedEntityCount);
+        MathParser.setVariable(MoLangQueries.ACTOR_COUNT, () -> renderedEntityCount);
     }
 }

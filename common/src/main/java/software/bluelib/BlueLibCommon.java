@@ -47,8 +47,8 @@ public class BlueLibCommon {
         BlueLibConstants.init();
         MixinBootstrap.init();
         InternalNetworkRegistry.networkServer();
-	    BlueEntityRegistry.init();
-		BlueRecipeTypeRegistry.init();
+        BlueEntityRegistry.init();
+        BlueRecipeTypeRegistry.init();
         BlueRecipeSerializerRegistry.init();
     }
 
