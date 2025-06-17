@@ -41,8 +41,6 @@ dependencies {
     modImplementation(libs.fabric)
     modImplementation(libs.fabric.api)
     compileOnly(project(":common"))
-    include(libs.molang)
-    modCompileOnly(libs.molang)
     modCompileOnlyApi(libs.jei.api)
     modRuntimeOnly(libs.jei.fabric)
 

@@ -52,8 +52,6 @@ repositories {
 
 dependencies {
     compileOnly(project(":common"))
-    jarJar(libs.molang)
-    compileOnly(libs.molang)
     runtimeOnly(libs.jei.neoforge)
 }
 

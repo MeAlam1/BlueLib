@@ -29,8 +29,6 @@ neoForge {
 dependencies {
     compileOnly(libs.mixin)
     compileOnly(libs.mixinextras.common)
-    jarJar(libs.molang)
-    compileOnly(libs.molang)
     compileOnlyApi(libs.jei.api)
 
     // Only enable for testing as needed
