@@ -35,7 +35,6 @@ val fabricVersion = libs.get().findVersion("fabric").get()
 val fabricVersionRange = libs.get().findVersion("fabric.range").get()
 val neoforgeVersionRange = libs.get().findVersion("neoforge.range").get()
 val neoforgeLoaderVersionRange = libs.get().findVersion("neoforge.loader.range").get()
-val molangVersion = libs.get().findVersion("molang").get()
 val jeiApiVersion = libs.get().findVersion("jei.api").get()
 
 tasks.withType<Jar>().configureEach {
@@ -81,7 +80,6 @@ tasks.withType<ProcessResources>().configureEach {
         "mod_description" to modDescription,
         "neoforge_version_range" to neoforgeVersionRange,
         "neoforge_loader_range" to neoforgeLoaderVersionRange,
-        "molang_version" to molangVersion,
         "jei_api_version" to jeiApiVersion
     )
 
