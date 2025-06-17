@@ -39,7 +39,8 @@ public class ExampleEntity extends PathfinderMob implements BlueEntity {
 
     @Override
     public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData spawnGroupData) {
-        MoLangConstants.service.getRuntimeFor(MoLangType.GENERAL).evaluate("q.say('hello')");
+        MoLangConstants.service.getRuntimeFor(MoLangType.GENERAL).evaluate("g.say('hello')");
+        System.out.println(MoLangConstants.service.getRuntimeFor(MoLangType.MATH).evaluate("m.pi"));
         return super.finalizeSpawn(level, difficulty, spawnType, spawnGroupData);
     }
 

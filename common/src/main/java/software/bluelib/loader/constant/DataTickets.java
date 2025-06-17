@@ -55,7 +55,7 @@ public final class DataTickets {
         SerializableDataTicket<?> existingTicket = SERIALIZABLE_TICKETS.putIfAbsent(ticket.id(), ticket);
 
         //if (existingTicket != null)
-        //BlueLibConstants.LOGGER.error("Duplicate SerializableDataTicket registered! This will cause issues. Existing: " + existingTicket.pId() + ", New: " + ticket.pId());
+        //BlueLibConstants.LOGGER.error("Duplicate SerializableDataTicket registered! This will cause issues. Existing: " + existingTicket.id() + ", New: " + ticket.id());
 
         return ticket;
     }
