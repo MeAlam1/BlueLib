@@ -1,4 +1,4 @@
-package software.bluelib.api.molang.context.entity;
+package software.bluelib.api.molang.context;
 
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.animal.Animal;
@@ -8,7 +8,6 @@ import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
-import software.bluelib.api.molang.context.BaseMoLangContext;
 
 /* TODO:
  * All Getters need Setters

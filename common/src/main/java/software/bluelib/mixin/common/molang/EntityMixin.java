@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import software.bluelib.api.molang.MoLang;
 import software.bluelib.api.molang.MoLangType;
-import software.bluelib.api.molang.context.entity.EntityMoLang;
+import software.bluelib.api.molang.context.EntityMoLang;
 
 // TODO: Inefficient, but works for now
 @Mixin(Entity.class)
