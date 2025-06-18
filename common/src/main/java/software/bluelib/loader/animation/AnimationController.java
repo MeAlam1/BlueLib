@@ -393,7 +393,7 @@ public class AnimationController<T extends BlueAnimatable> {
 
 		this.lastAdjustedTick = adjustedTick;
 		
-		System.out.println("BLUELIB: " + MoLang.animatableMoLang("q.anim_time"));
+		//TODO: System.out.println("BLUELIB: " + MoLang.animatableMoLang("q.anim_time"));
 
 		for (BoneAnimation boneAnimation : this.currentAnimation.animation().boneAnimations()) {
 			BoneAnimationQueue boneAnimationQueue = this.boneAnimationQueues.get(boneAnimation.boneName());
