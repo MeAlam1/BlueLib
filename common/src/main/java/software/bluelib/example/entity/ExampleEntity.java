@@ -25,7 +25,6 @@ import software.bluelib.api.utils.LoaderUtils;
 import software.bluelib.loader.animatable.BlueEntity;
 import software.bluelib.loader.animatable.instance.AnimatableInstanceCache;
 import software.bluelib.loader.animation.*;
-import software.bluelib.loader.loading.math.MathParser;
 
 public class ExampleEntity extends PathfinderMob implements BlueEntity {
 
@@ -48,7 +47,7 @@ public class ExampleEntity extends PathfinderMob implements BlueEntity {
 
 	@Override
 	protected InteractionResult mobInteract(Player player, InteractionHand hand) {
-		System.out.println(MoLang.entityMoLang("e.get_health"));
+		System.out.println(MoLang.operatorMoLang("o.add('1', '2', '3')"));
 		return super.mobInteract(player, hand);
 	}
 

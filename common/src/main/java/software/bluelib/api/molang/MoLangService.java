@@ -6,6 +6,7 @@ import java.util.function.Supplier;
 import software.bluelib.api.molang.context.BaseMoLangContext;
 import software.bluelib.api.molang.context.GeneralMoLang;
 import software.bluelib.api.molang.context.MathMoLang;
+import software.bluelib.api.molang.context.OperatorMoLang;
 
 public class MoLangService {
 
@@ -14,7 +15,8 @@ public class MoLangService {
     public MoLangService() {
         Map<MoLangType, Supplier<BaseMoLangContext>> contextFactories = Map.of(
                 MoLangType.GENERAL, GeneralMoLang::new,
-                MoLangType.MATH, MathMoLang::new);
+                MoLangType.MATH, MathMoLang::new,
+                MoLangType.OPERATOR, OperatorMoLang::new);
 
         for (MoLangType type : MoLangType.values()) {
             MoLangRuntime runtime = new MoLangRuntime();

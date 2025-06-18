@@ -11,6 +11,10 @@ public class MoLang {
 	public static Object mathMoLang(String pExpression) {
 		return service.getRuntimeFor(MoLangType.MATH).evaluate(pExpression);
 	}
+	
+	public static Object operatorMoLang(String pExpression) {
+		return service.getRuntimeFor(MoLangType.OPERATOR).evaluate(pExpression);
+	}
 
 	public static Object entityMoLang(String pExpression) {
 		return service.getRuntimeFor(MoLangType.ENTITY).evaluate(pExpression);

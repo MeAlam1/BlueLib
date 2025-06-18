@@ -35,6 +35,7 @@ public record MoLangType(String id, String name) {
 
 	public static final MoLangType GENERAL = new MoLangType("g", "general");
 	public static final MoLangType MATH = new MoLangType("m", "math");
+	public static final MoLangType OPERATOR = new MoLangType("o", "operator");
 	public static final MoLangType ENTITY = new MoLangType("e", "entity");
 	public static final MoLangType ANIMATABLE = new MoLangType("q", "animatable");
 }
