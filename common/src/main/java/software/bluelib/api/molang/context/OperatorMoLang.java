@@ -1,5 +1,15 @@
 package software.bluelib.api.molang.context;
 
+
+/* TODO: Add
+ * Arithmetic Operators
+ * Comparison Operators
+ * Logical Operators
+ * Bitwise Operators
+ * Assignment Operators
+ * Unary Operators
+ * SEPARATE METHODS FOR EACH OPERATOR
+ */
 public class OperatorMoLang extends BaseMoLangContext {
 
 	public OperatorMoLang() {
