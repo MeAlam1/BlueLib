@@ -28,40 +28,52 @@ import java.util.function.Supplier;
 public class EntityMoLang extends BaseMoLangContext {
 
 	public EntityMoLang(Supplier<Entity> pEntity) {
-
 		if (pEntity == null) return;
 
 		setup_base_entity(pEntity);
 
-		if (pEntity instanceof LivingEntity pLivingEntity) {
-			setup_living_entity(pLivingEntity);
-			if (pEntity instanceof ArmorStand pArmorStand) {
-				setup_armor_stand(pArmorStand);
+		Entity entity = pEntity.get();
+		if (entity instanceof LivingEntity) {
+			Supplier<LivingEntity> livingSupplier = () -> (LivingEntity) pEntity.get();
+			setup_living_entity(livingSupplier);
+
+			if (entity instanceof ArmorStand) {
+				setup_armor_stand(() -> (ArmorStand) pEntity.get());
 			}
-			if (pEntity instanceof Player player) {
-				setup_player(player);
+			if (entity instanceof Player) {
+				setup_player(() -> (Player) pEntity.get());
 			}
-			if (pEntity instanceof Mob pMob) {
-				setup_mob(pMob);
-				if (pEntity instanceof PathfinderMob pPathfinder) {
-					setup_pathfinder_mob(pPathfinder);
-					if (pEntity instanceof AgeableMob pAgeable) {
-						setup_ageable_mob(pAgeable);
-						if (pEntity instanceof Villager pVillager) {
-							setup_villager(pVillager);
+			if (entity instanceof Mob) {
+				Supplier<Mob> mobSupplier = () -> (Mob) pEntity.get();
+				setup_mob(mobSupplier);
+
+				if (entity instanceof PathfinderMob) {
+					Supplier<PathfinderMob> pathfinderSupplier = () -> (PathfinderMob) pEntity.get();
+					setup_pathfinder_mob(pathfinderSupplier);
+
+					if (entity instanceof AgeableMob) {
+						Supplier<AgeableMob> ageableSupplier = () -> (AgeableMob) pEntity.get();
+						setup_ageable_mob(ageableSupplier);
+
+						if (entity instanceof Villager) {
+							setup_villager(() -> (Villager) pEntity.get());
 						}
-						if (pEntity instanceof Animal pAnimal) {
-							setup_animal(pAnimal);
-							if (pEntity instanceof Bee pBee) {
-								setup_bee(pBee);
+						if (entity instanceof Animal) {
+							Supplier<Animal> animalSupplier = () -> (Animal) pEntity.get();
+							setup_animal(animalSupplier);
+
+							if (entity instanceof Bee) {
+								setup_bee(() -> (Bee) pEntity.get());
 							}
-							if (pEntity instanceof AbstractHorse pHorse) {
-								setup_abstract_horse(pHorse);
+							if (entity instanceof AbstractHorse) {
+								setup_abstract_horse(() -> (AbstractHorse) pEntity.get());
 							}
-							if (pEntity instanceof TamableAnimal pTamable) {
-								setup_tameable_animal(pTamable);
-								if (pEntity instanceof Wolf pWolf) {
-									setup_wolf(pWolf);
+							if (entity instanceof TamableAnimal) {
+								Supplier<TamableAnimal> tamableSupplier = () -> (TamableAnimal) pEntity.get();
+								setup_tameable_animal(tamableSupplier);
+
+								if (entity instanceof Wolf) {
+									setup_wolf(() -> (Wolf) pEntity.get());
 								}
 							}
 						}
@@ -69,7 +81,6 @@ public class EntityMoLang extends BaseMoLangContext {
 				}
 			}
 		}
-
 	}
 
 	// ====================== ENTITY ======================
@@ -97,7 +108,7 @@ public class EntityMoLang extends BaseMoLangContext {
 		setVariable("get_chunk_pos", pEntity.get().chunkPosition());
 
 		setVariable("get_vehicle", pEntity.get().getVehicle());
-		setVariable("get_passengers", () -> pEntity.get().getPassengers());
+		setVariable("get_passengers", pEntity.get().getPassengers());
 
 		setVariable("on_ground", pEntity.get().onGround());
 		setVariable("is_in_water", pEntity.get().isInWater());
@@ -118,113 +129,113 @@ public class EntityMoLang extends BaseMoLangContext {
 	}
 
 	// ====================== LIVING ENTITY ======================
-	private void setup_living_entity(LivingEntity pLivingEntity) {
-		setVariable("get_health", pLivingEntity.getHealth());
-		setVariable("get_max_health", pLivingEntity.getMaxHealth());
-		setVariable("get_main_hand_item", pLivingEntity.getMainHandItem());
-		setVariable("get_offhand_item", pLivingEntity.getOffhandItem());
-		setVariable("get_armor_items", pLivingEntity.getArmorSlots());
+	private void setup_living_entity(Supplier<LivingEntity> pLivingEntity) {
+		setVariable("get_health", pLivingEntity.get().getHealth());
+		setVariable("get_max_health", pLivingEntity.get().getMaxHealth());
+		setVariable("get_main_hand_item", pLivingEntity.get().getMainHandItem());
+		setVariable("get_offhand_item", pLivingEntity.get().getOffhandItem());
+		setVariable("get_armor_items", pLivingEntity.get().getArmorSlots());
 
-		setVariable("is_baby", pLivingEntity.isBaby());
-		setVariable("is_sleeping", pLivingEntity.isSleeping());
-		setVariable("is_fall_flying", pLivingEntity.isFallFlying());
+		setVariable("is_baby", pLivingEntity.get().isBaby());
+		setVariable("is_sleeping", pLivingEntity.get().isSleeping());
+		setVariable("is_fall_flying", pLivingEntity.get().isFallFlying());
 
-		setVariable("get_last_hurt_by_entity", pLivingEntity.getLastHurtByMob());
-		setVariable("get_last_damage_source", pLivingEntity.getLastDamageSource());
-		setVariable("get_active_effects", pLivingEntity.getActiveEffects());
-		setVariable("get_use_item", pLivingEntity.getUseItem());
+		setVariable("get_last_hurt_by_entity", pLivingEntity.get().getLastHurtByMob());
+		setVariable("get_last_damage_source", pLivingEntity.get().getLastDamageSource());
+		setVariable("get_active_effects", pLivingEntity.get().getActiveEffects());
+		setVariable("get_use_item", pLivingEntity.get().getUseItem());
 
-		setVariable("is_using_item", pLivingEntity.isUsingItem());
-		setVariable("is_glowing", pLivingEntity.isCurrentlyGlowing());
-		setVariable("is_dead_or_dying", pLivingEntity.isDeadOrDying());
+		setVariable("is_using_item", pLivingEntity.get().isUsingItem());
+		setVariable("is_glowing", pLivingEntity.get().isCurrentlyGlowing());
+		setVariable("is_dead_or_dying", pLivingEntity.get().isDeadOrDying());
 
-		setVariable("get_absorption_amount", pLivingEntity.getAbsorptionAmount());
-		setVariable("get_arrow_count", pLivingEntity.getArrowCount());
+		setVariable("get_absorption_amount", pLivingEntity.get().getAbsorptionAmount());
+		setVariable("get_arrow_count", pLivingEntity.get().getArrowCount());
 	}
 
 	// ====================== PLAYER ======================
-	private void setup_player(Player pPlayer) {
-		setVariable("get_xp", pPlayer.totalExperience);
-		setVariable("get_level", pPlayer.experienceLevel);
-		setVariable("get_hunger", pPlayer.getFoodData().getFoodLevel());
-		setVariable("get_saturation", pPlayer.getFoodData().getSaturationLevel());
-		setVariable("is_crouching", pPlayer.isCrouching());
-		setVariable("is_swimming", pPlayer.isSwimming());
-		setVariable("get_sleep_timer", pPlayer.getSleepTimer());
+	private void setup_player(Supplier<Player> pPlayer) {
+		setVariable("get_xp", pPlayer.get().totalExperience);
+		setVariable("get_level", pPlayer.get().experienceLevel);
+		setVariable("get_hunger", pPlayer.get().getFoodData().getFoodLevel());
+		setVariable("get_saturation", pPlayer.get().getFoodData().getSaturationLevel());
+		setVariable("is_crouching", pPlayer.get().isCrouching());
+		setVariable("is_swimming", pPlayer.get().isSwimming());
+		setVariable("get_sleep_timer", pPlayer.get().getSleepTimer());
 	}
 
 	// ====================== MOB ======================
-	private void setup_mob(Mob pMob) {
-		setVariable("get_target", pMob.getTarget());
-		setVariable("get_brain", pMob.getBrain());
-		setVariable("get_navigation", pMob.getNavigation());
-		setVariable("get_look_control", pMob.getLookControl());
-		setVariable("get_move_control", pMob.getMoveControl());
-		setVariable("get_jump_control", pMob.getJumpControl());
-		setVariable("can_attack", pMob.getTarget() == null ? null : pMob.canAttack(pMob.getTarget()));
-		setVariable("can_pickup_loot", pMob.canPickUpLoot());
-		setVariable("get_leash_holder", pMob.getLeashHolder());
-		setVariable("get_no_action_time", pMob.getNoActionTime());
+	private void setup_mob(Supplier<Mob> pMob) {
+		setVariable("get_target", pMob.get().getTarget());
+		setVariable("get_brain", pMob.get().getBrain());
+		setVariable("get_navigation", pMob.get().getNavigation());
+		setVariable("get_look_control", pMob.get().getLookControl());
+		setVariable("get_move_control", pMob.get().getMoveControl());
+		setVariable("get_jump_control", pMob.get().getJumpControl());
+		setVariable("can_attack", pMob.get().getTarget() == null ? null : pMob.get().canAttack(pMob.get().getTarget()));
+		setVariable("can_pickup_loot", pMob.get().canPickUpLoot());
+		setVariable("get_leash_holder", pMob.get().getLeashHolder());
+		setVariable("get_no_action_time", pMob.get().getNoActionTime());
 	}
 
 	// ====================== PATHFINDER MOB ======================
-	private void setup_pathfinder_mob(PathfinderMob pPathfinderMob) {
-		setVariable("is_pathfinding", pPathfinderMob.isPathFinding());
+	private void setup_pathfinder_mob(Supplier<PathfinderMob> pPathfinderMob) {
+		setVariable("is_pathfinding", pPathfinderMob.get().isPathFinding());
 	}
 
 	// ====================== AGEABLE MOB ======================
-	private void setup_ageable_mob(AgeableMob pAgeableMob) {
-		setVariable("get_age", pAgeableMob.getAge());
-		setVariable("can_breed", pAgeableMob.canBreed());
+	private void setup_ageable_mob(Supplier<AgeableMob> pAgeableMob) {
+		setVariable("get_age", pAgeableMob.get().getAge());
+		setVariable("can_breed", pAgeableMob.get().canBreed());
 	}
 
 	// ====================== TAMED ANIMAL ======================
-	private void setup_tameable_animal(TamableAnimal pTamableAnimal) {
-		setVariable("is_tamed", pTamableAnimal.isTame());
-		setVariable("get_owner_uuid", pTamableAnimal.getOwnerUUID());
-		setVariable("is_in_love", pTamableAnimal.isInLove());
+	private void setup_tameable_animal(Supplier<TamableAnimal> pTamableAnimal) {
+		setVariable("is_tamed", pTamableAnimal.get().isTame());
+		setVariable("get_owner_uuid", pTamableAnimal.get().getOwnerUUID());
+		setVariable("is_in_love", pTamableAnimal.get().isInLove());
 	}
 
 	// ====================== ANIMAL ======================
-	private void setup_animal(Animal pAnimal) {
+	private void setup_animal(Supplier<Animal> pAnimal) {
 	}
 
 	// ====================== ABSTRACT HORSE ======================
-	private void setup_abstract_horse(AbstractHorse pAbstractHorse) {
-		setVariable("is_saddled", pAbstractHorse.isSaddled());
-		setVariable("get_temper", pAbstractHorse.getTemper());
-		setVariable("is_tamed", pAbstractHorse.isTamed());
+	private void setup_abstract_horse(Supplier<AbstractHorse> pAbstractHorse) {
+		setVariable("is_saddled", pAbstractHorse.get().isSaddled());
+		setVariable("get_temper", pAbstractHorse.get().getTemper());
+		setVariable("is_tamed", pAbstractHorse.get().isTamed());
 	}
 
 	// ====================== VILLAGER ======================
-	private void setup_villager(Villager pVillager) {
-		setVariable("get_villager_profession", pVillager.getVillagerData().getProfession().toString());
+	private void setup_villager(Supplier<Villager> pVillager) {
+		setVariable("get_villager_profession", pVillager.get().getVillagerData().getProfession().toString());
 	}
 
 	// ====================== WOLF ======================
-	private void setup_wolf(Wolf pWolf) {
-		setVariable("is_angry", pWolf.isAngry());
-		setVariable("is_wet", pWolf.isWet());
-		setVariable("get_collar_color", pWolf.getCollarColor().name());
+	private void setup_wolf(Supplier<Wolf> pWolf) {
+		setVariable("is_angry", pWolf.get().isAngry());
+		setVariable("is_wet", pWolf.get().isWet());
+		setVariable("get_collar_color", pWolf.get().getCollarColor().name());
 	}
 
 	// ====================== BEE ======================
-	private void setup_bee(Bee pBee) {
-		setVariable("has_nectar", pBee.hasNectar());
-		setVariable("is_angry", pBee.isAngry());
-		setVariable("has_stung", pBee.hasStung());
+	private void setup_bee(Supplier<Bee> pBee) {
+		setVariable("has_nectar", pBee.get().hasNectar());
+		setVariable("is_angry", pBee.get().isAngry());
+		setVariable("has_stung", pBee.get().hasStung());
 	}
 
 	// ====================== ARMOR STAND ======================
-	private void setup_armor_stand(ArmorStand pArmorStand) {
-		setVariable("is_marker", pArmorStand.isMarker());
-		setVariable("is_small", pArmorStand.isSmall());
-		setVariable("is_show_arms", pArmorStand.isShowArms());
-		setVariable("get_head_pose", pArmorStand.getHeadPose());
-		setVariable("get_body_pose", pArmorStand.getBodyPose());
-		setVariable("get_left_arm_pose", pArmorStand.getLeftArmPose());
-		setVariable("get_right_arm_pose", pArmorStand.getRightArmPose());
-		setVariable("get_left_leg_pose", pArmorStand.getLeftLegPose());
-		setVariable("get_right_leg_pose", pArmorStand.getRightLegPose());
+	private void setup_armor_stand(Supplier<ArmorStand> pArmorStand) {
+		setVariable("is_marker", pArmorStand.get().isMarker());
+		setVariable("is_small", pArmorStand.get().isSmall());
+		setVariable("is_show_arms", pArmorStand.get().isShowArms());
+		setVariable("get_head_pose", pArmorStand.get().getHeadPose());
+		setVariable("get_body_pose", pArmorStand.get().getBodyPose());
+		setVariable("get_left_arm_pose", pArmorStand.get().getLeftArmPose());
+		setVariable("get_right_arm_pose", pArmorStand.get().getRightArmPose());
+		setVariable("get_left_leg_pose", pArmorStand.get().getLeftLegPose());
+		setVariable("get_right_leg_pose", pArmorStand.get().getRightLegPose());
 	}
 }

@@ -22,17 +22,14 @@ public abstract class BaseMoLangContext implements MoLangContext {
 		variables.put(pName, pSupplier);
 	}
 
-	public void setVariable(String pName, Object pValue) {
-		variables.put(pName, pValue);
+	public void setVariable(String pName, Object pSupplier) {
+		variables.put(pName, pSupplier instanceof Supplier<?> ? pSupplier : (Supplier<?>) () -> pSupplier);
 	}
 
 	@Override
 	public Object getVariable(String pName) {
-		Object value = variables.get(pName);
-		if (value instanceof Supplier<?> supplier) {
-			return supplier.get();
-		}
-		return value;
+		Supplier<?> supplier = (Supplier<?>) variables.get(pName);
+		return supplier != null ? supplier.get() : null;
 	}
 
 	@Override
