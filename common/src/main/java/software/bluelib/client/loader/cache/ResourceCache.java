@@ -27,7 +27,7 @@ import software.bluelib.loader.loading.json.typeadapter.BakedAnimationsAdapter;
 
 public final class ResourceCache extends BlueLoader {
 
-    private static Map<ResourceLocation, ControllerCache> CONTROLLERS = new ConcurrentHashMap<>();
+    private static Map<ResourceLocation, ControllerCache> CONTROLLERS = Collections.emptyMap();
     private static Map<ResourceLocation, AnimationsCache> ANIMATIONS = Collections.emptyMap();
     private static Map<ResourceLocation, ModelCache> MODELS = Collections.emptyMap();
 

@@ -5,7 +5,7 @@
  * If a copy of the MIT License was not distributed with this file,
  * You can obtain one at https://opensource.org/licenses/MIT.
  */
-package software.bluelib.client.loader.json.model.deserialize;
+package software.bluelib.client.loader.json.deserialize.controller;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializer;
@@ -15,19 +15,17 @@ import java.util.List;
 import net.minecraft.util.GsonHelper;
 import software.bluelib.api.utils.JsonUtils;
 
-public record Model(
-        String modelFormatVersion,
-        List<ModelGeometry> ModelGeometry) {
+public record Controller(
+        List<Group> groups) {
 
-    public static JsonDeserializer<Model> deserializer() throws JsonParseException {
+    public static JsonDeserializer<Controller> deserializer() throws JsonParseException {
         return (json, type, context) -> {
             JsonObject obj = json.getAsJsonObject();
-            String formatVersion = obj.get("format_version").getAsString();
-            List<ModelGeometry> ModelGeometry = JsonUtils.jsonArrayToObjectList(GsonHelper.getAsJsonArray(obj, "minecraft:geometry", new JsonArray(0)), context, ModelGeometry.class);
 
-            return new Model(
-                    formatVersion,
-                    ModelGeometry);
+            List<Group> groups = JsonUtils.jsonArrayToObjectList(GsonHelper.getAsJsonArray(obj, "groups", new JsonArray(0)), context, Group.class);
+
+            return new Controller(
+                    groups);
         };
     }
 }

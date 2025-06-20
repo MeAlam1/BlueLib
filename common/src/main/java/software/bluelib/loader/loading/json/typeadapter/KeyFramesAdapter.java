@@ -70,7 +70,7 @@ public class KeyFramesAdapter implements JsonDeserializer<Animation.Keyframes> {
             String instructions = "";
 
             if (entry.getValue() instanceof JsonArray array) {
-                instructions = BlueLoader.MODEL_GSON.fromJson(array, ObjectArrayList.class).toString();
+                instructions = BlueLoader.ANIMATION_GSON.fromJson(array, ObjectArrayList.class).toString();
             } else if (entry.getValue() instanceof JsonPrimitive primitive) {
                 instructions = primitive.getAsString();
             }

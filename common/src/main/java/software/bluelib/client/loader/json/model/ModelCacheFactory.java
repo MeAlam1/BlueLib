@@ -18,17 +18,25 @@ import org.jetbrains.annotations.Nullable;
 import software.bluelib.client.loader.cache.model.BoneCache;
 import software.bluelib.client.loader.cache.model.CubeCache;
 import software.bluelib.client.loader.cache.model.ModelCache;
-import software.bluelib.client.loader.json.model.deserialize.*;
+import software.bluelib.client.loader.json.deserialize.model.*;
 import software.bluelib.client.loader.json.model.object.BoneStructure;
 import software.bluelib.client.loader.json.model.object.BoneTree;
-import software.bluelib.client.loader.json.model.object.QuadData;
-import software.bluelib.client.loader.json.model.object.VertexData;
+import software.bluelib.client.loader.json.object.QuadData;
+import software.bluelib.client.loader.json.object.VertexData;
 import software.bluelib.client.utils.RenderUtils;
 
 public interface ModelCacheFactory {
 
     Map<String, ModelCacheFactory> FACTORIES = new Object2ObjectOpenHashMap<>(1);
     ModelCacheFactory DEFAULT_FACTORY = new Builtin();
+
+    static ModelCacheFactory getForNamespace(String pNamespace) {
+        return FACTORIES.getOrDefault(pNamespace, DEFAULT_FACTORY);
+    }
+
+    static void register(String pNamespace, ModelCacheFactory pFactory) {
+        FACTORIES.put(pNamespace, pFactory);
+    }
 
     ModelCache constructBlueModel(BoneTree pBoneTree);
 
@@ -115,14 +123,6 @@ public interface ModelCacheFactory {
         return QuadData.build(pVertices.verticesForQuad(pDirection, true, pMirror || pCube.mirror() == Boolean.TRUE), uvData.get(0), uvData.get(1), FaceUV.Rotation.NONE, pTextureWidth, pTextureHeight, pMirror, pDirection);
     }
 
-    static ModelCacheFactory getForNamespace(String pNamespace) {
-        return FACTORIES.getOrDefault(pNamespace, DEFAULT_FACTORY);
-    }
-
-    static void register(String pNamespace, ModelCacheFactory pFactory) {
-        FACTORIES.put(pNamespace, pFactory);
-    }
-
     final class Builtin implements ModelCacheFactory {
 
         @Override
@@ -130,10 +130,10 @@ public interface ModelCacheFactory {
             List<BoneCache> bones = new ObjectArrayList<>();
 
             for (BoneStructure boneStructure : pBoneTree.topLevelBones().values()) {
-                bones.add(constructBone(boneStructure, pBoneTree.properties(), null));
+                bones.add(constructBone(boneStructure, pBoneTree.description(), null));
             }
 
-            return new ModelCache(bones, pBoneTree.properties());
+            return new ModelCache(bones, pBoneTree.description());
         }
 
         @Override

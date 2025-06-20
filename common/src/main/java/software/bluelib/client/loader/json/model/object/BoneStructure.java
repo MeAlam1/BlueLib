@@ -9,13 +9,13 @@ package software.bluelib.client.loader.json.model.object;
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import java.util.Map;
-import software.bluelib.client.loader.json.model.deserialize.Bone;
+import software.bluelib.client.loader.json.deserialize.model.Bone;
 
 public record BoneStructure(
         Bone self,
         Map<String, BoneStructure> children) {
 
-    public BoneStructure(Bone self) {
-        this(self, new Object2ObjectOpenHashMap<>());
+    public BoneStructure(Bone pSelf) {
+        this(pSelf, new Object2ObjectOpenHashMap<>());
     }
 }

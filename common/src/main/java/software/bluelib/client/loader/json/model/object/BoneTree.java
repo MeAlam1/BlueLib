@@ -10,14 +10,14 @@ package software.bluelib.client.loader.json.model.object;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import java.util.List;
 import java.util.Map;
-import software.bluelib.client.loader.json.model.deserialize.Bone;
-import software.bluelib.client.loader.json.model.deserialize.Model;
-import software.bluelib.client.loader.json.model.deserialize.ModelDescription;
-import software.bluelib.client.loader.json.model.deserialize.ModelGeometry;
+import software.bluelib.client.loader.json.deserialize.model.Bone;
+import software.bluelib.client.loader.json.deserialize.model.Model;
+import software.bluelib.client.loader.json.deserialize.model.ModelDescription;
+import software.bluelib.client.loader.json.deserialize.model.ModelGeometry;
 
 public record BoneTree(
         Map<String, BoneStructure> topLevelBones,
-        ModelDescription properties) {
+        ModelDescription description) {
 
     public static BoneTree fromModel(Model pModel) {
         final Map<String, BoneStructure> topLevelBones = new Object2ObjectOpenHashMap<>();

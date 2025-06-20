@@ -5,7 +5,7 @@
  * If a copy of the MIT License was not distributed with this file,
  * You can obtain one at https://opensource.org/licenses/MIT.
  */
-package software.bluelib.client.loader.json.model.deserialize;
+package software.bluelib.client.loader.json.deserialize.model;
 
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonParseException;

@@ -9,7 +9,7 @@ package software.bluelib.client.loader.cache.model;
 
 import java.util.List;
 import java.util.Optional;
-import software.bluelib.client.loader.json.model.deserialize.ModelDescription;
+import software.bluelib.client.loader.json.deserialize.model.ModelDescription;
 
 public record ModelCache(List<BoneCache> topLevelBones, ModelDescription modelDescription) {
 

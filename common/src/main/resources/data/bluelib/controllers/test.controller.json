@@ -1,20 +1,52 @@
 {
-  "groups": {
-    "idle": {
-      "base": [
-        {
-          "when": [
-            "q.is_in_water"
-          ],
-          "play": "animation.bulbasaur.battle_idle"
-        },
-        {
-          "when": [
-            "true"
-          ],
-          "play": "animation.bulbasaur.ground_idle"
-        }
-      ]
+  "groups": [
+    {
+      "idle": {
+        "base": [
+          {
+            "when": [
+              "q.is_in_water"
+            ],
+            "play": "animation.bulbasaur.battle_idle"
+          },
+          {
+            "when": [
+              "true"
+            ],
+            "play": "animation.bulbasaur.ground_idle"
+          }
+        ],
+        "quirks": [
+          {
+            "when": [
+              "q.is_in_water"
+            ],
+            "play": "animation.bulbasaur.battle_idle"
+          },
+          {
+            "when": [
+              "true"
+            ],
+            "play": "animation.bulbasaur.ground_idle"
+          }
+        ]
+      },
+      "walk": {
+        "base": [
+          {
+            "when": [
+              "q.is_in_water"
+            ],
+            "play": "animation.bulbasaur.battle_walk"
+          },
+          {
+            "when": [
+              "true"
+            ],
+            "play": "animation.bulbasaur.ground_walk"
+          }
+        ]
+      }
     }
-  }
+  ]
 }

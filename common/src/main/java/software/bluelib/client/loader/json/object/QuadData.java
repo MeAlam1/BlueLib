@@ -5,12 +5,12 @@
  * If a copy of the MIT License was not distributed with this file,
  * You can obtain one at https://opensource.org/licenses/MIT.
  */
-package software.bluelib.client.loader.json.model.object;
+package software.bluelib.client.loader.json.object;
 
 import java.util.List;
 import net.minecraft.core.Direction;
 import org.joml.Vector3f;
-import software.bluelib.client.loader.json.model.deserialize.FaceUV;
+import software.bluelib.client.loader.json.deserialize.model.FaceUV;
 
 public record QuadData(List<VertexData> vertices, Vector3f normal, Direction direction) {
 
