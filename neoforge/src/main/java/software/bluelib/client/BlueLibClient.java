@@ -14,7 +14,6 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
-import net.neoforged.neoforge.event.AddReloadListenerEvent;
 import software.bluelib.BlueLibCommon;
 import software.bluelib.BlueLibConstants;
 import software.bluelib.client.loader.cache.ResourceCache;
@@ -25,7 +24,7 @@ public class BlueLibClient {
 	public static void init(ModContainer pModContainer) {
 		pModContainer.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
 		BlueLibCommon.doClientRegistration();
-		ResourceCache.registerReloadListener();
+		ResourceCache.registerClientReloadListener();
 	}
 
 	@SubscribeEvent

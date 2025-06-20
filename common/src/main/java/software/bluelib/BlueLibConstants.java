@@ -57,10 +57,11 @@ public class BlueLibConstants {
     public static class BlueLoader {
 
         public static final ResourceLocation RELOAD_LISTENER_ID = BlueResource.resource("models_animations");
+        public static final ResourceLocation CONTROLLERS_PATH = BlueResource.resource("controllers");
         public static final ResourceLocation ANIMATIONS_PATH = BlueResource.resource("animations");
         public static final ResourceLocation MODELS_PATH = BlueResource.resource("models");
-        public static final Pattern SUFFIX_STRIPPER = Pattern.compile("((\\.Blue)|((\\.animation)s?))?(\\.json)$");
-        public static final Pattern PREFIX_STRIPPER = Pattern.compile("^(bluelib/)((animations/)|(models/))?");
+        public static final Pattern SUFFIX_STRIPPER = Pattern.compile("((\\.geo)|((\\.animation)s?)|(\\.controller))?(\\.json)$");
+        public static final Pattern PREFIX_STRIPPER = Pattern.compile("^(bluelib/)((animations/)|(models/)|(controllers/))?");
         public static final List<String> SKIPPED_NAMESPACES = List.of("minecraft", "BlueLib", "neoforge");
     }
 

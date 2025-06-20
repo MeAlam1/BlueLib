@@ -1,0 +1,20 @@
+{
+  "groups": {
+    "idle": {
+      "base": [
+        {
+          "when": [
+            "q.is_in_water"
+          ],
+          "play": "animation.bulbasaur.battle_idle"
+        },
+        {
+          "when": [
+            "true"
+          ],
+          "play": "animation.bulbasaur.ground_idle"
+        }
+      ]
+    }
+  }
+}

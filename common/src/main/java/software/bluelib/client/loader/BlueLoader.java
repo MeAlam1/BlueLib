@@ -33,6 +33,7 @@ import software.bluelib.BlueLibConstants;
 import software.bluelib.api.exception.CompoundException;
 import software.bluelib.client.loader.cache.ResourceCache;
 import software.bluelib.client.loader.cache.animations.AnimationsCache;
+import software.bluelib.client.loader.cache.controller.ControllerCache;
 import software.bluelib.client.loader.cache.model.ModelCache;
 import software.bluelib.client.loader.json.model.ModelCacheFactory;
 import software.bluelib.client.loader.json.model.ModelFormatVersion;
@@ -58,11 +59,14 @@ public class BlueLoader {
             .registerTypeAdapter(TextureMesh.class, TextureMesh.deserializer())
             .registerTypeAdapter(UVFaces.class, UVFaces.deserializer())
             .registerTypeAdapter(UVUnion.class, UVUnion.deserializer())
+            .create();
+
+    public static final Gson ANIMATION_GSON = new GsonBuilder().setLenient()
             .registerTypeAdapter(Animation.Keyframes.class, new KeyFramesAdapter())
             .registerTypeAdapter(AnimationsCache.class, new BakedAnimationsAdapter())
             .create();
 
-    public static ResourceLocation stripPrefixAndSuffix(ResourceLocation pResourceLocation) {
+    private static ResourceLocation stripPrefixAndSuffix(ResourceLocation pResourceLocation) {
         String newPath = pResourceLocation.getPath();
         Matcher prefixMatcher = BlueLibConstants.BlueLoader.PREFIX_STRIPPER.matcher(newPath);
         newPath = prefixMatcher.find() ? newPath.substring(prefixMatcher.end()) : newPath;
@@ -70,6 +74,11 @@ public class BlueLoader {
         newPath = suffixMatcher.find() ? newPath.substring(0, suffixMatcher.start()) : newPath;
 
         return newPath.length() == pResourceLocation.getPath().length() ? pResourceLocation : pResourceLocation.withPath(newPath);
+    }
+
+    protected static CompletableFuture<Map<ResourceLocation, ControllerCache>> loadControllers(Executor pBackgroundExecutor, ResourceManager pResourceManager) {
+        return bakeJsonResources(pBackgroundExecutor, pResourceManager, BlueLibConstants.BlueLoader.CONTROLLERS_PATH.getPath(), ResourceCache::bakeController,
+                ex -> null);
     }
 
     protected static CompletableFuture<Map<ResourceLocation, AnimationsCache>> loadAnimations(Executor pBackgroundExecutor, ResourceManager pResourceManager) {
@@ -154,11 +163,22 @@ public class BlueLoader {
             throw new RuntimeException("Found model file in animations folder! '" + pResourceLocation + "'");
 
         try {
-            return BlueLoader.MODEL_GSON.fromJson(GsonHelper.getAsJsonObject(pJsonObject, "animations"), AnimationsCache.class);
+            return BlueLoader.ANIMATION_GSON.fromJson(GsonHelper.getAsJsonObject(pJsonObject, "animations"), AnimationsCache.class);
         } catch (CompoundException ex) {
             throw ex.withMessage(pResourceLocation + ": Error building animations from JSON");
         } catch (Exception pException) {
             throw new RuntimeException(pResourceLocation + ": Error building animations from JSON", pException);
+        }
+    }
+
+    @NotNull
+    protected static ControllerCache bakeController(ResourceLocation pResourceLocation, JsonObject pJsonObject) {
+        try {
+            return BlueLoader.MODEL_GSON.fromJson(GsonHelper.getAsJsonObject(pJsonObject, "controllers"), ControllerCache.class);
+        } catch (CompoundException ex) {
+            throw ex.withMessage(pResourceLocation + ": Error building controllers from JSON");
+        } catch (Exception pException) {
+            throw new RuntimeException(pResourceLocation + ": Error building controllers from JSON", pException);
         }
     }
 

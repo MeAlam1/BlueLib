@@ -11,6 +11,6 @@ import software.bluelib.client.loader.cache.ResourceCache;
 public class ClientEvents {
 	@SubscribeEvent
 	public static void reloadClient(AddReloadListenerEvent pEvent) {
-		ResourceCache.registerReloadListener();
+		ResourceCache.registerClientReloadListener();
 	}
 }

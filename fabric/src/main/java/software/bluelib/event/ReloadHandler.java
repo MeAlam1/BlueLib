@@ -30,10 +30,10 @@ public class ReloadHandler {
 	}
 
 	public static void onServerStart(MinecraftServer pServer) {
-		if (providers.isEmpty()) return;
-
 		BlueLibConstants.SCHEDULER = new ScheduledThreadPoolExecutor(1);
 		BlueLibConstants.server = pServer;
+		
+		if (providers.isEmpty()) return;
 		VariantLoader.loadEntityVariants(pServer.getResourceManager(), providers);
 		BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("variants.loaded"));
 	}

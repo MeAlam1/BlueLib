@@ -7,8 +7,8 @@ import software.bluelib.loader.loading.math.MoLangQueries;
 
 public class AnimatableMoLang extends BaseMoLangContext {
 
-	public AnimatableMoLang(AnimationState<? extends BlueAnimatable> pState) {
-		setVariable("anim_time", pState.getController() != null ? pState.getController().getAnimTime() : 0d);
-		MathParser.setVariable(MoLangQueries.ANIM_TIME, () -> pState.getController() != null ? pState.getController().getAnimTime() : 0d);
-	}
+    public AnimatableMoLang(AnimationState<? extends BlueAnimatable> pState) {
+        setVariable("anim_time", pState.getController() != null ? pState.getController().getAnimTime() : 0d);
+        MathParser.setVariable(MoLangQueries.ANIM_TIME, () -> pState.getController() != null ? pState.getController().getAnimTime() : 0d);
+    }
 }

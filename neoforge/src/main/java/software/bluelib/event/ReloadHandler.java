@@ -15,6 +15,7 @@ import software.bluelib.BlueLibConstants;
 import software.bluelib.api.entity.variant.IVariantProvider;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
+import software.bluelib.client.loader.cache.ResourceCache;
 import software.bluelib.entity.variant.VariantLoader;
 import software.bluelib.internal.BlueTranslation;
 
@@ -33,10 +34,11 @@ public class ReloadHandler {
 
 	@SubscribeEvent
 	public static void onServerStart(ServerStartingEvent pEvent) {
-		if (providers.isEmpty()) return;
-
+		ResourceCache.registerServerReloadListener(pEvent.getServer());
 		BlueLibConstants.SCHEDULER = new ScheduledThreadPoolExecutor(1);
 		BlueLibConstants.server = pEvent.getServer();
+		
+		if (providers.isEmpty()) return;
 		VariantLoader.loadEntityVariants(pEvent.getServer().getResourceManager(), providers);
 		BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("variants.loaded"));
 	}

@@ -17,9 +17,11 @@ import software.bluelib.loader.animation.keyframe.event.data.CustomInstructionKe
 import software.bluelib.loader.animation.keyframe.event.data.ParticleKeyframeData;
 import software.bluelib.loader.animation.keyframe.event.data.SoundKeyframeData;
 
-public record Animation(String name, double length, LoopType loopType, BoneAnimation[] boneAnimations, Keyframes keyFrames) {
+public record Animation(String name, double length, LoopType loopType, BoneAnimation[] boneAnimations,
+        Keyframes keyFrames) {
 
-    public record Keyframes(SoundKeyframeData[] sounds, ParticleKeyframeData[] particles, CustomInstructionKeyframeData[] customInstructions) {}
+    public record Keyframes(SoundKeyframeData[] sounds, ParticleKeyframeData[] particles,
+            CustomInstructionKeyframeData[] customInstructions) {}
 
     static Animation generateWaitAnimation(double length) {
         return new Animation(RawAnimation.Stage.WAIT, length, LoopType.PLAY_ONCE, new BoneAnimation[0],

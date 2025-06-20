@@ -39,7 +39,7 @@ public class BlueLibClient implements ClientModInitializer {
 					public @NotNull CompletableFuture<Void> reload(PreparationBarrier pSynchronizer, ResourceManager pResourceManager,
 					                                               ProfilerFiller pPrepareProfiler, ProfilerFiller pApplyProfiler, Executor pPrepareExecutor,
 					                                               Executor pApplyExecutor) {
-						return ResourceCache.reload(pSynchronizer, pResourceManager, pPrepareProfiler, pApplyProfiler, pPrepareExecutor, pApplyExecutor);
+						return ResourceCache.reloadClient(pSynchronizer, pResourceManager, pPrepareProfiler, pApplyProfiler, pPrepareExecutor, pApplyExecutor);
 					}
 				});
 	}
