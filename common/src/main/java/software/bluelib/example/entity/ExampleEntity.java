@@ -47,7 +47,7 @@ public class ExampleEntity extends PathfinderMob implements BlueEntity {
 
 	@Override
 	protected InteractionResult mobInteract(Player player, InteractionHand hand) {
-		System.out.println(MoLang.autoMoLang("o.add('1', '2', '3')"));
+		System.out.println(MoLang.autoMoLang("o.divide('1', '2', '3')"));
 		return super.mobInteract(player, hand);
 	}
 

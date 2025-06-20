@@ -13,19 +13,80 @@ package software.bluelib.api.molang.context;
 public class OperatorMoLang extends BaseMoLangContext {
 
 	public OperatorMoLang() {
+		Arithmetic();
+		Unary();
+	}
+
+	private void Arithmetic() {
 		registerFunction("add", (arguments, runtime) -> {
 			double sum = 0;
 			for (Object arg : arguments) {
-				if (arg instanceof Number n) {
-					sum += n.doubleValue();
-				} else if (arg != null) {
-					try {
-						sum += Double.parseDouble(arg.toString());
-					} catch (NumberFormatException ignored) {
-					}
-				}
+				sum += toDouble(arg);
 			}
 			return sum;
 		});
+
+		registerFunction("subtract", (arguments, runtime) -> {
+			if (arguments.isEmpty()) return 0.0;
+			double result = toDouble(arguments.getFirst());
+			for (int i = 1; i < arguments.size(); i++) {
+				result -= toDouble(arguments.get(i));
+			}
+			return result;
+		});
+
+		registerFunction("multiply", (arguments, runtime) -> {
+			double result = 1;
+			for (Object arg : arguments) {
+				result *= toDouble(arg);
+			}
+			return result;
+		});
+
+		registerFunction("divide", (arguments, runtime) -> {
+			if (arguments.isEmpty()) return 0.0;
+			double result = toDouble(arguments.getFirst());
+			for (int i = 1; i < arguments.size(); i++) {
+				double divisor = toDouble(arguments.get(i));
+				if (divisor == 0) return 0.0;
+				result /= divisor;
+			}
+			return result;
+		});
+
+		registerFunction("modulus", (arguments, runtime) -> {
+			if (arguments.size() < 2) return 0.0;
+			double a = toDouble(arguments.get(0));
+			double b = toDouble(arguments.get(1));
+			if (b == 0) return 0.0;
+			return a % b;
+		});
+
+		registerFunction("negate", (arguments, runtime) -> {
+			if (arguments.isEmpty()) return 0.0;
+			return -toDouble(arguments.getFirst());
+		});
+	}
+
+	private void Unary() {
+		registerFunction("increment", (arguments, runtime) -> {
+			if (arguments.isEmpty()) return 1.0;
+			return toDouble(arguments.getFirst()) + 1;
+		});
+
+		registerFunction("decrement", (arguments, runtime) -> {
+			if (arguments.isEmpty()) return -1.0;
+			return toDouble(arguments.getFirst()) - 1;
+		});
+
+	}
+
+	private double toDouble(Object pObj) {
+		if (pObj instanceof Number number) return number.doubleValue();
+		try {
+			return Double.parseDouble(pObj.toString());
+		} catch (Exception ignored) {
+			return 0;
+		}
 	}
 }
