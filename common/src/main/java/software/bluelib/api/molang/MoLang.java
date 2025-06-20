@@ -48,6 +48,8 @@ public class MoLang {
 			String transformed = prefix + pExpression;
 			return runtime.evaluate(transformed);
 		} finally {
+			runtime.popContext(pType.id());
+		}
 	}
 
 	public static Object moLangEntity(String pExpression, Entity pEntity) {
