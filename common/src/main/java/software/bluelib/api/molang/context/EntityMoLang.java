@@ -9,6 +9,8 @@ import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
 
+import java.util.function.Supplier;
+
 /* TODO:
  * All Getters need Setters
  * All Getters need an is method like get_x -> is_x(10) to check if the value is equal to the given value
@@ -25,7 +27,8 @@ import net.minecraft.world.entity.player.Player;
  */
 public class EntityMoLang extends BaseMoLangContext {
 
-	public EntityMoLang(Entity pEntity) {
+	public EntityMoLang(Supplier<Entity> pEntity) {
+
 		if (pEntity == null) return;
 
 		setup_base_entity(pEntity);
@@ -70,48 +73,48 @@ public class EntityMoLang extends BaseMoLangContext {
 	}
 
 	// ====================== ENTITY ======================
-	private void setup_base_entity(Entity pEntity) {
-		setVariable("level", pEntity.level());
-		setVariable("get_id", pEntity.getId());
-		setVariable("get_uuid", pEntity.getUUID());
-		setVariable("get_type", pEntity.getType().toString());
-		setVariable("is_custom_name_visible", pEntity.isCustomNameVisible());
+	private void setup_base_entity(Supplier<Entity> pEntity) {
+		setVariable("level", pEntity.get().level());
+		setVariable("get_id", pEntity.get().getId());
+		setVariable("get_uuid", pEntity.get().getUUID());
+		setVariable("get_type", pEntity.get().getType().toString());
+		setVariable("is_custom_name_visible", pEntity.get().isCustomNameVisible());
 
-		setVariable("get_x", pEntity.getX());
-		setVariable("get_y", pEntity.getY());
-		setVariable("get_z", pEntity.getZ());
-		setVariable("get_pos", pEntity.position());
-		setVariable("get_yaw", pEntity.getYRot());
-		setVariable("get_pitch", pEntity.getXRot());
+		setVariable("get_x", pEntity.get().getX());
+		setVariable("get_y", pEntity.get().getY());
+		setVariable("get_z", pEntity.get().getZ());
+		setVariable("get_pos", pEntity.get().position());
+		setVariable("get_yaw", pEntity.get().getYRot());
+		setVariable("get_pitch", pEntity.get().getXRot());
 
-		setVariable("get_eye_height", pEntity.getEyeHeight());
-		setVariable("get_eye_y", pEntity.getEyeY());
-		setVariable("get_eye_pos", pEntity.getEyePosition());
+		setVariable("get_eye_height", pEntity.get().getEyeHeight());
+		setVariable("get_eye_y", pEntity.get().getEyeY());
+		setVariable("get_eye_pos", pEntity.get().getEyePosition());
 
-		setVariable("get_movement", pEntity.getDeltaMovement());
-		setVariable("get_bounding_box", pEntity.getBoundingBox());
-		setVariable("get_block_pos", pEntity.blockPosition());
-		setVariable("get_chunk_pos", pEntity.chunkPosition());
+		setVariable("get_movement", pEntity.get().getDeltaMovement());
+		setVariable("get_bounding_box", pEntity.get().getBoundingBox());
+		setVariable("get_block_pos", pEntity.get().blockPosition());
+		setVariable("get_chunk_pos", pEntity.get().chunkPosition());
 
-		setVariable("get_vehicle", pEntity.getVehicle());
-		setVariable("get_passengers", pEntity.getPassengers());
+		setVariable("get_vehicle", pEntity.get().getVehicle());
+		setVariable("get_passengers", () -> pEntity.get().getPassengers());
 
-		setVariable("on_ground", pEntity.onGround());
-		setVariable("is_in_water", pEntity.isInWater());
-		setVariable("is_in_lava", pEntity.isInLava());
-		setVariable("is_on_fire", pEntity.isOnFire());
-		setVariable("is_invisible", pEntity.isInvisible());
-		setVariable("is_sprinting", pEntity.isSprinting());
+		setVariable("on_ground", pEntity.get().onGround());
+		setVariable("is_in_water", pEntity.get().isInWater());
+		setVariable("is_in_lava", pEntity.get().isInLava());
+		setVariable("is_on_fire", pEntity.get().isOnFire());
+		setVariable("is_invisible", pEntity.get().isInvisible());
+		setVariable("is_sprinting", pEntity.get().isSprinting());
 
-		setVariable("get_width", pEntity.getBbWidth());
-		setVariable("get_height", pEntity.getBbHeight());
+		setVariable("get_width", pEntity.get().getBbWidth());
+		setVariable("get_height", pEntity.get().getBbHeight());
 
-		setVariable("is_removed", pEntity.isRemoved());
-		setVariable("is_pushable", pEntity.isPushable());
-		setVariable("is_no_gravity", pEntity.isNoGravity());
-		setVariable("has_glowing_tag", pEntity.hasGlowingTag());
+		setVariable("is_removed", pEntity.get().isRemoved());
+		setVariable("is_pushable", pEntity.get().isPushable());
+		setVariable("is_no_gravity", pEntity.get().isNoGravity());
+		setVariable("has_glowing_tag", pEntity.get().hasGlowingTag());
 
-		setVariable("get_ticks_frozen", pEntity.getTicksFrozen());
+		setVariable("get_ticks_frozen", pEntity.get().getTicksFrozen());
 	}
 
 	// ====================== LIVING ENTITY ======================
@@ -196,7 +199,6 @@ public class EntityMoLang extends BaseMoLangContext {
 	// ====================== VILLAGER ======================
 	private void setup_villager(Villager pVillager) {
 		setVariable("get_villager_profession", pVillager.getVillagerData().getProfession().toString());
-		setVariable("get_trade_offers", pVillager.getOffers());
 	}
 
 	// ====================== WOLF ======================

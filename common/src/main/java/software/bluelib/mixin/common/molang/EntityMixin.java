@@ -22,7 +22,8 @@ public class EntityMixin {
 		if (!bluelib$MoLangRegistered) {
 			bluelib$MoLangRegistered = true;
 			Entity self = (Entity) (Object) this;
-			MoLang.service.getRuntimeFor(MoLangType.ENTITY).registerContext(MoLangType.ENTITY.id(), new EntityMoLang(self));
+
+			MoLang.service.getRuntimeFor(MoLangType.ENTITY).registerContext(MoLangType.ENTITY.id(), new EntityMoLang(() -> self));
 		}
 	}
 }
