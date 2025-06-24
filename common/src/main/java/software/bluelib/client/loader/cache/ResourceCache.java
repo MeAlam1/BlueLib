@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executor;
+import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
@@ -21,13 +22,13 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.profiling.ProfilerFiller;
 import software.bluelib.client.loader.BlueLoader;
 import software.bluelib.client.loader.cache.animations.AnimationsCache;
-import software.bluelib.client.loader.cache.controller.ControllerCache;
 import software.bluelib.client.loader.cache.model.ModelCache;
+import software.bluelib.client.loader.json.deserialize.controller.Controller;
 import software.bluelib.loader.loading.json.typeadapter.BakedAnimationsAdapter;
 
 public final class ResourceCache extends BlueLoader {
 
-    private static Map<ResourceLocation, ControllerCache> CONTROLLERS = Collections.emptyMap();
+    private static Map<ResourceLocation, Controller> CONTROLLERS = Collections.emptyMap();
     private static Map<ResourceLocation, AnimationsCache> ANIMATIONS = Collections.emptyMap();
     private static Map<ResourceLocation, ModelCache> MODELS = Collections.emptyMap();
 
@@ -47,8 +48,7 @@ public final class ResourceCache extends BlueLoader {
     }
 
     public static void registerServerReloadListener(MinecraftServer pServer) {
-        if (pServer.getResourceManager() instanceof ReloadableResourceManager pResourceManager)
-            pResourceManager.registerReloadListener(ResourceCache::reloadServer);
+        ResourceCache.reloadServer(pServer.getResourceManager(), Util.backgroundExecutor(), pServer);
     }
 
     public static CompletableFuture<Void> reloadClient(
@@ -77,18 +77,14 @@ public final class ResourceCache extends BlueLoader {
     }
 
     public static CompletableFuture<Void> reloadServer(
-            PreparationBarrier pStage,
             ResourceManager pResourceManager,
-            ProfilerFiller pProfilerFiller,
-            ProfilerFiller pProfilerFiller1,
             Executor pBackgroundExecutor,
             Executor pGameExecutor) {
         clearServerCaches();
 
-        CompletableFuture<Map<ResourceLocation, ControllerCache>> controllers = loadControllers(pBackgroundExecutor, pResourceManager);
+        CompletableFuture<Map<ResourceLocation, Controller>> controllers = loadControllers(pBackgroundExecutor, pResourceManager);
 
         return CompletableFuture.allOf(controllers)
-                .thenCompose(pStage::wait)
                 .thenRunAsync(() -> {
                     ResourceCache.CONTROLLERS = controllers.join();
 

@@ -30,9 +30,9 @@ public record FaceUV(
         return (json, type, context) -> {
             JsonObject obj = json.getAsJsonObject();
 
-            String materialInstance = GsonHelper.getAsString(obj, "material_instance", null);
-            List<Float> uv = JsonUtils.jsonArrayToFloatList(GsonHelper.getAsJsonArray(obj, "uv", null));
-            List<Float> uvSize = JsonUtils.jsonArrayToFloatList(GsonHelper.getAsJsonArray(obj, "uv_size", null));
+            String materialInstance = JsonUtils.getOptionalString(obj, "material_instance");
+            List<Float> uv = JsonUtils.jsonArrayToFloatList(JsonUtils.getOptionalJsonArray(obj, "uv"));
+            List<Float> uvSize = JsonUtils.jsonArrayToFloatList(JsonUtils.getOptionalJsonArray(obj, "uv_size"));
             Rotation uvRotation = Rotation.fromValue(GsonHelper.getAsInt(obj, "uv_rotation", 0));
 
             return new FaceUV(

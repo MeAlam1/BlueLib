@@ -14,6 +14,7 @@ import java.util.List;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.utils.JsonUtils;
 
+// TODO: Convert to Utils Please or Atleast Cleanup
 public record LocatorValue(@Nullable LocatorClass locatorClass, List<Float> values) {
 
     public static JsonDeserializer<LocatorValue> deserializer() throws JsonParseException {

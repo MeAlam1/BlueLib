@@ -84,6 +84,19 @@ public final class JsonUtils {
         return list;
     }
 
+    public static List<String> jsonArrayToStringList(@Nullable JsonArray pArray) throws JsonParseException {
+        if (pArray == null)
+            return new ArrayList<>();
+
+        List<String> output = new ArrayList<>(pArray.size());
+
+        for (int i = 0; i < pArray.size(); i++) {
+            output.add(pArray.get(i).getAsString());
+        }
+
+        return output;
+    }
+
     public static <T> Map<String, T> jsonObjToMap(JsonObject pObj, JsonDeserializationContext pContext, Class<T> pObjectType) {
         Map<String, T> map = new Object2ObjectOpenHashMap<>(pObj.size());
 
@@ -91,6 +104,16 @@ public final class JsonUtils {
             map.put(entry.getKey(), pContext.deserialize(entry.getValue(), pObjectType));
         }
 
+        return map;
+    }
+
+    public static <T> Map<String, List<T>> jsonObjToListMap(JsonObject pObj, JsonDeserializationContext pContext, Class<T> pObjectType) {
+        Map<String, List<T>> map = new Object2ObjectOpenHashMap<>(pObj.size());
+        for (Map.Entry<String, JsonElement> entry : pObj.entrySet()) {
+            JsonArray arr = entry.getValue().getAsJsonArray();
+            List<T> list = JsonUtils.jsonArrayToObjectList(arr, pContext, pObjectType);
+            map.put(entry.getKey(), list);
+        }
         return map;
     }
 
@@ -117,5 +140,20 @@ public final class JsonUtils {
     @Nullable
     public static Integer getOptionalInteger(JsonObject pObj, String pElementName) {
         return pObj.has(pElementName) ? GsonHelper.getAsInt(pObj, pElementName) : null;
+    }
+
+    @Nullable
+    public static String getOptionalString(JsonObject pObj, String pElementName) {
+        return pObj.has(pElementName) ? GsonHelper.getAsString(pObj, pElementName) : null;
+    }
+
+    @Nullable
+    public static <T> T getOptionalObject(JsonObject pObj, String pElementName, JsonDeserializationContext pContext, Class<T> pType) {
+        return pObj.has(pElementName) ? GsonHelper.getAsObject(pObj, pElementName, pContext, pType) : null;
+    }
+
+    @Nullable
+    public static JsonArray getOptionalJsonArray(JsonObject pObj, String pElementName) {
+        return pObj.has(pElementName) ? GsonHelper.getAsJsonArray(pObj, pElementName) : null;
     }
 }

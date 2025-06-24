@@ -32,8 +32,11 @@ import org.jetbrains.annotations.NotNull;
 import software.bluelib.BlueLibConstants;
 import software.bluelib.client.loader.cache.ResourceCache;
 import software.bluelib.client.loader.cache.animations.AnimationsCache;
-import software.bluelib.client.loader.cache.controller.ControllerCache;
 import software.bluelib.client.loader.cache.model.ModelCache;
+import software.bluelib.client.loader.json.deserialize.controller.Behaviour;
+import software.bluelib.client.loader.json.deserialize.controller.Controller;
+import software.bluelib.client.loader.json.deserialize.controller.Group;
+import software.bluelib.client.loader.json.deserialize.controller.State;
 import software.bluelib.client.loader.json.deserialize.model.*;
 import software.bluelib.client.loader.json.model.ModelCacheFactory;
 import software.bluelib.client.loader.json.model.ModelFormatVersion;
@@ -66,6 +69,10 @@ public class BlueLoader {
             .create();
 
     public static final Gson CONTROLLER_GSON = new GsonBuilder().setLenient()
+            .registerTypeAdapter(Controller.class, Controller.deserializer())
+            .registerTypeAdapter(Group.class, Group.deserializer())
+            .registerTypeAdapter(Behaviour.class, Behaviour.deserializer())
+            .registerTypeAdapter(State.class, State.deserializer())
             .create();
 
     private static ResourceLocation stripPrefixAndSuffix(ResourceLocation pResourceLocation) {
@@ -78,7 +85,7 @@ public class BlueLoader {
         return newPath.length() == pResourceLocation.getPath().length() ? pResourceLocation : pResourceLocation.withPath(newPath);
     }
 
-    protected static CompletableFuture<Map<ResourceLocation, ControllerCache>> loadControllers(Executor pBackgroundExecutor, ResourceManager pResourceManager) {
+    protected static CompletableFuture<Map<ResourceLocation, Controller>> loadControllers(Executor pBackgroundExecutor, ResourceManager pResourceManager) {
         return bakeJsonResources(pBackgroundExecutor, pResourceManager, BlueLibConstants.BlueLoader.CONTROLLERS_PATH.getPath(), ResourceCache::bakeController,
                 ex -> null);
     }
@@ -134,9 +141,10 @@ public class BlueLoader {
                 pExecutor).thenCompose(filteredResources -> {
                     List<CompletableFuture<Pair<ResourceLocation, UNBAKED>>> tasks = new ObjectArrayList<>(filteredResources.size());
 
-                    filteredResources.forEach((path, resource) -> tasks.add(
-                            CompletableFuture.supplyAsync(() -> Pair.of(path, pElementFactory.apply(path, resource)), pExecutor)));
-
+                    filteredResources.forEach((path, resource) -> {
+                        System.out.println("Loading path: " + path + " with resource: " + resource);
+                        tasks.add(CompletableFuture.supplyAsync(() -> Pair.of(path, pElementFactory.apply(path, resource)), pExecutor));
+                    });
                     return CompletableFuture.allOf(tasks.toArray(new CompletableFuture[0]))
                             .thenApply(ignored -> tasks.stream().map(CompletableFuture::join).filter(Objects::nonNull).toList());
                 });
@@ -168,8 +176,8 @@ public class BlueLoader {
     }
 
     @NotNull
-    protected static ControllerCache bakeController(ResourceLocation pResourceLocation, JsonObject pJsonObject) {
-        return BlueLoader.CONTROLLER_GSON.fromJson(GsonHelper.getAsJsonObject(pJsonObject, "controllers"), ControllerCache.class);
+    protected static Controller bakeController(ResourceLocation pResourceLocation, JsonObject pJsonObject) {
+        return BlueLoader.CONTROLLER_GSON.fromJson(pJsonObject, Controller.class);
     }
 
     protected static JsonObject readJsonFile(ResourceLocation pResourceLocation, Resource pResource) {

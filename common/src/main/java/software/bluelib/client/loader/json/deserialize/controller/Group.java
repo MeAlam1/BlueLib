@@ -7,22 +7,21 @@
  */
 package software.bluelib.client.loader.json.deserialize.controller;
 
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import net.minecraft.util.GsonHelper;
+import com.google.gson.*;
+import java.util.Map;
+import software.bluelib.api.utils.JsonUtils;
 
 public record Group(
-        Idle idle) {
+        Map<String, Behaviour> behaviours) {
 
     public static JsonDeserializer<Group> deserializer() throws JsonParseException {
         return (json, type, context) -> {
             JsonObject obj = json.getAsJsonObject();
 
-            Idle idle = GsonHelper.getAsObject(obj, "idle", null, context, Idle.class);
+            Map<String, Behaviour> behaviours = JsonUtils.jsonObjToMap(obj, context, Behaviour.class);
 
             return new Group(
-                    idle);
+                    behaviours);
         };
     }
 }

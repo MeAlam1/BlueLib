@@ -24,9 +24,9 @@ public record ModelGeometry(
     public static JsonDeserializer<ModelGeometry> deserializer() throws JsonParseException {
         return (json, type, context) -> {
             JsonObject obj = json.getAsJsonObject();
-            ModelDescription modelDescription = GsonHelper.getAsObject(obj, "description", null, context, ModelDescription.class);
+            ModelDescription modelDescription = JsonUtils.getOptionalObject(obj, "description", context, ModelDescription.class);
             List<Bone> bones = JsonUtils.jsonArrayToObjectList(GsonHelper.getAsJsonArray(obj, "bones", new JsonArray(0)), context, Bone.class);
-            String cape = GsonHelper.getAsString(obj, "cape", null);
+            String cape = JsonUtils.getOptionalString(obj, "cape");
 
             return new ModelGeometry(
                     modelDescription,

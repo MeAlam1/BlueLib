@@ -10,16 +10,21 @@ package software.bluelib.client.loader.json.deserialize.controller;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import java.util.List;
+import java.util.Map;
+import software.bluelib.api.utils.JsonUtils;
 
-public record Idle(
+public record Behaviour(
+        Map<String, List<State>> states) {
 
-) {
-
-    public static JsonDeserializer<Idle> deserializer() throws JsonParseException {
+    public static JsonDeserializer<Behaviour> deserializer() throws JsonParseException {
         return (json, type, context) -> {
             JsonObject obj = json.getAsJsonObject();
 
-            return new Idle();
+            Map<String, List<State>> states = JsonUtils.jsonObjToListMap(obj, context, State.class);
+
+            return new Behaviour(
+                    states);
         };
     }
 }

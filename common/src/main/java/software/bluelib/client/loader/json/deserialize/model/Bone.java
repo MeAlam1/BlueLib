@@ -38,7 +38,7 @@ public record Bone(
         return (json, type, context) -> {
             JsonObject obj = json.getAsJsonObject();
 
-            List<Float> bindPoseRotation = JsonUtils.jsonArrayToFloatList(GsonHelper.getAsJsonArray(obj, "bind_pose_rotation", null));
+            List<Float> bindPoseRotation = JsonUtils.jsonArrayToFloatList(JsonUtils.getOptionalJsonArray(obj, "bind_pose_rotation"));
             List<Cube> cubes = JsonUtils.jsonArrayToObjectList(GsonHelper.getAsJsonArray(obj, "cubes", new JsonArray(0)), context, Cube.class);
             Boolean debug = JsonUtils.getOptionalBoolean(obj, "debug");
             Float inflate = JsonUtils.getOptionalFloat(obj, "inflate");
@@ -46,14 +46,14 @@ public record Bone(
                     ? JsonUtils.jsonObjToMap(GsonHelper.getAsJsonObject(obj, "locators"), context, LocatorValue.class)
                     : null;
             Boolean mirror = JsonUtils.getOptionalBoolean(obj, "mirror");
-            String name = GsonHelper.getAsString(obj, "name", null);
+            String name = JsonUtils.getOptionalString(obj, "name");
             Boolean neverRender = JsonUtils.getOptionalBoolean(obj, "neverRender");
-            String parent = GsonHelper.getAsString(obj, "parent", null);
+            String parent = JsonUtils.getOptionalString(obj, "parent");
             List<Float> pivot = JsonUtils.jsonArrayToFloatList(GsonHelper.getAsJsonArray(obj, "pivot", new JsonArray(0)));
-            PolyMesh polyMesh = GsonHelper.getAsObject(obj, "poly_mesh", null, context, PolyMesh.class);
+            PolyMesh polyMesh = JsonUtils.getOptionalObject(obj, "poly_mesh", context, PolyMesh.class);
             Long renderGroupId = JsonUtils.getOptionalLong(obj, "render_group_id");
             Boolean reset = JsonUtils.getOptionalBoolean(obj, "reset");
-            List<Float> rotation = JsonUtils.jsonArrayToFloatList(GsonHelper.getAsJsonArray(obj, "rotation", null));
+            List<Float> rotation = JsonUtils.jsonArrayToFloatList(JsonUtils.getOptionalJsonArray(obj, "rotation"));
             List<TextureMesh> textureMeshes = JsonUtils.jsonArrayToObjectList(GsonHelper.getAsJsonArray(obj, "texture_meshes", new JsonArray(0)), context, TextureMesh.class);
 
             return new Bone(

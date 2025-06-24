@@ -14,6 +14,7 @@ import java.util.List;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.utils.JsonUtils;
 
+// TODO: Convert to Utils Please or Atleast Cleanup
 public record UVUnion(
         List<Float> boxUVCoords,
         @Nullable UVFaces faceUV,

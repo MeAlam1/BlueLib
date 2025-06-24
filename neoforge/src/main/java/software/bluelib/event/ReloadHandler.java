@@ -37,7 +37,7 @@ public class ReloadHandler {
 		ResourceCache.registerServerReloadListener(pEvent.getServer());
 		BlueLibConstants.SCHEDULER = new ScheduledThreadPoolExecutor(1);
 		BlueLibConstants.server = pEvent.getServer();
-		
+
 		if (providers.isEmpty()) return;
 		VariantLoader.loadEntityVariants(pEvent.getServer().getResourceManager(), providers);
 		BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("variants.loaded"));
@@ -45,6 +45,7 @@ public class ReloadHandler {
 
 	@SubscribeEvent
 	public static void onDatapackSync(OnDatapackSyncEvent pEvent) {
+		ResourceCache.registerServerReloadListener(pEvent.getPlayerList().getServer());
 		if (providers.isEmpty()) return;
 
 		VariantLoader.loadEntityVariants(pEvent.getPlayerList().getServer().getResourceManager(), providers);

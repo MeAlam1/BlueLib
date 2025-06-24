@@ -11,7 +11,6 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import java.util.List;
-import net.minecraft.util.GsonHelper;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.utils.JsonUtils;
 
@@ -24,8 +23,8 @@ public record LocatorClass(
         return (json, type, context) -> {
             JsonObject obj = json.getAsJsonObject();
             Boolean ignoreInheritedScale = JsonUtils.getOptionalBoolean(obj, "ignore_inherited_scale");
-            List<Float> offset = JsonUtils.jsonArrayToFloatList(GsonHelper.getAsJsonArray(obj, "offset", null));
-            List<Float> rotation = JsonUtils.jsonArrayToFloatList(GsonHelper.getAsJsonArray(obj, "rotation", null));
+            List<Float> offset = JsonUtils.jsonArrayToFloatList(JsonUtils.getOptionalJsonArray(obj, "offset"));
+            List<Float> rotation = JsonUtils.jsonArrayToFloatList(JsonUtils.getOptionalJsonArray(obj, "rotation"));
 
             return new LocatorClass(
                     ignoreInheritedScale,

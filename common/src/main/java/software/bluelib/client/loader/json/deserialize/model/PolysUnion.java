@@ -16,6 +16,7 @@ import java.util.List;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.utils.JsonUtils;
 
+// TODO: Convert to Utils Please or Atleast Cleanup
 public record PolysUnion(List<List<List<Float>>> union, @Nullable Type type) {
 
     public static JsonDeserializer<PolysUnion> deserializer() throws JsonParseException {

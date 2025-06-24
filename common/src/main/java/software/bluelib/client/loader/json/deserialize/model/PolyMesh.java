@@ -11,7 +11,6 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import java.util.List;
-import net.minecraft.util.GsonHelper;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.utils.JsonUtils;
 
@@ -26,10 +25,10 @@ public record PolyMesh(
         return (json, type, context) -> {
             JsonObject obj = json.getAsJsonObject();
             Boolean normalizedUVs = JsonUtils.getOptionalBoolean(obj, "normalized_uvs");
-            List<Float> normals = JsonUtils.jsonArrayToFloatList(GsonHelper.getAsJsonArray(obj, "normals", null));
-            PolysUnion polysUnion = GsonHelper.getAsObject(obj, "polys", null, context, PolysUnion.class);
-            List<Float> positions = JsonUtils.jsonArrayToFloatList(GsonHelper.getAsJsonArray(obj, "positions", null));
-            List<Float> uvs = JsonUtils.jsonArrayToFloatList(GsonHelper.getAsJsonArray(obj, "uvs", null));
+            List<Float> normals = JsonUtils.jsonArrayToFloatList(JsonUtils.getOptionalJsonArray(obj, "normals"));
+            PolysUnion polysUnion = JsonUtils.getOptionalObject(obj, "polys", context, PolysUnion.class);
+            List<Float> positions = JsonUtils.jsonArrayToFloatList(JsonUtils.getOptionalJsonArray(obj, "positions"));
+            List<Float> uvs = JsonUtils.jsonArrayToFloatList(JsonUtils.getOptionalJsonArray(obj, "uvs"));
 
             return new PolyMesh(
                     normalizedUVs,

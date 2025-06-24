@@ -10,8 +10,8 @@ package software.bluelib.client.loader.json.deserialize.model;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonObject;
 import net.minecraft.core.Direction;
-import net.minecraft.util.GsonHelper;
 import org.jetbrains.annotations.Nullable;
+import software.bluelib.api.utils.JsonUtils;
 
 public record UVFaces(
         @Nullable FaceUV north,
@@ -24,12 +24,12 @@ public record UVFaces(
     public static JsonDeserializer<UVFaces> deserializer() {
         return (json, type, context) -> {
             JsonObject obj = json.getAsJsonObject();
-            FaceUV north = GsonHelper.getAsObject(obj, "north", null, context, FaceUV.class);
-            FaceUV south = GsonHelper.getAsObject(obj, "south", null, context, FaceUV.class);
-            FaceUV east = GsonHelper.getAsObject(obj, "east", null, context, FaceUV.class);
-            FaceUV west = GsonHelper.getAsObject(obj, "west", null, context, FaceUV.class);
-            FaceUV up = GsonHelper.getAsObject(obj, "up", null, context, FaceUV.class);
-            FaceUV down = GsonHelper.getAsObject(obj, "down", null, context, FaceUV.class);
+            FaceUV north = JsonUtils.getOptionalObject(obj, "north", context, FaceUV.class);
+            FaceUV south = JsonUtils.getOptionalObject(obj, "south", context, FaceUV.class);
+            FaceUV east = JsonUtils.getOptionalObject(obj, "east", context, FaceUV.class);
+            FaceUV west = JsonUtils.getOptionalObject(obj, "west", context, FaceUV.class);
+            FaceUV up = JsonUtils.getOptionalObject(obj, "up", context, FaceUV.class);
+            FaceUV down = JsonUtils.getOptionalObject(obj, "down", context, FaceUV.class);
 
             return new UVFaces(
                     north,

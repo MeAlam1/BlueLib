@@ -47,12 +47,12 @@ public record ModelDescription(
             Boolean animationStationaryLegs = JsonUtils.getOptionalBoolean(obj, "animationStationaryLegs");
             Boolean animationStatueOfLibertyArms = JsonUtils.getOptionalBoolean(obj, "animationStatueOfLibertyArms");
             Boolean animationUpsideDown = JsonUtils.getOptionalBoolean(obj, "animationUpsideDown");
-            String identifier = GsonHelper.getAsString(obj, "identifier", null);
+            String identifier = JsonUtils.getOptionalString(obj, "identifier");
             Boolean preserveModelPose = JsonUtils.getOptionalBoolean(obj, "preserve_model_pose");
             float textureHeight = GsonHelper.getAsFloat(obj, "texture_height");
             float textureWidth = GsonHelper.getAsFloat(obj, "texture_width");
             Float visibleBoundsHeight = JsonUtils.getOptionalFloat(obj, "visible_bounds_height");
-            List<Float> visibleBoundsOffset = JsonUtils.jsonArrayToFloatList(GsonHelper.getAsJsonArray(obj, "visible_bounds_offset", null));
+            List<Float> visibleBoundsOffset = JsonUtils.jsonArrayToFloatList(JsonUtils.getOptionalJsonArray(obj, "visible_bounds_offset"));
             Float visibleBoundsWidth = JsonUtils.getOptionalFloat(obj, "visible_bounds_width");
 
             return new ModelDescription(

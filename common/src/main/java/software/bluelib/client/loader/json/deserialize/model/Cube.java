@@ -11,7 +11,6 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import java.util.List;
-import net.minecraft.util.GsonHelper;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.utils.JsonUtils;
 
@@ -31,11 +30,11 @@ public record Cube(
             Float inflate = JsonUtils.getOptionalFloat(obj, "inflate");
             Boolean mirror = JsonUtils.getOptionalBoolean(obj, "mirror");
 
-            List<Float> origin = JsonUtils.jsonArrayToFloatList(GsonHelper.getAsJsonArray(obj, "origin", null));
-            List<Float> size = JsonUtils.jsonArrayToFloatList(GsonHelper.getAsJsonArray(obj, "size", null));
-            List<Float> pivot = JsonUtils.jsonArrayToFloatList(GsonHelper.getAsJsonArray(obj, "pivot", null));
-            List<Float> rotation = JsonUtils.jsonArrayToFloatList(GsonHelper.getAsJsonArray(obj, "rotation", null));
-            UVUnion uvUnion = GsonHelper.getAsObject(obj, "uv", null, context, UVUnion.class);
+            List<Float> origin = JsonUtils.jsonArrayToFloatList(JsonUtils.getOptionalJsonArray(obj, "origin"));
+            List<Float> size = JsonUtils.jsonArrayToFloatList(JsonUtils.getOptionalJsonArray(obj, "size"));
+            List<Float> pivot = JsonUtils.jsonArrayToFloatList(JsonUtils.getOptionalJsonArray(obj, "pivot"));
+            List<Float> rotation = JsonUtils.jsonArrayToFloatList(JsonUtils.getOptionalJsonArray(obj, "rotation"));
+            UVUnion uvUnion = JsonUtils.getOptionalObject(obj, "uv", context, UVUnion.class);
 
             return new Cube(
                     origin,

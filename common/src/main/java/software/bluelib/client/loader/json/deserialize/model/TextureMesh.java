@@ -11,7 +11,6 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import java.util.List;
-import net.minecraft.util.GsonHelper;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.utils.JsonUtils;
 
@@ -25,11 +24,11 @@ public record TextureMesh(
     public static JsonDeserializer<TextureMesh> deserializer() throws JsonParseException {
         return (json, type, context) -> {
             JsonObject obj = json.getAsJsonObject();
-            List<Float> pivot = JsonUtils.jsonArrayToFloatList(GsonHelper.getAsJsonArray(obj, "local_pivot", null));
-            List<Float> position = JsonUtils.jsonArrayToFloatList(GsonHelper.getAsJsonArray(obj, "position", null));
-            List<Float> rotation = JsonUtils.jsonArrayToFloatList(GsonHelper.getAsJsonArray(obj, "rotation", null));
-            List<Float> scale = JsonUtils.jsonArrayToFloatList(GsonHelper.getAsJsonArray(obj, "scale", null));
-            String texture = GsonHelper.getAsString(obj, "texture", null);
+            List<Float> pivot = JsonUtils.jsonArrayToFloatList(JsonUtils.getOptionalJsonArray(obj, "local_pivot"));
+            List<Float> position = JsonUtils.jsonArrayToFloatList(JsonUtils.getOptionalJsonArray(obj, "position"));
+            List<Float> rotation = JsonUtils.jsonArrayToFloatList(JsonUtils.getOptionalJsonArray(obj, "rotation"));
+            List<Float> scale = JsonUtils.jsonArrayToFloatList(JsonUtils.getOptionalJsonArray(obj, "scale"));
+            String texture = JsonUtils.getOptionalString(obj, "texture");
 
             return new TextureMesh(
                     pivot,

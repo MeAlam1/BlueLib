@@ -4,46 +4,58 @@
       "idle": {
         "base": [
           {
-            "when": [
+            "conditions": [
               "q.is_in_water"
             ],
-            "play": "animation.bulbasaur.battle_idle"
+            "animation": "animation.bulbasaur.battle_idle",
+            "priority": 1,
+            "sound": "sound.bulbasaur.idle_water"
           },
           {
-            "when": [
+            "conditions": [
               "true"
             ],
-            "play": "animation.bulbasaur.ground_idle"
+            "animation": "animation.bulbasaur.ground_idle",
+            "priority": 0,
+            "sound": "sound.bulbasaur.idle_ground"
           }
         ],
         "quirks": [
           {
-            "when": [
+            "conditions": [
               "q.is_in_water"
             ],
-            "play": "animation.bulbasaur.battle_idle"
+            "animation": "animation.bulbasaur.battle_idle",
+            "priority": 1,
+            "sound": "sound.bulbasaur.idle_water"
           },
           {
-            "when": [
+            "conditions": [
               "true"
             ],
-            "play": "animation.bulbasaur.ground_idle"
+            "animation": "animation.bulbasaur.ground_idle",
+            "priority": 0,
+            "sound": "sound.bulbasaur.idle_ground"
           }
         ]
       },
       "walk": {
         "base": [
           {
-            "when": [
+            "conditions": [
               "q.is_in_water"
             ],
-            "play": "animation.bulbasaur.battle_walk"
+            "animation": "animation.bulbasaur.battle_walk",
+            "priority": 1,
+            "sound": "sound.bulbasaur.walk_water"
           },
           {
-            "when": [
+            "conditions": [
               "true"
             ],
-            "play": "animation.bulbasaur.ground_walk"
+            "animation": "animation.bulbasaur.ground_walk",
+            "priority": 0,
+            "sound": "sound.bulbasaur.walk_ground"
           }
         ]
       }
