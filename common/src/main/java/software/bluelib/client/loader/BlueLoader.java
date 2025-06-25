@@ -32,7 +32,10 @@ import org.jetbrains.annotations.NotNull;
 import software.bluelib.BlueLibConstants;
 import software.bluelib.client.loader.cache.ResourceCache;
 import software.bluelib.client.loader.cache.animations.AnimationsCache;
+import software.bluelib.client.loader.cache.controller.ControllerCache;
 import software.bluelib.client.loader.cache.model.ModelCache;
+import software.bluelib.client.loader.json.controller.ControllerCacheFactory;
+import software.bluelib.client.loader.json.controller.ControllerFormatVersion;
 import software.bluelib.client.loader.json.deserialize.controller.Behaviour;
 import software.bluelib.client.loader.json.deserialize.controller.Controller;
 import software.bluelib.client.loader.json.deserialize.controller.Group;
@@ -85,7 +88,7 @@ public class BlueLoader {
         return newPath.length() == pResourceLocation.getPath().length() ? pResourceLocation : pResourceLocation.withPath(newPath);
     }
 
-    protected static CompletableFuture<Map<ResourceLocation, Controller>> loadControllers(Executor pBackgroundExecutor, ResourceManager pResourceManager) {
+    protected static CompletableFuture<Map<ResourceLocation, ControllerCache>> loadControllers(Executor pBackgroundExecutor, ResourceManager pResourceManager) {
         return bakeJsonResources(pBackgroundExecutor, pResourceManager, BlueLibConstants.BlueLoader.CONTROLLERS_PATH.getPath(), ResourceCache::bakeController,
                 ex -> null);
     }
@@ -156,12 +159,12 @@ public class BlueLoader {
             throw new RuntimeException("Found animation file found in models folder! '" + pResourceLocation + "'");
 
         Model model = BlueLoader.MODEL_GSON.fromJson(pJsonObject, Model.class);
-        ModelFormatVersion matchedVersion = ModelFormatVersion.match(model.modelFormatVersion());
+        ModelFormatVersion matchedVersion = ModelFormatVersion.match(model.formatVersion());
 
         if (matchedVersion == null) {
-            System.out.printf("%s: Unknown Blue model format version: '%s'. This may not work correctly%n", pResourceLocation, model.modelFormatVersion());
+            System.out.printf("%s: Unknown geo model format version: '%s'. This may not work correctly%n", pResourceLocation, model.formatVersion());
         } else if (!matchedVersion.isSupported()) {
-            System.out.printf("%s: Unsupported Blue model format version: '%s'. %s%n", pResourceLocation, model.modelFormatVersion(), matchedVersion.getErrorMessage());
+            System.out.printf("%s: Unsupported geo model format version: '%s'. %s%n", pResourceLocation, model.formatVersion(), matchedVersion.getErrorMessage());
         }
 
         return ModelCacheFactory.getForNamespace(pResourceLocation.getNamespace()).constructBlueModel(BoneTree.fromModel(model));
@@ -176,8 +179,17 @@ public class BlueLoader {
     }
 
     @NotNull
-    protected static Controller bakeController(ResourceLocation pResourceLocation, JsonObject pJsonObject) {
-        return BlueLoader.CONTROLLER_GSON.fromJson(pJsonObject, Controller.class);
+    protected static ControllerCache bakeController(ResourceLocation pResourceLocation, JsonObject pJsonObject) {
+        Controller controller = BlueLoader.CONTROLLER_GSON.fromJson(pJsonObject, Controller.class);
+        ControllerFormatVersion matchedVersion = ControllerFormatVersion.match(controller.formatVersion());
+
+        if (matchedVersion == null) {
+            System.out.printf("%s: Unknown controller format version: '%s'. This may not work correctly%n", pResourceLocation, controller.formatVersion());
+        } else if (!matchedVersion.isSupported()) {
+            System.out.printf("%s: Unsupported controller format version: '%s'. %s%n", pResourceLocation, controller.formatVersion(), matchedVersion.getErrorMessage());
+        }
+        
+        return ControllerCacheFactory.getForNamespace(pResourceLocation.getNamespace()).constructBlueController();
     }
 
     protected static JsonObject readJsonFile(ResourceLocation pResourceLocation, Resource pResource) {

@@ -22,13 +22,14 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.profiling.ProfilerFiller;
 import software.bluelib.client.loader.BlueLoader;
 import software.bluelib.client.loader.cache.animations.AnimationsCache;
+import software.bluelib.client.loader.cache.controller.ControllerCache;
 import software.bluelib.client.loader.cache.model.ModelCache;
 import software.bluelib.client.loader.json.deserialize.controller.Controller;
 import software.bluelib.loader.loading.json.typeadapter.BakedAnimationsAdapter;
 
 public final class ResourceCache extends BlueLoader {
 
-    private static Map<ResourceLocation, Controller> CONTROLLERS = Collections.emptyMap();
+    private static Map<ResourceLocation, ControllerCache> CONTROLLERS = Collections.emptyMap();
     private static Map<ResourceLocation, AnimationsCache> ANIMATIONS = Collections.emptyMap();
     private static Map<ResourceLocation, ModelCache> MODELS = Collections.emptyMap();
 
@@ -82,7 +83,7 @@ public final class ResourceCache extends BlueLoader {
             Executor pGameExecutor) {
         clearServerCaches();
 
-        CompletableFuture<Map<ResourceLocation, Controller>> controllers = loadControllers(pBackgroundExecutor, pResourceManager);
+        CompletableFuture<Map<ResourceLocation, ControllerCache>> controllers = loadControllers(pBackgroundExecutor, pResourceManager);
 
         return CompletableFuture.allOf(controllers)
                 .thenRunAsync(() -> {
