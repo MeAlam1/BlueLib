@@ -22,6 +22,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.stream.Collectors;
 import net.minecraft.resources.ResourceLocation;
@@ -158,50 +159,87 @@ public class BlueLoader {
 
     @NotNull
     protected static ModelCache bakeModel(ResourceLocation pResourceLocation, JsonObject pJsonObject) {
-        if (pResourceLocation.getPath().endsWith(".animation.json"))
-            throw new RuntimeException("Found animation file found in models folder! '" + pResourceLocation + "'");
-
-        Model model = BlueLoader.MODEL_GSON.fromJson(pJsonObject, Model.class);
-        ModelFormatVersion matchedVersion = ModelFormatVersion.REGISTRY.match(model.formatVersion());
-
-        if (matchedVersion == null) {
-            System.out.printf("%s: Unknown geo model format version: '%s'. This may not work correctly%n", pResourceLocation, model.formatVersion());
-        } else if (!matchedVersion.isSupported()) {
-            System.out.printf("%s: Unsupported geo model format version: '%s'. %s%n", pResourceLocation, model.formatVersion(), matchedVersion.getErrorMessage());
-        }
-
-        return CacheFactory.constructWithFactory(ModelCacheFactory.REGISTRY::getForNamespace, pResourceLocation.getNamespace(), model);
+        return bakeGeneric(
+                pResourceLocation,
+                pJsonObject,
+                MODEL_GSON,
+                Model.class,
+                Model::formatVersion,
+                ModelFormatVersion.REGISTRY::match,
+                ModelFormatVersion::isSupported,
+                ModelFormatVersion::getErrorMessage,
+                (namespace, model) -> CacheFactory.constructWithFactory(ModelCacheFactory.REGISTRY::getForNamespace, namespace, model),
+                List.of(
+                        Pair.of(loc -> loc.getPath().endsWith(".animation.json"), ".animation.json"),
+                        Pair.of(loc -> loc.getPath().endsWith(".controller.json"), ".controller.json")));
     }
 
     @NotNull
     protected static AnimationLibraryCache bakeAnimations(ResourceLocation pResourceLocation, JsonObject pJsonObject) {
-        if (pResourceLocation.getPath().endsWith(".geo.json"))
-            throw new RuntimeException("Found model file in animations folder! '" + pResourceLocation + "'");
-
-        AnimationLibrary animations = BlueLoader.ANIMATION_GSON.fromJson(pJsonObject, AnimationLibrary.class);
-        AnimationFormatVersion matchedVersion = AnimationFormatVersion.REGISTRY.match(animations.formatVersion());
-
-        if (matchedVersion == null) {
-            System.out.printf("%s: Unknown animation format version: '%s'. This may not work correctly%n", pResourceLocation, animations.formatVersion());
-        } else if (!matchedVersion.isSupported()) {
-            System.out.printf("%s: Unsupported animation format version: '%s'. %s%n", pResourceLocation, animations.formatVersion(), matchedVersion.getErrorMessage());
-        }
-
-        return CacheFactory.constructWithFactory(AnimationCacheFactory.REGISTRY::getForNamespace, pResourceLocation.getNamespace(), animations);
+        return bakeGeneric(
+                pResourceLocation,
+                pJsonObject,
+                ANIMATION_GSON,
+                AnimationLibrary.class,
+                AnimationLibrary::formatVersion,
+                AnimationFormatVersion.REGISTRY::match,
+                AnimationFormatVersion::isSupported,
+                AnimationFormatVersion::getErrorMessage,
+                (namespace, animations) -> CacheFactory.constructWithFactory(AnimationCacheFactory.REGISTRY::getForNamespace, namespace, animations),
+                List.of(
+                        Pair.of(loc -> loc.getPath().endsWith(".geo.json"), ".geo.json"),
+                        Pair.of(loc -> loc.getPath().endsWith(".controller.json"), ".controller.json")));
     }
 
     @NotNull
     protected static ControllerCache bakeController(ResourceLocation pResourceLocation, JsonObject pJsonObject) {
-        Controller controller = BlueLoader.CONTROLLER_GSON.fromJson(pJsonObject, Controller.class);
-        ControllerFormatVersion matchedVersion = ControllerFormatVersion.REGISTRY.match(controller.formatVersion());
+        return bakeGeneric(
+                pResourceLocation,
+                pJsonObject,
+                CONTROLLER_GSON,
+                Controller.class,
+                Controller::formatVersion,
+                ControllerFormatVersion.REGISTRY::match,
+                ControllerFormatVersion::isSupported,
+                ControllerFormatVersion::getErrorMessage,
+                (namespace, controller) -> CacheFactory.constructWithFactory(ControllerCacheFactory.REGISTRY::getForNamespace, namespace, controller),
+                List.of(
+                        Pair.of(loc -> loc.getPath().endsWith(".geo.json"), ".geo.json"),
+                        Pair.of(loc -> loc.getPath().endsWith(".animation.json"), ".animation.json")));
+    }
+
+    public static <T, V, C> C bakeGeneric(
+            ResourceLocation pResourceLocation,
+            JsonObject pJsonObject,
+            Gson pGson,
+            Class<T> pModelClass,
+            Function<T, String> pVersionExtractor,
+            Function<String, V> pVersionMatcher,
+            Predicate<V> pIsSupported,
+            Function<V, String> pErrorMessage,
+            BiFunction<String, T, C> pCacheFactory,
+            List<Pair<Predicate<ResourceLocation>, String>> pFileChecks) {
+        if (pFileChecks != null) {
+            String path = pResourceLocation.getPath();
+            String folderName = path.contains("/") ? path.substring(0, path.indexOf('/')) : path;
+            for (Pair<Predicate<ResourceLocation>, String> check : pFileChecks) {
+                if (check.left().test(pResourceLocation)) {
+                    throw new RuntimeException(String.format("Found %s in %s folder! '%s'",
+                            check.right(), folderName, pResourceLocation));
+                }
+            }
+        }
+        T model = pGson.fromJson(pJsonObject, pModelClass);
+        String version = pVersionExtractor.apply(model);
+        V matchedVersion = pVersionMatcher.apply(version);
 
         if (matchedVersion == null) {
-            System.out.printf("%s: Unknown controller format version: '%s'. This may not work correctly%n", pResourceLocation, controller.formatVersion());
-        } else if (!matchedVersion.isSupported()) {
-            System.out.printf("%s: Unsupported controller format version: '%s'. %s%n", pResourceLocation, controller.formatVersion(), matchedVersion.getErrorMessage());
+            System.out.printf("%s: Unknown format version: '%s'. This may not work correctly%n", pResourceLocation, version);
+        } else if (!pIsSupported.test(matchedVersion)) {
+            System.out.printf("%s: Unsupported format version: '%s'. %s%n", pResourceLocation, version, pErrorMessage.apply(matchedVersion));
         }
 
-        return CacheFactory.constructWithFactory(ControllerCacheFactory.REGISTRY::getForNamespace, pResourceLocation.getNamespace(), controller);
+        return pCacheFactory.apply(pResourceLocation.getNamespace(), model);
     }
 
     protected static JsonObject readJsonFile(ResourceLocation pResourceLocation, Resource pResource) {

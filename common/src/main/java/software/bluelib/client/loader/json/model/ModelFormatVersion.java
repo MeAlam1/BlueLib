@@ -8,35 +8,35 @@
 package software.bluelib.client.loader.json.model;
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+import java.util.Map;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.client.loader.json.FormatVersion;
 
-import java.util.Map;
-
 public class ModelFormatVersion extends FormatVersion<ModelFormatVersion> {
 
-	public static final Registry<ModelFormatVersion> REGISTRY = new Registry<>() {
-		private final Map<String, ModelFormatVersion> map = new Object2ObjectOpenHashMap<>();
-		private final ModelFormatVersion defaultVersion = new ModelFormatVersion("1.12.0", true, null);
+    public static final Registry<ModelFormatVersion> REGISTRY = new Registry<>() {
 
-		{
-			register(defaultVersion);
-			register(new ModelFormatVersion("1.14.0", true, null));
-			register(new ModelFormatVersion("1.21.0", true, null));
-		}
+        private final Map<String, ModelFormatVersion> map = new Object2ObjectOpenHashMap<>();
+        private final ModelFormatVersion defaultVersion = new ModelFormatVersion("1.12.0", true, null);
 
-		@Override
-		public Map<String, ModelFormatVersion> versions() {
-			return map;
-		}
+        {
+            register(defaultVersion);
+            register(new ModelFormatVersion("1.14.0", true, null));
+            register(new ModelFormatVersion("1.21.0", true, null));
+        }
 
-		@Override
-		public ModelFormatVersion defaultVersion() {
-			return defaultVersion;
-		}
-	};
+        @Override
+        public Map<String, ModelFormatVersion> versions() {
+            return map;
+        }
 
-	protected ModelFormatVersion(String pSerializedName, boolean pSupported, @Nullable String pErrorMessage) {
-		super(pSerializedName, pSupported, pErrorMessage);
-	}
+        @Override
+        public ModelFormatVersion defaultVersion() {
+            return defaultVersion;
+        }
+    };
+
+    protected ModelFormatVersion(String pSerializedName, boolean pSupported, @Nullable String pErrorMessage) {
+        super(pSerializedName, pSupported, pErrorMessage);
+    }
 }

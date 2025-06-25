@@ -8,33 +8,33 @@
 package software.bluelib.client.loader.json.animation;
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+import java.util.Map;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.client.loader.json.FormatVersion;
 
-import java.util.Map;
-
 public class AnimationFormatVersion extends FormatVersion<AnimationFormatVersion> {
 
-	public static final Registry<AnimationFormatVersion> REGISTRY = new Registry<>() {
-		private final Map<String, AnimationFormatVersion> map = new Object2ObjectOpenHashMap<>();
-		private final AnimationFormatVersion defaultVersion = new AnimationFormatVersion("1.8.0", true, null);
+    public static final Registry<AnimationFormatVersion> REGISTRY = new Registry<>() {
 
-		{
-			register(defaultVersion);
-		}
+        private final Map<String, AnimationFormatVersion> map = new Object2ObjectOpenHashMap<>();
+        private final AnimationFormatVersion defaultVersion = new AnimationFormatVersion("1.8.0", true, null);
 
-		@Override
-		public Map<String, AnimationFormatVersion> versions() {
-			return map;
-		}
+        {
+            register(defaultVersion);
+        }
 
-		@Override
-		public AnimationFormatVersion defaultVersion() {
-			return defaultVersion;
-		}
-	};
+        @Override
+        public Map<String, AnimationFormatVersion> versions() {
+            return map;
+        }
 
-	protected AnimationFormatVersion(String pSerializedName, boolean pSupported, @Nullable String pErrorMessage) {
-		super(pSerializedName, pSupported, pErrorMessage);
-	}
+        @Override
+        public AnimationFormatVersion defaultVersion() {
+            return defaultVersion;
+        }
+    };
+
+    protected AnimationFormatVersion(String pSerializedName, boolean pSupported, @Nullable String pErrorMessage) {
+        super(pSerializedName, pSupported, pErrorMessage);
+    }
 }
