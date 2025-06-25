@@ -162,7 +162,7 @@ public class BlueLoader {
             throw new RuntimeException("Found animation file found in models folder! '" + pResourceLocation + "'");
 
         Model model = BlueLoader.MODEL_GSON.fromJson(pJsonObject, Model.class);
-        ModelFormatVersion matchedVersion = ModelFormatVersion.match(model.formatVersion());
+        ModelFormatVersion matchedVersion = ModelFormatVersion.REGISTRY.match(model.formatVersion());
 
         if (matchedVersion == null) {
             System.out.printf("%s: Unknown geo model format version: '%s'. This may not work correctly%n", pResourceLocation, model.formatVersion());
@@ -179,7 +179,7 @@ public class BlueLoader {
             throw new RuntimeException("Found model file in animations folder! '" + pResourceLocation + "'");
 
         AnimationLibrary animations = BlueLoader.ANIMATION_GSON.fromJson(pJsonObject, AnimationLibrary.class);
-        AnimationFormatVersion matchedVersion = AnimationFormatVersion.match(animations.formatVersion());
+        AnimationFormatVersion matchedVersion = AnimationFormatVersion.REGISTRY.match(animations.formatVersion());
 
         if (matchedVersion == null) {
             System.out.printf("%s: Unknown animation format version: '%s'. This may not work correctly%n", pResourceLocation, animations.formatVersion());
@@ -193,7 +193,7 @@ public class BlueLoader {
     @NotNull
     protected static ControllerCache bakeController(ResourceLocation pResourceLocation, JsonObject pJsonObject) {
         Controller controller = BlueLoader.CONTROLLER_GSON.fromJson(pJsonObject, Controller.class);
-        ControllerFormatVersion matchedVersion = ControllerFormatVersion.match(controller.formatVersion());
+        ControllerFormatVersion matchedVersion = ControllerFormatVersion.REGISTRY.match(controller.formatVersion());
 
         if (matchedVersion == null) {
             System.out.printf("%s: Unknown controller format version: '%s'. This may not work correctly%n", pResourceLocation, controller.formatVersion());

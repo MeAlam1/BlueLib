@@ -8,38 +8,35 @@
 package software.bluelib.client.loader.json.model;
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
-import java.util.Map;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.client.loader.json.FormatVersion;
 
+import java.util.Map;
+
 public class ModelFormatVersion extends FormatVersion<ModelFormatVersion> {
 
-    private static final Map<String, ModelFormatVersion> REGISTRY = new Object2ObjectOpenHashMap<>();
+	public static final Registry<ModelFormatVersion> REGISTRY = new Registry<>() {
+		private final Map<String, ModelFormatVersion> map = new Object2ObjectOpenHashMap<>();
+		private final ModelFormatVersion defaultVersion = new ModelFormatVersion("1.12.0", true, null);
 
-    static {
-        register("1.12.0");
-        register("1.14.0");
-        register("1.21.0");
-    }
+		{
+			register(defaultVersion);
+			register(new ModelFormatVersion("1.14.0", true, null));
+			register(new ModelFormatVersion("1.21.0", true, null));
+		}
 
-    protected ModelFormatVersion(String pSerializedName, boolean pSupported, @Nullable String pErrorMessage) {
-        super(pSerializedName, pSupported, pErrorMessage);
-    }
+		@Override
+		public Map<String, ModelFormatVersion> versions() {
+			return map;
+		}
 
-    protected static ModelFormatVersion register(String pName) {
-        return FormatVersion.register(REGISTRY, new ModelFormatVersion(pName, true, null));
-    }
+		@Override
+		public ModelFormatVersion defaultVersion() {
+			return defaultVersion;
+		}
+	};
 
-    protected static ModelFormatVersion register(String pName, boolean pSupported, @Nullable String pErrorMessage) {
-        return FormatVersion.register(REGISTRY, new ModelFormatVersion(pName, pSupported, pErrorMessage));
-    }
-
-    @Nullable
-    public static ModelFormatVersion match(String pVersion) {
-        return FormatVersion.match(REGISTRY, pVersion);
-    }
-
-    public static Map<String, ModelFormatVersion> getRegisteredVersions() {
-        return FormatVersion.getRegisteredVersions(REGISTRY);
-    }
+	protected ModelFormatVersion(String pSerializedName, boolean pSupported, @Nullable String pErrorMessage) {
+		super(pSerializedName, pSupported, pErrorMessage);
+	}
 }

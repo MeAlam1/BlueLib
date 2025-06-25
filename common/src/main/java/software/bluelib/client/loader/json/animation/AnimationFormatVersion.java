@@ -8,36 +8,33 @@
 package software.bluelib.client.loader.json.animation;
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
-import java.util.Map;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.client.loader.json.FormatVersion;
 
+import java.util.Map;
+
 public class AnimationFormatVersion extends FormatVersion<AnimationFormatVersion> {
 
-    private static final Map<String, AnimationFormatVersion> REGISTRY = new Object2ObjectOpenHashMap<>();
+	public static final Registry<AnimationFormatVersion> REGISTRY = new Registry<>() {
+		private final Map<String, AnimationFormatVersion> map = new Object2ObjectOpenHashMap<>();
+		private final AnimationFormatVersion defaultVersion = new AnimationFormatVersion("1.8.0", true, null);
 
-    static {
-        register("1.8.0");
-    }
+		{
+			register(defaultVersion);
+		}
 
-    protected AnimationFormatVersion(String pSerializedName, boolean pSupported, @Nullable String pErrorMessage) {
-        super(pSerializedName, pSupported, pErrorMessage);
-    }
+		@Override
+		public Map<String, AnimationFormatVersion> versions() {
+			return map;
+		}
 
-    protected static AnimationFormatVersion register(String pName) {
-        return FormatVersion.register(REGISTRY, new AnimationFormatVersion(pName, true, null));
-    }
+		@Override
+		public AnimationFormatVersion defaultVersion() {
+			return defaultVersion;
+		}
+	};
 
-    protected static AnimationFormatVersion register(String pName, boolean pSupported, @Nullable String pErrorMessage) {
-        return FormatVersion.register(REGISTRY, new AnimationFormatVersion(pName, pSupported, pErrorMessage));
-    }
-
-    @Nullable
-    public static AnimationFormatVersion match(@Nullable String pVersion) {
-        return FormatVersion.match(REGISTRY, pVersion);
-    }
-
-    public static Map<String, AnimationFormatVersion> getRegisteredVersions() {
-        return FormatVersion.getRegisteredVersions(REGISTRY);
-    }
+	protected AnimationFormatVersion(String pSerializedName, boolean pSupported, @Nullable String pErrorMessage) {
+		super(pSerializedName, pSupported, pErrorMessage);
+	}
 }
