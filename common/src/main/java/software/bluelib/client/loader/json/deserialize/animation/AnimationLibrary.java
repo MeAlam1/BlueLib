@@ -5,30 +5,30 @@
  * If a copy of the MIT License was not distributed with this file,
  * You can obtain one at https://opensource.org/licenses/MIT.
  */
-package software.bluelib.client.loader.json.deserialize.model;
+package software.bluelib.client.loader.json.deserialize.animation;
 
-import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import java.util.List;
 import net.minecraft.util.GsonHelper;
 import software.bluelib.api.utils.JsonUtils;
+import software.bluelib.client.loader.cache.animations.AnimationLibraryCache;
 
-public record Model(
+public record AnimationLibrary(
         String formatVersion,
-        List<ModelGeometry> ModelGeometry) {
+        AnimationLibraryCache animations) {
 
-    public static JsonDeserializer<Model> deserializer() throws JsonParseException {
+    public static JsonDeserializer<AnimationLibrary> deserializer() throws JsonParseException {
         return (json, type, context) -> {
             JsonObject obj = json.getAsJsonObject();
 
             String formatVersion = GsonHelper.getAsString(obj, "format_version");
-            List<ModelGeometry> ModelGeometry = JsonUtils.jsonArrayToObjectList(GsonHelper.getAsJsonArray(obj, "minecraft:geometry", new JsonArray(0)), context, ModelGeometry.class);
+            AnimationLibraryCache animations = JsonUtils.getOptionalObject(obj, "animations", context, AnimationLibraryCache.class);
 
-            return new Model(
+            return new AnimationLibrary(
                     formatVersion,
-                    ModelGeometry);
+                    animations);
+
         };
     }
 }

@@ -7,10 +7,13 @@
  */
 package software.bluelib.loader.animation.keyframe;
 
-public record AnimationPoint(Keyframe<?> keyFrame, double currentTick, double transitionLength, double animationStartValue, double animationEndValue) {
+import org.jetbrains.annotations.NotNull;
+import software.bluelib.client.loader.cache.animations.keyframe.KeyframeCache;
+
+public record AnimationPoint(KeyframeCache<?> keyFrame, double currentTick, double transitionLength, double animationStartValue, double animationEndValue) {
 
     @Override
-    public String toString() {
+    public @NotNull String toString() {
         return "Tick: " + this.currentTick +
                 " | Transition Length: " + this.transitionLength +
                 " | Start Value: " + this.animationStartValue +

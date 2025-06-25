@@ -9,12 +9,11 @@ package software.bluelib.client.loader.cache.animations;
 
 import java.util.Map;
 import org.jetbrains.annotations.Nullable;
-import software.bluelib.loader.animation.Animation;
 
-public record AnimationsCache(Map<String, Animation> animations) {
+public record AnimationLibraryCache(Map<String, AnimationCache> animations) {
 
     @Nullable
-    public Animation getAnimation(String pName) {
+    public AnimationCache getAnimation(String pName) {
         return animations.get(pName);
     }
 }

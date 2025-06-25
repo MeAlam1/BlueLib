@@ -16,6 +16,7 @@ import net.minecraft.util.Mth;
 import software.bluelib.api.molang.MoLang;
 import software.bluelib.api.molang.MoLangType;
 import software.bluelib.api.molang.context.AnimatableMoLang;
+import software.bluelib.client.loader.cache.animations.AnimationCache;
 import software.bluelib.client.loader.cache.model.BoneCache;
 import software.bluelib.client.loader.cache.model.ModelCache;
 import software.bluelib.loader.animatable.BlueAnimatable;
@@ -41,13 +42,13 @@ public class AnimationProcessor<T extends BlueAnimatable> {
         boolean error = false;
 
         for (RawAnimation.Stage stage : rawAnimation.getAnimationStages()) {
-            Animation animation = null;
+            AnimationCache animationCache = null;
 
             if (stage.animationName() == RawAnimation.Stage.WAIT) { // This is intentional. Do not change this or Tslat will be unhappy
-                animation = Animation.generateWaitAnimation(stage.additionalTicks());
+                animationCache = AnimationCache.generateWaitAnimation(stage.additionalTicks());
             } else {
                 try {
-                    animation = this.model.getAnimation(animatable, stage.animationName());
+                    animationCache = this.model.getAnimation(animatable, stage.animationName());
                 } catch (RuntimeException ex) {
                     //BlueLibConstants.LOGGER.log(Level.ERROR, "Unable to find animation: " + stage.animationName() + " for " + animatable.getClass().getSimpleName());
 
@@ -56,8 +57,8 @@ public class AnimationProcessor<T extends BlueAnimatable> {
                 }
             }
 
-            if (animation != null)
-                animations.add(new QueuedAnimation(animation, stage.loopType()));
+            if (animationCache != null)
+                animations.add(new QueuedAnimation(animationCache, stage.loopType()));
         }
 
         return error ? null : animations;
@@ -258,5 +259,5 @@ public class AnimationProcessor<T extends BlueAnimatable> {
         this.model.applyMolangQueries(pAnimationState, pAnimTime);
     }
 
-    public record QueuedAnimation(Animation animation, Animation.LoopType loopType) {}
+    public record QueuedAnimation(AnimationCache animationCache, AnimationCache.LoopType loopType) {}
 }

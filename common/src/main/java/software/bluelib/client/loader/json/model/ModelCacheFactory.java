@@ -18,6 +18,7 @@ import org.jetbrains.annotations.Nullable;
 import software.bluelib.client.loader.cache.model.BoneCache;
 import software.bluelib.client.loader.cache.model.CubeCache;
 import software.bluelib.client.loader.cache.model.ModelCache;
+import software.bluelib.client.loader.json.CacheFactory;
 import software.bluelib.client.loader.json.deserialize.model.*;
 import software.bluelib.client.loader.json.model.object.BoneStructure;
 import software.bluelib.client.loader.json.model.object.BoneTree;
@@ -25,20 +26,25 @@ import software.bluelib.client.loader.json.object.QuadData;
 import software.bluelib.client.loader.json.object.VertexData;
 import software.bluelib.client.utils.RenderUtils;
 
-public interface ModelCacheFactory {
+public interface ModelCacheFactory extends CacheFactory<ModelCache, Model> {
 
     Map<String, ModelCacheFactory> FACTORIES = new Object2ObjectOpenHashMap<>(1);
     ModelCacheFactory DEFAULT_FACTORY = new Builtin();
 
     static ModelCacheFactory getForNamespace(String pNamespace) {
-        return FACTORIES.getOrDefault(pNamespace, DEFAULT_FACTORY);
+        return CacheFactory.getForNamespace(FACTORIES, DEFAULT_FACTORY, pNamespace);
     }
 
     static void register(String pNamespace, ModelCacheFactory pFactory) {
-        FACTORIES.put(pNamespace, pFactory);
+        CacheFactory.register(FACTORIES, pNamespace, pFactory);
     }
 
-    ModelCache constructBlueModel(BoneTree pBoneTree);
+    @Override
+    default ModelCache construct(Model pSource) {
+        return constructBlueModel(pSource);
+    }
+
+    ModelCache constructBlueModel(Model pModel);
 
     BoneCache constructBone(BoneStructure pBoneStructure, ModelDescription pModelDescription, @Nullable BoneCache pParent);
 
@@ -126,14 +132,16 @@ public interface ModelCacheFactory {
     final class Builtin implements ModelCacheFactory {
 
         @Override
-        public ModelCache constructBlueModel(BoneTree pBoneTree) {
+        public ModelCache constructBlueModel(Model pModel) {
+            BoneTree boneTree = BoneTree.fromModel(pModel);
+
             List<BoneCache> bones = new ObjectArrayList<>();
 
-            for (BoneStructure boneStructure : pBoneTree.topLevelBones().values()) {
-                bones.add(constructBone(boneStructure, pBoneTree.description(), null));
+            for (BoneStructure boneStructure : boneTree.topLevelBones().values()) {
+                bones.add(constructBone(boneStructure, boneTree.description(), null));
             }
 
-            return new ModelCache(bones, pBoneTree.description());
+            return new ModelCache(bones, boneTree.description());
         }
 
         @Override

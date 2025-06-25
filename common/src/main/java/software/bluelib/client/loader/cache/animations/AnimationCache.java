@@ -5,27 +5,27 @@
  * If a copy of the MIT License was not distributed with this file,
  * You can obtain one at https://opensource.org/licenses/MIT.
  */
-package software.bluelib.loader.animation;
+package software.bluelib.client.loader.cache.animations;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import software.bluelib.client.loader.cache.animations.keyframe.BoneAnimationCache;
+import software.bluelib.client.loader.cache.animations.keyframe.KeyframeLibraryCache;
 import software.bluelib.loader.animatable.BlueAnimatable;
-import software.bluelib.loader.animation.keyframe.BoneAnimation;
+import software.bluelib.loader.animation.AnimationController;
+import software.bluelib.loader.animation.RawAnimation;
 import software.bluelib.loader.animation.keyframe.event.data.CustomInstructionKeyframeData;
 import software.bluelib.loader.animation.keyframe.event.data.ParticleKeyframeData;
 import software.bluelib.loader.animation.keyframe.event.data.SoundKeyframeData;
 
-public record Animation(String name, double length, LoopType loopType, BoneAnimation[] boneAnimations,
-        Keyframes keyFrames) {
+public record AnimationCache(String name, double length, LoopType loopType, BoneAnimationCache[] boneAnimationCaches,
+        KeyframeLibraryCache keyFrames) {
 
-    public record Keyframes(SoundKeyframeData[] sounds, ParticleKeyframeData[] particles,
-            CustomInstructionKeyframeData[] customInstructions) {}
-
-    static Animation generateWaitAnimation(double length) {
-        return new Animation(RawAnimation.Stage.WAIT, length, LoopType.PLAY_ONCE, new BoneAnimation[0],
-                new Keyframes(new SoundKeyframeData[0], new ParticleKeyframeData[0], new CustomInstructionKeyframeData[0]));
+    public static AnimationCache generateWaitAnimation(double pLength) {
+        return new AnimationCache(RawAnimation.Stage.WAIT, pLength, LoopType.PLAY_ONCE, new BoneAnimationCache[0],
+                new KeyframeLibraryCache(new SoundKeyframeData[0], new ParticleKeyframeData[0], new CustomInstructionKeyframeData[0]));
     }
 
     @FunctionalInterface
@@ -42,13 +42,13 @@ public record Animation(String name, double length, LoopType loopType, BoneAnima
         });
         LoopType LOOP = register("loop", register("true", (animatable, controller, currentAnimation) -> true));
 
-        boolean shouldPlayAgain(BlueAnimatable animatable, AnimationController<? extends BlueAnimatable> controller, Animation currentAnimation);
+        boolean shouldPlayAgain(BlueAnimatable pAnimatable, AnimationController<? extends BlueAnimatable> pController, AnimationCache pCurrentAnimationCache);
 
-        static LoopType fromJson(JsonElement json) {
-            if (json == null || !json.isJsonPrimitive())
+        static LoopType fromJson(JsonElement pJson) {
+            if (pJson == null || !pJson.isJsonPrimitive())
                 return PLAY_ONCE;
 
-            JsonPrimitive primitive = json.getAsJsonPrimitive();
+            JsonPrimitive primitive = pJson.getAsJsonPrimitive();
 
             if (primitive.isBoolean())
                 return primitive.getAsBoolean() ? LOOP : PLAY_ONCE;
@@ -59,14 +59,14 @@ public record Animation(String name, double length, LoopType loopType, BoneAnima
             return PLAY_ONCE;
         }
 
-        static LoopType fromString(String name) {
-            return LOOP_TYPES.getOrDefault(name, PLAY_ONCE);
+        static LoopType fromString(String pName) {
+            return LOOP_TYPES.getOrDefault(pName, PLAY_ONCE);
         }
 
-        static LoopType register(String name, LoopType loopType) {
-            LOOP_TYPES.put(name, loopType);
+        static LoopType register(String pName, LoopType pLoopType) {
+            LOOP_TYPES.put(pName, pLoopType);
 
-            return loopType;
+            return pLoopType;
         }
     }
 }

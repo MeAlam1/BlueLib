@@ -10,6 +10,7 @@ package software.bluelib.loader.animation;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import java.util.List;
 import java.util.Objects;
+import software.bluelib.client.loader.cache.animations.AnimationCache;
 
 public final class RawAnimation {
 
@@ -23,32 +24,32 @@ public final class RawAnimation {
     }
 
     public RawAnimation thenPlay(String animationName) {
-        return then(animationName, Animation.LoopType.DEFAULT);
+        return then(animationName, AnimationCache.LoopType.DEFAULT);
     }
 
     public RawAnimation thenLoop(String animationName) {
-        return then(animationName, Animation.LoopType.LOOP);
+        return then(animationName, AnimationCache.LoopType.LOOP);
     }
 
     public RawAnimation thenWait(int ticks) {
-        this.animationList.add(new Stage(Stage.WAIT, Animation.LoopType.PLAY_ONCE, ticks));
+        this.animationList.add(new Stage(Stage.WAIT, AnimationCache.LoopType.PLAY_ONCE, ticks));
 
         return this;
     }
 
     public RawAnimation thenPlayAndHold(String animation) {
-        return then(animation, Animation.LoopType.HOLD_ON_LAST_FRAME);
+        return then(animation, AnimationCache.LoopType.HOLD_ON_LAST_FRAME);
     }
 
     public RawAnimation thenPlayXTimes(String animationName, int playCount) {
         for (int i = 0; i < playCount; i++) {
-            then(animationName, i == playCount - 1 ? Animation.LoopType.DEFAULT : Animation.LoopType.PLAY_ONCE);
+            then(animationName, i == playCount - 1 ? AnimationCache.LoopType.DEFAULT : AnimationCache.LoopType.PLAY_ONCE);
         }
 
         return this;
     }
 
-    public RawAnimation then(String animationName, Animation.LoopType loopType) {
+    public RawAnimation then(String animationName, AnimationCache.LoopType loopType) {
         this.animationList.add(new Stage(animationName, loopType));
 
         return this;
@@ -82,11 +83,11 @@ public final class RawAnimation {
         return Objects.hash(this.animationList);
     }
 
-    public record Stage(String animationName, Animation.LoopType loopType, int additionalTicks) {
+    public record Stage(String animationName, AnimationCache.LoopType loopType, int additionalTicks) {
 
-        static final String WAIT = "internal.wait";
+        public static final String WAIT = "internal.wait";
 
-        public Stage(String animationName, Animation.LoopType loopType) {
+        public Stage(String animationName, AnimationCache.LoopType loopType) {
             this(animationName, loopType, 0);
         }
 

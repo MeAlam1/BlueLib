@@ -7,4 +7,6 @@
  */
 package software.bluelib.loader.animation.keyframe;
 
-public record KeyframeLocation<T extends Keyframe<?>>(T keyframe, double startTick) {}
+import software.bluelib.client.loader.cache.animations.keyframe.KeyframeCache;
+
+public record KeyframeLocation<T extends KeyframeCache<?>>(T keyframe, double startTick) {}

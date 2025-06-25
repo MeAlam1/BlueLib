@@ -11,15 +11,15 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import java.util.Map;
+import java.util.function.BiConsumer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import org.jetbrains.annotations.Nullable;
-import software.bluelib.client.loader.json.model.ModelCacheFactory;
+import software.bluelib.client.loader.cache.animations.AnimationCache;
 import software.bluelib.loader.animatable.BlueAnimatable;
 import software.bluelib.loader.animatable.instance.AnimatableInstanceCache;
 import software.bluelib.loader.animatable.instance.InstancedAnimatableInstanceCache;
 import software.bluelib.loader.animatable.instance.SingletonAnimatableInstanceCache;
-import software.bluelib.loader.animation.Animation;
 import software.bluelib.loader.animation.EasingType;
 import software.bluelib.loader.constant.DataTickets;
 import software.bluelib.loader.constant.dataticket.SerializableDataTicket;
@@ -45,16 +45,18 @@ public final class LoaderUtils {
         return pSingletonObject ? new SingletonAnimatableInstanceCache(pAnimatable) : new InstancedAnimatableInstanceCache(pAnimatable);
     }
 
-    synchronized public static Animation.LoopType addCustomLoopType(String pName, Animation.LoopType pLoopType) {
-        return Animation.LoopType.register(pName, pLoopType);
+    public static <F> void addCustomFactory(String pNamespace, F pFactory, BiConsumer<String, F> pRegisterFunction) {
+        synchronized (LoaderUtils.class) {
+            pRegisterFunction.accept(pNamespace, pFactory);
+        }
+    }
+
+    synchronized public static AnimationCache.LoopType addCustomLoopType(String pName, AnimationCache.LoopType pLoopType) {
+        return AnimationCache.LoopType.register(pName, pLoopType);
     }
 
     synchronized public static EasingType addCustomEasingType(String pName, EasingType pEasingType) {
         return EasingType.register(pName, pEasingType);
-    }
-
-    synchronized public static void addCustomBakedModelFactory(String pNamespace, ModelCacheFactory pFactory) {
-        ModelCacheFactory.register(pNamespace, pFactory);
     }
 
     synchronized public static <D> SerializableDataTicket<D> addDataTicket(SerializableDataTicket<D> pDataTicket) {

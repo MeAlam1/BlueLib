@@ -96,7 +96,7 @@ public class AnimationState<T extends BlueAnimatable> {
     }
 
     public boolean isCurrentAnimationStage(String name) {
-        return getController().getCurrentAnimation() != null && getController().getCurrentAnimation().animation().name().equals(name);
+        return getController().getCurrentAnimation() != null && getController().getCurrentAnimation().animationCache().name().equals(name);
     }
 
     public void resetCurrentAnimation() {

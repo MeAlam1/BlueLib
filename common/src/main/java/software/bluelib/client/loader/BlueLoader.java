@@ -31,11 +31,16 @@ import net.minecraft.util.GsonHelper;
 import org.jetbrains.annotations.NotNull;
 import software.bluelib.BlueLibConstants;
 import software.bluelib.client.loader.cache.ResourceCache;
-import software.bluelib.client.loader.cache.animations.AnimationsCache;
+import software.bluelib.client.loader.cache.animations.AnimationLibraryCache;
+import software.bluelib.client.loader.cache.animations.keyframe.KeyframeLibraryCache;
 import software.bluelib.client.loader.cache.controller.ControllerCache;
 import software.bluelib.client.loader.cache.model.ModelCache;
+import software.bluelib.client.loader.json.CacheFactory;
+import software.bluelib.client.loader.json.animation.AnimationCacheFactory;
+import software.bluelib.client.loader.json.animation.AnimationFormatVersion;
 import software.bluelib.client.loader.json.controller.ControllerCacheFactory;
 import software.bluelib.client.loader.json.controller.ControllerFormatVersion;
+import software.bluelib.client.loader.json.deserialize.animation.AnimationLibrary;
 import software.bluelib.client.loader.json.deserialize.controller.Behaviour;
 import software.bluelib.client.loader.json.deserialize.controller.Controller;
 import software.bluelib.client.loader.json.deserialize.controller.Group;
@@ -43,8 +48,6 @@ import software.bluelib.client.loader.json.deserialize.controller.State;
 import software.bluelib.client.loader.json.deserialize.model.*;
 import software.bluelib.client.loader.json.model.ModelCacheFactory;
 import software.bluelib.client.loader.json.model.ModelFormatVersion;
-import software.bluelib.client.loader.json.model.object.BoneTree;
-import software.bluelib.loader.animation.Animation;
 import software.bluelib.loader.loading.json.typeadapter.BakedAnimationsAdapter;
 import software.bluelib.loader.loading.json.typeadapter.KeyFramesAdapter;
 
@@ -67,8 +70,8 @@ public class BlueLoader {
             .create();
 
     public static final Gson ANIMATION_GSON = new GsonBuilder().setLenient()
-            .registerTypeAdapter(Animation.Keyframes.class, new KeyFramesAdapter())
-            .registerTypeAdapter(AnimationsCache.class, new BakedAnimationsAdapter())
+            .registerTypeAdapter(KeyframeLibraryCache.class, new KeyFramesAdapter())
+            .registerTypeAdapter(AnimationLibraryCache.class, new BakedAnimationsAdapter())
             .create();
 
     public static final Gson CONTROLLER_GSON = new GsonBuilder().setLenient()
@@ -93,9 +96,9 @@ public class BlueLoader {
                 ex -> null);
     }
 
-    protected static CompletableFuture<Map<ResourceLocation, AnimationsCache>> loadAnimations(Executor pBackgroundExecutor, ResourceManager pResourceManager) {
+    protected static CompletableFuture<Map<ResourceLocation, AnimationLibraryCache>> loadAnimations(Executor pBackgroundExecutor, ResourceManager pResourceManager) {
         return bakeJsonResources(pBackgroundExecutor, pResourceManager, BlueLibConstants.BlueLoader.ANIMATIONS_PATH.getPath(), ResourceCache::bakeAnimations,
-                ex -> new AnimationsCache(new Object2ObjectOpenHashMap<>()));
+                ex -> new AnimationLibraryCache(new Object2ObjectOpenHashMap<>()));
     }
 
     protected static CompletableFuture<Map<ResourceLocation, ModelCache>> loadModels(Executor pBackgroundExecutor, ResourceManager pResourceManager) {
@@ -167,15 +170,24 @@ public class BlueLoader {
             System.out.printf("%s: Unsupported geo model format version: '%s'. %s%n", pResourceLocation, model.formatVersion(), matchedVersion.getErrorMessage());
         }
 
-        return ModelCacheFactory.getForNamespace(pResourceLocation.getNamespace()).constructBlueModel(BoneTree.fromModel(model));
+        return CacheFactory.constructWithFactory(ModelCacheFactory::getForNamespace, pResourceLocation.getNamespace(), model);
     }
 
     @NotNull
-    protected static AnimationsCache bakeAnimations(ResourceLocation pResourceLocation, JsonObject pJsonObject) {
+    protected static AnimationLibraryCache bakeAnimations(ResourceLocation pResourceLocation, JsonObject pJsonObject) {
         if (pResourceLocation.getPath().endsWith(".geo.json"))
             throw new RuntimeException("Found model file in animations folder! '" + pResourceLocation + "'");
 
-        return BlueLoader.ANIMATION_GSON.fromJson(GsonHelper.getAsJsonObject(pJsonObject, "animations"), AnimationsCache.class);
+        AnimationLibrary animations = BlueLoader.ANIMATION_GSON.fromJson(pJsonObject, AnimationLibrary.class);
+        AnimationFormatVersion matchedVersion = AnimationFormatVersion.match(animations.formatVersion());
+
+        if (matchedVersion == null) {
+            System.out.printf("%s: Unknown animation format version: '%s'. This may not work correctly%n", pResourceLocation, animations.formatVersion());
+        } else if (!matchedVersion.isSupported()) {
+            System.out.printf("%s: Unsupported animation format version: '%s'. %s%n", pResourceLocation, animations.formatVersion(), matchedVersion.getErrorMessage());
+        }
+
+        return CacheFactory.constructWithFactory(AnimationCacheFactory::getForNamespace, pResourceLocation.getNamespace(), animations);
     }
 
     @NotNull
@@ -188,8 +200,8 @@ public class BlueLoader {
         } else if (!matchedVersion.isSupported()) {
             System.out.printf("%s: Unsupported controller format version: '%s'. %s%n", pResourceLocation, controller.formatVersion(), matchedVersion.getErrorMessage());
         }
-        
-        return ControllerCacheFactory.getForNamespace(pResourceLocation.getNamespace()).constructBlueController();
+
+        return CacheFactory.constructWithFactory(ControllerCacheFactory::getForNamespace, pResourceLocation.getNamespace(), controller);
     }
 
     protected static JsonObject readJsonFile(ResourceLocation pResourceLocation, Resource pResource) {

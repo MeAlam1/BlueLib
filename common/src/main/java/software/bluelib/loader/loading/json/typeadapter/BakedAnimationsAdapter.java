@@ -19,24 +19,25 @@ import net.minecraft.util.GsonHelper;
 import org.apache.commons.lang3.math.NumberUtils;
 import software.bluelib.api.exception.CompoundException;
 import software.bluelib.api.utils.JsonUtils;
-import software.bluelib.client.loader.cache.animations.AnimationsCache;
-import software.bluelib.loader.animation.Animation;
+import software.bluelib.client.loader.cache.animations.AnimationCache;
+import software.bluelib.client.loader.cache.animations.AnimationLibraryCache;
+import software.bluelib.client.loader.cache.animations.keyframe.BoneAnimationCache;
+import software.bluelib.client.loader.cache.animations.keyframe.KeyframeCache;
+import software.bluelib.client.loader.cache.animations.keyframe.KeyframeLibraryCache;
+import software.bluelib.client.loader.cache.animations.keyframe.KeyframeStackCache;
 import software.bluelib.loader.animation.EasingType;
-import software.bluelib.loader.animation.keyframe.BoneAnimation;
-import software.bluelib.loader.animation.keyframe.Keyframe;
-import software.bluelib.loader.animation.keyframe.KeyframeStack;
 import software.bluelib.loader.loading.math.MathParser;
 import software.bluelib.loader.loading.math.MathValue;
 import software.bluelib.loader.loading.math.value.Constant;
 
-public class BakedAnimationsAdapter implements JsonDeserializer<AnimationsCache> {
+public class BakedAnimationsAdapter implements JsonDeserializer<AnimationLibraryCache> {
 
     public static ConcurrentMap<Double, Constant> COMPRESSION_CACHE = null;
 
     @Override
-    public AnimationsCache deserialize(JsonElement json, Type type, JsonDeserializationContext context) throws RuntimeException {
+    public AnimationLibraryCache deserialize(JsonElement json, Type type, JsonDeserializationContext context) throws RuntimeException {
         JsonObject obj = json.getAsJsonObject();
-        Map<String, Animation> animations = new Object2ObjectOpenHashMap<>(obj.size());
+        Map<String, AnimationCache> animations = new Object2ObjectOpenHashMap<>(obj.size());
 
         for (Map.Entry<String, JsonElement> entry : obj.entrySet()) {
             try {
@@ -52,32 +53,32 @@ public class BakedAnimationsAdapter implements JsonDeserializer<AnimationsCache>
             }
         }
 
-        return new AnimationsCache(animations);
+        return new AnimationLibraryCache(animations);
     }
 
-    private Animation bakeAnimation(String name, JsonObject animationObj, JsonDeserializationContext context) throws CompoundException {
+    private AnimationCache bakeAnimation(String name, JsonObject animationObj, JsonDeserializationContext context) throws CompoundException {
         double length = animationObj.has("animation_length") ? GsonHelper.getAsDouble(animationObj, "animation_length") * 20d : -1;
-        Animation.LoopType loopType = Animation.LoopType.fromJson(animationObj.get("loop"));
-        BoneAnimation[] boneAnimations = bakeBoneAnimations(GsonHelper.getAsJsonObject(animationObj, "bones", new JsonObject()));
-        Animation.Keyframes keyframes = context.deserialize(animationObj, Animation.Keyframes.class);
+        AnimationCache.LoopType loopType = AnimationCache.LoopType.fromJson(animationObj.get("loop"));
+        BoneAnimationCache[] boneAnimationCaches = bakeBoneAnimations(GsonHelper.getAsJsonObject(animationObj, "bones", new JsonObject()));
+        KeyframeLibraryCache keyframes = context.deserialize(animationObj, KeyframeLibraryCache.class);
 
         if (length == -1)
-            length = calculateAnimationLength(boneAnimations);
+            length = calculateAnimationLength(boneAnimationCaches);
 
-        return new Animation(name, length, loopType, boneAnimations, keyframes);
+        return new AnimationCache(name, length, loopType, boneAnimationCaches, keyframes);
     }
 
-    private BoneAnimation[] bakeBoneAnimations(JsonObject bonesObj) throws CompoundException {
-        BoneAnimation[] animations = new BoneAnimation[bonesObj.size()];
+    private BoneAnimationCache[] bakeBoneAnimations(JsonObject bonesObj) throws CompoundException {
+        BoneAnimationCache[] animations = new BoneAnimationCache[bonesObj.size()];
         int index = 0;
 
         for (Map.Entry<String, JsonElement> entry : bonesObj.entrySet()) {
             JsonObject entryObj = entry.getValue().getAsJsonObject();
-            KeyframeStack<Keyframe<MathValue>> scaleFrames = buildKeyframeStack(getKeyframes(entryObj.get("scale")), false);
-            KeyframeStack<Keyframe<MathValue>> positionFrames = buildKeyframeStack(getKeyframes(entryObj.get("position")), false);
-            KeyframeStack<Keyframe<MathValue>> rotationFrames = buildKeyframeStack(getKeyframes(entryObj.get("rotation")), true);
+            KeyframeStackCache<KeyframeCache<MathValue>> scaleFrames = buildKeyframeStack(getKeyframes(entryObj.get("scale")), false);
+            KeyframeStackCache<KeyframeCache<MathValue>> positionFrames = buildKeyframeStack(getKeyframes(entryObj.get("position")), false);
+            KeyframeStackCache<KeyframeCache<MathValue>> rotationFrames = buildKeyframeStack(getKeyframes(entryObj.get("rotation")), true);
 
-            animations[index] = new BoneAnimation(entry.getKey(), rotationFrames, positionFrames, scaleFrames);
+            animations[index] = new BoneAnimationCache(entry.getKey(), rotationFrames, positionFrames, scaleFrames);
             index++;
         }
 
@@ -160,13 +161,13 @@ public class BakedAnimationsAdapter implements JsonDeserializer<AnimationsCache>
             throw new JsonParseException("Invalid keyframe data - expected array, found " + keyframe);
     }
 
-    private KeyframeStack<Keyframe<MathValue>> buildKeyframeStack(List<DoubleObjectPair<JsonElement>> entries, boolean isForRotation) throws CompoundException {
+    private KeyframeStackCache<KeyframeCache<MathValue>> buildKeyframeStack(List<DoubleObjectPair<JsonElement>> entries, boolean isForRotation) throws CompoundException {
         if (entries.isEmpty())
-            return new KeyframeStack<>();
+            return new KeyframeStackCache<>();
 
-        List<Keyframe<MathValue>> xFrames = new ObjectArrayList<>();
-        List<Keyframe<MathValue>> yFrames = new ObjectArrayList<>();
-        List<Keyframe<MathValue>> zFrames = new ObjectArrayList<>();
+        List<KeyframeCache<MathValue>> xFrames = new ObjectArrayList<>();
+        List<KeyframeCache<MathValue>> yFrames = new ObjectArrayList<>();
+        List<KeyframeCache<MathValue>> zFrames = new ObjectArrayList<>();
 
         MathValue xPrev = null;
         MathValue yPrev = null;
@@ -193,9 +194,9 @@ public class BakedAnimationsAdapter implements JsonDeserializer<AnimationsCache>
             EasingType easingType = entryObj != null && entryObj.has("easing") ? EasingType.fromJson(entryObj.get("easing")) : EasingType.LINEAR;
             List<MathValue> easingArgs = entryObj != null && entryObj.has("easingArgs") ? JsonUtils.jsonArrayToList(GsonHelper.getAsJsonArray(entryObj, "easingArgs"), ele -> new Constant(ele.getAsDouble())) : new ObjectArrayList<>();
 
-            xFrames.add(new Keyframe<>(timeDelta * 20, prevEntry == null ? xValue : xPrev, xValue, easingType, easingArgs));
-            yFrames.add(new Keyframe<>(timeDelta * 20, prevEntry == null ? yValue : yPrev, yValue, easingType, easingArgs));
-            zFrames.add(new Keyframe<>(timeDelta * 20, prevEntry == null ? zValue : zPrev, zValue, easingType, easingArgs));
+            xFrames.add(new KeyframeCache<>(timeDelta * 20, prevEntry == null ? xValue : xPrev, xValue, easingType, easingArgs));
+            yFrames.add(new KeyframeCache<>(timeDelta * 20, prevEntry == null ? yValue : yPrev, yValue, easingType, easingArgs));
+            zFrames.add(new KeyframeCache<>(timeDelta * 20, prevEntry == null ? zValue : zPrev, zValue, easingType, easingArgs));
 
             xPrev = xValue;
             yPrev = yValue;
@@ -203,25 +204,25 @@ public class BakedAnimationsAdapter implements JsonDeserializer<AnimationsCache>
             prevEntry = entry;
         }
 
-        return new KeyframeStack<>(addSplineArgs(xFrames), addSplineArgs(yFrames), addSplineArgs(zFrames));
+        return new KeyframeStackCache<>(addSplineArgs(xFrames), addSplineArgs(yFrames), addSplineArgs(zFrames));
     }
 
-    private List<Keyframe<MathValue>> addSplineArgs(List<Keyframe<MathValue>> frames) {
+    private List<KeyframeCache<MathValue>> addSplineArgs(List<KeyframeCache<MathValue>> frames) {
         if (frames.size() == 1) {
-            Keyframe<MathValue> frame = frames.getFirst();
+            KeyframeCache<MathValue> frame = frames.getFirst();
 
             if (frame.easingType() != EasingType.LINEAR) {
-                frames.set(0, new Keyframe<>(frame.length(), frame.startValue(), frame.endValue()));
+                frames.set(0, new KeyframeCache<>(frame.length(), frame.startValue(), frame.endValue()));
 
                 return frames;
             }
         }
 
         for (int i = 0; i < frames.size(); i++) {
-            Keyframe<MathValue> frame = frames.get(i);
+            KeyframeCache<MathValue> frame = frames.get(i);
 
             if (frame.easingType() == EasingType.CATMULLROM) {
-                frames.set(i, new Keyframe<>(frame.length(), frame.startValue(), frame.endValue(), frame.easingType(), ObjectArrayList.of(
+                frames.set(i, new KeyframeCache<>(frame.length(), frame.startValue(), frame.endValue(), frame.easingType(), ObjectArrayList.of(
                         i == 0 ? frame.startValue() : frames.get(i - 1).endValue(),
                         i + 1 >= frames.size() ? frame.endValue() : frames.get(i + 1).endValue())));
             }
@@ -237,10 +238,10 @@ public class BakedAnimationsAdapter implements JsonDeserializer<AnimationsCache>
         return COMPRESSION_CACHE.computeIfAbsent(input.get(), Constant::new);
     }
 
-    private static double calculateAnimationLength(BoneAnimation[] boneAnimations) {
+    private static double calculateAnimationLength(BoneAnimationCache[] boneAnimationCaches) {
         double length = 0;
 
-        for (BoneAnimation animation : boneAnimations) {
+        for (BoneAnimationCache animation : boneAnimationCaches) {
             length = Math.max(length, animation.rotationKeyFrames().getLastKeyframeTime());
             length = Math.max(length, animation.positionKeyFrames().getLastKeyframeTime());
             length = Math.max(length, animation.scaleKeyFrames().getLastKeyframeTime());

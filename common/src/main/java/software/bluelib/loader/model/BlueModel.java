@@ -16,14 +16,14 @@ import net.minecraft.world.entity.Entity;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.client.loader.cache.ResourceCache;
-import software.bluelib.client.loader.cache.animations.AnimationsCache;
+import software.bluelib.client.loader.cache.animations.AnimationCache;
+import software.bluelib.client.loader.cache.animations.AnimationLibraryCache;
 import software.bluelib.client.loader.cache.model.BoneCache;
 import software.bluelib.client.loader.cache.model.ModelCache;
 import software.bluelib.client.utils.RenderUtils;
 import software.bluelib.loader.animatable.BlueAnimatable;
 import software.bluelib.loader.animatable.BlueReplacedEntity;
 import software.bluelib.loader.animation.AnimatableManager;
-import software.bluelib.loader.animation.Animation;
 import software.bluelib.loader.animation.AnimationProcessor;
 import software.bluelib.loader.animation.AnimationState;
 import software.bluelib.loader.constant.DataTickets;
@@ -107,7 +107,7 @@ public abstract class BlueModel<T extends BlueAnimatable> {
     }
 
     @Nullable
-    public Animation getAnimation(T pAnimatable, String pName) {
+    public AnimationCache getAnimation(T pAnimatable, String pName) {
         ResourceLocation location = getAnimationResource(pAnimatable);
         ResourceLocation[] attempts = new ResourceLocation[] {
                 location,
@@ -116,17 +116,17 @@ public abstract class BlueModel<T extends BlueAnimatable> {
         };
 
         for (ResourceLocation loc : attempts) {
-            AnimationsCache animationsCache = ResourceCache.getBakedAnimations().get(loc);
-            Animation animation = animationsCache != null ? animationsCache.getAnimation(pName) : null;
-            if (animation != null)
-                return animation;
+            AnimationLibraryCache animationLibraryCache = ResourceCache.getBakedAnimations().get(loc);
+            AnimationCache animationCache = animationLibraryCache != null ? animationLibraryCache.getAnimation(pName) : null;
+            if (animationCache != null)
+                return animationCache;
         }
 
         for (ResourceLocation fallbackLocation : getAnimationResourceFallbacks(pAnimatable)) {
-            AnimationsCache animationsCache = ResourceCache.getBakedAnimations().get(fallbackLocation);
-            Animation animation = animationsCache != null ? animationsCache.getAnimation(pName) : null;
-            if (animation != null)
-                return animation;
+            AnimationLibraryCache animationLibraryCache = ResourceCache.getBakedAnimations().get(fallbackLocation);
+            AnimationCache animationCache = animationLibraryCache != null ? animationLibraryCache.getAnimation(pName) : null;
+            if (animationCache != null)
+                return animationCache;
         }
 
         if (!location.getPath().contains("animations/"))

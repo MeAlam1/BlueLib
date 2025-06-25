@@ -21,19 +21,18 @@ import net.minecraft.server.packs.resources.ReloadableResourceManager;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.profiling.ProfilerFiller;
 import software.bluelib.client.loader.BlueLoader;
-import software.bluelib.client.loader.cache.animations.AnimationsCache;
+import software.bluelib.client.loader.cache.animations.AnimationLibraryCache;
 import software.bluelib.client.loader.cache.controller.ControllerCache;
 import software.bluelib.client.loader.cache.model.ModelCache;
-import software.bluelib.client.loader.json.deserialize.controller.Controller;
 import software.bluelib.loader.loading.json.typeadapter.BakedAnimationsAdapter;
 
 public final class ResourceCache extends BlueLoader {
 
     private static Map<ResourceLocation, ControllerCache> CONTROLLERS = Collections.emptyMap();
-    private static Map<ResourceLocation, AnimationsCache> ANIMATIONS = Collections.emptyMap();
+    private static Map<ResourceLocation, AnimationLibraryCache> ANIMATIONS = Collections.emptyMap();
     private static Map<ResourceLocation, ModelCache> MODELS = Collections.emptyMap();
 
-    public static Map<ResourceLocation, AnimationsCache> getBakedAnimations() {
+    public static Map<ResourceLocation, AnimationLibraryCache> getBakedAnimations() {
         return ANIMATIONS;
     }
 
@@ -61,7 +60,7 @@ public final class ResourceCache extends BlueLoader {
             Executor pGameExecutor) {
         clearClientCaches();
 
-        CompletableFuture<Map<ResourceLocation, AnimationsCache>> animations = loadAnimations(pBackgroundExecutor, pResourceManager);
+        CompletableFuture<Map<ResourceLocation, AnimationLibraryCache>> animations = loadAnimations(pBackgroundExecutor, pResourceManager);
         CompletableFuture<Map<ResourceLocation, ModelCache>> models = loadModels(pBackgroundExecutor, pResourceManager);
 
         return CompletableFuture.runAsync(() -> BakedAnimationsAdapter.COMPRESSION_CACHE = new ConcurrentHashMap<>(), pBackgroundExecutor)

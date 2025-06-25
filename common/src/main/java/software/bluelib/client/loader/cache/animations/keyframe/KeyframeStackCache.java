@@ -5,19 +5,19 @@
  * If a copy of the MIT License was not distributed with this file,
  * You can obtain one at https://opensource.org/licenses/MIT.
  */
-package software.bluelib.loader.animation.keyframe;
+package software.bluelib.client.loader.cache.animations.keyframe;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import java.util.List;
 
-public record KeyframeStack<T extends Keyframe<?>>(List<T> xKeyframes, List<T> yKeyframes, List<T> zKeyframes) {
+public record KeyframeStackCache<T extends KeyframeCache<?>>(List<T> xKeyframes, List<T> yKeyframes, List<T> zKeyframes) {
 
-    public KeyframeStack() {
+    public KeyframeStackCache() {
         this(new ObjectArrayList<>(), new ObjectArrayList<>(), new ObjectArrayList<>());
     }
 
-    public static <F extends Keyframe<?>> KeyframeStack<F> from(KeyframeStack<F> otherStack) {
-        return new KeyframeStack<>(otherStack.xKeyframes, otherStack.yKeyframes, otherStack.zKeyframes);
+    public static <F extends KeyframeCache<?>> KeyframeStackCache<F> from(KeyframeStackCache<F> pOtherStack) {
+        return new KeyframeStackCache<>(pOtherStack.xKeyframes, pOtherStack.yKeyframes, pOtherStack.zKeyframes);
     }
 
     public double getLastKeyframeTime() {

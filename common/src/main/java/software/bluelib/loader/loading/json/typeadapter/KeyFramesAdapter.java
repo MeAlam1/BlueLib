@@ -13,21 +13,21 @@ import java.lang.reflect.Type;
 import java.util.Map;
 import net.minecraft.util.GsonHelper;
 import software.bluelib.client.loader.BlueLoader;
-import software.bluelib.loader.animation.Animation;
+import software.bluelib.client.loader.cache.animations.keyframe.KeyframeLibraryCache;
 import software.bluelib.loader.animation.keyframe.event.data.CustomInstructionKeyframeData;
 import software.bluelib.loader.animation.keyframe.event.data.ParticleKeyframeData;
 import software.bluelib.loader.animation.keyframe.event.data.SoundKeyframeData;
 
-public class KeyFramesAdapter implements JsonDeserializer<Animation.Keyframes> {
+public class KeyFramesAdapter implements JsonDeserializer<KeyframeLibraryCache> {
 
     @Override
-    public Animation.Keyframes deserialize(JsonElement json, Type type, JsonDeserializationContext context) throws JsonParseException {
+    public KeyframeLibraryCache deserialize(JsonElement json, Type type, JsonDeserializationContext context) throws JsonParseException {
         JsonObject obj = json.getAsJsonObject();
         SoundKeyframeData[] sounds = buildSoundFrameData(obj);
         ParticleKeyframeData[] particles = buildParticleFrameData(obj);
         CustomInstructionKeyframeData[] customInstructions = buildCustomFrameData(obj);
 
-        return new Animation.Keyframes(sounds, particles, customInstructions);
+        return new KeyframeLibraryCache(sounds, particles, customInstructions);
     }
 
     private static SoundKeyframeData[] buildSoundFrameData(JsonObject rootObj) {
