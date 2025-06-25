@@ -18,13 +18,18 @@ public interface ControllerCacheFactory extends CacheFactory<ControllerCache, Co
     Map<String, ControllerCacheFactory> FACTORIES = new Object2ObjectOpenHashMap<>(1);
     ControllerCacheFactory DEFAULT_FACTORY = new ControllerCacheFactory.Builtin();
 
-    static ControllerCacheFactory getForNamespace(String pNamespace) {
-        return CacheFactory.getForNamespace(FACTORIES, DEFAULT_FACTORY, pNamespace);
-    }
+    CacheFactory.Registry<ControllerCache, Controller, ControllerCacheFactory> REGISTRY = new CacheFactory.Registry<>() {
 
-    static void register(String pNamespace, ControllerCacheFactory pFactory) {
-        CacheFactory.register(FACTORIES, pNamespace, pFactory);
-    }
+        @Override
+        public Map<String, ControllerCacheFactory> factories() {
+            return FACTORIES;
+        }
+
+        @Override
+        public ControllerCacheFactory defaultFactory() {
+            return DEFAULT_FACTORY;
+        }
+    };
 
     @Override
     default ControllerCache construct(Controller pSource) {

@@ -19,11 +19,18 @@ public interface CacheFactory<T, S> {
         return pFactoryGetter.apply(pNamespace).construct(pSource);
     }
 
-    static <F> F getForNamespace(Map<String, F> pFactories, F pDefaultFactory, String pNamespace) {
-        return pFactories.getOrDefault(pNamespace, pDefaultFactory);
-    }
+    interface Registry<T, S, F extends CacheFactory<T, S>> {
 
-    static <F> void register(Map<String, F> pFactories, String pNamespace, F pFactory) {
-        pFactories.put(pNamespace, pFactory);
+        Map<String, F> factories();
+
+        F defaultFactory();
+
+        default F getForNamespace(String pNamespace) {
+            return factories().getOrDefault(pNamespace, defaultFactory());
+        }
+
+        default void register(String pNamespace, F pFactory) {
+            factories().put(pNamespace, pFactory);
+        }
     }
 }

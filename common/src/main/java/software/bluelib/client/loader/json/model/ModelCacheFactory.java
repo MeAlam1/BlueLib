@@ -31,13 +31,18 @@ public interface ModelCacheFactory extends CacheFactory<ModelCache, Model> {
     Map<String, ModelCacheFactory> FACTORIES = new Object2ObjectOpenHashMap<>(1);
     ModelCacheFactory DEFAULT_FACTORY = new Builtin();
 
-    static ModelCacheFactory getForNamespace(String pNamespace) {
-        return CacheFactory.getForNamespace(FACTORIES, DEFAULT_FACTORY, pNamespace);
-    }
+    CacheFactory.Registry<ModelCache, Model, ModelCacheFactory> REGISTRY = new CacheFactory.Registry<>() {
 
-    static void register(String pNamespace, ModelCacheFactory pFactory) {
-        CacheFactory.register(FACTORIES, pNamespace, pFactory);
-    }
+        @Override
+        public Map<String, ModelCacheFactory> factories() {
+            return FACTORIES;
+        }
+
+        @Override
+        public ModelCacheFactory defaultFactory() {
+            return DEFAULT_FACTORY;
+        }
+    };
 
     @Override
     default ModelCache construct(Model pSource) {

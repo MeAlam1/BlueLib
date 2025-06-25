@@ -170,7 +170,7 @@ public class BlueLoader {
             System.out.printf("%s: Unsupported geo model format version: '%s'. %s%n", pResourceLocation, model.formatVersion(), matchedVersion.getErrorMessage());
         }
 
-        return CacheFactory.constructWithFactory(ModelCacheFactory::getForNamespace, pResourceLocation.getNamespace(), model);
+        return CacheFactory.constructWithFactory(ModelCacheFactory.REGISTRY::getForNamespace, pResourceLocation.getNamespace(), model);
     }
 
     @NotNull
@@ -187,7 +187,7 @@ public class BlueLoader {
             System.out.printf("%s: Unsupported animation format version: '%s'. %s%n", pResourceLocation, animations.formatVersion(), matchedVersion.getErrorMessage());
         }
 
-        return CacheFactory.constructWithFactory(AnimationCacheFactory::getForNamespace, pResourceLocation.getNamespace(), animations);
+        return CacheFactory.constructWithFactory(AnimationCacheFactory.REGISTRY::getForNamespace, pResourceLocation.getNamespace(), animations);
     }
 
     @NotNull
@@ -201,7 +201,7 @@ public class BlueLoader {
             System.out.printf("%s: Unsupported controller format version: '%s'. %s%n", pResourceLocation, controller.formatVersion(), matchedVersion.getErrorMessage());
         }
 
-        return CacheFactory.constructWithFactory(ControllerCacheFactory::getForNamespace, pResourceLocation.getNamespace(), controller);
+        return CacheFactory.constructWithFactory(ControllerCacheFactory.REGISTRY::getForNamespace, pResourceLocation.getNamespace(), controller);
     }
 
     protected static JsonObject readJsonFile(ResourceLocation pResourceLocation, Resource pResource) {

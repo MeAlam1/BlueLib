@@ -18,26 +18,31 @@ public interface AnimationCacheFactory extends CacheFactory<AnimationLibraryCach
     Map<String, AnimationCacheFactory> FACTORIES = new Object2ObjectOpenHashMap<>(1);
     AnimationCacheFactory DEFAULT_FACTORY = new Builtin();
 
-    static AnimationCacheFactory getForNamespace(String pNamespace) {
-        return CacheFactory.getForNamespace(FACTORIES, DEFAULT_FACTORY, pNamespace);
-    }
+    CacheFactory.Registry<AnimationLibraryCache, AnimationLibrary, AnimationCacheFactory> REGISTRY = new CacheFactory.Registry<>() {
 
-    static void register(String pNamespace, AnimationCacheFactory pFactory) {
-        CacheFactory.register(FACTORIES, pNamespace, pFactory);
-    }
+        @Override
+        public Map<String, AnimationCacheFactory> factories() {
+            return FACTORIES;
+        }
+
+        @Override
+        public AnimationCacheFactory defaultFactory() {
+            return DEFAULT_FACTORY;
+        }
+    };
 
     @Override
     default AnimationLibraryCache construct(AnimationLibrary pSource) {
         return constructBlueAnimator(pSource);
     }
 
-    AnimationLibraryCache constructBlueAnimator(AnimationLibrary pLibrary);
+    AnimationLibraryCache constructBlueAnimator(AnimationLibrary pAnimations);
 
     final class Builtin implements AnimationCacheFactory {
 
         @Override
-        public AnimationLibraryCache constructBlueAnimator(AnimationLibrary pLibrary) {
-            return pLibrary.animations();
+        public AnimationLibraryCache constructBlueAnimator(AnimationLibrary pAnimations) {
+            return pAnimations.animations();
         }
     }
 }
