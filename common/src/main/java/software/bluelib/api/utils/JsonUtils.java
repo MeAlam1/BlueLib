@@ -62,6 +62,9 @@ public final class JsonUtils {
     }
 
     public static <T> List<T> jsonArrayToObjectList(JsonArray pArray, JsonDeserializationContext pContext, Class<T> pObjectClass) {
+        if (pArray == null)
+            return new ArrayList<>();
+
         List<T> list = new ArrayList<>(pArray.size());
 
         for (int i = 0; i < pArray.size(); i++) {
