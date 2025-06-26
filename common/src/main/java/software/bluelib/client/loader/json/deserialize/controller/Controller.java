@@ -11,25 +11,27 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+
 import java.util.List;
+
 import net.minecraft.util.GsonHelper;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.utils.JsonUtils;
 
 public record Controller(
-        @Nullable String formatVersion,
-        List<Group> groups) {
+		String formatVersion,
+		List<Group> groups) {
 
-    public static JsonDeserializer<Controller> deserializer() throws JsonParseException {
-        return (json, type, context) -> {
-            JsonObject obj = json.getAsJsonObject();
+	public static JsonDeserializer<Controller> deserializer() throws JsonParseException {
+		return (json, type, context) -> {
+			JsonObject obj = json.getAsJsonObject();
 
-            String formatVersion = JsonUtils.getOptionalString(obj, "format_version");
-            List<Group> groups = JsonUtils.jsonArrayToObjectList(GsonHelper.getAsJsonArray(obj, "groups", new JsonArray(0)), context, Group.class);
+			String formatVersion = GsonHelper.getAsString(obj, "format_version", "1.0.0");
+			List<Group> groups = JsonUtils.jsonArrayToObjectList(GsonHelper.getAsJsonArray(obj, "groups", new JsonArray(0)), context, Group.class);
 
-            return new Controller(
-                    formatVersion,
-                    groups);
-        };
-    }
+			return new Controller(
+					formatVersion,
+					groups);
+		};
+	}
 }
