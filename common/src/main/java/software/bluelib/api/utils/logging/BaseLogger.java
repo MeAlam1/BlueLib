@@ -23,27 +23,27 @@ public class BaseLogger {
 
     // --- Supplier-based logging ---
 
-    public static void log(boolean pIsBlueLib, Level pLogLevel, Supplier<String> messageSupplier, Throwable... pThrowable) {
+    public static void log(boolean pIsBlueLib, Level pLogLevel, Supplier<String> pMessageSupplier, Throwable... pThrowable) {
         if (shouldLogBlueLib(pLogLevel, pIsBlueLib)) {
-            logBoth(pLogLevel, Component.literal(messageSupplier.get()), pThrowable);
+            logBoth(pLogLevel, Component.literal(pMessageSupplier.get()), pThrowable);
         }
     }
 
-    public static void log(boolean pIsBlueLib, Level pLogLevel, Supplier<String> messageSupplier) {
+    public static void log(boolean pIsBlueLib, Level pLogLevel, Supplier<String> pMessageSupplier) {
         if (shouldLogBlueLib(pLogLevel, pIsBlueLib)) {
-            logBoth(pLogLevel, Component.literal(messageSupplier.get()));
+            logBoth(pLogLevel, Component.literal(pMessageSupplier.get()));
         }
     }
 
-    public static void log(Level pLogLevel, Supplier<String> messageSupplier, Throwable... pThrowable) {
+    public static void log(Level pLogLevel, Supplier<String> pMessageSupplier, Throwable... pThrowable) {
         if (shouldLog(pLogLevel)) {
-            logBoth(pLogLevel, Component.literal(messageSupplier.get()), pThrowable);
+            logBoth(pLogLevel, Component.literal(pMessageSupplier.get()), pThrowable);
         }
     }
 
-    public static void log(Level pLogLevel, Supplier<String> messageSupplier) {
+    public static void log(Level pLogLevel, Supplier<String> pMessageSupplier) {
         if (shouldLog(pLogLevel)) {
-            logBoth(pLogLevel, Component.literal(messageSupplier.get()));
+            logBoth(pLogLevel, Component.literal(pMessageSupplier.get()));
         }
     }
 
@@ -73,20 +73,20 @@ public class BaseLogger {
         }
     }
 
-    public static void log(boolean pIsBlueLib, Level pLogLevel, String message, Throwable... pThrowable) {
-        log(pIsBlueLib, pLogLevel, Component.literal(message), pThrowable);
+    public static void log(boolean pIsBlueLib, Level pLogLevel, String pMessage, Throwable... pThrowable) {
+        log(pIsBlueLib, pLogLevel, Component.literal(pMessage), pThrowable);
     }
 
-    public static void log(boolean pIsBlueLib, Level pLogLevel, String message) {
-        log(pIsBlueLib, pLogLevel, Component.literal(message));
+    public static void log(boolean pIsBlueLib, Level pLogLevel, String pMessage) {
+        log(pIsBlueLib, pLogLevel, Component.literal(pMessage));
     }
 
-    public static void log(Level pLogLevel, String message, Throwable... pThrowable) {
-        log(pLogLevel, Component.literal(message), pThrowable);
+    public static void log(Level pLogLevel, String pMessage, Throwable... pThrowable) {
+        log(pLogLevel, Component.literal(pMessage), pThrowable);
     }
 
-    public static void log(Level pLogLevel, String message) {
-        log(pLogLevel, Component.literal(message));
+    public static void log(Level pLogLevel, String pMessage) {
+        log(pLogLevel, Component.literal(pMessage));
     }
 
     public static void logBlueLib(Component pMessage) {

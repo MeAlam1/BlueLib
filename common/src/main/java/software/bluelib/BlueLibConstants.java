@@ -7,14 +7,19 @@
  */
 package software.bluelib;
 
+import java.util.List;
 import java.util.ServiceLoader;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
+
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import software.bluelib.api.event.IEventProxy;
 import software.bluelib.api.net.NetworkPacket;
+import software.bluelib.internal.BlueResource;
 import software.bluelib.platform.IPlatformHelper;
 import software.bluelib.platform.IRegistryHelper;
 
@@ -39,6 +44,12 @@ public class BlueLibConstants {
     public static final String MOD_NAME = "BlueLib";
 
     public static MinecraftServer server;
+
+    public static class BlueLoader {
+        public static final Pattern SUFFIX_STRIPPER = Pattern.compile("((\\.geo)|((\\.animation)s?)|(\\.controller))?(\\.json)$");
+        public static final Pattern PREFIX_STRIPPER = Pattern.compile("^(bluelib/)((animations/)|(models/)|(controllers/))?");
+        public static final List<String> SKIPPED_NAMESPACES = List.of("minecraft", "BlueLib", "neoforge");
+    }
 
     public static class PlatformHelper {
 
