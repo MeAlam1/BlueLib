@@ -7,19 +7,22 @@
  */
 package software.bluelib.loader.json.deserialize.variants;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import org.jetbrains.annotations.Nullable;
 
 public record Variant(
+		@Nullable JsonArray parameters
 ) {
-
 	public static JsonDeserializer<Variant> deserializer() throws JsonParseException {
 		return (json, type, context) -> {
-			JsonObject obj = json.getAsJsonObject();
 
-			return new Variant();
+			JsonArray parameters = json.getAsJsonArray();
 
+			return new Variant(
+					parameters
+			);
 		};
 	}
 }

@@ -11,9 +11,13 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import net.minecraft.util.GsonHelper;
+import software.bluelib.api.utils.JsonUtils;
+
+import java.util.Map;
 
 public record Entity(
-		String formatVersion
+		String formatVersion,
+		Map<String, Variant> variants
 ) {
 
 	public static JsonDeserializer<Entity> deserializer() throws JsonParseException {
@@ -21,9 +25,13 @@ public record Entity(
 			JsonObject obj = json.getAsJsonObject();
 
 			String formatVersion = GsonHelper.getAsString(obj, "format_version", "1.0.0");
-
+			Map<String, Variant> variants = new java.util.HashMap<>();
+			for (String variantName : obj.keySet()) {
+				variants.put(variantName, context.deserialize(obj.get(variantName), Variant.class));
+			}
 			return new Entity(
-					formatVersion
+					formatVersion,
+					variants
 			);
 
 		};

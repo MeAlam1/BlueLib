@@ -100,8 +100,7 @@ public class BaseLogger {
         return pLogLevel == BaseLogLevel.ERROR ||
                 pLogLevel == BaseLogLevel.WARNING ||
                 pLogLevel == BaseLogLevel.BLUELIB ||
-                pIsBlueLib && software.bluelib.config.LoggerConfig.isBlueLibLoggingEnabled ||
-                !pIsBlueLib && software.bluelib.config.LoggerConfig.isLoggingEnabled;
+                pIsBlueLib && software.bluelib.config.LoggerConfig.isBlueLibLoggingEnabled;
     }
 
     private static boolean shouldLog(Level pLogLevel) {

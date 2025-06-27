@@ -17,10 +17,12 @@ import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.GsonHelper;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import software.bluelib.BlueLibConstants;
 import software.bluelib.api.entity.variant.IVariantProvider;
+import software.bluelib.api.utils.logging.BaseLogLevel;
+import software.bluelib.api.utils.logging.BaseLogger;
 import software.bluelib.loader.cache.ResourceCache;
-import software.bluelib.loader.cache.variants.EntityCache;
 import software.bluelib.loader.json.CacheFactory;
 import software.bluelib.loader.json.deserialize.variants.Entity;
 import software.bluelib.loader.json.deserialize.variants.Variant;
@@ -40,6 +42,7 @@ import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.stream.Collectors;
 
+
 public class BlueLoader {
 	public static final Gson VARIANTS_GSON = new GsonBuilder()
 			.registerTypeAdapter(Entity.class, Entity.deserializer())
@@ -48,70 +51,90 @@ public class BlueLoader {
 			.create();
 
 	private static ResourceLocation stripPrefixAndSuffix(ResourceLocation pResourceLocation) {
+		BaseLogger.log(true, BaseLogLevel.INFO, "Stripping prefix and suffix for: " + pResourceLocation);
 		String newPath = pResourceLocation.getPath();
 		Matcher prefixMatcher = BlueLibConstants.BlueLoader.PREFIX_STRIPPER.matcher(newPath);
 		newPath = prefixMatcher.find() ? newPath.substring(prefixMatcher.end()) : newPath;
 		Matcher suffixMatcher = BlueLibConstants.BlueLoader.SUFFIX_STRIPPER.matcher(newPath);
 		newPath = suffixMatcher.find() ? newPath.substring(0, suffixMatcher.start()) : newPath;
 
-		return newPath.length() == pResourceLocation.getPath().length() ? pResourceLocation : pResourceLocation.withPath(newPath);
+		ResourceLocation result = newPath.length() == pResourceLocation.getPath().length() ? pResourceLocation : pResourceLocation.withPath(newPath);
+		BaseLogger.log(true, BaseLogLevel.INFO, "Result after strip: " + result);
+		return result;
 	}
 
-	protected static CompletableFuture<Map<ResourceLocation, EntityCache>> loadVariants(
+	protected static CompletableFuture<Map<ResourceLocation, Entity>> loadVariants(
 			Executor pBackgroundExecutor,
 			ResourceManager pResourceManager,
 			List<IVariantProvider> pProviders) {
 
-		List<CompletableFuture<Map<ResourceLocation, EntityCache>>> futures = new ObjectArrayList<>();
+		BaseLogger.log(true, BaseLogLevel.INFO, "Starting loadVariants with providers: " + pProviders.size());
+		List<CompletableFuture<Map<ResourceLocation, Entity>>> futures = new ObjectArrayList<>();
 
 		for (IVariantProvider provider : pProviders) {
-			futures.add(
-					bakeJsonResources(
-							pBackgroundExecutor,
-							pResourceManager,
-							provider.getBasePath(),
-							ResourceCache::bakeController,
-							ex -> null
-					)
-			);
+			BaseLogger.log(true, BaseLogLevel.INFO, "Processing provider: " + provider.getBasePath());
+			for (String entity : provider.getEntityNames()) {
+				String entityPath = provider.getBasePath() + entity + "/";
+				BaseLogger.log(true, BaseLogLevel.INFO, "Processing entity: " + entityPath);
+				futures.add(
+						bakeJsonResources(
+								pBackgroundExecutor,
+								pResourceManager,
+								entityPath,
+								ResourceCache::bakeVariants,
+								ex -> null
+						)
+				);
+			}
 		}
 
 		return CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]))
 				.thenApply(ignored -> {
-					Map<ResourceLocation, EntityCache> combined = new java.util.HashMap<>();
-					for (CompletableFuture<Map<ResourceLocation, EntityCache>> future : futures) {
-						Map<ResourceLocation, EntityCache> result = future.join();
+					BaseLogger.log(true, BaseLogLevel.INFO, "All futures completed for loadVariants");
+					Map<ResourceLocation, Entity> combined = new java.util.HashMap<>();
+					for (CompletableFuture<Map<ResourceLocation, Entity>> future : futures) {
+						Map<ResourceLocation, Entity> result = future.join();
 						if (result != null) {
+							BaseLogger.log(true, BaseLogLevel.INFO, "Merging result with size: " + result.size());
 							combined.putAll(result);
 						}
 					}
+					BaseLogger.log(true, BaseLogLevel.INFO, "Combined map size: " + combined.size());
 					return combined;
 				});
 	}
 
 	protected static <BAKED> CompletableFuture<Map<ResourceLocation, BAKED>> bakeJsonResources(Executor pBackgroundExecutor, ResourceManager pResourceManager, String pAssetPath,
 	                                                                                           BiFunction<ResourceLocation, JsonObject, BAKED> pElementFactory, Function<Throwable, BAKED> pExceptionalFactory) {
+		BaseLogger.log(true, BaseLogLevel.INFO, "Starting bakeJsonResources for assetPath: " + pAssetPath);
 		return loadResources(pBackgroundExecutor, pResourceManager, pAssetPath, "json", ResourceCache::readJsonFile)
 				.thenCompose(resources -> {
+					BaseLogger.log(true, BaseLogLevel.INFO, "Loaded resources: " + resources.size());
 					List<CompletableFuture<Pair<ResourceLocation, BAKED>>> tasks = new ObjectArrayList<>(resources.size());
 
 					resources.forEach(pair -> tasks.add(
 							CompletableFuture.supplyAsync(() -> {
+										BaseLogger.log(true, BaseLogLevel.INFO, "Baking resource: " + pair.left());
 										try {
-											return Pair.of(stripPrefixAndSuffix(pair.left()), pElementFactory.apply(pair.left(), pair.right()));
+											Pair<ResourceLocation, BAKED> baked = Pair.of(stripPrefixAndSuffix(pair.left()), pElementFactory.apply(pair.left(), pair.right()));
+											BaseLogger.log(true, BaseLogLevel.INFO, "Baked resource: " + pair.left());
+											return baked;
 										} catch (Exception ex) {
-											System.err.println("Error deserializing file: " + pair.left());
-											ex.printStackTrace();
+											BaseLogger.log(true, BaseLogLevel.ERROR, "Error deserializing file: " + pair.left() + " - " + ex.getMessage());
 											throw ex;
 										}
 									}, pBackgroundExecutor)
 									.exceptionally(ex -> {
+										BaseLogger.log(true, BaseLogLevel.ERROR, "Exceptionally handling: " + pair.left() + " - " + ex.getMessage());
 										ex.printStackTrace();
 										return Pair.of(pair.left(), pExceptionalFactory.apply(ex));
 									})));
 
 					return CompletableFuture.allOf(tasks.toArray(new CompletableFuture[0]))
-							.thenApply(ignored -> tasks.stream().map(CompletableFuture::join).filter(Objects::nonNull).collect(Collectors.toMap(Pair::left, Pair::right)));
+							.thenApply(ignored -> {
+								BaseLogger.log(true, BaseLogLevel.INFO, "All baking tasks completed");
+								return tasks.stream().map(CompletableFuture::join).filter(Objects::nonNull).collect(Collectors.toMap(Pair::left, Pair::right));
+							});
 				});
 	}
 
@@ -122,25 +145,38 @@ public class BlueLoader {
 			String pFileType,
 			BiFunction<ResourceLocation, Resource, UNBAKED> pElementFactory) {
 		final String fileTypeSuffix = "." + pFileType;
+		BaseLogger.log(true, BaseLogLevel.INFO, "Listing resources for path: " + pAssetPath + " with type: " + pFileType);
 
-		return CompletableFuture.supplyAsync(() -> pResourceManager.listResources(pAssetPath, fileName -> fileName.getPath().endsWith(fileTypeSuffix))
-						.entrySet().stream()
-						.filter(entry -> !BlueLibConstants.BlueLoader.SKIPPED_NAMESPACES.contains(entry.getKey().getNamespace()))
-						.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)),
-				pExecutor).thenCompose(filteredResources -> {
+		return CompletableFuture.supplyAsync(() -> {
+			Map<ResourceLocation, Resource> listed = pResourceManager.listResources(pAssetPath, fileName -> fileName.getPath().endsWith(fileTypeSuffix))
+					.entrySet().stream()
+					.filter(entry -> !BlueLibConstants.BlueLoader.SKIPPED_NAMESPACES.contains(entry.getKey().getNamespace()))
+					.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+
+			BaseLogger.log(true, BaseLogLevel.INFO, "Resource keys found after filtering: " + listed.keySet());
+			BaseLogger.log(true, BaseLogLevel.INFO, "Listed resources: " + listed.size());
+			return listed;
+		}, pExecutor).thenCompose(filteredResources -> {
 			List<CompletableFuture<Pair<ResourceLocation, UNBAKED>>> tasks = new ObjectArrayList<>(filteredResources.size());
 
 			filteredResources.forEach((path, resource) -> {
-				System.out.println("Loading path: " + path + " with resource: " + resource);
-				tasks.add(CompletableFuture.supplyAsync(() -> Pair.of(path, pElementFactory.apply(path, resource)), pExecutor));
+				BaseLogger.log(true, BaseLogLevel.INFO, "Loading path: " + path + " with resource: " + resource);
+				tasks.add(CompletableFuture.supplyAsync(() -> {
+					BaseLogger.log(true, BaseLogLevel.INFO, "Applying element factory for: " + path);
+					return Pair.of(path, pElementFactory.apply(path, resource));
+				}, pExecutor));
 			});
 			return CompletableFuture.allOf(tasks.toArray(new CompletableFuture[0]))
-					.thenApply(ignored -> tasks.stream().map(CompletableFuture::join).filter(Objects::nonNull).toList());
+					.thenApply(ignored -> {
+						BaseLogger.log(true, BaseLogLevel.INFO, "All resource loading tasks completed");
+						return tasks.stream().map(CompletableFuture::join).filter(Objects::nonNull).toList();
+					});
 		});
 	}
 
 	@NotNull
-	protected static EntityCache bakeController(ResourceLocation pResourceLocation, JsonObject pJsonObject) {
+	protected static Entity bakeVariants(ResourceLocation pResourceLocation, JsonObject pJsonObject) {
+		BaseLogger.log(true, BaseLogLevel.INFO, "Baking variants for: " + pResourceLocation);
 		return bakeGeneric(
 				pResourceLocation,
 				pJsonObject,
@@ -151,9 +187,7 @@ public class BlueLoader {
 				VariantsFormatVersion::isSupported,
 				VariantsFormatVersion::getErrorMessage,
 				(namespace, controller) -> CacheFactory.constructWithFactory(VariantsCacheFactory.REGISTRY::getForNamespace, namespace, controller),
-				List.of(
-						Pair.of(loc -> loc.getPath().endsWith(".geo.json"), ".geo.json"),
-						Pair.of(loc -> loc.getPath().endsWith(".animation.json"), ".animation.json")));
+				null);
 	}
 
 	public static <T, V, C> C bakeGeneric(
@@ -166,34 +200,44 @@ public class BlueLoader {
 			Predicate<V> pIsSupported,
 			Function<V, String> pErrorMessage,
 			BiFunction<String, T, C> pCacheFactory,
-			List<Pair<Predicate<ResourceLocation>, String>> pFileChecks) {
+			@Nullable List<Pair<Predicate<ResourceLocation>, String>> pFileChecks) {
+		BaseLogger.log(true, BaseLogLevel.INFO, "Starting bakeGeneric for: " + pResourceLocation);
 		if (pFileChecks != null) {
 			String path = pResourceLocation.getPath();
 			String folderName = path.contains("/") ? path.substring(0, path.indexOf('/')) : path;
 			for (Pair<Predicate<ResourceLocation>, String> check : pFileChecks) {
 				if (check.left().test(pResourceLocation)) {
+					BaseLogger.log(true, BaseLogLevel.ERROR, "File check failed for: " + pResourceLocation);
 					throw new RuntimeException(String.format("Found %s in %s folder! '%s'",
 							check.right(), folderName, pResourceLocation));
 				}
 			}
 		}
 		T model = pGson.fromJson(pJsonObject, pModelClass);
+		BaseLogger.log(true, BaseLogLevel.INFO, "Deserialized model for: " + pResourceLocation);
 		String version = pVersionExtractor.apply(model);
+		BaseLogger.log(true, BaseLogLevel.INFO, "Extracted version: " + version + " for: " + pResourceLocation);
 		V matchedVersion = pVersionMatcher.apply(version);
 
 		if (matchedVersion == null) {
-			System.out.printf("%s: Unknown format version: '%s'. This may not work correctly%n", pResourceLocation, version);
+			BaseLogger.log(true, BaseLogLevel.WARNING, pResourceLocation + ": Unknown format version: '" + version + "'. This may not work correctly");
 		} else if (!pIsSupported.test(matchedVersion)) {
-			System.out.printf("%s: Unsupported format version: '%s'. %s%n", pResourceLocation, version, pErrorMessage.apply(matchedVersion));
+			BaseLogger.log(true, BaseLogLevel.ERROR, pResourceLocation + ": Unsupported format version: '" + version + "'. " + pErrorMessage.apply(matchedVersion));
 		}
 
-		return pCacheFactory.apply(pResourceLocation.getNamespace(), model);
+		C cache = pCacheFactory.apply(pResourceLocation.getNamespace(), model);
+		BaseLogger.log(true, BaseLogLevel.INFO, "Cache created for: " + pResourceLocation);
+		return cache;
 	}
 
 	protected static JsonObject readJsonFile(ResourceLocation pResourceLocation, Resource pResource) {
+		BaseLogger.log(true, BaseLogLevel.INFO, "Reading JSON file for: " + pResourceLocation);
 		try (Reader reader = pResource.openAsReader()) {
-			return GsonHelper.parse(reader);
+			JsonObject obj = GsonHelper.parse(reader);
+			BaseLogger.log(true, BaseLogLevel.INFO, "Parsed JSON for: " + pResourceLocation);
+			return obj;
 		} catch (IOException pIoException) {
+			BaseLogger.log(true, BaseLogLevel.ERROR, "Failed to read resource: " + pResourceLocation + " - " + pIoException.getMessage());
 			throw new RuntimeException("Failed to read resource: " + pResourceLocation, pIoException);
 		}
 	}

@@ -48,7 +48,7 @@ public class BlueLibConstants {
     public static class BlueLoader {
         public static final Pattern SUFFIX_STRIPPER = Pattern.compile("((\\.geo)|((\\.animation)s?)|(\\.controller))?(\\.json)$");
         public static final Pattern PREFIX_STRIPPER = Pattern.compile("^(bluelib/)((animations/)|(models/)|(controllers/))?");
-        public static final List<String> SKIPPED_NAMESPACES = List.of("minecraft", "BlueLib", "neoforge");
+        public static final List<String> SKIPPED_NAMESPACES = List.of("minecraft", "neoforge");
     }
 
     public static class PlatformHelper {

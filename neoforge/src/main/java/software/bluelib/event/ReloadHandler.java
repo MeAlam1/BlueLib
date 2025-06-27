@@ -15,8 +15,8 @@ import software.bluelib.BlueLibConstants;
 import software.bluelib.api.entity.variant.IVariantProvider;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
-import software.bluelib.entity.variant.VariantLoader;
 import software.bluelib.internal.BlueTranslation;
+import software.bluelib.loader.cache.ResourceCache;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,25 +27,28 @@ public class ReloadHandler {
 
 	private static final List<IVariantProvider> providers = new ArrayList<>();
 
-	public static void registerProvider(IVariantProvider provider) {
-		providers.add(provider);
+	public static void registerProvider(IVariantProvider pProvider) {
+		providers.add(pProvider);
 	}
 
 	@SubscribeEvent
 	public static void onServerStart(ServerStartingEvent pEvent) {
-		if (providers.isEmpty()) return;
-
 		BlueLibConstants.SCHEDULER = new ScheduledThreadPoolExecutor(1);
 		BlueLibConstants.server = pEvent.getServer();
-		VariantLoader.loadEntityVariants(pEvent.getServer().getResourceManager(), providers);
+
+		if (providers.isEmpty()) return;
+		ResourceCache.registerServerReloadListener(pEvent.getServer(), providers);
+
+		//VariantLoader.loadEntityVariants(pEvent.getServer().getResourceManager(), providers);
 		BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("variants.loaded"));
 	}
 
 	@SubscribeEvent
 	public static void onDatapackSync(OnDatapackSyncEvent pEvent) {
 		if (providers.isEmpty()) return;
+		ResourceCache.registerServerReloadListener(pEvent.getPlayerList().getServer(), providers);
 
-		VariantLoader.loadEntityVariants(pEvent.getPlayerList().getServer().getResourceManager(), providers);
+		//VariantLoader.loadEntityVariants(pEvent.getPlayerList().getServer().getResourceManager(), providers);
 		BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("variants.reloaded"));
 	}
 }

@@ -19,7 +19,7 @@ public class DefaultLogColorProvider implements ILogColorProvider {
         } else if (pLevel == BaseLogLevel.WARNING) {
             return 0xFFA500; // Orange
         } else if (pLevel == BaseLogLevel.INFO) {
-            return 0x0000FF; // Blue
+            return 0x5DADE2; // Blue
         } else if (pLevel == BaseLogLevel.SUCCESS) {
             return 0x00FF00; // Green
         } else if (pLevel == BaseLogLevel.BLUELIB) {

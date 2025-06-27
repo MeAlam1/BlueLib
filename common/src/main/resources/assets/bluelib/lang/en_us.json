@@ -4,7 +4,7 @@
   "bluelib.mod.developer": "Running in Developer mode.",
   "bluelib.mod.production": "Running in Production mode.",
   
-  "bluelib.mod.loaded": "Mods loaded:\n %1$s \n\n\n",
+  "bluelib.mod.loaded": "Mods loaded:\n%1$s \n\n\n",
   "bluelib.mod.loaded.empty": "No supported mods loaded. \n\n\n",
   
   "bluelib.log.invalid_url": "Invalid URL: %1$s",
