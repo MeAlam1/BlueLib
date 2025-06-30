@@ -20,9 +20,11 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.BlueLibConstants;
 import software.bluelib.api.entity.variant.IVariantProvider;
+import software.bluelib.api.json.JSONMerger;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
 import software.bluelib.loader.cache.ResourceCache;
+import software.bluelib.loader.cache.variants.EntityCache;
 import software.bluelib.loader.json.CacheFactory;
 import software.bluelib.loader.json.deserialize.variants.Entity;
 import software.bluelib.loader.json.deserialize.variants.Variant;
@@ -42,7 +44,11 @@ import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.stream.Collectors;
 
-
+/**
+ * TODO:
+ *  Make the Logging Translateble en_us.json
+ *  Go through the entire code, not this file. and double check all Annotations (NotNull, Nullable, etc.)
+ */
 public class BlueLoader {
 	public static final Gson VARIANTS_GSON = new GsonBuilder()
 			.registerTypeAdapter(Entity.class, Entity.deserializer())
@@ -63,43 +69,58 @@ public class BlueLoader {
 		return result;
 	}
 
-	protected static CompletableFuture<Map<ResourceLocation, Entity>> loadVariants(
+
+	protected static CompletableFuture<Map<ResourceLocation, EntityCache>> loadVariants(
 			Executor pBackgroundExecutor,
 			ResourceManager pResourceManager,
 			List<IVariantProvider> pProviders) {
 
 		BaseLogger.log(true, BaseLogLevel.INFO, "Starting loadVariants with providers: " + pProviders.size());
-		List<CompletableFuture<Map<ResourceLocation, Entity>>> futures = new ObjectArrayList<>();
+		List<CompletableFuture<Map.Entry<ResourceLocation, EntityCache>>> futures = new ObjectArrayList<>();
 
 		for (IVariantProvider provider : pProviders) {
 			BaseLogger.log(true, BaseLogLevel.INFO, "Processing provider: " + provider.getBasePath());
 			for (String entity : provider.getEntityNames()) {
-				String entityPath = provider.getBasePath() + entity + "/";
+				if (BlueLibConstants.PlatformHelper.EVENT_PROXY.allVariantsLoadedPre(entity)) {
+					BaseLogger.log(true, BaseLogLevel.INFO, "variants.load.cancelled for entity: " + entity);
+					continue;
+				}
+
+				String entityPath = provider.getBasePath() + entity;
 				BaseLogger.log(true, BaseLogLevel.INFO, "Processing entity: " + entityPath);
-				futures.add(
-						bakeJsonResources(
-								pBackgroundExecutor,
-								pResourceManager,
-								entityPath,
-								ResourceCache::bakeVariants,
-								ex -> null
-						)
-				);
+
+				Map<ResourceLocation, Resource> resources = pResourceManager.listResources(entityPath, fileName -> fileName.getPath().endsWith(".json"));
+				JsonObject merged = new JsonObject();
+				for (Map.Entry<ResourceLocation, Resource> entry : resources.entrySet()) {
+					JsonObject obj = readJsonFile(entry.getKey(), entry.getValue());
+					new JSONMerger().mergeJsonObjects(merged, obj);
+				}
+
+				String namespace = resources.isEmpty() ? "minecraft" : resources.keySet().iterator().next().getNamespace();
+				ResourceLocation key = ResourceLocation.fromNamespaceAndPath(namespace, entity);
+
+				futures.add(CompletableFuture.supplyAsync(() -> {
+					if (BlueLibConstants.PlatformHelper.EVENT_PROXY.variantLoadedPre(entity, key.toString())) {
+						BaseLogger.log(true, BaseLogLevel.INFO, "variant.load.cancelled for: " + key);
+						return null;
+					}
+					EntityCache cache = bakeVariants(key, merged);
+					BlueLibConstants.PlatformHelper.EVENT_PROXY.variantLoadedPost(entity, key.toString());
+					return Map.entry(key, cache);
+				}, pBackgroundExecutor));
+				BlueLibConstants.PlatformHelper.EVENT_PROXY.allVariantsLoadedPost(entity);
 			}
 		}
 
 		return CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]))
 				.thenApply(ignored -> {
-					BaseLogger.log(true, BaseLogLevel.INFO, "All futures completed for loadVariants");
-					Map<ResourceLocation, Entity> combined = new java.util.HashMap<>();
-					for (CompletableFuture<Map<ResourceLocation, Entity>> future : futures) {
-						Map<ResourceLocation, Entity> result = future.join();
-						if (result != null) {
-							BaseLogger.log(true, BaseLogLevel.INFO, "Merging result with size: " + result.size());
-							combined.putAll(result);
+					Map<ResourceLocation, EntityCache> combined = new java.util.HashMap<>();
+					for (CompletableFuture<Map.Entry<ResourceLocation, EntityCache>> future : futures) {
+						Map.Entry<ResourceLocation, EntityCache> entry = future.join();
+						if (entry != null) {
+							combined.put(entry.getKey(), entry.getValue());
 						}
 					}
-					BaseLogger.log(true, BaseLogLevel.INFO, "Combined map size: " + combined.size());
 					return combined;
 				});
 	}
@@ -111,6 +132,7 @@ public class BlueLoader {
 				.thenCompose(resources -> {
 					BaseLogger.log(true, BaseLogLevel.INFO, "Loaded resources: " + resources.size());
 					List<CompletableFuture<Pair<ResourceLocation, BAKED>>> tasks = new ObjectArrayList<>(resources.size());
+					BaseLogger.log(true, BaseLogLevel.INFO, "Resources to bake: " + resources.stream().map(Pair::left).toList());
 
 					resources.forEach(pair -> tasks.add(
 							CompletableFuture.supplyAsync(() -> {
@@ -148,13 +170,16 @@ public class BlueLoader {
 		BaseLogger.log(true, BaseLogLevel.INFO, "Listing resources for path: " + pAssetPath + " with type: " + pFileType);
 
 		return CompletableFuture.supplyAsync(() -> {
-			Map<ResourceLocation, Resource> listed = pResourceManager.listResources(pAssetPath, fileName -> fileName.getPath().endsWith(fileTypeSuffix))
-					.entrySet().stream()
+			BaseLogger.log(true, BaseLogLevel.INFO, "Calling listResources with path: " + pAssetPath + " and fileTypeSuffix: " + fileTypeSuffix);
+			Map<ResourceLocation, Resource> allResources = pResourceManager.listResources(pAssetPath, fileName -> fileName.getPath().endsWith(fileTypeSuffix));
+			BaseLogger.log(true, BaseLogLevel.INFO, "All resources found: " + allResources.keySet());
+
+			Map<ResourceLocation, Resource> listed = allResources.entrySet().stream()
 					.filter(entry -> !BlueLibConstants.BlueLoader.SKIPPED_NAMESPACES.contains(entry.getKey().getNamespace()))
 					.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
 			BaseLogger.log(true, BaseLogLevel.INFO, "Resource keys found after filtering: " + listed.keySet());
-			BaseLogger.log(true, BaseLogLevel.INFO, "Listed resources: " + listed.size());
+			BaseLogger.log(true, BaseLogLevel.INFO, "Listed resources count: " + listed.size());
 			return listed;
 		}, pExecutor).thenCompose(filteredResources -> {
 			List<CompletableFuture<Pair<ResourceLocation, UNBAKED>>> tasks = new ObjectArrayList<>(filteredResources.size());
@@ -175,7 +200,7 @@ public class BlueLoader {
 	}
 
 	@NotNull
-	protected static Entity bakeVariants(ResourceLocation pResourceLocation, JsonObject pJsonObject) {
+	protected static EntityCache bakeVariants(ResourceLocation pResourceLocation, JsonObject pJsonObject) {
 		BaseLogger.log(true, BaseLogLevel.INFO, "Baking variants for: " + pResourceLocation);
 		return bakeGeneric(
 				pResourceLocation,

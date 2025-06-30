@@ -10,6 +10,7 @@ package software.bluelib.api.entity.variant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
@@ -32,7 +33,7 @@ public interface IVariantEntity {
         return selectedVariant;
     }
 
-    default List<String> getEntityVariants(String pEntityName) {
-        return new ArrayList<>(Objects.requireNonNull(ParameterUtils.getVariantsOfEntity(pEntityName)));
+    default List<String> getEntityVariants(ResourceLocation pEntity) {
+        return new ArrayList<>(Objects.requireNonNull(ParameterUtils.getVariantsOfEntity(pEntity)));
     }
 }

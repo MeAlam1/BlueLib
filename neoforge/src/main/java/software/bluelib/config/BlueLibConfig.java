@@ -47,8 +47,8 @@ public class BlueLibConfig {
 
     public static void bakeLogger(final ModConfig pConfig) {
         try {
-            LoggerConfig.isBlueLibLoggingEnabled = ConfigHolder.LOGGER.isBlueLibLoggingEnabled.get();
-            LoggerConfig.isLoggingEnabled = ConfigHolder.LOGGER.isLoggingEnabled.get();
+            LoggerConfig.isBlueLibLoggingEnabled = true;
+            LoggerConfig.isLoggingEnabled = true;
             BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.config("markdown.loaded"));
         } catch (Exception pException) {
             BaseLogger.log(true, BaseLogLevel.ERROR, BlueTranslation.config("markdown.failed", pException.getMessage()));

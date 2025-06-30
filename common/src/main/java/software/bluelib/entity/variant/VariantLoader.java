@@ -76,6 +76,6 @@ public class VariantLoader extends JSONParser {
         BlueLibConstants.PlatformHelper.EVENT_PROXY.allVariantsLoadedPost(pEntityName);
 
         BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("variants.entities", Arrays.toString(ParameterUtils.getAllEntities().toArray())));
-        BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("variants.variants", pEntityName, Arrays.toString(Objects.requireNonNull(ParameterUtils.getVariantsOfEntity(pEntityName)).toArray())));
+        //BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("variants.variants", pEntityName, Arrays.toString(Objects.requireNonNull(ParameterUtils.getVariantsOfEntity(pEntityName)).toArray())));
     }
 }

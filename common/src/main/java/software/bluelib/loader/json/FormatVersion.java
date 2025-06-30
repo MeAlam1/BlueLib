@@ -7,10 +7,9 @@
  */
 package software.bluelib.loader.json;
 
-import org.jetbrains.annotations.Nullable;
-
 import java.util.Collections;
 import java.util.Map;
+import org.jetbrains.annotations.Nullable;
 
 public abstract class FormatVersion<T extends FormatVersion<T>> {
 

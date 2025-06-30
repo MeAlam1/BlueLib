@@ -13,16 +13,15 @@ import com.google.gson.JsonParseException;
 import org.jetbrains.annotations.Nullable;
 
 public record Variant(
-		@Nullable JsonArray parameters
-) {
-	public static JsonDeserializer<Variant> deserializer() throws JsonParseException {
-		return (json, type, context) -> {
+        @Nullable JsonArray parameters) {
 
-			JsonArray parameters = json.getAsJsonArray();
+    public static JsonDeserializer<Variant> deserializer() throws JsonParseException {
+        return (json, type, context) -> {
 
-			return new Variant(
-					parameters
-			);
-		};
-	}
+            JsonArray parameters = json.getAsJsonArray();
+
+            return new Variant(
+                    parameters);
+        };
+    }
 }

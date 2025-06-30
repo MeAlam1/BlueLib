@@ -10,13 +10,12 @@ package software.bluelib.api.utils;
 import com.google.gson.*;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import net.minecraft.util.GsonHelper;
-import org.jetbrains.annotations.Nullable;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+import net.minecraft.util.GsonHelper;
+import org.jetbrains.annotations.Nullable;
 
 @SuppressWarnings({ "unused" })
 public final class JsonUtils {
