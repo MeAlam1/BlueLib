@@ -8,12 +8,13 @@
 package software.bluelib;
 
 import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
-import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.fml.event.lifecycle.InterModProcessEvent;
 import net.neoforged.fml.loading.FMLEnvironment;
 import software.bluelib.client.BlueLibClient;
 import software.bluelib.config.ConfigHolder;
@@ -27,7 +28,7 @@ public class BlueLib {
 
 	public BlueLib(IEventBus pModEventBus, ModContainer pModContainer) {
 		NeoForgeRegistryHelper.register(pModEventBus);
-		
+
 		BlueLibCommon.doRegistration();
 
 		if (FMLEnvironment.dist == Dist.CLIENT)
@@ -49,8 +50,8 @@ public class BlueLib {
 		pModEventBus.addListener(NeoForgeNetworkManager::registerMessages);
 	}
 
-	@SubscribeEvent
-	public void onLoadComplete(FMLClientSetupEvent pEvent) {
+	@SubscribeEvent(priority = EventPriority.LOWEST)
+	public void onLoadComplete(InterModProcessEvent pEvent) {
 		BlueLibCommon.init();
 	}
 }
