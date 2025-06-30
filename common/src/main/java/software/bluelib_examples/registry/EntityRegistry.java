@@ -12,7 +12,7 @@ public class EntityRegistry {
 
     public static void init() {}
 
-    public static final Supplier<EntityType<ExampleEntity>> EXAMPLE = registerEntity("example", ExampleEntity::new, 0.45f, 1f, 0x5F2A31, 0x6F363E);
+    public static final Supplier<EntityType<ExampleEntity>> EXAMPLE = registerEntity("test", ExampleEntity::new, 0.45f, 1f, 0x5F2A31, 0x6F363E);
 
     public static void registerEntityAttributes(BiConsumer<EntityType<? extends LivingEntity>, AttributeSupplier> registrar) {
         AttributeSupplier.Builder genericAttribs = PathfinderMob.createMobAttributes()

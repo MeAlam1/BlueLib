@@ -3,14 +3,13 @@ package software.bluelib_examples;
 
 import org.jetbrains.annotations.ApiStatus;
 import software.bluelib.api.net.NetworkRegistry;
-import software.bluelib.registry.BlueNetworkRegistry;
 import software.bluelib_examples.registry.EntityRegistry;
 
 public class BlueLibCommon {
 
     @ApiStatus.Internal
-    public static BlueNetworkRegistry getRegistry() {
-        return new BlueNetworkRegistry();
+    public static software.bluelib_examples.registry.NetworkRegistry getRegistry() {
+        return new software.bluelib_examples.registry.NetworkRegistry();
     }
 
     @ApiStatus.Internal

@@ -1,6 +1,7 @@
 
 package software.bluelib_examples.entity;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
@@ -16,12 +17,15 @@ import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.util.GeckoLibUtil;
 import software.bluelib.api.entity.variant.IVariantEntity;
+import software.bluelib.api.net.NetworkRegistry;
 import software.bluelib.entity.variant.IVariantAccessor;
+import software.bluelib.net.messages.client.OpenLoggerPacket;
+import software.bluelib_examples.BlueLibConstants;
 
 public class ExampleEntity extends PathfinderMob implements GeoEntity, IVariantEntity {
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
-    public final String entityName = "example";
+    public final String entityName = "test";
 
     public ExampleEntity(EntityType<? extends ExampleEntity> type, Level level) {
         super(type, level);
@@ -49,9 +53,9 @@ public class ExampleEntity extends PathfinderMob implements GeoEntity, IVariantE
 
     @Override
     public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor pLevel, @NotNull DifficultyInstance pDifficulty, @NotNull MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData) {
-        //NetworkRegistry.sendToAllPlayers(new OpenLoggerPacket());
+        NetworkRegistry.sendToAllPlayers(new OpenLoggerPacket());
         if (getVariantName() == null || getVariantName().isEmpty()) {
-            setVariantName(getRandomVariant(getEntityVariants(entityName), "normal"));
+            setVariantName(getRandomVariant(getEntityVariants(ResourceLocation.fromNamespaceAndPath(BlueLibConstants.MOD_ID, entityName)), "normal"));
         }
         return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData);
     }

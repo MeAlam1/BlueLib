@@ -20,13 +20,13 @@ public class BlueLib {
     public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(Registries.ENTITY_TYPE, BlueLibConstants.MOD_ID);
 
     public BlueLib(IEventBus pModEventBus, ModContainer pModContainer) {
-        ReloadHandler.registerProvider(new VariantProvider());
-        ENTITIES.register(pModEventBus);
-        pModEventBus.<EntityAttributeCreationEvent>addListener(event -> EntityRegistry.registerEntityAttributes(event::put));
-
         if (FMLEnvironment.dist == Dist.CLIENT)
             BlueLibClient.init(pModContainer);
 
         BlueLibCommon.doServerRegistration();
+
+        ReloadHandler.registerProvider(new VariantProvider());
+        ENTITIES.register(pModEventBus);
+        pModEventBus.<EntityAttributeCreationEvent>addListener(event -> EntityRegistry.registerEntityAttributes(event::put));
     }
 }
