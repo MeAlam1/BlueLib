@@ -9,6 +9,7 @@ package software.bluelib.net.messages.server;
 
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.net.NetworkPacket;
 import software.bluelib.internal.BlueResource;
 import software.bluelib.net.serverHandling.TestPacketHandler;
@@ -21,7 +22,7 @@ public record TestPacket(boolean value) implements NetworkPacket<TestPacket> {
     public static final ResourceLocation ID = BlueResource.resource("test_packet");
 
     @Override
-    public void encode(RegistryFriendlyByteBuf pBuffer) {
+    public void encode(@NotNull RegistryFriendlyByteBuf pBuffer) {
         pBuffer.writeBoolean(value);
     }
 
@@ -30,7 +31,7 @@ public record TestPacket(boolean value) implements NetworkPacket<TestPacket> {
     }
 
     @Override
-    public ResourceLocation getId() {
+    public @NotNull ResourceLocation getId() {
         return ID;
     }
 }

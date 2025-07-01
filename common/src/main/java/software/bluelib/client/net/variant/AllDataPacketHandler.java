@@ -9,6 +9,7 @@ package software.bluelib.client.net.variant;
 
 import java.util.function.Consumer;
 import net.minecraft.client.Minecraft;
+import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.net.ClientNetworkPacketHandler;
 import software.bluelib.net.messages.client.variant.AllDataPacket;
 
@@ -21,7 +22,7 @@ public class AllDataPacketHandler implements ClientNetworkPacketHandler<AllDataP
     }
 
     @Override
-    public void handle(AllDataPacket pPacket, Minecraft pClient) {
+    public void handle(@NotNull AllDataPacket pPacket, @NotNull Minecraft pClient) {
         handlerFunction.accept(pPacket);
     }
 }

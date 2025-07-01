@@ -7,6 +7,7 @@
  */
 package software.bluelib.api.utils.math;
 
+import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
 import software.bluelib.internal.BlueTranslation;
@@ -16,29 +17,31 @@ public class RandomGenUtils {
 
     private RandomGenUtils() {}
 
-    public static int generateRandomInt(int pMin, int pMax) {
+    public static @NotNull Integer generateRandomInt(@NotNull Integer pMin, @NotNull Integer pMax) {
         if (pMin > pMax) {
             Throwable throwable = new IllegalArgumentException("Minimum value must not be greater than maximum value.");
-            BaseLogger.log(true, BaseLogLevel.WARNING, BlueTranslation.log("math.error.gen", "random integer"), throwable);
+            BaseLogger.log(true, BaseLogLevel.WARNING, BlueTranslation.log("math.error.gen", "random @NotNull Integereger"), throwable);
             return 0;
         }
         return pMin + (int) (Math.random() * (pMax - pMin + 1));
     }
 
-    public static double generateRandomDouble(double pMin, double pMax) {
+    public static @NotNull Double generateRandomDouble(@NotNull Double pMin, @NotNull Double pMax) {
         if (pMin > pMax) {
             Throwable throwable = new IllegalArgumentException("Minimum value must not be greater than maximum value.");
-            BaseLogger.log(true, BaseLogLevel.WARNING, BlueTranslation.log("math.error.gen", "random double"), throwable);
-            return 0;
+            BaseLogger.log(true, BaseLogLevel.WARNING, BlueTranslation.log("math.error.gen", "random @NotNull Double"), throwable);
+            return 0.0;
         }
         return pMin + Math.random() * (pMax - pMin);
     }
 
-    public static boolean generateRandomBoolean() {
+    @NotNull
+    public static Boolean generateRandomBoolean() {
         return Math.random() < 0.5;
     }
 
-    public static String generateRandomString(int pLength) {
+    @NotNull
+    public static String generateRandomString(@NotNull Integer pLength) {
         if (pLength < 0) {
             Throwable throwable = new IllegalArgumentException("Length must be non-negative.");
             BaseLogger.log(true, BaseLogLevel.WARNING, BlueTranslation.log("math.error.gen", "random string"), throwable);
@@ -53,7 +56,8 @@ public class RandomGenUtils {
         return sb.toString();
     }
 
-    public static String generateRandomStringWithPrefix(String pPrefix, int pLength) {
+    @NotNull
+    public static String generateRandomStringWithPrefix(@NotNull String pPrefix, @NotNull Integer pLength) {
         if (pLength < 0) {
             Throwable throwable = new IllegalArgumentException("Length must be non-negative.");
             BaseLogger.log(true, BaseLogLevel.WARNING, BlueTranslation.log("math.error.gen", "random string with prefix"), throwable);

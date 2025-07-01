@@ -10,6 +10,7 @@ package software.bluelib.internal.registry;
 import java.util.ArrayList;
 import java.util.List;
 import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.net.PacketProvider;
 import software.bluelib.client.net.OpenLoggerPacketHandler;
 import software.bluelib.net.PacketRegisterInfo;
@@ -21,7 +22,7 @@ import software.bluelib.net.serverHandling.TestPacketHandler;
 public class BlueNetworkRegistry implements PacketProvider.C2SPacketProvider, PacketProvider.S2CPacketProvider {
 
     @Override
-    public List<PacketRegisterInfo<?>> getC2SPacketInfoList() {
+    public @NotNull List<PacketRegisterInfo<?>> getC2SPacketInfoList() {
         List<PacketRegisterInfo<?>> list = new ArrayList<>();
 
         // Test
@@ -31,7 +32,7 @@ public class BlueNetworkRegistry implements PacketProvider.C2SPacketProvider, Pa
     }
 
     @Override
-    public List<PacketRegisterInfo<?>> getS2CPacketInfoList() {
+    public @NotNull List<PacketRegisterInfo<?>> getS2CPacketInfoList() {
         List<PacketRegisterInfo<?>> list = new ArrayList<>();
 
         // Logger

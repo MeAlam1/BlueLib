@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import net.minecraft.util.GsonHelper;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 @SuppressWarnings({ "unused" })
@@ -22,6 +23,7 @@ public final class JsonUtils {
 
     private JsonUtils() {}
 
+    @NotNull
     public static List<Float> jsonArrayToFloatList(@Nullable JsonArray pArray) throws JsonParseException {
         if (pArray == null)
             return new ArrayList<>();
@@ -35,6 +37,7 @@ public final class JsonUtils {
         return output;
     }
 
+    @NotNull
     public static List<Double> jsonArrayToDoubleList(@Nullable JsonArray pArray) throws JsonParseException {
         if (pArray == null)
             return new ArrayList<>();
@@ -48,6 +51,7 @@ public final class JsonUtils {
         return output;
     }
 
+    @NotNull
     public static List<Integer> jsonArrayToIntList(@Nullable JsonArray pArray) throws JsonParseException {
         if (pArray == null)
             return new ArrayList<>();
@@ -61,7 +65,8 @@ public final class JsonUtils {
         return output;
     }
 
-    public static <T> List<T> jsonArrayToObjectList(JsonArray pArray, JsonDeserializationContext pContext, Class<T> pObjectClass) {
+    @NotNull
+    public static <T> List<T> jsonArrayToObjectList(@Nullable JsonArray pArray, @NotNull JsonDeserializationContext pContext, @NotNull Class<T> pObjectClass) {
         if (pArray == null)
             return new ArrayList<>();
 
@@ -74,7 +79,8 @@ public final class JsonUtils {
         return list;
     }
 
-    public static <T> List<T> jsonArrayToList(@Nullable JsonArray pArray, Function<JsonElement, T> pElementTransformer) {
+    @NotNull
+    public static <T> List<T> jsonArrayToList(@Nullable JsonArray pArray, @NotNull Function<JsonElement, T> pElementTransformer) {
         if (pArray == null)
             return new ObjectArrayList<>();
 
@@ -87,6 +93,7 @@ public final class JsonUtils {
         return list;
     }
 
+    @NotNull
     public static List<String> jsonArrayToStringList(@Nullable JsonArray pArray) throws JsonParseException {
         if (pArray == null)
             return new ArrayList<>();
@@ -100,7 +107,8 @@ public final class JsonUtils {
         return output;
     }
 
-    public static <T> Map<String, T> jsonObjToMap(JsonObject pObj, JsonDeserializationContext pContext, Class<T> pObjectType) {
+    @NotNull
+    public static <T> Map<String, T> jsonObjToMap(@NotNull JsonObject pObj, @NotNull JsonDeserializationContext pContext, @NotNull Class<T> pObjectType) {
         Map<String, T> map = new Object2ObjectOpenHashMap<>(pObj.size());
 
         for (Map.Entry<String, JsonElement> entry : pObj.entrySet()) {
@@ -110,7 +118,8 @@ public final class JsonUtils {
         return map;
     }
 
-    public static <T> Map<String, List<T>> jsonObjToListMap(JsonObject pObj, JsonDeserializationContext pContext, Class<T> pObjectType) {
+    @NotNull
+    public static <T> Map<String, List<T>> jsonObjToListMap(@NotNull JsonObject pObj, @NotNull JsonDeserializationContext pContext, @NotNull Class<T> pObjectType) {
         Map<String, List<T>> map = new Object2ObjectOpenHashMap<>(pObj.size());
         for (Map.Entry<String, JsonElement> entry : pObj.entrySet()) {
             JsonArray arr = entry.getValue().getAsJsonArray();
@@ -121,42 +130,42 @@ public final class JsonUtils {
     }
 
     @Nullable
-    public static Long getOptionalLong(JsonObject pObj, String pElementName) {
+    public static Long getOptionalLong(@NotNull JsonObject pObj, @NotNull String pElementName) {
         return pObj.has(pElementName) ? GsonHelper.getAsLong(pObj, pElementName) : null;
     }
 
     @Nullable
-    public static Boolean getOptionalBoolean(JsonObject pObj, String pElementName) {
+    public static Boolean getOptionalBoolean(@NotNull JsonObject pObj, @NotNull String pElementName) {
         return pObj.has(pElementName) ? GsonHelper.getAsBoolean(pObj, pElementName) : null;
     }
 
     @Nullable
-    public static Float getOptionalFloat(JsonObject pObj, String pElementName) {
+    public static Float getOptionalFloat(@NotNull JsonObject pObj, @NotNull String pElementName) {
         return pObj.has(pElementName) ? GsonHelper.getAsFloat(pObj, pElementName) : null;
     }
 
     @Nullable
-    public static Double getOptionalDouble(JsonObject pObj, String pElementName) {
+    public static Double getOptionalDouble(@NotNull JsonObject pObj, @NotNull String pElementName) {
         return pObj.has(pElementName) ? GsonHelper.getAsDouble(pObj, pElementName) : null;
     }
 
     @Nullable
-    public static Integer getOptionalInteger(JsonObject pObj, String pElementName) {
+    public static Integer getOptionalInteger(@NotNull JsonObject pObj, @NotNull String pElementName) {
         return pObj.has(pElementName) ? GsonHelper.getAsInt(pObj, pElementName) : null;
     }
 
     @Nullable
-    public static String getOptionalString(JsonObject pObj, String pElementName) {
+    public static String getOptionalString(@NotNull JsonObject pObj, @NotNull String pElementName) {
         return pObj.has(pElementName) ? GsonHelper.getAsString(pObj, pElementName) : null;
     }
 
     @Nullable
-    public static <T> T getOptionalObject(JsonObject pObj, String pElementName, JsonDeserializationContext pContext, Class<T> pType) {
+    public static <T> T getOptionalObject(@NotNull JsonObject pObj, @NotNull String pElementName, @NotNull JsonDeserializationContext pContext, @NotNull Class<T> pType) {
         return pObj.has(pElementName) ? GsonHelper.getAsObject(pObj, pElementName, pContext, pType) : null;
     }
 
     @Nullable
-    public static JsonArray getOptionalJsonArray(JsonObject pObj, String pElementName) {
+    public static JsonArray getOptionalJsonArray(@NotNull JsonObject pObj, @NotNull String pElementName) {
         return pObj.has(pElementName) ? GsonHelper.getAsJsonArray(pObj, pElementName) : null;
     }
 }

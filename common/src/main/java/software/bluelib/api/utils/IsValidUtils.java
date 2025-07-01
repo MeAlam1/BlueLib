@@ -9,7 +9,7 @@ package software.bluelib.api.utils;
 
 import java.net.URI;
 import java.util.regex.Pattern;
-import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
 import software.bluelib.internal.BlueTranslation;
@@ -19,12 +19,9 @@ public class IsValidUtils {
 
     private IsValidUtils() {}
 
-    public static boolean isValidURL(@Nullable String pUrl) {
+    @NotNull
+    public static Boolean isValidURL(@NotNull String pUrl) {
         try {
-            if (pUrl == null) {
-                BaseLogger.log(true, BaseLogLevel.WARNING, BlueTranslation.translate("null"));
-                return false;
-            }
             if (!pUrl.startsWith("http://") && !pUrl.startsWith("https://")) {
                 BaseLogger.log(true, BaseLogLevel.WARNING, BlueTranslation.log("invalid_url.begin", pUrl));
                 return false;
@@ -43,17 +40,14 @@ public class IsValidUtils {
         }
     }
 
-    public static boolean isValidEmail(String pEmail) {
+    @NotNull
+    public static Boolean isValidEmail(@NotNull String pEmail) {
         String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
-        return pEmail != null && pEmail.matches(emailRegex);
+        return pEmail.matches(emailRegex);
     }
 
-    public static boolean isValidColor(@Nullable String pInput) {
-        if (pInput == null) {
-            BaseLogger.log(true, BaseLogLevel.WARNING, BlueTranslation.translate("null"));
-            return false;
-        }
-
+    @NotNull
+    public static Boolean isValidColor(@NotNull String pInput) {
         String rgbPattern = "\\(\\s*\\d{1,3}\\s*,\\s*\\d{1,3}\\s*,\\s*\\d{1,3}\\s*\\)";
         String argbPattern = "\\(\\s*\\d{1,3}\\s*,\\s*\\d{1,3}\\s*,\\s*\\d{1,3}\\s*,\\s*\\d{1,3}\\s*\\)";
         String hexPattern = "^#([0-9A-Fa-f]{6})$";

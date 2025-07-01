@@ -21,6 +21,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.GsonHelper;
+import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
 import software.bluelib.internal.BlueTranslation;
@@ -35,7 +36,7 @@ public abstract class JSONParser {
 
     protected JsonObject mergedJsonObject;
 
-    public void loadData(String pFolderPath, ResourceManager pResourceManager) {
+    public void loadData(@NotNull String pFolderPath, @NotNull ResourceManager pResourceManager) {
         mergedJsonObject = new JsonObject();
 
         Collection<ResourceLocation> resources = pResourceManager.listResources(pFolderPath, path -> path.getPath().endsWith(".json")).keySet();
@@ -63,10 +64,12 @@ public abstract class JSONParser {
         }
     }
 
+    @NotNull
     public Map<String, JsonObject> getDataMap() {
         return dataMap;
     }
 
+    @NotNull
     public JsonObject getMergedJsonObject() {
         return mergedJsonObject;
     }

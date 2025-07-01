@@ -8,19 +8,22 @@
 package software.bluelib.api.event;
 
 import java.util.List;
+import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.event.mod.ModMeta;
 
 public interface IEventProxy {
 
-    void onModLoaded(ModMeta pModData);
+    void onModLoaded(@NotNull ModMeta pModData);
 
-    void onAllModsLoaded(List<ModMeta> pModData);
+    void onAllModsLoaded(@NotNull List<ModMeta> pModData);
 
-    boolean variantLoadedPre(String pEntityName, String pVariant);
+    @NotNull
+    Boolean variantLoadedPre(@NotNull String pEntityName, @NotNull String pVariant);
 
-    void variantLoadedPost(String pEntityName, String pVariant);
+    void variantLoadedPost(@NotNull String pEntityName, @NotNull String pVariant);
 
-    boolean allVariantsLoadedPre(String pEntityName);
+    @NotNull
+    Boolean allVariantsLoadedPre(@NotNull String pEntityName);
 
-    void allVariantsLoadedPost(String pEntityName);
+    void allVariantsLoadedPost(@NotNull String pEntityName);
 }

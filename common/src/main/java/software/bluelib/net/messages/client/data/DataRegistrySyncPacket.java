@@ -11,6 +11,7 @@ import io.netty.buffer.Unpooled;
 import java.util.ArrayList;
 import java.util.Collection;
 import net.minecraft.network.RegistryFriendlyByteBuf;
+import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.net.NetworkPacket;
 
 public abstract class DataRegistrySyncPacket<T, N extends NetworkPacket<N>> implements NetworkPacket<N> {
@@ -24,7 +25,7 @@ public abstract class DataRegistrySyncPacket<T, N extends NetworkPacket<N>> impl
     }
 
     @Override
-    public void encode(RegistryFriendlyByteBuf pBuffer) {
+    public void encode(@NotNull RegistryFriendlyByteBuf pBuffer) {
         RegistryFriendlyByteBuf newBuffer = new RegistryFriendlyByteBuf(Unpooled.buffer(), pBuffer.registryAccess());
         newBuffer.writeCollection(registryEntries, (buf, entry) -> encodeEntry(newBuffer, entry));
         pBuffer.writeInt(newBuffer.readableBytes());

@@ -19,7 +19,7 @@ public class DelayedScheduler {
     private static final ScheduledExecutorService EXECUTOR_SERVICE = Executors.newSingleThreadScheduledExecutor();
 
     @NotNull
-    public static CompletableFuture<Void> schedule(Runnable task, long delay, TimeUnit unit) {
+    public static CompletableFuture<Void> schedule(@NotNull Runnable task, @NotNull Long delay, @NotNull TimeUnit unit) {
         CompletableFuture<Void> future = new CompletableFuture<>();
         EXECUTOR_SERVICE.schedule(() -> {
             try {
@@ -33,7 +33,7 @@ public class DelayedScheduler {
     }
 
     @NotNull
-    public static <A> CompletableFuture<A> schedule(Supplier<A> supplier, long delay, TimeUnit unit) {
+    public static <A> CompletableFuture<A> schedule(@NotNull Supplier<A> supplier, @NotNull Long delay, @NotNull TimeUnit unit) {
         CompletableFuture<A> future = new CompletableFuture<>();
         EXECUTOR_SERVICE.schedule(() -> {
             try {

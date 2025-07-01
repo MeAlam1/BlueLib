@@ -7,6 +7,7 @@
  */
 package software.bluelib.api.utils.math;
 
+import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
 import software.bluelib.internal.BlueTranslation;
@@ -16,20 +17,20 @@ public class GeometricUtils {
 
     private GeometricUtils() {}
 
-    public static double calculateDistance2D(double pX1, double pY1, double pX2, double pY2) {
-        double dx = pX2 - pX1;
-        double dy = pY2 - pY1;
+    public static @NotNull Double calculateDistance2D(@NotNull Double pX1, @NotNull Double pY1, @NotNull Double pX2, @NotNull Double pY2) {
+        Double dx = pX2 - pX1;
+        Double dy = pY2 - pY1;
         return Math.sqrt(dx * dx + dy * dy);
     }
 
-    public static double calculateDistance3D(double pX1, double pY1, double pZ1, double pX2, double pY2, double pZ2) {
-        double dx = pX2 - pX1;
-        double dy = pY2 - pY1;
-        double dz = pZ2 - pZ1;
+    public static @NotNull Double calculateDistance3D(@NotNull Double pX1, @NotNull Double pY1, @NotNull Double pZ1, @NotNull Double pX2, @NotNull Double pY2, @NotNull Double pZ2) {
+        Double dx = pX2 - pX1;
+        Double dy = pY2 - pY1;
+        Double dz = pZ2 - pZ1;
         return Math.sqrt(dx * dx + dy * dy + dz * dz);
     }
 
-    public static double calculateCircleArea(double pRadius) {
+    public static @NotNull Double calculateCircleArea(@NotNull Double pRadius) {
         if (pRadius < 0) {
             Throwable throwable = new IllegalArgumentException("Radius must be non-negative.");
             BaseLogger.log(true, BaseLogLevel.WARNING, BlueTranslation.log("math.error.calc", "circle area"), throwable);
@@ -38,7 +39,7 @@ public class GeometricUtils {
         return Math.PI * pRadius * pRadius;
     }
 
-    public static double calculateCircleCircumference(double pRadius) {
+    public static @NotNull Double calculateCircleCircumference(@NotNull Double pRadius) {
         if (pRadius < 0) {
             Throwable throwable = new IllegalArgumentException("Radius must be non-negative.");
             BaseLogger.log(true, BaseLogLevel.WARNING, BlueTranslation.log("math.error.calc", "circle circumference"), throwable);
@@ -47,7 +48,7 @@ public class GeometricUtils {
         return 2 * Math.PI * pRadius;
     }
 
-    public static double calculateRectangleArea(double pWidth, double pHeight) {
+    public static @NotNull Double calculateRectangleArea(@NotNull Double pWidth, @NotNull Double pHeight) {
         if (pWidth < 0 || pHeight < 0) {
             Throwable throwable = new IllegalArgumentException("Width and height must be non-negative.");
             BaseLogger.log(true, BaseLogLevel.WARNING, BlueTranslation.log("math.error.calc", "rectangle area"), throwable);
@@ -56,7 +57,7 @@ public class GeometricUtils {
         return pWidth * pHeight;
     }
 
-    public static double calculateRectanglePerimeter(double pWidth, double pHeight) {
+    public static @NotNull Double calculateRectanglePerimeter(@NotNull Double pWidth, @NotNull Double pHeight) {
         if (pWidth < 0 || pHeight < 0) {
             Throwable throwable = new IllegalArgumentException("Width and height must be non-negative.");
             BaseLogger.log(true, BaseLogLevel.WARNING, BlueTranslation.log("math.error.calc", "rectangle perimeter"), throwable);
@@ -65,7 +66,7 @@ public class GeometricUtils {
         return 2 * (pWidth + pHeight);
     }
 
-    public static double calculateTriangleArea(double pBase, double pHeight) {
+    public static @NotNull Double calculateTriangleArea(@NotNull Double pBase, @NotNull Double pHeight) {
         if (pBase < 0 || pHeight < 0) {
             Throwable throwable = new IllegalArgumentException("Base and height must be non-negative.");
             BaseLogger.log(true, BaseLogLevel.WARNING, BlueTranslation.log("math.error.calc", "triangle area"), throwable);
@@ -74,7 +75,7 @@ public class GeometricUtils {
         return 0.5 * pBase * pHeight;
     }
 
-    public static double calculateTrianglePerimeter(double pSide1, double pSide2, double pSide3) {
+    public static @NotNull Double calculateTrianglePerimeter(@NotNull Double pSide1, @NotNull Double pSide2, @NotNull Double pSide3) {
         if (pSide1 < 0 || pSide2 < 0 || pSide3 < 0) {
             Throwable throwable = new IllegalArgumentException("Sides must be non-negative.");
             BaseLogger.log(true, BaseLogLevel.WARNING, BlueTranslation.log("math.error.calc", "triangle perimeter"), throwable);
@@ -83,7 +84,7 @@ public class GeometricUtils {
         return pSide1 + pSide2 + pSide3;
     }
 
-    public static double calculateSphereVolume(double pRadius) {
+    public static @NotNull Double calculateSphereVolume(@NotNull Double pRadius) {
         if (pRadius < 0) {
             Throwable throwable = new IllegalArgumentException("Radius must be non-negative.");
             BaseLogger.log(true, BaseLogLevel.WARNING, BlueTranslation.log("math.error.calc", "sphere volume"), throwable);
@@ -92,7 +93,7 @@ public class GeometricUtils {
         return (4.0 / 3.0) * Math.PI * Math.pow(pRadius, 3);
     }
 
-    public static double calculateCubeSurfaceArea(double pSideLength) {
+    public static @NotNull Double calculateCubeSurfaceArea(@NotNull Double pSideLength) {
         if (pSideLength < 0) {
             Throwable throwable = new IllegalArgumentException("Side length must be non-negative.");
             BaseLogger.log(true, BaseLogLevel.WARNING, BlueTranslation.log("math.error.calc", "cube surface area"), throwable);
@@ -101,7 +102,7 @@ public class GeometricUtils {
         return 6 * Math.pow(pSideLength, 2);
     }
 
-    public static double calculateCylinderVolume(double pRadius, double pHeight) {
+    public static @NotNull Double calculateCylinderVolume(@NotNull Double pRadius, @NotNull Double pHeight) {
         if (pRadius < 0 || pHeight < 0) {
             Throwable throwable = new IllegalArgumentException("Radius and height must be non-negative.");
             BaseLogger.log(true, BaseLogLevel.WARNING, BlueTranslation.log("math.error.calc", "cylinder volume"), throwable);
@@ -110,7 +111,7 @@ public class GeometricUtils {
         return Math.PI * Math.pow(pRadius, 2) * pHeight;
     }
 
-    public static double calculateConeSurfaceArea(double pRadius, double pSlantHeight) {
+    public static @NotNull Double calculateConeSurfaceArea(@NotNull Double pRadius, @NotNull Double pSlantHeight) {
         if (pRadius < 0 || pSlantHeight < 0) {
             Throwable throwable = new IllegalArgumentException("Radius and slant height must be non-negative.");
             BaseLogger.log(true, BaseLogLevel.WARNING, BlueTranslation.log("math.error.calc", "cone surface area"), throwable);

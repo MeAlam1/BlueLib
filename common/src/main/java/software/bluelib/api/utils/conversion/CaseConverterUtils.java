@@ -96,7 +96,7 @@ public class CaseConverterUtils {
     }
 
     @NotNull
-    private static String convertUsingDelimiter(@NotNull String pInput, @NotNull String pDelim, boolean pCamel) {
+    private static String convertUsingDelimiter(@NotNull String pInput, @NotNull String pDelim, @NotNull Boolean pCamel) {
         String[] parts = pInput.split(pDelim);
         StringBuilder sb = new StringBuilder();
 

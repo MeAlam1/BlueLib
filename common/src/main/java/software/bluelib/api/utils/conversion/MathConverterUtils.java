@@ -10,6 +10,7 @@ package software.bluelib.api.utils.conversion;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
 import software.bluelib.internal.BlueTranslation;
@@ -19,31 +20,32 @@ public class MathConverterUtils {
 
     private MathConverterUtils() {}
 
-    public static double inchesToCentimeters(double pInches) {
+    public static @NotNull Double inchesToCentimeters(@NotNull Double pInches) {
         return pInches * 2.54;
     }
 
-    public static double centimetersToInches(double pCentimeters) {
+    public static @NotNull Double centimetersToInches(@NotNull Double pCentimeters) {
         return pCentimeters / 2.54;
     }
 
-    public static double celsiusToFahrenheit(double pCelsius) {
+    public static @NotNull Double celsiusToFahrenheit(@NotNull Double pCelsius) {
         return pCelsius * 9 / 5 + 32;
     }
 
-    public static double fahrenheitToCelsius(double pFahrenheit) {
+    public static @NotNull Double fahrenheitToCelsius(@NotNull Double pFahrenheit) {
         return (pFahrenheit - 32) * 5 / 9;
     }
 
-    public static double kilometersToMiles(double pKilometers) {
+    public static @NotNull Double kilometersToMiles(@NotNull Double pKilometers) {
         return pKilometers * 0.621371;
     }
 
-    public static double milesToKilometers(double pMiles) {
+    public static @NotNull Double milesToKilometers(@NotNull Double pMiles) {
         return pMiles / 0.621371;
     }
 
-    public static Date stringToDate(String pDateStr, String pFormat) throws ParseException {
+    @NotNull
+    public static Date stringToDate(@NotNull String pDateStr, @NotNull String pFormat) throws ParseException {
         try {
             SimpleDateFormat formatter = new SimpleDateFormat(pFormat);
             return formatter.parse(pDateStr);
@@ -53,7 +55,8 @@ public class MathConverterUtils {
         }
     }
 
-    public static String dateToString(Date pDate, String pFormat) {
+    @NotNull
+    public static String dateToString(@NotNull Date pDate, @NotNull String pFormat) {
         try {
             SimpleDateFormat formatter = new SimpleDateFormat(pFormat);
             return formatter.format(pDate);

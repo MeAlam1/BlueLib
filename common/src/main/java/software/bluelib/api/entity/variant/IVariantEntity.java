@@ -9,9 +9,11 @@ package software.bluelib.api.entity.variant;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+import java.util.Set;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
 import software.bluelib.api.utils.variant.ParameterUtils;
@@ -22,7 +24,8 @@ public interface IVariantEntity {
 
     RandomSource random = RandomSource.create();
 
-    default String getRandomVariant(List<String> pVariantNamesList, String pDefaultVariant) {
+    @Nullable
+    default String getRandomVariant(@NotNull List<String> pVariantNamesList, @Nullable String pDefaultVariant) {
         if (pVariantNamesList.isEmpty()) {
             BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("variant.list.empty", pDefaultVariant));
             return pDefaultVariant;
@@ -33,7 +36,9 @@ public interface IVariantEntity {
         return selectedVariant;
     }
 
-    default List<String> getEntityVariants(ResourceLocation pEntity) {
-        return new ArrayList<>(Objects.requireNonNull(ParameterUtils.getVariantsOfEntity(pEntity)));
+    @Nullable
+    default List<String> getEntityVariants(@Nullable ResourceLocation pEntity) {
+        Set<String> variants = ParameterUtils.getVariantsOfEntity(pEntity);
+        return variants != null ? new ArrayList<>(variants) : null;
     }
 }

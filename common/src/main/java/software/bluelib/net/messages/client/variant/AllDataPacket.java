@@ -13,6 +13,7 @@ import java.util.Map;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.net.NetworkPacket;
 import software.bluelib.internal.BlueResource;
 
@@ -21,7 +22,7 @@ public record AllDataPacket(Map<String, JsonObject> allData) implements NetworkP
     public static final ResourceLocation ID = BlueResource.resource("all_data_packet");
 
     @Override
-    public void encode(RegistryFriendlyByteBuf pBuffer) {
+    public void encode(@NotNull RegistryFriendlyByteBuf pBuffer) {
         pBuffer.writeMap(allData, FriendlyByteBuf::writeUtf, (buf, json) -> buf.writeUtf(json.toString()));
     }
 
@@ -33,7 +34,7 @@ public record AllDataPacket(Map<String, JsonObject> allData) implements NetworkP
     }
 
     @Override
-    public ResourceLocation getId() {
+    public @NotNull ResourceLocation getId() {
         return ID;
     }
 }

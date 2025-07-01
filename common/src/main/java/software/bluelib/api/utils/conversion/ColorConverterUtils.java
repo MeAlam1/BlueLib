@@ -21,7 +21,8 @@ import software.bluelib.internal.BlueTranslation;
 @SuppressWarnings("unused")
 public class ColorConverterUtils {
 
-    public static int parseColorToHexString(@NotNull String pInput) {
+    @NotNull
+    public static Integer parseColorToHexString(@NotNull String pInput) {
         if (pInput.matches("^([0-9A-Fa-f]{6})$")) {
             pInput = "#" + pInput;
         }
@@ -34,9 +35,12 @@ public class ColorConverterUtils {
         if (pInput.matches(rgbPattern)) {
             Matcher matcher = Pattern.compile(rgbPattern).matcher(pInput);
             if (matcher.matches()) {
-                int r = Integer.parseInt(matcher.group(1));
-                int g = Integer.parseInt(matcher.group(2));
-                int b = Integer.parseInt(matcher.group(3));
+                @NotNull
+                Integer r = Integer.parseInt(matcher.group(1));
+                @NotNull
+                Integer g = Integer.parseInt(matcher.group(2));
+                @NotNull
+                Integer b = Integer.parseInt(matcher.group(3));
                 if (isValidRGB(r, g, b)) {
                     return toHex(r, g, b);
                 }
@@ -46,9 +50,12 @@ public class ColorConverterUtils {
         if (pInput.matches(argbPattern)) {
             Matcher matcher = Pattern.compile(argbPattern).matcher(pInput);
             if (matcher.matches()) {
-                int r = Integer.parseInt(matcher.group(2));
-                int g = Integer.parseInt(matcher.group(3));
-                int b = Integer.parseInt(matcher.group(4));
+                @NotNull
+                Integer r = Integer.parseInt(matcher.group(2));
+                @NotNull
+                Integer g = Integer.parseInt(matcher.group(3));
+                @NotNull
+                Integer b = Integer.parseInt(matcher.group(4));
                 if (isValidRGB(r, g, b)) {
                     return toHex(r, g, b);
                 }
@@ -66,15 +73,16 @@ public class ColorConverterUtils {
         return 0xFFFFFF;
     }
 
-    private static boolean isValidRGB(int pRed, int pGreen, int pBlue) {
+    @NotNull
+    private static Boolean isValidRGB(@NotNull Integer pRed, @NotNull Integer pGreen, @NotNull Integer pBlue) {
         return isInRange(pRed) && isInRange(pGreen) && isInRange(pBlue);
     }
 
-    private static boolean isInRange(int pValue) {
+    private static boolean isInRange(@NotNull Integer pValue) {
         return pValue >= 0 && pValue <= 255;
     }
 
-    private static int toHex(int pRed, int pGreen, int pBlue) {
+    private static @NotNull Integer toHex(@NotNull Integer pRed, @NotNull Integer pGreen, @NotNull Integer pBlue) {
         return (pRed << 16) | (pGreen << 8) | pBlue;
     }
 
@@ -103,7 +111,7 @@ public class ColorConverterUtils {
         return Optional.empty();
     }
 
-    public static int rgbToDecimal(int pRed, int pGreen, int pBlue) {
+    public static @NotNull Integer rgbToDecimal(@NotNull Integer pRed, @NotNull Integer pGreen, @NotNull Integer pBlue) {
         return (pRed << 16) + (pGreen << 8) + pBlue;
     }
 }

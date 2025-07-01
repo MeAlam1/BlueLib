@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.TreeMap;
 import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * <b>WARNING:</b> <i>Still a massive Work in Progress.</i> <br>
@@ -44,11 +45,11 @@ import org.jetbrains.annotations.ApiStatus;
  * Math formula for weighting:
  * <ul>
  * <li>For each value <code>x</code>, its weight <code>w(x)</code> is calculated as:</li>
- * 
+ *
  * <pre>
  * <code>w(x) = 2^(maxCount - count(x))</code>
  * </pre>
- * 
+ *
  * <li>Where <code>maxCount</code> is the highest count of selections made for any value, and <code>count(x)</code> is the number of times <code>x</code> has been selected.</li>
  * <li>The weight decreases exponentially for values with higher selection counts, and increases for values with fewer selections, encouraging the selection of less-picked values.</li>
  * </ul>
@@ -61,7 +62,7 @@ import org.jetbrains.annotations.ApiStatus;
  * </ul>
  */
 @SuppressWarnings("unused")
-@ApiStatus.Internal
+@ApiStatus.Experimental
 public class PityRandom {
 
     private final int minInt;
@@ -72,7 +73,7 @@ public class PityRandom {
     private final Map<Double, Integer> selectionCountDouble;
     private final Random random;
 
-    public PityRandom(int pMin, int pMax) {
+    public PityRandom(@NotNull Integer pMin, @NotNull Integer pMax) {
         this.minInt = pMin;
         this.maxInt = pMax;
         this.minDouble = pMin;
@@ -86,7 +87,8 @@ public class PityRandom {
         }
     }
 
-    public int nextInt() {
+    @NotNull
+    public Integer nextInt() {
         Map<Integer, Double> weights = new HashMap<>();
         int maxCount = selectionCountInt.values().stream().max(Integer::compareTo).orElse(1);
 
@@ -110,7 +112,8 @@ public class PityRandom {
         return selected;
     }
 
-    public boolean nextBoolean() {
+    @NotNull
+    public Boolean nextBoolean() {
         int trueCount = selectionCountInt.getOrDefault(1, 0);
         int falseCount = selectionCountInt.getOrDefault(0, 0);
         int maxCount = Math.max(trueCount, falseCount);
@@ -124,7 +127,8 @@ public class PityRandom {
         return selected;
     }
 
-    private double getNextValue(double min, double max, Map<Double, Integer> selectionCount) {
+    @NotNull
+    private Double getNextValue(@NotNull Double min, @NotNull Double max, @NotNull Map<Double, Integer> selectionCount) {
         Map<Double, Double> weights = new HashMap<>();
         double maxCount = selectionCount.values().stream().mapToInt(Integer::intValue).max().orElse(1);
 
@@ -148,11 +152,13 @@ public class PityRandom {
         return selected;
     }
 
-    public float nextFloat() {
-        return (float) getNextValue(minDouble, maxDouble, selectionCountDouble);
+    @NotNull
+    public Float nextFloat() {
+        return getNextValue(minDouble, maxDouble, selectionCountDouble).floatValue();
     }
 
-    public double nextDouble() {
+    @NotNull
+    public Double nextDouble() {
         return getNextValue(minDouble, maxDouble, selectionCountDouble);
     }
 }

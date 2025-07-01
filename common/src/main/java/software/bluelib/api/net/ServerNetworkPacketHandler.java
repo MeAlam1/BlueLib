@@ -9,8 +9,9 @@ package software.bluelib.api.net;
 
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
+import org.jetbrains.annotations.NotNull;
 
 public interface ServerNetworkPacketHandler<T extends NetworkPacket<T>> extends PacketHandler<T> {
 
-    void handle(T pPacket, MinecraftServer pServer, ServerPlayer pPlayer);
+    void handle(@NotNull T pPacket, @NotNull MinecraftServer pServer, @NotNull ServerPlayer pPlayer);
 }

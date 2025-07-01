@@ -11,13 +11,14 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import java.util.Map;
+import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
 import software.bluelib.internal.BlueTranslation;
 
 public class JSONMerger {
 
-    public void mergeJsonObjects(JsonObject pTarget, JsonObject pSource) {
+    public void mergeJsonObjects(@NotNull JsonObject pTarget, @NotNull JsonObject pSource) {
         for (Map.Entry<String, JsonElement> entry : pSource.entrySet()) {
             String key = entry.getKey();
             JsonElement sourceElement = entry.getValue();

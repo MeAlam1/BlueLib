@@ -9,18 +9,20 @@ package software.bluelib.example.event;
 
 import java.util.List;
 import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.entity.variant.IVariantProvider;
 
 @ApiStatus.Internal
 public class VariantProvider implements IVariantProvider {
 
     @Override
-    public List<String> getEntityNames() {
+    public @NotNull List<String> getEntityNames() {
         return List.of("example");
     }
 
     @Override
-    public String getBasePath() {
+    public @Nullable String getBasePath() {
         return IVariantProvider.super.getBasePath();
     }
 }

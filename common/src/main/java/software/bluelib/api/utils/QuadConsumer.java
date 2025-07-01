@@ -7,8 +7,10 @@
  */
 package software.bluelib.api.utils;
 
+import org.jetbrains.annotations.NotNull;
+
 @FunctionalInterface
 public interface QuadConsumer<T, U, V, W> {
 
-    void accept(T t, U u, V v, W w);
+    void accept(@NotNull T pT, @NotNull U pU, @NotNull V pV, @NotNull W pW);
 }

@@ -13,6 +13,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.chunk.LevelChunk;
+import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
 import software.bluelib.internal.BlueTranslation;
@@ -22,7 +23,8 @@ public class ChunkUtils {
 
     private ChunkUtils() {}
 
-    public static Biome getBiomeOfChunk(Level pLevel, ChunkPos pChunkPos) {
+    @NotNull
+    public static Biome getBiomeOfChunk(@NotNull Level pLevel, @NotNull ChunkPos pChunkPos) {
         try {
             return pLevel.getBiome(pChunkPos.getWorldPosition()).value();
         } catch (Exception pException) {
@@ -31,7 +33,8 @@ public class ChunkUtils {
         }
     }
 
-    public static Collection<BlockEntity> getChunkTileEntities(Level pLevel, ChunkPos pChunkPos) {
+    @NotNull
+    public static Collection<BlockEntity> getChunkTileEntities(@NotNull Level pLevel, @NotNull ChunkPos pChunkPos) {
         try {
             LevelChunk chunk = pLevel.getChunk(pChunkPos.x, pChunkPos.z);
             return chunk.getBlockEntities().values();

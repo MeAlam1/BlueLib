@@ -21,13 +21,14 @@ import software.bluelib.internal.BlueTranslation;
 
 public interface NetworkPacket<T extends NetworkPacket<T>> extends CustomPacketPayload, Encodable {
 
+    @NotNull
     ResourceLocation getId();
 
-    default void sendToPlayer(ServerPlayer pPlayer) {
+    default void sendToPlayer(@NotNull ServerPlayer pPlayer) {
         NetworkRegistry.sendPacketToPlayer(pPlayer, this);
     }
 
-    default void sendToPlayers(Iterable<ServerPlayer> pPlayers) {
+    default void sendToPlayers(@NotNull Iterable<ServerPlayer> pPlayers) {
         if (pPlayers.iterator().hasNext()) {
             NetworkRegistry.sendPacketToPlayers(pPlayers, this);
         }
@@ -41,7 +42,7 @@ public interface NetworkPacket<T extends NetworkPacket<T>> extends CustomPacketP
         NetworkRegistry.sendToServer(this);
     }
 
-    default void sendToPlayersAround(double pX, double pY, double pZ, double pDistance, ResourceKey<Level> pWorldKey, Predicate<ServerPlayer> pExclusionCondition) {
+    default void sendToPlayersAround(@NotNull Double pX, @NotNull Double pY, @NotNull Double pZ, @NotNull Double pDistance, @NotNull ResourceKey<Level> pWorldKey, @NotNull Predicate<ServerPlayer> pExclusionCondition) {
         var server = BlueLibConstants.PlatformHelper.PLATFORM.getServer();
         if (server == null) {
             BaseLogger.log(true, BaseLogLevel.ERROR, BlueTranslation.translate("server.null"));
@@ -61,7 +62,7 @@ public interface NetworkPacket<T extends NetworkPacket<T>> extends CustomPacketP
         }
     }
 
-    default void sendToPlayersAround(double pX, double pY, double pZ, double pDistance, ResourceKey<Level> pWorldKey) {
+    default void sendToPlayersAround(@NotNull Double pX, @NotNull Double pY, @NotNull Double pZ, @NotNull Double pDistance, @NotNull ResourceKey<Level> pWorldKey) {
         sendToPlayersAround(pX, pY, pZ, pDistance, pWorldKey, player -> false);
     }
 

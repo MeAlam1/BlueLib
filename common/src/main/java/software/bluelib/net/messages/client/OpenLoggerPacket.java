@@ -10,6 +10,7 @@ package software.bluelib.net.messages.client;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.net.NetworkPacket;
 import software.bluelib.internal.BlueResource;
 
@@ -18,14 +19,14 @@ public record OpenLoggerPacket() implements NetworkPacket<OpenLoggerPacket> {
     public static final ResourceLocation ID = BlueResource.resource("open_screen_packet");
 
     @Override
-    public void encode(RegistryFriendlyByteBuf pBuffer) {}
+    public void encode(@NotNull RegistryFriendlyByteBuf pBuffer) {}
 
     public static OpenLoggerPacket decode(FriendlyByteBuf pBuffer) {
         return new OpenLoggerPacket();
     }
 
     @Override
-    public ResourceLocation getId() {
+    public @NotNull ResourceLocation getId() {
         return ID;
     }
 }

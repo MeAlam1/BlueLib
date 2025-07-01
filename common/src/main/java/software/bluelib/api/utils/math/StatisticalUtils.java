@@ -10,6 +10,7 @@ package software.bluelib.api.utils.math;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
 import software.bluelib.internal.BlueTranslation;
@@ -19,10 +20,10 @@ public class StatisticalUtils {
 
     private StatisticalUtils() {}
 
-    public static double calculateMean(double[] pValues) {
+    public static @NotNull Double calculateMean(@NotNull Double[] pValues) {
         if (pValues.length == 0) {
             BaseLogger.log(true, BaseLogLevel.WARNING, BlueTranslation.log("math.null", "array", "mean"));
-            return 0;
+            return 0.0;
         }
 
         double sum = 0;
@@ -32,23 +33,23 @@ public class StatisticalUtils {
         return sum / pValues.length;
     }
 
-    public static double calculateMedian(double[] pValues) {
+    public static @NotNull Double calculateMedian(@NotNull Double[] pValues) {
         if (pValues.length == 0) {
             BaseLogger.log(true, BaseLogLevel.WARNING, BlueTranslation.log("math.null", "array", "median"));
-            return 0;
+            return 0.0;
         }
 
-        double[] sorted = pValues.clone();
+        Double[] sorted = pValues.clone();
         Arrays.sort(sorted);
         int middle = sorted.length / 2;
 
         return (sorted.length % 2 == 0) ? (sorted[middle - 1] + sorted[middle]) / 2.0 : sorted[middle];
     }
 
-    public static double calculateMode(double[] pValues) {
+    public static @NotNull Double calculateMode(@NotNull Double[] pValues) {
         if (pValues.length == 0) {
             BaseLogger.log(true, BaseLogLevel.WARNING, BlueTranslation.log("math.null", "array", "mode"));
-            return 0;
+            return 0.0;
         }
 
         Map<Double, Integer> frequencyMap = new HashMap<>();
@@ -67,24 +68,25 @@ public class StatisticalUtils {
         return mode;
     }
 
-    public static double calculateStandardDeviation(double[] pValues) {
+    public static @NotNull Double calculateStandardDeviation(@NotNull Double[] pValues) {
         if (pValues.length == 0) {
             BaseLogger.log(true, BaseLogLevel.WARNING, BlueTranslation.log("math.null", "array", "standard deviation"));
-            return 0;
+            return 0.0;
         }
 
         double mean = calculateMean(pValues);
         double sumSquaredDifferences = 0;
-        for (double value : pValues) {
+        for (@NotNull
+        Double value : pValues) {
             sumSquaredDifferences += Math.pow(value - mean, 2);
         }
         return Math.sqrt(sumSquaredDifferences / pValues.length);
     }
 
-    public static double calculateVariance(double[] pValues) {
+    public static @NotNull Double calculateVariance(@NotNull Double[] pValues) {
         if (pValues.length == 0) {
             BaseLogger.log(true, BaseLogLevel.WARNING, BlueTranslation.log("math.null", "array", "variance"));
-            return 0;
+            return 0.0;
         }
 
         double mean = calculateMean(pValues);
@@ -95,10 +97,10 @@ public class StatisticalUtils {
         return sumSquaredDifferences / pValues.length;
     }
 
-    public static double calculateRange(double[] pValues) {
+    public static @NotNull Double calculateRange(double[] pValues) {
         if (pValues.length == 0) {
             BaseLogger.log(true, BaseLogLevel.WARNING, BlueTranslation.log("math.null", "array", "range"));
-            return 0;
+            return 0.0;
         }
 
         double max = Arrays.stream(pValues).max().orElseThrow();
@@ -106,14 +108,16 @@ public class StatisticalUtils {
         return max - min;
     }
 
-    public static double calculateCoefficientOfVariation(double[] pValues) {
+    public static @NotNull Double calculateCoefficientOfVariation(@NotNull Double[] pValues) {
         if (pValues.length == 0) {
             BaseLogger.log(true, BaseLogLevel.WARNING, BlueTranslation.log("math.null", "array", "coefficient of variation"));
-            return 0;
+            return 0.0;
         }
 
-        double mean = calculateMean(pValues);
-        double stdDev = calculateStandardDeviation(pValues);
+        @NotNull
+        Double mean = calculateMean(pValues);
+        @NotNull
+        Double stdDev = calculateStandardDeviation(pValues);
         return (stdDev / mean) * 100;
     }
 }

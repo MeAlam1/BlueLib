@@ -10,29 +10,40 @@ package software.bluelib.platform;
 import java.util.List;
 import java.util.Set;
 import net.minecraft.server.MinecraftServer;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import software.bluelib.BlueLibConstants;
 import software.bluelib.api.event.mod.ModMeta;
 
 @SuppressWarnings("unused")
 public interface IPlatformHelper {
 
+    @NotNull
     String getPlatformName();
 
-    boolean isModLoaded(String pModId);
+    @NotNull
+    Boolean isModLoaded(@NotNull String pModId);
 
+    @NotNull
     Set<String> getLoadedMods();
 
+    @NotNull
     List<ModMeta> getLoadedModMetadata();
 
-    boolean isDevelopmentEnvironment();
+    @NotNull
+    Boolean isDevelopmentEnvironment();
 
+    @NotNull
     default String getEnvironmentName() {
         return isDevelopmentEnvironment() ? "development" : "production";
     }
 
+    @NotNull
     BlueLibConstants.Environment getEnvironment();
 
+    @NotNull
     BlueLibConstants.ModAPI getAPI();
 
+    @Nullable
     MinecraftServer getServer();
 }

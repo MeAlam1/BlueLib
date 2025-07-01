@@ -20,12 +20,13 @@ public abstract class LoggerConfig {
 
     protected static final String RESET = "\u001B[0m";
 
-    public static void configureLogger(Logger pLogger, ILogColorProvider pColorProvider) {
+    public static void configureLogger(@NotNull Logger pLogger, @NotNull ILogColorProvider pColorProvider) {
         ConsoleHandler handler = new ConsoleHandler();
         handler.setFormatter(new SimpleFormatter() {
 
             @Override
-            public synchronized String format(LogRecord pRecord) {
+            @NotNull
+            public synchronized String format(@NotNull LogRecord pRecord) {
                 String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
                 int color = pColorProvider.getColor(pRecord.getLevel());
                 String ansiColor = rgbToAnsi(color);
@@ -46,7 +47,7 @@ public abstract class LoggerConfig {
                 return coloredMessage + "\n";
             }
 
-            private static @NotNull String getExceptionDetails(LogRecord pRecord) {
+            private static @NotNull String getExceptionDetails(@NotNull LogRecord pRecord) {
                 StringBuilder exceptionDetails = new StringBuilder("\nException: " + pRecord.getThrown().getMessage());
                 for (StackTraceElement element : pRecord.getThrown().getStackTrace()) {
                     String packageName = element.getClassName().substring(0, element.getClassName().lastIndexOf('.'));
@@ -64,7 +65,8 @@ public abstract class LoggerConfig {
         pLogger.addHandler(handler);
     }
 
-    private static String rgbToAnsi(int pRgb) {
+    @NotNull
+    private static String rgbToAnsi(@NotNull Integer pRgb) {
         int red = (pRgb >> 16) & 0xFF;
         int green = (pRgb >> 8) & 0xFF;
         int blue = pRgb & 0xFF;

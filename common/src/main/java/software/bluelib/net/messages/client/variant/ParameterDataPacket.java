@@ -12,6 +12,7 @@ import com.google.gson.JsonParser;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.net.NetworkPacket;
 import software.bluelib.internal.BlueResource;
 
@@ -20,7 +21,7 @@ public record ParameterDataPacket(JsonElement parameterData) implements NetworkP
     public static final ResourceLocation ID = BlueResource.resource("parameter_data_packet");
 
     @Override
-    public void encode(RegistryFriendlyByteBuf pBuffer) {
+    public void encode(@NotNull RegistryFriendlyByteBuf pBuffer) {
         pBuffer.writeUtf(parameterData.toString());
     }
 
@@ -31,7 +32,7 @@ public record ParameterDataPacket(JsonElement parameterData) implements NetworkP
     }
 
     @Override
-    public ResourceLocation getId() {
+    public @NotNull ResourceLocation getId() {
         return ID;
     }
 }

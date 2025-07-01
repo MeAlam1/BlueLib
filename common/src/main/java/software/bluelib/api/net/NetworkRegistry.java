@@ -9,29 +9,39 @@ package software.bluelib.api.net;
 
 import java.util.ArrayList;
 import java.util.List;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
+import org.jetbrains.annotations.NotNull;
 import software.bluelib.BlueLibConstants;
+import software.bluelib.api.utils.logging.BaseLogLevel;
+import software.bluelib.api.utils.logging.BaseLogger;
+import software.bluelib.internal.BlueTranslation;
 import software.bluelib.net.PacketRegisterInfo;
 
 public class NetworkRegistry {
 
-    public static void sendPacket(ServerPlayer pPlayer, NetworkPacket<?> pPacket) {
+    public static void sendPacket(@NotNull ServerPlayer pPlayer, @NotNull NetworkPacket<?> pPacket) {
         sendPacketToPlayer(pPlayer, pPacket);
     }
 
-    public static void sendToServer(NetworkPacket<?> pPacket) {
+    public static void sendToServer(@NotNull NetworkPacket<?> pPacket) {
         BlueLibConstants.PlatformHelper.REGISTRY.getNetwork().sendToServer(pPacket);
     }
 
-    public static void sendPacketToPlayer(ServerPlayer pPlayer, NetworkPacket<?> pPacket) {
+    public static void sendPacketToPlayer(@NotNull ServerPlayer pPlayer, @NotNull NetworkPacket<?> pPacket) {
         BlueLibConstants.PlatformHelper.REGISTRY.getNetwork().sendPacketToPlayer(pPlayer, pPacket);
     }
 
-    public static void sendToAllPlayers(NetworkPacket<?> pPacket) {
-        sendPacketToPlayers(BlueLibConstants.PlatformHelper.PLATFORM.getServer().getPlayerList().getPlayers(), pPacket);
+    public static void sendToAllPlayers(@NotNull NetworkPacket<?> pPacket) {
+        MinecraftServer server = BlueLibConstants.PlatformHelper.PLATFORM.getServer();
+        if (server == null) {
+            BaseLogger.log(true, BaseLogLevel.ERROR, BlueTranslation.translate("server.null"));
+            return;
+        }
+        sendPacketToPlayers(server.getPlayerList().getPlayers(), pPacket);
     }
 
-    public static void sendPacketToPlayers(Iterable<ServerPlayer> pPlayers, NetworkPacket<?> pPacket) {
+    public static void sendPacketToPlayers(@NotNull Iterable<ServerPlayer> pPlayers, @NotNull NetworkPacket<?> pPacket) {
         for (ServerPlayer player : pPlayers) {
             sendPacketToPlayer(player, pPacket);
         }
@@ -43,6 +53,7 @@ public class NetworkRegistry {
     public static List<PacketRegisterInfo<?>> s2cPayloads = generateS2CPacketInfoList();
     public static List<PacketRegisterInfo<?>> c2sPayloads = generateC2SPacketInfoList();
 
+    @NotNull
     private static List<PacketRegisterInfo<?>> generateS2CPacketInfoList() {
         List<PacketRegisterInfo<?>> list = new ArrayList<>();
         for (PacketProvider.S2CPacketProvider provider : s2cProviders) {
@@ -51,6 +62,7 @@ public class NetworkRegistry {
         return list;
     }
 
+    @NotNull
     private static List<PacketRegisterInfo<?>> generateC2SPacketInfoList() {
         List<PacketRegisterInfo<?>> list = new ArrayList<>();
         for (PacketProvider.C2SPacketProvider provider : c2sProviders) {
@@ -59,12 +71,12 @@ public class NetworkRegistry {
         return list;
     }
 
-    public static void registerC2SPacketProvider(PacketProvider.C2SPacketProvider pProvider) {
+    public static void registerC2SPacketProvider(@NotNull PacketProvider.C2SPacketProvider pProvider) {
         c2sProviders.add(pProvider);
         c2sPayloads = generateC2SPacketInfoList();
     }
 
-    public static void registerS2CPacketProvider(PacketProvider.S2CPacketProvider pProvider) {
+    public static void registerS2CPacketProvider(@NotNull PacketProvider.S2CPacketProvider pProvider) {
         s2cProviders.add(pProvider);
         s2cPayloads = generateS2CPacketInfoList();
     }

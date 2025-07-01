@@ -8,12 +8,14 @@
 package software.bluelib.api.utils.logging;
 
 import java.util.logging.Level;
+import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("unused")
 public class DefaultLogColorProvider implements ILogColorProvider {
 
     @Override
-    public int getColor(Level pLevel) {
+    @NotNull
+    public Integer getColor(@NotNull Level pLevel) {
         if (pLevel == BaseLogLevel.ERROR) {
             return 0xFF0000; // Red
         } else if (pLevel == BaseLogLevel.WARNING) {

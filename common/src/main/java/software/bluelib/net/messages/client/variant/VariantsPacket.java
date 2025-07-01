@@ -12,6 +12,7 @@ import java.util.Set;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.net.NetworkPacket;
 import software.bluelib.internal.BlueResource;
 
@@ -20,7 +21,7 @@ public record VariantsPacket(Set<String> allVariants) implements NetworkPacket<V
     public static final ResourceLocation ID = BlueResource.resource("variants_packet");
 
     @Override
-    public void encode(RegistryFriendlyByteBuf pBuffer) {
+    public void encode(@NotNull RegistryFriendlyByteBuf pBuffer) {
         pBuffer.writeCollection(allVariants, FriendlyByteBuf::writeUtf);
     }
 
@@ -30,7 +31,7 @@ public record VariantsPacket(Set<String> allVariants) implements NetworkPacket<V
     }
 
     @Override
-    public ResourceLocation getId() {
+    public @NotNull ResourceLocation getId() {
         return ID;
     }
 }
