@@ -19,7 +19,7 @@ public class BrewingJeiRecipe implements IJeiBrewingRecipe {
     private final BrewingRecipe recipe;
     private final ResourceLocation id;
 
-    public BrewingJeiRecipe(BrewingRecipe pRecipe, ResourceLocation pId) {
+    public BrewingJeiRecipe(@NotNull BrewingRecipe pRecipe, @NotNull ResourceLocation pId) {
         this.recipe = pRecipe;
         this.id = pId;
     }
@@ -45,6 +45,7 @@ public class BrewingJeiRecipe implements IJeiBrewingRecipe {
     }
 
     @Override
+    @NotNull
     public ResourceLocation getUid() {
         return id;
     }

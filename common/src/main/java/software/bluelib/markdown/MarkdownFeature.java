@@ -13,6 +13,8 @@ import java.util.regex.Pattern;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.utils.QuadConsumer;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
@@ -20,16 +22,24 @@ import software.bluelib.internal.BlueTranslation;
 
 public abstract class MarkdownFeature {
 
+    @Nullable
     protected String prefix;
 
+    @Nullable
     protected String suffix;
 
-    public MutableComponent apply(MutableComponent pComponent) {
+    @NotNull
+    public MutableComponent apply(@NotNull MutableComponent pComponent) {
         if (!isFeatureEnabled()) {
             BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("markdown.feature.disabled", getFeatureName()));
             return pComponent;
         }
 
+        if (prefix == null || suffix == null) {
+            // TODO: add to en_us.json
+            BaseLogger.log(true, BaseLogLevel.WARNING, BlueTranslation.log("markdown.feature.prefix_suffix_not_set", getFeatureName()));
+            return pComponent;
+        }
         Pattern pattern = Pattern.compile(Pattern.quote(prefix) + "(.*?)" + Pattern.quote(suffix));
         MutableComponent result = Component.empty();
 
@@ -43,11 +53,11 @@ public abstract class MarkdownFeature {
     }
 
     protected void processComponentText(
-            String pText,
-            Style pOriginalStyle,
-            MutableComponent pResult,
-            Pattern pPattern,
-            BiConsumer<Matcher, MutableComponent> pSpecialTextHandler) {
+            @NotNull String pText,
+            @NotNull Style pOriginalStyle,
+            @NotNull MutableComponent pResult,
+            @NotNull Pattern pPattern,
+            @NotNull BiConsumer<Matcher, MutableComponent> pSpecialTextHandler) {
         Matcher matcher = pPattern.matcher(pText);
         int lastIndex = 0;
 
@@ -67,15 +77,20 @@ public abstract class MarkdownFeature {
         appendUnstyledText(pText.substring(lastIndex), pResult, pOriginalStyle);
     }
 
-    protected void processComponentTextWithFormatting(String pText, Style pOriginalStyle, MutableComponent pResult, Pattern pPattern) {
+    protected void processComponentTextWithFormatting(
+            @NotNull String pText,
+            @NotNull Style pOriginalStyle,
+            @NotNull MutableComponent pResult,
+            @NotNull Pattern pPattern) {
         processComponentText(pText, pOriginalStyle, pResult, pPattern,
                 (matcher, res) -> appendFormattedText(matcher.group(1), pOriginalStyle, res));
     }
 
+    @NotNull
     protected MutableComponent processSiblings(
-            MutableComponent pComponent,
-            Pattern pPattern,
-            QuadConsumer<String, Style, MutableComponent, Pattern> pSiblingProcessor) {
+            @NotNull MutableComponent pComponent,
+            @NotNull Pattern pPattern,
+            @NotNull QuadConsumer<String, Style, MutableComponent, Pattern> pSiblingProcessor) {
         MutableComponent result = Component.empty();
 
         for (Component sibling : pComponent.getSiblings()) {
@@ -93,20 +108,23 @@ public abstract class MarkdownFeature {
         return result;
     }
 
-    protected MutableComponent processSiblingsWithFormatting(MutableComponent pComponent, Pattern pPattern) {
+    @NotNull
+    protected MutableComponent processSiblingsWithFormatting(@NotNull MutableComponent pComponent, @NotNull Pattern pPattern) {
         return processSiblings(pComponent, pPattern,
                 this::processComponentTextWithFormatting);
     }
 
-    protected void appendFormattedText(String pText, Style pStyle, MutableComponent pResult) {
+    protected void appendFormattedText(@NotNull String pText, @NotNull Style pStyle, @NotNull MutableComponent pResult) {
         pResult.append(Component.literal(pText).setStyle(pStyle));
     }
 
-    protected void appendUnstyledText(String pText, MutableComponent pResult, Style pOriginalStyle) {
+    protected void appendUnstyledText(@NotNull String pText, @NotNull MutableComponent pResult, @NotNull Style pOriginalStyle) {
         pResult.append(Component.literal(pText).setStyle(pOriginalStyle));
     }
 
-    protected abstract boolean isFeatureEnabled();
+    @NotNull
+    protected abstract Boolean isFeatureEnabled();
 
+    @NotNull
     protected abstract String getFeatureName();
 }

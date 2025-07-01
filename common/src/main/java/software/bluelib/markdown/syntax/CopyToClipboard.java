@@ -10,15 +10,18 @@ package software.bluelib.markdown.syntax;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
 import software.bluelib.config.MarkdownConfig;
 import software.bluelib.internal.BlueTranslation;
+import software.bluelib.markdown.MarkdownFeature;
 
 @SuppressWarnings("unused")
-public class CopyToClipboard {
+public class CopyToClipboard extends MarkdownFeature {
 
-    public MutableComponent apply(MutableComponent pMessage, String pTextToCopy) {
+    @NotNull
+    public MutableComponent apply(@NotNull MutableComponent pMessage, @NotNull String pTextToCopy) {
         if (!MarkdownConfig.isCopyToClipboardEnabled) {
             BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("markdown.copyToClipboard.disabled"));
             return pMessage;
@@ -40,7 +43,23 @@ public class CopyToClipboard {
         return result;
     }
 
+    /**
+     * @return true if the CopyToClipboard feature is enabled, false otherwise.
+     * @deprecated Use {@link CopyToClipboard#isFeatureEnabled} instead.
+     */
+    @NotNull
+    @Deprecated(forRemoval = true, since = "2.2.0")
     public static Boolean isCopyToClipboardEnabled() {
         return MarkdownConfig.isCopyToClipboardEnabled;
+    }
+
+    @Override
+    protected @NotNull Boolean isFeatureEnabled() {
+        return MarkdownConfig.isCopyToClipboardEnabled;
+    }
+
+    @Override
+    protected @NotNull String getFeatureName() {
+        return "CopyToClipboard";
     }
 }

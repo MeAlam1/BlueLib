@@ -10,6 +10,7 @@ package software.bluelib.mixin.common.brewing;
 import net.minecraft.world.inventory.BrewingStandMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeManager;
+import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -25,12 +26,12 @@ public class IngredientSlotMixin implements RecipeAwareSlot {
     private RecipeManager bluelib$recipeManager;
 
     @Override
-    public void blueLib$setRecipeManager(RecipeManager pRecipeManager) {
+    public void blueLib$setRecipeManager(@NotNull RecipeManager pRecipeManager) {
         this.bluelib$recipeManager = pRecipeManager;
     }
 
     @Inject(method = "mayPlace", at = @At("HEAD"), cancellable = true)
-    private void blueLib$mayPlace(ItemStack pStack, CallbackInfoReturnable<Boolean> pCir) {
+    private void blueLib$mayPlace(@NotNull ItemStack pStack, @NotNull CallbackInfoReturnable<Boolean> pCir) {
         if (BrewingRecipe.isInput(pStack, bluelib$recipeManager)) {
             pCir.setReturnValue(true);
         }

@@ -9,10 +9,11 @@ package software.bluelib.compat.jei;
 
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
+import org.jetbrains.annotations.NotNull;
 
 public interface BlueJeiProvider {
 
-    void registerCategory(IRecipeCategoryRegistration pRegistration);
+    void registerCategory(@NotNull IRecipeCategoryRegistration pRegistration);
 
-    void registerRecipes(IRecipeRegistration pRegistration);
+    void registerRecipes(@NotNull IRecipeRegistration pRegistration);
 }

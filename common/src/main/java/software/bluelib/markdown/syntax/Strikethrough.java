@@ -10,6 +10,7 @@ package software.bluelib.markdown.syntax;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
+import org.jetbrains.annotations.NotNull;
 import software.bluelib.config.MarkdownConfig;
 import software.bluelib.markdown.MarkdownFeature;
 
@@ -22,19 +23,19 @@ public class Strikethrough extends MarkdownFeature {
     }
 
     @Override
-    protected void appendFormattedText(String pText, Style pOriginalStyle, MutableComponent pResult) {
+    protected void appendFormattedText(@NotNull String pText, @NotNull Style pOriginalStyle, @NotNull MutableComponent pResult) {
         MutableComponent StrikethroughText = Component.literal(pText)
                 .setStyle(pOriginalStyle.withStrikethrough(true));
         pResult.append(StrikethroughText);
     }
 
     @Override
-    protected boolean isFeatureEnabled() {
+    protected @NotNull Boolean isFeatureEnabled() {
         return MarkdownConfig.isStrikethroughEnabled;
     }
 
     @Override
-    protected String getFeatureName() {
+    protected @NotNull String getFeatureName() {
         return "Strikethrough";
     }
 

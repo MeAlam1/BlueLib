@@ -38,8 +38,6 @@ public class ReloadHandler {
 
 		if (providers.isEmpty()) return;
 		ResourceCache.registerServerReloadListener(pEvent.getServer(), providers);
-
-		//VariantLoader.loadEntityVariants(pEvent.getServer().getResourceManager(), providers);
 		BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("variants.loaded"));
 	}
 
@@ -47,8 +45,6 @@ public class ReloadHandler {
 	public static void onDatapackSync(OnDatapackSyncEvent pEvent) {
 		if (providers.isEmpty()) return;
 		ResourceCache.registerServerReloadListener(pEvent.getPlayerList().getServer(), providers);
-
-		//VariantLoader.loadEntityVariants(pEvent.getPlayerList().getServer().getResourceManager(), providers);
 		BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("variants.reloaded"));
 	}
 }

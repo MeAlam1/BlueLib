@@ -17,7 +17,7 @@ public class ParameterDataPacketHandler implements ClientNetworkPacketHandler<Pa
 
     private final Consumer<ParameterDataPacket> handlerFunction;
 
-    public ParameterDataPacketHandler(Consumer<ParameterDataPacket> pHandlerFunction) {
+    public ParameterDataPacketHandler(@NotNull Consumer<ParameterDataPacket> pHandlerFunction) {
         this.handlerFunction = pHandlerFunction;
     }
 

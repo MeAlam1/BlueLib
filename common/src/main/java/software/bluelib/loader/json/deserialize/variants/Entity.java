@@ -12,10 +12,11 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import java.util.Map;
 import net.minecraft.util.GsonHelper;
+import org.jetbrains.annotations.NotNull;
 
 public record Entity(
-        String formatVersion,
-        Map<String, Variant> variants) {
+        @NotNull String formatVersion,
+        @NotNull Map<String, Variant> variants) {
 
     public static JsonDeserializer<Entity> deserializer() throws JsonParseException {
         return (json, type, context) -> {

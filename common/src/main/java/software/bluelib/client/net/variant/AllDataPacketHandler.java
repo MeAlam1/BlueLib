@@ -17,7 +17,7 @@ public class AllDataPacketHandler implements ClientNetworkPacketHandler<AllDataP
 
     private final Consumer<AllDataPacket> handlerFunction;
 
-    public AllDataPacketHandler(Consumer<AllDataPacket> pHandlerFunction) {
+    public AllDataPacketHandler(@NotNull Consumer<AllDataPacket> pHandlerFunction) {
         this.handlerFunction = pHandlerFunction;
     }
 

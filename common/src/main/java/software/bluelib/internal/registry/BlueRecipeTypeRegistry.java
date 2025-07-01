@@ -10,6 +10,7 @@ package software.bluelib.internal.registry;
 import java.util.function.Supplier;
 import net.minecraft.world.item.crafting.RecipeType;
 import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.NotNull;
 import software.bluelib.BlueLibConstants;
 import software.bluelib.recipe.brewing.BrewingRecipe;
 
@@ -18,9 +19,11 @@ public class BlueRecipeTypeRegistry {
 
     public static void init() {}
 
+    @NotNull
     public static final Supplier<RecipeType<BrewingRecipe>> BREWING = registerRecipeType("brewing", () -> new RecipeType<>() {});
 
-    private static <T extends RecipeType<?>> Supplier<T> registerRecipeType(String pId, Supplier<T> pRecipeType) {
+    @NotNull
+    private static <T extends RecipeType<?>> Supplier<T> registerRecipeType(@NotNull String pId, @NotNull Supplier<T> pRecipeType) {
         return BlueLibConstants.PlatformHelper.REGISTRY.registerRecipeType(pId, pRecipeType);
     }
 }

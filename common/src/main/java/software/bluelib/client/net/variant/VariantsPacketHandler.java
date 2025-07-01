@@ -17,7 +17,7 @@ public class VariantsPacketHandler implements ClientNetworkPacketHandler<Variant
 
     private final Consumer<VariantsPacket> handlerFunction;
 
-    public VariantsPacketHandler(Consumer<VariantsPacket> pHandlerFunction) {
+    public VariantsPacketHandler(@NotNull Consumer<VariantsPacket> pHandlerFunction) {
         this.handlerFunction = pHandlerFunction;
     }
 

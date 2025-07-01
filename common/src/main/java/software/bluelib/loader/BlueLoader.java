@@ -46,17 +46,19 @@ import software.bluelib.loader.json.variants.VariantsFormatVersion;
 /**
  * TODO:
  * Make the Logging Translateble en_us.json
- * Go through the entire code, not this file. and double check all Annotations (NotNull, Nullable, etc.) (JUST DID API PACKAGE)
+ * Go through the entire code, not this file. and double check all Annotations (NotNull, Nullable, etc.) (JUST DID ALL TILL MIXINS PACKAGE)
  */
 public class BlueLoader {
 
+    @NotNull
     public static final Gson VARIANTS_GSON = new GsonBuilder()
             .registerTypeAdapter(Entity.class, Entity.deserializer())
             .registerTypeAdapter(Variant.class, Variant.deserializer())
             .setPrettyPrinting()
             .create();
 
-    private static ResourceLocation stripPrefixAndSuffix(ResourceLocation pResourceLocation) {
+    @NotNull
+    private static ResourceLocation stripPrefixAndSuffix(@NotNull ResourceLocation pResourceLocation) {
         BaseLogger.log(true, BaseLogLevel.INFO, "Stripping prefix and suffix for: " + pResourceLocation);
         String newPath = pResourceLocation.getPath();
         Matcher prefixMatcher = BlueLibConstants.BlueLoader.PREFIX_STRIPPER.matcher(newPath);
@@ -69,10 +71,11 @@ public class BlueLoader {
         return result;
     }
 
+    @NotNull
     protected static CompletableFuture<Map<ResourceLocation, EntityCache>> loadVariants(
-            Executor pBackgroundExecutor,
-            ResourceManager pResourceManager,
-            List<IVariantProvider> pProviders) {
+            @NotNull Executor pBackgroundExecutor,
+            @NotNull ResourceManager pResourceManager,
+            @NotNull List<IVariantProvider> pProviders) {
         BaseLogger.log(true, BaseLogLevel.INFO, "Starting loadVariants with providers: " + pProviders.size());
         List<CompletableFuture<Map.Entry<ResourceLocation, EntityCache>>> futures = new ObjectArrayList<>();
 
@@ -123,8 +126,13 @@ public class BlueLoader {
                 });
     }
 
-    protected static <BAKED> CompletableFuture<Map<ResourceLocation, BAKED>> bakeJsonResources(Executor pBackgroundExecutor, ResourceManager pResourceManager, String pAssetPath,
-            BiFunction<ResourceLocation, JsonObject, BAKED> pElementFactory, Function<Throwable, BAKED> pExceptionalFactory) {
+    @NotNull
+    protected static <BAKED> CompletableFuture<Map<ResourceLocation, BAKED>> bakeJsonResources(
+            @NotNull Executor pBackgroundExecutor,
+            @NotNull ResourceManager pResourceManager,
+            @NotNull String pAssetPath,
+            @NotNull BiFunction<ResourceLocation, JsonObject, BAKED> pElementFactory,
+            @NotNull Function<Throwable, BAKED> pExceptionalFactory) {
         BaseLogger.log(true, BaseLogLevel.INFO, "Starting bakeJsonResources for assetPath: " + pAssetPath);
         return loadResources(pBackgroundExecutor, pResourceManager, pAssetPath, "json", ResourceCache::readJsonFile)
                 .thenCompose(resources -> {
@@ -158,12 +166,13 @@ public class BlueLoader {
                 });
     }
 
+    @NotNull
     protected static <UNBAKED> CompletableFuture<List<Pair<ResourceLocation, UNBAKED>>> loadResources(
-            Executor pExecutor,
-            ResourceManager pResourceManager,
-            String pAssetPath,
-            String pFileType,
-            BiFunction<ResourceLocation, Resource, UNBAKED> pElementFactory) {
+            @NotNull Executor pExecutor,
+            @NotNull ResourceManager pResourceManager,
+            @NotNull String pAssetPath,
+            @NotNull String pFileType,
+            @NotNull BiFunction<ResourceLocation, Resource, UNBAKED> pElementFactory) {
         final String fileTypeSuffix = "." + pFileType;
         BaseLogger.log(true, BaseLogLevel.INFO, "Listing resources for path: " + pAssetPath + " with type: " + pFileType);
 
@@ -198,7 +207,7 @@ public class BlueLoader {
     }
 
     @NotNull
-    protected static EntityCache bakeVariants(ResourceLocation pResourceLocation, JsonObject pJsonObject) {
+    protected static EntityCache bakeVariants(@NotNull ResourceLocation pResourceLocation, @NotNull JsonObject pJsonObject) {
         BaseLogger.log(true, BaseLogLevel.INFO, "Baking variants for: " + pResourceLocation);
         return bakeGeneric(
                 pResourceLocation,
@@ -213,16 +222,17 @@ public class BlueLoader {
                 null);
     }
 
+    @NotNull
     public static <T, V, C> C bakeGeneric(
-            ResourceLocation pResourceLocation,
-            JsonObject pJsonObject,
-            Gson pGson,
-            Class<T> pModelClass,
-            Function<T, String> pVersionExtractor,
-            Function<String, V> pVersionMatcher,
-            Predicate<V> pIsSupported,
-            Function<V, String> pErrorMessage,
-            BiFunction<String, T, C> pCacheFactory,
+            @NotNull ResourceLocation pResourceLocation,
+            @NotNull JsonObject pJsonObject,
+            @NotNull Gson pGson,
+            @NotNull Class<T> pModelClass,
+            @NotNull Function<T, String> pVersionExtractor,
+            @NotNull Function<String, V> pVersionMatcher,
+            @NotNull Predicate<V> pIsSupported,
+            @NotNull Function<V, String> pErrorMessage,
+            @NotNull BiFunction<String, T, C> pCacheFactory,
             @Nullable List<Pair<Predicate<ResourceLocation>, String>> pFileChecks) {
         BaseLogger.log(true, BaseLogLevel.INFO, "Starting bakeGeneric for: " + pResourceLocation);
         if (pFileChecks != null) {
@@ -253,7 +263,8 @@ public class BlueLoader {
         return cache;
     }
 
-    protected static JsonObject readJsonFile(ResourceLocation pResourceLocation, Resource pResource) {
+    @NotNull
+    protected static JsonObject readJsonFile(@NotNull ResourceLocation pResourceLocation, @NotNull Resource pResource) {
         BaseLogger.log(true, BaseLogLevel.INFO, "Reading JSON file for: " + pResourceLocation);
         try (Reader reader = pResource.openAsReader()) {
             JsonObject obj = GsonHelper.parse(reader);

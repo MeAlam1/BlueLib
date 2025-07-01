@@ -9,27 +9,35 @@ package software.bluelib.loader.json;
 
 import java.util.Map;
 import java.util.function.Function;
+import org.jetbrains.annotations.NotNull;
 
 public interface CacheFactory<T, S> {
 
-    T construct(S pSource);
+    @NotNull
+    T construct(@NotNull S pSource);
 
+    @NotNull
     static <T, S, F extends CacheFactory<T, S>> T constructWithFactory(
-            Function<String, F> pFactoryGetter, String pNamespace, S pSource) {
+            @NotNull Function<String, F> pFactoryGetter,
+            @NotNull String pNamespace,
+            @NotNull S pSource) {
         return pFactoryGetter.apply(pNamespace).construct(pSource);
     }
 
     interface Registry<T, S, F extends CacheFactory<T, S>> {
 
+        @NotNull
         Map<String, F> factories();
 
+        @NotNull
         F defaultFactory();
 
-        default F getForNamespace(String pNamespace) {
+        @NotNull
+        default F getForNamespace(@NotNull String pNamespace) {
             return factories().getOrDefault(pNamespace, defaultFactory());
         }
 
-        default void register(String pNamespace, F pFactory) {
+        default void register(@NotNull String pNamespace, @NotNull F pFactory) {
             factories().put(pNamespace, pFactory);
         }
     }

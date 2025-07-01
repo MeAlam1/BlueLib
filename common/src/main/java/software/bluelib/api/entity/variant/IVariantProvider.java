@@ -9,14 +9,13 @@ package software.bluelib.api.entity.variant;
 
 import java.util.List;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public interface IVariantProvider {
 
     @NotNull
     List<String> getEntityNames();
 
-    @Nullable
+    @NotNull
     default String getBasePath() {
         return "variant/entity/";
     }

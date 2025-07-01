@@ -76,9 +76,10 @@ public class LoggerScreen extends Screen {
         }
     }
 
-    private record RenderedLine(String text, int color) {}
+    private record RenderedLine(@NotNull String text, @NotNull Integer color) {}
 
-    private List<String> wrapText(String pText, int pMaxWidth) {
+    @NotNull
+    private List<String> wrapText(@NotNull String pText, @NotNull Integer pMaxWidth) {
         List<String> lines = new ArrayList<>();
         String[] segments = pText.split("\n");
 
@@ -114,7 +115,8 @@ public class LoggerScreen extends Screen {
         return lines;
     }
 
-    private int getSplitIndex(String pWord, int pMaxWidth) {
+    @NotNull
+    private Integer getSplitIndex(@NotNull String pWord, @NotNull Integer pMaxWidth) {
         for (int i = 1; i <= pWord.length(); i++) {
             if (this.font.width(pWord.substring(0, i)) > pMaxWidth) {
                 return i - 1;

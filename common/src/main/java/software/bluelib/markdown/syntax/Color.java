@@ -15,6 +15,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextColor;
+import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.utils.IsValidUtils;
 import software.bluelib.api.utils.conversion.ColorConverterUtils;
 import software.bluelib.api.utils.logging.BaseLogLevel;
@@ -26,7 +27,7 @@ import software.bluelib.markdown.MarkdownFeature;
 @SuppressWarnings("unused")
 public class Color extends MarkdownFeature {
 
-    public MutableComponent apply(MutableComponent pComponent) {
+    public @NotNull MutableComponent apply(@NotNull MutableComponent pComponent) {
         if (!MarkdownConfig.isColorEnabled) {
             BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("markdown.color.disabled"));
             return pComponent;
@@ -47,7 +48,7 @@ public class Color extends MarkdownFeature {
         return result;
     }
 
-    protected void processComponentTextWithColors(String pText, Style pOriginalStyle, MutableComponent pResult, Pattern pPattern) {
+    protected void processComponentTextWithColors(@NotNull String pText, @NotNull Style pOriginalStyle, @NotNull MutableComponent pResult, @NotNull Pattern pPattern) {
         processComponentText(pText, pOriginalStyle, pResult, pPattern,
                 (matcher, res) -> {
                     Object colors = extractColorsFromMatcher(matcher);
@@ -57,7 +58,8 @@ public class Color extends MarkdownFeature {
                 });
     }
 
-    private Object extractColorsFromMatcher(Matcher matcher) {
+    @NotNull
+    private Object extractColorsFromMatcher(@NotNull Matcher matcher) {
         List<Integer> colors = new ArrayList<>();
 
         String colorGroup = matcher.group(1);
@@ -76,7 +78,7 @@ public class Color extends MarkdownFeature {
     }
 
     @SuppressWarnings("unchecked")
-    private void appendColor(String pColorText, Object pColors, Style pOriginalStyle, MutableComponent pResult) {
+    private void appendColor(@NotNull String pColorText, @NotNull Object pColors, @NotNull Style pOriginalStyle, @NotNull MutableComponent pResult) {
         if (pColors instanceof String) {
             pResult.append(Component.literal(MarkdownConfig.colorPrefix + pColors + MarkdownConfig.colorSuffix + "(" + pColorText + ")")
                     .setStyle(pOriginalStyle));
@@ -121,7 +123,8 @@ public class Color extends MarkdownFeature {
         }
     }
 
-    private int interpolateColor(int startColor, int endColor, float ratio) {
+    @NotNull
+    private Integer interpolateColor(@NotNull Integer startColor, @NotNull Integer endColor, @NotNull Float ratio) {
         int startR = (startColor >> 16) & 0xFF;
         int startG = (startColor >> 8) & 0xFF;
         int startB = startColor & 0xFF;
@@ -137,21 +140,28 @@ public class Color extends MarkdownFeature {
         return (r << 16) | (g << 8) | b;
     }
 
-    public MutableComponent processSiblingsWithColors(MutableComponent pComponent, Pattern pPattern) {
+    @NotNull
+    public MutableComponent processSiblingsWithColors(@NotNull MutableComponent pComponent, @NotNull Pattern pPattern) {
         return processSiblings(pComponent, pPattern,
                 this::processComponentTextWithColors);
     }
 
     @Override
-    protected boolean isFeatureEnabled() {
+    protected @NotNull Boolean isFeatureEnabled() {
         return MarkdownConfig.isColorEnabled;
     }
 
     @Override
-    protected String getFeatureName() {
+    protected @NotNull String getFeatureName() {
         return "Color";
     }
 
+    /**
+     * @return true if the color feature is enabled, false otherwise.
+     * @deprecated Use {@link Color#isFeatureEnabled} instead.
+     */
+    @NotNull
+    @Deprecated(forRemoval = true, since = "2.2.0")
     public static Boolean isColorEnabled() {
         return MarkdownConfig.isColorEnabled;
     }

@@ -22,6 +22,8 @@ import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.block.entity.BrewingStandBlockEntity;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -33,7 +35,7 @@ import software.bluelib.recipe.brewing.BrewingRecipe;
 public class BrewingStandBlockEntityMixin {
 
     @WrapOperation(method = "serverTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/entity/BrewingStandBlockEntity;doBrew(Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/core/NonNullList;)V"))
-    private static void blueLib$doBrew(Level pLevel, BlockPos pPos, NonNullList<ItemStack> pSlots, Operation<Void> pOriginal) {
+    private static void blueLib$doBrew(@NotNull Level pLevel, @NotNull BlockPos pPos, @NotNull NonNullList<ItemStack> pSlots, @NotNull Operation<Void> pOriginal) {
         var recipe = blueLib$fetchBrewingRecipe(pSlots, pLevel);
         if (recipe == null) {
             pOriginal.call(pLevel, pPos, pSlots);
@@ -64,13 +66,14 @@ public class BrewingStandBlockEntityMixin {
     }
 
     @WrapOperation(method = "serverTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/entity/BrewingStandBlockEntity;isBrewable(Lnet/minecraft/world/item/alchemy/PotionBrewing;Lnet/minecraft/core/NonNullList;)Z"))
-    private static boolean blueLib$isBrewable(PotionBrewing pPotionBrewing, NonNullList<ItemStack> pItems, Operation<Boolean> pOriginal,
-            @Local(argsOnly = true) Level pLevel) {
+    private static boolean blueLib$isBrewable(@NotNull PotionBrewing pPotionBrewing, @NotNull NonNullList<ItemStack> pItems, @NotNull Operation<Boolean> pOriginal,
+            @Local(argsOnly = true) @NotNull Level pLevel) {
         return blueLib$fetchBrewingRecipe(pItems, pLevel) != null || pOriginal.call(pPotionBrewing, pItems);
     }
 
     @Unique
-    private static BrewingRecipe blueLib$fetchBrewingRecipe(NonNullList<ItemStack> pItems, Level pLevel) {
+    @Nullable
+    private static BrewingRecipe blueLib$fetchBrewingRecipe(@NotNull NonNullList<ItemStack> pItems, @NotNull Level pLevel) {
         ItemStack ingredient = pItems.get(3);
         List<ItemStack> bottles = pItems.subList(0, 3);
 

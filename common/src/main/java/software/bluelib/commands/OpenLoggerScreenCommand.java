@@ -12,21 +12,27 @@ import com.mojang.brigadier.context.CommandContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.server.level.ServerPlayer;
+import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.net.NetworkRegistry;
 import software.bluelib.internal.BlueTranslation;
 import software.bluelib.net.messages.client.OpenLoggerPacket;
 
 public class OpenLoggerScreenCommand {
 
-    public static void register(CommandDispatcher<CommandSourceStack> pDispatcher) {
+    public static void register(@NotNull CommandDispatcher<CommandSourceStack> pDispatcher) {
         pDispatcher.register(
                 Commands.literal("log")
                         .executes(OpenLoggerScreenCommand::openLogScreen));
     }
 
-    private static int openLogScreen(CommandContext<CommandSourceStack> pContext) {
+    @NotNull
+    private static Integer openLogScreen(@NotNull CommandContext<CommandSourceStack> pContext) {
         ServerPlayer player = pContext.getSource().getPlayer();
-        assert player != null;
+        if (player == null) {
+            //TODO: Check en_us.json
+            pContext.getSource().sendFailure(BlueTranslation.translate("command.logger.no_player"));
+            return 0;
+        }
         if (player.hasPermissions(3)) {
             NetworkRegistry.sendPacketToPlayer(player, new OpenLoggerPacket());
         } else {

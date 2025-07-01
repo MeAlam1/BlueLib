@@ -10,6 +10,7 @@ package software.bluelib.markdown.syntax;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
+import org.jetbrains.annotations.NotNull;
 import software.bluelib.config.MarkdownConfig;
 import software.bluelib.markdown.MarkdownFeature;
 
@@ -22,19 +23,19 @@ public class Bold extends MarkdownFeature {
     }
 
     @Override
-    protected void appendFormattedText(String pText, Style pOriginalStyle, MutableComponent pResult) {
+    protected void appendFormattedText(@NotNull String pText, @NotNull Style pOriginalStyle, @NotNull MutableComponent pResult) {
         MutableComponent boldText = Component.literal(pText)
                 .setStyle(pOriginalStyle.withBold(true));
         pResult.append(boldText);
     }
 
     @Override
-    protected boolean isFeatureEnabled() {
+    protected @NotNull Boolean isFeatureEnabled() {
         return MarkdownConfig.isBoldEnabled;
     }
 
     @Override
-    protected String getFeatureName() {
+    protected @NotNull String getFeatureName() {
         return "Bold";
     }
 

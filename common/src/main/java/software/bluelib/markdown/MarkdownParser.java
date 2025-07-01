@@ -9,6 +9,7 @@ package software.bluelib.markdown;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
 import software.bluelib.config.MarkdownConfig;
@@ -18,7 +19,8 @@ import software.bluelib.markdown.syntax.*;
 @SuppressWarnings("unused")
 public class MarkdownParser {
 
-    public static MutableComponent parseMarkdown(Component pMessage) {
+    @NotNull
+    public static MutableComponent parseMarkdown(@NotNull Component pMessage) {
         if (!MarkdownConfig.isMarkdownEnabled) {
             BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("markdown.disabled"));
             return pMessage.copy();

@@ -10,6 +10,7 @@ package software.bluelib.internal.registry;
 import java.util.function.Supplier;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.NotNull;
 import software.bluelib.BlueLibConstants;
 import software.bluelib.recipe.brewing.BrewingRecipe;
 
@@ -18,9 +19,11 @@ public class BlueRecipeSerializerRegistry {
 
     public static void init() {}
 
+    @NotNull
     public static final Supplier<RecipeSerializer<?>> BREWING = registerRecipeSerializer("brewing", BrewingRecipe.Serializer::new);
 
-    private static <T extends RecipeSerializer<?>> Supplier<T> registerRecipeSerializer(String pId, Supplier<T> pRecipeSerializer) {
+    @NotNull
+    private static <T extends RecipeSerializer<?>> Supplier<T> registerRecipeSerializer(@NotNull String pId, @NotNull Supplier<T> pRecipeSerializer) {
         return BlueLibConstants.PlatformHelper.REGISTRY.registerRecipeSerializer(pId, pRecipeSerializer);
     }
 }

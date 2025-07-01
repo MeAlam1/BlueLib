@@ -15,16 +15,17 @@ import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.item.crafting.RecipeManager;
+import org.jetbrains.annotations.NotNull;
 import software.bluelib.compat.jei.BlueJeiProvider;
 import software.bluelib.internal.registry.BlueRecipeTypeRegistry;
 
 public class BrewingJeiProvider implements BlueJeiProvider {
 
     @Override
-    public void registerCategory(IRecipeCategoryRegistration pRegistration) {}
+    public void registerCategory(@NotNull IRecipeCategoryRegistration pRegistration) {}
 
     @Override
-    public void registerRecipes(IRecipeRegistration pRegistration) {
+    public void registerRecipes(@NotNull IRecipeRegistration pRegistration) {
         RecipeManager recipeManager = Minecraft.getInstance().level != null
                 ? Minecraft.getInstance().level.getRecipeManager()
                 : null;
