@@ -8,8 +8,9 @@
 package software.bluelib.recipe.brewing;
 
 import net.minecraft.world.item.crafting.RecipeManager;
+import org.jetbrains.annotations.NotNull;
 
 public interface RecipeAwareSlot {
 
-    void blueLib$setRecipeManager(RecipeManager pRecipeManager);
+    void blueLib$setRecipeManager(@NotNull RecipeManager pRecipeManager);
 }

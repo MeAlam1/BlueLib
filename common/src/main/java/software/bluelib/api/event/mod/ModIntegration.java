@@ -21,7 +21,9 @@ import software.bluelib.internal.BlueTranslation;
 
 public class ModIntegration {
 
+    @NotNull
     private static final List<ModMeta> loadedModMetas = new ArrayList<>();
+    @NotNull
     private static ExcludedMods excludedModsProvider = new ExcludedMods();
 
     public static void setExcludedModsProvider(@NotNull ExcludedMods pProvider) {

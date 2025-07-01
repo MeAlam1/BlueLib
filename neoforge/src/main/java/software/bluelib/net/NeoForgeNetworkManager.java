@@ -14,12 +14,14 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.HandlerThread;
+import org.jetbrains.annotations.NotNull;
 import software.bluelib.BlueLibConstants;
+import software.bluelib.api.net.NetworkManager;
 import software.bluelib.api.net.NetworkPacket;
 import software.bluelib.api.net.NetworkRegistry;
 import software.bluelib.client.net.data.DataRegistrySyncPacketHandler;
 
-public class NeoForgeNetworkManager implements BlueLibConstants.NetworkManager {
+public class NeoForgeNetworkManager implements NetworkManager {
 
     public static final String PROTOCOL_VERSION = "1.0.0";
 
@@ -52,12 +54,12 @@ public class NeoForgeNetworkManager implements BlueLibConstants.NetworkManager {
     }
 
     @Override
-    public void sendPacketToPlayer(ServerPlayer pPlayer, NetworkPacket<?> pPacket) {
+    public void sendPacketToPlayer(@NotNull ServerPlayer pPlayer, @NotNull NetworkPacket<?> pPacket) {
         pPlayer.connection.send(pPacket);
     }
 
     @Override
-    public void sendToServer(NetworkPacket<?> pPacket) {
+    public void sendToServer(@NotNull NetworkPacket<?> pPacket) {
         Objects.requireNonNull(Minecraft.getInstance().getConnection()).send(pPacket);
     }
 }

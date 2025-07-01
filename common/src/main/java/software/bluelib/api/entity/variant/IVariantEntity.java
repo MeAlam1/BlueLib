@@ -22,6 +22,7 @@ import software.bluelib.internal.BlueTranslation;
 @SuppressWarnings("unused")
 public interface IVariantEntity {
 
+    @NotNull
     RandomSource random = RandomSource.create();
 
     @Nullable

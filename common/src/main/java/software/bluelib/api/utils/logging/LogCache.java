@@ -14,6 +14,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class LogCache {
 
+    @NotNull
     private static final List<LogEntry> logEntries = Collections.synchronizedList(new ArrayList<>());
 
     public static void addLog(@NotNull String pMessage, @NotNull Integer pColor) {

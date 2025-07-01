@@ -14,10 +14,12 @@ import org.jetbrains.annotations.NotNull;
 
 public class BrewingInput implements RecipeInput {
 
+    @NotNull
     private final ItemStack ingredient;
+    @NotNull
     private final List<ItemStack> bottles;
 
-    public BrewingInput(ItemStack pIngredient, List<ItemStack> pBottles) {
+    public BrewingInput(@NotNull ItemStack pIngredient, @NotNull List<ItemStack> pBottles) {
         this.ingredient = pIngredient;
         this.bottles = pBottles;
     }
@@ -37,10 +39,12 @@ public class BrewingInput implements RecipeInput {
         return 1 + bottles.size();
     }
 
+    @NotNull
     public ItemStack getIngredient() {
         return ingredient;
     }
 
+    @NotNull
     public List<ItemStack> getBottles() {
         return bottles;
     }

@@ -18,6 +18,7 @@ import org.jetbrains.annotations.NotNull;
 @SuppressWarnings("unused")
 public abstract class LoggerConfig {
 
+    @NotNull
     protected static final String RESET = "\u001B[0m";
 
     public static void configureLogger(@NotNull Logger pLogger, @NotNull ILogColorProvider pColorProvider) {

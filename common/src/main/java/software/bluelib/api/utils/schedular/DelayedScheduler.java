@@ -16,6 +16,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class DelayedScheduler {
 
+    @NotNull
     private static final ScheduledExecutorService EXECUTOR_SERVICE = Executors.newSingleThreadScheduledExecutor();
 
     @NotNull

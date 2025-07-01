@@ -65,39 +65,46 @@ import org.jetbrains.annotations.NotNull;
 @ApiStatus.Experimental
 public class PityRandom {
 
-    private final int minInt;
-    private final int maxInt;
-    private final double minDouble;
-    private final double maxDouble;
-    private final Map<Integer, Integer> selectionCountInt;
+    @NotNull
+    private final Integer minInteger;
+    @NotNull
+    private final Integer maxInteger;
+    @NotNull
+    private final Double minDouble;
+    @NotNull
+    private final Double maxDouble;
+    @NotNull
+    private final Map<Integer, Integer> selectionCountInteger;
+    @NotNull
     private final Map<Double, Integer> selectionCountDouble;
+    @NotNull
     private final Random random;
 
     public PityRandom(@NotNull Integer pMin, @NotNull Integer pMax) {
-        this.minInt = pMin;
-        this.maxInt = pMax;
-        this.minDouble = pMin;
-        this.maxDouble = pMax;
-        this.selectionCountInt = new HashMap<>();
+        this.minInteger = pMin;
+        this.maxInteger = pMax;
+        this.minDouble = pMin.doubleValue();
+        this.maxDouble = pMax.doubleValue();
+        this.selectionCountInteger = new HashMap<>();
         this.selectionCountDouble = new HashMap<>();
         this.random = new Random();
 
-        for (int i = pMin; i <= pMax; i++) {
-            selectionCountInt.put(i, 0);
+        for (Integer i = pMin; i <= pMax; i++) {
+            selectionCountInteger.put(i, 0);
         }
     }
 
     @NotNull
-    public Integer nextInt() {
+    public Integer nextInteger() {
         Map<Integer, Double> weights = new HashMap<>();
-        int maxCount = selectionCountInt.values().stream().max(Integer::compareTo).orElse(1);
+        Integer maxCount = selectionCountInteger.values().stream().max(Integer::compareTo).orElse(1);
 
-        for (int num = minInt; num <= maxInt; num++) {
-            int count = selectionCountInt.get(num);
+        for (Integer num = minInteger; num <= maxInteger; num++) {
+            Integer count = selectionCountInteger.get(num);
             weights.put(num, Math.pow(2, maxCount - count));
         }
 
-        double totalWeight = weights.values().stream().mapToDouble(Double::doubleValue).sum();
+        Double totalWeight = weights.values().stream().mapToDouble(Double::doubleValue).sum();
         TreeMap<Double, Integer> probabilityMap = new TreeMap<>();
         double cumulative = 0.0;
 
@@ -106,24 +113,24 @@ public class PityRandom {
             probabilityMap.put(cumulative, entry.getKey());
         }
 
-        double roll = random.nextDouble();
-        int selected = probabilityMap.ceilingEntry(roll).getValue();
-        selectionCountInt.put(selected, selectionCountInt.get(selected) + 1);
+        Double roll = random.nextDouble();
+        Integer selected = probabilityMap.ceilingEntry(roll).getValue();
+        selectionCountInteger.put(selected, selectionCountInteger.get(selected) + 1);
         return selected;
     }
 
     @NotNull
     public Boolean nextBoolean() {
-        int trueCount = selectionCountInt.getOrDefault(1, 0);
-        int falseCount = selectionCountInt.getOrDefault(0, 0);
-        int maxCount = Math.max(trueCount, falseCount);
+        Integer trueCount = selectionCountInteger.getOrDefault(1, 0);
+        Integer falseCount = selectionCountInteger.getOrDefault(0, 0);
+        Integer maxCount = Math.max(trueCount, falseCount);
 
-        double trueWeight = Math.pow(2, maxCount - trueCount);
-        double falseWeight = Math.pow(2, maxCount - falseCount);
-        double totalWeight = trueWeight + falseWeight;
+        Double trueWeight = Math.pow(2, maxCount - trueCount);
+        Double falseWeight = Math.pow(2, maxCount - falseCount);
+        Double totalWeight = trueWeight + falseWeight;
 
         boolean selected = (random.nextDouble() < (trueWeight / totalWeight));
-        selectionCountInt.put(selected ? 1 : 0, selectionCountInt.getOrDefault(selected ? 1 : 0, 0) + 1);
+        selectionCountInteger.put(selected ? 1 : 0, selectionCountInteger.getOrDefault(selected ? 1 : 0, 0) + 1);
         return selected;
     }
 
@@ -132,12 +139,12 @@ public class PityRandom {
         Map<Double, Double> weights = new HashMap<>();
         double maxCount = selectionCount.values().stream().mapToInt(Integer::intValue).max().orElse(1);
 
-        for (double num = min; num <= max; num += 0.01) {
-            int count = selectionCount.getOrDefault(num, 0);
+        for (Double num = min; num <= max; num += 0.01) {
+            Integer count = selectionCount.getOrDefault(num, 0);
             weights.put(num, Math.pow(2, maxCount - count));
         }
 
-        double totalWeight = weights.values().stream().mapToDouble(Double::doubleValue).sum();
+        Double totalWeight = weights.values().stream().mapToDouble(Double::doubleValue).sum();
         TreeMap<Double, Double> probabilityMap = new TreeMap<>();
         double cumulative = 0.0;
 
@@ -146,8 +153,8 @@ public class PityRandom {
             probabilityMap.put(cumulative, entry.getKey());
         }
 
-        double roll = random.nextDouble();
-        double selected = probabilityMap.ceilingEntry(roll).getValue();
+        Double roll = random.nextDouble();
+        Double selected = probabilityMap.ceilingEntry(roll).getValue();
         selectionCount.put(selected, selectionCount.getOrDefault(selected, 0) + 1);
         return selected;
     }

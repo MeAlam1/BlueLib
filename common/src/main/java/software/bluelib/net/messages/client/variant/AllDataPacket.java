@@ -17,8 +17,9 @@ import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.net.NetworkPacket;
 import software.bluelib.internal.BlueResource;
 
-public record AllDataPacket(Map<String, JsonObject> allData) implements NetworkPacket<AllDataPacket> {
+public record AllDataPacket(@NotNull Map<String, JsonObject> allData) implements NetworkPacket<AllDataPacket> {
 
+    @NotNull
     public static final ResourceLocation ID = BlueResource.resource("all_data_packet");
 
     @Override
@@ -26,7 +27,8 @@ public record AllDataPacket(Map<String, JsonObject> allData) implements NetworkP
         pBuffer.writeMap(allData, FriendlyByteBuf::writeUtf, (buf, json) -> buf.writeUtf(json.toString()));
     }
 
-    public static AllDataPacket decode(FriendlyByteBuf pBuffer) {
+    @NotNull
+    public static AllDataPacket decode(@NotNull FriendlyByteBuf pBuffer) {
         Map<String, JsonObject> map = pBuffer.readMap(
                 FriendlyByteBuf::readUtf,
                 buf -> JsonParser.parseString(buf.readUtf()).getAsJsonObject());

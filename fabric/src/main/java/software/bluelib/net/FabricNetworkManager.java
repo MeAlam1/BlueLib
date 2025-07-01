@@ -10,11 +10,12 @@ package software.bluelib.net;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.server.level.ServerPlayer;
-import software.bluelib.BlueLibConstants;
+import org.jetbrains.annotations.NotNull;
+import software.bluelib.api.net.NetworkManager;
 import software.bluelib.api.net.NetworkPacket;
 import software.bluelib.api.net.NetworkRegistry;
 
-public class FabricNetworkManager implements BlueLibConstants.NetworkManager {
+public class FabricNetworkManager implements NetworkManager {
 
     public static void registerMessages() {
         NetworkRegistry.s2cPayloads.forEach(info -> FabricPacketInfo.registerPacket(info, true));
@@ -34,12 +35,12 @@ public class FabricNetworkManager implements BlueLibConstants.NetworkManager {
     }
 
     @Override
-    public void sendPacketToPlayer(ServerPlayer pPlayer, NetworkPacket<?> pPacket) {
+    public void sendPacketToPlayer(@NotNull ServerPlayer pPlayer, @NotNull NetworkPacket<?> pPacket) {
         ServerPlayNetworking.send(pPlayer, pPacket);
     }
 
     @Override
-    public void sendToServer(NetworkPacket<?> pPacket) {
+    public void sendToServer(@NotNull NetworkPacket<?> pPacket) {
         ClientPlayNetworking.send(pPacket);
     }
 }

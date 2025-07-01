@@ -12,6 +12,7 @@ import static software.bluelib.BlueLibConstants.SCHEDULER;
 import java.util.concurrent.TimeUnit;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.launch.MixinBootstrap;
 import software.bluelib.api.event.mod.ModIntegration;
 import software.bluelib.api.net.NetworkRegistry;
@@ -54,7 +55,8 @@ public class BlueLibCommon {
         InternalNetworkRegistry.networkClient();
     }
 
-    public static boolean isDeveloperMode() {
+    @NotNull
+    public static Boolean isDeveloperMode() {
         boolean isDevMode = BlueLibConstants.PlatformHelper.PLATFORM.isDevelopmentEnvironment();
         if (isDevMode) {
             BaseLogger.log(true, BaseLogLevel.INFO, Component.literal("Running in Developer mode."));
@@ -64,6 +66,7 @@ public class BlueLibCommon {
 
     protected static class InternalNetworkRegistry {
 
+        @NotNull
         private static BlueNetworkRegistry getNetwork() {
             return new BlueNetworkRegistry();
         }

@@ -28,13 +28,17 @@ import software.bluelib.internal.BlueTranslation;
 
 public abstract class JSONParser {
 
+    @NotNull
     protected Map<String, JsonObject> dataMap = new HashMap<>();
 
+    @NotNull
     protected static final Gson gson = new Gson();
 
+    @NotNull
     protected static final JSONMerger jsonMerger = new JSONMerger();
 
-    protected JsonObject mergedJsonObject;
+    @NotNull
+    protected JsonObject mergedJsonObject = new JsonObject();
 
     public void loadData(@NotNull String pFolderPath, @NotNull ResourceManager pResourceManager) {
         mergedJsonObject = new JsonObject();

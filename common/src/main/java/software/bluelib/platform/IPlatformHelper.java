@@ -12,7 +12,8 @@ import java.util.Set;
 import net.minecraft.server.MinecraftServer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import software.bluelib.BlueLibConstants;
+import software.bluelib.api.Environment;
+import software.bluelib.api.ModAPI;
 import software.bluelib.api.event.mod.ModMeta;
 
 @SuppressWarnings("unused")
@@ -39,10 +40,10 @@ public interface IPlatformHelper {
     }
 
     @NotNull
-    BlueLibConstants.Environment getEnvironment();
+    Environment getEnvironment();
 
     @NotNull
-    BlueLibConstants.ModAPI getAPI();
+    ModAPI getAPI();
 
     @Nullable
     MinecraftServer getServer();

@@ -16,8 +16,9 @@ import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.net.NetworkPacket;
 import software.bluelib.internal.BlueResource;
 
-public record VariantsPacket(Set<String> allVariants) implements NetworkPacket<VariantsPacket> {
+public record VariantsPacket(@NotNull Set<String> allVariants) implements NetworkPacket<VariantsPacket> {
 
+    @NotNull
     public static final ResourceLocation ID = BlueResource.resource("variants_packet");
 
     @Override
@@ -25,7 +26,7 @@ public record VariantsPacket(Set<String> allVariants) implements NetworkPacket<V
         pBuffer.writeCollection(allVariants, FriendlyByteBuf::writeUtf);
     }
 
-    public static VariantsPacket decode(FriendlyByteBuf pBuffer) {
+    public static @NotNull VariantsPacket decode(@NotNull RegistryFriendlyByteBuf pBuffer) {
         Set<String> allVariants = pBuffer.readCollection(HashSet::new, FriendlyByteBuf::readUtf);
         return new VariantsPacket(allVariants);
     }

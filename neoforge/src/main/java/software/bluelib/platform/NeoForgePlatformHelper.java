@@ -15,7 +15,8 @@ import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import net.neoforged.neoforgespi.language.IModInfo;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import software.bluelib.BlueLibConstants;
+import software.bluelib.api.Environment;
+import software.bluelib.api.ModAPI;
 import software.bluelib.api.event.mod.ModMeta;
 
 import java.util.ArrayList;
@@ -63,13 +64,13 @@ public class NeoForgePlatformHelper implements IPlatformHelper {
 	}
 
 	@Override
-	public BlueLibConstants.@NotNull Environment getEnvironment() {
-		return FMLEnvironment.dist.isClient() ? BlueLibConstants.Environment.CLIENT : BlueLibConstants.Environment.SERVER;
+	public @NotNull Environment getEnvironment() {
+		return FMLEnvironment.dist.isClient() ? Environment.CLIENT : Environment.SERVER;
 	}
 
 	@Override
-	public BlueLibConstants.@NotNull ModAPI getAPI() {
-		return BlueLibConstants.ModAPI.NEOFORGE;
+	public @NotNull ModAPI getAPI() {
+		return ModAPI.NEOFORGE;
 	}
 
 	@Override

@@ -17,8 +17,9 @@ import software.bluelib.net.serverHandling.TestPacketHandler;
 /**
  * {@link TestPacketHandler}
  */
-public record TestPacket(boolean value) implements NetworkPacket<TestPacket> {
+public record TestPacket(@NotNull Boolean value) implements NetworkPacket<TestPacket> {
 
+    @NotNull
     public static final ResourceLocation ID = BlueResource.resource("test_packet");
 
     @Override
@@ -26,7 +27,8 @@ public record TestPacket(boolean value) implements NetworkPacket<TestPacket> {
         pBuffer.writeBoolean(value);
     }
 
-    public static TestPacket decode(RegistryFriendlyByteBuf pBuffer) {
+    @NotNull
+    public static TestPacket decode(@NotNull RegistryFriendlyByteBuf pBuffer) {
         return new TestPacket(pBuffer.readBoolean());
     }
 

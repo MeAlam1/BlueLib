@@ -16,8 +16,9 @@ import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.net.NetworkPacket;
 import software.bluelib.internal.BlueResource;
 
-public record ParameterDataPacket(JsonElement parameterData) implements NetworkPacket<ParameterDataPacket> {
+public record ParameterDataPacket(@NotNull JsonElement parameterData) implements NetworkPacket<ParameterDataPacket> {
 
+    @NotNull
     public static final ResourceLocation ID = BlueResource.resource("parameter_data_packet");
 
     @Override
@@ -25,7 +26,8 @@ public record ParameterDataPacket(JsonElement parameterData) implements NetworkP
         pBuffer.writeUtf(parameterData.toString());
     }
 
-    public static ParameterDataPacket decode(FriendlyByteBuf pBuffer) {
+    @NotNull
+    public static ParameterDataPacket decode(@NotNull FriendlyByteBuf pBuffer) {
         String json = pBuffer.readUtf();
         JsonElement element = JsonParser.parseString(json);
         return new ParameterDataPacket(element);

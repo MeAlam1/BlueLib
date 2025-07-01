@@ -14,6 +14,8 @@ import net.minecraft.server.MinecraftServer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.BlueLibConstants;
+import software.bluelib.api.Environment;
+import software.bluelib.api.ModAPI;
 import software.bluelib.api.event.mod.ModMeta;
 
 import java.util.ArrayList;
@@ -61,20 +63,20 @@ public class FabricPlatformHelper implements IPlatformHelper {
 	}
 
 	@Override
-	public BlueLibConstants.@NotNull Environment getEnvironment() {
+	public @NotNull Environment getEnvironment() {
 		return switch (FabricLoader.getInstance().getEnvironmentType()) {
-			case CLIENT -> BlueLibConstants.Environment.CLIENT;
-			case SERVER -> BlueLibConstants.Environment.SERVER;
+			case CLIENT -> Environment.CLIENT;
+			case SERVER -> Environment.SERVER;
 		};
 	}
 
 	@Override
-	public BlueLibConstants.@NotNull ModAPI getAPI() {
-		return BlueLibConstants.ModAPI.FABRIC;
+	public @NotNull ModAPI getAPI() {
+		return ModAPI.FABRIC;
 	}
 
 	@Override
 	public @Nullable MinecraftServer getServer() {
-		return this.getEnvironment() == BlueLibConstants.Environment.CLIENT ? Minecraft.getInstance().getSingleplayerServer() : BlueLibConstants.server;
+		return this.getEnvironment() == Environment.CLIENT ? Minecraft.getInstance().getSingleplayerServer() : BlueLibConstants.server;
 	}
 }
