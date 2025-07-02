@@ -28,7 +28,7 @@ public record AllDataPacket(@NotNull Map<String, JsonObject> allData) implements
 	}
 
 	@NotNull
-	public static AllDataPacket decode(@NotNull FriendlyByteBuf pBuffer) {
+	public static AllDataPacket decode(@NotNull RegistryFriendlyByteBuf pBuffer) {
 		Map<String, JsonObject> map = pBuffer.readMap(
 				FriendlyByteBuf::readUtf,
 				buf -> JsonParser.parseString(buf.readUtf()).getAsJsonObject());

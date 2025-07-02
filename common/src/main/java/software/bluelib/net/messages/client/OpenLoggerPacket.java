@@ -7,7 +7,6 @@
  */
 package software.bluelib.net.messages.client;
 
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
@@ -23,7 +22,7 @@ public record OpenLoggerPacket() implements NetworkPacket<OpenLoggerPacket> {
 	public void encode(@NotNull RegistryFriendlyByteBuf pBuffer) {}
 
 	@NotNull
-	public static OpenLoggerPacket decode(@NotNull FriendlyByteBuf pBuffer) {
+	public static OpenLoggerPacket decode(@NotNull RegistryFriendlyByteBuf pBuffer) {
 		return new OpenLoggerPacket();
 	}
 

@@ -32,7 +32,7 @@ public class NeoForgePlatformHelper implements IPlatformHelper {
 	}
 
 	@Override
-	public @NotNull Boolean isModLoaded(@NotNull String pModId) {
+	public boolean isModLoaded(@NotNull String pModId) {
 		return ModList.get().isLoaded(pModId);
 	}
 
@@ -58,7 +58,7 @@ public class NeoForgePlatformHelper implements IPlatformHelper {
 	}
 
 	@Override
-	public @NotNull Boolean isDevelopmentEnvironment() {
+	public boolean isDevelopmentEnvironment() {
 		return !FMLLoader.isProduction();
 	}
 

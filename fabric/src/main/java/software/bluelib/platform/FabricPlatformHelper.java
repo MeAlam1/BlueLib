@@ -31,7 +31,7 @@ public class FabricPlatformHelper implements IPlatformHelper {
 	}
 
 	@Override
-	public @NotNull Boolean isModLoaded(@NotNull String pModId) {
+	public boolean isModLoaded(@NotNull String pModId) {
 		return FabricLoader.getInstance().isModLoaded(pModId);
 	}
 
@@ -57,7 +57,7 @@ public class FabricPlatformHelper implements IPlatformHelper {
 	}
 
 	@Override
-	public @NotNull Boolean isDevelopmentEnvironment() {
+	public boolean isDevelopmentEnvironment() {
 		return FabricLoader.getInstance().isDevelopmentEnvironment();
 	}
 

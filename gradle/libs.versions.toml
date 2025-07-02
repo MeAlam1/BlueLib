@@ -33,7 +33,7 @@ plugin-minotaur = "2.8.7"
 plugin-curseforge-gradle = "1.1.26"
 plugin-idea-ext = "1.1.10"
 plugin-mixin = "0.7.+"
-plugin-loom = "1.10-SNAPSHOT"
+plugin-loom = "1.11-SNAPSHOT"
 spotless = "6.25.0"
 license = "0.16.1"
 

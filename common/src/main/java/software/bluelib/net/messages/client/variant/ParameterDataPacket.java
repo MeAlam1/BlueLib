@@ -9,7 +9,6 @@ package software.bluelib.net.messages.client.variant;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
@@ -27,7 +26,7 @@ public record ParameterDataPacket(@NotNull JsonElement parameterData) implements
 	}
 
 	@NotNull
-	public static ParameterDataPacket decode(@NotNull FriendlyByteBuf pBuffer) {
+	public static ParameterDataPacket decode(@NotNull RegistryFriendlyByteBuf pBuffer) {
 		String json = pBuffer.readUtf();
 		JsonElement element = JsonParser.parseString(json);
 		return new ParameterDataPacket(element);

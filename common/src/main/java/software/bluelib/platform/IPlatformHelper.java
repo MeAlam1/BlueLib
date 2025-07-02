@@ -22,8 +22,7 @@ public interface IPlatformHelper {
 	@NotNull
 	String getPlatformName();
 
-	@NotNull
-	Boolean isModLoaded(@NotNull String pModId);
+	boolean isModLoaded(@NotNull String pModId);
 
 	@NotNull
 	Set<String> getLoadedMods();
@@ -31,8 +30,7 @@ public interface IPlatformHelper {
 	@NotNull
 	List<ModMeta> getLoadedModMetadata();
 
-	@NotNull
-	Boolean isDevelopmentEnvironment();
+	boolean isDevelopmentEnvironment();
 
 	@NotNull
 	default String getEnvironmentName() {
