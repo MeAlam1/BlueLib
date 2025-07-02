@@ -8,12 +8,14 @@
 package software.bluelib.api.event.mod;
 
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public record ModMeta(
-        String modId,
-        String displayName,
-        String version,
-        String description,
-        Optional<String> logoFile
+        @NotNull String modId,
+        @NotNull String displayName,
+        @NotNull String version,
+        @NotNull String description,
+        @Nullable Optional<String> logoFile
 
 ) {}

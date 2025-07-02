@@ -11,6 +11,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.OnDatapackSyncEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
+import org.jetbrains.annotations.NotNull;
 import software.bluelib.BlueLibConstants;
 import software.bluelib.api.entity.variant.IVariantProvider;
 import software.bluelib.api.utils.logging.BaseLogLevel;
@@ -25,14 +26,15 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 @EventBusSubscriber(modid = BlueLibConstants.MOD_ID)
 public class ReloadHandler {
 
+	@NotNull
 	private static final List<IVariantProvider> providers = new ArrayList<>();
 
-	public static void registerProvider(IVariantProvider pProvider) {
+	public static void registerProvider(@NotNull IVariantProvider pProvider) {
 		providers.add(pProvider);
 	}
 
 	@SubscribeEvent
-	public static void onServerStart(ServerStartingEvent pEvent) {
+	public static void onServerStart(@NotNull ServerStartingEvent pEvent) {
 		BlueLibConstants.SCHEDULER = new ScheduledThreadPoolExecutor(1);
 		BlueLibConstants.server = pEvent.getServer();
 
@@ -42,7 +44,7 @@ public class ReloadHandler {
 	}
 
 	@SubscribeEvent
-	public static void onDatapackSync(OnDatapackSyncEvent pEvent) {
+	public static void onDatapackSync(@NotNull OnDatapackSyncEvent pEvent) {
 		if (providers.isEmpty()) return;
 		ResourceCache.registerServerReloadListener(pEvent.getPlayerList().getServer(), providers);
 		BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("variants.reloaded"));

@@ -9,6 +9,7 @@ package software.bluelib.event;
 
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.packs.resources.CloseableResourceManager;
+import org.jetbrains.annotations.NotNull;
 import software.bluelib.BlueLibConstants;
 import software.bluelib.api.entity.variant.IVariantProvider;
 import software.bluelib.api.utils.logging.BaseLogLevel;
@@ -22,14 +23,14 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 public class ReloadHandler {
 
-
+	@NotNull
 	private static final List<IVariantProvider> providers = new ArrayList<>();
 
-	public static void registerProvider(IVariantProvider provider) {
+	public static void registerProvider(@NotNull IVariantProvider provider) {
 		providers.add(provider);
 	}
 
-	public static void onServerStart(MinecraftServer pServer) {
+	public static void onServerStart(@NotNull MinecraftServer pServer) {
 		BlueLibConstants.SCHEDULER = new ScheduledThreadPoolExecutor(1);
 		BlueLibConstants.server = pServer;
 		if (providers.isEmpty()) return;
@@ -37,7 +38,7 @@ public class ReloadHandler {
 		BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("variants.loaded"));
 	}
 
-	public static void onReload(MinecraftServer pServer, CloseableResourceManager pCloseableResourceManager, boolean pBoolean) {
+	public static void onReload(@NotNull MinecraftServer pServer, @NotNull CloseableResourceManager pCloseableResourceManager, @NotNull Boolean pBoolean) {
 		if (providers.isEmpty()) return;
 		ResourceCache.registerServerReloadListener(pServer, providers);
 		BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("variants.reloaded"));

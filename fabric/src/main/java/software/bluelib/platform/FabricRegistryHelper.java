@@ -20,6 +20,7 @@ import software.bluelib.net.FabricNetworkManager;
 
 import java.util.function.Supplier;
 
+@SuppressWarnings({"unchecked", "unused"})
 public class FabricRegistryHelper implements IRegistryHelper {
 
 	@Override
@@ -37,13 +38,15 @@ public class FabricRegistryHelper implements IRegistryHelper {
 		return registerSupplier(BuiltInRegistries.RECIPE_SERIALIZER, pId, pRecipeSerializer);
 	}
 
-	private static <T, R extends Registry<? super T>> Supplier<T> registerSupplier(R pRegistry, String pId, Supplier<T> pObject) {
+	@NotNull
+	private static <T, R extends Registry<? super T>> Supplier<T> registerSupplier(@NotNull R pRegistry, @NotNull String pId, @NotNull Supplier<T> pObject) {
 		final T registeredObject = Registry.register((Registry<T>) pRegistry, ResourceLocation.fromNamespaceAndPath(BlueLibConstants.MOD_ID, pId), pObject.get());
 
 		return () -> registeredObject;
 	}
 
-	private static <T, R extends Registry<? super T>> Holder<T> registerHolder(R pRegistry, String pId, Supplier<T> pObject) {
+	@NotNull
+	private static <T, R extends Registry<? super T>> Holder<T> registerHolder(@NotNull R pRegistry, @NotNull String pId, @NotNull Supplier<T> pObject) {
 		return Registry.registerForHolder((Registry<T>) pRegistry, ResourceLocation.fromNamespaceAndPath(BlueLibConstants.MOD_ID, pId), pObject.get());
 	}
 }

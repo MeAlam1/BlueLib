@@ -46,7 +46,6 @@ import software.bluelib.loader.json.variants.VariantsFormatVersion;
 /**
  * TODO:
  * Make the Logging Translateble en_us.json
- * Go through the entire code, not this file. and double check all Annotations (NotNull, Nullable, etc.) (JUST DID ALL TILL MIXINS PACKAGE)
  */
 public class BlueLoader {
 

@@ -10,12 +10,13 @@ package software.bluelib.client;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
+import org.jetbrains.annotations.NotNull;
 import software.bluelib.BlueLibCommon;
 
 //@EventBusSubscriber(value = Dist.CLIENT, modid = BlueLibConstants.MOD_ID)
 public class BlueLibClient {
 
-	public static void init(ModContainer pModContainer) {
+	public static void init(@NotNull ModContainer pModContainer) {
 		pModContainer.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
 		BlueLibCommon.doClientRegistration();
 	}

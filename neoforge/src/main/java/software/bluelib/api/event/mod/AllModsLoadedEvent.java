@@ -7,31 +7,34 @@
  */
 package software.bluelib.api.event.mod;
 
-import java.util.List;
 import net.neoforged.bus.api.Event;
 import net.neoforged.fml.event.IModBusEvent;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 @SuppressWarnings("unused")
 public class AllModsLoadedEvent extends Event implements IModBusEvent {
 
-    List<ModMeta> modData;
+	@NotNull
+	final List<ModMeta> modData;
 
-    public AllModsLoadedEvent(@Nullable List<ModMeta> pModData) {
-        super();
-        this.modData = pModData;
-    }
+	public AllModsLoadedEvent(@NotNull List<ModMeta> pModData) {
+		super();
+		this.modData = pModData;
+	}
 
-    @Nullable
-    public List<ModMeta> getAllModsData() {
-        return modData;
-    }
+	@NotNull
+	public List<ModMeta> getAllModsData() {
+		return modData;
+	}
 
-    @Nullable
-    public ModMeta getModMetaById(String pModId) {
-        return modData.stream()
-                .filter(modMeta -> modMeta.modId().equals(pModId))
-                .findFirst()
-                .orElse(null);
-    }
+	@Nullable
+	public ModMeta getModMetaById(@NotNull String pModId) {
+		return modData.stream()
+				.filter(modMeta -> modMeta.modId().equals(pModId))
+				.findFirst()
+				.orElse(null);
+	}
 }

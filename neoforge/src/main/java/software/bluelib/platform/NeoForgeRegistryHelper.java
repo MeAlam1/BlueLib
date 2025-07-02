@@ -21,9 +21,11 @@ import java.util.function.Supplier;
 
 public class NeoForgeRegistryHelper implements IRegistryHelper {
 
+	@NotNull
 	public static final DeferredRegister<RecipeType<?>> RECIPE_TYPES = DeferredRegister.create(Registries.RECIPE_TYPE, BlueLibConstants.MOD_ID);
+	@NotNull
 	public static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(Registries.RECIPE_SERIALIZER, BlueLibConstants.MOD_ID);
-	
+
 	@Override
 	public @NotNull NetworkManager getNetwork() {
 		return new NeoForgeNetworkManager();
@@ -39,7 +41,7 @@ public class NeoForgeRegistryHelper implements IRegistryHelper {
 		return RECIPE_SERIALIZERS.register(pId, pRecipeSerializer);
 	}
 
-	public static void register(IEventBus pModEventBus) {
+	public static void register(@NotNull IEventBus pModEventBus) {
 		RECIPE_TYPES.register(pModEventBus);
 		RECIPE_SERIALIZERS.register(pModEventBus);
 	}

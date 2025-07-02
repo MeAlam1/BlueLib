@@ -11,13 +11,15 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.loader.api.FabricLoader;
+import org.jetbrains.annotations.NotNull;
 import software.bluelib.event.ReloadHandler;
 import software.bluelib.example.event.VariantProvider;
 import software.bluelib.net.FabricNetworkManager;
 
 public class BlueLib implements ModInitializer {
 
-	private boolean hasInitialized = false;
+	@NotNull
+	private Boolean hasInitialized = false;
 
 	@Override
 	public void onInitialize() {
@@ -35,7 +37,8 @@ public class BlueLib implements ModInitializer {
 		FabricNetworkManager.registerServerHandlers();
 	}
 
-	private boolean isClientEnvironment() {
+	@NotNull
+	private Boolean isClientEnvironment() {
 		return FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT;
 	}
 

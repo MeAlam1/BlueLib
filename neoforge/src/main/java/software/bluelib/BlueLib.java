@@ -16,6 +16,7 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.InterModProcessEvent;
 import net.neoforged.fml.loading.FMLEnvironment;
+import org.jetbrains.annotations.NotNull;
 import software.bluelib.client.BlueLibClient;
 import software.bluelib.config.ConfigHolder;
 import software.bluelib.event.ReloadHandler;
@@ -26,7 +27,7 @@ import software.bluelib.platform.NeoForgeRegistryHelper;
 @Mod(BlueLibConstants.MOD_ID)
 public class BlueLib {
 
-	public BlueLib(IEventBus pModEventBus, ModContainer pModContainer) {
+	public BlueLib(@NotNull IEventBus pModEventBus, @NotNull ModContainer pModContainer) {
 		NeoForgeRegistryHelper.register(pModEventBus);
 
 		BlueLibCommon.doRegistration();
@@ -40,18 +41,18 @@ public class BlueLib {
 		ReloadHandler.registerProvider(new VariantProvider());
 	}
 
-	private void registerConfigs(ModContainer pModContainer) {
+	private void registerConfigs(@NotNull ModContainer pModContainer) {
 		pModContainer.registerConfig(ModConfig.Type.SERVER, ConfigHolder.MARKDOWN_SPEC, BlueLibConstants.MOD_ID + "-markdown.toml");
 		pModContainer.registerConfig(ModConfig.Type.SERVER, ConfigHolder.LOGGER_SPEC, BlueLibConstants.MOD_ID + "-logger.toml");
 	}
 
-	private void setupEventListeners(IEventBus pModEventBus) {
+	private void setupEventListeners(@NotNull IEventBus pModEventBus) {
 		pModEventBus.register(this);
 		pModEventBus.addListener(NeoForgeNetworkManager::registerMessages);
 	}
 
 	@SubscribeEvent(priority = EventPriority.LOWEST)
-	public void onLoadComplete(InterModProcessEvent pEvent) {
+	public void onLoadComplete(@NotNull InterModProcessEvent pEvent) {
 		BlueLibCommon.init();
 	}
 }
