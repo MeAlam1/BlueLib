@@ -29,7 +29,7 @@ public class RandomGenUtils {
 	public static @NotNull Double generateRandomDouble(@NotNull Double pMin, @NotNull Double pMax) {
 		if (pMin > pMax) {
 			Throwable throwable = new IllegalArgumentException("Minimum value must not be greater than maximum value.");
-			BaseLogger.log(true, BaseLogLevel.WARNING, BlueTranslation.log("math.error.gen", "random @NotNull Double"), throwable);
+			BaseLogger.log(true, BaseLogLevel.WARNING, BlueTranslation.log("math.error.gen", "random double"), throwable);
 			return 0.0;
 		}
 		return pMin + Math.random() * (pMax - pMin);
