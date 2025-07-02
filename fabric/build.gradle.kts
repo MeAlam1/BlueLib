@@ -1,5 +1,5 @@
-import net.fabricmc.loom.task.RemapJarTask
 import net.darkhax.curseforgegradle.TaskPublishCurseForge
+import net.fabricmc.loom.task.RemapJarTask
 
 plugins {
     id("bluelib-convention")
@@ -7,6 +7,8 @@ plugins {
     alias(libs.plugins.minotaur)
     alias(libs.plugins.curseforgegradle)
     alias(libs.plugins.loom)
+    alias(libs.plugins.com.diffplug.spotless)
+    alias(libs.plugins.com.github.hierynomus.license)
 }
 
 val modId: String by project
@@ -135,4 +137,33 @@ publishing {
 tasks.named<DefaultTask>("publish").configure {
     finalizedBy("modrinth")
     finalizedBy("publishToCurseForge")
+}
+
+spotless {
+    java {
+        indentWithTabs()
+        endWithNewline()
+        removeUnusedImports()
+        toggleOffOn()
+
+        // Pin version to 4.31 due to Spotless bug https://github.com/diffplug/spotless/issues/1992
+        eclipse("4.31").configFile(rootProject.file("codeformat/formatter-config.xml"))
+
+        importOrder()
+        custom("jetbrainsNullable") { fileContents: String ->
+            fileContents.replace("javax.annotation.Nullable", "org.jetbrains.annotations.Nullable")
+        }
+
+        bumpThisNumberIfACustomStepChanges(3)
+    }
+}
+
+license {
+    header = rootProject.file("HEADER")
+    include("**/*.java")
+    strictCheck = true
+
+    mapping("java", "SLASHSTAR_STYLE")
+
+    skipExistingHeaders = false
 }
