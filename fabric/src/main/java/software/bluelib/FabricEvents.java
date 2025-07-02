@@ -13,15 +13,15 @@ import net.fabricmc.fabric.api.message.v1.ServerMessageEvents;
 import software.bluelib.config.ConfigLoader;
 import software.bluelib.event.ChatHandler;
 import software.bluelib.event.CommandHandler;
-import software.bluelib.event.ReloadHandler;
+import software.bluelib.event.FabricReloadHandler;
 
 public class FabricEvents {
 
 	public static void register() {
-		ServerLifecycleEvents.SERVER_STARTING.register(ReloadHandler::onServerStart);
+		ServerLifecycleEvents.SERVER_STARTING.register(FabricReloadHandler::onServerStart);
 		ServerLifecycleEvents.SERVER_STARTED.register(ConfigLoader::createConfigs);
 		ServerLifecycleEvents.END_DATA_PACK_RELOAD.register(ConfigLoader::reloadConfigs);
-		ServerLifecycleEvents.END_DATA_PACK_RELOAD.register(ReloadHandler::onReload);
+		ServerLifecycleEvents.END_DATA_PACK_RELOAD.register(FabricReloadHandler::onReload);
 
 		ServerMessageEvents.ALLOW_CHAT_MESSAGE.register(ChatHandler::onAllowChat);
 

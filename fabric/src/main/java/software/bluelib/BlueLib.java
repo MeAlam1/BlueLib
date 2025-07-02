@@ -12,7 +12,7 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import org.jetbrains.annotations.NotNull;
-import software.bluelib.event.ReloadHandler;
+import software.bluelib.event.FabricReloadHandler;
 import software.bluelib.example.event.VariantProvider;
 import software.bluelib.net.FabricNetworkManager;
 
@@ -28,7 +28,7 @@ public class BlueLib implements ModInitializer {
 		clientEndTick();
 		registerNetwork();
 
-		ReloadHandler.registerProvider(new VariantProvider());
+		FabricReloadHandler.registerProvider(new VariantProvider());
 	}
 
 	private void registerNetwork() {

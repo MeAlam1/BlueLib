@@ -19,7 +19,7 @@ import net.neoforged.fml.loading.FMLEnvironment;
 import org.jetbrains.annotations.NotNull;
 import software.bluelib.client.BlueLibClient;
 import software.bluelib.config.ConfigHolder;
-import software.bluelib.event.ReloadHandler;
+import software.bluelib.event.NeoForgeReloadHandler;
 import software.bluelib.example.event.VariantProvider;
 import software.bluelib.net.NeoForgeNetworkManager;
 import software.bluelib.platform.NeoForgeRegistryHelper;
@@ -38,7 +38,7 @@ public class BlueLib {
 		registerConfigs(pModContainer);
 		setupEventListeners(pModEventBus);
 
-		ReloadHandler.registerProvider(new VariantProvider());
+		NeoForgeReloadHandler.registerProvider(new VariantProvider());
 	}
 
 	private void registerConfigs(@NotNull ModContainer pModContainer) {
