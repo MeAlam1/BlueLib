@@ -5,7 +5,7 @@
  * If a copy of the MIT License was not distributed with this file,
  * You can obtain one at https://opensource.org/licenses/MIT.
  */
-package software.bluelib.api.utils.schedular;
+package software.bluelib.api.utils.scheduler;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executors;
