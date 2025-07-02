@@ -21,8 +21,8 @@ import software.bluelib.net.messages.server.TestPacket;
  */
 public class TestPacketHandler implements ServerNetworkPacketHandler<TestPacket> {
 
-    @Override
-    public void handle(@NotNull TestPacket pPacket, @NotNull MinecraftServer pServer, @NotNull ServerPlayer pPlayer) {
-        BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("test", pPacket.value()));
-    }
+	@Override
+	public void handle(@NotNull TestPacket pPacket, @NotNull MinecraftServer pServer, @NotNull ServerPlayer pPlayer) {
+		BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("test", pPacket.value()));
+	}
 }

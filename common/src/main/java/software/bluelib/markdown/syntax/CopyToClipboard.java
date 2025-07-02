@@ -20,46 +20,46 @@ import software.bluelib.markdown.MarkdownFeature;
 @SuppressWarnings("unused")
 public class CopyToClipboard extends MarkdownFeature {
 
-    @NotNull
-    public MutableComponent apply(@NotNull MutableComponent pMessage, @NotNull String pTextToCopy) {
-        if (!MarkdownConfig.isCopyToClipboardEnabled) {
-            BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("markdown.copyToClipboard.disabled"));
-            return pMessage;
-        }
-        MutableComponent result = Component.empty();
+	@NotNull
+	public MutableComponent apply(@NotNull MutableComponent pMessage, @NotNull String pTextToCopy) {
+		if (!MarkdownConfig.isCopyToClipboardEnabled) {
+			BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("markdown.copyToClipboard.disabled"));
+			return pMessage;
+		}
+		MutableComponent result = Component.empty();
 
-        for (Component sibling : pMessage.getSiblings()) {
-            if (sibling instanceof MutableComponent mutableSibling) {
-                if (mutableSibling.getStyle().getClickEvent() == null) {
-                    mutableSibling.setStyle(mutableSibling.getStyle()
-                            .withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, pTextToCopy)));
-                }
-                result.append(mutableSibling);
-            } else {
-                result.append(sibling);
-            }
-        }
+		for (Component sibling : pMessage.getSiblings()) {
+			if (sibling instanceof MutableComponent mutableSibling) {
+				if (mutableSibling.getStyle().getClickEvent() == null) {
+					mutableSibling.setStyle(mutableSibling.getStyle()
+							.withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, pTextToCopy)));
+				}
+				result.append(mutableSibling);
+			} else {
+				result.append(sibling);
+			}
+		}
 
-        return result;
-    }
+		return result;
+	}
 
-    /**
-     * @return true if the CopyToClipboard feature is enabled, false otherwise.
-     * @deprecated Use {@link CopyToClipboard#isFeatureEnabled} instead.
-     */
-    @NotNull
-    @Deprecated(forRemoval = true, since = "2.2.0")
-    public static Boolean isCopyToClipboardEnabled() {
-        return MarkdownConfig.isCopyToClipboardEnabled;
-    }
+	/**
+	 * @return true if the CopyToClipboard feature is enabled, false otherwise.
+	 * @deprecated Use {@link CopyToClipboard#isFeatureEnabled} instead.
+	 */
+	@NotNull
+	@Deprecated(forRemoval = true, since = "2.2.0")
+	public static Boolean isCopyToClipboardEnabled() {
+		return MarkdownConfig.isCopyToClipboardEnabled;
+	}
 
-    @Override
-    protected @NotNull Boolean isFeatureEnabled() {
-        return MarkdownConfig.isCopyToClipboardEnabled;
-    }
+	@Override
+	protected @NotNull Boolean isFeatureEnabled() {
+		return MarkdownConfig.isCopyToClipboardEnabled;
+	}
 
-    @Override
-    protected @NotNull String getFeatureName() {
-        return "CopyToClipboard";
-    }
+	@Override
+	protected @NotNull String getFeatureName() {
+		return "CopyToClipboard";
+	}
 }

@@ -12,5 +12,5 @@ import org.jetbrains.annotations.NotNull;
 
 public interface RecipeAwareSlot {
 
-    void blueLib$setRecipeManager(@NotNull RecipeManager pRecipeManager);
+	void blueLib$setRecipeManager(@NotNull RecipeManager pRecipeManager);
 }

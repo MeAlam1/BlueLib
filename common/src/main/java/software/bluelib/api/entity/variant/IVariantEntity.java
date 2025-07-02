@@ -22,24 +22,24 @@ import software.bluelib.internal.BlueTranslation;
 @SuppressWarnings("unused")
 public interface IVariantEntity {
 
-    @NotNull
-    RandomSource random = RandomSource.create();
+	@NotNull
+	RandomSource random = RandomSource.create();
 
-    @Nullable
-    default String getRandomVariant(@NotNull List<String> pVariantNamesList, @Nullable String pDefaultVariant) {
-        if (pVariantNamesList.isEmpty()) {
-            BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("variant.list.empty", pDefaultVariant));
-            return pDefaultVariant;
-        }
-        int index = random.nextInt(pVariantNamesList.size());
-        String selectedVariant = pVariantNamesList.get(index);
-        BaseLogger.log(true, BaseLogLevel.SUCCESS, BlueTranslation.log("variant.random", selectedVariant, pVariantNamesList.size()));
-        return selectedVariant;
-    }
+	@Nullable
+	default String getRandomVariant(@NotNull List<String> pVariantNamesList, @Nullable String pDefaultVariant) {
+		if (pVariantNamesList.isEmpty()) {
+			BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("variant.list.empty", pDefaultVariant));
+			return pDefaultVariant;
+		}
+		int index = random.nextInt(pVariantNamesList.size());
+		String selectedVariant = pVariantNamesList.get(index);
+		BaseLogger.log(true, BaseLogLevel.SUCCESS, BlueTranslation.log("variant.random", selectedVariant, pVariantNamesList.size()));
+		return selectedVariant;
+	}
 
-    @Nullable
-    default List<String> getEntityVariants(@Nullable ResourceLocation pEntity) {
-        Set<String> variants = ParameterUtils.getVariantsOfEntity(pEntity);
-        return variants != null ? new ArrayList<>(variants) : null;
-    }
+	@Nullable
+	default List<String> getEntityVariants(@Nullable ResourceLocation pEntity) {
+		Set<String> variants = ParameterUtils.getVariantsOfEntity(pEntity);
+		return variants != null ? new ArrayList<>(variants) : null;
+	}
 }

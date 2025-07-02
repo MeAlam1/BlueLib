@@ -16,34 +16,34 @@ import org.jetbrains.annotations.NotNull;
 
 public class DelayedScheduler {
 
-    @NotNull
-    private static final ScheduledExecutorService EXECUTOR_SERVICE = Executors.newSingleThreadScheduledExecutor();
+	@NotNull
+	private static final ScheduledExecutorService EXECUTOR_SERVICE = Executors.newSingleThreadScheduledExecutor();
 
-    @NotNull
-    public static CompletableFuture<Void> schedule(@NotNull Runnable task, @NotNull Long delay, @NotNull TimeUnit unit) {
-        CompletableFuture<Void> future = new CompletableFuture<>();
-        EXECUTOR_SERVICE.schedule(() -> {
-            try {
-                task.run();
-                future.complete(null);
-            } catch (Exception pException) {
-                future.completeExceptionally(pException);
-            }
-        }, delay, unit);
-        return future;
-    }
+	@NotNull
+	public static CompletableFuture<Void> schedule(@NotNull Runnable task, @NotNull Long delay, @NotNull TimeUnit unit) {
+		CompletableFuture<Void> future = new CompletableFuture<>();
+		EXECUTOR_SERVICE.schedule(() -> {
+			try {
+				task.run();
+				future.complete(null);
+			} catch (Exception pException) {
+				future.completeExceptionally(pException);
+			}
+		}, delay, unit);
+		return future;
+	}
 
-    @NotNull
-    public static <A> CompletableFuture<A> schedule(@NotNull Supplier<A> supplier, @NotNull Long delay, @NotNull TimeUnit unit) {
-        CompletableFuture<A> future = new CompletableFuture<>();
-        EXECUTOR_SERVICE.schedule(() -> {
-            try {
-                A a = supplier.get();
-                future.complete(a);
-            } catch (Exception pException) {
-                future.completeExceptionally(pException);
-            }
-        }, delay, unit);
-        return future;
-    }
+	@NotNull
+	public static <A> CompletableFuture<A> schedule(@NotNull Supplier<A> supplier, @NotNull Long delay, @NotNull TimeUnit unit) {
+		CompletableFuture<A> future = new CompletableFuture<>();
+		EXECUTOR_SERVICE.schedule(() -> {
+			try {
+				A a = supplier.get();
+				future.complete(a);
+			} catch (Exception pException) {
+				future.completeExceptionally(pException);
+			}
+		}, delay, unit);
+		return future;
+	}
 }

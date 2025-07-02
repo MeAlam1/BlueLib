@@ -12,11 +12,11 @@ import org.jetbrains.annotations.NotNull;
 
 public interface IVariantProvider {
 
-    @NotNull
-    List<String> getEntityNames();
+	@NotNull
+	List<String> getEntityNames();
 
-    @NotNull
-    default String getBasePath() {
-        return "variant/entity/";
-    }
+	@NotNull
+	default String getBasePath() {
+		return "variant/entity/";
+	}
 }

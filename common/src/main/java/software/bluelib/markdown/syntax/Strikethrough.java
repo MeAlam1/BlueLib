@@ -17,29 +17,29 @@ import software.bluelib.markdown.MarkdownFeature;
 @SuppressWarnings("unused")
 public class Strikethrough extends MarkdownFeature {
 
-    public Strikethrough() {
-        prefix = MarkdownConfig.strikethroughPrefix;
-        suffix = MarkdownConfig.strikethroughSuffix;
-    }
+	public Strikethrough() {
+		prefix = MarkdownConfig.strikethroughPrefix;
+		suffix = MarkdownConfig.strikethroughSuffix;
+	}
 
-    @Override
-    protected void appendFormattedText(@NotNull String pText, @NotNull Style pOriginalStyle, @NotNull MutableComponent pResult) {
-        MutableComponent StrikethroughText = Component.literal(pText)
-                .setStyle(pOriginalStyle.withStrikethrough(true));
-        pResult.append(StrikethroughText);
-    }
+	@Override
+	protected void appendFormattedText(@NotNull String pText, @NotNull Style pOriginalStyle, @NotNull MutableComponent pResult) {
+		MutableComponent strikethroughText = Component.literal(pText)
+				.setStyle(pOriginalStyle.withStrikethrough(true));
+		pResult.append(strikethroughText);
+	}
 
-    @Override
-    protected @NotNull Boolean isFeatureEnabled() {
-        return MarkdownConfig.isStrikethroughEnabled;
-    }
+	@Override
+	protected @NotNull Boolean isFeatureEnabled() {
+		return MarkdownConfig.isStrikethroughEnabled;
+	}
 
-    @Override
-    protected @NotNull String getFeatureName() {
-        return "Strikethrough";
-    }
+	@Override
+	protected @NotNull String getFeatureName() {
+		return "Strikethrough";
+	}
 
-    public static boolean isStrikethroughEnabled() {
-        return MarkdownConfig.isStrikethroughEnabled;
-    }
+	public static boolean isStrikethroughEnabled() {
+		return MarkdownConfig.isStrikethroughEnabled;
+	}
 }

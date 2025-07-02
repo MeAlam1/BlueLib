@@ -13,16 +13,16 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public record VariantCache(
-        @Nullable JsonArray parameters) {
+		@Nullable JsonArray parameters) {
 
-    @Nullable
-    public JsonElement getParameter(@NotNull String pParameterName) {
-        if (parameters == null) return null;
-        for (JsonElement el : parameters) {
-            if (el.isJsonObject() && el.getAsJsonObject().has(pParameterName)) {
-                return el.getAsJsonObject().get(pParameterName);
-            }
-        }
-        return null;
-    }
+	@Nullable
+	public JsonElement getParameter(@NotNull String pParameterName) {
+		if (parameters == null) return null;
+		for (JsonElement el : parameters) {
+			if (el.isJsonObject() && el.getAsJsonObject().has(pParameterName)) {
+				return el.getAsJsonObject().get(pParameterName);
+			}
+		}
+		return null;
+	}
 }

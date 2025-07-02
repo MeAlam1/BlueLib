@@ -18,21 +18,21 @@ import software.bluelib.internal.BlueResource;
 
 public record VariantsPacket(@NotNull Set<String> allVariants) implements NetworkPacket<VariantsPacket> {
 
-    @NotNull
-    public static final ResourceLocation ID = BlueResource.resource("variants_packet");
+	@NotNull
+	public static final ResourceLocation ID = BlueResource.resource("variants_packet");
 
-    @Override
-    public void encode(@NotNull RegistryFriendlyByteBuf pBuffer) {
-        pBuffer.writeCollection(allVariants, FriendlyByteBuf::writeUtf);
-    }
+	@Override
+	public void encode(@NotNull RegistryFriendlyByteBuf pBuffer) {
+		pBuffer.writeCollection(allVariants, FriendlyByteBuf::writeUtf);
+	}
 
-    public static @NotNull VariantsPacket decode(@NotNull RegistryFriendlyByteBuf pBuffer) {
-        Set<String> allVariants = pBuffer.readCollection(HashSet::new, FriendlyByteBuf::readUtf);
-        return new VariantsPacket(allVariants);
-    }
+	public static @NotNull VariantsPacket decode(@NotNull RegistryFriendlyByteBuf pBuffer) {
+		Set<String> allVariants = pBuffer.readCollection(HashSet::new, FriendlyByteBuf::readUtf);
+		return new VariantsPacket(allVariants);
+	}
 
-    @Override
-    public @NotNull ResourceLocation getId() {
-        return ID;
-    }
+	@Override
+	public @NotNull ResourceLocation getId() {
+		return ID;
+	}
 }

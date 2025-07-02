@@ -17,13 +17,13 @@ import software.bluelib.recipe.brewing.BrewingRecipe;
 @ApiStatus.Internal
 public class BlueRecipeTypeRegistry {
 
-    public static void init() {}
+	public static void init() {}
 
-    @NotNull
-    public static final Supplier<RecipeType<BrewingRecipe>> BREWING = registerRecipeType("brewing", () -> new RecipeType<>() {});
+	@NotNull
+	public static final Supplier<RecipeType<BrewingRecipe>> BREWING = registerRecipeType("brewing", () -> new RecipeType<>() {});
 
-    @NotNull
-    private static <T extends RecipeType<?>> Supplier<T> registerRecipeType(@NotNull String pId, @NotNull Supplier<T> pRecipeType) {
-        return BlueLibConstants.PlatformHelper.REGISTRY.registerRecipeType(pId, pRecipeType);
-    }
+	@NotNull
+	private static <T extends RecipeType<?>> Supplier<T> registerRecipeType(@NotNull String pId, @NotNull Supplier<T> pRecipeType) {
+		return BlueLibConstants.PlatformHelper.REGISTRY.registerRecipeType(pId, pRecipeType);
+	}
 }

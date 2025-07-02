@@ -19,25 +19,25 @@ import software.bluelib.net.messages.client.OpenLoggerPacket;
 
 public class OpenLoggerScreenCommand {
 
-    public static void register(@NotNull CommandDispatcher<CommandSourceStack> pDispatcher) {
-        pDispatcher.register(
-                Commands.literal("log")
-                        .executes(OpenLoggerScreenCommand::openLogScreen));
-    }
+	public static void register(@NotNull CommandDispatcher<CommandSourceStack> pDispatcher) {
+		pDispatcher.register(
+				Commands.literal("log")
+						.executes(OpenLoggerScreenCommand::openLogScreen));
+	}
 
-    @NotNull
-    private static Integer openLogScreen(@NotNull CommandContext<CommandSourceStack> pContext) {
-        ServerPlayer player = pContext.getSource().getPlayer();
-        if (player == null) {
-            //TODO: Check en_us.json
-            pContext.getSource().sendFailure(BlueTranslation.translate("command.logger.no_player"));
-            return 0;
-        }
-        if (player.hasPermissions(3)) {
-            NetworkRegistry.sendPacketToPlayer(player, new OpenLoggerPacket());
-        } else {
-            pContext.getSource().sendFailure(BlueTranslation.translate("command.logger.no_permission"));
-        }
-        return 1;
-    }
+	@NotNull
+	private static Integer openLogScreen(@NotNull CommandContext<CommandSourceStack> pContext) {
+		ServerPlayer player = pContext.getSource().getPlayer();
+		if (player == null) {
+			//TODO: Check en_us.json
+			pContext.getSource().sendFailure(BlueTranslation.translate("command.logger.no_player"));
+			return 0;
+		}
+		if (player.hasPermissions(3)) {
+			NetworkRegistry.sendPacketToPlayer(player, new OpenLoggerPacket());
+		} else {
+			pContext.getSource().sendFailure(BlueTranslation.translate("command.logger.no_permission"));
+		}
+		return 1;
+	}
 }

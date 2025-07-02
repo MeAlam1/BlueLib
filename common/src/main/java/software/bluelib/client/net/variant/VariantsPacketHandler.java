@@ -15,14 +15,14 @@ import software.bluelib.net.messages.client.variant.VariantsPacket;
 
 public class VariantsPacketHandler implements ClientNetworkPacketHandler<VariantsPacket> {
 
-    private final Consumer<VariantsPacket> handlerFunction;
+	private final Consumer<VariantsPacket> handlerFunction;
 
-    public VariantsPacketHandler(@NotNull Consumer<VariantsPacket> pHandlerFunction) {
-        this.handlerFunction = pHandlerFunction;
-    }
+	public VariantsPacketHandler(@NotNull Consumer<VariantsPacket> pHandlerFunction) {
+		this.handlerFunction = pHandlerFunction;
+	}
 
-    @Override
-    public void handle(@NotNull VariantsPacket pPacket, @NotNull Minecraft pClient) {
-        handlerFunction.accept(pPacket);
-    }
+	@Override
+	public void handle(@NotNull VariantsPacket pPacket, @NotNull Minecraft pClient) {
+		handlerFunction.accept(pPacket);
+	}
 }

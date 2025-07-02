@@ -18,31 +18,31 @@ import software.bluelib.internal.BlueTranslation;
 
 public class JSONMerger {
 
-    public void mergeJsonObjects(@NotNull JsonObject pTarget, @NotNull JsonObject pSource) {
-        for (Map.Entry<String, JsonElement> entry : pSource.entrySet()) {
-            String key = entry.getKey();
-            JsonElement sourceElement = entry.getValue();
+	public void mergeJsonObjects(@NotNull JsonObject pTarget, @NotNull JsonObject pSource) {
+		for (Map.Entry<String, JsonElement> entry : pSource.entrySet()) {
+			String key = entry.getKey();
+			JsonElement sourceElement = entry.getValue();
 
-            if (pTarget.has(key)) {
-                JsonElement targetElement = pTarget.get(key);
+			if (pTarget.has(key)) {
+				JsonElement targetElement = pTarget.get(key);
 
-                if (targetElement.isJsonArray() && sourceElement.isJsonArray()) {
-                    JsonArray targetArray = targetElement.getAsJsonArray();
-                    JsonArray sourceArray = sourceElement.getAsJsonArray();
+				if (targetElement.isJsonArray() && sourceElement.isJsonArray()) {
+					JsonArray targetArray = targetElement.getAsJsonArray();
+					JsonArray sourceArray = sourceElement.getAsJsonArray();
 
-                    for (JsonElement element : sourceArray) {
-                        targetArray.add(element);
-                    }
+					for (JsonElement element : sourceArray) {
+						targetArray.add(element);
+					}
 
-                    BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("json.merge", key));
-                } else {
-                    pTarget.add(key, sourceElement);
-                    BaseLogger.log(true, BaseLogLevel.WARNING, BlueTranslation.log("json.overwrite", key));
-                }
-            } else {
-                pTarget.add(key, sourceElement);
-                BaseLogger.log(true, BaseLogLevel.SUCCESS, BlueTranslation.log("json.add", key));
-            }
-        }
-    }
+					BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("json.merge", key));
+				} else {
+					pTarget.add(key, sourceElement);
+					BaseLogger.log(true, BaseLogLevel.WARNING, BlueTranslation.log("json.overwrite", key));
+				}
+			} else {
+				pTarget.add(key, sourceElement);
+				BaseLogger.log(true, BaseLogLevel.SUCCESS, BlueTranslation.log("json.add", key));
+			}
+		}
+	}
 }

@@ -24,43 +24,43 @@ import software.bluelib.entity.variant.IVariantAccessor;
 @Mixin(LivingEntity.class)
 public class LivingEntityMixin implements IVariantAccessor {
 
-    @Unique
-    @NotNull
-    private static final EntityDataAccessor<String> bluelib$VARIANT = SynchedEntityData.defineId(LivingEntity.class, EntityDataSerializers.STRING);
+	@Unique
+	@NotNull
+	private static final EntityDataAccessor<String> bluelib$VARIANT = SynchedEntityData.defineId(LivingEntity.class, EntityDataSerializers.STRING);
 
-    @Inject(method = "defineSynchedData", at = @At("HEAD"))
-    protected void defineSynchedData(@NotNull SynchedEntityData.@NotNull Builder pBuilder, @NotNull CallbackInfo pCi) {
-        pBuilder.define(bluelib$VARIANT, "normal");
-    }
+	@Inject(method = "defineSynchedData", at = @At("HEAD"))
+	protected void defineSynchedData(@NotNull SynchedEntityData.@NotNull Builder pBuilder, @NotNull CallbackInfo pCi) {
+		pBuilder.define(bluelib$VARIANT, "normal");
+	}
 
-    @Inject(method = "addAdditionalSaveData", at = @At("HEAD"))
-    public void addAdditionalSaveData(@NotNull CompoundTag pCompound, @NotNull CallbackInfo pCi) {
-        pCompound.putString("Variant", bluelib$getVariantName());
-    }
+	@Inject(method = "addAdditionalSaveData", at = @At("HEAD"))
+	public void addAdditionalSaveData(@NotNull CompoundTag pCompound, @NotNull CallbackInfo pCi) {
+		pCompound.putString("Variant", bluelib$getVariantName());
+	}
 
-    @Inject(method = "readAdditionalSaveData", at = @At("HEAD"))
-    public void readAdditionalSaveData(@NotNull CompoundTag pCompound, @NotNull CallbackInfo pCi) {
-        bluelib$setVariantName(pCompound.getString("Variant"));
-    }
+	@Inject(method = "readAdditionalSaveData", at = @At("HEAD"))
+	public void readAdditionalSaveData(@NotNull CompoundTag pCompound, @NotNull CallbackInfo pCi) {
+		bluelib$setVariantName(pCompound.getString("Variant"));
+	}
 
-    @Unique
-    public void bluelib$setVariantName(@NotNull String pName) {
-        ((Entity) (Object) this).getEntityData().set(bluelib$VARIANT, pName);
-    }
+	@Unique
+	public void bluelib$setVariantName(@NotNull String pName) {
+		((Entity) (Object) this).getEntityData().set(bluelib$VARIANT, pName);
+	}
 
-    @Unique
-    @NotNull
-    public String bluelib$getVariantName() {
-        return ((Entity) (Object) this).getEntityData().get(bluelib$VARIANT);
-    }
+	@Unique
+	@NotNull
+	public String bluelib$getVariantName() {
+		return ((Entity) (Object) this).getEntityData().get(bluelib$VARIANT);
+	}
 
-    @Override
-    public void setEntityVariantName(@NotNull String pVariantName) {
-        bluelib$setVariantName(pVariantName);
-    }
+	@Override
+	public void setEntityVariantName(@NotNull String pVariantName) {
+		bluelib$setVariantName(pVariantName);
+	}
 
-    @Override
-    public @NotNull String getEntityVariantName() {
-        return bluelib$getVariantName();
-    }
+	@Override
+	public @NotNull String getEntityVariantName() {
+		return bluelib$getVariantName();
+	}
 }

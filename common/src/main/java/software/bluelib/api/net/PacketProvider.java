@@ -13,15 +13,15 @@ import software.bluelib.net.PacketRegisterInfo;
 
 public interface PacketProvider {
 
-    interface C2SPacketProvider {
+	interface C2SPacketProvider {
 
-        @NotNull
-        List<PacketRegisterInfo<?>> getC2SPacketInfoList();
-    }
+		@NotNull
+		List<PacketRegisterInfo<?>> getC2SPacketInfoList();
+	}
 
-    interface S2CPacketProvider {
+	interface S2CPacketProvider {
 
-        @NotNull
-        List<PacketRegisterInfo<?>> getS2CPacketInfoList();
-    }
+		@NotNull
+		List<PacketRegisterInfo<?>> getS2CPacketInfoList();
+	}
 }

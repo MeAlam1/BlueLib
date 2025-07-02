@@ -12,5 +12,5 @@ import org.jetbrains.annotations.NotNull;
 
 public interface ClientNetworkPacketHandler<T extends NetworkPacket<T>> extends PacketHandler<T> {
 
-    void handle(@NotNull T pPacket, @NotNull Minecraft pClient);
+	void handle(@NotNull T pPacket, @NotNull Minecraft pClient);
 }

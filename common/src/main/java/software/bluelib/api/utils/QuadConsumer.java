@@ -12,5 +12,5 @@ import org.jetbrains.annotations.NotNull;
 @FunctionalInterface
 public interface QuadConsumer<T, U, V, W> {
 
-    void accept(@NotNull T pT, @NotNull U pU, @NotNull V pV, @NotNull W pW);
+	void accept(@NotNull T pT, @NotNull U pU, @NotNull V pV, @NotNull W pW);
 }

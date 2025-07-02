@@ -26,57 +26,57 @@ import software.bluelib.internal.registry.BlueRecipeTypeRegistry;
 @ApiStatus.Internal
 public class BlueLibCommon {
 
-    private BlueLibCommon() {}
+	private BlueLibCommon() {}
 
-    public static void init() {
-        if (isDeveloperMode()) {
-            SCHEDULER.schedule(() -> {
-                ModIntegration.checkSupportMods();
-                BaseLogger.logBlueLib(Component.literal("**************************************************"));
-                BaseLogger.logBlueLib(Component.literal("                                                  "));
-                BaseLogger.logBlueLib(BlueTranslation.translate("mod.thank_you"));
-                BaseLogger.logBlueLib(BlueTranslation.translate("mod.thank_you.subtitle"));
-                BaseLogger.logBlueLib(Component.literal("                                                  "));
-                BaseLogger.logBlueLib(Component.literal("**************************************************"));
-                SCHEDULER.shutdown();
-            }, 5, TimeUnit.SECONDS);
-        }
-    }
+	public static void init() {
+		if (isDeveloperMode()) {
+			SCHEDULER.schedule(() -> {
+				ModIntegration.checkSupportMods();
+				BaseLogger.logBlueLib(Component.literal("**************************************************"));
+				BaseLogger.logBlueLib(Component.literal("                                                  "));
+				BaseLogger.logBlueLib(BlueTranslation.translate("mod.thank_you"));
+				BaseLogger.logBlueLib(BlueTranslation.translate("mod.thank_you.subtitle"));
+				BaseLogger.logBlueLib(Component.literal("                                                  "));
+				BaseLogger.logBlueLib(Component.literal("**************************************************"));
+				SCHEDULER.shutdown();
+			}, 5, TimeUnit.SECONDS);
+		}
+	}
 
-    public static void doRegistration() {
-        BlueLibConstants.init();
-        MixinBootstrap.init();
-        InternalNetworkRegistry.networkServer();
-        BlueRecipeTypeRegistry.init();
-        BlueRecipeSerializerRegistry.init();
-    }
+	public static void doRegistration() {
+		BlueLibConstants.init();
+		MixinBootstrap.init();
+		InternalNetworkRegistry.networkServer();
+		BlueRecipeTypeRegistry.init();
+		BlueRecipeSerializerRegistry.init();
+	}
 
-    public static void doClientRegistration() {
-        InternalNetworkRegistry.networkClient();
-    }
+	public static void doClientRegistration() {
+		InternalNetworkRegistry.networkClient();
+	}
 
-    @NotNull
-    public static Boolean isDeveloperMode() {
-        boolean isDevMode = BlueLibConstants.PlatformHelper.PLATFORM.isDevelopmentEnvironment();
-        if (isDevMode) {
-            BaseLogger.log(true, BaseLogLevel.INFO, Component.literal("Running in Developer mode."));
-        }
-        return isDevMode;
-    }
+	@NotNull
+	public static Boolean isDeveloperMode() {
+		boolean isDevMode = BlueLibConstants.PlatformHelper.PLATFORM.isDevelopmentEnvironment();
+		if (isDevMode) {
+			BaseLogger.log(true, BaseLogLevel.INFO, Component.literal("Running in Developer mode."));
+		}
+		return isDevMode;
+	}
 
-    protected static class InternalNetworkRegistry {
+	protected static class InternalNetworkRegistry {
 
-        @NotNull
-        private static BlueNetworkRegistry getNetwork() {
-            return new BlueNetworkRegistry();
-        }
+		@NotNull
+		private static BlueNetworkRegistry getNetwork() {
+			return new BlueNetworkRegistry();
+		}
 
-        private static void networkServer() {
-            NetworkRegistry.registerC2SPacketProvider(getNetwork());
-        }
+		private static void networkServer() {
+			NetworkRegistry.registerC2SPacketProvider(getNetwork());
+		}
 
-        private static void networkClient() {
-            NetworkRegistry.registerS2CPacketProvider(getNetwork());
-        }
-    }
+		private static void networkClient() {
+			NetworkRegistry.registerS2CPacketProvider(getNetwork());
+		}
+	}
 }

@@ -13,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
 
 public interface BlueJeiProvider {
 
-    void registerCategory(@NotNull IRecipeCategoryRegistration pRegistration);
+	void registerCategory(@NotNull IRecipeCategoryRegistration pRegistration);
 
-    void registerRecipes(@NotNull IRecipeRegistration pRegistration);
+	void registerRecipes(@NotNull IRecipeRegistration pRegistration);
 }

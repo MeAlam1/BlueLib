@@ -21,26 +21,26 @@ import software.bluelib.internal.BlueTranslation;
 @SuppressWarnings("unused")
 public class ChunkUtils {
 
-    private ChunkUtils() {}
+	private ChunkUtils() {}
 
-    @NotNull
-    public static Biome getBiomeOfChunk(@NotNull Level pLevel, @NotNull ChunkPos pChunkPos) {
-        try {
-            return pLevel.getBiome(pChunkPos.getWorldPosition()).value();
-        } catch (Exception pException) {
-            BaseLogger.log(true, BaseLogLevel.ERROR, BlueTranslation.log("chunk.biome.error"), pException);
-            throw pException;
-        }
-    }
+	@NotNull
+	public static Biome getBiomeOfChunk(@NotNull Level pLevel, @NotNull ChunkPos pChunkPos) {
+		try {
+			return pLevel.getBiome(pChunkPos.getWorldPosition()).value();
+		} catch (Exception pException) {
+			BaseLogger.log(true, BaseLogLevel.ERROR, BlueTranslation.log("chunk.biome.error"), pException);
+			throw pException;
+		}
+	}
 
-    @NotNull
-    public static Collection<BlockEntity> getChunkTileEntities(@NotNull Level pLevel, @NotNull ChunkPos pChunkPos) {
-        try {
-            LevelChunk chunk = pLevel.getChunk(pChunkPos.x, pChunkPos.z);
-            return chunk.getBlockEntities().values();
-        } catch (Exception pException) {
-            BaseLogger.log(true, BaseLogLevel.ERROR, BlueTranslation.log("chunk.tile.error"), pException);
-            throw pException;
-        }
-    }
+	@NotNull
+	public static Collection<BlockEntity> getChunkTileEntities(@NotNull Level pLevel, @NotNull ChunkPos pChunkPos) {
+		try {
+			LevelChunk chunk = pLevel.getChunk(pChunkPos.x, pChunkPos.z);
+			return chunk.getBlockEntities().values();
+		} catch (Exception pException) {
+			BaseLogger.log(true, BaseLogLevel.ERROR, BlueTranslation.log("chunk.tile.error"), pException);
+			throw pException;
+		}
+	}
 }

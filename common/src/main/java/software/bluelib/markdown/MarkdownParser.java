@@ -19,26 +19,26 @@ import software.bluelib.markdown.syntax.*;
 @SuppressWarnings("unused")
 public class MarkdownParser {
 
-    @NotNull
-    public static MutableComponent parseMarkdown(@NotNull Component pMessage) {
-        if (!MarkdownConfig.isMarkdownEnabled) {
-            BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("markdown.disabled"));
-            return pMessage.copy();
-        }
+	@NotNull
+	public static MutableComponent parseMarkdown(@NotNull Component pMessage) {
+		if (!MarkdownConfig.isMarkdownEnabled) {
+			BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("markdown.disabled"));
+			return pMessage.copy();
+		}
 
-        String text = pMessage.getString();
-        MutableComponent formattedMessage = Component.literal(text);
+		String text = pMessage.getString();
+		MutableComponent formattedMessage = Component.literal(text);
 
-        formattedMessage = new Bold().apply(formattedMessage);
-        formattedMessage = new Italic().apply(formattedMessage);
-        formattedMessage = new Underline().apply(formattedMessage);
-        formattedMessage = new Strikethrough().apply(formattedMessage);
-        formattedMessage = new Spoiler().apply(formattedMessage);
-        formattedMessage = new Hyperlink().apply(formattedMessage);
-        formattedMessage = new Color().apply(formattedMessage);
-        formattedMessage = new CopyToClipboard().apply(formattedMessage, text);
+		formattedMessage = new Bold().apply(formattedMessage);
+		formattedMessage = new Italic().apply(formattedMessage);
+		formattedMessage = new Underline().apply(formattedMessage);
+		formattedMessage = new Strikethrough().apply(formattedMessage);
+		formattedMessage = new Spoiler().apply(formattedMessage);
+		formattedMessage = new Hyperlink().apply(formattedMessage);
+		formattedMessage = new Color().apply(formattedMessage);
+		formattedMessage = new CopyToClipboard().apply(formattedMessage, text);
 
-        BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("markdown.message"));
-        return formattedMessage;
-    }
+		BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("markdown.message"));
+		return formattedMessage;
+	}
 }

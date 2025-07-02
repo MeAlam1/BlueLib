@@ -13,16 +13,16 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public record EntityCache(
-        @NotNull String formatVersion,
-        @NotNull Map<String, VariantCache> variants) {
+		@NotNull String formatVersion,
+		@NotNull Map<String, VariantCache> variants) {
 
-    @NotNull
-    public Set<String> getVariantNames() {
-        return variants.keySet();
-    }
+	@NotNull
+	public Set<String> getVariantNames() {
+		return variants.keySet();
+	}
 
-    @Nullable
-    public VariantCache getVariant(@NotNull String pName) {
-        return variants.get(pName);
-    }
+	@Nullable
+	public VariantCache getVariant(@NotNull String pName) {
+		return variants.get(pName);
+	}
 }

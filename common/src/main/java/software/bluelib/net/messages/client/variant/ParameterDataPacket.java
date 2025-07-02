@@ -18,23 +18,23 @@ import software.bluelib.internal.BlueResource;
 
 public record ParameterDataPacket(@NotNull JsonElement parameterData) implements NetworkPacket<ParameterDataPacket> {
 
-    @NotNull
-    public static final ResourceLocation ID = BlueResource.resource("parameter_data_packet");
+	@NotNull
+	public static final ResourceLocation ID = BlueResource.resource("parameter_data_packet");
 
-    @Override
-    public void encode(@NotNull RegistryFriendlyByteBuf pBuffer) {
-        pBuffer.writeUtf(parameterData.toString());
-    }
+	@Override
+	public void encode(@NotNull RegistryFriendlyByteBuf pBuffer) {
+		pBuffer.writeUtf(parameterData.toString());
+	}
 
-    @NotNull
-    public static ParameterDataPacket decode(@NotNull FriendlyByteBuf pBuffer) {
-        String json = pBuffer.readUtf();
-        JsonElement element = JsonParser.parseString(json);
-        return new ParameterDataPacket(element);
-    }
+	@NotNull
+	public static ParameterDataPacket decode(@NotNull FriendlyByteBuf pBuffer) {
+		String json = pBuffer.readUtf();
+		JsonElement element = JsonParser.parseString(json);
+		return new ParameterDataPacket(element);
+	}
 
-    @Override
-    public @NotNull ResourceLocation getId() {
-        return ID;
-    }
+	@Override
+	public @NotNull ResourceLocation getId() {
+		return ID;
+	}
 }

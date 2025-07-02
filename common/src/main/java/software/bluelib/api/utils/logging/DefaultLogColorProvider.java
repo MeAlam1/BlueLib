@@ -13,21 +13,21 @@ import org.jetbrains.annotations.NotNull;
 @SuppressWarnings("unused")
 public class DefaultLogColorProvider implements ILogColorProvider {
 
-    @Override
-    @NotNull
-    public Integer getColor(@NotNull Level pLevel) {
-        if (pLevel == BaseLogLevel.ERROR) {
-            return 0xFF0000; // Red
-        } else if (pLevel == BaseLogLevel.WARNING) {
-            return 0xFFA500; // Orange
-        } else if (pLevel == BaseLogLevel.INFO) {
-            return 0x5DADE2; // Blue
-        } else if (pLevel == BaseLogLevel.SUCCESS) {
-            return 0x00FF00; // Green
-        } else if (pLevel == BaseLogLevel.BLUELIB) {
-            return 0x00FF00; // Green
-        } else {
-            return 0xFFFFFF; // Default to white
-        }
-    }
+	@Override
+	@NotNull
+	public Integer getColor(@NotNull Level pLevel) {
+		if (pLevel == BaseLogLevel.ERROR) {
+			return 0xFF0000; // Red
+		} else if (pLevel == BaseLogLevel.WARNING) {
+			return 0xFFA500; // Orange
+		} else if (pLevel == BaseLogLevel.INFO) {
+			return 0x5DADE2; // Blue
+		} else if (pLevel == BaseLogLevel.SUCCESS) {
+			return 0x00FF00; // Green
+		} else if (pLevel == BaseLogLevel.BLUELIB) {
+			return 0x00FF00; // Green
+		} else {
+			return 0xFFFFFF; // Default to white
+		}
+	}
 }

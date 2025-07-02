@@ -14,21 +14,21 @@ import org.jetbrains.annotations.NotNull;
 
 public class LogCache {
 
-    @NotNull
-    private static final List<LogEntry> logEntries = Collections.synchronizedList(new ArrayList<>());
+	@NotNull
+	private static final List<LogEntry> logEntries = Collections.synchronizedList(new ArrayList<>());
 
-    public static void addLog(@NotNull String pMessage, @NotNull Integer pColor) {
-        logEntries.add(new LogEntry(pMessage, pColor));
-    }
+	public static void addLog(@NotNull String pMessage, @NotNull Integer pColor) {
+		logEntries.add(new LogEntry(pMessage, pColor));
+	}
 
-    @NotNull
-    public static List<LogEntry> getLogs() {
-        return new ArrayList<>(logEntries);
-    }
+	@NotNull
+	public static List<LogEntry> getLogs() {
+		return new ArrayList<>(logEntries);
+	}
 
-    public static void clearLogs() {
-        logEntries.clear();
-    }
+	public static void clearLogs() {
+		logEntries.clear();
+	}
 
-    public record LogEntry(@NotNull String message, @NotNull Integer color) {}
+	public record LogEntry(@NotNull String message, @NotNull Integer color) {}
 }

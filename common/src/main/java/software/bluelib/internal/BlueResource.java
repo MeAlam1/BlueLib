@@ -15,8 +15,8 @@ import software.bluelib.BlueLibConstants;
 @ApiStatus.Internal
 public class BlueResource {
 
-    @NotNull
-    public static ResourceLocation resource(@NotNull String pPath) {
-        return ResourceLocation.fromNamespaceAndPath(BlueLibConstants.MOD_ID, pPath);
-    }
+	@NotNull
+	public static ResourceLocation resource(@NotNull String pPath) {
+		return ResourceLocation.fromNamespaceAndPath(BlueLibConstants.MOD_ID, pPath);
+	}
 }

@@ -15,10 +15,10 @@ import software.bluelib.net.messages.client.OpenLoggerPacket;
 
 public class OpenLoggerPacketHandler implements ClientNetworkPacketHandler<OpenLoggerPacket> {
 
-    @Override
-    public void handle(@NotNull OpenLoggerPacket pPacket, @NotNull Minecraft pClient) {
-        pClient.execute(() -> {
-            pClient.setScreen(new LoggerScreen());
-        });
-    }
+	@Override
+	public void handle(@NotNull OpenLoggerPacket pPacket, @NotNull Minecraft pClient) {
+		pClient.execute(() -> {
+			pClient.setScreen(new LoggerScreen());
+		});
+	}
 }

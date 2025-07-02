@@ -15,13 +15,13 @@ import software.bluelib.api.entity.variant.IVariantProvider;
 @ApiStatus.Internal
 public class VariantProvider implements IVariantProvider {
 
-    @Override
-    public @NotNull List<String> getEntityNames() {
-        return List.of("example");
-    }
+	@Override
+	public @NotNull List<String> getEntityNames() {
+		return List.of("example");
+	}
 
-    @Override
-    public @NotNull String getBasePath() {
-        return IVariantProvider.super.getBasePath();
-    }
+	@Override
+	public @NotNull String getBasePath() {
+		return IVariantProvider.super.getBasePath();
+	}
 }

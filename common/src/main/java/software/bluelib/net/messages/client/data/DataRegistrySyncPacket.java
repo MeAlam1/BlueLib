@@ -17,35 +17,35 @@ import software.bluelib.api.net.NetworkPacket;
 
 public abstract class DataRegistrySyncPacket<T, N extends NetworkPacket<N>> implements NetworkPacket<N> {
 
-    @NotNull
-    private final Collection<T> registryEntries;
+	@NotNull
+	private final Collection<T> registryEntries;
 
-    @Nullable
-    public RegistryFriendlyByteBuf buffer;
+	@Nullable
+	public RegistryFriendlyByteBuf buffer;
 
-    @NotNull
-    public final ArrayList<T> entries = new ArrayList<>();
+	@NotNull
+	public final ArrayList<T> entries = new ArrayList<>();
 
-    public DataRegistrySyncPacket(@NotNull Collection<T> pRegistryEntries) {
-        this.registryEntries = pRegistryEntries;
-    }
+	public DataRegistrySyncPacket(@NotNull Collection<T> pRegistryEntries) {
+		this.registryEntries = pRegistryEntries;
+	}
 
-    @Override
-    public void encode(@NotNull RegistryFriendlyByteBuf pBuffer) {
-        RegistryFriendlyByteBuf newBuffer = new RegistryFriendlyByteBuf(Unpooled.buffer(), pBuffer.registryAccess());
-        newBuffer.writeCollection(registryEntries, (buf, entry) -> encodeEntry(newBuffer, entry));
-        pBuffer.writeInt(newBuffer.readableBytes());
-        pBuffer.writeBytes(newBuffer);
-    }
+	@Override
+	public void encode(@NotNull RegistryFriendlyByteBuf pBuffer) {
+		RegistryFriendlyByteBuf newBuffer = new RegistryFriendlyByteBuf(Unpooled.buffer(), pBuffer.registryAccess());
+		newBuffer.writeCollection(registryEntries, (buf, entry) -> encodeEntry(newBuffer, entry));
+		pBuffer.writeInt(newBuffer.readableBytes());
+		pBuffer.writeBytes(newBuffer);
+	}
 
-    protected void decodeBuffer(@NotNull RegistryFriendlyByteBuf pBuffer) {
-        int size = pBuffer.readInt();
-        this.buffer = new RegistryFriendlyByteBuf(pBuffer.readBytes(size), pBuffer.registryAccess());
-    }
+	protected void decodeBuffer(@NotNull RegistryFriendlyByteBuf pBuffer) {
+		int size = pBuffer.readInt();
+		this.buffer = new RegistryFriendlyByteBuf(pBuffer.readBytes(size), pBuffer.registryAccess());
+	}
 
-    public abstract void encodeEntry(@NotNull RegistryFriendlyByteBuf pBuffer, @NotNull T pEntry);
+	public abstract void encodeEntry(@NotNull RegistryFriendlyByteBuf pBuffer, @NotNull T pEntry);
 
-    public abstract T decodeEntry(@NotNull RegistryFriendlyByteBuf pBuffer);
+	public abstract T decodeEntry(@NotNull RegistryFriendlyByteBuf pBuffer);
 
-    public abstract void synchronizeDecoded(@NotNull Collection<T> pEntries);
+	public abstract void synchronizeDecoded(@NotNull Collection<T> pEntries);
 }

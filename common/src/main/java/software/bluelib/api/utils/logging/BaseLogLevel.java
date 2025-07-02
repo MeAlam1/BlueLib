@@ -14,19 +14,19 @@ import org.jetbrains.annotations.NotNull;
 @SuppressWarnings("unused")
 public class BaseLogLevel {
 
-    @NotNull
-    public static final Level INFO = new Level("INFO", Level.INFO.intValue()) {};
+	@NotNull
+	public static final Level INFO = new Level("INFO", Level.INFO.intValue()) {};
 
-    @NotNull
-    public static final Level ERROR = new Level("ERROR", Level.SEVERE.intValue()) {};
+	@NotNull
+	public static final Level ERROR = new Level("ERROR", Level.SEVERE.intValue()) {};
 
-    @NotNull
-    public static final Level WARNING = new Level("WARNING", Level.WARNING.intValue()) {};
+	@NotNull
+	public static final Level WARNING = new Level("WARNING", Level.WARNING.intValue()) {};
 
-    @NotNull
-    public static final Level SUCCESS = new Level("SUCCESS", Level.INFO.intValue() + 50) {};
+	@NotNull
+	public static final Level SUCCESS = new Level("SUCCESS", Level.INFO.intValue() + 50) {};
 
-    @NotNull
-    @ApiStatus.Internal
-    public static final Level BLUELIB = new Level("BlueLib Developer", Level.INFO.intValue() + 50) {};
+	@NotNull
+	@ApiStatus.Internal
+	public static final Level BLUELIB = new Level("BlueLib Developer", Level.INFO.intValue() + 50) {};
 }

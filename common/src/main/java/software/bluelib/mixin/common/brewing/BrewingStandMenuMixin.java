@@ -28,18 +28,18 @@ import software.bluelib.recipe.brewing.RecipeAwareSlot;
 @Mixin(BrewingStandMenu.class)
 public abstract class BrewingStandMenuMixin {
 
-    @Inject(method = "<init>(ILnet/minecraft/world/entity/player/Inventory;Lnet/minecraft/world/Container;Lnet/minecraft/world/inventory/ContainerData;)V", at = @At("TAIL"))
-    private void captureLevel(int pContainerId, @NotNull Inventory pPlayerInventory, @NotNull Container pBrewingStandContainer, @NotNull ContainerData pBrewingStandData, @NotNull CallbackInfo pCi) {
-        var recipeManager = pPlayerInventory.player.level().getRecipeManager();
-        for (Slot slot : ((BrewingStandMenu) (Object) this).slots) {
-            if (slot instanceof RecipeAwareSlot awareSlot) {
-                awareSlot.blueLib$setRecipeManager(recipeManager);
-            }
-        }
-    }
+	@Inject(method = "<init>(ILnet/minecraft/world/entity/player/Inventory;Lnet/minecraft/world/Container;Lnet/minecraft/world/inventory/ContainerData;)V", at = @At("TAIL"))
+	private void captureLevel(int pContainerId, @NotNull Inventory pPlayerInventory, @NotNull Container pBrewingStandContainer, @NotNull ContainerData pBrewingStandData, @NotNull CallbackInfo pCi) {
+		var recipeManager = pPlayerInventory.player.level().getRecipeManager();
+		for (Slot slot : ((BrewingStandMenu) (Object) this).slots) {
+			if (slot instanceof RecipeAwareSlot awareSlot) {
+				awareSlot.blueLib$setRecipeManager(recipeManager);
+			}
+		}
+	}
 
-    @WrapOperation(method = "quickMoveStack", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/inventory/BrewingStandMenu$PotionSlot;mayPlaceItem(Lnet/minecraft/world/item/ItemStack;)Z"))
-    private boolean blueLib$isPotionBottle(@NotNull ItemStack pStack, @NotNull Operation<Boolean> pOriginal, @Local(argsOnly = true) @NotNull Player pPlayer) {
-        return BrewingRecipe.isBottle(pStack, pPlayer.level().getRecipeManager()) || pOriginal.call(pStack);
-    }
+	@WrapOperation(method = "quickMoveStack", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/inventory/BrewingStandMenu$PotionSlot;mayPlaceItem(Lnet/minecraft/world/item/ItemStack;)Z"))
+	private boolean blueLib$isPotionBottle(@NotNull ItemStack pStack, @NotNull Operation<Boolean> pOriginal, @Local(argsOnly = true) @NotNull Player pPlayer) {
+		return BrewingRecipe.isBottle(pStack, pPlayer.level().getRecipeManager()) || pOriginal.call(pStack);
+	}
 }

@@ -22,18 +22,18 @@ import software.bluelib.recipe.brewing.RecipeAwareSlot;
 @Mixin(BrewingStandMenu.IngredientsSlot.class)
 public class IngredientSlotMixin implements RecipeAwareSlot {
 
-    @Unique
-    private RecipeManager bluelib$recipeManager;
+	@Unique
+	private RecipeManager bluelib$recipeManager;
 
-    @Override
-    public void blueLib$setRecipeManager(@NotNull RecipeManager pRecipeManager) {
-        this.bluelib$recipeManager = pRecipeManager;
-    }
+	@Override
+	public void blueLib$setRecipeManager(@NotNull RecipeManager pRecipeManager) {
+		this.bluelib$recipeManager = pRecipeManager;
+	}
 
-    @Inject(method = "mayPlace", at = @At("HEAD"), cancellable = true)
-    private void blueLib$mayPlace(@NotNull ItemStack pStack, @NotNull CallbackInfoReturnable<Boolean> pCir) {
-        if (BrewingRecipe.isInput(pStack, bluelib$recipeManager)) {
-            pCir.setReturnValue(true);
-        }
-    }
+	@Inject(method = "mayPlace", at = @At("HEAD"), cancellable = true)
+	private void blueLib$mayPlace(@NotNull ItemStack pStack, @NotNull CallbackInfoReturnable<Boolean> pCir) {
+		if (BrewingRecipe.isInput(pStack, bluelib$recipeManager)) {
+			pCir.setReturnValue(true);
+		}
+	}
 }

@@ -11,8 +11,8 @@ import org.jetbrains.annotations.NotNull;
 
 public interface IVariantAccessor {
 
-    void setEntityVariantName(@NotNull String pVariantName);
+	void setEntityVariantName(@NotNull String pVariantName);
 
-    @NotNull
-    String getEntityVariantName();
+	@NotNull
+	String getEntityVariantName();
 }

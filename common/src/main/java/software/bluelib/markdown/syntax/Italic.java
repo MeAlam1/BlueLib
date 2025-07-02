@@ -17,29 +17,29 @@ import software.bluelib.markdown.MarkdownFeature;
 @SuppressWarnings("unused")
 public class Italic extends MarkdownFeature {
 
-    public Italic() {
-        prefix = MarkdownConfig.italicPrefix;
-        suffix = MarkdownConfig.italicSuffix;
-    }
+	public Italic() {
+		prefix = MarkdownConfig.italicPrefix;
+		suffix = MarkdownConfig.italicSuffix;
+	}
 
-    @Override
-    protected void appendFormattedText(@NotNull String pText, @NotNull Style pOriginalStyle, @NotNull MutableComponent pResult) {
-        MutableComponent italicText = Component.literal(pText)
-                .setStyle(pOriginalStyle.withItalic(true));
-        pResult.append(italicText);
-    }
+	@Override
+	protected void appendFormattedText(@NotNull String pText, @NotNull Style pOriginalStyle, @NotNull MutableComponent pResult) {
+		MutableComponent italicText = Component.literal(pText)
+				.setStyle(pOriginalStyle.withItalic(true));
+		pResult.append(italicText);
+	}
 
-    @Override
-    protected @NotNull Boolean isFeatureEnabled() {
-        return MarkdownConfig.isItalicEnabled;
-    }
+	@Override
+	protected @NotNull Boolean isFeatureEnabled() {
+		return MarkdownConfig.isItalicEnabled;
+	}
 
-    @Override
-    protected @NotNull String getFeatureName() {
-        return "Italic";
-    }
+	@Override
+	protected @NotNull String getFeatureName() {
+		return "Italic";
+	}
 
-    public static boolean isItalicEnabled() {
-        return MarkdownConfig.isItalicEnabled;
-    }
+	public static boolean isItalicEnabled() {
+		return MarkdownConfig.isItalicEnabled;
+	}
 }

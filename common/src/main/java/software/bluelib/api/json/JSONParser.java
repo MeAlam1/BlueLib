@@ -28,53 +28,53 @@ import software.bluelib.internal.BlueTranslation;
 
 public abstract class JSONParser {
 
-    @NotNull
-    protected Map<String, JsonObject> dataMap = new HashMap<>();
+	@NotNull
+	protected Map<String, JsonObject> dataMap = new HashMap<>();
 
-    @NotNull
-    protected static final Gson gson = new Gson();
+	@NotNull
+	protected static final Gson gson = new Gson();
 
-    @NotNull
-    protected static final JSONMerger jsonMerger = new JSONMerger();
+	@NotNull
+	protected static final JSONMerger jsonMerger = new JSONMerger();
 
-    @NotNull
-    protected JsonObject mergedJsonObject = new JsonObject();
+	@NotNull
+	protected JsonObject mergedJsonObject = new JsonObject();
 
-    public void loadData(@NotNull String pFolderPath, @NotNull ResourceManager pResourceManager) {
-        mergedJsonObject = new JsonObject();
+	public void loadData(@NotNull String pFolderPath, @NotNull ResourceManager pResourceManager) {
+		mergedJsonObject = new JsonObject();
 
-        Collection<ResourceLocation> resources = pResourceManager.listResources(pFolderPath, path -> path.getPath().endsWith(".json")).keySet();
+		Collection<ResourceLocation> resources = pResourceManager.listResources(pFolderPath, path -> path.getPath().endsWith(".json")).keySet();
 
-        BaseLogger.log(true, BaseLogLevel.SUCCESS, BlueTranslation.log("json.found", pFolderPath));
+		BaseLogger.log(true, BaseLogLevel.SUCCESS, BlueTranslation.log("json.found", pFolderPath));
 
-        for (ResourceLocation resourceLocation : resources) {
-            try {
-                Optional<Resource> optionalResource = pResourceManager.getResource(resourceLocation);
-                if (optionalResource.isPresent()) {
-                    Resource resource = optionalResource.get();
-                    try (InputStream inputStream = resource.open();
-                            InputStreamReader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8)) {
+		for (ResourceLocation resourceLocation : resources) {
+			try {
+				Optional<Resource> optionalResource = pResourceManager.getResource(resourceLocation);
+				if (optionalResource.isPresent()) {
+					Resource resource = optionalResource.get();
+					try (InputStream inputStream = resource.open();
+							InputStreamReader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8)) {
 
-                        JsonElement element = GsonHelper.fromJson(gson, reader, JsonElement.class);
-                        if (element.isJsonObject()) {
-                            JsonObject jsonObject = element.getAsJsonObject();
-                            jsonMerger.mergeJsonObjects(mergedJsonObject, jsonObject);
-                        }
-                    }
-                }
-            } catch (Exception pException) {
-                BaseLogger.log(true, BaseLogLevel.ERROR, BlueTranslation.log("json.failed", resourceLocation.toString()), pException);
-            }
-        }
-    }
+						JsonElement element = GsonHelper.fromJson(gson, reader, JsonElement.class);
+						if (element.isJsonObject()) {
+							JsonObject jsonObject = element.getAsJsonObject();
+							jsonMerger.mergeJsonObjects(mergedJsonObject, jsonObject);
+						}
+					}
+				}
+			} catch (Exception pException) {
+				BaseLogger.log(true, BaseLogLevel.ERROR, BlueTranslation.log("json.failed", resourceLocation.toString()), pException);
+			}
+		}
+	}
 
-    @NotNull
-    public Map<String, JsonObject> getDataMap() {
-        return dataMap;
-    }
+	@NotNull
+	public Map<String, JsonObject> getDataMap() {
+		return dataMap;
+	}
 
-    @NotNull
-    public JsonObject getMergedJsonObject() {
-        return mergedJsonObject;
-    }
+	@NotNull
+	public JsonObject getMergedJsonObject() {
+		return mergedJsonObject;
+	}
 }

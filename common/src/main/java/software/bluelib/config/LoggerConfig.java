@@ -9,6 +9,6 @@ package software.bluelib.config;
 
 public class LoggerConfig {
 
-    public static boolean isBlueLibLoggingEnabled = true;
-    public static boolean isLoggingEnabled = true;
+	public static boolean isBlueLibLoggingEnabled = true;
+	public static boolean isLoggingEnabled = true;
 }

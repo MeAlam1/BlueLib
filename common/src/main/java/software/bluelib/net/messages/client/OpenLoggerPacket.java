@@ -16,19 +16,19 @@ import software.bluelib.internal.BlueResource;
 
 public record OpenLoggerPacket() implements NetworkPacket<OpenLoggerPacket> {
 
-    @NotNull
-    public static final ResourceLocation ID = BlueResource.resource("open_screen_packet");
+	@NotNull
+	public static final ResourceLocation ID = BlueResource.resource("open_screen_packet");
 
-    @Override
-    public void encode(@NotNull RegistryFriendlyByteBuf pBuffer) {}
+	@Override
+	public void encode(@NotNull RegistryFriendlyByteBuf pBuffer) {}
 
-    @NotNull
-    public static OpenLoggerPacket decode(@NotNull FriendlyByteBuf pBuffer) {
-        return new OpenLoggerPacket();
-    }
+	@NotNull
+	public static OpenLoggerPacket decode(@NotNull FriendlyByteBuf pBuffer) {
+		return new OpenLoggerPacket();
+	}
 
-    @Override
-    public @NotNull ResourceLocation getId() {
-        return ID;
-    }
+	@Override
+	public @NotNull ResourceLocation getId() {
+		return ID;
+	}
 }

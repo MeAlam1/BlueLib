@@ -16,7 +16,7 @@ import software.bluelib.commands.OpenLoggerScreenCommand;
 @ApiStatus.Internal
 public class BlueCommandRegistry {
 
-    public static void registerCommands(@NotNull CommandDispatcher<CommandSourceStack> pDispatcher) {
-        OpenLoggerScreenCommand.register(pDispatcher);
-    }
+	public static void registerCommands(@NotNull CommandDispatcher<CommandSourceStack> pDispatcher) {
+		OpenLoggerScreenCommand.register(pDispatcher);
+	}
 }

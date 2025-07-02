@@ -25,37 +25,37 @@ import software.bluelib.loader.cache.variants.EntityCache;
 
 public class ResourceCache extends BlueLoader {
 
-    @NotNull
-    public static Map<ResourceLocation, EntityCache> VARIANTS = Collections.emptyMap();
+	@NotNull
+	public static Map<ResourceLocation, EntityCache> VARIANTS = Collections.emptyMap();
 
-    @NotNull
-    public static Map<ResourceLocation, EntityCache> getVariants() {
-        return VARIANTS;
-    }
+	@NotNull
+	public static Map<ResourceLocation, EntityCache> getVariants() {
+		return VARIANTS;
+	}
 
-    public static void registerServerReloadListener(@NotNull MinecraftServer pServer, @NotNull List<IVariantProvider> pProviders) {
-        ResourceCache.reloadServer(pProviders, pServer.getResourceManager(), Util.backgroundExecutor(), pServer);
-    }
+	public static void registerServerReloadListener(@NotNull MinecraftServer pServer, @NotNull List<IVariantProvider> pProviders) {
+		ResourceCache.reloadServer(pProviders, pServer.getResourceManager(), Util.backgroundExecutor(), pServer);
+	}
 
-    public static CompletableFuture<Void> reloadServer(
-            @NotNull List<IVariantProvider> pProviders,
-            @NotNull ResourceManager pResourceManager,
-            @NotNull Executor pBackgroundExecutor,
-            @NotNull Executor pGameExecutor) {
-        clearServerCaches();
+	public static CompletableFuture<Void> reloadServer(
+			@NotNull List<IVariantProvider> pProviders,
+			@NotNull ResourceManager pResourceManager,
+			@NotNull Executor pBackgroundExecutor,
+			@NotNull Executor pGameExecutor) {
+		clearServerCaches();
 
-        CompletableFuture<Map<ResourceLocation, EntityCache>> variants = loadVariants(pBackgroundExecutor, pResourceManager, pProviders);
-        BaseLogger.log(true, BaseLogLevel.INFO, "Loaded variants map: " + variants.join());
+		CompletableFuture<Map<ResourceLocation, EntityCache>> variants = loadVariants(pBackgroundExecutor, pResourceManager, pProviders);
+		BaseLogger.log(true, BaseLogLevel.INFO, "Loaded variants map: " + variants.join());
 
-        return CompletableFuture.allOf(variants)
-                .thenRunAsync(() -> {
-                    ResourceCache.VARIANTS = variants.join();
+		return CompletableFuture.allOf(variants)
+				.thenRunAsync(() -> {
+					ResourceCache.VARIANTS = variants.join();
 
-                    BaseLogger.log(true, BaseLogLevel.INFO, "Variants Cache: " + ResourceCache.VARIANTS);
-                }, pGameExecutor);
-    }
+					BaseLogger.log(true, BaseLogLevel.INFO, "Variants Cache: " + ResourceCache.VARIANTS);
+				}, pGameExecutor);
+	}
 
-    public static void clearServerCaches() {
-        ResourceCache.VARIANTS = Collections.emptyMap();
-    }
+	public static void clearServerCaches() {
+		ResourceCache.VARIANTS = Collections.emptyMap();
+	}
 }

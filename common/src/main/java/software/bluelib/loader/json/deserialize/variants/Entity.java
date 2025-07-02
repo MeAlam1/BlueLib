@@ -15,22 +15,22 @@ import net.minecraft.util.GsonHelper;
 import org.jetbrains.annotations.NotNull;
 
 public record Entity(
-        @NotNull String formatVersion,
-        @NotNull Map<String, Variant> variants) {
+		@NotNull String formatVersion,
+		@NotNull Map<String, Variant> variants) {
 
-    public static JsonDeserializer<Entity> deserializer() throws JsonParseException {
-        return (json, type, context) -> {
-            JsonObject obj = json.getAsJsonObject();
+	public static JsonDeserializer<Entity> deserializer() throws JsonParseException {
+		return (json, type, context) -> {
+			JsonObject obj = json.getAsJsonObject();
 
-            String formatVersion = GsonHelper.getAsString(obj, "format_version", "1.0.0");
-            Map<String, Variant> variants = new java.util.HashMap<>();
-            for (String variantName : obj.keySet()) {
-                variants.put(variantName, context.deserialize(obj.get(variantName), Variant.class));
-            }
-            return new Entity(
-                    formatVersion,
-                    variants);
+			String formatVersion = GsonHelper.getAsString(obj, "format_version", "1.0.0");
+			Map<String, Variant> variants = new java.util.HashMap<>();
+			for (String variantName : obj.keySet()) {
+				variants.put(variantName, context.deserialize(obj.get(variantName), Variant.class));
+			}
+			return new Entity(
+					formatVersion,
+					variants);
 
-        };
-    }
+		};
+	}
 }

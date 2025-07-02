@@ -19,21 +19,21 @@ import software.bluelib.net.serverHandling.TestPacketHandler;
  */
 public record TestPacket(@NotNull Boolean value) implements NetworkPacket<TestPacket> {
 
-    @NotNull
-    public static final ResourceLocation ID = BlueResource.resource("test_packet");
+	@NotNull
+	public static final ResourceLocation ID = BlueResource.resource("test_packet");
 
-    @Override
-    public void encode(@NotNull RegistryFriendlyByteBuf pBuffer) {
-        pBuffer.writeBoolean(value);
-    }
+	@Override
+	public void encode(@NotNull RegistryFriendlyByteBuf pBuffer) {
+		pBuffer.writeBoolean(value);
+	}
 
-    @NotNull
-    public static TestPacket decode(@NotNull RegistryFriendlyByteBuf pBuffer) {
-        return new TestPacket(pBuffer.readBoolean());
-    }
+	@NotNull
+	public static TestPacket decode(@NotNull RegistryFriendlyByteBuf pBuffer) {
+		return new TestPacket(pBuffer.readBoolean());
+	}
 
-    @Override
-    public @NotNull ResourceLocation getId() {
-        return ID;
-    }
+	@Override
+	public @NotNull ResourceLocation getId() {
+		return ID;
+	}
 }

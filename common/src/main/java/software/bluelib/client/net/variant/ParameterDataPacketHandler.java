@@ -15,14 +15,14 @@ import software.bluelib.net.messages.client.variant.ParameterDataPacket;
 
 public class ParameterDataPacketHandler implements ClientNetworkPacketHandler<ParameterDataPacket> {
 
-    private final Consumer<ParameterDataPacket> handlerFunction;
+	private final Consumer<ParameterDataPacket> handlerFunction;
 
-    public ParameterDataPacketHandler(@NotNull Consumer<ParameterDataPacket> pHandlerFunction) {
-        this.handlerFunction = pHandlerFunction;
-    }
+	public ParameterDataPacketHandler(@NotNull Consumer<ParameterDataPacket> pHandlerFunction) {
+		this.handlerFunction = pHandlerFunction;
+	}
 
-    @Override
-    public void handle(@NotNull ParameterDataPacket pPacket, @NotNull Minecraft pClient) {
-        handlerFunction.accept(pPacket);
-    }
+	@Override
+	public void handle(@NotNull ParameterDataPacket pPacket, @NotNull Minecraft pClient) {
+		handlerFunction.accept(pPacket);
+	}
 }

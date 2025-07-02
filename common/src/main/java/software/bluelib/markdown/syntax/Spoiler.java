@@ -17,29 +17,29 @@ import software.bluelib.markdown.MarkdownFeature;
 @SuppressWarnings("unused")
 public class Spoiler extends MarkdownFeature {
 
-    public Spoiler() {
-        prefix = MarkdownConfig.spoilerPrefix;
-        suffix = MarkdownConfig.spoilerSuffix;
-    }
+	public Spoiler() {
+		prefix = MarkdownConfig.spoilerPrefix;
+		suffix = MarkdownConfig.spoilerSuffix;
+	}
 
-    @Override
-    protected void appendFormattedText(@NotNull String pText, @NotNull Style pOriginalStyle, @NotNull MutableComponent pResult) {
-        MutableComponent SpoilerText = Component.literal(pText)
-                .setStyle(pOriginalStyle.withObfuscated(true));
-        pResult.append(SpoilerText);
-    }
+	@Override
+	protected void appendFormattedText(@NotNull String pText, @NotNull Style pOriginalStyle, @NotNull MutableComponent pResult) {
+		MutableComponent SpoilerText = Component.literal(pText)
+				.setStyle(pOriginalStyle.withObfuscated(true));
+		pResult.append(SpoilerText);
+	}
 
-    @Override
-    protected @NotNull Boolean isFeatureEnabled() {
-        return MarkdownConfig.isSpoilerEnabled;
-    }
+	@Override
+	protected @NotNull Boolean isFeatureEnabled() {
+		return MarkdownConfig.isSpoilerEnabled;
+	}
 
-    @Override
-    protected @NotNull String getFeatureName() {
-        return "Spoiler";
-    }
+	@Override
+	protected @NotNull String getFeatureName() {
+		return "Spoiler";
+	}
 
-    public static Boolean isSpoilerEnabled() {
-        return MarkdownConfig.isSpoilerEnabled;
-    }
+	public static Boolean isSpoilerEnabled() {
+		return MarkdownConfig.isSpoilerEnabled;
+	}
 }

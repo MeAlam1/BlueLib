@@ -19,32 +19,32 @@ import software.bluelib.api.event.mod.ModMeta;
 @SuppressWarnings("unused")
 public interface IPlatformHelper {
 
-    @NotNull
-    String getPlatformName();
+	@NotNull
+	String getPlatformName();
 
-    @NotNull
-    Boolean isModLoaded(@NotNull String pModId);
+	@NotNull
+	Boolean isModLoaded(@NotNull String pModId);
 
-    @NotNull
-    Set<String> getLoadedMods();
+	@NotNull
+	Set<String> getLoadedMods();
 
-    @NotNull
-    List<ModMeta> getLoadedModMetadata();
+	@NotNull
+	List<ModMeta> getLoadedModMetadata();
 
-    @NotNull
-    Boolean isDevelopmentEnvironment();
+	@NotNull
+	Boolean isDevelopmentEnvironment();
 
-    @NotNull
-    default String getEnvironmentName() {
-        return isDevelopmentEnvironment() ? "development" : "production";
-    }
+	@NotNull
+	default String getEnvironmentName() {
+		return isDevelopmentEnvironment() ? "development" : "production";
+	}
 
-    @NotNull
-    Environment getEnvironment();
+	@NotNull
+	Environment getEnvironment();
 
-    @NotNull
-    ModAPI getAPI();
+	@NotNull
+	ModAPI getAPI();
 
-    @Nullable
-    MinecraftServer getServer();
+	@Nullable
+	MinecraftServer getServer();
 }

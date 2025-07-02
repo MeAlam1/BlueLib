@@ -12,6 +12,6 @@ import org.jetbrains.annotations.NotNull;
 
 public interface ILogColorProvider {
 
-    @NotNull
-    Integer getColor(@NotNull Level pLevel);
+	@NotNull
+	Integer getColor(@NotNull Level pLevel);
 }

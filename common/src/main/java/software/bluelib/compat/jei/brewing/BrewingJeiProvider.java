@@ -21,24 +21,24 @@ import software.bluelib.internal.registry.BlueRecipeTypeRegistry;
 
 public class BrewingJeiProvider implements BlueJeiProvider {
 
-    @Override
-    public void registerCategory(@NotNull IRecipeCategoryRegistration pRegistration) {}
+	@Override
+	public void registerCategory(@NotNull IRecipeCategoryRegistration pRegistration) {}
 
-    @Override
-    public void registerRecipes(@NotNull IRecipeRegistration pRegistration) {
-        RecipeManager recipeManager = Minecraft.getInstance().level != null
-                ? Minecraft.getInstance().level.getRecipeManager()
-                : null;
+	@Override
+	public void registerRecipes(@NotNull IRecipeRegistration pRegistration) {
+		RecipeManager recipeManager = Minecraft.getInstance().level != null
+				? Minecraft.getInstance().level.getRecipeManager()
+				: null;
 
-        if (recipeManager == null) {
-            throw new IllegalStateException("Recipe manager not found");
-        }
+		if (recipeManager == null) {
+			throw new IllegalStateException("Recipe manager not found");
+		}
 
-        List<IJeiBrewingRecipe> jeiRecipes = recipeManager.getAllRecipesFor(BlueRecipeTypeRegistry.BREWING.get())
-                .stream()
-                .map(recipe -> new BrewingJeiRecipe(recipe.value(), recipe.id()))
-                .collect(Collectors.toList());
+		List<IJeiBrewingRecipe> jeiRecipes = recipeManager.getAllRecipesFor(BlueRecipeTypeRegistry.BREWING.get())
+				.stream()
+				.map(recipe -> new BrewingJeiRecipe(recipe.value(), recipe.id()))
+				.collect(Collectors.toList());
 
-        pRegistration.addRecipes(RecipeTypes.BREWING, jeiRecipes);
-    }
+		pRegistration.addRecipes(RecipeTypes.BREWING, jeiRecipes);
+	}
 }

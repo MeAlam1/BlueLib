@@ -17,13 +17,13 @@ import software.bluelib.recipe.brewing.BrewingRecipe;
 @ApiStatus.Internal
 public class BlueRecipeSerializerRegistry {
 
-    public static void init() {}
+	public static void init() {}
 
-    @NotNull
-    public static final Supplier<RecipeSerializer<?>> BREWING = registerRecipeSerializer("brewing", BrewingRecipe.Serializer::new);
+	@NotNull
+	public static final Supplier<RecipeSerializer<?>> BREWING = registerRecipeSerializer("brewing", BrewingRecipe.Serializer::new);
 
-    @NotNull
-    private static <T extends RecipeSerializer<?>> Supplier<T> registerRecipeSerializer(@NotNull String pId, @NotNull Supplier<T> pRecipeSerializer) {
-        return BlueLibConstants.PlatformHelper.REGISTRY.registerRecipeSerializer(pId, pRecipeSerializer);
-    }
+	@NotNull
+	private static <T extends RecipeSerializer<?>> Supplier<T> registerRecipeSerializer(@NotNull String pId, @NotNull Supplier<T> pRecipeSerializer) {
+		return BlueLibConstants.PlatformHelper.REGISTRY.registerRecipeSerializer(pId, pRecipeSerializer);
+	}
 }

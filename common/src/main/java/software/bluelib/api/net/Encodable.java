@@ -12,5 +12,5 @@ import org.jetbrains.annotations.NotNull;
 
 public interface Encodable {
 
-    void encode(@NotNull RegistryFriendlyByteBuf pBuffer);
+	void encode(@NotNull RegistryFriendlyByteBuf pBuffer);
 }

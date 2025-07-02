@@ -17,29 +17,29 @@ import software.bluelib.markdown.MarkdownFeature;
 @SuppressWarnings("unused")
 public class Underline extends MarkdownFeature {
 
-    public Underline() {
-        prefix = MarkdownConfig.underlinePrefix;
-        suffix = MarkdownConfig.underlineSuffix;
-    }
+	public Underline() {
+		prefix = MarkdownConfig.underlinePrefix;
+		suffix = MarkdownConfig.underlineSuffix;
+	}
 
-    @Override
-    protected void appendFormattedText(@NotNull String pText, @NotNull Style pOriginalStyle, @NotNull MutableComponent pResult) {
-        MutableComponent UnderlineText = Component.literal(pText)
-                .setStyle(pOriginalStyle.withUnderlined(true));
-        pResult.append(UnderlineText);
-    }
+	@Override
+	protected void appendFormattedText(@NotNull String pText, @NotNull Style pOriginalStyle, @NotNull MutableComponent pResult) {
+		MutableComponent underlineText = Component.literal(pText)
+				.setStyle(pOriginalStyle.withUnderlined(true));
+		pResult.append(underlineText);
+	}
 
-    @Override
-    protected @NotNull Boolean isFeatureEnabled() {
-        return MarkdownConfig.isUnderlineEnabled;
-    }
+	@Override
+	protected @NotNull Boolean isFeatureEnabled() {
+		return MarkdownConfig.isUnderlineEnabled;
+	}
 
-    @Override
-    protected @NotNull String getFeatureName() {
-        return "Underline";
-    }
+	@Override
+	protected @NotNull String getFeatureName() {
+		return "Underline";
+	}
 
-    public static Boolean isUnderlineEnabled() {
-        return MarkdownConfig.isUnderlineEnabled;
-    }
+	public static Boolean isUnderlineEnabled() {
+		return MarkdownConfig.isUnderlineEnabled;
+	}
 }
