@@ -7,6 +7,7 @@
  */
 package software.bluelib.event;
 
+import java.util.Objects;
 import net.minecraft.network.chat.ChatType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.OutgoingChatMessage;
@@ -14,8 +15,6 @@ import net.minecraft.network.chat.PlayerChatMessage;
 import net.minecraft.server.level.ServerPlayer;
 import org.jetbrains.annotations.NotNull;
 import software.bluelib.markdown.MarkdownParser;
-
-import java.util.Objects;
 
 public class ChatHandler {
 

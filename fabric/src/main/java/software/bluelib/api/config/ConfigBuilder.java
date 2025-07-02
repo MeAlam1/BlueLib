@@ -9,12 +9,11 @@ package software.bluelib.api.config;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import org.jetbrains.annotations.NotNull;
-import software.bluelib.config.BlueLibConfig;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import org.jetbrains.annotations.NotNull;
+import software.bluelib.config.BlueLibConfig;
 
 public class ConfigBuilder<T extends BlueLibConfig> {
 

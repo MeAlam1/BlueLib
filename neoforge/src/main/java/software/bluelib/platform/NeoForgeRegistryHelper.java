@@ -7,6 +7,7 @@
  */
 package software.bluelib.platform;
 
+import java.util.function.Supplier;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -16,8 +17,6 @@ import org.jetbrains.annotations.NotNull;
 import software.bluelib.BlueLibConstants;
 import software.bluelib.api.net.NetworkManager;
 import software.bluelib.net.NeoForgeNetworkManager;
-
-import java.util.function.Supplier;
 
 public class NeoForgeRegistryHelper implements IRegistryHelper {
 

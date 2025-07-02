@@ -7,12 +7,11 @@
  */
 package software.bluelib.api.event.mod;
 
+import java.util.Optional;
 import net.neoforged.bus.api.Event;
 import net.neoforged.fml.event.IModBusEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.Optional;
 
 @SuppressWarnings("unused")
 public class ModLoadedEvent extends Event implements IModBusEvent {

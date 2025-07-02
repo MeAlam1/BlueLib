@@ -15,8 +15,8 @@ import org.jetbrains.annotations.NotNull;
 import software.bluelib.internal.registry.BlueCommandRegistry;
 
 public class CommandHandler {
+
 	public static void registerCommands(@NotNull CommandDispatcher<CommandSourceStack> pCommandSourceStackCommandDispatcher, @NotNull CommandBuildContext pCommandBuildContext, @NotNull Commands.CommandSelection pCommandSelection) {
 		BlueCommandRegistry.registerCommands(pCommandSourceStackCommandDispatcher);
 	}
-
 }

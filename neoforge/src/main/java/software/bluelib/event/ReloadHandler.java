@@ -7,6 +7,9 @@
  */
 package software.bluelib.event;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.OnDatapackSyncEvent;
@@ -18,10 +21,6 @@ import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
 import software.bluelib.internal.BlueTranslation;
 import software.bluelib.loader.cache.ResourceCache;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 @EventBusSubscriber(modid = BlueLibConstants.MOD_ID)
 public class ReloadHandler {

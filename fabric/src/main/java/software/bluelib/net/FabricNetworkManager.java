@@ -17,30 +17,30 @@ import software.bluelib.api.net.NetworkRegistry;
 
 public class FabricNetworkManager implements NetworkManager {
 
-    public static void registerMessages() {
-        NetworkRegistry.s2cPayloads.forEach(info -> FabricPacketInfo.registerPacket(info, true));
-        NetworkRegistry.c2sPayloads.forEach(info -> FabricPacketInfo.registerPacket(info, false));
-    }
+	public static void registerMessages() {
+		NetworkRegistry.s2cPayloads.forEach(info -> FabricPacketInfo.registerPacket(info, true));
+		NetworkRegistry.c2sPayloads.forEach(info -> FabricPacketInfo.registerPacket(info, false));
+	}
 
-    public static void registerClientHandlers() {
-        NetworkRegistry.s2cPayloads.stream()
-                .map(FabricPacketInfo::new)
-                .forEach(FabricPacketInfo::registerClientHandler);
-    }
+	public static void registerClientHandlers() {
+		NetworkRegistry.s2cPayloads.stream()
+				.map(FabricPacketInfo::new)
+				.forEach(FabricPacketInfo::registerClientHandler);
+	}
 
-    public static void registerServerHandlers() {
-        NetworkRegistry.c2sPayloads.stream()
-                .map(FabricPacketInfo::new)
-                .forEach(FabricPacketInfo::registerServerHandler);
-    }
+	public static void registerServerHandlers() {
+		NetworkRegistry.c2sPayloads.stream()
+				.map(FabricPacketInfo::new)
+				.forEach(FabricPacketInfo::registerServerHandler);
+	}
 
-    @Override
-    public void sendPacketToPlayer(@NotNull ServerPlayer pPlayer, @NotNull NetworkPacket<?> pPacket) {
-        ServerPlayNetworking.send(pPlayer, pPacket);
-    }
+	@Override
+	public void sendPacketToPlayer(@NotNull ServerPlayer pPlayer, @NotNull NetworkPacket<?> pPacket) {
+		ServerPlayNetworking.send(pPlayer, pPacket);
+	}
 
-    @Override
-    public void sendToServer(@NotNull NetworkPacket<?> pPacket) {
-        ClientPlayNetworking.send(pPacket);
-    }
+	@Override
+	public void sendToServer(@NotNull NetworkPacket<?> pPacket) {
+		ClientPlayNetworking.send(pPacket);
+	}
 }

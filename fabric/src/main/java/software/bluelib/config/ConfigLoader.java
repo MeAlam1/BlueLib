@@ -7,6 +7,7 @@
  */
 package software.bluelib.config;
 
+import java.nio.file.Path;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.packs.resources.CloseableResourceManager;
 import net.minecraft.world.level.storage.LevelResource;
@@ -17,15 +18,12 @@ import software.bluelib.api.config.ConfigBuilder;
 import software.bluelib.config.bluelib.LoggerConfig;
 import software.bluelib.config.bluelib.MarkdownConfig;
 
-import java.nio.file.Path;
-
 public class ConfigLoader {
 
 	@Nullable
 	private static ConfigBuilder<MarkdownConfig> markdownConfigBuilder;
 	@Nullable
 	private static ConfigBuilder<LoggerConfig> loggerConfigBuilder;
-
 
 	public static void createConfigs(@NotNull MinecraftServer pServer) {
 		createMarkdownConfig(pServer);

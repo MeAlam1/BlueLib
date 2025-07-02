@@ -7,6 +7,11 @@
  */
 package software.bluelib.platform;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 import net.minecraft.server.MinecraftServer;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.loading.FMLEnvironment;
@@ -18,12 +23,6 @@ import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.Environment;
 import software.bluelib.api.ModAPI;
 import software.bluelib.api.event.mod.ModMeta;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 public class NeoForgePlatformHelper implements IPlatformHelper {
 

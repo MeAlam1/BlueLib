@@ -7,6 +7,7 @@
  */
 package software.bluelib.platform;
 
+import java.util.function.Supplier;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -18,9 +19,7 @@ import software.bluelib.BlueLibConstants;
 import software.bluelib.api.net.NetworkManager;
 import software.bluelib.net.FabricNetworkManager;
 
-import java.util.function.Supplier;
-
-@SuppressWarnings({"unchecked", "unused"})
+@SuppressWarnings({ "unchecked", "unused" })
 public class FabricRegistryHelper implements IRegistryHelper {
 
 	@Override

@@ -7,11 +7,10 @@
  */
 package software.bluelib.api.event.mod;
 
+import java.util.List;
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.List;
 
 public final class AllModsLoadedEvent {
 

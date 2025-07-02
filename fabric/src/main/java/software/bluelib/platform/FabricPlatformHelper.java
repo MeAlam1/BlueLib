@@ -7,6 +7,11 @@
  */
 package software.bluelib.platform;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
 import net.minecraft.client.Minecraft;
@@ -17,12 +22,6 @@ import software.bluelib.BlueLibConstants;
 import software.bluelib.api.Environment;
 import software.bluelib.api.ModAPI;
 import software.bluelib.api.event.mod.ModMeta;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 public class FabricPlatformHelper implements IPlatformHelper {
 

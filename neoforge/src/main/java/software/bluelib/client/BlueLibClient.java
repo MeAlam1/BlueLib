@@ -13,7 +13,7 @@ import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import org.jetbrains.annotations.NotNull;
 import software.bluelib.BlueLibCommon;
 
-//@EventBusSubscriber(value = Dist.CLIENT, modid = BlueLibConstants.MOD_ID)
+// @EventBusSubscriber(value = Dist.CLIENT, modid = BlueLibConstants.MOD_ID)
 public class BlueLibClient {
 
 	public static void init(@NotNull ModContainer pModContainer) {

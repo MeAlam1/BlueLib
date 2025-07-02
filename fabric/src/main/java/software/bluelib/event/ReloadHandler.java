@@ -7,6 +7,9 @@
  */
 package software.bluelib.event;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.packs.resources.CloseableResourceManager;
 import org.jetbrains.annotations.NotNull;
@@ -16,10 +19,6 @@ import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
 import software.bluelib.internal.BlueTranslation;
 import software.bluelib.loader.cache.ResourceCache;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 public class ReloadHandler {
 

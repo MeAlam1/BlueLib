@@ -7,6 +7,7 @@
  */
 package software.bluelib.api.event;
 
+import java.util.List;
 import net.neoforged.fml.ModLoader;
 import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.event.entity.AllVariantsLoadedEvent;
@@ -14,8 +15,6 @@ import software.bluelib.api.event.entity.VariantLoadedEvent;
 import software.bluelib.api.event.mod.AllModsLoadedEvent;
 import software.bluelib.api.event.mod.ModLoadedEvent;
 import software.bluelib.api.event.mod.ModMeta;
-
-import java.util.List;
 
 public class BlueLibEventProxy implements IEventProxy {
 

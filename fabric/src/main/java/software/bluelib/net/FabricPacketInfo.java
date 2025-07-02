@@ -7,6 +7,8 @@
  */
 package software.bluelib.net;
 
+import java.util.HashSet;
+import java.util.Set;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
@@ -17,9 +19,6 @@ import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.net.ClientNetworkPacketHandler;
 import software.bluelib.api.net.NetworkPacket;
 import software.bluelib.api.net.ServerNetworkPacketHandler;
-
-import java.util.HashSet;
-import java.util.Set;
 
 public class FabricPacketInfo<T extends NetworkPacket<T>> {
 

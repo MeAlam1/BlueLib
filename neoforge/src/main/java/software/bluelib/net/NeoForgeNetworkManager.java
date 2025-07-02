@@ -7,6 +7,8 @@
  */
 package software.bluelib.net;
 
+import java.util.HashSet;
+import java.util.Objects;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -18,9 +20,6 @@ import software.bluelib.api.net.NetworkManager;
 import software.bluelib.api.net.NetworkPacket;
 import software.bluelib.api.net.NetworkRegistry;
 import software.bluelib.client.net.data.DataRegistrySyncPacketHandler;
-
-import java.util.HashSet;
-import java.util.Objects;
 
 public class NeoForgeNetworkManager implements NetworkManager {
 

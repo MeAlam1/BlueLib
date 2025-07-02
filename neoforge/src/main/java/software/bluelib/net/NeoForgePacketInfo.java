@@ -7,6 +7,8 @@
  */
 package software.bluelib.net;
 
+import java.util.HashSet;
+import java.util.Set;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -16,9 +18,6 @@ import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.net.ClientNetworkPacketHandler;
 import software.bluelib.api.net.NetworkPacket;
 import software.bluelib.api.net.ServerNetworkPacketHandler;
-
-import java.util.HashSet;
-import java.util.Set;
 
 public record NeoForgePacketInfo<T extends NetworkPacket<T>>(@NotNull PacketRegisterInfo<T> info) {
 
