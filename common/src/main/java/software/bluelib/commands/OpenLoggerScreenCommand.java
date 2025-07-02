@@ -25,8 +25,7 @@ public class OpenLoggerScreenCommand {
 						.executes(OpenLoggerScreenCommand::openLogScreen));
 	}
 
-	@NotNull
-	private static Integer openLogScreen(@NotNull CommandContext<CommandSourceStack> pContext) {
+	private static int openLogScreen(@NotNull CommandContext<CommandSourceStack> pContext) {
 		ServerPlayer player = pContext.getSource().getPlayer();
 		if (player == null) {
 			//TODO: Check en_us.json

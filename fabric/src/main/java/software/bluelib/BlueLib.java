@@ -18,8 +18,7 @@ import software.bluelib.net.FabricNetworkManager;
 
 public class BlueLib implements ModInitializer {
 
-	@NotNull
-	private Boolean hasInitialized = false;
+	private boolean hasInitialized = false;
 
 	@Override
 	public void onInitialize() {
