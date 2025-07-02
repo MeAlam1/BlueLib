@@ -20,7 +20,7 @@ public class RandomGenUtils {
     public static @NotNull Integer generateRandomInt(@NotNull Integer pMin, @NotNull Integer pMax) {
         if (pMin > pMax) {
             Throwable throwable = new IllegalArgumentException("Minimum value must not be greater than maximum value.");
-            BaseLogger.log(true, BaseLogLevel.WARNING, BlueTranslation.log("math.error.gen", "random @NotNull Integereger"), throwable);
+            BaseLogger.log(true, BaseLogLevel.WARNING, BlueTranslation.log("math.error.gen", "random integer"), throwable);
             return 0;
         }
         return pMin + (int) (Math.random() * (pMax - pMin + 1));
