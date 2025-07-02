@@ -38,7 +38,7 @@ public interface IVariantEntity {
 	}
 
 	@Nullable
-	default List<String> getEntityVariants(@Nullable ResourceLocation pEntity) {
+	default List<String> getEntityVariants(@NotNull ResourceLocation pEntity) {
 		Set<String> variants = ParameterUtils.getVariantsOfEntity(pEntity);
 		return variants != null ? new ArrayList<>(variants) : null;
 	}

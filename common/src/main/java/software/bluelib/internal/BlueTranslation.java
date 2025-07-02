@@ -10,6 +10,7 @@ package software.bluelib.internal;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import software.bluelib.BlueLibConstants;
 
 @ApiStatus.Internal
@@ -21,7 +22,7 @@ public class BlueTranslation {
 	}
 
 	@NotNull
-	public static Component translate(@NotNull String pString, @NotNull Object... pArgs) {
+	public static Component translate(@NotNull String pString, @Nullable Object... pArgs) {
 		return Component.translatable(BlueLibConstants.MOD_ID + "." + pString, pArgs);
 	}
 
@@ -31,7 +32,7 @@ public class BlueTranslation {
 	}
 
 	@NotNull
-	public static Component log(@NotNull String pString, @NotNull Object... pArgs) {
+	public static Component log(@NotNull String pString, @Nullable Object... pArgs) {
 		return Component.translatable(BlueLibConstants.MOD_ID + ".log." + pString, pArgs);
 	}
 
@@ -41,7 +42,7 @@ public class BlueTranslation {
 	}
 
 	@NotNull
-	public static Component config(@NotNull String pString, @NotNull Object... pArgs) {
+	public static Component config(@NotNull String pString, @Nullable Object... pArgs) {
 		return Component.translatable(BlueLibConstants.MOD_ID + ".config." + pString, pArgs);
 	}
 }
