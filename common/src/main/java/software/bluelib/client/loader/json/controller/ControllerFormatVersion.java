@@ -14,27 +14,27 @@ import software.bluelib.client.loader.json.FormatVersion;
 
 public class ControllerFormatVersion extends FormatVersion<ControllerFormatVersion> {
 
-    public static final Registry<ControllerFormatVersion> REGISTRY = new Registry<>() {
+	public static final Registry<ControllerFormatVersion> REGISTRY = new Registry<>() {
 
-        private final Map<String, ControllerFormatVersion> map = new Object2ObjectOpenHashMap<>();
-        private final ControllerFormatVersion defaultVersion = new ControllerFormatVersion("1.0.0", true, null);
+		private final Map<String, ControllerFormatVersion> map = new Object2ObjectOpenHashMap<>();
+		private final ControllerFormatVersion defaultVersion = new ControllerFormatVersion("1.0.0", true, null);
 
-        {
-            register(defaultVersion);
-        }
+		{
+			register(defaultVersion);
+		}
 
-        @Override
-        public Map<String, ControllerFormatVersion> versions() {
-            return map;
-        }
+		@Override
+		public Map<String, ControllerFormatVersion> versions() {
+			return map;
+		}
 
-        @Override
-        public ControllerFormatVersion defaultVersion() {
-            return defaultVersion;
-        }
-    };
+		@Override
+		public ControllerFormatVersion defaultVersion() {
+			return defaultVersion;
+		}
+	};
 
-    protected ControllerFormatVersion(String pSerializedName, boolean pSupported, @Nullable String pErrorMessage) {
-        super(pSerializedName, pSupported, pErrorMessage);
-    }
+	protected ControllerFormatVersion(String pSerializedName, boolean pSupported, @Nullable String pErrorMessage) {
+		super(pSerializedName, pSupported, pErrorMessage);
+	}
 }

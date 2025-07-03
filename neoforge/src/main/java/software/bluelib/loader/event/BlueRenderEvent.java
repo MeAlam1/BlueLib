@@ -1,3 +1,10 @@
+/*
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
+ */
 package software.bluelib.loader.event;
 
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -7,680 +14,729 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.bus.api.Event;
 import net.neoforged.bus.api.ICancellableEvent;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.client.loader.cache.model.ModelCache;
-import software.bluelib.loader.renderer.*;
-import software.bluelib.loader.renderer.layer.BlueRenderLayer;
+import software.bluelib.oldLoader.renderer.*;
+import software.bluelib.oldLoader.renderer.layer.BlueRenderLayer;
 
-
+@SuppressWarnings("unused")
 public interface BlueRenderEvent {
-	
+
+	@NotNull
 	BlueRenderer<?> getRenderer();
 
-	
 	abstract class Armor extends Event implements BlueRenderEvent {
+
+		@NotNull
 		private final BlueArmorRenderer<?> renderer;
 
-		public Armor(BlueArmorRenderer<?> renderer) {
-			this.renderer = renderer;
+		public Armor(@NotNull BlueArmorRenderer<?> pRenderer) {
+			this.renderer = pRenderer;
 		}
 
-		
 		@Override
-		public BlueArmorRenderer<?> getRenderer() {
+		public @NotNull BlueArmorRenderer<?> getRenderer() {
 			return this.renderer;
 		}
 
-		
 		@Nullable
 		public net.minecraft.world.entity.Entity getEntity() {
 			return getRenderer().getCurrentEntity();
 		}
 
-		
 		@Nullable
 		public ItemStack getItemStack() {
 			return getRenderer().getCurrentStack();
 		}
 
-		
 		@Nullable
 		public EquipmentSlot getEquipmentSlot() {
 			return getRenderer().getCurrentSlot();
 		}
 
-		
 		public static class Pre extends Armor implements ICancellableEvent {
-			private final PoseStack pPoseStack;
-			private final ModelCache model;
-			private final MultiBufferSource pBufferSource;
-			private final float pPartialTick;
-			private final int pPackedLight;
 
-			public Pre(BlueArmorRenderer<?> renderer, PoseStack pPoseStack, ModelCache model, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight) {
-				super(renderer);
+			@NotNull
+			private final PoseStack pPoseStack;
+			@NotNull
+			private final ModelCache model;
+			@NotNull
+			private final MultiBufferSource pBufferSource;
+			@NotNull
+			private final Float pPartialTick;
+			@NotNull
+			private final Integer pPackedLight;
+
+			public Pre(@NotNull BlueArmorRenderer<?> pRenderer, @NotNull PoseStack pPoseStack, @NotNull ModelCache pModel, @NotNull MultiBufferSource pBufferSource, @NotNull Float pPartialTick, @NotNull Integer pPackedLight) {
+				super(pRenderer);
 
 				this.pPoseStack = pPoseStack;
-				this.model = model;
+				this.model = pModel;
 				this.pBufferSource = pBufferSource;
 				this.pPartialTick = pPartialTick;
 				this.pPackedLight = pPackedLight;
 			}
 
-			public PoseStack getPoseStack() {
+			public @NotNull PoseStack getPoseStack() {
 				return this.pPoseStack;
 			}
-			
-			public ModelCache getModel() {
+
+			public @NotNull ModelCache getModel() {
 				return this.model;
 			}
 
-			public MultiBufferSource getBufferSource() {
+			public @NotNull MultiBufferSource getBufferSource() {
 				return this.pBufferSource;
 			}
 
-			public float getPartialTick() {
+			public @NotNull Float getPartialTick() {
 				return this.pPartialTick;
 			}
 
-			public int getPackedLight() {
+			public @NotNull Integer getPackedLight() {
 				return this.pPackedLight;
 			}
 		}
 
-		
 		public static class Post extends Armor {
-			private final PoseStack pPoseStack;
-			private final ModelCache model;
-			private final MultiBufferSource pBufferSource;
-			private final float pPartialTick;
-			private final int pPackedLight;
 
-			public Post(BlueArmorRenderer<?> renderer, PoseStack pPoseStack, ModelCache model, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight) {
-				super(renderer);
+			@NotNull
+			private final PoseStack pPoseStack;
+			@NotNull
+			private final ModelCache model;
+			@NotNull
+			private final MultiBufferSource pBufferSource;
+			@NotNull
+			private final Float pPartialTick;
+			@NotNull
+			private final Integer pPackedLight;
+
+			public Post(@NotNull BlueArmorRenderer<?> pRenderer, @NotNull PoseStack pPoseStack, @NotNull ModelCache pModel, @NotNull MultiBufferSource pBufferSource, @NotNull Float pPartialTick, @NotNull Integer pPackedLight) {
+				super(pRenderer);
 
 				this.pPoseStack = pPoseStack;
-				this.model = model;
+				this.model = pModel;
 				this.pBufferSource = pBufferSource;
 				this.pPartialTick = pPartialTick;
 				this.pPackedLight = pPackedLight;
 			}
 
-			public PoseStack getPoseStack() {
+			public @NotNull PoseStack getPoseStack() {
 				return this.pPoseStack;
 			}
-			
-			public ModelCache getModel() {
+
+			public @NotNull ModelCache getModel() {
 				return this.model;
 			}
 
-			public MultiBufferSource getBufferSource() {
+			public @NotNull MultiBufferSource getBufferSource() {
 				return this.pBufferSource;
 			}
 
-			public float getPartialTick() {
+			public @NotNull Float getPartialTick() {
 				return this.pPartialTick;
 			}
 
-			public int getPackedLight() {
+			public @NotNull Integer getPackedLight() {
 				return this.pPackedLight;
 			}
 		}
 
-		
 		public static class CompileRenderLayers extends Armor {
-			public CompileRenderLayers(BlueArmorRenderer<?> renderer) {
-				super(renderer);
+
+			public CompileRenderLayers(@NotNull BlueArmorRenderer<?> pRenderer) {
+				super(pRenderer);
 			}
 
-			
-			public void addLayer(BlueRenderLayer renderLayer) {
-				getRenderer().addRenderLayer(renderLayer);
+			public void addLayer(@NotNull BlueRenderLayer pRenderLayer) {
+				getRenderer().addRenderLayer(pRenderLayer);
 			}
 		}
 	}
 
-	
 	abstract class Block extends Event implements BlueRenderEvent {
+
+		@NotNull
 		private final BlueBlockRenderer<?> renderer;
 
-		public Block(BlueBlockRenderer<?> renderer) {
-			this.renderer = renderer;
+		public Block(@NotNull BlueBlockRenderer<?> pRenderer) {
+			this.renderer = pRenderer;
 		}
 
-		
 		@Override
-		public BlueBlockRenderer<?> getRenderer() {
+		public @NotNull BlueBlockRenderer<?> getRenderer() {
 			return this.renderer;
 		}
 
-		
-		public BlockEntity getBlockEntity() {
+		public @NotNull BlockEntity getBlockEntity() {
 			return getRenderer().getAnimatable();
 		}
 
-		
 		public static class Pre extends Block implements ICancellableEvent {
-			private final PoseStack pPoseStack;
-			private final ModelCache model;
-			private final MultiBufferSource pBufferSource;
-			private final float pPartialTick;
-			private final int pPackedLight;
 
-			public Pre(BlueBlockRenderer<?> renderer, PoseStack pPoseStack, ModelCache model, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight) {
-				super(renderer);
+			@NotNull
+			private final PoseStack pPoseStack;
+			@NotNull
+			private final ModelCache model;
+			@NotNull
+			private final MultiBufferSource pBufferSource;
+			@NotNull
+			private final Float pPartialTick;
+			@NotNull
+			private final Integer pPackedLight;
+
+			public Pre(@NotNull BlueBlockRenderer<?> pRenderer, @NotNull PoseStack pPoseStack, @NotNull ModelCache pModel, @NotNull MultiBufferSource pBufferSource, @NotNull Float pPartialTick, @NotNull Integer pPackedLight) {
+				super(pRenderer);
 
 				this.pPoseStack = pPoseStack;
-				this.model = model;
+				this.model = pModel;
 				this.pBufferSource = pBufferSource;
 				this.pPartialTick = pPartialTick;
 				this.pPackedLight = pPackedLight;
 			}
 
-			public PoseStack getPoseStack() {
+			public @NotNull PoseStack getPoseStack() {
 				return this.pPoseStack;
 			}
-			
-			public ModelCache getModel() {
+
+			public @NotNull ModelCache getModel() {
 				return this.model;
 			}
 
-			public MultiBufferSource getBufferSource() {
+			public @NotNull MultiBufferSource getBufferSource() {
 				return this.pBufferSource;
 			}
 
-			public float getPartialTick() {
+			public @NotNull Float getPartialTick() {
 				return this.pPartialTick;
 			}
 
-			public int getPackedLight() {
+			public @NotNull Integer getPackedLight() {
 				return this.pPackedLight;
 			}
 		}
 
-		
 		public static class Post extends Block {
-			private final PoseStack pPoseStack;
-			private final ModelCache model;
-			private final MultiBufferSource pBufferSource;
-			private final float pPartialTick;
-			private final int pPackedLight;
 
-			public Post(BlueBlockRenderer<?> renderer, PoseStack pPoseStack, ModelCache model, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight) {
-				super(renderer);
+			@NotNull
+			private final PoseStack pPoseStack;
+			@NotNull
+			private final ModelCache model;
+			@NotNull
+			private final MultiBufferSource pBufferSource;
+			@NotNull
+			private final Float pPartialTick;
+			@NotNull
+			private final Integer pPackedLight;
+
+			public Post(@NotNull BlueBlockRenderer<?> pRenderer, @NotNull PoseStack pPoseStack, @NotNull ModelCache pModel, @NotNull MultiBufferSource pBufferSource, @NotNull Float pPartialTick, @NotNull Integer pPackedLight) {
+				super(pRenderer);
 
 				this.pPoseStack = pPoseStack;
-				this.model = model;
+				this.model = pModel;
 				this.pBufferSource = pBufferSource;
 				this.pPartialTick = pPartialTick;
 				this.pPackedLight = pPackedLight;
 			}
 
-			public PoseStack getPoseStack() {
+			public @NotNull PoseStack getPoseStack() {
 				return this.pPoseStack;
 			}
-			
-			public ModelCache getModel() {
+
+			public @NotNull ModelCache getModel() {
 				return this.model;
 			}
 
-			public MultiBufferSource getBufferSource() {
+			public @NotNull MultiBufferSource getBufferSource() {
 				return this.pBufferSource;
 			}
 
-			public float getPartialTick() {
+			public @NotNull Float getPartialTick() {
 				return this.pPartialTick;
 			}
 
-			public int getPackedLight() {
+			public @NotNull Integer getPackedLight() {
 				return this.pPackedLight;
 			}
 		}
 
-		
 		public static class CompileRenderLayers extends Block {
-			public CompileRenderLayers(BlueBlockRenderer<?> renderer) {
-				super(renderer);
+
+			public CompileRenderLayers(@NotNull BlueBlockRenderer<?> pRenderer) {
+				super(pRenderer);
 			}
 
-			
-			public void addLayer(BlueRenderLayer renderLayer) {
-				getRenderer().addRenderLayer(renderLayer);
+			public void addLayer(@NotNull BlueRenderLayer pRenderLayer) {
+				getRenderer().addRenderLayer(pRenderLayer);
 			}
 		}
 	}
 
-	
 	abstract class Entity extends Event implements BlueRenderEvent {
+
+		@NotNull
 		private final BlueEntityRenderer<?> renderer;
 
-		public Entity(BlueEntityRenderer<?> renderer) {
-			this.renderer = renderer;
+		public Entity(@NotNull BlueEntityRenderer<?> pRenderer) {
+			this.renderer = pRenderer;
 		}
 
-		
 		@Override
-		public BlueEntityRenderer<?> getRenderer() {
+		public @NotNull BlueEntityRenderer<?> getRenderer() {
 			return this.renderer;
 		}
 
-		
-		public net.minecraft.world.entity.Entity getEntity() {
+		public @NotNull net.minecraft.world.entity.Entity getEntity() {
 			return this.renderer.getAnimatable();
 		}
 
-		
 		public static class Pre extends Entity implements ICancellableEvent {
-			private final PoseStack pPoseStack;
-			private final ModelCache model;
-			private final MultiBufferSource pBufferSource;
-			private final float pPartialTick;
-			private final int pPackedLight;
 
-			public Pre(BlueEntityRenderer<?> renderer, PoseStack pPoseStack, ModelCache model, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight) {
-				super(renderer);
+			@NotNull
+			private final PoseStack pPoseStack;
+			@NotNull
+			private final ModelCache model;
+			@NotNull
+			private final MultiBufferSource pBufferSource;
+			@NotNull
+			private final Float pPartialTick;
+			@NotNull
+			private final Integer pPackedLight;
+
+			public Pre(@NotNull BlueEntityRenderer<?> pRenderer, @NotNull PoseStack pPoseStack, @NotNull ModelCache pModel, @NotNull MultiBufferSource pBufferSource, @NotNull Float pPartialTick, @NotNull Integer pPackedLight) {
+				super(pRenderer);
 
 				this.pPoseStack = pPoseStack;
-				this.model = model;
+				this.model = pModel;
 				this.pBufferSource = pBufferSource;
 				this.pPartialTick = pPartialTick;
 				this.pPackedLight = pPackedLight;
 			}
 
-			public PoseStack getPoseStack() {
+			public @NotNull PoseStack getPoseStack() {
 				return this.pPoseStack;
 			}
-			
-			public ModelCache getModel() {
+
+			public @NotNull ModelCache getModel() {
 				return this.model;
 			}
 
-			public MultiBufferSource getBufferSource() {
+			public @NotNull MultiBufferSource getBufferSource() {
 				return this.pBufferSource;
 			}
 
-			public float getPartialTick() {
+			public @NotNull Float getPartialTick() {
 				return this.pPartialTick;
 			}
 
-			public int getPackedLight() {
+			public @NotNull Integer getPackedLight() {
 				return this.pPackedLight;
 			}
 		}
 
-		
 		public static class Post extends Entity {
-			private final PoseStack pPoseStack;
-			private final ModelCache model;
-			private final MultiBufferSource pBufferSource;
-			private final float pPartialTick;
-			private final int pPackedLight;
 
-			public Post(BlueEntityRenderer<?> renderer, PoseStack pPoseStack, ModelCache model, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight) {
-				super(renderer);
+			@NotNull
+			private final PoseStack pPoseStack;
+			@NotNull
+			private final ModelCache model;
+			@NotNull
+			private final MultiBufferSource pBufferSource;
+			@NotNull
+			private final Float pPartialTick;
+			@NotNull
+			private final Integer pPackedLight;
+
+			public Post(@NotNull BlueEntityRenderer<?> pRenderer, @NotNull PoseStack pPoseStack, @NotNull ModelCache pModel, @NotNull MultiBufferSource pBufferSource, @NotNull Float pPartialTick, @NotNull Integer pPackedLight) {
+				super(pRenderer);
 
 				this.pPoseStack = pPoseStack;
-				this.model = model;
+				this.model = pModel;
 				this.pBufferSource = pBufferSource;
 				this.pPartialTick = pPartialTick;
 				this.pPackedLight = pPackedLight;
 			}
 
-			public PoseStack getPoseStack() {
+			public @NotNull PoseStack getPoseStack() {
 				return this.pPoseStack;
 			}
-			
-			public ModelCache getModel() {
+
+			public @NotNull ModelCache getModel() {
 				return this.model;
 			}
 
-			public MultiBufferSource getBufferSource() {
+			public @NotNull MultiBufferSource getBufferSource() {
 				return this.pBufferSource;
 			}
 
-			public float getPartialTick() {
+			public @NotNull Float getPartialTick() {
 				return this.pPartialTick;
 			}
 
-			public int getPackedLight() {
+			public @NotNull Integer getPackedLight() {
 				return this.pPackedLight;
 			}
 		}
 
-		
 		public static class CompileRenderLayers extends Entity {
-			public CompileRenderLayers(BlueEntityRenderer<?> renderer) {
-				super(renderer);
+
+			public CompileRenderLayers(@NotNull BlueEntityRenderer<?> pRenderer) {
+				super(pRenderer);
 			}
 
-			
-			public void addLayer(BlueRenderLayer renderLayer) {
-				getRenderer().addRenderLayer(renderLayer);
+			public void addLayer(@NotNull BlueRenderLayer pRenderLayer) {
+				getRenderer().addRenderLayer(pRenderLayer);
 			}
 		}
 	}
 
-	
 	abstract class Item extends Event implements BlueRenderEvent {
+
+		@NotNull
 		private final BlueItemRenderer<?> renderer;
 
-		public Item(BlueItemRenderer<?> renderer) {
-			this.renderer = renderer;
+		public Item(@NotNull BlueItemRenderer<?> pRenderer) {
+			this.renderer = pRenderer;
 		}
 
-		
 		@Override
-		public BlueItemRenderer<?> getRenderer() {
+		public @NotNull BlueItemRenderer<?> getRenderer() {
 			return this.renderer;
 		}
 
-		
-		public ItemStack getItemStack() {
+		public @NotNull ItemStack getItemStack() {
 			return getRenderer().getCurrentItemStack();
 		}
 
-		
 		public static class Pre extends Item implements ICancellableEvent {
-			private final PoseStack pPoseStack;
-			private final ModelCache model;
-			private final MultiBufferSource pBufferSource;
-			private final float pPartialTick;
-			private final int pPackedLight;
 
-			public Pre(BlueItemRenderer<?> renderer, PoseStack pPoseStack, ModelCache model, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight) {
-				super(renderer);
+			@NotNull
+			private final PoseStack pPoseStack;
+			@NotNull
+			private final ModelCache model;
+			@NotNull
+			private final MultiBufferSource pBufferSource;
+			@NotNull
+			private final Float pPartialTick;
+			@NotNull
+			private final Integer pPackedLight;
+
+			public Pre(@NotNull BlueItemRenderer<?> pRenderer, @NotNull PoseStack pPoseStack, @NotNull ModelCache pModel, @NotNull MultiBufferSource pBufferSource, @NotNull Float pPartialTick, @NotNull Integer pPackedLight) {
+				super(pRenderer);
 
 				this.pPoseStack = pPoseStack;
-				this.model = model;
+				this.model = pModel;
 				this.pBufferSource = pBufferSource;
 				this.pPartialTick = pPartialTick;
 				this.pPackedLight = pPackedLight;
 			}
 
-			public PoseStack getPoseStack() {
+			public @NotNull PoseStack getPoseStack() {
 				return this.pPoseStack;
 			}
-			
-			public ModelCache getModel() {
+
+			public @NotNull ModelCache getModel() {
 				return this.model;
 			}
 
-			public MultiBufferSource getBufferSource() {
+			public @NotNull MultiBufferSource getBufferSource() {
 				return this.pBufferSource;
 			}
 
-			public float getPartialTick() {
+			public @NotNull Float getPartialTick() {
 				return this.pPartialTick;
 			}
 
-			public int getPackedLight() {
+			public @NotNull Integer getPackedLight() {
 				return this.pPackedLight;
 			}
 		}
 
-		
 		public static class Post extends Item {
-			private final PoseStack pPoseStack;
-			private final ModelCache model;
-			private final MultiBufferSource pBufferSource;
-			private final float pPartialTick;
-			private final int pPackedLight;
 
-			public Post(BlueItemRenderer<?> renderer, PoseStack pPoseStack, ModelCache model, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight) {
-				super(renderer);
+			@NotNull
+			private final PoseStack pPoseStack;
+			@NotNull
+			private final ModelCache model;
+			@NotNull
+			private final MultiBufferSource pBufferSource;
+			@NotNull
+			private final Float pPartialTick;
+			@NotNull
+			private final Integer pPackedLight;
+
+			public Post(@NotNull BlueItemRenderer<?> pRenderer, @NotNull PoseStack pPoseStack, @NotNull ModelCache pModel, @NotNull MultiBufferSource pBufferSource, @NotNull Float pPartialTick, @NotNull Integer pPackedLight) {
+				super(pRenderer);
 
 				this.pPoseStack = pPoseStack;
-				this.model = model;
+				this.model = pModel;
 				this.pBufferSource = pBufferSource;
 				this.pPartialTick = pPartialTick;
 				this.pPackedLight = pPackedLight;
 			}
 
-			public PoseStack getPoseStack() {
+			public @NotNull PoseStack getPoseStack() {
 				return this.pPoseStack;
 			}
-			
-			public ModelCache getModel() {
+
+			public @NotNull ModelCache getModel() {
 				return this.model;
 			}
 
-			public MultiBufferSource getBufferSource() {
+			public @NotNull MultiBufferSource getBufferSource() {
 				return this.pBufferSource;
 			}
 
-			public float getPartialTick() {
+			public @NotNull Float getPartialTick() {
 				return this.pPartialTick;
 			}
 
-			public int getPackedLight() {
+			public @NotNull Integer getPackedLight() {
 				return this.pPackedLight;
 			}
 		}
 
-		
 		public static class CompileRenderLayers extends Item {
-			public CompileRenderLayers(BlueItemRenderer<?> renderer) {
-				super(renderer);
+
+			public CompileRenderLayers(@NotNull BlueItemRenderer<?> pRenderer) {
+				super(pRenderer);
 			}
 
-			
-			public void addLayer(BlueRenderLayer renderLayer) {
-				getRenderer().addRenderLayer(renderLayer);
+			public void addLayer(@NotNull BlueRenderLayer pRenderLayer) {
+				getRenderer().addRenderLayer(pRenderLayer);
 			}
 		}
 	}
 
-	
 	abstract class Object extends Event implements BlueRenderEvent {
+
+		@NotNull
 		private final BlueObjectRenderer<?> renderer;
 
-		public Object(BlueObjectRenderer<?> renderer) {
-			this.renderer = renderer;
+		public Object(@NotNull BlueObjectRenderer<?> pRenderer) {
+			this.renderer = pRenderer;
 		}
 
-		
 		@Override
-		public BlueObjectRenderer<?> getRenderer() {
+		public @NotNull BlueObjectRenderer<?> getRenderer() {
 			return this.renderer;
 		}
 
-		
 		public static class Pre extends Object implements ICancellableEvent {
-			private final PoseStack pPoseStack;
-			private final ModelCache model;
-			private final MultiBufferSource pBufferSource;
-			private final float pPartialTick;
-			private final int pPackedLight;
 
-			public Pre(BlueObjectRenderer<?> renderer, PoseStack pPoseStack, ModelCache model, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight) {
-				super(renderer);
+			@NotNull
+			private final PoseStack pPoseStack;
+			@NotNull
+			private final ModelCache model;
+			@NotNull
+			private final MultiBufferSource pBufferSource;
+			@NotNull
+			private final Float pPartialTick;
+			@NotNull
+			private final Integer pPackedLight;
+
+			public Pre(@NotNull BlueObjectRenderer<?> pRenderer, @NotNull PoseStack pPoseStack, @NotNull ModelCache pModel, @NotNull MultiBufferSource pBufferSource, @NotNull Float pPartialTick, @NotNull Integer pPackedLight) {
+				super(pRenderer);
 
 				this.pPoseStack = pPoseStack;
-				this.model = model;
+				this.model = pModel;
 				this.pBufferSource = pBufferSource;
 				this.pPartialTick = pPartialTick;
 				this.pPackedLight = pPackedLight;
 			}
 
-			public PoseStack getPoseStack() {
+			public @NotNull PoseStack getPoseStack() {
 				return this.pPoseStack;
 			}
-			
-			public ModelCache getModel() {
+
+			public @NotNull ModelCache getModel() {
 				return this.model;
 			}
 
-			public MultiBufferSource getBufferSource() {
+			public @NotNull MultiBufferSource getBufferSource() {
 				return this.pBufferSource;
 			}
 
-			public float getPartialTick() {
+			public @NotNull Float getPartialTick() {
 				return this.pPartialTick;
 			}
 
-			public int getPackedLight() {
+			public @NotNull Integer getPackedLight() {
 				return this.pPackedLight;
 			}
 		}
 
-		
 		public static class Post extends Object {
-			private final PoseStack pPoseStack;
-			private final ModelCache model;
-			private final MultiBufferSource pBufferSource;
-			private final float pPartialTick;
-			private final int pPackedLight;
 
-			public Post(BlueObjectRenderer<?> renderer, PoseStack pPoseStack, ModelCache model, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight) {
-				super(renderer);
+			@NotNull
+			private final PoseStack pPoseStack;
+			@NotNull
+			private final ModelCache model;
+			@NotNull
+			private final MultiBufferSource pBufferSource;
+			@NotNull
+			private final Float pPartialTick;
+			@NotNull
+			private final Integer pPackedLight;
+
+			public Post(@NotNull BlueObjectRenderer<?> pRenderer, @NotNull PoseStack pPoseStack, @NotNull ModelCache pModel, @NotNull MultiBufferSource pBufferSource, @NotNull Float pPartialTick, @NotNull Integer pPackedLight) {
+				super(pRenderer);
 
 				this.pPoseStack = pPoseStack;
-				this.model = model;
+				this.model = pModel;
 				this.pBufferSource = pBufferSource;
 				this.pPartialTick = pPartialTick;
 				this.pPackedLight = pPackedLight;
 			}
 
-			public PoseStack getPoseStack() {
+			public @NotNull PoseStack getPoseStack() {
 				return this.pPoseStack;
 			}
-			
-			public ModelCache getModel() {
+
+			public @NotNull ModelCache getModel() {
 				return this.model;
 			}
 
-			public MultiBufferSource getBufferSource() {
+			public @NotNull MultiBufferSource getBufferSource() {
 				return this.pBufferSource;
 			}
 
-			public float getPartialTick() {
+			public @NotNull Float getPartialTick() {
 				return this.pPartialTick;
 			}
 
-			public int getPackedLight() {
+			public @NotNull Integer getPackedLight() {
 				return this.pPackedLight;
 			}
 		}
 
-		
 		public static class CompileRenderLayers extends Object {
-			public CompileRenderLayers(BlueObjectRenderer<?> renderer) {
-				super(renderer);
+
+			public CompileRenderLayers(@NotNull BlueObjectRenderer<?> pRenderer) {
+				super(pRenderer);
 			}
 
-			
-			public void addLayer(BlueRenderLayer renderLayer) {
-				getRenderer().addRenderLayer(renderLayer);
+			public void addLayer(@NotNull BlueRenderLayer pRenderLayer) {
+				getRenderer().addRenderLayer(pRenderLayer);
 			}
 		}
 	}
 
-	
 	abstract class ReplacedEntity extends Event implements BlueRenderEvent {
+
+		@NotNull
 		private final BlueReplacedEntityRenderer<?, ?> renderer;
 
-		public ReplacedEntity(BlueReplacedEntityRenderer<?, ?> renderer) {
-			this.renderer = renderer;
+		public ReplacedEntity(@NotNull BlueReplacedEntityRenderer<?, ?> pRenderer) {
+			this.renderer = pRenderer;
 		}
 
-		
 		@Override
-		public BlueReplacedEntityRenderer<?, ?> getRenderer() {
+		public @NotNull BlueReplacedEntityRenderer<?, ?> getRenderer() {
 			return this.renderer;
 		}
 
-		
-		public net.minecraft.world.entity.Entity getReplacedEntity() {
+		public @NotNull net.minecraft.world.entity.Entity getReplacedEntity() {
 			return getRenderer().getCurrentEntity();
 		}
 
-		
 		public static class Pre extends ReplacedEntity implements ICancellableEvent {
-			private final PoseStack pPoseStack;
-			private final ModelCache model;
-			private final MultiBufferSource pBufferSource;
-			private final float pPartialTick;
-			private final int pPackedLight;
 
-			public Pre(BlueReplacedEntityRenderer<?, ?> renderer, PoseStack pPoseStack, ModelCache model, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight) {
-				super(renderer);
+			@NotNull
+			private final PoseStack pPoseStack;
+			@NotNull
+			private final ModelCache model;
+			@NotNull
+			private final MultiBufferSource pBufferSource;
+			@NotNull
+			private final Float pPartialTick;
+			@NotNull
+			private final Integer pPackedLight;
+
+			public Pre(@NotNull BlueReplacedEntityRenderer<?, ?> pRenderer, @NotNull PoseStack pPoseStack, @NotNull ModelCache pModel, @NotNull MultiBufferSource pBufferSource, @NotNull Float pPartialTick, @NotNull Integer pPackedLight) {
+				super(pRenderer);
 
 				this.pPoseStack = pPoseStack;
-				this.model = model;
+				this.model = pModel;
 				this.pBufferSource = pBufferSource;
 				this.pPartialTick = pPartialTick;
 				this.pPackedLight = pPackedLight;
 			}
 
-			public PoseStack getPoseStack() {
+			public @NotNull PoseStack getPoseStack() {
 				return this.pPoseStack;
 			}
-			
-			public ModelCache getModel() {
+
+			public @NotNull ModelCache getModel() {
 				return this.model;
 			}
 
-			public MultiBufferSource getBufferSource() {
+			public @NotNull MultiBufferSource getBufferSource() {
 				return this.pBufferSource;
 			}
 
-			public float getPartialTick() {
+			public @NotNull Float getPartialTick() {
 				return this.pPartialTick;
 			}
 
-			public int getPackedLight() {
+			public @NotNull Integer getPackedLight() {
 				return this.pPackedLight;
 			}
 		}
 
-		
 		public static class Post extends ReplacedEntity {
-			private final PoseStack pPoseStack;
-			private final ModelCache model;
-			private final MultiBufferSource pBufferSource;
-			private final float pPartialTick;
-			private final int pPackedLight;
 
-			public Post(BlueReplacedEntityRenderer<?, ?> renderer, PoseStack pPoseStack, ModelCache model, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight) {
-				super(renderer);
+			@NotNull
+			private final PoseStack pPoseStack;
+			@NotNull
+			private final ModelCache model;
+			@NotNull
+			private final MultiBufferSource pBufferSource;
+			@NotNull
+			private final Float pPartialTick;
+			@NotNull
+			private final Integer pPackedLight;
+
+			public Post(@NotNull BlueReplacedEntityRenderer<?, ?> pRenderer, @NotNull PoseStack pPoseStack, @NotNull ModelCache pModel, @NotNull MultiBufferSource pBufferSource, @NotNull Float pPartialTick, @NotNull Integer pPackedLight) {
+				super(pRenderer);
 
 				this.pPoseStack = pPoseStack;
-				this.model = model;
+				this.model = pModel;
 				this.pBufferSource = pBufferSource;
 				this.pPartialTick = pPartialTick;
 				this.pPackedLight = pPackedLight;
 			}
 
-			public PoseStack getPoseStack() {
+			public @NotNull PoseStack getPoseStack() {
 				return this.pPoseStack;
 			}
 
-			public ModelCache getModel() {
+			public @NotNull ModelCache getModel() {
 				return this.model;
 			}
 
-			public MultiBufferSource getBufferSource() {
+			public @NotNull MultiBufferSource getBufferSource() {
 				return this.pBufferSource;
 			}
 
-			public float getPartialTick() {
+			public @NotNull Float getPartialTick() {
 				return this.pPartialTick;
 			}
 
-			public int getPackedLight() {
+			public @NotNull Integer getPackedLight() {
 				return this.pPackedLight;
 			}
 		}
 
-		
 		public static class CompileRenderLayers extends ReplacedEntity {
-			public CompileRenderLayers(BlueReplacedEntityRenderer<?, ?> renderer) {
-				super(renderer);
+
+			public CompileRenderLayers(@NotNull BlueReplacedEntityRenderer<?, ?> pRenderer) {
+				super(pRenderer);
 			}
 
-			
-			public void addLayer(BlueRenderLayer renderLayer) {
-				getRenderer().addRenderLayer(renderLayer);
+			public void addLayer(@NotNull BlueRenderLayer pRenderLayer) {
+				getRenderer().addRenderLayer(pRenderLayer);
 			}
 		}
 	}

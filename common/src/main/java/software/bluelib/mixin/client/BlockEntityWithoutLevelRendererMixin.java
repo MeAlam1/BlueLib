@@ -12,23 +12,24 @@ import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import software.bluelib.loader.animatable.client.BlueRenderProvider;
+import software.bluelib.oldLoader.animatable.client.BlueRenderProvider;
 
 @Mixin(BlockEntityWithoutLevelRenderer.class)
 public class BlockEntityWithoutLevelRendererMixin {
 
-    @Inject(method = "renderByItem", at = @At("HEAD"), cancellable = true)
-    public void BlueLib$renderBlueLibItem(ItemStack stack, ItemDisplayContext displayContext, PoseStack pPoseStack, MultiBufferSource pBufferSource, int pPackedLight, int pPackedOverlay, CallbackInfo ci) {
-        final BlockEntityWithoutLevelRenderer BlueLibRenderer = BlueRenderProvider.of(stack).getBlueItemRenderer();
+	@Inject(method = "renderByItem", at = @At("HEAD"), cancellable = true)
+	public void BlueLib$renderBlueLibItem(@NotNull ItemStack pStack, @NotNull ItemDisplayContext pDisplayContext, @NotNull PoseStack pPoseStack, @NotNull MultiBufferSource pBufferSource, int pPackedLight, int pPackedOverlay, @NotNull CallbackInfo pCi) {
+		final BlockEntityWithoutLevelRenderer BlueLibRenderer = BlueRenderProvider.of(pStack).getBlueItemRenderer();
 
-        if (BlueLibRenderer != null) {
-            BlueLibRenderer.renderByItem(stack, displayContext, pPoseStack, pBufferSource, pPackedLight, pPackedOverlay);
+		if (BlueLibRenderer != null) {
+			BlueLibRenderer.renderByItem(pStack, pDisplayContext, pPoseStack, pBufferSource, pPackedLight, pPackedOverlay);
 
-            ci.cancel();
-        }
-    }
+			pCi.cancel();
+		}
+	}
 }

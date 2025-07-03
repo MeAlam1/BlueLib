@@ -8,61 +8,73 @@
 package software.bluelib.api.utils.variant;
 
 import com.google.gson.JsonElement;
-import java.util.Map;
 import java.util.Set;
+import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
-import software.bluelib.entity.variant.VariantLoader;
-import software.bluelib.entity.variant.cache.Variants;
-import software.bluelib.internal.BlueTranslation;
+import software.bluelib.loader.cache.ResourceCache;
+import software.bluelib.loader.cache.variants.EntityCache;
+import software.bluelib.loader.cache.variants.VariantCache;
 
-@SuppressWarnings("unused")
 public class ParameterUtils {
 
-    private ParameterUtils() {}
+	private ParameterUtils() {}
 
-    @NotNull
-    public static Set<String> getAllEntities() {
-        return VariantLoader.AllVariants.keySet();
-    }
+	@NotNull
+	public static Set<ResourceLocation> getAllEntities() {
+		return ResourceCache.getVariants().keySet();
+	}
 
-    @Nullable
-    public static Set<String> getVariantsOfEntity(String pEntityName) {
-        Map<String, Variants> entityVariants = VariantLoader.AllVariants.get(pEntityName);
-        if (entityVariants == null) {
-            BaseLogger.log(true, BaseLogLevel.WARNING, BlueTranslation.log("entity.notfound", pEntityName));
-            return null;
-        }
-        return entityVariants.keySet();
-    }
+	@Nullable
+	public static Set<String> getVariantsOfEntity(@NotNull ResourceLocation pEntity) {
+		EntityCache entityCache = getOptionalEntityCache(pEntity);
+		if (entityCache == null) return null;
+		return entityCache.getVariantNames();
+	}
 
-    @Nullable
-    public static JsonElement getParameterDataForVariant(String pEntityName, String pVariantName, String pParameter, @NotNull String pFallbackVariant) {
-        JsonElement result = getParameterDataForVariant(pEntityName, pVariantName, pParameter);
-        if (result == null && !pFallbackVariant.equals(pVariantName)) {
-            result = getParameterDataForVariant(pEntityName, pFallbackVariant, pParameter);
-        }
-        return result;
-    }
+	@Nullable
+	public static JsonElement getParameterDataForVariant(@NotNull ResourceLocation pEntity, @NotNull String pVariantName, @NotNull String pParameter, @NotNull String pFallbackVariant) {
+		JsonElement result = getParameterDataForVariant(pEntity, pVariantName, pParameter);
+		if (result == null && !pFallbackVariant.equals(pVariantName)) {
+			result = getParameterDataForVariant(pEntity, pFallbackVariant, pParameter);
+		}
+		return result;
+	}
 
-    @Nullable
-    public static JsonElement getParameterDataForVariant(String pEntityName, String pVariantName, String pParameter) {
-        Map<String, Variants> entityVariants = VariantLoader.AllVariants.get(pEntityName);
-        if (entityVariants == null) {
-            BaseLogger.log(true, BaseLogLevel.WARNING, BlueTranslation.log("entity.notfound", pEntityName));
-            return null;
-        }
-        Variants record = entityVariants.get(pVariantName);
-        if (record == null) {
-            BaseLogger.log(true, BaseLogLevel.WARNING, BlueTranslation.log("entity.variantsNotfound", pVariantName, pEntityName));
-            return null;
-        }
-        JsonElement parameterElement = record.getParameter(pParameter);
-        if (parameterElement == null) {
-            BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("entity.parameterNotfound", pParameter, pVariantName, pEntityName));
-        }
-        return parameterElement;
-    }
+	@Nullable
+	public static JsonElement getParameterDataForVariant(@NotNull ResourceLocation pEntity, @NotNull String pVariantName, @NotNull String pParameter) {
+		EntityCache entityCache = getOptionalEntityCache(pEntity);
+		if (entityCache == null) return null;
+		VariantCache variantCache = getOptionalVariantCache(pEntity, pVariantName, entityCache);
+		if (variantCache == null) return null;
+		return getOptionalParameter(pEntity, pVariantName, pParameter, variantCache);
+	}
+
+	public static @Nullable JsonElement getOptionalParameter(@NotNull ResourceLocation pEntity, @NotNull String pVariantName, @NotNull String pParameter, @NotNull VariantCache pVariantCache) {
+		JsonElement parameterElement = pVariantCache.getParameter(pParameter);
+		if (parameterElement == null) {
+			BaseLogger.log(true, BaseLogLevel.INFO, "Parameter not found: " + pParameter + " in variant: " + pVariantName + " for entity: " + pEntity);
+		}
+		return parameterElement;
+	}
+
+	public static @Nullable VariantCache getOptionalVariantCache(@NotNull ResourceLocation pEntity, @NotNull String pVariantName, @NotNull EntityCache pEntityCache) {
+		VariantCache variantCache = pEntityCache.getVariant(pVariantName);
+		if (variantCache == null) {
+			BaseLogger.log(true, BaseLogLevel.WARNING, "Variant not found: " + pVariantName + " for entity: " + pEntity);
+			return null;
+		}
+		return variantCache;
+	}
+
+	public static @Nullable EntityCache getOptionalEntityCache(@NotNull ResourceLocation pEntity) {
+		EntityCache entityCache = ResourceCache.getVariants().get(pEntity);
+		if (entityCache == null) {
+			BaseLogger.log(true, BaseLogLevel.WARNING, "Entity not found: " + pEntity);
+			return null;
+		}
+		return entityCache;
+	}
 }

@@ -8,18 +8,19 @@
 package software.bluelib.client.net.loader;
 
 import net.minecraft.client.Minecraft;
+import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.net.ClientNetworkPacketHandler;
 import software.bluelib.api.utils.LoaderUtils;
-import software.bluelib.loader.animatable.BlueAnimatable;
 import software.bluelib.net.messages.client.loader.SingletonAnimTriggerPacket;
+import software.bluelib.oldLoader.animatable.BlueAnimatable;
 
 public class SingletonAnimTriggerPacketHandler implements ClientNetworkPacketHandler<SingletonAnimTriggerPacket> {
 
-    @Override
-    public void handle(SingletonAnimTriggerPacket pPacket, Minecraft pClient) {
-        BlueAnimatable animatable = LoaderUtils.getSyncedAnimatable(pPacket.syncableId());
+	@Override
+	public void handle(@NotNull SingletonAnimTriggerPacket pPacket, @NotNull Minecraft pClient) {
+		BlueAnimatable animatable = LoaderUtils.getSyncedAnimatable(pPacket.syncableId());
 
-        if (animatable != null)
-            animatable.getAnimatableInstanceCache().getManagerForId(pPacket.instanceId()).tryTriggerAnimation(pPacket.controllerName(), pPacket.animName());
-    }
+		if (animatable != null)
+			animatable.getAnimatableInstanceCache().getManagerForId(pPacket.instanceId()).tryTriggerAnimation(pPacket.controllerName(), pPacket.animName());
+	}
 }

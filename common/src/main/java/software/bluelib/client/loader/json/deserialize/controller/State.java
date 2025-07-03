@@ -16,25 +16,25 @@ import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.utils.JsonUtils;
 
 public record State(
-        List<String> conditions,
-        String animation,
-        @Nullable Integer priority,
-        @Nullable String sound) {
+		List<String> conditions,
+		String animation,
+		@Nullable Integer priority,
+		@Nullable String sound) {
 
-    public static JsonDeserializer<State> deserializer() throws JsonParseException {
-        return (json, type, context) -> {
-            JsonObject obj = json.getAsJsonObject();
+	public static JsonDeserializer<State> deserializer() throws JsonParseException {
+		return (json, type, context) -> {
+			JsonObject obj = json.getAsJsonObject();
 
-            List<String> conditions = JsonUtils.jsonArrayToStringList(GsonHelper.getAsJsonArray(obj, "conditions"));
-            String animation = GsonHelper.getAsString(obj, "animation");
-            Integer priority = JsonUtils.getOptionalInteger(obj, "priority");
-            String sound = JsonUtils.getOptionalString(obj, "sound");
+			List<String> conditions = JsonUtils.jsonArrayToStringList(GsonHelper.getAsJsonArray(obj, "conditions"));
+			String animation = GsonHelper.getAsString(obj, "animation");
+			Integer priority = JsonUtils.getOptionalInteger(obj, "priority");
+			String sound = JsonUtils.getOptionalString(obj, "sound");
 
-            return new State(
-                    conditions,
-                    animation,
-                    priority,
-                    sound);
-        };
-    }
+			return new State(
+					conditions,
+					animation,
+					priority,
+					sound);
+		};
+	}
 }

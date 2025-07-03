@@ -7,42 +7,45 @@
  */
 package software.bluelib.platform;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.loader.api.FabricLoader;
-import net.fabricmc.loader.api.ModContainer;
-import net.minecraft.client.Minecraft;
-import net.minecraft.server.MinecraftServer;
-import software.bluelib.BlueLibConstants;
-import software.bluelib.api.event.mod.ModMeta;
-
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.loader.api.FabricLoader;
+import net.fabricmc.loader.api.ModContainer;
+import net.minecraft.client.Minecraft;
+import net.minecraft.server.MinecraftServer;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import software.bluelib.BlueLibConstants;
+import software.bluelib.api.Environment;
+import software.bluelib.api.ModAPI;
+import software.bluelib.api.event.mod.ModMeta;
 
 public class FabricPlatformHelper implements IPlatformHelper {
 
 	@Override
-	public String getPlatformName() {
+	public @NotNull String getPlatformName() {
 		return "Fabric";
 	}
 
 	@Override
-	public boolean isModLoaded(String pModId) {
+	public boolean isModLoaded(@NotNull String pModId) {
 		return FabricLoader.getInstance().isModLoaded(pModId);
 	}
 
 	@Override
-	public Set<String> getLoadedMods() {
+	public @NotNull Set<String> getLoadedMods() {
 		return FabricLoader.getInstance().getAllMods().stream()
 				.map(modContainer -> modContainer.getMetadata().getId())
 				.collect(Collectors.toSet());
 	}
 
 	@Override
-	public List<ModMeta> getLoadedModMetadata() {
+	public @NotNull List<ModMeta> getLoadedModMetadata() {
 		List<ModMeta> mods = new ArrayList<>();
 		for (ModContainer modInfo : FabricLoader.getInstance().getAllMods()) {
 			String modId = modInfo.getMetadata().getId();
@@ -61,7 +64,7 @@ public class FabricPlatformHelper implements IPlatformHelper {
 	}
 
 	@Override
-	public Path getGameDir() {
+	public @NotNull Path getGameDir() {
 		return FabricLoader.getInstance().getGameDir();
 	}
 
@@ -71,20 +74,20 @@ public class FabricPlatformHelper implements IPlatformHelper {
 	}
 
 	@Override
-	public BlueLibConstants.Environment getEnvironment() {
+	public @NotNull Environment getEnvironment() {
 		return switch (FabricLoader.getInstance().getEnvironmentType()) {
-			case CLIENT -> BlueLibConstants.Environment.CLIENT;
-			case SERVER -> BlueLibConstants.Environment.SERVER;
+			case CLIENT -> Environment.CLIENT;
+			case SERVER -> Environment.SERVER;
 		};
 	}
 
 	@Override
-	public BlueLibConstants.ModAPI getAPI() {
-		return BlueLibConstants.ModAPI.FABRIC;
+	public @NotNull ModAPI getAPI() {
+		return ModAPI.FABRIC;
 	}
 
 	@Override
-	public MinecraftServer getServer() {
-		return this.getEnvironment() == BlueLibConstants.Environment.CLIENT ? Minecraft.getInstance().getSingleplayerServer() : BlueLibConstants.server;
+	public @Nullable MinecraftServer getServer() {
+		return this.getEnvironment() == Environment.CLIENT ? Minecraft.getInstance().getSingleplayerServer() : BlueLibConstants.server;
 	}
 }

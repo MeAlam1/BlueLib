@@ -17,21 +17,21 @@ import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.utils.JsonUtils;
 
 public record ModelGeometry(
-        @Nullable ModelDescription modelDescription,
-        List<Bone> bones,
-        @Nullable String cape) {
+		@Nullable ModelDescription modelDescription,
+		List<Bone> bones,
+		@Nullable String cape) {
 
-    public static JsonDeserializer<ModelGeometry> deserializer() throws JsonParseException {
-        return (json, type, context) -> {
-            JsonObject obj = json.getAsJsonObject();
-            ModelDescription modelDescription = JsonUtils.getOptionalObject(obj, "description", context, ModelDescription.class);
-            List<Bone> bones = JsonUtils.jsonArrayToObjectList(GsonHelper.getAsJsonArray(obj, "bones", new JsonArray(0)), context, Bone.class);
-            String cape = JsonUtils.getOptionalString(obj, "cape");
+	public static JsonDeserializer<ModelGeometry> deserializer() throws JsonParseException {
+		return (json, type, context) -> {
+			JsonObject obj = json.getAsJsonObject();
+			ModelDescription modelDescription = JsonUtils.getOptionalObject(obj, "description", context, ModelDescription.class);
+			List<Bone> bones = JsonUtils.jsonArrayToObjectList(GsonHelper.getAsJsonArray(obj, "bones", new JsonArray(0)), context, Bone.class);
+			String cape = JsonUtils.getOptionalString(obj, "cape");
 
-            return new ModelGeometry(
-                    modelDescription,
-                    bones,
-                    cape);
-        };
-    }
+			return new ModelGeometry(
+					modelDescription,
+					bones,
+					cape);
+		};
+	}
 }

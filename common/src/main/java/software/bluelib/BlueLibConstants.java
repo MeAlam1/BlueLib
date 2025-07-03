@@ -15,16 +15,13 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.function.Supplier;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.Entity;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.event.IEventProxy;
-import software.bluelib.api.net.NetworkPacket;
 import software.bluelib.internal.BlueResource;
 import software.bluelib.platform.IPlatformClient;
 import software.bluelib.platform.IPlatformHelper;
@@ -32,69 +29,65 @@ import software.bluelib.platform.IRegistryHelper;
 
 public class BlueLibConstants {
 
-    private BlueLibConstants() {}
+	private BlueLibConstants() {}
 
-    public static void init() {}
+	public static void init() {}
 
-    public static <T> T load(Class<T> pClazz) {
-        return ServiceLoader.load(pClazz)
-                .findFirst()
-                .orElseThrow(() -> new NullPointerException("Failed to load service for " + pClazz.getName()));
-    }
+	@NotNull
+	public static <T> T load(@NotNull Class<T> pClazz) {
+		return ServiceLoader.load(pClazz)
+				.findFirst()
+				.orElseThrow(() -> new NullPointerException("Failed to load service for " + pClazz.getName()));
+	}
 
-    public static final Logger LOGGER = Logger.getLogger(BlueLibConstants.MOD_NAME);
+	@NotNull
+	public static final Logger LOGGER = Logger.getLogger(BlueLibConstants.MOD_NAME);
 
-    public static ScheduledExecutorService SCHEDULER = Executors.newScheduledThreadPool(1);
+	@NotNull
+	public static ScheduledExecutorService SCHEDULER = Executors.newScheduledThreadPool(1);
 
-    public static final Supplier<DataComponentType<Long>> STACK_ANIMATABLE_ID_COMPONENT = PlatformHelper.REGISTRY.registerDataComponent("stack_animatable_id", builder -> builder.persistent(Codec.LONG).networkSynchronized(ByteBufCodecs.VAR_LONG));
+	@NotNull
+	public static final String MOD_ID = "bluelib";
 
-    public static final String MOD_ID = "bluelib";
+	@NotNull
+	public static final Supplier<DataComponentType<Long>> STACK_ANIMATABLE_ID_COMPONENT = PlatformHelper.REGISTRY.registerDataComponent("stack_animatable_id", builder -> builder.persistent(Codec.LONG).networkSynchronized(ByteBufCodecs.VAR_LONG));
 
-    public static final String MOD_NAME = "BlueLib";
+	@NotNull
+	public static final String MOD_NAME = "BlueLib";
 
-    public static MinecraftServer server;
+	@Nullable
+	public static MinecraftServer server;
 
-    public static class BlueLoader {
+	public static class BlueLoader {
 
-        public static final ResourceLocation RELOAD_LISTENER_ID = BlueResource.resource("models_animations");
-        public static final ResourceLocation CONTROLLERS_PATH = BlueResource.resource("controllers");
-        public static final ResourceLocation ANIMATIONS_PATH = BlueResource.resource("animations");
-        public static final ResourceLocation MODELS_PATH = BlueResource.resource("models");
-        public static final Pattern SUFFIX_STRIPPER = Pattern.compile("((\\.geo)|((\\.animation)s?)|(\\.controller))?(\\.json)$");
-        public static final Pattern PREFIX_STRIPPER = Pattern.compile("^(bluelib/)((animations/)|(models/)|(controllers/))?");
-        public static final List<String> SKIPPED_NAMESPACES = List.of("minecraft", "BlueLib", "neoforge");
-    }
+		@NotNull
+		public static final ResourceLocation RELOAD_LISTENER_ID = BlueResource.resource("models_animations");
+		@NotNull
+		public static final ResourceLocation CONTROLLERS_PATH = BlueResource.resource("controllers");
+		@NotNull
+		public static final ResourceLocation ANIMATIONS_PATH = BlueResource.resource("animations");
+		@NotNull
+		public static final ResourceLocation MODELS_PATH = BlueResource.resource("models");
+		@NotNull
+		public static final Pattern SUFFIX_STRIPPER = Pattern.compile("((\\.geo)|((\\.animation)s?)|(\\.controller))?(\\.json)$");
+		@NotNull
+		public static final Pattern PREFIX_STRIPPER = Pattern.compile("^(bluelib/)((animations/)|(models/)|(controllers/))?");
+		@NotNull
+		public static final List<String> SKIPPED_NAMESPACES = List.of("minecraft", "neoforge");
+	}
 
-    public static class PlatformHelper {
+	public static class PlatformHelper {
 
-        public static final IPlatformHelper PLATFORM = load(IPlatformHelper.class);
+		@NotNull
+		public static final IPlatformHelper PLATFORM = load(IPlatformHelper.class);
 
-        public static final IEventProxy EVENT_PROXY = load(IEventProxy.class);
+		@NotNull
+		public static final IEventProxy EVENT_PROXY = load(IEventProxy.class);
 
-        public static final IRegistryHelper REGISTRY = load(IRegistryHelper.class);
+		@NotNull
+		public static final IRegistryHelper REGISTRY = load(IRegistryHelper.class);
 
-        public static final IPlatformClient ITEM_RENDERING = load(IPlatformClient.class);
-    }
-
-    public enum ModAPI {
-        FABRIC,
-        FORGE,
-        NEOFORGE
-    }
-
-    public interface NetworkManager {
-
-        void sendToPlayer(ServerPlayer pPlayer, NetworkPacket<?> pPacket);
-
-        void sendToServer(NetworkPacket<?> pPacket);
-
-        void sendToAllPlayersTrackingEntity(Entity pTrackingEntity, NetworkPacket<?> pPacket);
-
-        void sendToAllPlayersTrackingBlock(ServerLevel pLevel, BlockPos pBlockPos, NetworkPacket<?> pPacket);
-    }
-
-    public enum Environment {
-        CLIENT,
-        SERVER
-    }
+		@NotNull
+		public static final IPlatformClient ITEM_RENDERING = load(IPlatformClient.class);
+	}
 }

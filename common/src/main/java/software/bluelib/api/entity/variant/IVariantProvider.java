@@ -8,12 +8,15 @@
 package software.bluelib.api.entity.variant;
 
 import java.util.List;
+import org.jetbrains.annotations.NotNull;
 
 public interface IVariantProvider {
 
-    List<String> getEntityNames();
+	@NotNull
+	List<String> getEntityNames();
 
-    default String getBasePath() {
-        return "variant/entity/";
-    }
+	@NotNull
+	default String getBasePath() {
+		return "variant/entity/";
+	}
 }

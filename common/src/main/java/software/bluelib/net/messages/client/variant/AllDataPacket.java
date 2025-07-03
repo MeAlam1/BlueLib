@@ -13,27 +13,30 @@ import java.util.Map;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.net.NetworkPacket;
 import software.bluelib.internal.BlueResource;
 
-public record AllDataPacket(Map<String, JsonObject> allData) implements NetworkPacket<AllDataPacket> {
+public record AllDataPacket(@NotNull Map<String, JsonObject> allData) implements NetworkPacket<AllDataPacket> {
 
-    public static final ResourceLocation ID = BlueResource.resource("all_data_packet");
+	@NotNull
+	public static final ResourceLocation ID = BlueResource.resource("all_data_packet");
 
-    @Override
-    public void encode(RegistryFriendlyByteBuf pBuffer) {
-        pBuffer.writeMap(allData, FriendlyByteBuf::writeUtf, (buf, json) -> buf.writeUtf(json.toString()));
-    }
+	@Override
+	public void encode(@NotNull RegistryFriendlyByteBuf pBuffer) {
+		pBuffer.writeMap(allData, FriendlyByteBuf::writeUtf, (buf, json) -> buf.writeUtf(json.toString()));
+	}
 
-    public static AllDataPacket decode(FriendlyByteBuf pBuffer) {
-        Map<String, JsonObject> map = pBuffer.readMap(
-                FriendlyByteBuf::readUtf,
-                buf -> JsonParser.parseString(buf.readUtf()).getAsJsonObject());
-        return new AllDataPacket(map);
-    }
+	@NotNull
+	public static AllDataPacket decode(@NotNull RegistryFriendlyByteBuf pBuffer) {
+		Map<String, JsonObject> map = pBuffer.readMap(
+				FriendlyByteBuf::readUtf,
+				buf -> JsonParser.parseString(buf.readUtf()).getAsJsonObject());
+		return new AllDataPacket(map);
+	}
 
-    @Override
-    public ResourceLocation getId() {
-        return ID;
-    }
+	@Override
+	public @NotNull ResourceLocation getId() {
+		return ID;
+	}
 }

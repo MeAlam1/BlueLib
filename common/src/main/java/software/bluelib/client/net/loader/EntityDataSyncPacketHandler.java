@@ -9,30 +9,31 @@ package software.bluelib.client.net.loader;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.Entity;
+import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.net.ClientNetworkPacketHandler;
 import software.bluelib.client.utils.LevelUtils;
 import software.bluelib.client.utils.RenderUtils;
-import software.bluelib.loader.animatable.BlueEntity;
-import software.bluelib.loader.animatable.BlueReplacedEntity;
 import software.bluelib.net.messages.client.loader.EntityDataSyncPacket;
+import software.bluelib.oldLoader.animatable.BlueEntity;
+import software.bluelib.oldLoader.animatable.BlueReplacedEntity;
 
 public class EntityDataSyncPacketHandler<D> implements ClientNetworkPacketHandler<EntityDataSyncPacket<D>> {
 
-    @Override
-    public void handle(EntityDataSyncPacket<D> pPacket, Minecraft pClient) {
-        Entity entity = LevelUtils.getLevel().getEntity(pPacket.entityId());
+	@Override
+	public void handle(@NotNull EntityDataSyncPacket<D> pPacket, @NotNull Minecraft pClient) {
+		Entity entity = LevelUtils.getLevel().getEntity(pPacket.entityId());
 
-        if (entity == null)
-            return;
+		if (entity == null)
+			return;
 
-        if (!pPacket.isReplacedEntity()) {
-            if (entity instanceof BlueEntity BlueEntity)
-                BlueEntity.setAnimData(pPacket.dataTicket(), pPacket.data());
+		if (!pPacket.isReplacedEntity()) {
+			if (entity instanceof BlueEntity BlueEntity)
+				BlueEntity.setAnimData(pPacket.dataTicket(), pPacket.data());
 
-            return;
-        }
+			return;
+		}
 
-        if (RenderUtils.getReplacedAnimatable(entity.getType()) instanceof BlueReplacedEntity replacedEntity)
-            replacedEntity.setAnimData(entity, pPacket.dataTicket(), pPacket.data());
-    }
+		if (RenderUtils.getReplacedAnimatable(entity.getType()) instanceof BlueReplacedEntity replacedEntity)
+			replacedEntity.setAnimData(entity, pPacket.dataTicket(), pPacket.data());
+	}
 }

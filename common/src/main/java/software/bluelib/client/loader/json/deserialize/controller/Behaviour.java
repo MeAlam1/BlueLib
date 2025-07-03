@@ -15,16 +15,16 @@ import java.util.Map;
 import software.bluelib.api.utils.JsonUtils;
 
 public record Behaviour(
-        Map<String, List<State>> states) {
+		Map<String, List<State>> states) {
 
-    public static JsonDeserializer<Behaviour> deserializer() throws JsonParseException {
-        return (json, type, context) -> {
-            JsonObject obj = json.getAsJsonObject();
+	public static JsonDeserializer<Behaviour> deserializer() throws JsonParseException {
+		return (json, type, context) -> {
+			JsonObject obj = json.getAsJsonObject();
 
-            Map<String, List<State>> states = JsonUtils.jsonObjToListMap(obj, context, State.class);
+			Map<String, List<State>> states = JsonUtils.jsonObjToListMap(obj, context, State.class);
 
-            return new Behaviour(
-                    states);
-        };
-    }
+			return new Behaviour(
+					states);
+		};
+	}
 }

@@ -12,25 +12,25 @@ import java.util.function.Function;
 
 public interface CacheFactory<T, S> {
 
-    T construct(S pSource);
+	T construct(S pSource);
 
-    static <T, S, F extends CacheFactory<T, S>> T constructWithFactory(
-            Function<String, F> pFactoryGetter, String pNamespace, S pSource) {
-        return pFactoryGetter.apply(pNamespace).construct(pSource);
-    }
+	static <T, S, F extends CacheFactory<T, S>> T constructWithFactory(
+			Function<String, F> pFactoryGetter, String pNamespace, S pSource) {
+		return pFactoryGetter.apply(pNamespace).construct(pSource);
+	}
 
-    interface Registry<T, S, F extends CacheFactory<T, S>> {
+	interface Registry<T, S, F extends CacheFactory<T, S>> {
 
-        Map<String, F> factories();
+		Map<String, F> factories();
 
-        F defaultFactory();
+		F defaultFactory();
 
-        default F getForNamespace(String pNamespace) {
-            return factories().getOrDefault(pNamespace, defaultFactory());
-        }
+		default F getForNamespace(String pNamespace) {
+			return factories().getOrDefault(pNamespace, defaultFactory());
+		}
 
-        default void register(String pNamespace, F pFactory) {
-            factories().put(pNamespace, pFactory);
-        }
-    }
+		default void register(String pNamespace, F pFactory) {
+			factories().put(pNamespace, pFactory);
+		}
+	}
 }

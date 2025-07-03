@@ -7,6 +7,12 @@
  */
 package software.bluelib.platform;
 
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 import net.minecraft.server.MinecraftServer;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.loading.FMLEnvironment;
@@ -14,37 +20,33 @@ import net.neoforged.fml.loading.FMLLoader;
 import net.neoforged.fml.loading.FMLPaths;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import net.neoforged.neoforgespi.language.IModInfo;
-import software.bluelib.BlueLibConstants;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import software.bluelib.api.Environment;
+import software.bluelib.api.ModAPI;
 import software.bluelib.api.event.mod.ModMeta;
-
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 public class NeoForgePlatformHelper implements IPlatformHelper {
 
 	@Override
-	public String getPlatformName() {
+	public @NotNull String getPlatformName() {
 		return "NeoForge";
 	}
 
 	@Override
-	public boolean isModLoaded(String pModId) {
+	public boolean isModLoaded(@NotNull String pModId) {
 		return ModList.get().isLoaded(pModId);
 	}
 
 	@Override
-	public Set<String> getLoadedMods() {
+	public @NotNull Set<String> getLoadedMods() {
 		return ModList.get().getMods().stream()
 				.map(IModInfo::getModId)
 				.collect(Collectors.toSet());
 	}
 
 	@Override
-	public List<ModMeta> getLoadedModMetadata() {
+	public @NotNull List<ModMeta> getLoadedModMetadata() {
 		List<ModMeta> mods = new ArrayList<>();
 		for (IModInfo modInfo : ModList.get().getMods()) {
 			String modId = modInfo.getModId();
@@ -63,7 +65,7 @@ public class NeoForgePlatformHelper implements IPlatformHelper {
 	}
 
 	@Override
-	public Path getGameDir() {
+	public @NotNull Path getGameDir() {
 		return FMLPaths.GAMEDIR.get();
 	}
 
@@ -73,17 +75,17 @@ public class NeoForgePlatformHelper implements IPlatformHelper {
 	}
 
 	@Override
-	public BlueLibConstants.Environment getEnvironment() {
-		return FMLEnvironment.dist.isClient() ? BlueLibConstants.Environment.CLIENT : BlueLibConstants.Environment.SERVER;
+	public @NotNull Environment getEnvironment() {
+		return FMLEnvironment.dist.isClient() ? Environment.CLIENT : Environment.SERVER;
 	}
 
 	@Override
-	public BlueLibConstants.ModAPI getAPI() {
-		return BlueLibConstants.ModAPI.NEOFORGE;
+	public @NotNull ModAPI getAPI() {
+		return ModAPI.NEOFORGE;
 	}
 
 	@Override
-	public MinecraftServer getServer() {
+	public @Nullable MinecraftServer getServer() {
 		return ServerLifecycleHooks.getCurrentServer();
 	}
 }

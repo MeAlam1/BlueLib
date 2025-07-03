@@ -12,16 +12,16 @@ import java.util.Map;
 import software.bluelib.api.utils.JsonUtils;
 
 public record Group(
-        Map<String, Behaviour> behaviours) {
+		Map<String, Behaviour> behaviours) {
 
-    public static JsonDeserializer<Group> deserializer() throws JsonParseException {
-        return (json, type, context) -> {
-            JsonObject obj = json.getAsJsonObject();
+	public static JsonDeserializer<Group> deserializer() throws JsonParseException {
+		return (json, type, context) -> {
+			JsonObject obj = json.getAsJsonObject();
 
-            Map<String, Behaviour> behaviours = JsonUtils.jsonObjToMap(obj, context, Behaviour.class);
+			Map<String, Behaviour> behaviours = JsonUtils.jsonObjToMap(obj, context, Behaviour.class);
 
-            return new Group(
-                    behaviours);
-        };
-    }
+			return new Group(
+					behaviours);
+		};
+	}
 }

@@ -13,35 +13,41 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import org.jetbrains.annotations.NotNull;
 
-public record MoLangType(String id, String name) {
+public record MoLangType(@NotNull String id, @NotNull String name) {
 
-    private static final Map<String, MoLangType> REGISTRY = new LinkedHashMap<>();
+	@NotNull
+	private static final Map<String, MoLangType> REGISTRY = new LinkedHashMap<>();
 
-    public MoLangType(String id, String name) {
-        this.id = id;
-        this.name = name;
-        if (REGISTRY.containsKey(id)) {
-            throw new IllegalArgumentException("MoLangType with id '" + id + "' is already registered.");
-        }
-        REGISTRY.put(id, this);
-    }
+	public MoLangType(@NotNull String id, @NotNull String name) {
+		this.id = id;
+		this.name = name;
+		if (REGISTRY.containsKey(id)) {
+			throw new IllegalArgumentException("MoLangType with id '" + id + "' is already registered.");
+		}
+		REGISTRY.put(id, this);
+	}
 
-    public static MoLangType byId(String pId) {
-        return REGISTRY.get(pId);
-    }
+	public static @NotNull MoLangType byId(@NotNull String pId) {
+		return REGISTRY.get(pId);
+	}
 
-    public static Collection<MoLangType> values() {
-        return Collections.unmodifiableCollection(REGISTRY.values());
-    }
+	public static @NotNull Collection<MoLangType> values() {
+		return Collections.unmodifiableCollection(REGISTRY.values());
+	}
 
-    @Override
-    public @NotNull String toString() {
-        return name;
-    }
+	@Override
+	public @NotNull String toString() {
+		return name;
+	}
 
-    public static final MoLangType GENERAL = new MoLangType("g", "general");
-    public static final MoLangType MATH = new MoLangType("m", "math");
-    public static final MoLangType OPERATOR = new MoLangType("o", "operator");
-    public static final MoLangType ENTITY = new MoLangType("e", "entity");
-    public static final MoLangType ANIMATABLE = new MoLangType("q", "animatable");
+	@NotNull
+	public static final MoLangType GENERAL = new MoLangType("g", "general");
+	@NotNull
+	public static final MoLangType MATH = new MoLangType("m", "math");
+	@NotNull
+	public static final MoLangType OPERATOR = new MoLangType("o", "operator");
+	@NotNull
+	public static final MoLangType ENTITY = new MoLangType("e", "entity");
+	@NotNull
+	public static final MoLangType ANIMATABLE = new MoLangType("q", "animatable");
 }

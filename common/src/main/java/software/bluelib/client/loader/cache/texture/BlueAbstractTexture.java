@@ -26,64 +26,64 @@ import software.bluelib.client.utils.TextureUtils;
 
 public abstract class BlueAbstractTexture extends AbstractTexture {
 
-    protected static void generateTexture(ResourceLocation pTexturePath, Consumer<TextureManager> pTextureManagerConsumer) {
-        if (!RenderSystem.isOnRenderThreadOrInit())
-            throw new IllegalThreadStateException("Texture loading called outside of the render thread! This should DEFINITELY not be happening.");
+	protected static void generateTexture(ResourceLocation pTexturePath, Consumer<TextureManager> pTextureManagerConsumer) {
+		if (!RenderSystem.isOnRenderThreadOrInit())
+			throw new IllegalThreadStateException("Texture loading called outside of the render thread! This should DEFINITELY not be happening.");
 
-        TextureManager textureManager = TextureUtils.getTextureManager();
+		TextureManager textureManager = TextureUtils.getTextureManager();
 
-        if (!(textureManager.getTexture(pTexturePath, MissingTextureAtlasSprite.getTexture()) instanceof BlueAbstractTexture))
-            pTextureManagerConsumer.accept(textureManager);
-    }
+		if (!(textureManager.getTexture(pTexturePath, MissingTextureAtlasSprite.getTexture()) instanceof BlueAbstractTexture))
+			pTextureManagerConsumer.accept(textureManager);
+	}
 
-    @Override
-    public final void load(@NotNull ResourceManager pResourceManager) throws IOException {
-        RenderCall renderCall = loadTexture(pResourceManager);
+	@Override
+	public final void load(@NotNull ResourceManager pResourceManager) throws IOException {
+		RenderCall renderCall = loadTexture(pResourceManager);
 
-        if (renderCall == null)
-            return;
+		if (renderCall == null)
+			return;
 
-        if (!RenderSystem.isOnRenderThreadOrInit()) {
-            RenderSystem.recordRenderCall(renderCall);
-        } else {
-            renderCall.execute();
-        }
-    }
+		if (!RenderSystem.isOnRenderThreadOrInit()) {
+			RenderSystem.recordRenderCall(renderCall);
+		} else {
+			renderCall.execute();
+		}
+	}
 
-    protected void printDebugImageToDisk(ResourceLocation pId, NativeImage pNewImage) {
-        try {
-            File file = new File(BlueLibConstants.PlatformHelper.PLATFORM.getGameDir().toFile(), "BlueTexture Debug Printouts");
+	protected void printDebugImageToDisk(ResourceLocation pId, NativeImage pNewImage) {
+		try {
+			File file = new File(BlueLibConstants.PlatformHelper.PLATFORM.getGameDir().toFile(), "BlueTexture Debug Printouts");
 
-            if (!file.exists()) {
-                file.mkdirs();
-            } else if (!file.isDirectory()) {
-                file.delete();
-                file.mkdirs();
-            }
+			if (!file.exists()) {
+				file.mkdirs();
+			} else if (!file.isDirectory()) {
+				file.delete();
+				file.mkdirs();
+			}
 
-            file = new File(file, pId.getPath().replace('/', '.'));
+			file = new File(file, pId.getPath().replace('/', '.'));
 
-            if (!file.exists())
-                file.createNewFile();
+			if (!file.exists())
+				file.createNewFile();
 
-            pNewImage.writeToFile(file);
-        } catch (IOException pIoException) {
-            pIoException.printStackTrace();
-        }
-    }
+			pNewImage.writeToFile(file);
+		} catch (IOException pIoException) {
+			pIoException.printStackTrace();
+		}
+	}
 
-    @Nullable
-    protected abstract RenderCall loadTexture(ResourceManager pResourceManager) throws IOException;
+	@Nullable
+	protected abstract RenderCall loadTexture(ResourceManager pResourceManager) throws IOException;
 
-    public static void uploadSimple(int pTexture, NativeImage pImage, boolean pBlur, boolean pClamp) {
-        TextureUtil.prepareImage(pTexture, 0, pImage.getWidth(), pImage.getHeight());
-        pImage.upload(0, 0, 0, 0, 0, pImage.getWidth(), pImage.getHeight(), pBlur, pClamp, false, true);
-    }
+	public static void uploadSimple(int pTexture, NativeImage pImage, boolean pBlur, boolean pClamp) {
+		TextureUtil.prepareImage(pTexture, 0, pImage.getWidth(), pImage.getHeight());
+		pImage.upload(0, 0, 0, 0, 0, pImage.getWidth(), pImage.getHeight(), pBlur, pClamp, false, true);
+	}
 
-    public static ResourceLocation appendToPath(ResourceLocation pLocation, String pSuffix) {
-        String path = pLocation.getPath();
-        int i = path.lastIndexOf('.');
+	public static ResourceLocation appendToPath(ResourceLocation pLocation, String pSuffix) {
+		String path = pLocation.getPath();
+		int i = path.lastIndexOf('.');
 
-        return ResourceLocation.fromNamespaceAndPath(pLocation.getNamespace(), path.substring(0, i) + pSuffix + path.substring(i));
-    }
+		return ResourceLocation.fromNamespaceAndPath(pLocation.getNamespace(), path.substring(0, i) + pSuffix + path.substring(i));
+	}
 }

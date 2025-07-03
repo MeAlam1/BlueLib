@@ -11,33 +11,44 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Set;
 import net.minecraft.server.MinecraftServer;
-import software.bluelib.BlueLibConstants;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import software.bluelib.api.Environment;
+import software.bluelib.api.ModAPI;
 import software.bluelib.api.event.mod.ModMeta;
 
 @SuppressWarnings("unused")
 public interface IPlatformHelper {
 
-    String getPlatformName();
+	@NotNull
+	String getPlatformName();
 
-    boolean isModLoaded(String pModId);
+	boolean isModLoaded(@NotNull String pModId);
 
-    Set<String> getLoadedMods();
+	@NotNull
+	Set<String> getLoadedMods();
 
-    List<ModMeta> getLoadedModMetadata();
+	@NotNull
+	List<ModMeta> getLoadedModMetadata();
 
-    boolean isDevelopmentEnvironment();
+	boolean isDevelopmentEnvironment();
 
-    boolean isPhysicalClient();
+	boolean isPhysicalClient();
 
-    Path getGameDir();
+	@NotNull
+	Path getGameDir();
 
-    default String getEnvironmentName() {
-        return isDevelopmentEnvironment() ? "development" : "production";
-    }
+	@NotNull
+	default String getEnvironmentName() {
+		return isDevelopmentEnvironment() ? "development" : "production";
+	}
 
-    BlueLibConstants.Environment getEnvironment();
+	@NotNull
+	Environment getEnvironment();
 
-    BlueLibConstants.ModAPI getAPI();
+	@NotNull
+	ModAPI getAPI();
 
-    MinecraftServer getServer();
+	@Nullable
+	MinecraftServer getServer();
 }

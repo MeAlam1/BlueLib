@@ -7,9 +7,9 @@
  */
 package software.bluelib.client.loader.cache.animations.keyframe;
 
-import software.bluelib.loader.loading.math.MathValue;
+import software.bluelib.oldLoader.loading.math.MathValue;
 
 public record BoneAnimationCache(String boneName,
-        KeyframeStackCache<KeyframeCache<MathValue>> rotationKeyFrames,
-        KeyframeStackCache<KeyframeCache<MathValue>> positionKeyFrames,
-        KeyframeStackCache<KeyframeCache<MathValue>> scaleKeyFrames) {}
+		KeyframeStackCache<KeyframeCache<MathValue>> rotationKeyFrames,
+		KeyframeStackCache<KeyframeCache<MathValue>> positionKeyFrames,
+		KeyframeStackCache<KeyframeCache<MathValue>> scaleKeyFrames) {}

@@ -16,42 +16,42 @@ import software.bluelib.client.loader.json.deserialize.model.ModelDescription;
 import software.bluelib.client.loader.json.deserialize.model.ModelGeometry;
 
 public record BoneTree(
-        Map<String, BoneStructure> topLevelBones,
-        ModelDescription description) {
+		Map<String, BoneStructure> topLevelBones,
+		ModelDescription description) {
 
-    public static BoneTree fromModel(Model pModel) {
-        final Map<String, BoneStructure> topLevelBones = new Object2ObjectOpenHashMap<>();
-        final ModelGeometry geometry = pModel.ModelGeometry().getFirst();
-        final List<Bone> bones = geometry.bones();
-        final Map<String, BoneStructure> lookup = new Object2ObjectOpenHashMap<>(bones.size());
+	public static BoneTree fromModel(Model pModel) {
+		final Map<String, BoneStructure> topLevelBones = new Object2ObjectOpenHashMap<>();
+		final ModelGeometry geometry = pModel.ModelGeometry().getFirst();
+		final List<Bone> bones = geometry.bones();
+		final Map<String, BoneStructure> lookup = new Object2ObjectOpenHashMap<>(bones.size());
 
-        for (Bone bone : bones) {
-            final BoneStructure boneStructure = new BoneStructure(bone);
+		for (Bone bone : bones) {
+			final BoneStructure boneStructure = new BoneStructure(bone);
 
-            lookup.put(bone.name(), boneStructure);
+			lookup.put(bone.name(), boneStructure);
 
-            if (bone.parent() == null)
-                topLevelBones.put(bone.name(), boneStructure);
-        }
+			if (bone.parent() == null)
+				topLevelBones.put(bone.name(), boneStructure);
+		}
 
-        for (Bone bone : bones) {
-            final String parentName = bone.parent();
+		for (Bone bone : bones) {
+			final String parentName = bone.parent();
 
-            if (parentName != null) {
-                final String boneName = bone.name();
+			if (parentName != null) {
+				final String boneName = bone.name();
 
-                if (parentName.equals(boneName))
-                    throw new IllegalArgumentException("Invalid model definition. Bone has defined itself as its own parent: " + boneName);
+				if (parentName.equals(boneName))
+					throw new IllegalArgumentException("Invalid model definition. Bone has defined itself as its own parent: " + boneName);
 
-                final BoneStructure parentStructure = lookup.get(parentName);
+				final BoneStructure parentStructure = lookup.get(parentName);
 
-                if (parentStructure == null)
-                    throw new IllegalArgumentException("Invalid model definition. Found bone with undefined parent (child -> parent): " + boneName + " -> " + parentName);
+				if (parentStructure == null)
+					throw new IllegalArgumentException("Invalid model definition. Found bone with undefined parent (child -> parent): " + boneName + " -> " + parentName);
 
-                parentStructure.children().put(boneName, lookup.get(boneName));
-            }
-        }
+				parentStructure.children().put(boneName, lookup.get(boneName));
+			}
+		}
 
-        return new BoneTree(topLevelBones, geometry.modelDescription());
-    }
+		return new BoneTree(topLevelBones, geometry.modelDescription());
+	}
 }

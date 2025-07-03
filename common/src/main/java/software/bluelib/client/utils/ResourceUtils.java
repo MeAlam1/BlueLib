@@ -12,14 +12,15 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
+import org.jetbrains.annotations.NotNull;
 
 public class ResourceUtils {
 
-    public static ResourceManager getResourceManager() {
-        return Minecraft.getInstance().getResourceManager();
-    }
+	public static @NotNull ResourceManager getResourceManager() {
+		return Minecraft.getInstance().getResourceManager();
+	}
 
-    public static Optional<Resource> getResource(ResourceLocation pResourcePath) {
-        return getResourceManager().getResource(pResourcePath);
-    }
+	public static @NotNull Optional<Resource> getResource(@NotNull ResourceLocation pResourcePath) {
+		return getResourceManager().getResource(pResourcePath);
+	}
 }

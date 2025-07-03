@@ -15,34 +15,34 @@ import org.jetbrains.annotations.NotNull;
 
 public final class IdCache extends SavedData {
 
-    private static final Factory<IdCache> FACTORY = new Factory<>(IdCache::new, IdCache::new, null);
-    private static final String DATA_KEY = "bluelib_id_cache";
-    private long lastId;
+	private static final Factory<IdCache> FACTORY = new Factory<>(IdCache::new, IdCache::new, null);
+	private static final String DATA_KEY = "bluelib_id_cache";
+	private long lastId;
 
-    private IdCache() {}
+	private IdCache() {}
 
-    private IdCache(CompoundTag pTag, HolderLookup.Provider pRegistryLookup) {
-        this.lastId = pTag.getLong("last_id");
-    }
+	private IdCache(CompoundTag pTag, HolderLookup.Provider pRegistryLookup) {
+		this.lastId = pTag.getLong("last_id");
+	}
 
-    public static long getFreeId(ServerLevel pLevel) {
-        return getCache(pLevel).getNextId();
-    }
+	public static long getFreeId(ServerLevel pLevel) {
+		return getCache(pLevel).getNextId();
+	}
 
-    private long getNextId() {
-        setDirty();
+	private long getNextId() {
+		setDirty();
 
-        return ++this.lastId;
-    }
+		return ++this.lastId;
+	}
 
-    @Override
-    public @NotNull CompoundTag save(CompoundTag pTag, HolderLookup.@NotNull Provider pRegistryLookup) {
-        pTag.putLong("last_id", this.lastId);
+	@Override
+	public @NotNull CompoundTag save(CompoundTag pTag, HolderLookup.@NotNull Provider pRegistryLookup) {
+		pTag.putLong("last_id", this.lastId);
 
-        return pTag;
-    }
+		return pTag;
+	}
 
-    private static IdCache getCache(ServerLevel pLevel) {
-        return pLevel.getServer().overworld().getDataStorage().computeIfAbsent(FACTORY, DATA_KEY);
-    }
+	private static IdCache getCache(ServerLevel pLevel) {
+		return pLevel.getServer().overworld().getDataStorage().computeIfAbsent(FACTORY, DATA_KEY);
+	}
 }

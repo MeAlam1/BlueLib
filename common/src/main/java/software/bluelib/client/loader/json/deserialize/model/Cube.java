@@ -15,35 +15,35 @@ import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.utils.JsonUtils;
 
 public record Cube(
-        List<Float> origin,
-        List<Float> size,
-        List<Float> pivot,
-        List<Float> rotation,
-        UVUnion uvUnion,
-        @Nullable Float inflate,
-        @Nullable Boolean mirror) {
+		List<Float> origin,
+		List<Float> size,
+		List<Float> pivot,
+		List<Float> rotation,
+		UVUnion uvUnion,
+		@Nullable Float inflate,
+		@Nullable Boolean mirror) {
 
-    public static JsonDeserializer<Cube> deserializer() throws JsonParseException {
-        return (json, type, context) -> {
-            JsonObject obj = json.getAsJsonObject();
+	public static JsonDeserializer<Cube> deserializer() throws JsonParseException {
+		return (json, type, context) -> {
+			JsonObject obj = json.getAsJsonObject();
 
-            Float inflate = JsonUtils.getOptionalFloat(obj, "inflate");
-            Boolean mirror = JsonUtils.getOptionalBoolean(obj, "mirror");
+			Float inflate = JsonUtils.getOptionalFloat(obj, "inflate");
+			Boolean mirror = JsonUtils.getOptionalBoolean(obj, "mirror");
 
-            List<Float> origin = JsonUtils.jsonArrayToFloatList(JsonUtils.getOptionalJsonArray(obj, "origin"));
-            List<Float> size = JsonUtils.jsonArrayToFloatList(JsonUtils.getOptionalJsonArray(obj, "size"));
-            List<Float> pivot = JsonUtils.jsonArrayToFloatList(JsonUtils.getOptionalJsonArray(obj, "pivot"));
-            List<Float> rotation = JsonUtils.jsonArrayToFloatList(JsonUtils.getOptionalJsonArray(obj, "rotation"));
-            UVUnion uvUnion = JsonUtils.getOptionalObject(obj, "uv", context, UVUnion.class);
+			List<Float> origin = JsonUtils.jsonArrayToFloatList(JsonUtils.getOptionalJsonArray(obj, "origin"));
+			List<Float> size = JsonUtils.jsonArrayToFloatList(JsonUtils.getOptionalJsonArray(obj, "size"));
+			List<Float> pivot = JsonUtils.jsonArrayToFloatList(JsonUtils.getOptionalJsonArray(obj, "pivot"));
+			List<Float> rotation = JsonUtils.jsonArrayToFloatList(JsonUtils.getOptionalJsonArray(obj, "rotation"));
+			UVUnion uvUnion = JsonUtils.getOptionalObject(obj, "uv", context, UVUnion.class);
 
-            return new Cube(
-                    origin,
-                    size,
-                    pivot,
-                    rotation,
-                    uvUnion,
-                    inflate,
-                    mirror);
-        };
-    }
+			return new Cube(
+					origin,
+					size,
+					pivot,
+					rotation,
+					uvUnion,
+					inflate,
+					mirror);
+		};
+	}
 }

@@ -9,11 +9,12 @@ package software.bluelib.datagen;
 
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
+import org.jetbrains.annotations.NotNull;
 
 public class DataGenerator implements DataGeneratorEntrypoint {
 
-    @Override
-    public void onInitializeDataGenerator(FabricDataGenerator generator) {
-        //FabricDataGenerator.Pack pack = generator.createPack();
-    }
+	@Override
+	public void onInitializeDataGenerator(@NotNull FabricDataGenerator generator) {
+		//FabricDataGenerator.Pack pack = generator.createPack();
+	}
 }

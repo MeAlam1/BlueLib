@@ -13,53 +13,53 @@ import org.jetbrains.annotations.Nullable;
 
 public abstract class FormatVersion<T extends FormatVersion<T>> {
 
-    private final String serializedName;
-    private final boolean supported;
-    private final String errorMessage;
+	private final String serializedName;
+	private final boolean supported;
+	private final String errorMessage;
 
-    protected FormatVersion(String pSerializedName, boolean pSupported, @Nullable String pErrorMessage) {
-        this.serializedName = pSerializedName;
-        this.supported = pSupported;
-        this.errorMessage = pErrorMessage;
-    }
+	protected FormatVersion(String pSerializedName, boolean pSupported, @Nullable String pErrorMessage) {
+		this.serializedName = pSerializedName;
+		this.supported = pSupported;
+		this.errorMessage = pErrorMessage;
+	}
 
-    public String getSerializedName() {
-        return serializedName;
-    }
+	public String getSerializedName() {
+		return serializedName;
+	}
 
-    public boolean isSupported() {
-        return supported;
-    }
+	public boolean isSupported() {
+		return supported;
+	}
 
-    public String getErrorMessage() {
-        return errorMessage;
-    }
+	public String getErrorMessage() {
+		return errorMessage;
+	}
 
-    protected static <T extends FormatVersion<T>> T register(Map<String, T> pRegistry, T pVersion) {
-        pRegistry.put(pVersion.getSerializedName(), pVersion);
-        return pVersion;
-    }
+	protected static <T extends FormatVersion<T>> T register(Map<String, T> pRegistry, T pVersion) {
+		pRegistry.put(pVersion.getSerializedName(), pVersion);
+		return pVersion;
+	}
 
-    public interface Registry<T extends FormatVersion<T>> {
+	public interface Registry<T extends FormatVersion<T>> {
 
-        Map<String, T> versions();
+		Map<String, T> versions();
 
-        T defaultVersion();
+		T defaultVersion();
 
-        default T get(String pName) {
-            return versions().getOrDefault(pName, defaultVersion());
-        }
+		default T get(String pName) {
+			return versions().getOrDefault(pName, defaultVersion());
+		}
 
-        default void register(T pVersion) {
-            versions().put(pVersion.getSerializedName(), pVersion);
-        }
+		default void register(T pVersion) {
+			versions().put(pVersion.getSerializedName(), pVersion);
+		}
 
-        default Map<String, T> getRegisteredVersions() {
-            return Collections.unmodifiableMap(versions());
-        }
+		default Map<String, T> getRegisteredVersions() {
+			return Collections.unmodifiableMap(versions());
+		}
 
-        default T match(String pVersion) {
-            return get(pVersion);
-        }
-    }
+		default T match(String pVersion) {
+			return get(pVersion);
+		}
+	}
 }

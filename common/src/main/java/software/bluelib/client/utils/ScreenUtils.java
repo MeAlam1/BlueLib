@@ -9,22 +9,23 @@ package software.bluelib.client.utils;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
+import org.jetbrains.annotations.Nullable;
 
 public class ScreenUtils {
 
-    public static boolean isScreenOpen() {
-        return Minecraft.getInstance().screen != null;
-    }
+	public static boolean isScreenOpen() {
+		return Minecraft.getInstance().screen != null;
+	}
 
-    public static Screen getCurrentScreen() {
-        return Minecraft.getInstance().screen;
-    }
+	public static @Nullable Screen getCurrentScreen() {
+		return Minecraft.getInstance().screen;
+	}
 
-    public static boolean isGamePaused() {
-        return Minecraft.getInstance().isPaused();
-    }
+	public static boolean isGamePaused() {
+		return Minecraft.getInstance().isPaused();
+	}
 
-    public static void closeCurrentScreen() {
-        Minecraft.getInstance().setScreen(null);
-    }
+	public static void closeCurrentScreen() {
+		Minecraft.getInstance().setScreen(null);
+	}
 }

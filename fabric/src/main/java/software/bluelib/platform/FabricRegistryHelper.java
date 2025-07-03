@@ -7,6 +7,8 @@
  */
 package software.bluelib.platform;
 
+import java.util.function.Supplier;
+import java.util.function.UnaryOperator;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponentType;
@@ -16,49 +18,51 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
+import org.jetbrains.annotations.NotNull;
 import software.bluelib.BlueLibConstants;
+import software.bluelib.api.net.NetworkManager;
 import software.bluelib.internal.BlueResource;
 import software.bluelib.net.FabricNetworkManager;
 
-import java.util.function.Supplier;
-import java.util.function.UnaryOperator;
-
+@SuppressWarnings({ "unchecked", "unused" })
 public class FabricRegistryHelper implements IRegistryHelper {
 
 	@Override
-	public BlueLibConstants.NetworkManager getNetwork() {
+	public @NotNull NetworkManager getNetwork() {
 		return new FabricNetworkManager();
 	}
 
 	@Override
-	public <T extends RecipeType<?>> Supplier<T> registerRecipeType(String pId, Supplier<T> pRecipeType) {
+	public <T extends RecipeType<?>> @NotNull Supplier<T> registerRecipeType(@NotNull String pId, @NotNull Supplier<T> pRecipeType) {
 		return registerSupplier(BuiltInRegistries.RECIPE_TYPE, pId, pRecipeType);
 	}
 
 	@Override
-	public <T extends RecipeSerializer<?>> Supplier<T> registerRecipeSerializer(String pId, Supplier<T> pRecipeSerializer) {
+	public <T extends RecipeSerializer<?>> @NotNull Supplier<T> registerRecipeSerializer(@NotNull String pId, @NotNull Supplier<T> pRecipeSerializer) {
 		return registerSupplier(BuiltInRegistries.RECIPE_SERIALIZER, pId, pRecipeSerializer);
 	}
 
 	@Override
-	public <T extends Entity> Supplier<EntityType<T>> registerEntity(String pId, Supplier<EntityType<T>> pEntity) {
+	public <T extends Entity> @NotNull Supplier<EntityType<T>> registerEntity(@NotNull String pId, @NotNull Supplier<EntityType<T>> pEntity) {
 		return registerSupplier(BuiltInRegistries.ENTITY_TYPE, pId, pEntity);
 	}
 
 	@Override
-	public <T> Supplier<DataComponentType<T>> registerDataComponent(String pId, UnaryOperator<DataComponentType.Builder<T>> pBuilder) {
+	public <T> @NotNull Supplier<DataComponentType<T>> registerDataComponent(@NotNull String pId, @NotNull UnaryOperator<DataComponentType.Builder<T>> pBuilder) {
 		final DataComponentType<T> componentType = Registry.register(BuiltInRegistries.DATA_COMPONENT_TYPE, BlueResource.resource(pId).toString(), pBuilder.apply(DataComponentType.builder()).build());
 
 		return () -> componentType;
 	}
 
-	private static <T, R extends Registry<? super T>> Supplier<T> registerSupplier(R pRegistry, String pId, Supplier<T> pObject) {
+	@NotNull
+	private static <T, R extends Registry<? super T>> Supplier<T> registerSupplier(@NotNull R pRegistry, @NotNull String pId, @NotNull Supplier<T> pObject) {
 		final T registeredObject = Registry.register((Registry<T>) pRegistry, ResourceLocation.fromNamespaceAndPath(BlueLibConstants.MOD_ID, pId), pObject.get());
 
 		return () -> registeredObject;
 	}
 
-	private static <T, R extends Registry<? super T>> Holder<T> registerHolder(R pRegistry, String pId, Supplier<T> pObject) {
+	@NotNull
+	private static <T, R extends Registry<? super T>> Holder<T> registerHolder(@NotNull R pRegistry, @NotNull String pId, @NotNull Supplier<T> pObject) {
 		return Registry.registerForHolder((Registry<T>) pRegistry, ResourceLocation.fromNamespaceAndPath(BlueLibConstants.MOD_ID, pId), pObject.get());
 	}
 }

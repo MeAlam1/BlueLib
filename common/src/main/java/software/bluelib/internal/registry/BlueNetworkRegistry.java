@@ -10,6 +10,7 @@ package software.bluelib.internal.registry;
 import java.util.ArrayList;
 import java.util.List;
 import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.net.PacketProvider;
 import software.bluelib.client.net.OpenLoggerPacketHandler;
 import software.bluelib.client.net.loader.*;
@@ -22,34 +23,34 @@ import software.bluelib.net.serverHandling.TestPacketHandler;
 @ApiStatus.Internal
 public class BlueNetworkRegistry implements PacketProvider.C2SPacketProvider, PacketProvider.S2CPacketProvider {
 
-    @Override
-    public List<PacketRegisterInfo<?>> getC2SPacketInfoList() {
-        List<PacketRegisterInfo<?>> list = new ArrayList<>();
+	@Override
+	public @NotNull List<PacketRegisterInfo<?>> getC2SPacketInfoList() {
+		List<PacketRegisterInfo<?>> list = new ArrayList<>();
 
-        // Test
-        list.add(new PacketRegisterInfo<>(TestPacket.ID, TestPacket::decode, new TestPacketHandler()));
+		// Test
+		list.add(new PacketRegisterInfo<>(TestPacket.ID, TestPacket::decode, new TestPacketHandler()));
 
-        return list;
-    }
+		return list;
+	}
 
-    @Override
-    public List<PacketRegisterInfo<?>> getS2CPacketInfoList() {
-        List<PacketRegisterInfo<?>> list = new ArrayList<>();
+	@Override
+	public @NotNull List<PacketRegisterInfo<?>> getS2CPacketInfoList() {
+		List<PacketRegisterInfo<?>> list = new ArrayList<>();
 
-        // Logger
-        list.add(new PacketRegisterInfo<>(OpenLoggerPacket.ID, OpenLoggerPacket::decode, new OpenLoggerPacketHandler()));
+		// Logger
+		list.add(new PacketRegisterInfo<>(OpenLoggerPacket.ID, OpenLoggerPacket::decode, new OpenLoggerPacketHandler()));
 
-        // Loader
-        list.add(new PacketRegisterInfo<>(BlockEntityAnimTriggerPacket.ID, BlockEntityAnimTriggerPacket::decode, new BlockEntityAnimTriggerPacketHandler()));
-        list.add(new PacketRegisterInfo<>(BlockEntityDataSyncPacket.ID, BlockEntityDataSyncPacket::decode, new BlockEntityDataSyncPacketHandler<>()));
-        list.add(new PacketRegisterInfo<>(EntityAnimTriggerPacket.ID, EntityAnimTriggerPacket::decode, new EntityAnimTriggerPacketHandler()));
-        list.add(new PacketRegisterInfo<>(EntityDataSyncPacket.ID, EntityDataSyncPacket::decode, new EntityDataSyncPacketHandler<>()));
-        list.add(new PacketRegisterInfo<>(SingletonAnimTriggerPacket.ID, SingletonAnimTriggerPacket::decode, new SingletonAnimTriggerPacketHandler()));
-        list.add(new PacketRegisterInfo<>(SingletonDataSyncPacket.ID, SingletonDataSyncPacket::decode, new SingletonDataSyncPacketHandler<>()));
-        list.add(new PacketRegisterInfo<>(StopTriggeredEntityAnimPacket.ID, StopTriggeredEntityAnimPacket::decode, new StopTriggeredEntityAnimPacketHandler()));
-        list.add(new PacketRegisterInfo<>(StopTriggeredBlockEntityAnimPacket.ID, StopTriggeredBlockEntityAnimPacket::decode, new StopTriggeredBlockEntityAnimPacketHandler()));
-        list.add(new PacketRegisterInfo<>(StopTriggeredSingletonAnimPacket.ID, StopTriggeredSingletonAnimPacket::decode, new StopTriggeredSingletonAnimPacketHandler()));
+		// Loader
+		list.add(new PacketRegisterInfo<>(BlockEntityAnimTriggerPacket.ID, BlockEntityAnimTriggerPacket::decode, new BlockEntityAnimTriggerPacketHandler()));
+		list.add(new PacketRegisterInfo<>(BlockEntityDataSyncPacket.ID, BlockEntityDataSyncPacket::decode, new BlockEntityDataSyncPacketHandler<>()));
+		list.add(new PacketRegisterInfo<>(EntityAnimTriggerPacket.ID, EntityAnimTriggerPacket::decode, new EntityAnimTriggerPacketHandler()));
+		list.add(new PacketRegisterInfo<>(EntityDataSyncPacket.ID, EntityDataSyncPacket::decode, new EntityDataSyncPacketHandler<>()));
+		list.add(new PacketRegisterInfo<>(SingletonAnimTriggerPacket.ID, SingletonAnimTriggerPacket::decode, new SingletonAnimTriggerPacketHandler()));
+		list.add(new PacketRegisterInfo<>(SingletonDataSyncPacket.ID, SingletonDataSyncPacket::decode, new SingletonDataSyncPacketHandler<>()));
+		list.add(new PacketRegisterInfo<>(StopTriggeredEntityAnimPacket.ID, StopTriggeredEntityAnimPacket::decode, new StopTriggeredEntityAnimPacketHandler()));
+		list.add(new PacketRegisterInfo<>(StopTriggeredBlockEntityAnimPacket.ID, StopTriggeredBlockEntityAnimPacket::decode, new StopTriggeredBlockEntityAnimPacketHandler()));
+		list.add(new PacketRegisterInfo<>(StopTriggeredSingletonAnimPacket.ID, StopTriggeredSingletonAnimPacket::decode, new StopTriggeredSingletonAnimPacketHandler()));
 
-        return list;
-    }
+		return list;
+	}
 }

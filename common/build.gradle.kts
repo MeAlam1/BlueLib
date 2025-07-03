@@ -2,8 +2,8 @@ plugins {
     id("bluelib-convention")
     alias(libs.plugins.curseforgegradle)
     alias(libs.plugins.moddevgradle)
-    id("com.diffplug.spotless") version "6.25.0"
-    id("com.github.hierynomus.license") version "0.16.1"
+    alias(libs.plugins.com.diffplug.spotless)
+    alias(libs.plugins.com.github.hierynomus.license)
 }
 
 repositories {
@@ -49,20 +49,17 @@ publishing {
 
 spotless {
     java {
+        leadingSpacesToTabs()
         endWithNewline()
         removeUnusedImports()
         toggleOffOn()
-        indentWithTabs()
 
         // Pin version to 4.31 due to Spotless bug https://github.com/diffplug/spotless/issues/1992
         eclipse("4.31").configFile(rootProject.file("codeformat/formatter-config.xml"))
 
         importOrder()
-        custom("jetbrainsNullable") { fileContents: String ->
-            fileContents.replace("javax.annotation.Nullable", "org.jetbrains.annotations.Nullable")
-        }
 
-        bumpThisNumberIfACustomStepChanges(2)
+        bumpThisNumberIfACustomStepChanges(3)
     }
 }
 

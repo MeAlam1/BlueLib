@@ -7,9 +7,12 @@
  */
 package software.bluelib.entity.variant;
 
+import org.jetbrains.annotations.NotNull;
+
 public interface IVariantAccessor {
 
-    void setEntityVariantName(String pVariantName);
+	void setEntityVariantName(@NotNull String pVariantName);
 
-    String getEntityVariantName();
+	@NotNull
+	String getEntityVariantName();
 }

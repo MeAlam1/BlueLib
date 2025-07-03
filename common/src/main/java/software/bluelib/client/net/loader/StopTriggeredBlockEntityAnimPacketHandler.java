@@ -8,16 +8,17 @@
 package software.bluelib.client.net.loader;
 
 import net.minecraft.client.Minecraft;
+import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.net.ClientNetworkPacketHandler;
 import software.bluelib.client.utils.LevelUtils;
-import software.bluelib.loader.animatable.BlueBlockEntity;
 import software.bluelib.net.messages.client.loader.StopTriggeredBlockEntityAnimPacket;
+import software.bluelib.oldLoader.animatable.BlueBlockEntity;
 
 public class StopTriggeredBlockEntityAnimPacketHandler implements ClientNetworkPacketHandler<StopTriggeredBlockEntityAnimPacket> {
 
-    @Override
-    public void handle(StopTriggeredBlockEntityAnimPacket pPacket, Minecraft pClient) {
-        if (LevelUtils.getLevel().getBlockEntity(pPacket.pos()) instanceof BlueBlockEntity blockEntity)
-            blockEntity.stopTriggeredAnim(pPacket.controllerName().isEmpty() ? null : pPacket.controllerName(), pPacket.animName().isEmpty() ? null : pPacket.animName());
-    }
+	@Override
+	public void handle(@NotNull StopTriggeredBlockEntityAnimPacket pPacket, @NotNull Minecraft pClient) {
+		if (LevelUtils.getLevel().getBlockEntity(pPacket.pos()) instanceof BlueBlockEntity blockEntity)
+			blockEntity.stopTriggeredAnim(pPacket.controllerName().isEmpty() ? null : pPacket.controllerName(), pPacket.animName().isEmpty() ? null : pPacket.animName());
+	}
 }

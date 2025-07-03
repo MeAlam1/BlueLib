@@ -15,34 +15,34 @@ import software.bluelib.client.loader.json.deserialize.controller.Controller;
 
 public interface ControllerCacheFactory extends CacheFactory<ControllerCache, Controller> {
 
-    Map<String, ControllerCacheFactory> FACTORIES = new Object2ObjectOpenHashMap<>(1);
-    ControllerCacheFactory DEFAULT_FACTORY = new ControllerCacheFactory.Builtin();
+	Map<String, ControllerCacheFactory> FACTORIES = new Object2ObjectOpenHashMap<>(1);
+	ControllerCacheFactory DEFAULT_FACTORY = new ControllerCacheFactory.Builtin();
 
-    CacheFactory.Registry<ControllerCache, Controller, ControllerCacheFactory> REGISTRY = new CacheFactory.Registry<>() {
+	CacheFactory.Registry<ControllerCache, Controller, ControllerCacheFactory> REGISTRY = new CacheFactory.Registry<>() {
 
-        @Override
-        public Map<String, ControllerCacheFactory> factories() {
-            return FACTORIES;
-        }
+		@Override
+		public Map<String, ControllerCacheFactory> factories() {
+			return FACTORIES;
+		}
 
-        @Override
-        public ControllerCacheFactory defaultFactory() {
-            return DEFAULT_FACTORY;
-        }
-    };
+		@Override
+		public ControllerCacheFactory defaultFactory() {
+			return DEFAULT_FACTORY;
+		}
+	};
 
-    @Override
-    default ControllerCache construct(Controller pSource) {
-        return constructBlueController(pSource);
-    }
+	@Override
+	default ControllerCache construct(Controller pSource) {
+		return constructBlueController(pSource);
+	}
 
-    ControllerCache constructBlueController(Controller pController);
+	ControllerCache constructBlueController(Controller pController);
 
-    final class Builtin implements ControllerCacheFactory {
+	final class Builtin implements ControllerCacheFactory {
 
-        @Override
-        public ControllerCache constructBlueController(Controller pController) {
-            return null;
-        }
-    }
+		@Override
+		public ControllerCache constructBlueController(Controller pController) {
+			return null;
+		}
+	}
 }

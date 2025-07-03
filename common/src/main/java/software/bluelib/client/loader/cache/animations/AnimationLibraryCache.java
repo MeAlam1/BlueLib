@@ -12,8 +12,8 @@ import org.jetbrains.annotations.Nullable;
 
 public record AnimationLibraryCache(Map<String, AnimationCache> animations) {
 
-    @Nullable
-    public AnimationCache getAnimation(String pName) {
-        return animations.get(pName);
-    }
+	@Nullable
+	public AnimationCache getAnimation(String pName) {
+		return animations.get(pName);
+	}
 }

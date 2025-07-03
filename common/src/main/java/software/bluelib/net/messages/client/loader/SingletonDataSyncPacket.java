@@ -9,34 +9,39 @@ package software.bluelib.net.messages.client.loader;
 
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.net.NetworkPacket;
 import software.bluelib.internal.BlueResource;
-import software.bluelib.loader.constant.dataticket.SerializableDataTicket;
+import software.bluelib.oldLoader.constant.dataticket.SerializableDataTicket;
 
-public record SingletonDataSyncPacket<D>(String syncableId, long instanceId, SerializableDataTicket<D> dataTicket,
-        D data) implements NetworkPacket<SingletonDataSyncPacket<D>> {
+public record SingletonDataSyncPacket<D>(
+		@NotNull String syncableId,
+		@NotNull Long instanceId,
+		@NotNull SerializableDataTicket<D> dataTicket,
+		@NotNull D data) implements NetworkPacket<SingletonDataSyncPacket<D>> {
 
-    public static final ResourceLocation ID = BlueResource.resource("singleton_data_sync");
+	@NotNull
+	public static final ResourceLocation ID = BlueResource.resource("singleton_data_sync");
 
-    @Override
-    public void encode(RegistryFriendlyByteBuf pBuffer) {
-        pBuffer.writeUtf(this.syncableId);
-        pBuffer.writeVarLong(this.instanceId);
-        SerializableDataTicket.STREAM_CODEC.encode(pBuffer, this.dataTicket);
-        this.dataTicket.streamCodec().encode(pBuffer, this.data);
-    }
+	@Override
+	public void encode(@NotNull RegistryFriendlyByteBuf pBuffer) {
+		pBuffer.writeUtf(this.syncableId);
+		pBuffer.writeVarLong(this.instanceId);
+		SerializableDataTicket.STREAM_CODEC.encode(pBuffer, this.dataTicket);
+		this.dataTicket.streamCodec().encode(pBuffer, this.data);
+	}
 
-    @SuppressWarnings("unchecked")
-    public static <D> SingletonDataSyncPacket<D> decode(RegistryFriendlyByteBuf pBuffer) {
-        String syncableId = pBuffer.readUtf();
-        long instanceId = pBuffer.readVarLong();
-        SerializableDataTicket<D> dataTicket = (SerializableDataTicket<D>) SerializableDataTicket.STREAM_CODEC.decode(pBuffer);
-        D data = dataTicket.streamCodec().decode(pBuffer);
-        return new SingletonDataSyncPacket<>(syncableId, instanceId, dataTicket, data);
-    }
+	@SuppressWarnings("unchecked")
+	public static <D> @NotNull SingletonDataSyncPacket<D> decode(@NotNull RegistryFriendlyByteBuf pBuffer) {
+		String syncableId = pBuffer.readUtf();
+		Long instanceId = pBuffer.readVarLong();
+		SerializableDataTicket<D> dataTicket = (SerializableDataTicket<D>) SerializableDataTicket.STREAM_CODEC.decode(pBuffer);
+		D data = dataTicket.streamCodec().decode(pBuffer);
+		return new SingletonDataSyncPacket<>(syncableId, instanceId, dataTicket, data);
+	}
 
-    @Override
-    public ResourceLocation getId() {
-        return ID;
-    }
+	@Override
+	public @NotNull ResourceLocation getId() {
+		return ID;
+	}
 }

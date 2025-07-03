@@ -14,27 +14,27 @@ import software.bluelib.client.loader.json.FormatVersion;
 
 public class AnimationFormatVersion extends FormatVersion<AnimationFormatVersion> {
 
-    public static final Registry<AnimationFormatVersion> REGISTRY = new Registry<>() {
+	public static final Registry<AnimationFormatVersion> REGISTRY = new Registry<>() {
 
-        private final Map<String, AnimationFormatVersion> map = new Object2ObjectOpenHashMap<>();
-        private final AnimationFormatVersion defaultVersion = new AnimationFormatVersion("1.8.0", true, null);
+		private final Map<String, AnimationFormatVersion> map = new Object2ObjectOpenHashMap<>();
+		private final AnimationFormatVersion defaultVersion = new AnimationFormatVersion("1.8.0", true, null);
 
-        {
-            register(defaultVersion);
-        }
+		{
+			register(defaultVersion);
+		}
 
-        @Override
-        public Map<String, AnimationFormatVersion> versions() {
-            return map;
-        }
+		@Override
+		public Map<String, AnimationFormatVersion> versions() {
+			return map;
+		}
 
-        @Override
-        public AnimationFormatVersion defaultVersion() {
-            return defaultVersion;
-        }
-    };
+		@Override
+		public AnimationFormatVersion defaultVersion() {
+			return defaultVersion;
+		}
+	};
 
-    protected AnimationFormatVersion(String pSerializedName, boolean pSupported, @Nullable String pErrorMessage) {
-        super(pSerializedName, pSupported, pErrorMessage);
-    }
+	protected AnimationFormatVersion(String pSerializedName, boolean pSupported, @Nullable String pErrorMessage) {
+		super(pSerializedName, pSupported, pErrorMessage);
+	}
 }

@@ -14,29 +14,29 @@ import software.bluelib.client.loader.json.FormatVersion;
 
 public class ModelFormatVersion extends FormatVersion<ModelFormatVersion> {
 
-    public static final Registry<ModelFormatVersion> REGISTRY = new Registry<>() {
+	public static final Registry<ModelFormatVersion> REGISTRY = new Registry<>() {
 
-        private final Map<String, ModelFormatVersion> map = new Object2ObjectOpenHashMap<>();
-        private final ModelFormatVersion defaultVersion = new ModelFormatVersion("1.12.0", true, null);
+		private final Map<String, ModelFormatVersion> map = new Object2ObjectOpenHashMap<>();
+		private final ModelFormatVersion defaultVersion = new ModelFormatVersion("1.12.0", true, null);
 
-        {
-            register(defaultVersion);
-            register(new ModelFormatVersion("1.14.0", true, null));
-            register(new ModelFormatVersion("1.21.0", true, null));
-        }
+		{
+			register(defaultVersion);
+			register(new ModelFormatVersion("1.14.0", true, null));
+			register(new ModelFormatVersion("1.21.0", true, null));
+		}
 
-        @Override
-        public Map<String, ModelFormatVersion> versions() {
-            return map;
-        }
+		@Override
+		public Map<String, ModelFormatVersion> versions() {
+			return map;
+		}
 
-        @Override
-        public ModelFormatVersion defaultVersion() {
-            return defaultVersion;
-        }
-    };
+		@Override
+		public ModelFormatVersion defaultVersion() {
+			return defaultVersion;
+		}
+	};
 
-    protected ModelFormatVersion(String pSerializedName, boolean pSupported, @Nullable String pErrorMessage) {
-        super(pSerializedName, pSupported, pErrorMessage);
-    }
+	protected ModelFormatVersion(String pSerializedName, boolean pSupported, @Nullable String pErrorMessage) {
+		super(pSerializedName, pSupported, pErrorMessage);
+	}
 }

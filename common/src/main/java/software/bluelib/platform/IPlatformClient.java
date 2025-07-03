@@ -13,17 +13,17 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import software.bluelib.loader.animatable.BlueAnimatable;
 import software.bluelib.loader.model.BlueModel;
+import software.bluelib.oldLoader.animatable.BlueAnimatable;
 
 public interface IPlatformClient {
 
-    @NotNull
-    <T extends LivingEntity & BlueAnimatable> HumanoidModel<?> getArmorModelForItem(T pAnimatable, ItemStack pStack, EquipmentSlot pSlot, HumanoidModel<LivingEntity> pDefaultModel);
+	@NotNull
+	<T extends LivingEntity & BlueAnimatable> HumanoidModel<?> getArmorModelForItem(@NotNull T pAnimatable, @NotNull ItemStack pStack, @NotNull EquipmentSlot pSlot, @NotNull HumanoidModel<LivingEntity> pDefaultModel);
 
-    @Nullable
-    BlueModel<?> getBlueModelForItem(ItemStack pItem);
+	@Nullable
+	BlueModel<?> getBlueModelForItem(@NotNull ItemStack pItem);
 
-    @Nullable
-    BlueModel<?> getBlueModelForArmor(ItemStack pArmour);
+	@Nullable
+	BlueModel<?> getBlueModelForArmor(@NotNull ItemStack pArmour);
 }

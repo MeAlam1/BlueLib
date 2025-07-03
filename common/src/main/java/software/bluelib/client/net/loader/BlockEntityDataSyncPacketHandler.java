@@ -8,17 +8,18 @@
 package software.bluelib.client.net.loader;
 
 import net.minecraft.client.Minecraft;
+import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.net.ClientNetworkPacketHandler;
 import software.bluelib.client.utils.LevelUtils;
-import software.bluelib.loader.animatable.BlueBlockEntity;
 import software.bluelib.net.messages.client.loader.BlockEntityDataSyncPacket;
+import software.bluelib.oldLoader.animatable.BlueBlockEntity;
 
 public class BlockEntityDataSyncPacketHandler<D> implements ClientNetworkPacketHandler<BlockEntityDataSyncPacket<D>> {
 
-    @Override
-    public void handle(BlockEntityDataSyncPacket<D> pPacket, Minecraft pClient) {
-        if (LevelUtils.getLevel().getBlockEntity(pPacket.pos()) instanceof BlueBlockEntity blockEntity) {
-            blockEntity.setAnimData(pPacket.dataTicket(), pPacket.data());
-        }
-    }
+	@Override
+	public void handle(@NotNull BlockEntityDataSyncPacket<D> pPacket, @NotNull Minecraft pClient) {
+		if (LevelUtils.getLevel().getBlockEntity(pPacket.pos()) instanceof BlueBlockEntity blockEntity) {
+			blockEntity.setAnimData(pPacket.dataTicket(), pPacket.data());
+		}
+	}
 }

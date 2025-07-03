@@ -7,35 +7,39 @@
  */
 package software.bluelib.net.messages.client.loader;
 
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.net.NetworkPacket;
 import software.bluelib.internal.BlueResource;
 
-public record StopTriggeredSingletonAnimPacket(String syncableId, long instanceId, String controllerName,
-        String animName) implements NetworkPacket<StopTriggeredSingletonAnimPacket> {
+public record StopTriggeredSingletonAnimPacket(
+		@NotNull String syncableId,
+		@NotNull Long instanceId,
+		@NotNull String controllerName,
+		@NotNull String animName) implements NetworkPacket<StopTriggeredSingletonAnimPacket> {
 
-    public static final ResourceLocation ID = BlueResource.resource("stop_triggered_singleton_anim");
+	@NotNull
+	public static final ResourceLocation ID = BlueResource.resource("stop_triggered_singleton_anim");
 
-    @Override
-    public void encode(RegistryFriendlyByteBuf pBuffer) {
-        pBuffer.writeUtf(this.syncableId);
-        pBuffer.writeVarLong(this.instanceId);
-        pBuffer.writeUtf(this.controllerName);
-        pBuffer.writeUtf(this.animName);
-    }
+	@Override
+	public void encode(@NotNull RegistryFriendlyByteBuf pBuffer) {
+		pBuffer.writeUtf(this.syncableId);
+		pBuffer.writeVarLong(this.instanceId);
+		pBuffer.writeUtf(this.controllerName);
+		pBuffer.writeUtf(this.animName);
+	}
 
-    public static StopTriggeredSingletonAnimPacket decode(FriendlyByteBuf pBuffer) {
-        String syncableId = pBuffer.readUtf();
-        long instanceId = pBuffer.readVarLong();
-        String controllerName = pBuffer.readUtf();
-        String animName = pBuffer.readUtf();
-        return new StopTriggeredSingletonAnimPacket(syncableId, instanceId, controllerName, animName);
-    }
+	public static @NotNull StopTriggeredSingletonAnimPacket decode(@NotNull RegistryFriendlyByteBuf pBuffer) {
+		String syncableId = pBuffer.readUtf();
+		Long instanceId = pBuffer.readVarLong();
+		String controllerName = pBuffer.readUtf();
+		String animName = pBuffer.readUtf();
+		return new StopTriggeredSingletonAnimPacket(syncableId, instanceId, controllerName, animName);
+	}
 
-    @Override
-    public ResourceLocation getId() {
-        return ID;
-    }
+	@Override
+	public @NotNull ResourceLocation getId() {
+		return ID;
+	}
 }

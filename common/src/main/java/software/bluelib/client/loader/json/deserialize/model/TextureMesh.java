@@ -15,27 +15,27 @@ import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.utils.JsonUtils;
 
 public record TextureMesh(
-        List<Float> localPivot,
-        List<Float> position,
-        List<Float> rotation,
-        List<Float> scale,
-        @Nullable String texture) {
+		List<Float> localPivot,
+		List<Float> position,
+		List<Float> rotation,
+		List<Float> scale,
+		@Nullable String texture) {
 
-    public static JsonDeserializer<TextureMesh> deserializer() throws JsonParseException {
-        return (json, type, context) -> {
-            JsonObject obj = json.getAsJsonObject();
-            List<Float> pivot = JsonUtils.jsonArrayToFloatList(JsonUtils.getOptionalJsonArray(obj, "local_pivot"));
-            List<Float> position = JsonUtils.jsonArrayToFloatList(JsonUtils.getOptionalJsonArray(obj, "position"));
-            List<Float> rotation = JsonUtils.jsonArrayToFloatList(JsonUtils.getOptionalJsonArray(obj, "rotation"));
-            List<Float> scale = JsonUtils.jsonArrayToFloatList(JsonUtils.getOptionalJsonArray(obj, "scale"));
-            String texture = JsonUtils.getOptionalString(obj, "texture");
+	public static JsonDeserializer<TextureMesh> deserializer() throws JsonParseException {
+		return (json, type, context) -> {
+			JsonObject obj = json.getAsJsonObject();
+			List<Float> pivot = JsonUtils.jsonArrayToFloatList(JsonUtils.getOptionalJsonArray(obj, "local_pivot"));
+			List<Float> position = JsonUtils.jsonArrayToFloatList(JsonUtils.getOptionalJsonArray(obj, "position"));
+			List<Float> rotation = JsonUtils.jsonArrayToFloatList(JsonUtils.getOptionalJsonArray(obj, "rotation"));
+			List<Float> scale = JsonUtils.jsonArrayToFloatList(JsonUtils.getOptionalJsonArray(obj, "scale"));
+			String texture = JsonUtils.getOptionalString(obj, "texture");
 
-            return new TextureMesh(
-                    pivot,
-                    position,
-                    rotation,
-                    scale,
-                    texture);
-        };
-    }
+			return new TextureMesh(
+					pivot,
+					position,
+					rotation,
+					scale,
+					texture);
+		};
+	}
 }

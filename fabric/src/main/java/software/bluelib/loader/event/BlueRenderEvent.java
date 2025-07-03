@@ -1,3 +1,10 @@
+/*
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
+ */
 package software.bluelib.loader.event;
 
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -7,50 +14,50 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.client.loader.cache.model.ModelCache;
-import software.bluelib.loader.renderer.*;
-import software.bluelib.loader.renderer.layer.BlueRenderLayer;
+import software.bluelib.oldLoader.renderer.*;
+import software.bluelib.oldLoader.renderer.layer.BlueRenderLayer;
 
-
+@SuppressWarnings("unused")
 public interface BlueRenderEvent {
-	
+
+	@NotNull
 	BlueRenderer<?> getRenderer();
 
-	
 	abstract class Armor implements BlueRenderEvent {
+
+		@NotNull
 		private final BlueArmorRenderer<?> renderer;
 
-		public Armor(BlueArmorRenderer<?> renderer) {
-			this.renderer = renderer;
+		public Armor(@NotNull BlueArmorRenderer<?> pRenderer) {
+			this.renderer = pRenderer;
 		}
 
-		
 		@Override
-		public BlueArmorRenderer<?> getRenderer() {
+		public @NotNull BlueArmorRenderer<?> getRenderer() {
 			return this.renderer;
 		}
 
-		
 		@Nullable
 		public net.minecraft.world.entity.Entity getEntity() {
 			return getRenderer().getCurrentEntity();
 		}
 
-		
 		@Nullable
 		public ItemStack getItemStack() {
 			return getRenderer().getCurrentStack();
 		}
 
-		
 		@Nullable
 		public EquipmentSlot getEquipmentSlot() {
 			return getRenderer().getCurrentSlot();
 		}
 
-		
 		public static class Pre extends Armor {
+
+			@NotNull
 			public static final Event<Listener> EVENT = EventFactory.createArrayBacked(Listener.class, event -> true, listeners -> event -> {
 				for (Listener listener : listeners) {
 					if (!listener.handle(event))
@@ -60,146 +67,157 @@ public interface BlueRenderEvent {
 				return true;
 			});
 
-			private final PoseStack pPoseStack;
+			@NotNull
+			private final PoseStack poseStack;
+			@NotNull
 			private final ModelCache model;
-			private final MultiBufferSource pBufferSource;
-			private final float pPartialTick;
-			private final int pPackedLight;
+			@NotNull
+			private final MultiBufferSource bufferSource;
+			@NotNull
+			private final Float partialTick;
+			@NotNull
+			private final Integer packedLight;
 
-			public Pre(BlueArmorRenderer<?> renderer, PoseStack pPoseStack, ModelCache model, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight) {
-				super(renderer);
+			public Pre(@NotNull BlueArmorRenderer<?> pRenderer, @NotNull PoseStack pPoseStack, @NotNull ModelCache pModel, @NotNull MultiBufferSource pBufferSource, @NotNull Float pPartialTick, @NotNull Integer pPackedLight) {
+				super(pRenderer);
 
-				this.pPoseStack = pPoseStack;
-				this.model = model;
-				this.pBufferSource = pBufferSource;
-				this.pPartialTick = pPartialTick;
-				this.pPackedLight = pPackedLight;
+				this.poseStack = pPoseStack;
+				this.model = pModel;
+				this.bufferSource = pBufferSource;
+				this.partialTick = pPartialTick;
+				this.packedLight = pPackedLight;
 			}
 
-			public PoseStack getPoseStack() {
-				return this.pPoseStack;
+			public @NotNull PoseStack getPoseStack() {
+				return this.poseStack;
 			}
 
-			public ModelCache getModel() {
+			public @NotNull ModelCache getModel() {
 				return this.model;
 			}
 
-			public MultiBufferSource getBufferSource() {
-				return this.pBufferSource;
+			public @NotNull MultiBufferSource getBufferSource() {
+				return this.bufferSource;
 			}
 
-			public float getPartialTick() {
-				return this.pPartialTick;
+			public @NotNull Float getPartialTick() {
+				return this.partialTick;
 			}
 
-			public int getPackedLight() {
-				return this.pPackedLight;
+			public @NotNull Integer getPackedLight() {
+				return this.packedLight;
 			}
 
-			
 			@FunctionalInterface
 			public interface Listener {
-				boolean handle(Pre event);
+
+				boolean handle(@NotNull Pre pEvent);
 			}
 		}
 
-		
 		public static class Post extends Armor {
+
+			@NotNull
 			public static final Event<Listener> EVENT = EventFactory.createArrayBacked(Listener.class, post -> {}, listeners -> event -> {
 				for (Listener listener : listeners) {
 					listener.handle(event);
 				}
 			});
 
-			private final PoseStack pPoseStack;
+			@NotNull
+			private final PoseStack poseStack;
+			@NotNull
 			private final ModelCache model;
-			private final MultiBufferSource pBufferSource;
-			private final float pPartialTick;
-			private final int pPackedLight;
+			@NotNull
+			private final MultiBufferSource bufferSource;
+			@NotNull
+			private final Float partialTick;
+			@NotNull
+			private final Integer packedLight;
 
-			public Post(BlueArmorRenderer<?> renderer, PoseStack pPoseStack, ModelCache model, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight) {
-				super(renderer);
+			public Post(@NotNull BlueArmorRenderer<?> pRenderer, @NotNull PoseStack pPoseStack, @NotNull ModelCache pModel, @NotNull MultiBufferSource pBufferSource, @NotNull Float pPartialTick, @NotNull Integer pPackedLight) {
+				super(pRenderer);
 
-				this.pPoseStack = pPoseStack;
-				this.model = model;
-				this.pBufferSource = pBufferSource;
-				this.pPartialTick = pPartialTick;
-				this.pPackedLight = pPackedLight;
+				this.poseStack = pPoseStack;
+				this.model = pModel;
+				this.bufferSource = pBufferSource;
+				this.partialTick = pPartialTick;
+				this.packedLight = pPackedLight;
 			}
 
-			public PoseStack getPoseStack() {
-				return this.pPoseStack;
+			public @NotNull PoseStack getPoseStack() {
+				return this.poseStack;
 			}
 
-			public ModelCache getModel() {
+			public @NotNull ModelCache getModel() {
 				return this.model;
 			}
 
-			public MultiBufferSource getBufferSource() {
-				return this.pBufferSource;
+			public @NotNull MultiBufferSource getBufferSource() {
+				return this.bufferSource;
 			}
 
-			public float getPartialTick() {
-				return this.pPartialTick;
+			public @NotNull Float getPartialTick() {
+				return this.partialTick;
 			}
 
-			public int getPackedLight() {
-				return this.pPackedLight;
+			public @NotNull Integer getPackedLight() {
+				return this.packedLight;
 			}
 
-			
 			@FunctionalInterface
 			public interface Listener {
-				void handle(Post event);
+
+				void handle(@NotNull Post pEvent);
 			}
 		}
 
-		
 		public static class CompileRenderLayers extends Armor {
+
+			@NotNull
 			public static final Event<Listener> EVENT = EventFactory.createArrayBacked(Listener.class, post -> {}, listeners -> event -> {
 				for (Listener listener : listeners) {
 					listener.handle(event);
 				}
 			});
 
-			public CompileRenderLayers(BlueArmorRenderer<?> renderer) {
-				super(renderer);
+			public CompileRenderLayers(@NotNull BlueArmorRenderer<?> pRenderer) {
+				super(pRenderer);
 			}
 
-			
-			public void addLayer(BlueRenderLayer renderLayer) {
-				getRenderer().addRenderLayer(renderLayer);
+			public void addLayer(@NotNull BlueRenderLayer pRenderLayer) {
+				getRenderer().addRenderLayer(pRenderLayer);
 			}
 
-			
 			@FunctionalInterface
 			public interface Listener {
-				void handle(CompileRenderLayers event);
+
+				void handle(@NotNull CompileRenderLayers pEvent);
 			}
 		}
 	}
 
-	
 	abstract class Block implements BlueRenderEvent {
+
+		@NotNull
 		private final BlueBlockRenderer<?> renderer;
 
-		public Block(BlueBlockRenderer<?> renderer) {
-			this.renderer = renderer;
+		public Block(@NotNull BlueBlockRenderer<?> pRenderer) {
+			this.renderer = pRenderer;
 		}
 
-		
 		@Override
-		public BlueBlockRenderer<?> getRenderer() {
+		public @NotNull BlueBlockRenderer<?> getRenderer() {
 			return this.renderer;
 		}
 
-		
-		public BlockEntity getBlockEntity() {
+		public @NotNull BlockEntity getBlockEntity() {
 			return getRenderer().getAnimatable();
 		}
 
-		
 		public static class Pre extends Block {
+
+			@NotNull
 			public static final Event<Listener> EVENT = EventFactory.createArrayBacked(Listener.class, event -> true, listeners -> event -> {
 				for (Listener listener : listeners) {
 					if (!listener.handle(event))
@@ -209,146 +227,157 @@ public interface BlueRenderEvent {
 				return true;
 			});
 
-			private final PoseStack pPoseStack;
+			@NotNull
+			private final PoseStack poseStack;
+			@NotNull
 			private final ModelCache model;
-			private final MultiBufferSource pBufferSource;
-			private final float pPartialTick;
-			private final int pPackedLight;
+			@NotNull
+			private final MultiBufferSource bufferSource;
+			@NotNull
+			private final Float partialTick;
+			@NotNull
+			private final Integer packedLight;
 
-			public Pre(BlueBlockRenderer<?> renderer, PoseStack pPoseStack, ModelCache model, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight) {
-				super(renderer);
+			public Pre(@NotNull BlueBlockRenderer<?> pRenderer, @NotNull PoseStack pPoseStack, @NotNull ModelCache pModel, @NotNull MultiBufferSource pBufferSource, @NotNull Float pPartialTick, @NotNull Integer pPackedLight) {
+				super(pRenderer);
 
-				this.pPoseStack = pPoseStack;
-				this.model = model;
-				this.pBufferSource = pBufferSource;
-				this.pPartialTick = pPartialTick;
-				this.pPackedLight = pPackedLight;
+				this.poseStack = pPoseStack;
+				this.model = pModel;
+				this.bufferSource = pBufferSource;
+				this.partialTick = pPartialTick;
+				this.packedLight = pPackedLight;
 			}
 
-			public PoseStack getPoseStack() {
-				return this.pPoseStack;
+			public @NotNull PoseStack getPoseStack() {
+				return this.poseStack;
 			}
 
-			public ModelCache getModel() {
+			public @NotNull ModelCache getModel() {
 				return this.model;
 			}
 
-			public MultiBufferSource getBufferSource() {
-				return this.pBufferSource;
+			public @NotNull MultiBufferSource getBufferSource() {
+				return this.bufferSource;
 			}
 
-			public float getPartialTick() {
-				return this.pPartialTick;
+			public @NotNull Float getPartialTick() {
+				return this.partialTick;
 			}
 
-			public int getPackedLight() {
-				return this.pPackedLight;
+			public @NotNull Integer getPackedLight() {
+				return this.packedLight;
 			}
 
-			
 			@FunctionalInterface
 			public interface Listener {
-				boolean handle(Pre event);
+
+				boolean handle(@NotNull Pre pEvent);
 			}
 		}
 
-		
 		public static class Post extends Block {
+
+			@NotNull
 			public static final Event<Listener> EVENT = EventFactory.createArrayBacked(Listener.class, post -> {}, listeners -> event -> {
 				for (Listener listener : listeners) {
 					listener.handle(event);
 				}
 			});
 
-			private final PoseStack pPoseStack;
+			@NotNull
+			private final PoseStack poseStack;
+			@NotNull
 			private final ModelCache model;
-			private final MultiBufferSource pBufferSource;
-			private final float pPartialTick;
-			private final int pPackedLight;
+			@NotNull
+			private final MultiBufferSource bufferSource;
+			@NotNull
+			private final Float partialTick;
+			@NotNull
+			private final Integer packedLight;
 
-			public Post(BlueBlockRenderer<?> renderer, PoseStack pPoseStack, ModelCache model, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight) {
-				super(renderer);
+			public Post(@NotNull BlueBlockRenderer<?> pRenderer, @NotNull PoseStack pPoseStack, @NotNull ModelCache pModel, @NotNull MultiBufferSource pBufferSource, @NotNull Float pPartialTick, @NotNull Integer pPackedLight) {
+				super(pRenderer);
 
-				this.pPoseStack = pPoseStack;
-				this.model = model;
-				this.pBufferSource = pBufferSource;
-				this.pPartialTick = pPartialTick;
-				this.pPackedLight = pPackedLight;
+				this.poseStack = pPoseStack;
+				this.model = pModel;
+				this.bufferSource = pBufferSource;
+				this.partialTick = pPartialTick;
+				this.packedLight = pPackedLight;
 			}
 
-			public PoseStack getPoseStack() {
-				return this.pPoseStack;
+			public @NotNull PoseStack getPoseStack() {
+				return this.poseStack;
 			}
 
-			public ModelCache getModel() {
+			public @NotNull ModelCache getModel() {
 				return this.model;
 			}
 
-			public MultiBufferSource getBufferSource() {
-				return this.pBufferSource;
+			public @NotNull MultiBufferSource getBufferSource() {
+				return this.bufferSource;
 			}
 
-			public float getPartialTick() {
-				return this.pPartialTick;
+			public @NotNull Float getPartialTick() {
+				return this.partialTick;
 			}
 
-			public int getPackedLight() {
-				return this.pPackedLight;
+			public @NotNull Integer getPackedLight() {
+				return this.packedLight;
 			}
 
-			
 			@FunctionalInterface
 			public interface Listener {
-				void handle(Post event);
+
+				void handle(@NotNull Post pEvent);
 			}
 		}
 
-		
 		public static class CompileRenderLayers extends Block {
+
+			@NotNull
 			public static final Event<Listener> EVENT = EventFactory.createArrayBacked(Listener.class, post -> {}, listeners -> event -> {
 				for (Listener listener : listeners) {
 					listener.handle(event);
 				}
 			});
 
-			public CompileRenderLayers(BlueBlockRenderer<?> renderer) {
-				super(renderer);
+			public CompileRenderLayers(@NotNull BlueBlockRenderer<?> pRenderer) {
+				super(pRenderer);
 			}
 
-			
-			public void addLayer(BlueRenderLayer renderLayer) {
-				getRenderer().addRenderLayer(renderLayer);
+			public void addLayer(@NotNull BlueRenderLayer pRenderLayer) {
+				getRenderer().addRenderLayer(pRenderLayer);
 			}
 
-			
 			@FunctionalInterface
 			public interface Listener {
-				void handle(CompileRenderLayers event);
+
+				void handle(@NotNull CompileRenderLayers pEvent);
 			}
 		}
 	}
 
-	
 	abstract class Entity implements BlueRenderEvent {
+
+		@NotNull
 		private final BlueEntityRenderer<?> renderer;
 
-		public Entity(BlueEntityRenderer<?> renderer) {
-			this.renderer = renderer;
+		public Entity(@NotNull BlueEntityRenderer<?> pRenderer) {
+			this.renderer = pRenderer;
 		}
 
-		
 		@Override
-		public BlueEntityRenderer<?> getRenderer() {
+		public @NotNull BlueEntityRenderer<?> getRenderer() {
 			return this.renderer;
 		}
 
-		
-		public net.minecraft.world.entity.Entity getEntity() {
+		public @NotNull net.minecraft.world.entity.Entity getEntity() {
 			return this.renderer.getAnimatable();
 		}
 
-		
 		public static class Pre extends Entity {
+
+			@NotNull
 			public static final Event<Listener> EVENT = EventFactory.createArrayBacked(Listener.class, event -> true, listeners -> event -> {
 				for (Listener listener : listeners) {
 					if (!listener.handle(event))
@@ -358,146 +387,157 @@ public interface BlueRenderEvent {
 				return true;
 			});
 
-			private final PoseStack pPoseStack;
+			@NotNull
+			private final PoseStack poseStack;
+			@NotNull
 			private final ModelCache model;
-			private final MultiBufferSource pBufferSource;
-			private final float pPartialTick;
-			private final int pPackedLight;
+			@NotNull
+			private final MultiBufferSource bufferSource;
+			@NotNull
+			private final Float partialTick;
+			@NotNull
+			private final Integer packedLight;
 
-			public Pre(BlueEntityRenderer<?> renderer, PoseStack pPoseStack, ModelCache model, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight) {
-				super(renderer);
+			public Pre(@NotNull BlueEntityRenderer<?> pRenderer, @NotNull PoseStack pPoseStack, @NotNull ModelCache pModel, @NotNull MultiBufferSource pBufferSource, @NotNull Float pPartialTick, @NotNull Integer pPackedLight) {
+				super(pRenderer);
 
-				this.pPoseStack = pPoseStack;
-				this.model = model;
-				this.pBufferSource = pBufferSource;
-				this.pPartialTick = pPartialTick;
-				this.pPackedLight = pPackedLight;
+				this.poseStack = pPoseStack;
+				this.model = pModel;
+				this.bufferSource = pBufferSource;
+				this.partialTick = pPartialTick;
+				this.packedLight = pPackedLight;
 			}
 
-			public PoseStack getPoseStack() {
-				return this.pPoseStack;
+			public @NotNull PoseStack getPoseStack() {
+				return this.poseStack;
 			}
 
-			public ModelCache getModel() {
+			public @NotNull ModelCache getModel() {
 				return this.model;
 			}
 
-			public MultiBufferSource getBufferSource() {
-				return this.pBufferSource;
+			public @NotNull MultiBufferSource getBufferSource() {
+				return this.bufferSource;
 			}
 
-			public float getPartialTick() {
-				return this.pPartialTick;
+			public @NotNull Float getPartialTick() {
+				return this.partialTick;
 			}
 
-			public int getPackedLight() {
-				return this.pPackedLight;
+			public @NotNull Integer getPackedLight() {
+				return this.packedLight;
 			}
 
-			
 			@FunctionalInterface
 			public interface Listener {
-				boolean handle(Pre event);
+
+				boolean handle(@NotNull Pre pEvent);
 			}
 		}
 
-		
 		public static class Post extends Entity {
+
+			@NotNull
 			public static final Event<Listener> EVENT = EventFactory.createArrayBacked(Listener.class, post -> {}, listeners -> event -> {
 				for (Listener listener : listeners) {
 					listener.handle(event);
 				}
 			});
 
-			private final PoseStack pPoseStack;
+			@NotNull
+			private final PoseStack poseStack;
+			@NotNull
 			private final ModelCache model;
-			private final MultiBufferSource pBufferSource;
-			private final float pPartialTick;
-			private final int pPackedLight;
+			@NotNull
+			private final MultiBufferSource bufferSource;
+			@NotNull
+			private final Float partialTick;
+			@NotNull
+			private final Integer packedLight;
 
-			public Post(BlueEntityRenderer<?> renderer, PoseStack pPoseStack, ModelCache model, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight) {
-				super(renderer);
+			public Post(@NotNull BlueEntityRenderer<?> pRenderer, @NotNull PoseStack pPoseStack, @NotNull ModelCache pModel, @NotNull MultiBufferSource pBufferSource, @NotNull Float pPartialTick, @NotNull Integer pPackedLight) {
+				super(pRenderer);
 
-				this.pPoseStack = pPoseStack;
-				this.model = model;
-				this.pBufferSource = pBufferSource;
-				this.pPartialTick = pPartialTick;
-				this.pPackedLight = pPackedLight;
+				this.poseStack = pPoseStack;
+				this.model = pModel;
+				this.bufferSource = pBufferSource;
+				this.partialTick = pPartialTick;
+				this.packedLight = pPackedLight;
 			}
 
-			public PoseStack getPoseStack() {
-				return this.pPoseStack;
+			public @NotNull PoseStack getPoseStack() {
+				return this.poseStack;
 			}
 
-			public ModelCache getModel() {
+			public @NotNull ModelCache getModel() {
 				return this.model;
 			}
 
-			public MultiBufferSource getBufferSource() {
-				return this.pBufferSource;
+			public @NotNull MultiBufferSource getBufferSource() {
+				return this.bufferSource;
 			}
 
-			public float getPartialTick() {
-				return this.pPartialTick;
+			public @NotNull Float getPartialTick() {
+				return this.partialTick;
 			}
 
-			public int getPackedLight() {
-				return this.pPackedLight;
+			public @NotNull Integer getPackedLight() {
+				return this.packedLight;
 			}
 
-			
 			@FunctionalInterface
 			public interface Listener {
-				void handle(Post event);
+
+				void handle(@NotNull Post pEvent);
 			}
 		}
 
-		
 		public static class CompileRenderLayers extends Entity {
+
+			@NotNull
 			public static final Event<Listener> EVENT = EventFactory.createArrayBacked(Listener.class, post -> {}, listeners -> event -> {
 				for (Listener listener : listeners) {
 					listener.handle(event);
 				}
 			});
 
-			public CompileRenderLayers(BlueEntityRenderer<?> renderer) {
-				super(renderer);
+			public CompileRenderLayers(@NotNull BlueEntityRenderer<?> pRenderer) {
+				super(pRenderer);
 			}
 
-			
-			public void addLayer(BlueRenderLayer renderLayer) {
-				getRenderer().addRenderLayer(renderLayer);
+			public void addLayer(@NotNull BlueRenderLayer pRenderLayer) {
+				getRenderer().addRenderLayer(pRenderLayer);
 			}
 
-			
 			@FunctionalInterface
 			public interface Listener {
-				void handle(CompileRenderLayers event);
+
+				void handle(@NotNull CompileRenderLayers pEvent);
 			}
 		}
 	}
 
-	
 	abstract class Item implements BlueRenderEvent {
+
+		@NotNull
 		private final BlueItemRenderer<?> renderer;
 
-		public Item(BlueItemRenderer<?> renderer) {
-			this.renderer = renderer;
+		public Item(@NotNull BlueItemRenderer<?> pRenderer) {
+			this.renderer = pRenderer;
 		}
 
-		
 		@Override
-		public BlueItemRenderer<?> getRenderer() {
+		public @NotNull BlueItemRenderer<?> getRenderer() {
 			return this.renderer;
 		}
 
-		
-		public ItemStack getItemStack() {
+		public @NotNull ItemStack getItemStack() {
 			return getRenderer().getCurrentItemStack();
 		}
 
-		
 		public static class Pre extends Item {
+
+			@NotNull
 			public static final Event<Listener> EVENT = EventFactory.createArrayBacked(Listener.class, event -> true, listeners -> event -> {
 				for (Listener listener : listeners) {
 					if (!listener.handle(event))
@@ -507,141 +547,153 @@ public interface BlueRenderEvent {
 				return true;
 			});
 
-			private final PoseStack pPoseStack;
+			@NotNull
+			private final PoseStack poseStack;
+			@NotNull
 			private final ModelCache model;
-			private final MultiBufferSource pBufferSource;
-			private final float pPartialTick;
-			private final int pPackedLight;
+			@NotNull
+			private final MultiBufferSource bufferSource;
+			@NotNull
+			private final Float partialTick;
+			@NotNull
+			private final Integer packedLight;
 
-			public Pre(BlueItemRenderer<?> renderer, PoseStack pPoseStack, ModelCache model, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight) {
-				super(renderer);
+			public Pre(@NotNull BlueItemRenderer<?> pRenderer, @NotNull PoseStack pPoseStack, @NotNull ModelCache pModel, @NotNull MultiBufferSource pBufferSource, @NotNull Float pPartialTick, @NotNull Integer pPackedLight) {
+				super(pRenderer);
 
-				this.pPoseStack = pPoseStack;
-				this.model = model;
-				this.pBufferSource = pBufferSource;
-				this.pPartialTick = pPartialTick;
-				this.pPackedLight = pPackedLight;
+				this.poseStack = pPoseStack;
+				this.model = pModel;
+				this.bufferSource = pBufferSource;
+				this.partialTick = pPartialTick;
+				this.packedLight = pPackedLight;
 			}
 
-			public PoseStack getPoseStack() {
-				return this.pPoseStack;
+			public @NotNull PoseStack getPoseStack() {
+				return this.poseStack;
 			}
 
-			public ModelCache getModel() {
+			public @NotNull ModelCache getModel() {
 				return this.model;
 			}
 
-			public MultiBufferSource getBufferSource() {
-				return this.pBufferSource;
+			public @NotNull MultiBufferSource getBufferSource() {
+				return this.bufferSource;
 			}
 
-			public float getPartialTick() {
-				return this.pPartialTick;
+			public @NotNull Float getPartialTick() {
+				return this.partialTick;
 			}
 
-			public int getPackedLight() {
-				return this.pPackedLight;
+			public @NotNull Integer getPackedLight() {
+				return this.packedLight;
 			}
 
-			
 			@FunctionalInterface
 			public interface Listener {
-				boolean handle(Pre event);
+
+				boolean handle(@NotNull Pre pEvent);
 			}
 		}
 
-		
 		public static class Post extends Item {
+
+			@NotNull
 			public static final Event<Listener> EVENT = EventFactory.createArrayBacked(Listener.class, post -> {}, listeners -> event -> {
 				for (Listener listener : listeners) {
 					listener.handle(event);
 				}
 			});
 
-			private final PoseStack pPoseStack;
+			@NotNull
+			private final PoseStack poseStack;
+			@NotNull
 			private final ModelCache model;
-			private final MultiBufferSource pBufferSource;
-			private final float pPartialTick;
-			private final int pPackedLight;
+			@NotNull
+			private final MultiBufferSource bufferSource;
+			@NotNull
+			private final Float partialTick;
+			@NotNull
+			private final Integer packedLight;
 
-			public Post(BlueItemRenderer<?> renderer, PoseStack pPoseStack, ModelCache model, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight) {
-				super(renderer);
+			public Post(@NotNull BlueItemRenderer<?> pRenderer, @NotNull PoseStack pPoseStack, @NotNull ModelCache pModel, @NotNull MultiBufferSource pBufferSource, @NotNull Float pPartialTick, @NotNull Integer pPackedLight) {
+				super(pRenderer);
 
-				this.pPoseStack = pPoseStack;
-				this.model = model;
-				this.pBufferSource = pBufferSource;
-				this.pPartialTick = pPartialTick;
-				this.pPackedLight = pPackedLight;
+				this.poseStack = pPoseStack;
+				this.model = pModel;
+				this.bufferSource = pBufferSource;
+				this.partialTick = pPartialTick;
+				this.packedLight = pPackedLight;
 			}
 
-			public PoseStack getPoseStack() {
-				return this.pPoseStack;
+			public @NotNull PoseStack getPoseStack() {
+				return this.poseStack;
 			}
 
-			public ModelCache getModel() {
+			public @NotNull ModelCache getModel() {
 				return this.model;
 			}
 
-			public MultiBufferSource getBufferSource() {
-				return this.pBufferSource;
+			public @NotNull MultiBufferSource getBufferSource() {
+				return this.bufferSource;
 			}
 
-			public float getPartialTick() {
-				return this.pPartialTick;
+			public @NotNull Float getPartialTick() {
+				return this.partialTick;
 			}
 
-			public int getPackedLight() {
-				return this.pPackedLight;
+			public @NotNull Integer getPackedLight() {
+				return this.packedLight;
 			}
 
-			
 			@FunctionalInterface
 			public interface Listener {
-				void handle(Post event);
+
+				void handle(@NotNull Post pEvent);
 			}
 		}
 
-		
 		public static class CompileRenderLayers extends Item {
+
+			@NotNull
 			public static final Event<Listener> EVENT = EventFactory.createArrayBacked(Listener.class, post -> {}, listeners -> event -> {
 				for (Listener listener : listeners) {
 					listener.handle(event);
 				}
 			});
 
-			public CompileRenderLayers(BlueItemRenderer<?> renderer) {
-				super(renderer);
+			public CompileRenderLayers(@NotNull BlueItemRenderer<?> pRenderer) {
+				super(pRenderer);
 			}
 
-			
-			public void addLayer(BlueRenderLayer renderLayer) {
-				getRenderer().addRenderLayer(renderLayer);
+			public void addLayer(@NotNull BlueRenderLayer pRenderLayer) {
+				getRenderer().addRenderLayer(pRenderLayer);
 			}
 
-			
 			@FunctionalInterface
 			public interface Listener {
-				void handle(CompileRenderLayers event);
+
+				void handle(@NotNull CompileRenderLayers pEvent);
 			}
 		}
 	}
 
-	
 	abstract class Object implements BlueRenderEvent {
+
+		@NotNull
 		private final BlueObjectRenderer<?> renderer;
 
-		public Object(BlueObjectRenderer<?> renderer) {
-			this.renderer = renderer;
+		public Object(@NotNull BlueObjectRenderer<?> pRenderer) {
+			this.renderer = pRenderer;
 		}
 
-		
 		@Override
-		public BlueObjectRenderer<?> getRenderer() {
+		public @NotNull BlueObjectRenderer<?> getRenderer() {
 			return this.renderer;
 		}
 
-		
 		public static class Pre extends Object {
+
+			@NotNull
 			public static final Event<Listener> EVENT = EventFactory.createArrayBacked(Listener.class, event -> true, listeners -> event -> {
 				for (Listener listener : listeners) {
 					if (!listener.handle(event))
@@ -651,146 +703,157 @@ public interface BlueRenderEvent {
 				return true;
 			});
 
-			private final PoseStack pPoseStack;
+			@NotNull
+			private final PoseStack poseStack;
+			@NotNull
 			private final ModelCache model;
-			private final MultiBufferSource pBufferSource;
-			private final float pPartialTick;
-			private final int pPackedLight;
+			@NotNull
+			private final MultiBufferSource bufferSource;
+			@NotNull
+			private final Float partialTick;
+			@NotNull
+			private final Integer packedLight;
 
-			public Pre(BlueObjectRenderer<?> renderer, PoseStack pPoseStack, ModelCache model, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight) {
-				super(renderer);
+			public Pre(@NotNull BlueObjectRenderer<?> pRenderer, @NotNull PoseStack pPoseStack, @NotNull ModelCache pModel, @NotNull MultiBufferSource pBufferSource, @NotNull Float pPartialTick, @NotNull Integer pPackedLight) {
+				super(pRenderer);
 
-				this.pPoseStack = pPoseStack;
-				this.model = model;
-				this.pBufferSource = pBufferSource;
-				this.pPartialTick = pPartialTick;
-				this.pPackedLight = pPackedLight;
+				this.poseStack = pPoseStack;
+				this.model = pModel;
+				this.bufferSource = pBufferSource;
+				this.partialTick = pPartialTick;
+				this.packedLight = pPackedLight;
 			}
 
-			public PoseStack getPoseStack() {
-				return this.pPoseStack;
+			public @NotNull PoseStack getPoseStack() {
+				return this.poseStack;
 			}
 
-			public ModelCache getModel() {
+			public @NotNull ModelCache getModel() {
 				return this.model;
 			}
 
-			public MultiBufferSource getBufferSource() {
-				return this.pBufferSource;
+			public @NotNull MultiBufferSource getBufferSource() {
+				return this.bufferSource;
 			}
 
-			public float getPartialTick() {
-				return this.pPartialTick;
+			public @NotNull Float getPartialTick() {
+				return this.partialTick;
 			}
 
-			public int getPackedLight() {
-				return this.pPackedLight;
+			public @NotNull Integer getPackedLight() {
+				return this.packedLight;
 			}
 
-			
 			@FunctionalInterface
 			public interface Listener {
-				boolean handle(Pre event);
+
+				boolean handle(@NotNull Pre pEvent);
 			}
 		}
 
-		
 		public static class Post extends Object {
+
+			@NotNull
 			public static final Event<Listener> EVENT = EventFactory.createArrayBacked(Listener.class, post -> {}, listeners -> event -> {
 				for (Listener listener : listeners) {
 					listener.handle(event);
 				}
 			});
 
-			private final PoseStack pPoseStack;
+			@NotNull
+			private final PoseStack poseStack;
+			@NotNull
 			private final ModelCache model;
-			private final MultiBufferSource pBufferSource;
-			private final float pPartialTick;
-			private final int pPackedLight;
+			@NotNull
+			private final MultiBufferSource bufferSource;
+			@NotNull
+			private final Float partialTick;
+			@NotNull
+			private final Integer packedLight;
 
-			public Post(BlueObjectRenderer<?> renderer, PoseStack pPoseStack, ModelCache model, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight) {
-				super(renderer);
+			public Post(@NotNull BlueObjectRenderer<?> pRenderer, @NotNull PoseStack pPoseStack, @NotNull ModelCache pModel, @NotNull MultiBufferSource pBufferSource, @NotNull Float pPartialTick, @NotNull Integer pPackedLight) {
+				super(pRenderer);
 
-				this.pPoseStack = pPoseStack;
-				this.model = model;
-				this.pBufferSource = pBufferSource;
-				this.pPartialTick = pPartialTick;
-				this.pPackedLight = pPackedLight;
+				this.poseStack = pPoseStack;
+				this.model = pModel;
+				this.bufferSource = pBufferSource;
+				this.partialTick = pPartialTick;
+				this.packedLight = pPackedLight;
 			}
 
-			public PoseStack getPoseStack() {
-				return this.pPoseStack;
+			public @NotNull PoseStack getPoseStack() {
+				return this.poseStack;
 			}
 
-			public ModelCache getModel() {
+			public @NotNull ModelCache getModel() {
 				return this.model;
 			}
 
-			public MultiBufferSource getBufferSource() {
-				return this.pBufferSource;
+			public @NotNull MultiBufferSource getBufferSource() {
+				return this.bufferSource;
 			}
 
-			public float getPartialTick() {
-				return this.pPartialTick;
+			public @NotNull Float getPartialTick() {
+				return this.partialTick;
 			}
 
-			public int getPackedLight() {
-				return this.pPackedLight;
+			public @NotNull Integer getPackedLight() {
+				return this.packedLight;
 			}
 
-			
 			@FunctionalInterface
 			public interface Listener {
-				void handle(Post event);
+
+				void handle(@NotNull Post pEvent);
 			}
 		}
 
-		
 		public static class CompileRenderLayers extends Object {
+
+			@NotNull
 			public static final Event<Listener> EVENT = EventFactory.createArrayBacked(Listener.class, post -> {}, listeners -> event -> {
 				for (Listener listener : listeners) {
 					listener.handle(event);
 				}
 			});
 
-			public CompileRenderLayers(BlueObjectRenderer<?> renderer) {
-				super(renderer);
+			public CompileRenderLayers(@NotNull BlueObjectRenderer<?> pRenderer) {
+				super(pRenderer);
 			}
 
-			
-			public void addLayer(BlueRenderLayer renderLayer) {
-				getRenderer().addRenderLayer(renderLayer);
+			public void addLayer(@NotNull BlueRenderLayer pRenderLayer) {
+				getRenderer().addRenderLayer(pRenderLayer);
 			}
 
-			
 			@FunctionalInterface
 			public interface Listener {
-				void handle(CompileRenderLayers event);
+
+				void handle(@NotNull CompileRenderLayers pEvent);
 			}
 		}
 	}
 
-	
 	abstract class ReplacedEntity implements BlueRenderEvent {
+
+		@NotNull
 		private final BlueReplacedEntityRenderer<?, ?> renderer;
 
-		public ReplacedEntity(BlueReplacedEntityRenderer<?, ?> renderer) {
-			this.renderer = renderer;
+		public ReplacedEntity(@NotNull BlueReplacedEntityRenderer<?, ?> pRenderer) {
+			this.renderer = pRenderer;
 		}
 
-		
 		@Override
-		public BlueReplacedEntityRenderer<?, ?> getRenderer() {
+		public @NotNull BlueReplacedEntityRenderer<?, ?> getRenderer() {
 			return this.renderer;
 		}
 
-		
-		public net.minecraft.world.entity.Entity getReplacedEntity() {
+		public @NotNull net.minecraft.world.entity.Entity getReplacedEntity() {
 			return getRenderer().getCurrentEntity();
 		}
 
-		
 		public static class Pre extends ReplacedEntity {
+
+			@NotNull
 			public static final Event<Listener> EVENT = EventFactory.createArrayBacked(Listener.class, event -> true, listeners -> event -> {
 				for (Listener listener : listeners) {
 					if (!listener.handle(event))
@@ -800,121 +863,132 @@ public interface BlueRenderEvent {
 				return true;
 			});
 
-			private final PoseStack pPoseStack;
+			@NotNull
+			private final PoseStack poseStack;
+			@NotNull
 			private final ModelCache model;
-			private final MultiBufferSource pBufferSource;
-			private final float pPartialTick;
-			private final int pPackedLight;
+			@NotNull
+			private final MultiBufferSource bufferSource;
+			@NotNull
+			private final Float partialTick;
+			@NotNull
+			private final Integer packedLight;
 
-			public Pre(BlueReplacedEntityRenderer<?, ?> renderer, PoseStack pPoseStack, ModelCache model, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight) {
-				super(renderer);
+			public Pre(@NotNull BlueReplacedEntityRenderer<?, ?> pRenderer, @NotNull PoseStack pPoseStack, @NotNull ModelCache pModel, @NotNull MultiBufferSource pBufferSource, @NotNull Float pPartialTick, @NotNull Integer pPackedLight) {
+				super(pRenderer);
 
-				this.pPoseStack = pPoseStack;
-				this.model = model;
-				this.pBufferSource = pBufferSource;
-				this.pPartialTick = pPartialTick;
-				this.pPackedLight = pPackedLight;
+				this.poseStack = pPoseStack;
+				this.model = pModel;
+				this.bufferSource = pBufferSource;
+				this.partialTick = pPartialTick;
+				this.packedLight = pPackedLight;
 			}
 
-			public PoseStack getPoseStack() {
-				return this.pPoseStack;
+			public @NotNull PoseStack getPoseStack() {
+				return this.poseStack;
 			}
 
-			public ModelCache getModel() {
+			public @NotNull ModelCache getModel() {
 				return this.model;
 			}
 
-			public MultiBufferSource getBufferSource() {
-				return this.pBufferSource;
+			public @NotNull MultiBufferSource getBufferSource() {
+				return this.bufferSource;
 			}
 
-			public float getPartialTick() {
-				return this.pPartialTick;
+			public @NotNull Float getPartialTick() {
+				return this.partialTick;
 			}
 
-			public int getPackedLight() {
-				return this.pPackedLight;
+			public @NotNull Integer getPackedLight() {
+				return this.packedLight;
 			}
 
-			
 			@FunctionalInterface
 			public interface Listener {
-				boolean handle(Pre event);
+
+				boolean handle(@NotNull Pre pEvent);
 			}
 		}
 
-		
 		public static class Post extends ReplacedEntity {
+
+			@NotNull
 			public static final Event<Listener> EVENT = EventFactory.createArrayBacked(Listener.class, post -> {}, listeners -> event -> {
 				for (Listener listener : listeners) {
 					listener.handle(event);
 				}
 			});
 
-			private final PoseStack pPoseStack;
+			@NotNull
+			private final PoseStack poseStack;
+			@NotNull
 			private final ModelCache model;
-			private final MultiBufferSource pBufferSource;
-			private final float pPartialTick;
-			private final int pPackedLight;
+			@NotNull
+			private final MultiBufferSource bufferSource;
+			@NotNull
+			private final Float partialTick;
+			@NotNull
+			private final Integer packedLight;
 
-			public Post(BlueReplacedEntityRenderer<?, ?> renderer, PoseStack pPoseStack, ModelCache model, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight) {
-				super(renderer);
+			public Post(@NotNull BlueReplacedEntityRenderer<?, ?> pRenderer, @NotNull PoseStack pPoseStack, @NotNull ModelCache pModel, @NotNull MultiBufferSource pBufferSource, @NotNull Float pPartialTick, @NotNull Integer pPackedLight) {
+				super(pRenderer);
 
-				this.pPoseStack = pPoseStack;
-				this.model = model;
-				this.pBufferSource = pBufferSource;
-				this.pPartialTick = pPartialTick;
-				this.pPackedLight = pPackedLight;
+				this.poseStack = pPoseStack;
+				this.model = pModel;
+				this.bufferSource = pBufferSource;
+				this.partialTick = pPartialTick;
+				this.packedLight = pPackedLight;
 			}
 
-			public PoseStack getPoseStack() {
-				return this.pPoseStack;
+			public @NotNull PoseStack getPoseStack() {
+				return this.poseStack;
 			}
 
-			public ModelCache getModel() {
+			public @NotNull ModelCache getModel() {
 				return this.model;
 			}
 
-			public MultiBufferSource getBufferSource() {
-				return this.pBufferSource;
+			public @NotNull MultiBufferSource getBufferSource() {
+				return this.bufferSource;
 			}
 
-			public float getPartialTick() {
-				return this.pPartialTick;
+			public @NotNull Float getPartialTick() {
+				return this.partialTick;
 			}
 
-			public int getPackedLight() {
-				return this.pPackedLight;
+			public @NotNull Integer getPackedLight() {
+				return this.packedLight;
 			}
 
-			
 			@FunctionalInterface
 			public interface Listener {
-				void handle(Post event);
+
+				void handle(@NotNull Post pEvent);
 			}
 		}
 
-		
 		public static class CompileRenderLayers extends ReplacedEntity {
+
+			@NotNull
 			public static final Event<Listener> EVENT = EventFactory.createArrayBacked(Listener.class, post -> {}, listeners -> event -> {
 				for (Listener listener : listeners) {
 					listener.handle(event);
 				}
 			});
 
-			public CompileRenderLayers(BlueReplacedEntityRenderer<?, ?> renderer) {
-				super(renderer);
+			public CompileRenderLayers(@NotNull BlueReplacedEntityRenderer<?, ?> pRenderer) {
+				super(pRenderer);
 			}
 
-			
-			public void addLayer(BlueRenderLayer renderLayer) {
-				getRenderer().addRenderLayer(renderLayer);
+			public void addLayer(@NotNull BlueRenderLayer pRenderLayer) {
+				getRenderer().addRenderLayer(pRenderLayer);
 			}
 
-			
 			@FunctionalInterface
 			public interface Listener {
-				void handle(CompileRenderLayers event);
+
+				void handle(@NotNull CompileRenderLayers pEvent);
 			}
 		}
 	}

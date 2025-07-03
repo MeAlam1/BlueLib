@@ -10,32 +10,36 @@ package software.bluelib.net.messages.client.loader;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.net.NetworkPacket;
 import software.bluelib.internal.BlueResource;
-import software.bluelib.loader.constant.dataticket.SerializableDataTicket;
+import software.bluelib.oldLoader.constant.dataticket.SerializableDataTicket;
 
-public record BlockEntityDataSyncPacket<D>(BlockPos pos, SerializableDataTicket<D> dataTicket,
-        D data) implements NetworkPacket<BlockEntityDataSyncPacket<D>> {
+public record BlockEntityDataSyncPacket<D>(
+		@NotNull BlockPos pos,
+		@NotNull SerializableDataTicket<D> dataTicket,
+		@NotNull D data) implements NetworkPacket<BlockEntityDataSyncPacket<D>> {
 
-    public static final ResourceLocation ID = BlueResource.resource("blockentity_data_sync");
+	@NotNull
+	public static final ResourceLocation ID = BlueResource.resource("blockentity_data_sync");
 
-    @Override
-    public void encode(RegistryFriendlyByteBuf pBuffer) {
-        SerializableDataTicket.STREAM_CODEC.encode(pBuffer, dataTicket);
-        pBuffer.writeBlockPos(pos);
-        dataTicket.streamCodec().encode(pBuffer, data);
-    }
+	@Override
+	public void encode(@NotNull RegistryFriendlyByteBuf pBuffer) {
+		SerializableDataTicket.STREAM_CODEC.encode(pBuffer, dataTicket);
+		pBuffer.writeBlockPos(pos);
+		dataTicket.streamCodec().encode(pBuffer, data);
+	}
 
-    @SuppressWarnings("unchecked")
-    public static <D> BlockEntityDataSyncPacket<D> decode(RegistryFriendlyByteBuf pBuffer) {
-        SerializableDataTicket<D> dataTicket = (SerializableDataTicket<D>) SerializableDataTicket.STREAM_CODEC.decode(pBuffer);
-        BlockPos pos = pBuffer.readBlockPos();
-        D data = dataTicket.streamCodec().decode(pBuffer);
-        return new BlockEntityDataSyncPacket<>(pos, dataTicket, data);
-    }
+	@SuppressWarnings("unchecked")
+	public static <D> @NotNull BlockEntityDataSyncPacket<D> decode(@NotNull RegistryFriendlyByteBuf pBuffer) {
+		SerializableDataTicket<D> dataTicket = (SerializableDataTicket<D>) SerializableDataTicket.STREAM_CODEC.decode(pBuffer);
+		BlockPos pos = pBuffer.readBlockPos();
+		D data = dataTicket.streamCodec().decode(pBuffer);
+		return new BlockEntityDataSyncPacket<>(pos, dataTicket, data);
+	}
 
-    @Override
-    public ResourceLocation getId() {
-        return ID;
-    }
+	@Override
+	public @NotNull ResourceLocation getId() {
+		return ID;
+	}
 }

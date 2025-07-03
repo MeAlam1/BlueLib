@@ -9,10 +9,11 @@ package software.bluelib.client.utils;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
 
 public final class LevelUtils {
 
-    public static Level getLevel() {
-        return Minecraft.getInstance().level;
-    }
+	public static @Nullable Level getLevel() {
+		return Minecraft.getInstance().level;
+	}
 }

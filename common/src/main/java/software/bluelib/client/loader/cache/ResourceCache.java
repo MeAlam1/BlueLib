@@ -24,80 +24,80 @@ import software.bluelib.client.loader.BlueLoader;
 import software.bluelib.client.loader.cache.animations.AnimationLibraryCache;
 import software.bluelib.client.loader.cache.controller.ControllerCache;
 import software.bluelib.client.loader.cache.model.ModelCache;
-import software.bluelib.loader.loading.json.typeadapter.BakedAnimationsAdapter;
+import software.bluelib.oldLoader.loading.json.typeadapter.BakedAnimationsAdapter;
 
 public final class ResourceCache extends BlueLoader {
 
-    private static Map<ResourceLocation, ControllerCache> CONTROLLERS = Collections.emptyMap();
-    private static Map<ResourceLocation, AnimationLibraryCache> ANIMATIONS = Collections.emptyMap();
-    private static Map<ResourceLocation, ModelCache> MODELS = Collections.emptyMap();
+	private static Map<ResourceLocation, ControllerCache> CONTROLLERS = Collections.emptyMap();
+	private static Map<ResourceLocation, AnimationLibraryCache> ANIMATIONS = Collections.emptyMap();
+	private static Map<ResourceLocation, ModelCache> MODELS = Collections.emptyMap();
 
-    public static Map<ResourceLocation, AnimationLibraryCache> getBakedAnimations() {
-        return ANIMATIONS;
-    }
+	public static Map<ResourceLocation, AnimationLibraryCache> getBakedAnimations() {
+		return ANIMATIONS;
+	}
 
-    public static Map<ResourceLocation, ModelCache> getBakedModels() {
-        return MODELS;
-    }
+	public static Map<ResourceLocation, ModelCache> getBakedModels() {
+		return MODELS;
+	}
 
-    public static void registerClientReloadListener() {
-        Minecraft mc = Minecraft.getInstance();
+	public static void registerClientReloadListener() {
+		Minecraft mc = Minecraft.getInstance();
 
-        if (mc.getResourceManager() instanceof ReloadableResourceManager pResourceManager)
-            pResourceManager.registerReloadListener(ResourceCache::reloadClient);
-    }
+		if (mc.getResourceManager() instanceof ReloadableResourceManager pResourceManager)
+			pResourceManager.registerReloadListener(ResourceCache::reloadClient);
+	}
 
-    public static void registerServerReloadListener(MinecraftServer pServer) {
-        ResourceCache.reloadServer(pServer.getResourceManager(), Util.backgroundExecutor(), pServer);
-    }
+	public static void registerServerReloadListener(MinecraftServer pServer) {
+		ResourceCache.reloadServer(pServer.getResourceManager(), Util.backgroundExecutor(), pServer);
+	}
 
-    public static CompletableFuture<Void> reloadClient(
-            PreparationBarrier pStage,
-            ResourceManager pResourceManager,
-            ProfilerFiller pProfilerFiller,
-            ProfilerFiller pProfilerFiller1,
-            Executor pBackgroundExecutor,
-            Executor pGameExecutor) {
-        clearClientCaches();
+	public static CompletableFuture<Void> reloadClient(
+			PreparationBarrier pStage,
+			ResourceManager pResourceManager,
+			ProfilerFiller pProfilerFiller,
+			ProfilerFiller pProfilerFiller1,
+			Executor pBackgroundExecutor,
+			Executor pGameExecutor) {
+		clearClientCaches();
 
-        CompletableFuture<Map<ResourceLocation, AnimationLibraryCache>> animations = loadAnimations(pBackgroundExecutor, pResourceManager);
-        CompletableFuture<Map<ResourceLocation, ModelCache>> models = loadModels(pBackgroundExecutor, pResourceManager);
+		CompletableFuture<Map<ResourceLocation, AnimationLibraryCache>> animations = loadAnimations(pBackgroundExecutor, pResourceManager);
+		CompletableFuture<Map<ResourceLocation, ModelCache>> models = loadModels(pBackgroundExecutor, pResourceManager);
 
-        return CompletableFuture.runAsync(() -> BakedAnimationsAdapter.COMPRESSION_CACHE = new ConcurrentHashMap<>(), pBackgroundExecutor)
-                .thenCompose(ignored -> CompletableFuture.allOf(animations, models)
-                        .thenCompose(pStage::wait)
-                        .thenRunAsync(() -> {
-                            ResourceCache.ANIMATIONS = animations.join();
-                            ResourceCache.MODELS = models.join();
-                            BakedAnimationsAdapter.COMPRESSION_CACHE = null;
+		return CompletableFuture.runAsync(() -> BakedAnimationsAdapter.COMPRESSION_CACHE = new ConcurrentHashMap<>(), pBackgroundExecutor)
+				.thenCompose(ignored -> CompletableFuture.allOf(animations, models)
+						.thenCompose(pStage::wait)
+						.thenRunAsync(() -> {
+							ResourceCache.ANIMATIONS = animations.join();
+							ResourceCache.MODELS = models.join();
+							BakedAnimationsAdapter.COMPRESSION_CACHE = null;
 
-                            System.out.println("Model Cache: " + ResourceCache.MODELS);
-                            System.out.println("Animations Cache: " + ResourceCache.ANIMATIONS);
-                        }, pGameExecutor));
-    }
+							System.out.println("Model Cache: " + ResourceCache.MODELS);
+							System.out.println("Animations Cache: " + ResourceCache.ANIMATIONS);
+						}, pGameExecutor));
+	}
 
-    public static CompletableFuture<Void> reloadServer(
-            ResourceManager pResourceManager,
-            Executor pBackgroundExecutor,
-            Executor pGameExecutor) {
-        clearServerCaches();
+	public static CompletableFuture<Void> reloadServer(
+			ResourceManager pResourceManager,
+			Executor pBackgroundExecutor,
+			Executor pGameExecutor) {
+		clearServerCaches();
 
-        CompletableFuture<Map<ResourceLocation, ControllerCache>> controllers = loadControllers(pBackgroundExecutor, pResourceManager);
+		CompletableFuture<Map<ResourceLocation, ControllerCache>> controllers = loadControllers(pBackgroundExecutor, pResourceManager);
 
-        return CompletableFuture.allOf(controllers)
-                .thenRunAsync(() -> {
-                    ResourceCache.CONTROLLERS = controllers.join();
+		return CompletableFuture.allOf(controllers)
+				.thenRunAsync(() -> {
+					ResourceCache.CONTROLLERS = controllers.join();
 
-                    System.out.println("Controller Cache: " + ResourceCache.CONTROLLERS);
-                }, pGameExecutor);
-    }
+					System.out.println("Controller Cache: " + ResourceCache.CONTROLLERS);
+				}, pGameExecutor);
+	}
 
-    private static void clearClientCaches() {
-        ResourceCache.ANIMATIONS = Collections.emptyMap();
-        ResourceCache.MODELS = Collections.emptyMap();
-    }
+	private static void clearClientCaches() {
+		ResourceCache.ANIMATIONS = Collections.emptyMap();
+		ResourceCache.MODELS = Collections.emptyMap();
+	}
 
-    private static void clearServerCaches() {
-        ResourceCache.CONTROLLERS = Collections.emptyMap();
-    }
+	private static void clearServerCaches() {
+		ResourceCache.CONTROLLERS = Collections.emptyMap();
+	}
 }

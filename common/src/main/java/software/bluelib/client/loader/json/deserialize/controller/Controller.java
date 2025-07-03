@@ -11,11 +11,8 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-
 import java.util.List;
-
 import net.minecraft.util.GsonHelper;
-import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.utils.JsonUtils;
 
 public record Controller(

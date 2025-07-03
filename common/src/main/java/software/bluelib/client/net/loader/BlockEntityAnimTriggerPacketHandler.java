@@ -8,16 +8,17 @@
 package software.bluelib.client.net.loader;
 
 import net.minecraft.client.Minecraft;
+import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.net.ClientNetworkPacketHandler;
 import software.bluelib.client.utils.LevelUtils;
-import software.bluelib.loader.animatable.BlueBlockEntity;
 import software.bluelib.net.messages.client.loader.BlockEntityAnimTriggerPacket;
+import software.bluelib.oldLoader.animatable.BlueBlockEntity;
 
 public class BlockEntityAnimTriggerPacketHandler implements ClientNetworkPacketHandler<BlockEntityAnimTriggerPacket> {
 
-    @Override
-    public void handle(BlockEntityAnimTriggerPacket pPacket, Minecraft pClient) {
-        if (LevelUtils.getLevel().getBlockEntity(pPacket.pos()) instanceof BlueBlockEntity blockEntity)
-            blockEntity.triggerAnim(pPacket.controllerName().isEmpty() ? null : pPacket.controllerName(), pPacket.animName());
-    }
+	@Override
+	public void handle(@NotNull BlockEntityAnimTriggerPacket pPacket, @NotNull Minecraft pClient) {
+		if (LevelUtils.getLevel().getBlockEntity(pPacket.pos()) instanceof BlueBlockEntity blockEntity)
+			blockEntity.triggerAnim(pPacket.controllerName().isEmpty() ? null : pPacket.controllerName(), pPacket.animName());
+	}
 }

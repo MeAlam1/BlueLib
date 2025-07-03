@@ -8,33 +8,36 @@
 package software.bluelib.net.messages.client.loader;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.net.NetworkPacket;
 import software.bluelib.internal.BlueResource;
 
-public record BlockEntityAnimTriggerPacket(BlockPos pos, String controllerName,
-        String animName) implements NetworkPacket<BlockEntityAnimTriggerPacket> {
+public record BlockEntityAnimTriggerPacket(
+		@NotNull BlockPos pos,
+		@NotNull String controllerName,
+		@NotNull String animName) implements NetworkPacket<BlockEntityAnimTriggerPacket> {
 
-    public static final ResourceLocation ID = BlueResource.resource("blockentity_anim_trigger");
+	@NotNull
+	public static final ResourceLocation ID = BlueResource.resource("blockentity_anim_trigger");
 
-    @Override
-    public void encode(RegistryFriendlyByteBuf pBuffer) {
-        pBuffer.writeBlockPos(pos);
-        pBuffer.writeUtf(controllerName);
-        pBuffer.writeUtf(animName);
-    }
+	@Override
+	public void encode(@NotNull RegistryFriendlyByteBuf pBuffer) {
+		pBuffer.writeBlockPos(pos);
+		pBuffer.writeUtf(controllerName);
+		pBuffer.writeUtf(animName);
+	}
 
-    public static BlockEntityAnimTriggerPacket decode(FriendlyByteBuf pBuffer) {
-        BlockPos pos = pBuffer.readBlockPos();
-        String controllerName = pBuffer.readUtf();
-        String animName = pBuffer.readUtf();
-        return new BlockEntityAnimTriggerPacket(pos, controllerName, animName);
-    }
+	public static @NotNull BlockEntityAnimTriggerPacket decode(@NotNull RegistryFriendlyByteBuf pBuffer) {
+		BlockPos pos = pBuffer.readBlockPos();
+		String controllerName = pBuffer.readUtf();
+		String animName = pBuffer.readUtf();
+		return new BlockEntityAnimTriggerPacket(pos, controllerName, animName);
+	}
 
-    @Override
-    public ResourceLocation getId() {
-        return ID;
-    }
+	@Override
+	public @NotNull ResourceLocation getId() {
+		return ID;
+	}
 }

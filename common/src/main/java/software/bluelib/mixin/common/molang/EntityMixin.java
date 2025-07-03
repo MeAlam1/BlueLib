@@ -8,6 +8,7 @@
 package software.bluelib.mixin.common.molang;
 
 import net.minecraft.world.entity.Entity;
+import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -21,16 +22,16 @@ import software.bluelib.api.molang.context.EntityMoLang;
 @Mixin(Entity.class)
 public class EntityMixin {
 
-    @Unique
-    private boolean bluelib$MoLangRegistered = false;
+	@Unique
+	private boolean bluelib$MoLangRegistered = false;
 
-    @Inject(method = "tick", at = @At("HEAD"))
-    private void onConstructed(CallbackInfo pCi) {
-        if (!bluelib$MoLangRegistered) {
-            bluelib$MoLangRegistered = true;
-            Entity self = (Entity) (Object) this;
+	@Inject(method = "tick", at = @At("HEAD"))
+	private void onConstructed(@NotNull CallbackInfo pCi) {
+		if (!bluelib$MoLangRegistered) {
+			bluelib$MoLangRegistered = true;
+			Entity self = (Entity) (Object) this;
 
-            MoLang.service.getRuntimeFor(MoLangType.ENTITY).registerContext(MoLangType.ENTITY.id(), new EntityMoLang(() -> self));
-        }
-    }
+			MoLang.service.getRuntimeFor(MoLangType.ENTITY).registerContext(MoLangType.ENTITY.id(), new EntityMoLang(() -> self));
+		}
+	}
 }

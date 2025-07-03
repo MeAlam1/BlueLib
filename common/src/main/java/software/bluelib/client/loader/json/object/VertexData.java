@@ -11,11 +11,11 @@ import org.joml.Vector3f;
 
 public record VertexData(Vector3f position, float texU, float texV) {
 
-    public VertexData(double pX, double pY, double pZ) {
-        this(new Vector3f((float) pX, (float) pY, (float) pZ), 0, 0);
-    }
+	public VertexData(double pX, double pY, double pZ) {
+		this(new Vector3f((float) pX, (float) pY, (float) pZ), 0, 0);
+	}
 
-    public VertexData withUVs(float pTexU, float pTexV) {
-        return new VertexData(this.position, pTexU, pTexV);
-    }
+	public VertexData withUVs(float pTexU, float pTexV) {
+		return new VertexData(this.position, pTexU, pTexV);
+	}
 }

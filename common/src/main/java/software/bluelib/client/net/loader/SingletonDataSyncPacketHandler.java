@@ -8,20 +8,21 @@
 package software.bluelib.client.net.loader;
 
 import net.minecraft.client.Minecraft;
+import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.net.ClientNetworkPacketHandler;
 import software.bluelib.api.utils.LoaderUtils;
 import software.bluelib.client.utils.PlayerUtils;
-import software.bluelib.loader.animatable.BlueAnimatable;
-import software.bluelib.loader.animatable.SingletonBlueAnimatable;
 import software.bluelib.net.messages.client.loader.SingletonDataSyncPacket;
+import software.bluelib.oldLoader.animatable.BlueAnimatable;
+import software.bluelib.oldLoader.animatable.SingletonBlueAnimatable;
 
 public class SingletonDataSyncPacketHandler<D> implements ClientNetworkPacketHandler<SingletonDataSyncPacket<D>> {
 
-    @Override
-    public void handle(SingletonDataSyncPacket<D> pPacket, Minecraft pClient) {
-        BlueAnimatable animatable = LoaderUtils.getSyncedAnimatable(pPacket.syncableId());
+	@Override
+	public void handle(@NotNull SingletonDataSyncPacket<D> pPacket, @NotNull Minecraft pClient) {
+		BlueAnimatable animatable = LoaderUtils.getSyncedAnimatable(pPacket.syncableId());
 
-        if (animatable instanceof SingletonBlueAnimatable singleton)
-            singleton.setAnimData(PlayerUtils.getClientPlayer(), pPacket.instanceId(), pPacket.dataTicket(), pPacket.data());
-    }
+		if (animatable instanceof SingletonBlueAnimatable singleton)
+			singleton.setAnimData(PlayerUtils.getClientPlayer(), pPacket.instanceId(), pPacket.dataTicket(), pPacket.data());
+	}
 }

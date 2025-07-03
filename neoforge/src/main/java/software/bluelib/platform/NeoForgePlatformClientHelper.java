@@ -1,3 +1,10 @@
+/*
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
+ */
 package software.bluelib.platform;
 
 import net.minecraft.client.model.HumanoidModel;
@@ -8,18 +15,17 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import software.bluelib.loader.animatable.BlueAnimatable;
-import software.bluelib.loader.animatable.client.BlueRenderProvider;
 import software.bluelib.loader.model.BlueModel;
-import software.bluelib.loader.renderer.BlueArmorRenderer;
-import software.bluelib.loader.renderer.BlueRenderer;
+import software.bluelib.oldLoader.animatable.BlueAnimatable;
+import software.bluelib.oldLoader.animatable.client.BlueRenderProvider;
+import software.bluelib.oldLoader.renderer.BlueArmorRenderer;
+import software.bluelib.oldLoader.renderer.BlueRenderer;
 
 public class NeoForgePlatformClientHelper implements IPlatformClient {
 
-
 	@NotNull
 	@Override
-	public <T extends LivingEntity & BlueAnimatable> HumanoidModel<?> getArmorModelForItem(T pAnimatable, ItemStack pStack, EquipmentSlot pSlot, HumanoidModel<LivingEntity> pDefaultModel) {
+	public <T extends LivingEntity & BlueAnimatable> HumanoidModel<?> getArmorModelForItem(@NotNull T pAnimatable, @NotNull ItemStack pStack, @NotNull EquipmentSlot pSlot, @NotNull HumanoidModel<LivingEntity> pDefaultModel) {
 		Item item = pStack.getItem();
 		HumanoidModel<?> model = IClientItemExtensions.of(item).getHumanoidArmorModel(pAnimatable, pStack, pSlot, pDefaultModel);
 
@@ -29,10 +35,9 @@ public class NeoForgePlatformClientHelper implements IPlatformClient {
 		return model;
 	}
 
-
 	@Nullable
 	@Override
-	public BlueModel<?> getBlueModelForItem(ItemStack pItem) {
+	public BlueModel<?> getBlueModelForItem(@NotNull ItemStack pItem) {
 		if (IClientItemExtensions.of(pItem).getCustomRenderer() instanceof BlueRenderer<?> blueRenderer)
 			return blueRenderer.getBlueModel();
 
@@ -42,10 +47,9 @@ public class NeoForgePlatformClientHelper implements IPlatformClient {
 		return null;
 	}
 
-
 	@Nullable
 	@Override
-	public BlueModel<?> getBlueModelForArmor(ItemStack pArmour) {
+	public BlueModel<?> getBlueModelForArmor(@NotNull ItemStack pArmour) {
 		if (IClientItemExtensions.of(pArmour).getHumanoidArmorModel(null, pArmour, null, null) instanceof BlueArmorRenderer<?> armorRenderer)
 			return armorRenderer.getBlueModel();
 

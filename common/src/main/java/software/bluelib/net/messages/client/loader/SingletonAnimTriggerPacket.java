@@ -7,35 +7,39 @@
  */
 package software.bluelib.net.messages.client.loader;
 
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.net.NetworkPacket;
 import software.bluelib.internal.BlueResource;
 
-public record SingletonAnimTriggerPacket(String syncableId, long instanceId, String controllerName,
-        String animName) implements NetworkPacket<SingletonAnimTriggerPacket> {
+public record SingletonAnimTriggerPacket(
+		@NotNull String syncableId,
+		@NotNull Long instanceId,
+		@NotNull String controllerName,
+		@NotNull String animName) implements NetworkPacket<SingletonAnimTriggerPacket> {
 
-    public static final ResourceLocation ID = BlueResource.resource("singleton_anim_trigger");
+	@NotNull
+	public static final ResourceLocation ID = BlueResource.resource("singleton_anim_trigger");
 
-    @Override
-    public void encode(RegistryFriendlyByteBuf pBuffer) {
-        pBuffer.writeUtf(this.syncableId);
-        pBuffer.writeVarLong(this.instanceId);
-        pBuffer.writeUtf(this.controllerName);
-        pBuffer.writeUtf(this.animName);
-    }
+	@Override
+	public void encode(@NotNull RegistryFriendlyByteBuf pBuffer) {
+		pBuffer.writeUtf(this.syncableId);
+		pBuffer.writeVarLong(this.instanceId);
+		pBuffer.writeUtf(this.controllerName);
+		pBuffer.writeUtf(this.animName);
+	}
 
-    public static SingletonAnimTriggerPacket decode(FriendlyByteBuf pBuffer) {
-        String syncableId = pBuffer.readUtf();
-        long instanceId = pBuffer.readVarLong();
-        String controllerName = pBuffer.readUtf();
-        String animName = pBuffer.readUtf();
-        return new SingletonAnimTriggerPacket(syncableId, instanceId, controllerName, animName);
-    }
+	public static SingletonAnimTriggerPacket decode(@NotNull RegistryFriendlyByteBuf pBuffer) {
+		String syncableId = pBuffer.readUtf();
+		Long instanceId = pBuffer.readVarLong();
+		String controllerName = pBuffer.readUtf();
+		String animName = pBuffer.readUtf();
+		return new SingletonAnimTriggerPacket(syncableId, instanceId, controllerName, animName);
+	}
 
-    @Override
-    public ResourceLocation getId() {
-        return ID;
-    }
+	@Override
+	public @NotNull ResourceLocation getId() {
+		return ID;
+	}
 }

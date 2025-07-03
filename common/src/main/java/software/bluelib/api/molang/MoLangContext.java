@@ -8,13 +8,14 @@
 package software.bluelib.api.molang;
 
 import java.util.List;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public interface MoLangContext {
 
-    @Nullable
-    Object getVariable(String pName);
+	@Nullable
+	Object getVariable(@NotNull String pName);
 
-    @Nullable
-    Object callFunction(String pName, List<Object> pArguments);
+	@Nullable
+	Object callFunction(@NotNull String pName, @NotNull List<Object> pArguments);
 }

@@ -10,72 +10,81 @@ package software.bluelib.api.event;
 import com.mojang.blaze3d.vertex.PoseStack;
 import java.util.List;
 import net.minecraft.client.renderer.MultiBufferSource;
+import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.event.mod.ModMeta;
 import software.bluelib.client.loader.cache.model.ModelCache;
-import software.bluelib.loader.renderer.*;
+import software.bluelib.oldLoader.renderer.*;
 
 public interface IEventProxy {
 
-    // Mod Events
+	// Mod Events
 
-    void onModLoaded(ModMeta pModData);
+	void onModLoaded(@NotNull ModMeta pModData);
 
-    void onAllModsLoaded(List<ModMeta> pModData);
+	void onAllModsLoaded(@NotNull List<ModMeta> pModData);
 
-    // Variant Events
+	// Variant Events
 
-    boolean variantLoadedPre(String pEntityName, String pVariant);
+	@NotNull
+	Boolean variantLoadedPre(@NotNull String pEntityName, @NotNull String pVariant);
 
-    void variantLoadedPost(String pEntityName, String pVariant);
+	void variantLoadedPost(@NotNull String pEntityName, @NotNull String pVariant);
 
-    boolean allVariantsLoadedPre(String pEntityName);
+	@NotNull
+	Boolean allVariantsLoadedPre(@NotNull String pEntityName);
 
-    void allVariantsLoadedPost(String pEntityName);
+	void allVariantsLoadedPost(@NotNull String pEntityName);
 
-    // Render Events
+	// Render Events
 
-    // Block
-    void fireCompileBlockRenderLayers(BlueBlockRenderer<?> pRenderer);
+	// Block
+	void fireCompileBlockRenderLayers(@NotNull BlueBlockRenderer<?> pRenderer);
 
-    boolean fireBlockPreRender(BlueBlockRenderer<?> pRenderer, PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight);
+	@NotNull
+	Boolean fireBlockPreRender(@NotNull BlueBlockRenderer<?> pRenderer, @NotNull PoseStack pPoseStack, @NotNull ModelCache pModel, @NotNull MultiBufferSource pBufferSource, @NotNull Float pPartialTick, @NotNull Integer pPackedLight);
 
-    void fireBlockPostRender(BlueBlockRenderer<?> pRenderer, PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight);
+	void fireBlockPostRender(@NotNull BlueBlockRenderer<?> pRenderer, @NotNull PoseStack pPoseStack, @NotNull ModelCache pModel, @NotNull MultiBufferSource pBufferSource, @NotNull Float pPartialTick, @NotNull Integer pPackedLight);
 
-    // Armor
+	// Armor
 
-    void fireCompileArmorRenderLayers(BlueArmorRenderer<?> pRenderer);
+	void fireCompileArmorRenderLayers(@NotNull BlueArmorRenderer<?> pRenderer);
 
-    boolean fireArmorPreRender(BlueArmorRenderer<?> pRenderer, PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight);
+	@NotNull
+	Boolean fireArmorPreRender(@NotNull BlueArmorRenderer<?> pRenderer, @NotNull PoseStack pPoseStack, @NotNull ModelCache pModel, @NotNull MultiBufferSource pBufferSource, @NotNull Float pPartialTick, @NotNull Integer pPackedLight);
 
-    void fireArmorPostRender(BlueArmorRenderer<?> pRenderer, PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight);
+	void fireArmorPostRender(@NotNull BlueArmorRenderer<?> pRenderer, @NotNull PoseStack pPoseStack, @NotNull ModelCache pModel, @NotNull MultiBufferSource pBufferSource, @NotNull Float pPartialTick, @NotNull Integer pPackedLight);
 
-    // Entity
+	// Entity
 
-    void fireCompileEntityRenderLayers(BlueEntityRenderer<?> pRenderer);
+	void fireCompileEntityRenderLayers(@NotNull BlueEntityRenderer<?> pRenderer);
 
-    boolean fireEntityPreRender(BlueEntityRenderer<?> pRenderer, PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight);
+	@NotNull
+	Boolean fireEntityPreRender(@NotNull BlueEntityRenderer<?> pRenderer, @NotNull PoseStack pPoseStack, @NotNull ModelCache pModel, @NotNull MultiBufferSource pBufferSource, @NotNull Float pPartialTick, @NotNull Integer pPackedLight);
 
-    void fireEntityPostRender(BlueEntityRenderer<?> pRenderer, PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight);
+	void fireEntityPostRender(@NotNull BlueEntityRenderer<?> pRenderer, @NotNull PoseStack pPoseStack, @NotNull ModelCache pModel, @NotNull MultiBufferSource pBufferSource, @NotNull Float pPartialTick, @NotNull Integer pPackedLight);
 
-    void fireCompileReplacedEntityRenderLayers(BlueReplacedEntityRenderer<?, ?> pRenderer);
+	void fireCompileReplacedEntityRenderLayers(@NotNull BlueReplacedEntityRenderer<?, ?> pRenderer);
 
-    boolean fireReplacedEntityPreRender(BlueReplacedEntityRenderer<?, ?> pRenderer, PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight);
+	@NotNull
+	Boolean fireReplacedEntityPreRender(@NotNull BlueReplacedEntityRenderer<?, ?> pRenderer, @NotNull PoseStack pPoseStack, @NotNull ModelCache pModel, @NotNull MultiBufferSource pBufferSource, @NotNull Float pPartialTick, @NotNull Integer pPackedLight);
 
-    void fireReplacedEntityPostRender(BlueReplacedEntityRenderer<?, ?> pRenderer, PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight);
+	void fireReplacedEntityPostRender(@NotNull BlueReplacedEntityRenderer<?, ?> pRenderer, @NotNull PoseStack pPoseStack, @NotNull ModelCache pModel, @NotNull MultiBufferSource pBufferSource, @NotNull Float pPartialTick, @NotNull Integer pPackedLight);
 
-    // Item
+	// Item
 
-    void fireCompileItemRenderLayers(BlueItemRenderer<?> pRenderer);
+	void fireCompileItemRenderLayers(@NotNull BlueItemRenderer<?> pRenderer);
 
-    boolean fireItemPreRender(BlueItemRenderer<?> pRenderer, PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight);
+	@NotNull
+	Boolean fireItemPreRender(@NotNull BlueItemRenderer<?> pRenderer, @NotNull PoseStack pPoseStack, @NotNull ModelCache pModel, @NotNull MultiBufferSource pBufferSource, @NotNull Float pPartialTick, @NotNull Integer pPackedLight);
 
-    void fireItemPostRender(BlueItemRenderer<?> pRenderer, PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight);
+	void fireItemPostRender(@NotNull BlueItemRenderer<?> pRenderer, @NotNull PoseStack pPoseStack, @NotNull ModelCache pModel, @NotNull MultiBufferSource pBufferSource, @NotNull Float pPartialTick, @NotNull Integer pPackedLight);
 
-    // Object
+	// Object
 
-    void fireCompileObjectRenderLayers(BlueObjectRenderer<?> pRenderer);
+	void fireCompileObjectRenderLayers(@NotNull BlueObjectRenderer<?> pRenderer);
 
-    boolean fireObjectPreRender(BlueObjectRenderer<?> pRenderer, PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight);
+	@NotNull
+	Boolean fireObjectPreRender(@NotNull BlueObjectRenderer<?> pRenderer, @NotNull PoseStack pPoseStack, @NotNull ModelCache pModel, @NotNull MultiBufferSource pBufferSource, @NotNull Float pPartialTick, @NotNull Integer pPackedLight);
 
-    void fireObjectPostRender(BlueObjectRenderer<?> pRenderer, PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight);
+	void fireObjectPostRender(@NotNull BlueObjectRenderer<?> pRenderer, @NotNull PoseStack pPoseStack, @NotNull ModelCache pModel, @NotNull MultiBufferSource pBufferSource, @NotNull Float pPartialTick, @NotNull Integer pPackedLight);
 }

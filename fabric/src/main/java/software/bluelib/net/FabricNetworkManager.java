@@ -14,54 +14,54 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.level.ChunkPos;
-import software.bluelib.BlueLibConstants;
+import org.jetbrains.annotations.NotNull;
+import software.bluelib.api.net.NetworkManager;
 import software.bluelib.api.net.NetworkPacket;
 import software.bluelib.api.net.NetworkRegistry;
 
-public class FabricNetworkManager implements BlueLibConstants.NetworkManager {
+public class FabricNetworkManager implements NetworkManager {
 
-    public static void registerMessages() {
-        NetworkRegistry.s2cPayloads.forEach(info -> FabricPacketInfo.registerPacket(info, true));
-        NetworkRegistry.c2sPayloads.forEach(info -> FabricPacketInfo.registerPacket(info, false));
-    }
+	public static void registerMessages() {
+		NetworkRegistry.s2cPayloads.forEach(info -> FabricPacketInfo.registerPacket(info, true));
+		NetworkRegistry.c2sPayloads.forEach(info -> FabricPacketInfo.registerPacket(info, false));
+	}
 
-    public static void registerClientHandlers() {
-        NetworkRegistry.s2cPayloads.stream()
-                .map(FabricPacketInfo::new)
-                .forEach(FabricPacketInfo::registerClientHandler);
-    }
+	public static void registerClientHandlers() {
+		NetworkRegistry.s2cPayloads.stream()
+				.map(FabricPacketInfo::new)
+				.forEach(FabricPacketInfo::registerClientHandler);
+	}
 
-    public static void registerServerHandlers() {
-        NetworkRegistry.c2sPayloads.stream()
-                .map(FabricPacketInfo::new)
-                .forEach(FabricPacketInfo::registerServerHandler);
-    }
+	public static void registerServerHandlers() {
+		NetworkRegistry.c2sPayloads.stream()
+				.map(FabricPacketInfo::new)
+				.forEach(FabricPacketInfo::registerServerHandler);
+	}
 
-    @Override
-    public void sendToPlayer(ServerPlayer pPlayer, NetworkPacket<?> pPacket) {
-        ServerPlayNetworking.send(pPlayer, pPacket);
-    }
+	@Override
+	public void sendPacketToPlayer(@NotNull ServerPlayer pPlayer, @NotNull NetworkPacket<?> pPacket) {
+		ServerPlayNetworking.send(pPlayer, pPacket);
+	}
 
-    @Override
-    public void sendToServer(NetworkPacket<?> pPacket) {
-        ClientPlayNetworking.send(pPacket);
-    }
+	@Override
+	public void sendToServer(@NotNull NetworkPacket<?> pPacket) {
+		ClientPlayNetworking.send(pPacket);
+	}
 
-    @Override
-    public void sendToAllPlayersTrackingEntity(Entity pTrackingEntity, NetworkPacket<?> pPacket) {
-        if (pTrackingEntity instanceof ServerPlayer pl)
-            sendToPlayer(pl, pPacket);
+	@Override
+	public void sendToAllPlayersTrackingEntity(@NotNull Entity pTrackingEntity, @NotNull NetworkPacket<?> pPacket) {
+		if (pTrackingEntity instanceof ServerPlayer pl)
+			sendPacketToPlayer(pl, pPacket);
 
-        for (ServerPlayer player : PlayerLookup.tracking(pTrackingEntity)) {
-            sendToPlayer(player, pPacket);
-        }
-    }
+		for (ServerPlayer player : PlayerLookup.tracking(pTrackingEntity)) {
+			sendPacketToPlayer(player, pPacket);
+		}
+	}
 
-    @Override
-    public void sendToAllPlayersTrackingBlock(ServerLevel pLevel, BlockPos pBlockPos, NetworkPacket<?> pPacket) {
-        for (ServerPlayer player : PlayerLookup.tracking(pLevel, pBlockPos)) {
-            sendToPlayer(player, pPacket);
-        }
-    }
+	@Override
+	public void sendToAllPlayersTrackingBlock(@NotNull ServerLevel pLevel, @NotNull BlockPos pBlockPos, @NotNull NetworkPacket<?> pPacket) {
+		for (ServerPlayer player : PlayerLookup.tracking(pLevel, pBlockPos)) {
+			sendPacketToPlayer(player, pPacket);
+		}
+	}
 }

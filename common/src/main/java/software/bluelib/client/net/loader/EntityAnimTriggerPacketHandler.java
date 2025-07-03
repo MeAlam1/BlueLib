@@ -9,31 +9,32 @@ package software.bluelib.client.net.loader;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.Entity;
+import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.net.ClientNetworkPacketHandler;
 import software.bluelib.client.utils.LevelUtils;
 import software.bluelib.client.utils.RenderUtils;
-import software.bluelib.loader.animatable.BlueEntity;
-import software.bluelib.loader.animatable.BlueReplacedEntity;
 import software.bluelib.net.messages.client.loader.EntityAnimTriggerPacket;
+import software.bluelib.oldLoader.animatable.BlueEntity;
+import software.bluelib.oldLoader.animatable.BlueReplacedEntity;
 
 public class EntityAnimTriggerPacketHandler implements ClientNetworkPacketHandler<EntityAnimTriggerPacket> {
 
-    @Override
-    public void handle(EntityAnimTriggerPacket pPacket, Minecraft pClient) {
-        Entity entity = LevelUtils.getLevel().getEntity(pPacket.entityId());
+	@Override
+	public void handle(@NotNull EntityAnimTriggerPacket pPacket, @NotNull Minecraft pClient) {
+		Entity entity = LevelUtils.getLevel().getEntity(pPacket.entityId());
 
-        if (entity == null)
-            return;
+		if (entity == null)
+			return;
 
-        String controllerName = pPacket.controllerName().isEmpty() ? null : pPacket.controllerName();
-        if (!pPacket.isReplacedEntity()) {
-            if (entity instanceof BlueEntity BlueEntity)
-                BlueEntity.triggerAnim(controllerName, pPacket.animName());
+		String controllerName = pPacket.controllerName().isEmpty() ? null : pPacket.controllerName();
+		if (!pPacket.isReplacedEntity()) {
+			if (entity instanceof BlueEntity BlueEntity)
+				BlueEntity.triggerAnim(controllerName, pPacket.animName());
 
-            return;
-        }
+			return;
+		}
 
-        if (RenderUtils.getReplacedAnimatable(entity.getType()) instanceof BlueReplacedEntity replacedEntity)
-            replacedEntity.triggerAnim(entity, controllerName, pPacket.animName());
-    }
+		if (RenderUtils.getReplacedAnimatable(entity.getType()) instanceof BlueReplacedEntity replacedEntity)
+			replacedEntity.triggerAnim(entity, controllerName, pPacket.animName());
+	}
 }

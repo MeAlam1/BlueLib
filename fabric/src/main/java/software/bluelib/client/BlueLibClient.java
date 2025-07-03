@@ -7,6 +7,8 @@
  */
 package software.bluelib.client;
 
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -20,9 +22,6 @@ import org.jetbrains.annotations.NotNull;
 import software.bluelib.BlueLibConstants;
 import software.bluelib.client.loader.cache.ResourceCache;
 
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executor;
-
 @Environment(EnvType.CLIENT)
 public class BlueLibClient implements ClientModInitializer {
 
@@ -30,15 +29,20 @@ public class BlueLibClient implements ClientModInitializer {
 	public void onInitializeClient() {
 		ResourceManagerHelper.get(PackType.CLIENT_RESOURCES)
 				.registerReloadListener(new IdentifiableResourceReloadListener() {
+
 					@Override
-					public ResourceLocation getFabricId() {
+					public @NotNull ResourceLocation getFabricId() {
 						return BlueLibConstants.BlueLoader.RELOAD_LISTENER_ID;
 					}
 
 					@Override
-					public @NotNull CompletableFuture<Void> reload(PreparationBarrier pSynchronizer, ResourceManager pResourceManager,
-					                                               ProfilerFiller pPrepareProfiler, ProfilerFiller pApplyProfiler, Executor pPrepareExecutor,
-					                                               Executor pApplyExecutor) {
+					public @NotNull CompletableFuture<Void> reload(
+							@NotNull PreparationBarrier pSynchronizer,
+							@NotNull ResourceManager pResourceManager,
+							@NotNull ProfilerFiller pPrepareProfiler,
+							@NotNull ProfilerFiller pApplyProfiler,
+							@NotNull Executor pPrepareExecutor,
+							@NotNull Executor pApplyExecutor) {
 						return ResourceCache.reloadClient(pSynchronizer, pResourceManager, pPrepareProfiler, pApplyProfiler, pPrepareExecutor, pApplyExecutor);
 					}
 				});

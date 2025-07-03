@@ -17,15 +17,15 @@ import software.bluelib.api.utils.JsonUtils;
 // TODO: Convert to Utils Please or Atleast Cleanup
 public record LocatorValue(@Nullable LocatorClass locatorClass, List<Float> values) {
 
-    public static JsonDeserializer<LocatorValue> deserializer() throws JsonParseException {
-        return (json, type, context) -> {
-            if (json.isJsonArray()) {
-                return new LocatorValue(null, JsonUtils.jsonArrayToFloatList(json.getAsJsonArray()));
-            } else if (json.isJsonObject()) {
-                return new LocatorValue(context.deserialize(json.getAsJsonObject(), LocatorClass.class), new ArrayList<>());
-            } else {
-                throw new JsonParseException("Invalid format for LocatorValue in json");
-            }
-        };
-    }
+	public static JsonDeserializer<LocatorValue> deserializer() throws JsonParseException {
+		return (json, type, context) -> {
+			if (json.isJsonArray()) {
+				return new LocatorValue(null, JsonUtils.jsonArrayToFloatList(json.getAsJsonArray()));
+			} else if (json.isJsonObject()) {
+				return new LocatorValue(context.deserialize(json.getAsJsonObject(), LocatorClass.class), new ArrayList<>());
+			} else {
+				throw new JsonParseException("Invalid format for LocatorValue in json");
+			}
+		};
+	}
 }

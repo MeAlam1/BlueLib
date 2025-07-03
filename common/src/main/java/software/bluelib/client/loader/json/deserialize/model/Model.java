@@ -16,19 +16,19 @@ import net.minecraft.util.GsonHelper;
 import software.bluelib.api.utils.JsonUtils;
 
 public record Model(
-        String formatVersion,
-        List<ModelGeometry> ModelGeometry) {
+		String formatVersion,
+		List<ModelGeometry> ModelGeometry) {
 
-    public static JsonDeserializer<Model> deserializer() throws JsonParseException {
-        return (json, type, context) -> {
-            JsonObject obj = json.getAsJsonObject();
+	public static JsonDeserializer<Model> deserializer() throws JsonParseException {
+		return (json, type, context) -> {
+			JsonObject obj = json.getAsJsonObject();
 
-            String formatVersion = GsonHelper.getAsString(obj, "format_version");
-            List<ModelGeometry> ModelGeometry = JsonUtils.jsonArrayToObjectList(GsonHelper.getAsJsonArray(obj, "minecraft:geometry", new JsonArray(0)), context, ModelGeometry.class);
+			String formatVersion = GsonHelper.getAsString(obj, "format_version");
+			List<ModelGeometry> ModelGeometry = JsonUtils.jsonArrayToObjectList(GsonHelper.getAsJsonArray(obj, "minecraft:geometry", new JsonArray(0)), context, ModelGeometry.class);
 
-            return new Model(
-                    formatVersion,
-                    ModelGeometry);
-        };
-    }
+			return new Model(
+					formatVersion,
+					ModelGeometry);
+		};
+	}
 }

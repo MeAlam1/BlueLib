@@ -15,20 +15,20 @@ import software.bluelib.api.utils.JsonUtils;
 import software.bluelib.client.loader.cache.animations.AnimationLibraryCache;
 
 public record AnimationLibrary(
-        String formatVersion,
-        AnimationLibraryCache animations) {
+		String formatVersion,
+		AnimationLibraryCache animations) {
 
-    public static JsonDeserializer<AnimationLibrary> deserializer() throws JsonParseException {
-        return (json, type, context) -> {
-            JsonObject obj = json.getAsJsonObject();
+	public static JsonDeserializer<AnimationLibrary> deserializer() throws JsonParseException {
+		return (json, type, context) -> {
+			JsonObject obj = json.getAsJsonObject();
 
-            String formatVersion = GsonHelper.getAsString(obj, "format_version");
-            AnimationLibraryCache animations = JsonUtils.getOptionalObject(obj, "animations", context, AnimationLibraryCache.class);
+			String formatVersion = GsonHelper.getAsString(obj, "format_version");
+			AnimationLibraryCache animations = JsonUtils.getOptionalObject(obj, "animations", context, AnimationLibraryCache.class);
 
-            return new AnimationLibrary(
-                    formatVersion,
-                    animations);
+			return new AnimationLibrary(
+					formatVersion,
+					animations);
 
-        };
-    }
+		};
+	}
 }

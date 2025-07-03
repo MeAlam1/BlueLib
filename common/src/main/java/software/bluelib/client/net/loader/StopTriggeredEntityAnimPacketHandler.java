@@ -9,32 +9,33 @@ package software.bluelib.client.net.loader;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.Entity;
+import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.net.ClientNetworkPacketHandler;
 import software.bluelib.client.utils.LevelUtils;
 import software.bluelib.client.utils.RenderUtils;
-import software.bluelib.loader.animatable.BlueEntity;
-import software.bluelib.loader.animatable.BlueReplacedEntity;
 import software.bluelib.net.messages.client.loader.StopTriggeredEntityAnimPacket;
+import software.bluelib.oldLoader.animatable.BlueEntity;
+import software.bluelib.oldLoader.animatable.BlueReplacedEntity;
 
 public class StopTriggeredEntityAnimPacketHandler implements ClientNetworkPacketHandler<StopTriggeredEntityAnimPacket> {
 
-    @Override
-    public void handle(StopTriggeredEntityAnimPacket pPacket, Minecraft pClient) {
-        Entity entity = LevelUtils.getLevel().getEntity(pPacket.entityId());
+	@Override
+	public void handle(@NotNull StopTriggeredEntityAnimPacket pPacket, @NotNull Minecraft pClient) {
+		Entity entity = LevelUtils.getLevel().getEntity(pPacket.entityId());
 
-        if (entity == null)
-            return;
+		if (entity == null)
+			return;
 
-        String controllerName = pPacket.controllerName().isEmpty() ? null : pPacket.controllerName();
-        String animName = pPacket.animName().isEmpty() ? null : pPacket.animName();
-        if (!pPacket.isReplacedEntity()) {
-            if (entity instanceof BlueEntity BlueEntity)
-                BlueEntity.stopTriggeredAnim(controllerName, animName);
+		String controllerName = pPacket.controllerName().isEmpty() ? null : pPacket.controllerName();
+		String animName = pPacket.animName().isEmpty() ? null : pPacket.animName();
+		if (!pPacket.isReplacedEntity()) {
+			if (entity instanceof BlueEntity BlueEntity)
+				BlueEntity.stopTriggeredAnim(controllerName, animName);
 
-            return;
-        }
+			return;
+		}
 
-        if (RenderUtils.getReplacedAnimatable(entity.getType()) instanceof BlueReplacedEntity replacedEntity)
-            replacedEntity.stopTriggeredAnim(entity, controllerName, animName);
-    }
+		if (RenderUtils.getReplacedAnimatable(entity.getType()) instanceof BlueReplacedEntity replacedEntity)
+			replacedEntity.stopTriggeredAnim(entity, controllerName, animName);
+	}
 }

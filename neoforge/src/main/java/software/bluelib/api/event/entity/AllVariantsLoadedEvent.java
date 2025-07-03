@@ -15,29 +15,30 @@ import org.jetbrains.annotations.NotNull;
 @SuppressWarnings("unused")
 public abstract class AllVariantsLoadedEvent extends Event implements IModBusEvent {
 
-    String entityName;
+	@NotNull
+	final String entityName;
 
-    public AllVariantsLoadedEvent(@NotNull String pEntityName) {
-        super();
-        this.entityName = pEntityName;
-    }
+	public AllVariantsLoadedEvent(@NotNull String pEntityName) {
+		super();
+		this.entityName = pEntityName;
+	}
 
-    @NotNull
-    public String getEntity() {
-        return entityName;
-    }
+	@NotNull
+	public String getEntity() {
+		return entityName;
+	}
 
-    public static class Pre extends AllVariantsLoadedEvent implements ICancellableEvent {
+	public static class Pre extends AllVariantsLoadedEvent implements ICancellableEvent {
 
-        public Pre(@NotNull String pEntityName) {
-            super(pEntityName);
-        }
-    }
+		public Pre(@NotNull String pEntityName) {
+			super(pEntityName);
+		}
+	}
 
-    public static class Post extends AllVariantsLoadedEvent {
+	public static class Post extends AllVariantsLoadedEvent {
 
-        public Post(@NotNull String pEntityName) {
-            super(pEntityName);
-        }
-    }
+		public Post(@NotNull String pEntityName) {
+			super(pEntityName);
+		}
+	}
 }

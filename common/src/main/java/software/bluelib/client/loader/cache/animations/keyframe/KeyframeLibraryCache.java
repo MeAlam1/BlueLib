@@ -7,9 +7,9 @@
  */
 package software.bluelib.client.loader.cache.animations.keyframe;
 
-import software.bluelib.loader.animation.keyframe.event.data.CustomInstructionKeyframeData;
-import software.bluelib.loader.animation.keyframe.event.data.ParticleKeyframeData;
-import software.bluelib.loader.animation.keyframe.event.data.SoundKeyframeData;
+import software.bluelib.oldLoader.animation.keyframe.event.data.CustomInstructionKeyframeData;
+import software.bluelib.oldLoader.animation.keyframe.event.data.ParticleKeyframeData;
+import software.bluelib.oldLoader.animation.keyframe.event.data.SoundKeyframeData;
 
 public record KeyframeLibraryCache(SoundKeyframeData[] sounds, ParticleKeyframeData[] particles,
-        CustomInstructionKeyframeData[] customInstructions) {}
+		CustomInstructionKeyframeData[] customInstructions) {}

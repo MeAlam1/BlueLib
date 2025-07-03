@@ -15,21 +15,21 @@ import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.utils.JsonUtils;
 
 public record LocatorClass(
-        @Nullable Boolean ignoreInheritedScale,
-        List<Float> offset,
-        List<Float> rotation) {
+		@Nullable Boolean ignoreInheritedScale,
+		List<Float> offset,
+		List<Float> rotation) {
 
-    public static JsonDeserializer<LocatorClass> deserializer() throws JsonParseException {
-        return (json, type, context) -> {
-            JsonObject obj = json.getAsJsonObject();
-            Boolean ignoreInheritedScale = JsonUtils.getOptionalBoolean(obj, "ignore_inherited_scale");
-            List<Float> offset = JsonUtils.jsonArrayToFloatList(JsonUtils.getOptionalJsonArray(obj, "offset"));
-            List<Float> rotation = JsonUtils.jsonArrayToFloatList(JsonUtils.getOptionalJsonArray(obj, "rotation"));
+	public static JsonDeserializer<LocatorClass> deserializer() throws JsonParseException {
+		return (json, type, context) -> {
+			JsonObject obj = json.getAsJsonObject();
+			Boolean ignoreInheritedScale = JsonUtils.getOptionalBoolean(obj, "ignore_inherited_scale");
+			List<Float> offset = JsonUtils.jsonArrayToFloatList(JsonUtils.getOptionalJsonArray(obj, "offset"));
+			List<Float> rotation = JsonUtils.jsonArrayToFloatList(JsonUtils.getOptionalJsonArray(obj, "rotation"));
 
-            return new LocatorClass(
-                    ignoreInheritedScale,
-                    offset,
-                    rotation);
-        };
-    }
+			return new LocatorClass(
+					ignoreInheritedScale,
+					offset,
+					rotation);
+		};
+	}
 }

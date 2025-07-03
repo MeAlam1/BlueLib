@@ -15,34 +15,34 @@ import software.bluelib.client.loader.json.deserialize.animation.AnimationLibrar
 
 public interface AnimationCacheFactory extends CacheFactory<AnimationLibraryCache, AnimationLibrary> {
 
-    Map<String, AnimationCacheFactory> FACTORIES = new Object2ObjectOpenHashMap<>(1);
-    AnimationCacheFactory DEFAULT_FACTORY = new Builtin();
+	Map<String, AnimationCacheFactory> FACTORIES = new Object2ObjectOpenHashMap<>(1);
+	AnimationCacheFactory DEFAULT_FACTORY = new Builtin();
 
-    CacheFactory.Registry<AnimationLibraryCache, AnimationLibrary, AnimationCacheFactory> REGISTRY = new CacheFactory.Registry<>() {
+	CacheFactory.Registry<AnimationLibraryCache, AnimationLibrary, AnimationCacheFactory> REGISTRY = new CacheFactory.Registry<>() {
 
-        @Override
-        public Map<String, AnimationCacheFactory> factories() {
-            return FACTORIES;
-        }
+		@Override
+		public Map<String, AnimationCacheFactory> factories() {
+			return FACTORIES;
+		}
 
-        @Override
-        public AnimationCacheFactory defaultFactory() {
-            return DEFAULT_FACTORY;
-        }
-    };
+		@Override
+		public AnimationCacheFactory defaultFactory() {
+			return DEFAULT_FACTORY;
+		}
+	};
 
-    @Override
-    default AnimationLibraryCache construct(AnimationLibrary pSource) {
-        return constructBlueAnimator(pSource);
-    }
+	@Override
+	default AnimationLibraryCache construct(AnimationLibrary pSource) {
+		return constructBlueAnimator(pSource);
+	}
 
-    AnimationLibraryCache constructBlueAnimator(AnimationLibrary pAnimations);
+	AnimationLibraryCache constructBlueAnimator(AnimationLibrary pAnimations);
 
-    final class Builtin implements AnimationCacheFactory {
+	final class Builtin implements AnimationCacheFactory {
 
-        @Override
-        public AnimationLibraryCache constructBlueAnimator(AnimationLibrary pAnimations) {
-            return pAnimations.animations();
-        }
-    }
+		@Override
+		public AnimationLibraryCache constructBlueAnimator(AnimationLibrary pAnimations) {
+			return pAnimations.animations();
+		}
+	}
 }

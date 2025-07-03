@@ -14,17 +14,23 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
-import software.bluelib.BlueLibConstants;
+import org.jetbrains.annotations.NotNull;
+import software.bluelib.api.net.NetworkManager;
 
 public interface IRegistryHelper {
 
-    BlueLibConstants.NetworkManager getNetwork();
+	@NotNull
+	NetworkManager getNetwork();
 
-    <T extends RecipeType<?>> Supplier<T> registerRecipeType(String pId, Supplier<T> pRecipeType);
+	@NotNull
+	<T extends RecipeType<?>> Supplier<T> registerRecipeType(@NotNull String pId, @NotNull Supplier<T> pRecipeType);
 
-    <T extends RecipeSerializer<?>> Supplier<T> registerRecipeSerializer(String pId, Supplier<T> pRecipeSerializer);
+	@NotNull
+	<T extends RecipeSerializer<?>> Supplier<T> registerRecipeSerializer(@NotNull String pId, @NotNull Supplier<T> pRecipeSerializer);
 
-    <T extends Entity> Supplier<EntityType<T>> registerEntity(String pId, Supplier<EntityType<T>> pEntity);
+	@NotNull
+	<T extends Entity> Supplier<EntityType<T>> registerEntity(@NotNull String pId, @NotNull Supplier<EntityType<T>> pEntity);
 
-    <T> Supplier<DataComponentType<T>> registerDataComponent(String pId, UnaryOperator<DataComponentType.Builder<T>> pBuilder);
+	@NotNull
+	<T> Supplier<DataComponentType<T>> registerDataComponent(@NotNull String pId, @NotNull UnaryOperator<DataComponentType.Builder<T>> pBuilder);
 }

@@ -13,24 +13,25 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.OutgoingChatMessage;
 import net.minecraft.network.chat.PlayerChatMessage;
 import net.minecraft.server.level.ServerPlayer;
+import org.jetbrains.annotations.NotNull;
 import software.bluelib.markdown.MarkdownParser;
 
 public class ChatHandler {
 
-    public static boolean onAllowChat(PlayerChatMessage pPlayerChatMessage, ServerPlayer pServerPlayer, ChatType.Bound pBound) {
-        Component originalMessage = pPlayerChatMessage.decoratedContent();
-        Component formattedMessage = MarkdownParser.parseMarkdown(originalMessage);
-        if (!formattedMessage.equals(originalMessage)) {
-            PlayerChatMessage newPlayerChatMessage = new PlayerChatMessage(
-                    pPlayerChatMessage.link(),
-                    pPlayerChatMessage.signature(),
-                    pPlayerChatMessage.signedBody(),
-                    formattedMessage,
-                    pPlayerChatMessage.filterMask());
+	public static boolean onAllowChat(@NotNull PlayerChatMessage pPlayerChatMessage, @NotNull ServerPlayer pServerPlayer, @NotNull ChatType.Bound pBound) {
+		Component originalMessage = pPlayerChatMessage.decoratedContent();
+		Component formattedMessage = MarkdownParser.parseMarkdown(originalMessage);
+		if (!formattedMessage.equals(originalMessage)) {
+			PlayerChatMessage newPlayerChatMessage = new PlayerChatMessage(
+					pPlayerChatMessage.link(),
+					pPlayerChatMessage.signature(),
+					pPlayerChatMessage.signedBody(),
+					formattedMessage,
+					pPlayerChatMessage.filterMask());
 
-            pServerPlayer.sendChatMessage(OutgoingChatMessage.create(newPlayerChatMessage), false,
-                    pBound.withTargetName(Objects.requireNonNull(pServerPlayer.getDisplayName())));
-        }
-        return formattedMessage.equals(originalMessage);
-    }
+			pServerPlayer.sendChatMessage(OutgoingChatMessage.create(newPlayerChatMessage), false,
+					pBound.withTargetName(Objects.requireNonNull(pServerPlayer.getDisplayName())));
+		}
+		return formattedMessage.equals(originalMessage);
+	}
 }

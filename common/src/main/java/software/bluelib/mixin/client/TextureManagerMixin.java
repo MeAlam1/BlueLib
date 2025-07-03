@@ -14,6 +14,7 @@ import net.minecraft.client.renderer.texture.AbstractTexture;
 import net.minecraft.client.renderer.texture.SimpleTexture;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -22,20 +23,20 @@ import software.bluelib.client.loader.cache.texture.AnimatableTexture;
 @Mixin(value = TextureManager.class, priority = 2000)
 public abstract class TextureManagerMixin {
 
-    @Shadow
-    public abstract void register(ResourceLocation path, AbstractTexture texture);
+	@Shadow
+	public abstract void register(@NotNull ResourceLocation pPath, @NotNull AbstractTexture pTexture);
 
-    @WrapOperation(method = "getTexture(Lnet/minecraft/resources/ResourceLocation;)Lnet/minecraft/client/renderer/texture/AbstractTexture;", at = @At(value = "NEW", target = "(Lnet/minecraft/resources/ResourceLocation;)Lnet/minecraft/client/renderer/texture/SimpleTexture;"), require = 0)
-    private SimpleTexture BlueLib$replaceAnimatableTexture(ResourceLocation location, Operation<SimpleTexture> original) {
-        AnimatableTexture animatableTexture = new AnimatableTexture(location);
+	@WrapOperation(method = "getTexture(Lnet/minecraft/resources/ResourceLocation;)Lnet/minecraft/client/renderer/texture/AbstractTexture;", at = @At(value = "NEW", target = "(Lnet/minecraft/resources/ResourceLocation;)Lnet/minecraft/client/renderer/texture/SimpleTexture;"), require = 0)
+	private SimpleTexture BlueLib$replaceAnimatableTexture(@NotNull ResourceLocation pLocation, @NotNull Operation<SimpleTexture> pOriginal) {
+		AnimatableTexture animatableTexture = new AnimatableTexture(pLocation);
 
-        register(location, animatableTexture);
+		register(pLocation, animatableTexture);
 
-        return animatableTexture.isAnimated() ? animatableTexture : new SimpleTexture(location);
-    }
+		return animatableTexture.isAnimated() ? animatableTexture : new SimpleTexture(pLocation);
+	}
 
-    @WrapWithCondition(method = "getTexture(Lnet/minecraft/resources/ResourceLocation;)Lnet/minecraft/client/renderer/texture/AbstractTexture;", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/texture/TextureManager;register(Lnet/minecraft/resources/ResourceLocation;Lnet/minecraft/client/renderer/texture/AbstractTexture;)V"), require = 0)
-    private boolean BlueLib$skipAnimatableTextureRegistration(TextureManager textureManager, ResourceLocation location, AbstractTexture texture) {
-        return !(texture instanceof AnimatableTexture);
-    }
+	@WrapWithCondition(method = "getTexture(Lnet/minecraft/resources/ResourceLocation;)Lnet/minecraft/client/renderer/texture/AbstractTexture;", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/texture/TextureManager;register(Lnet/minecraft/resources/ResourceLocation;Lnet/minecraft/client/renderer/texture/AbstractTexture;)V"), require = 0)
+	private boolean BlueLib$skipAnimatableTextureRegistration(@NotNull TextureManager pTextureManager, @NotNull ResourceLocation pLocation, @NotNull AbstractTexture pTexture) {
+		return !(pTexture instanceof AnimatableTexture);
+	}
 }

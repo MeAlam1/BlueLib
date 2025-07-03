@@ -10,38 +10,40 @@ package software.bluelib.api.exception;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import java.util.List;
 import java.util.StringJoiner;
+import org.jetbrains.annotations.NotNull;
 
 public class CompoundException extends RuntimeException {
 
-    private final List<String> messages = new ObjectArrayList<>();
+	@NotNull
+	private final List<String> messages = new ObjectArrayList<>();
 
-    public CompoundException(String pMessage) {
-        this.messages.add(pMessage);
-    }
+	public CompoundException(@NotNull String pMessage) {
+		this.messages.add(pMessage);
+	}
 
-    public CompoundException withMessage(String pMessage) {
-        this.messages.add(pMessage);
+	public @NotNull CompoundException withMessage(@NotNull String pMessage) {
+		this.messages.add(pMessage);
 
-        return this;
-    }
+		return this;
+	}
 
-    @Override
-    public String getLocalizedMessage() {
-        final StringJoiner joiner = new StringJoiner("\n");
-        final int count = this.messages.size() - 1;
+	@Override
+	public @NotNull String getLocalizedMessage() {
+		final StringJoiner joiner = new StringJoiner("\n");
+		final int count = this.messages.size() - 1;
 
-        for (int i = count; i >= 0; i--) {
-            joiner.add((i == count ? "" : "\t".repeat(Math.max(0, count - i)) + "-> ") + this.messages.get(i));
-        }
+		for (int i = count; i >= 0; i--) {
+			joiner.add((i == count ? "" : "\t".repeat(Math.max(0, count - i)) + "-> ") + this.messages.get(i));
+		}
 
-        return joiner.toString();
-    }
+		return joiner.toString();
+	}
 
-    @Override
-    public String toString() {
-        final String name = "BlueLib.CompoundException";
-        final String message = getLocalizedMessage();
+	@Override
+	public @NotNull String toString() {
+		final String name = "BlueLib.CompoundException";
+		final String message = getLocalizedMessage();
 
-        return message != null ? name + ": " + message : name;
-    }
+		return name + ": " + message;
+	}
 }
