@@ -8,8 +8,9 @@
 package software.bluelib.api.net;
 
 import net.minecraft.client.Minecraft;
+import org.jetbrains.annotations.NotNull;
 
 public interface ClientNetworkPacketHandler<T extends NetworkPacket<T>> extends PacketHandler<T> {
 
-    void handle(T pPacket, Minecraft pClient);
+	void handle(@NotNull T pPacket, @NotNull Minecraft pClient);
 }

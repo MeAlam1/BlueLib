@@ -11,34 +11,41 @@ import io.netty.buffer.Unpooled;
 import java.util.ArrayList;
 import java.util.Collection;
 import net.minecraft.network.RegistryFriendlyByteBuf;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.net.NetworkPacket;
 
 public abstract class DataRegistrySyncPacket<T, N extends NetworkPacket<N>> implements NetworkPacket<N> {
 
-    private final Collection<T> registryEntries;
-    public RegistryFriendlyByteBuf buffer;
-    public final ArrayList<T> entries = new ArrayList<>();
+	@NotNull
+	private final Collection<T> registryEntries;
 
-    public DataRegistrySyncPacket(Collection<T> pRegistryEntries) {
-        this.registryEntries = pRegistryEntries;
-    }
+	@Nullable
+	public RegistryFriendlyByteBuf buffer;
 
-    @Override
-    public void encode(RegistryFriendlyByteBuf pBuffer) {
-        RegistryFriendlyByteBuf newBuffer = new RegistryFriendlyByteBuf(Unpooled.buffer(), pBuffer.registryAccess());
-        newBuffer.writeCollection(registryEntries, (buf, entry) -> encodeEntry(newBuffer, entry));
-        pBuffer.writeInt(newBuffer.readableBytes());
-        pBuffer.writeBytes(newBuffer);
-    }
+	@NotNull
+	public final ArrayList<T> entries = new ArrayList<>();
 
-    protected void decodeBuffer(RegistryFriendlyByteBuf pBuffer) {
-        int size = pBuffer.readInt();
-        this.buffer = new RegistryFriendlyByteBuf(pBuffer.readBytes(size), pBuffer.registryAccess());
-    }
+	public DataRegistrySyncPacket(@NotNull Collection<T> pRegistryEntries) {
+		this.registryEntries = pRegistryEntries;
+	}
 
-    public abstract void encodeEntry(RegistryFriendlyByteBuf pBuffer, T pEntry);
+	@Override
+	public void encode(@NotNull RegistryFriendlyByteBuf pBuffer) {
+		RegistryFriendlyByteBuf newBuffer = new RegistryFriendlyByteBuf(Unpooled.buffer(), pBuffer.registryAccess());
+		newBuffer.writeCollection(registryEntries, (buf, entry) -> encodeEntry(newBuffer, entry));
+		pBuffer.writeInt(newBuffer.readableBytes());
+		pBuffer.writeBytes(newBuffer);
+	}
 
-    public abstract T decodeEntry(RegistryFriendlyByteBuf pBuffer);
+	protected void decodeBuffer(@NotNull RegistryFriendlyByteBuf pBuffer) {
+		int size = pBuffer.readInt();
+		this.buffer = new RegistryFriendlyByteBuf(pBuffer.readBytes(size), pBuffer.registryAccess());
+	}
 
-    public abstract void synchronizeDecoded(Collection<T> pEntries);
+	public abstract void encodeEntry(@NotNull RegistryFriendlyByteBuf pBuffer, @NotNull T pEntry);
+
+	public abstract T decodeEntry(@NotNull RegistryFriendlyByteBuf pBuffer);
+
+	public abstract void synchronizeDecoded(@NotNull Collection<T> pEntries);
 }

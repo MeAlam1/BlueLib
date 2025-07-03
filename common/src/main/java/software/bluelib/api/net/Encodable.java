@@ -8,8 +8,9 @@
 package software.bluelib.api.net;
 
 import net.minecraft.network.RegistryFriendlyByteBuf;
+import org.jetbrains.annotations.NotNull;
 
 public interface Encodable {
 
-    void encode(RegistryFriendlyByteBuf pBuffer);
+	void encode(@NotNull RegistryFriendlyByteBuf pBuffer);
 }

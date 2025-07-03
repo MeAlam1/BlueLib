@@ -5,11 +5,9 @@
  * If a copy of the MIT License was not distributed with this file,
  * You can obtain one at https://opensource.org/licenses/MIT.
  */
-package software.bluelib.api.net;
+package software.bluelib.api;
 
-import net.minecraft.network.RegistryFriendlyByteBuf;
-
-public interface Decodable {
-
-    void decode(RegistryFriendlyByteBuf pBuffer);
+public enum Environment {
+	CLIENT,
+	SERVER
 }

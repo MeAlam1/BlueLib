@@ -9,19 +9,20 @@ package software.bluelib.client.net.variant;
 
 import java.util.function.Consumer;
 import net.minecraft.client.Minecraft;
+import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.net.ClientNetworkPacketHandler;
 import software.bluelib.net.messages.client.variant.VariantsPacket;
 
 public class VariantsPacketHandler implements ClientNetworkPacketHandler<VariantsPacket> {
 
-    private final Consumer<VariantsPacket> handlerFunction;
+	private final Consumer<VariantsPacket> handlerFunction;
 
-    public VariantsPacketHandler(Consumer<VariantsPacket> pHandlerFunction) {
-        this.handlerFunction = pHandlerFunction;
-    }
+	public VariantsPacketHandler(@NotNull Consumer<VariantsPacket> pHandlerFunction) {
+		this.handlerFunction = pHandlerFunction;
+	}
 
-    @Override
-    public void handle(VariantsPacket pPacket, Minecraft pClient) {
-        handlerFunction.accept(pPacket);
-    }
+	@Override
+	public void handle(@NotNull VariantsPacket pPacket, @NotNull Minecraft pClient) {
+		handlerFunction.accept(pPacket);
+	}
 }

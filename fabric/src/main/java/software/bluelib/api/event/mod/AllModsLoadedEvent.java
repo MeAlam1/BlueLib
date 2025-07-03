@@ -10,19 +10,21 @@ package software.bluelib.api.event.mod;
 import java.util.List;
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
+import org.jetbrains.annotations.NotNull;
 
 public final class AllModsLoadedEvent {
 
-    public static final Event<AllModsLoadedEventListener> EVENT = EventFactory.createArrayBacked(AllModsLoadedEventListener.class,
-            (listeners) -> (pModData) -> {
-                for (AllModsLoadedEventListener listener : listeners) {
-                    listener.onAllModsLoaded(pModData);
-                }
-            });
+	@NotNull
+	public static final Event<AllModsLoadedEventListener> EVENT = EventFactory.createArrayBacked(AllModsLoadedEventListener.class,
+			(listeners) -> (pModData) -> {
+				for (AllModsLoadedEventListener listener : listeners) {
+					listener.onAllModsLoaded(pModData);
+				}
+			});
 
-    @FunctionalInterface
-    public interface AllModsLoadedEventListener {
+	@FunctionalInterface
+	public interface AllModsLoadedEventListener {
 
-        void onAllModsLoaded(List<ModMeta> pModData);
-    }
+		void onAllModsLoaded(@NotNull List<ModMeta> pModData);
+	}
 }

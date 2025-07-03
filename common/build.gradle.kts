@@ -2,8 +2,8 @@ plugins {
     id("bluelib-convention")
     alias(libs.plugins.curseforgegradle)
     alias(libs.plugins.moddevgradle)
-    id("com.diffplug.spotless") version "6.25.0"
-    id("com.github.hierynomus.license") version "0.16.1"
+    alias(libs.plugins.com.diffplug.spotless)
+    alias(libs.plugins.com.github.hierynomus.license)
 }
 
 repositories {
@@ -49,6 +49,7 @@ publishing {
 
 spotless {
     java {
+        indentWithTabs()
         endWithNewline()
         removeUnusedImports()
         toggleOffOn()
@@ -61,7 +62,7 @@ spotless {
             fileContents.replace("javax.annotation.Nullable", "org.jetbrains.annotations.Nullable")
         }
 
-        bumpThisNumberIfACustomStepChanges(2)
+        bumpThisNumberIfACustomStepChanges(3)
     }
 }
 

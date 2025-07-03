@@ -8,17 +8,20 @@
 package software.bluelib.api.net;
 
 import java.util.List;
+import org.jetbrains.annotations.NotNull;
 import software.bluelib.net.PacketRegisterInfo;
 
 public interface PacketProvider {
 
-    interface C2SPacketProvider {
+	interface C2SPacketProvider {
 
-        List<PacketRegisterInfo<?>> getC2SPacketInfoList();
-    }
+		@NotNull
+		List<PacketRegisterInfo<?>> getC2SPacketInfoList();
+	}
 
-    interface S2CPacketProvider {
+	interface S2CPacketProvider {
 
-        List<PacketRegisterInfo<?>> getS2CPacketInfoList();
-    }
+		@NotNull
+		List<PacketRegisterInfo<?>> getS2CPacketInfoList();
+	}
 }

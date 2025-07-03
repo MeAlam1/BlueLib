@@ -9,7 +9,7 @@ package software.bluelib.api.utils;
 
 import java.net.URI;
 import java.util.regex.Pattern;
-import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
 import software.bluelib.internal.BlueTranslation;
@@ -17,53 +17,47 @@ import software.bluelib.internal.BlueTranslation;
 @SuppressWarnings("unused")
 public class IsValidUtils {
 
-    private IsValidUtils() {}
+	private IsValidUtils() {}
 
-    public static boolean isValidURL(@Nullable String pUrl) {
-        try {
-            if (pUrl == null) {
-                BaseLogger.log(true, BaseLogLevel.WARNING, BlueTranslation.translate("null"));
-                return false;
-            }
-            if (!pUrl.startsWith("http://") && !pUrl.startsWith("https://")) {
-                BaseLogger.log(true, BaseLogLevel.WARNING, BlueTranslation.log("invalid_url.begin", pUrl));
-                return false;
-            }
+	@NotNull
+	public static Boolean isValidURL(@NotNull String pUrl) {
+		try {
+			if (!pUrl.startsWith("http://") && !pUrl.startsWith("https://")) {
+				BaseLogger.log(true, BaseLogLevel.WARNING, BlueTranslation.log("invalid_url.begin", pUrl));
+				return false;
+			}
 
-            URI uri = new URI(pUrl);
+			URI uri = new URI(pUrl);
 
-            String domainRegex = "^[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
-            Pattern pattern = Pattern.compile(domainRegex);
-            String host = uri.getHost();
+			String domainRegex = "^[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
+			Pattern pattern = Pattern.compile(domainRegex);
+			String host = uri.getHost();
 
-            return uri.isAbsolute() && (pattern.matcher(host).matches());
-        } catch (Exception pException) {
-            BaseLogger.log(true, BaseLogLevel.ERROR, BlueTranslation.log("invalid_url", pUrl));
-            return false;
-        }
-    }
+			return uri.isAbsolute() && (pattern.matcher(host).matches());
+		} catch (Exception pException) {
+			BaseLogger.log(true, BaseLogLevel.ERROR, BlueTranslation.log("invalid_url", pUrl));
+			return false;
+		}
+	}
 
-    public static boolean isValidEmail(String pEmail) {
-        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
-        return pEmail != null && pEmail.matches(emailRegex);
-    }
+	@NotNull
+	public static Boolean isValidEmail(@NotNull String pEmail) {
+		String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+		return pEmail.matches(emailRegex);
+	}
 
-    public static boolean isValidColor(@Nullable String pInput) {
-        if (pInput == null) {
-            BaseLogger.log(true, BaseLogLevel.WARNING, BlueTranslation.translate("null"));
-            return false;
-        }
+	@NotNull
+	public static Boolean isValidColor(@NotNull String pInput) {
+		String rgbPattern = "\\(\\s*\\d{1,3}\\s*,\\s*\\d{1,3}\\s*,\\s*\\d{1,3}\\s*\\)";
+		String argbPattern = "\\(\\s*\\d{1,3}\\s*,\\s*\\d{1,3}\\s*,\\s*\\d{1,3}\\s*,\\s*\\d{1,3}\\s*\\)";
+		String hexPattern = "^#([0-9A-Fa-f]{6})$";
+		String hex0xPattern = "^0x([0-9A-Fa-f]{6})$";
+		String plainHexPattern = "^([0-9A-Fa-f]{6})$";
 
-        String rgbPattern = "\\(\\s*\\d{1,3}\\s*,\\s*\\d{1,3}\\s*,\\s*\\d{1,3}\\s*\\)";
-        String argbPattern = "\\(\\s*\\d{1,3}\\s*,\\s*\\d{1,3}\\s*,\\s*\\d{1,3}\\s*,\\s*\\d{1,3}\\s*\\)";
-        String hexPattern = "^#([0-9A-Fa-f]{6})$";
-        String hex0xPattern = "^0x([0-9A-Fa-f]{6})$";
-        String plainHexPattern = "^([0-9A-Fa-f]{6})$";
-
-        return pInput.matches(rgbPattern) ||
-                pInput.matches(argbPattern) ||
-                pInput.matches(hexPattern) ||
-                pInput.matches(hex0xPattern) ||
-                pInput.matches(plainHexPattern);
-    }
+		return pInput.matches(rgbPattern) ||
+				pInput.matches(argbPattern) ||
+				pInput.matches(hexPattern) ||
+				pInput.matches(hex0xPattern) ||
+				pInput.matches(plainHexPattern);
+	}
 }

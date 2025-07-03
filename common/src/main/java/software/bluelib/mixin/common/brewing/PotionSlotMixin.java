@@ -10,6 +10,7 @@ package software.bluelib.mixin.common.brewing;
 import net.minecraft.world.inventory.BrewingStandMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeManager;
+import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -21,17 +22,17 @@ import software.bluelib.recipe.brewing.RecipeAwareSlot;
 @Mixin(BrewingStandMenu.PotionSlot.class)
 public class PotionSlotMixin implements RecipeAwareSlot {
 
-    @Unique
-    private RecipeManager bluelib$recipeManager;
+	@Unique
+	private RecipeManager bluelib$recipeManager;
 
-    public void blueLib$setRecipeManager(RecipeManager pRecipeManager) {
-        this.bluelib$recipeManager = pRecipeManager;
-    }
+	public void blueLib$setRecipeManager(@NotNull RecipeManager pRecipeManager) {
+		this.bluelib$recipeManager = pRecipeManager;
+	}
 
-    @Inject(method = "mayPlace", at = @At("HEAD"), cancellable = true)
-    private void blueLib$mayPlace(ItemStack pStack, CallbackInfoReturnable<Boolean> pCir) {
-        if (BrewingRecipe.isBottle(pStack, bluelib$recipeManager)) {
-            pCir.setReturnValue(true);
-        }
-    }
+	@Inject(method = "mayPlace", at = @At("HEAD"), cancellable = true)
+	private void blueLib$mayPlace(@NotNull ItemStack pStack, @NotNull CallbackInfoReturnable<Boolean> pCir) {
+		if (BrewingRecipe.isBottle(pStack, bluelib$recipeManager)) {
+			pCir.setReturnValue(true);
+		}
+	}
 }
