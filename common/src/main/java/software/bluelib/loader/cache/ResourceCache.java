@@ -20,6 +20,7 @@ import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.entity.variant.IVariantProvider;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
+import software.bluelib.internal.BlueTranslation;
 import software.bluelib.loader.BlueLoader;
 import software.bluelib.loader.cache.variants.EntityCache;
 
@@ -45,13 +46,12 @@ public class ResourceCache extends BlueLoader {
 		clearServerCaches();
 
 		CompletableFuture<Map<ResourceLocation, EntityCache>> variants = loadVariants(pBackgroundExecutor, pResourceManager, pProviders);
-		BaseLogger.log(true, BaseLogLevel.INFO, "Loaded variants map: " + variants.join());
 
 		return CompletableFuture.allOf(variants)
 				.thenRunAsync(() -> {
 					ResourceCache.VARIANTS = variants.join();
 
-					BaseLogger.log(true, BaseLogLevel.INFO, "Variants Cache: " + ResourceCache.VARIANTS);
+					BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("loader.variants.loaded"));
 				}, pGameExecutor);
 	}
 

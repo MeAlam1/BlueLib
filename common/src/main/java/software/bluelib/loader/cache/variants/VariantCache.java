@@ -18,9 +18,9 @@ public record VariantCache(
 	@Nullable
 	public JsonElement getParameter(@NotNull String pParameterName) {
 		if (parameters == null) return null;
-		for (JsonElement el : parameters) {
-			if (el.isJsonObject() && el.getAsJsonObject().has(pParameterName)) {
-				return el.getAsJsonObject().get(pParameterName);
+		for (JsonElement element : parameters) {
+			if (element.isJsonObject() && element.getAsJsonObject().has(pParameterName)) {
+				return element.getAsJsonObject().get(pParameterName);
 			}
 		}
 		return null;

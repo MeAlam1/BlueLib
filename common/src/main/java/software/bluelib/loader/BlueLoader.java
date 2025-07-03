@@ -35,6 +35,7 @@ import software.bluelib.api.entity.variant.IVariantProvider;
 import software.bluelib.api.json.JSONMerger;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
+import software.bluelib.internal.BlueTranslation;
 import software.bluelib.loader.cache.ResourceCache;
 import software.bluelib.loader.cache.variants.EntityCache;
 import software.bluelib.loader.json.CacheFactory;
@@ -43,10 +44,6 @@ import software.bluelib.loader.json.deserialize.variants.Variant;
 import software.bluelib.loader.json.variants.VariantsCacheFactory;
 import software.bluelib.loader.json.variants.VariantsFormatVersion;
 
-/**
- * TODO:
- * Make the Logging Translateble en_us.json
- */
 public class BlueLoader {
 
 	@NotNull
@@ -58,7 +55,7 @@ public class BlueLoader {
 
 	@NotNull
 	private static ResourceLocation stripPrefixAndSuffix(@NotNull ResourceLocation pResourceLocation) {
-		BaseLogger.log(true, BaseLogLevel.INFO, "Stripping prefix and suffix for: " + pResourceLocation);
+		BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("strip.prefix_suffix", pResourceLocation));
 		String newPath = pResourceLocation.getPath();
 		Matcher prefixMatcher = BlueLibConstants.BlueLoader.PREFIX_STRIPPER.matcher(newPath);
 		newPath = prefixMatcher.find() ? newPath.substring(prefixMatcher.end()) : newPath;
@@ -66,7 +63,7 @@ public class BlueLoader {
 		newPath = suffixMatcher.find() ? newPath.substring(0, suffixMatcher.start()) : newPath;
 
 		ResourceLocation result = newPath.length() == pResourceLocation.getPath().length() ? pResourceLocation : pResourceLocation.withPath(newPath);
-		BaseLogger.log(true, BaseLogLevel.INFO, "Result after strip: " + result);
+		BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("strip.result", result));
 		return result;
 	}
 
@@ -75,19 +72,19 @@ public class BlueLoader {
 			@NotNull Executor pBackgroundExecutor,
 			@NotNull ResourceManager pResourceManager,
 			@NotNull List<IVariantProvider> pProviders) {
-		BaseLogger.log(true, BaseLogLevel.INFO, "Starting loadVariants with providers: " + pProviders.size());
+		BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("variants.load.start", pProviders.size()));
 		List<CompletableFuture<Map.Entry<ResourceLocation, EntityCache>>> futures = new ObjectArrayList<>();
 
 		for (IVariantProvider provider : pProviders) {
-			BaseLogger.log(true, BaseLogLevel.INFO, "Processing provider: " + provider.getBasePath());
+			BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("variants.provider", provider.getBasePath()));
 			for (String entity : provider.getEntityNames()) {
 				if (BlueLibConstants.PlatformHelper.EVENT_PROXY.allVariantsLoadedPre(entity)) {
-					BaseLogger.log(true, BaseLogLevel.INFO, "variants.load.cancelled for entity: " + entity);
+					BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("variants.load.cancelled", entity));
 					continue;
 				}
 
 				String entityPath = provider.getBasePath() + entity;
-				BaseLogger.log(true, BaseLogLevel.INFO, "Processing entity: " + entityPath);
+				BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("variants.entity.processing", entityPath));
 
 				Map<ResourceLocation, Resource> resources = pResourceManager.listResources(entityPath, fileName -> fileName.getPath().endsWith(".json"));
 				JsonObject merged = new JsonObject();
@@ -101,7 +98,7 @@ public class BlueLoader {
 
 				futures.add(CompletableFuture.supplyAsync(() -> {
 					if (BlueLibConstants.PlatformHelper.EVENT_PROXY.variantLoadedPre(entity, key.toString())) {
-						BaseLogger.log(true, BaseLogLevel.INFO, "variant.load.cancelled for: " + key);
+						BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("variants.variant.load.cancelled", key));
 						return null;
 					}
 					EntityCache cache = bakeVariants(key, merged);
@@ -132,34 +129,34 @@ public class BlueLoader {
 			@NotNull String pAssetPath,
 			@NotNull BiFunction<ResourceLocation, JsonObject, BAKED> pElementFactory,
 			@NotNull Function<Throwable, BAKED> pExceptionalFactory) {
-		BaseLogger.log(true, BaseLogLevel.INFO, "Starting bakeJsonResources for assetPath: " + pAssetPath);
+		BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("bakejson.start", pAssetPath));
 		return loadResources(pBackgroundExecutor, pResourceManager, pAssetPath, "json", ResourceCache::readJsonFile)
 				.thenCompose(resources -> {
-					BaseLogger.log(true, BaseLogLevel.INFO, "Loaded resources: " + resources.size());
+					BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("bakejson.resources.loaded", resources.size()));
 					List<CompletableFuture<Pair<ResourceLocation, BAKED>>> tasks = new ObjectArrayList<>(resources.size());
-					BaseLogger.log(true, BaseLogLevel.INFO, "Resources to bake: " + resources.stream().map(Pair::left).toList());
+					BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("bakejson.resources.tobake", resources.stream().map(Pair::left).toList()));
 
 					resources.forEach(pair -> tasks.add(
 							CompletableFuture.supplyAsync(() -> {
-								BaseLogger.log(true, BaseLogLevel.INFO, "Baking resource: " + pair.left());
+								BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("bakejson.baking", pair.left()));
 								try {
 									Pair<ResourceLocation, BAKED> baked = Pair.of(stripPrefixAndSuffix(pair.left()), pElementFactory.apply(pair.left(), pair.right()));
-									BaseLogger.log(true, BaseLogLevel.INFO, "Baked resource: " + pair.left());
+									BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("bakejson.baked", pair.left()));
 									return baked;
 								} catch (Exception ex) {
-									BaseLogger.log(true, BaseLogLevel.ERROR, "Error deserializing file: " + pair.left() + " - " + ex.getMessage());
+									BaseLogger.log(true, BaseLogLevel.ERROR, BlueTranslation.log("bakejson.error", pair.left(), ex.getMessage()));
 									throw ex;
 								}
 							}, pBackgroundExecutor)
 									.exceptionally(ex -> {
-										BaseLogger.log(true, BaseLogLevel.ERROR, "Exceptionally handling: " + pair.left() + " - " + ex.getMessage());
+										BaseLogger.log(true, BaseLogLevel.ERROR, BlueTranslation.log("bakejson.exceptionally", pair.left(), ex.getMessage()));
 										ex.printStackTrace();
 										return Pair.of(pair.left(), pExceptionalFactory.apply(ex));
 									})));
 
 					return CompletableFuture.allOf(tasks.toArray(new CompletableFuture[0]))
 							.thenApply(ignored -> {
-								BaseLogger.log(true, BaseLogLevel.INFO, "All baking tasks completed");
+								BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("bakejson.tasks.completed"));
 								return tasks.stream().map(CompletableFuture::join).filter(Objects::nonNull).collect(Collectors.toMap(Pair::left, Pair::right));
 							});
 				});
@@ -173,33 +170,33 @@ public class BlueLoader {
 			@NotNull String pFileType,
 			@NotNull BiFunction<ResourceLocation, Resource, UNBAKED> pElementFactory) {
 		final String fileTypeSuffix = "." + pFileType;
-		BaseLogger.log(true, BaseLogLevel.INFO, "Listing resources for path: " + pAssetPath + " with type: " + pFileType);
+		BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("resources.listing", pAssetPath, pFileType));
 
 		return CompletableFuture.supplyAsync(() -> {
-			BaseLogger.log(true, BaseLogLevel.INFO, "Calling listResources with path: " + pAssetPath + " and fileTypeSuffix: " + fileTypeSuffix);
+			BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("resources.listresources", pAssetPath, fileTypeSuffix));
 			Map<ResourceLocation, Resource> allResources = pResourceManager.listResources(pAssetPath, fileName -> fileName.getPath().endsWith(fileTypeSuffix));
-			BaseLogger.log(true, BaseLogLevel.INFO, "All resources found: " + allResources.keySet());
+			BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("resources.found", allResources.keySet()));
 
 			Map<ResourceLocation, Resource> listed = allResources.entrySet().stream()
 					.filter(entry -> !BlueLibConstants.BlueLoader.SKIPPED_NAMESPACES.contains(entry.getKey().getNamespace()))
 					.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
-			BaseLogger.log(true, BaseLogLevel.INFO, "Resource keys found after filtering: " + listed.keySet());
-			BaseLogger.log(true, BaseLogLevel.INFO, "Listed resources count: " + listed.size());
+			BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("resources.filtered", listed.keySet()));
+			BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("resources.count", listed.size()));
 			return listed;
 		}, pExecutor).thenCompose(filteredResources -> {
 			List<CompletableFuture<Pair<ResourceLocation, UNBAKED>>> tasks = new ObjectArrayList<>(filteredResources.size());
 
 			filteredResources.forEach((path, resource) -> {
-				BaseLogger.log(true, BaseLogLevel.INFO, "Loading path: " + path + " with resource: " + resource);
+				BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("resources.loading", path, resource));
 				tasks.add(CompletableFuture.supplyAsync(() -> {
-					BaseLogger.log(true, BaseLogLevel.INFO, "Applying element factory for: " + path);
+					BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("resources.elementfactory", path));
 					return Pair.of(path, pElementFactory.apply(path, resource));
 				}, pExecutor));
 			});
 			return CompletableFuture.allOf(tasks.toArray(new CompletableFuture[0]))
 					.thenApply(ignored -> {
-						BaseLogger.log(true, BaseLogLevel.INFO, "All resource loading tasks completed");
+						BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("resources.tasks.completed"));
 						return tasks.stream().map(CompletableFuture::join).filter(Objects::nonNull).toList();
 					});
 		});
@@ -207,7 +204,6 @@ public class BlueLoader {
 
 	@NotNull
 	protected static EntityCache bakeVariants(@NotNull ResourceLocation pResourceLocation, @NotNull JsonObject pJsonObject) {
-		BaseLogger.log(true, BaseLogLevel.INFO, "Baking variants for: " + pResourceLocation);
 		return bakeGeneric(
 				pResourceLocation,
 				pJsonObject,
@@ -233,44 +229,36 @@ public class BlueLoader {
 			@NotNull Function<V, String> pErrorMessage,
 			@NotNull BiFunction<String, T, C> pCacheFactory,
 			@Nullable List<Pair<Predicate<ResourceLocation>, String>> pFileChecks) {
-		BaseLogger.log(true, BaseLogLevel.INFO, "Starting bakeGeneric for: " + pResourceLocation);
 		if (pFileChecks != null) {
 			String path = pResourceLocation.getPath();
 			String folderName = path.contains("/") ? path.substring(0, path.indexOf('/')) : path;
 			for (Pair<Predicate<ResourceLocation>, String> check : pFileChecks) {
 				if (check.left().test(pResourceLocation)) {
-					BaseLogger.log(true, BaseLogLevel.ERROR, "File check failed for: " + pResourceLocation);
+					BaseLogger.log(true, BaseLogLevel.ERROR, BlueTranslation.log("bakegeneric.filecheck.failed", pResourceLocation.toString()));
 					throw new RuntimeException(String.format("Found %s in %s folder! '%s'",
 							check.right(), folderName, pResourceLocation));
 				}
 			}
 		}
 		T model = pGson.fromJson(pJsonObject, pModelClass);
-		BaseLogger.log(true, BaseLogLevel.INFO, "Deserialized model for: " + pResourceLocation);
 		String version = pVersionExtractor.apply(model);
-		BaseLogger.log(true, BaseLogLevel.INFO, "Extracted version: " + version + " for: " + pResourceLocation);
 		V matchedVersion = pVersionMatcher.apply(version);
 
 		if (matchedVersion == null) {
-			BaseLogger.log(true, BaseLogLevel.WARNING, pResourceLocation + ": Unknown format version: '" + version + "'. This may not work correctly");
+			BaseLogger.log(true, BaseLogLevel.WARNING, BlueTranslation.log("bakegeneric.version.unknown", pResourceLocation.toString(), version));
 		} else if (!pIsSupported.test(matchedVersion)) {
-			BaseLogger.log(true, BaseLogLevel.ERROR, pResourceLocation + ": Unsupported format version: '" + version + "'. " + pErrorMessage.apply(matchedVersion));
+			BaseLogger.log(true, BaseLogLevel.ERROR, BlueTranslation.log("bakegeneric.version.unsupported", pResourceLocation.toString(), version, pErrorMessage.apply(matchedVersion)));
 		}
 
-		C cache = pCacheFactory.apply(pResourceLocation.getNamespace(), model);
-		BaseLogger.log(true, BaseLogLevel.INFO, "Cache created for: " + pResourceLocation);
-		return cache;
+		return pCacheFactory.apply(pResourceLocation.getNamespace(), model);
 	}
 
 	@NotNull
 	protected static JsonObject readJsonFile(@NotNull ResourceLocation pResourceLocation, @NotNull Resource pResource) {
-		BaseLogger.log(true, BaseLogLevel.INFO, "Reading JSON file for: " + pResourceLocation);
 		try (Reader reader = pResource.openAsReader()) {
-			JsonObject obj = GsonHelper.parse(reader);
-			BaseLogger.log(true, BaseLogLevel.INFO, "Parsed JSON for: " + pResourceLocation);
-			return obj;
+			return GsonHelper.parse(reader);
 		} catch (IOException pIoException) {
-			BaseLogger.log(true, BaseLogLevel.ERROR, "Failed to read resource: " + pResourceLocation + " - " + pIoException.getMessage());
+			BaseLogger.log(true, BaseLogLevel.ERROR, BlueTranslation.log("readjson.failed", pResourceLocation.toString(), pIoException.getMessage()));
 			throw new RuntimeException("Failed to read resource: " + pResourceLocation, pIoException);
 		}
 	}
