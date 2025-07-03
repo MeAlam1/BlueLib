@@ -8,8 +8,10 @@
 package software.bluelib.api.utils.logging;
 
 import java.util.logging.Level;
+import org.jetbrains.annotations.NotNull;
 
 public interface ILogColorProvider {
 
-    int getColor(Level pLevel);
+	@NotNull
+	Integer getColor(@NotNull Level pLevel);
 }

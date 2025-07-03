@@ -10,35 +10,36 @@ package software.bluelib.markdown.syntax;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
+import org.jetbrains.annotations.NotNull;
 import software.bluelib.config.MarkdownConfig;
 import software.bluelib.markdown.MarkdownFeature;
 
 @SuppressWarnings("unused")
 public class Underline extends MarkdownFeature {
 
-    public Underline() {
-        prefix = MarkdownConfig.underlinePrefix;
-        suffix = MarkdownConfig.underlineSuffix;
-    }
+	public Underline() {
+		prefix = MarkdownConfig.underlinePrefix;
+		suffix = MarkdownConfig.underlineSuffix;
+	}
 
-    @Override
-    protected void appendFormattedText(String pText, Style pOriginalStyle, MutableComponent pResult) {
-        MutableComponent UnderlineText = Component.literal(pText)
-                .setStyle(pOriginalStyle.withUnderlined(true));
-        pResult.append(UnderlineText);
-    }
+	@Override
+	protected void appendFormattedText(@NotNull String pText, @NotNull Style pOriginalStyle, @NotNull MutableComponent pResult) {
+		MutableComponent underlineText = Component.literal(pText)
+				.setStyle(pOriginalStyle.withUnderlined(true));
+		pResult.append(underlineText);
+	}
 
-    @Override
-    protected boolean isFeatureEnabled() {
-        return MarkdownConfig.isUnderlineEnabled;
-    }
+	@Override
+	protected @NotNull Boolean isFeatureEnabled() {
+		return MarkdownConfig.isUnderlineEnabled;
+	}
 
-    @Override
-    protected String getFeatureName() {
-        return "Underline";
-    }
+	@Override
+	protected @NotNull String getFeatureName() {
+		return "Underline";
+	}
 
-    public static Boolean isUnderlineEnabled() {
-        return MarkdownConfig.isUnderlineEnabled;
-    }
+	public static Boolean isUnderlineEnabled() {
+		return MarkdownConfig.isUnderlineEnabled;
+	}
 }

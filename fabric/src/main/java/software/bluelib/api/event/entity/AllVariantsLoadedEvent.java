@@ -13,32 +13,35 @@ import org.jetbrains.annotations.NotNull;
 
 public final class AllVariantsLoadedEvent {
 
-    public static final Event<AllVariantsLoadedPre> ALLOW_ALL_VARIANTS_TO_LOAD = EventFactory.createArrayBacked(AllVariantsLoadedPre.class,
-            (listeners) -> (pEntityName) -> {
-                for (AllVariantsLoadedPre listener : listeners) {
-                    if (!listener.allowAllVariantsToLoad(pEntityName)) {
-                        return false;
-                    }
-                }
-                return true;
-            });
+	@NotNull
+	public static final Event<AllVariantsLoadedPre> ALLOW_ALL_VARIANTS_TO_LOAD = EventFactory.createArrayBacked(AllVariantsLoadedPre.class,
+			(listeners) -> (pEntityName) -> {
+				for (AllVariantsLoadedPre listener : listeners) {
+					if (!listener.allowAllVariantsToLoad(pEntityName)) {
+						return false;
+					}
+				}
+				return true;
+			});
 
-    @FunctionalInterface
-    public interface AllVariantsLoadedPre {
+	@FunctionalInterface
+	public interface AllVariantsLoadedPre {
 
-        boolean allowAllVariantsToLoad(@NotNull String pEntityName);
-    }
+		@NotNull
+		Boolean allowAllVariantsToLoad(@NotNull String pEntityName);
+	}
 
-    public static final Event<AllVariantsLoadedPost> POST = EventFactory.createArrayBacked(AllVariantsLoadedPost.class,
-            (listeners) -> (pEntityName) -> {
-                for (AllVariantsLoadedPost listener : listeners) {
-                    listener.onAllVariantsLoaded(pEntityName);
-                }
-            });
+	@NotNull
+	public static final Event<AllVariantsLoadedPost> POST = EventFactory.createArrayBacked(AllVariantsLoadedPost.class,
+			(listeners) -> (pEntityName) -> {
+				for (AllVariantsLoadedPost listener : listeners) {
+					listener.onAllVariantsLoaded(pEntityName);
+				}
+			});
 
-    @FunctionalInterface
-    public interface AllVariantsLoadedPost {
+	@FunctionalInterface
+	public interface AllVariantsLoadedPost {
 
-        void onAllVariantsLoaded(@NotNull String pEntityName);
-    }
+		void onAllVariantsLoaded(@NotNull String pEntityName);
+	}
 }

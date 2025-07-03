@@ -10,22 +10,25 @@ package software.bluelib.api.utils.logging;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import org.jetbrains.annotations.NotNull;
 
 public class LogCache {
 
-    private static final List<LogEntry> logEntries = Collections.synchronizedList(new ArrayList<>());
+	@NotNull
+	private static final List<LogEntry> logEntries = Collections.synchronizedList(new ArrayList<>());
 
-    public static void addLog(String pMessage, int pColor) {
-        logEntries.add(new LogEntry(pMessage, pColor));
-    }
+	public static void addLog(@NotNull String pMessage, @NotNull Integer pColor) {
+		logEntries.add(new LogEntry(pMessage, pColor));
+	}
 
-    public static List<LogEntry> getLogs() {
-        return new ArrayList<>(logEntries);
-    }
+	@NotNull
+	public static List<LogEntry> getLogs() {
+		return new ArrayList<>(logEntries);
+	}
 
-    public static void clearLogs() {
-        logEntries.clear();
-    }
+	public static void clearLogs() {
+		logEntries.clear();
+	}
 
-    public record LogEntry(String message, int color) {}
+	public record LogEntry(@NotNull String message, @NotNull Integer color) {}
 }

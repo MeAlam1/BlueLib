@@ -15,36 +15,38 @@ import org.jetbrains.annotations.NotNull;
 @SuppressWarnings("unused")
 public abstract class VariantLoadedEvent extends Event implements IModBusEvent {
 
-    String entityName;
-    String variant;
+	@NotNull
+	final String entityName;
+	@NotNull
+	final String variant;
 
-    public VariantLoadedEvent(@NotNull String pEntityName, @NotNull String pVariant) {
-        super();
-        this.entityName = pEntityName;
-        this.variant = pVariant;
-    }
+	public VariantLoadedEvent(@NotNull String pEntityName, @NotNull String pVariant) {
+		super();
+		this.entityName = pEntityName;
+		this.variant = pVariant;
+	}
 
-    @NotNull
-    public String getEntity() {
-        return entityName;
-    }
+	@NotNull
+	public String getEntity() {
+		return entityName;
+	}
 
-    @NotNull
-    public String getVariant() {
-        return variant;
-    }
+	@NotNull
+	public String getVariant() {
+		return variant;
+	}
 
-    public static class Pre extends VariantLoadedEvent implements ICancellableEvent {
+	public static class Pre extends VariantLoadedEvent implements ICancellableEvent {
 
-        public Pre(@NotNull String pEntityName, @NotNull String pVariant) {
-            super(pEntityName, pVariant);
-        }
-    }
+		public Pre(@NotNull String pEntityName, @NotNull String pVariant) {
+			super(pEntityName, pVariant);
+		}
+	}
 
-    public static class Post extends VariantLoadedEvent {
+	public static class Post extends VariantLoadedEvent {
 
-        public Post(@NotNull String pEntityName, @NotNull String pVariant) {
-            super(pEntityName, pVariant);
-        }
-    }
+		public Post(@NotNull String pEntityName, @NotNull String pVariant) {
+			super(pEntityName, pVariant);
+		}
+	}
 }

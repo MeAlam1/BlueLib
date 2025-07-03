@@ -10,13 +10,17 @@ package software.bluelib.platform;
 import java.util.function.Supplier;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
-import software.bluelib.BlueLibConstants;
+import org.jetbrains.annotations.NotNull;
+import software.bluelib.api.net.NetworkManager;
 
 public interface IRegistryHelper {
 
-    BlueLibConstants.NetworkManager getNetwork();
+	@NotNull
+	NetworkManager getNetwork();
 
-    <T extends RecipeType<?>> Supplier<T> registerRecipeType(String pId, Supplier<T> pRecipeType);
+	@NotNull
+	<T extends RecipeType<?>> Supplier<T> registerRecipeType(@NotNull String pId, @NotNull Supplier<T> pRecipeType);
 
-    <T extends RecipeSerializer<?>> Supplier<T> registerRecipeSerializer(String pId, Supplier<T> pRecipeSerializer);
+	@NotNull
+	<T extends RecipeSerializer<?>> Supplier<T> registerRecipeSerializer(@NotNull String pId, @NotNull Supplier<T> pRecipeSerializer);
 }

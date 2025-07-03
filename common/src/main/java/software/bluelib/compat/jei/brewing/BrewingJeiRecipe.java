@@ -16,36 +16,37 @@ import software.bluelib.recipe.brewing.BrewingRecipe;
 
 public class BrewingJeiRecipe implements IJeiBrewingRecipe {
 
-    private final BrewingRecipe recipe;
-    private final ResourceLocation id;
+	private final BrewingRecipe recipe;
+	private final ResourceLocation id;
 
-    public BrewingJeiRecipe(BrewingRecipe pRecipe, ResourceLocation pId) {
-        this.recipe = pRecipe;
-        this.id = pId;
-    }
+	public BrewingJeiRecipe(@NotNull BrewingRecipe pRecipe, @NotNull ResourceLocation pId) {
+		this.recipe = pRecipe;
+		this.id = pId;
+	}
 
-    @Override
-    public @NotNull List<ItemStack> getPotionInputs() {
-        return List.of(recipe.getBottleIngredient().getItems());
-    }
+	@Override
+	public @NotNull List<ItemStack> getPotionInputs() {
+		return List.of(recipe.getBottleIngredient().getItems());
+	}
 
-    @Override
-    public @NotNull List<ItemStack> getIngredients() {
-        return List.of(recipe.getInputIngredient().getItems());
-    }
+	@Override
+	public @NotNull List<ItemStack> getIngredients() {
+		return List.of(recipe.getInputIngredient().getItems());
+	}
 
-    @Override
-    public @NotNull ItemStack getPotionOutput() {
-        return recipe.getResult().copy();
-    }
+	@Override
+	public @NotNull ItemStack getPotionOutput() {
+		return recipe.getResult().copy();
+	}
 
-    @Override
-    public int getBrewingSteps() {
-        return 1;
-    }
+	@Override
+	public int getBrewingSteps() {
+		return 1;
+	}
 
-    @Override
-    public ResourceLocation getUid() {
-        return id;
-    }
+	@Override
+	@NotNull
+	public ResourceLocation getUid() {
+		return id;
+	}
 }

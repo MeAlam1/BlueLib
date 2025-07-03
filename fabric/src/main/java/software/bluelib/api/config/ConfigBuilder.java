@@ -9,25 +9,30 @@ package software.bluelib.api.config;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import software.bluelib.config.BlueLibConfig;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import org.jetbrains.annotations.NotNull;
+import software.bluelib.config.BlueLibConfig;
 
 public class ConfigBuilder<T extends BlueLibConfig> {
 
+	@NotNull
 	private final Path configPath;
+	@NotNull
 	private final Class<T> configClass;
+	@NotNull
 	private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
+	@NotNull
 	private T config;
 
-	public ConfigBuilder(Path pConfigPath, Class<T> pConfigClass) {
+	public ConfigBuilder(@NotNull Path pConfigPath, @NotNull Class<T> pConfigClass, @NotNull T pDefaultConfig) {
 		this.configPath = pConfigPath;
 		this.configClass = pConfigClass;
+		this.config = pDefaultConfig;
 	}
 
-	public void createIfAbsent(T pDefaultConfig) {
+	public void createIfAbsent(@NotNull T pDefaultConfig) {
 		if (!Files.exists(configPath)) {
 			config = pDefaultConfig;
 			save();
@@ -68,6 +73,7 @@ public class ConfigBuilder<T extends BlueLibConfig> {
 		}
 	}
 
+	@NotNull
 	public T getConfig() {
 		return config;
 	}

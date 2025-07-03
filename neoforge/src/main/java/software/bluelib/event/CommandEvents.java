@@ -10,13 +10,15 @@ package software.bluelib.event;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
+import org.jetbrains.annotations.NotNull;
+import software.bluelib.BlueLibConstants;
 import software.bluelib.internal.registry.BlueCommandRegistry;
 
-@EventBusSubscriber
+@EventBusSubscriber(modid = BlueLibConstants.MOD_ID)
 public class CommandEvents {
 
-    @SubscribeEvent
-    public static void onRegisterCommands(RegisterCommandsEvent pEvent) {
-        BlueCommandRegistry.registerCommands(pEvent.getDispatcher());
-    }
+	@SubscribeEvent
+	public static void onRegisterCommands(@NotNull RegisterCommandsEvent pEvent) {
+		BlueCommandRegistry.registerCommands(pEvent.getDispatcher());
+	}
 }

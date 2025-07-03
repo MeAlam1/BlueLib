@@ -7,42 +7,45 @@
  */
 package software.bluelib.platform;
 
+import java.util.function.Supplier;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
+import org.jetbrains.annotations.NotNull;
 import software.bluelib.BlueLibConstants;
+import software.bluelib.api.net.NetworkManager;
 import software.bluelib.net.FabricNetworkManager;
 
-import java.util.function.Supplier;
-
+@SuppressWarnings({ "unchecked", "unused" })
 public class FabricRegistryHelper implements IRegistryHelper {
 
 	@Override
-	public BlueLibConstants.NetworkManager getNetwork() {
+	public @NotNull NetworkManager getNetwork() {
 		return new FabricNetworkManager();
 	}
 
 	@Override
-	public <T extends RecipeType<?>> Supplier<T> registerRecipeType(String pId, Supplier<T> pRecipeType) {
+	public <T extends RecipeType<?>> @NotNull Supplier<T> registerRecipeType(@NotNull String pId, @NotNull Supplier<T> pRecipeType) {
 		return registerSupplier(BuiltInRegistries.RECIPE_TYPE, pId, pRecipeType);
 	}
 
 	@Override
-	public <T extends RecipeSerializer<?>> Supplier<T> registerRecipeSerializer(String pId, Supplier<T> pRecipeSerializer) {
+	public <T extends RecipeSerializer<?>> @NotNull Supplier<T> registerRecipeSerializer(@NotNull String pId, @NotNull Supplier<T> pRecipeSerializer) {
 		return registerSupplier(BuiltInRegistries.RECIPE_SERIALIZER, pId, pRecipeSerializer);
 	}
 
-	private static <T, R extends Registry<? super T>> Supplier<T> registerSupplier(R pRegistry, String pId, Supplier<T> pObject) {
+	@NotNull
+	private static <T, R extends Registry<? super T>> Supplier<T> registerSupplier(@NotNull R pRegistry, @NotNull String pId, @NotNull Supplier<T> pObject) {
 		final T registeredObject = Registry.register((Registry<T>) pRegistry, ResourceLocation.fromNamespaceAndPath(BlueLibConstants.MOD_ID, pId), pObject.get());
 
 		return () -> registeredObject;
 	}
 
-	private static <T, R extends Registry<? super T>> Holder<T> registerHolder(R pRegistry, String pId, Supplier<T> pObject) {
+	@NotNull
+	private static <T, R extends Registry<? super T>> Holder<T> registerHolder(@NotNull R pRegistry, @NotNull String pId, @NotNull Supplier<T> pObject) {
 		return Registry.registerForHolder((Registry<T>) pRegistry, ResourceLocation.fromNamespaceAndPath(BlueLibConstants.MOD_ID, pId), pObject.get());
 	}
 }

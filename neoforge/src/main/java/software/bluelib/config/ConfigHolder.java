@@ -9,31 +9,36 @@ package software.bluelib.config;
 
 import net.neoforged.neoforge.common.ModConfigSpec;
 import org.apache.commons.lang3.tuple.Pair;
+import org.jetbrains.annotations.NotNull;
 import software.bluelib.config.bluelib.LoggerConfig;
 import software.bluelib.config.bluelib.MarkdownConfig;
 
 public final class ConfigHolder {
 
-    // Type of Configs
+	// Type of Configs
 
-    // Markdown
-    public static final ModConfigSpec MARKDOWN_SPEC;
-    public static final MarkdownConfig MARKDOWN;
+	// Markdown
+	@NotNull
+	public static final ModConfigSpec MARKDOWN_SPEC;
+	@NotNull
+	public static final MarkdownConfig MARKDOWN;
 
-    // Logger
-    public static final ModConfigSpec LOGGER_SPEC;
-    public static final LoggerConfig LOGGER;
+	// Logger
+	@NotNull
+	public static final ModConfigSpec LOGGER_SPEC;
+	@NotNull
+	public static final LoggerConfig LOGGER;
 
-    static {
-        {
-            Pair<MarkdownConfig, ModConfigSpec> specPair = new ModConfigSpec.Builder().configure(MarkdownConfig::new);
-            MARKDOWN = specPair.getLeft();
-            MARKDOWN_SPEC = specPair.getRight();
-        }
-        {
-            Pair<LoggerConfig, ModConfigSpec> specPair = new ModConfigSpec.Builder().configure(LoggerConfig::new);
-            LOGGER = specPair.getLeft();
-            LOGGER_SPEC = specPair.getRight();
-        }
-    }
+	static {
+		{
+			Pair<MarkdownConfig, ModConfigSpec> specPair = new ModConfigSpec.Builder().configure(MarkdownConfig::new);
+			MARKDOWN = specPair.getLeft();
+			MARKDOWN_SPEC = specPair.getRight();
+		}
+		{
+			Pair<LoggerConfig, ModConfigSpec> specPair = new ModConfigSpec.Builder().configure(LoggerConfig::new);
+			LOGGER = specPair.getLeft();
+			LOGGER_SPEC = specPair.getRight();
+		}
+	}
 }
