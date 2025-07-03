@@ -34,7 +34,7 @@ plugin-curseforge-gradle = "1.1.26"
 plugin-idea-ext = "1.1.10"
 plugin-mixin = "0.7.+"
 plugin-loom = "1.11-SNAPSHOT"
-spotless = "6.25.0"
+spotless = "7.0.4"
 license = "0.16.1"
 
 [libraries]
@@ -42,7 +42,6 @@ license = "0.16.1"
 # Mixin
 mixin = { group = "org.spongepowered", name = "mixin", version.ref = "mixin" }
 mixinextras-common = { group = "io.github.llamalad7", name = "mixinextras-common", version.ref = "mixinextras" }
-mixinextras-forge = { group = "io.github.llamalad7", name = "mixinextras-forge", version.ref = "mixinextras" }
 
 # Platform
 neoforge = { group = "net.neoforged", name = "neoforge", version.ref = "neoforge" }

@@ -141,7 +141,7 @@ tasks.named<DefaultTask>("publish").configure {
 
 spotless {
     java {
-        indentWithTabs()
+        leadingSpacesToTabs()
         endWithNewline()
         removeUnusedImports()
         toggleOffOn()
@@ -150,10 +150,7 @@ spotless {
         eclipse("4.31").configFile(rootProject.file("codeformat/formatter-config.xml"))
 
         importOrder()
-        custom("jetbrainsNullable") { fileContents: String ->
-            fileContents.replace("javax.annotation.Nullable", "org.jetbrains.annotations.Nullable")
-        }
-
+        
         bumpThisNumberIfACustomStepChanges(3)
     }
 }
