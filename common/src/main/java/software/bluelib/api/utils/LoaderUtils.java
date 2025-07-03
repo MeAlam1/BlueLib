@@ -16,7 +16,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import software.bluelib.client.loader.cache.animations.AnimationCache;
+import software.bluelib.loader.cache.animations.AnimationCache;
 import software.bluelib.oldLoader.animatable.BlueAnimatable;
 import software.bluelib.oldLoader.animatable.instance.AnimatableInstanceCache;
 import software.bluelib.oldLoader.animatable.instance.InstancedAnimatableInstanceCache;

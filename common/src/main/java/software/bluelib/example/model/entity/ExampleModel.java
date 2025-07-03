@@ -12,7 +12,7 @@ import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.BlueLibConstants;
 import software.bluelib.example.entity.ExampleEntity;
-import software.bluelib.loader.model.BlueModel;
+import software.bluelib.oldLoader.model.BlueModel;
 import software.bluelib.oldLoader.renderer.BlueRenderer;
 
 public class ExampleModel extends BlueModel<ExampleEntity> {

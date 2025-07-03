@@ -18,9 +18,9 @@ import net.minecraft.world.item.Item;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.utils.Color;
-import software.bluelib.client.loader.cache.model.BoneCache;
-import software.bluelib.client.loader.cache.model.ModelCache;
-import software.bluelib.loader.model.BlueModel;
+import software.bluelib.loader.cache.model.BoneCache;
+import software.bluelib.loader.cache.model.ModelCache;
+import software.bluelib.oldLoader.model.BlueModel;
 import software.bluelib.oldLoader.animatable.BlueItem;
 import software.bluelib.oldLoader.renderer.BlueArmorRenderer;
 

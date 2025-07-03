@@ -7,7 +7,7 @@
  */
 package software.bluelib.oldLoader.animation.state;
 
-import software.bluelib.client.loader.cache.model.BoneCache;
+import software.bluelib.loader.cache.model.BoneCache;
 
 public class BoneSnapshot {
 

@@ -20,7 +20,6 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.profiling.ProfilerFiller;
 import org.jetbrains.annotations.NotNull;
 import software.bluelib.BlueLibConstants;
-import software.bluelib.client.loader.cache.ResourceCache;
 
 @Environment(EnvType.CLIENT)
 public class BlueLibClient implements ClientModInitializer {

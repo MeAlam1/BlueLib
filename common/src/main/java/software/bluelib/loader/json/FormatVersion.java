@@ -7,15 +7,17 @@
  */
 package software.bluelib.loader.json;
 
-import java.util.Collections;
-import java.util.Map;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public abstract class FormatVersion<T extends FormatVersion<T>> {
+import java.util.Collections;
+import java.util.Map;
 
+public abstract class FormatVersion<T extends FormatVersion<T>> {
+	@NotNull
 	private final String serializedName;
 	private final boolean supported;
+	@Nullable
 	private final String errorMessage;
 
 	protected FormatVersion(@NotNull String pSerializedName, @NotNull Boolean pSupported, @Nullable String pErrorMessage) {
@@ -24,7 +26,7 @@ public abstract class FormatVersion<T extends FormatVersion<T>> {
 		this.errorMessage = pErrorMessage;
 	}
 
-	public String getSerializedName() {
+	public @NotNull String getSerializedName() {
 		return serializedName;
 	}
 
@@ -32,7 +34,7 @@ public abstract class FormatVersion<T extends FormatVersion<T>> {
 		return supported;
 	}
 
-	public String getErrorMessage() {
+	public @Nullable String getErrorMessage() {
 		return errorMessage;
 	}
 

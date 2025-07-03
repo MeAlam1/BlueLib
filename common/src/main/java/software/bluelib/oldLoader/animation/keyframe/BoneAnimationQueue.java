@@ -7,8 +7,8 @@
  */
 package software.bluelib.oldLoader.animation.keyframe;
 
-import software.bluelib.client.loader.cache.animations.keyframe.KeyframeCache;
-import software.bluelib.client.loader.cache.model.BoneCache;
+import software.bluelib.loader.cache.animations.keyframe.KeyframeCache;
+import software.bluelib.loader.cache.model.BoneCache;
 import software.bluelib.oldLoader.animation.state.BoneSnapshot;
 
 public record BoneAnimationQueue(BoneCache bone, AnimationPointQueue rotationXQueue, AnimationPointQueue rotationYQueue,

@@ -16,7 +16,7 @@ import net.neoforged.bus.api.Event;
 import net.neoforged.bus.api.ICancellableEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import software.bluelib.client.loader.cache.model.ModelCache;
+import software.bluelib.loader.cache.model.ModelCache;
 import software.bluelib.oldLoader.renderer.*;
 import software.bluelib.oldLoader.renderer.layer.BlueRenderLayer;
 

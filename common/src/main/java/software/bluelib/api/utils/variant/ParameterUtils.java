@@ -8,7 +8,6 @@
 package software.bluelib.api.utils.variant;
 
 import com.google.gson.JsonElement;
-import java.util.Set;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -18,13 +17,16 @@ import software.bluelib.loader.cache.ResourceCache;
 import software.bluelib.loader.cache.variants.EntityCache;
 import software.bluelib.loader.cache.variants.VariantCache;
 
+import java.util.Set;
+
 public class ParameterUtils {
 
-	private ParameterUtils() {}
+	private ParameterUtils() {
+	}
 
 	@NotNull
 	public static Set<ResourceLocation> getAllEntities() {
-		return ResourceCache.getVariants().keySet();
+		return ResourceCache.Server.getVariants().keySet();
 	}
 
 	@Nullable
@@ -70,7 +72,7 @@ public class ParameterUtils {
 	}
 
 	public static @Nullable EntityCache getOptionalEntityCache(@NotNull ResourceLocation pEntity) {
-		EntityCache entityCache = ResourceCache.getVariants().get(pEntity);
+		EntityCache entityCache = ResourceCache.Server.getVariants().get(pEntity);
 		if (entityCache == null) {
 			BaseLogger.log(true, BaseLogLevel.WARNING, "Entity not found: " + pEntity);
 			return null;

@@ -16,7 +16,7 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.BlueLibConstants;
-import software.bluelib.client.loader.cache.item.IdCache;
+import software.bluelib.loader.cache.item.IdCache;
 import software.bluelib.client.utils.RenderUtils;
 import software.bluelib.oldLoader.animatable.instance.AnimatableInstanceCache;
 import software.bluelib.oldLoader.animatable.instance.SingletonAnimatableInstanceCache;

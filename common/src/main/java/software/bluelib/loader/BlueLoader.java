@@ -11,19 +11,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import it.unimi.dsi.fastutil.Pair;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import java.io.IOException;
-import java.io.Reader;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executor;
-import java.util.function.BiFunction;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.regex.Matcher;
-import java.util.stream.Collectors;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -37,14 +26,78 @@ import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
 import software.bluelib.internal.BlueTranslation;
 import software.bluelib.loader.cache.ResourceCache;
+import software.bluelib.loader.cache.animations.AnimationLibraryCache;
+import software.bluelib.loader.cache.animations.keyframe.KeyframeLibraryCache;
+import software.bluelib.loader.cache.controller.ControllerCache;
+import software.bluelib.loader.cache.model.ModelCache;
 import software.bluelib.loader.cache.variants.EntityCache;
 import software.bluelib.loader.json.CacheFactory;
+import software.bluelib.loader.json.animation.AnimationCacheFactory;
+import software.bluelib.loader.json.animation.AnimationFormatVersion;
+import software.bluelib.loader.json.controller.ControllerCacheFactory;
+import software.bluelib.loader.json.controller.ControllerFormatVersion;
+import software.bluelib.loader.json.deserialize.animation.AnimationLibrary;
+import software.bluelib.loader.json.deserialize.controller.Behaviour;
+import software.bluelib.loader.json.deserialize.controller.Controller;
+import software.bluelib.loader.json.deserialize.controller.Group;
+import software.bluelib.loader.json.deserialize.controller.State;
+import software.bluelib.loader.json.deserialize.model.*;
 import software.bluelib.loader.json.deserialize.variants.Entity;
 import software.bluelib.loader.json.deserialize.variants.Variant;
+import software.bluelib.loader.json.model.ModelCacheFactory;
+import software.bluelib.loader.json.model.ModelFormatVersion;
 import software.bluelib.loader.json.variants.VariantsCacheFactory;
 import software.bluelib.loader.json.variants.VariantsFormatVersion;
+import software.bluelib.oldLoader.loading.json.typeadapter.BakedAnimationsAdapter;
+import software.bluelib.oldLoader.loading.json.typeadapter.KeyFramesAdapter;
+
+import java.io.IOException;
+import java.io.Reader;
+import java.lang.reflect.Array;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
+import java.util.function.BiFunction;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.regex.Matcher;
+import java.util.stream.Collectors;
 
 public class BlueLoader {
+
+	@NotNull
+	public static final Gson MODEL_GSON = new GsonBuilder().setLenient()
+			.registerTypeAdapter(Bone.class, Bone.deserializer())
+			.registerTypeAdapter(Cube.class, Cube.deserializer())
+			.registerTypeAdapter(FaceUV.class, FaceUV.deserializer())
+			.registerTypeAdapter(LocatorClass.class, LocatorClass.deserializer())
+			.registerTypeAdapter(LocatorValue.class, LocatorValue.deserializer())
+			.registerTypeAdapter(ModelGeometry.class, ModelGeometry.deserializer())
+			.registerTypeAdapter(Model.class, Model.deserializer())
+			.registerTypeAdapter(ModelDescription.class, ModelDescription.deserializer())
+			.registerTypeAdapter(PolyMesh.class, PolyMesh.deserializer())
+			.registerTypeAdapter(PolysUnion.class, PolysUnion.deserializer())
+			.registerTypeAdapter(TextureMesh.class, TextureMesh.deserializer())
+			.registerTypeAdapter(UVFaces.class, UVFaces.deserializer())
+			.registerTypeAdapter(UVUnion.class, UVUnion.deserializer())
+			.create();
+
+	@NotNull
+	public static final Gson ANIMATION_GSON = new GsonBuilder().setLenient()
+			.registerTypeAdapter(KeyframeLibraryCache.class, new KeyFramesAdapter())
+			.registerTypeAdapter(AnimationLibraryCache.class, new BakedAnimationsAdapter())
+			.create();
+
+	@NotNull
+	public static final Gson CONTROLLER_GSON = new GsonBuilder().setLenient()
+			.registerTypeAdapter(Controller.class, Controller.deserializer())
+			.registerTypeAdapter(Group.class, Group.deserializer())
+			.registerTypeAdapter(Behaviour.class, Behaviour.deserializer())
+			.registerTypeAdapter(State.class, State.deserializer())
+			.create();
 
 	@NotNull
 	public static final Gson VARIANTS_GSON = new GsonBuilder()
@@ -55,7 +108,7 @@ public class BlueLoader {
 
 	@NotNull
 	private static ResourceLocation stripPrefixAndSuffix(@NotNull ResourceLocation pResourceLocation) {
-		BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("strip.prefix_suffix", pResourceLocation));
+		BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("strip.prefix_suffix", pResourceLocation.toString()));
 		String newPath = pResourceLocation.getPath();
 		Matcher prefixMatcher = BlueLibConstants.BlueLoader.PREFIX_STRIPPER.matcher(newPath);
 		newPath = prefixMatcher.find() ? newPath.substring(prefixMatcher.end()) : newPath;
@@ -63,8 +116,23 @@ public class BlueLoader {
 		newPath = suffixMatcher.find() ? newPath.substring(0, suffixMatcher.start()) : newPath;
 
 		ResourceLocation result = newPath.length() == pResourceLocation.getPath().length() ? pResourceLocation : pResourceLocation.withPath(newPath);
-		BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("strip.result", result));
+		BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("strip.result", result.toString()));
 		return result;
+	}
+
+	protected static CompletableFuture<Map<ResourceLocation, ControllerCache>> loadControllers(Executor pBackgroundExecutor, ResourceManager pResourceManager) {
+		return bakeJsonResources(pBackgroundExecutor, pResourceManager, BlueLibConstants.BlueLoader.CONTROLLERS_PATH.getPath(), ResourceCache::bakeController,
+				ex -> null);
+	}
+
+	protected static CompletableFuture<Map<ResourceLocation, AnimationLibraryCache>> loadAnimations(Executor pBackgroundExecutor, ResourceManager pResourceManager) {
+		return bakeJsonResources(pBackgroundExecutor, pResourceManager, BlueLibConstants.BlueLoader.ANIMATIONS_PATH.getPath(), ResourceCache::bakeAnimations,
+				ex -> new AnimationLibraryCache(new Object2ObjectOpenHashMap<>()));
+	}
+
+	protected static CompletableFuture<Map<ResourceLocation, ModelCache>> loadModels(Executor pBackgroundExecutor, ResourceManager pResourceManager) {
+		return bakeJsonResources(pBackgroundExecutor, pResourceManager, BlueLibConstants.BlueLoader.MODELS_PATH.getPath(), ResourceCache::bakeModel,
+				ex -> null);
 	}
 
 	@NotNull
@@ -134,22 +202,22 @@ public class BlueLoader {
 				.thenCompose(resources -> {
 					BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("bakejson.resources.loaded", resources.size()));
 					List<CompletableFuture<Pair<ResourceLocation, BAKED>>> tasks = new ObjectArrayList<>(resources.size());
-					BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("bakejson.resources.tobake", resources.stream().map(Pair::left).toList()));
+					BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("bakejson.resources.tobake", Arrays.toString(resources.stream().map(Pair::left).toList().toArray())));
 
 					resources.forEach(pair -> tasks.add(
 							CompletableFuture.supplyAsync(() -> {
-								BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("bakejson.baking", pair.left()));
-								try {
-									Pair<ResourceLocation, BAKED> baked = Pair.of(stripPrefixAndSuffix(pair.left()), pElementFactory.apply(pair.left(), pair.right()));
-									BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("bakejson.baked", pair.left()));
-									return baked;
-								} catch (Exception ex) {
-									BaseLogger.log(true, BaseLogLevel.ERROR, BlueTranslation.log("bakejson.error", pair.left(), ex.getMessage()));
-									throw ex;
-								}
-							}, pBackgroundExecutor)
+										BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("bakejson.baking", pair.left().toString()));
+										try {
+											Pair<ResourceLocation, BAKED> baked = Pair.of(stripPrefixAndSuffix(pair.left()), pElementFactory.apply(pair.left(), pair.right()));
+											BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("bakejson.baked", pair.left().toString()));
+											return baked;
+										} catch (Exception ex) {
+											BaseLogger.log(true, BaseLogLevel.ERROR, BlueTranslation.log("bakejson.error", pair.left().toString(), ex.getMessage()));
+											throw ex;
+										}
+									}, pBackgroundExecutor)
 									.exceptionally(ex -> {
-										BaseLogger.log(true, BaseLogLevel.ERROR, BlueTranslation.log("bakejson.exceptionally", pair.left(), ex.getMessage()));
+										BaseLogger.log(true, BaseLogLevel.ERROR, BlueTranslation.log("bakejson.exceptionally", pair.left().toString(), ex.getMessage()));
 										ex.printStackTrace();
 										return Pair.of(pair.left(), pExceptionalFactory.apply(ex));
 									})));
@@ -175,22 +243,22 @@ public class BlueLoader {
 		return CompletableFuture.supplyAsync(() -> {
 			BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("resources.listresources", pAssetPath, fileTypeSuffix));
 			Map<ResourceLocation, Resource> allResources = pResourceManager.listResources(pAssetPath, fileName -> fileName.getPath().endsWith(fileTypeSuffix));
-			BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("resources.found", allResources.keySet()));
+			BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("resources.found", Arrays.toString(allResources.keySet().toArray())));
 
 			Map<ResourceLocation, Resource> listed = allResources.entrySet().stream()
 					.filter(entry -> !BlueLibConstants.BlueLoader.SKIPPED_NAMESPACES.contains(entry.getKey().getNamespace()))
 					.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
-			BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("resources.filtered", listed.keySet()));
+			BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("resources.filtered", Arrays.toString(listed.keySet().toArray())));
 			BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("resources.count", listed.size()));
 			return listed;
 		}, pExecutor).thenCompose(filteredResources -> {
 			List<CompletableFuture<Pair<ResourceLocation, UNBAKED>>> tasks = new ObjectArrayList<>(filteredResources.size());
 
 			filteredResources.forEach((path, resource) -> {
-				BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("resources.loading", path, resource));
+				BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("resources.loading", path.toString(), resource.toString()));
 				tasks.add(CompletableFuture.supplyAsync(() -> {
-					BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("resources.elementfactory", path));
+					BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("resources.elementfactory", path.toString()));
 					return Pair.of(path, pElementFactory.apply(path, resource));
 				}, pExecutor));
 			});
@@ -200,6 +268,57 @@ public class BlueLoader {
 						return tasks.stream().map(CompletableFuture::join).filter(Objects::nonNull).toList();
 					});
 		});
+	}
+
+	@NotNull
+	protected static ModelCache bakeModel(@NotNull ResourceLocation pResourceLocation, @NotNull JsonObject pJsonObject) {
+		return bakeGeneric(
+				pResourceLocation,
+				pJsonObject,
+				MODEL_GSON,
+				Model.class,
+				Model::formatVersion,
+				ModelFormatVersion.REGISTRY::match,
+				ModelFormatVersion::isSupported,
+				ModelFormatVersion::getErrorMessage,
+				(namespace, model) -> CacheFactory.constructWithFactory(ModelCacheFactory.REGISTRY::getForNamespace, namespace, model),
+				List.of(
+						Pair.of(loc -> loc.getPath().endsWith(".animation.json"), ".animation.json"),
+						Pair.of(loc -> loc.getPath().endsWith(".controller.json"), ".controller.json")));
+	}
+
+	@NotNull
+	protected static AnimationLibraryCache bakeAnimations(@NotNull ResourceLocation pResourceLocation, @NotNull JsonObject pJsonObject) {
+		return bakeGeneric(
+				pResourceLocation,
+				pJsonObject,
+				ANIMATION_GSON,
+				AnimationLibrary.class,
+				AnimationLibrary::formatVersion,
+				AnimationFormatVersion.REGISTRY::match,
+				AnimationFormatVersion::isSupported,
+				AnimationFormatVersion::getErrorMessage,
+				(namespace, animations) -> CacheFactory.constructWithFactory(AnimationCacheFactory.REGISTRY::getForNamespace, namespace, animations),
+				List.of(
+						Pair.of(loc -> loc.getPath().endsWith(".geo.json"), ".geo.json"),
+						Pair.of(loc -> loc.getPath().endsWith(".controller.json"), ".controller.json")));
+	}
+
+	@NotNull
+	protected static ControllerCache bakeController(@NotNull ResourceLocation pResourceLocation, @NotNull JsonObject pJsonObject) {
+		return bakeGeneric(
+				pResourceLocation,
+				pJsonObject,
+				CONTROLLER_GSON,
+				Controller.class,
+				Controller::formatVersion,
+				ControllerFormatVersion.REGISTRY::match,
+				ControllerFormatVersion::isSupported,
+				ControllerFormatVersion::getErrorMessage,
+				(namespace, controller) -> CacheFactory.constructWithFactory(ControllerCacheFactory.REGISTRY::getForNamespace, namespace, controller),
+				List.of(
+						Pair.of(loc -> loc.getPath().endsWith(".geo.json"), ".geo.json"),
+						Pair.of(loc -> loc.getPath().endsWith(".animation.json"), ".animation.json")));
 	}
 
 	@NotNull

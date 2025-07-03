@@ -16,7 +16,7 @@ import software.bluelib.api.event.entity.VariantLoadedEvent;
 import software.bluelib.api.event.mod.AllModsLoadedEvent;
 import software.bluelib.api.event.mod.ModLoadedEvent;
 import software.bluelib.api.event.mod.ModMeta;
-import software.bluelib.client.loader.cache.model.ModelCache;
+import software.bluelib.loader.cache.model.ModelCache;
 import software.bluelib.loader.event.BlueRenderEvent;
 import software.bluelib.oldLoader.renderer.*;
 

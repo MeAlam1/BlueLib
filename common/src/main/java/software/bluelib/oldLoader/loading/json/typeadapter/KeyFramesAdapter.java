@@ -9,14 +9,15 @@ package software.bluelib.oldLoader.loading.json.typeadapter;
 
 import com.google.gson.*;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import java.lang.reflect.Type;
-import java.util.Map;
 import net.minecraft.util.GsonHelper;
-import software.bluelib.client.loader.BlueLoader;
-import software.bluelib.client.loader.cache.animations.keyframe.KeyframeLibraryCache;
+import software.bluelib.loader.BlueLoader;
+import software.bluelib.loader.cache.animations.keyframe.KeyframeLibraryCache;
 import software.bluelib.oldLoader.animation.keyframe.event.data.CustomInstructionKeyframeData;
 import software.bluelib.oldLoader.animation.keyframe.event.data.ParticleKeyframeData;
 import software.bluelib.oldLoader.animation.keyframe.event.data.SoundKeyframeData;
+
+import java.lang.reflect.Type;
+import java.util.Map;
 
 public class KeyFramesAdapter implements JsonDeserializer<KeyframeLibraryCache> {
 

@@ -8,7 +8,7 @@
 package software.bluelib.oldLoader.animation.keyframe;
 
 import org.jetbrains.annotations.NotNull;
-import software.bluelib.client.loader.cache.animations.keyframe.KeyframeCache;
+import software.bluelib.loader.cache.animations.keyframe.KeyframeCache;
 
 public record AnimationPoint(KeyframeCache<?> keyFrame, double currentTick, double transitionLength, double animationStartValue, double animationEndValue) {
 

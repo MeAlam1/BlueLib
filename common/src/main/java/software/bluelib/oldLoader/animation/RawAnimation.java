@@ -10,7 +10,7 @@ package software.bluelib.oldLoader.animation;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import java.util.List;
 import java.util.Objects;
-import software.bluelib.client.loader.cache.animations.AnimationCache;
+import software.bluelib.loader.cache.animations.AnimationCache;
 
 public final class RawAnimation {
 
