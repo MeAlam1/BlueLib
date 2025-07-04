@@ -9,6 +9,9 @@ package software.bluelib.loader.json.model;
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import net.minecraft.core.Direction;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
@@ -24,16 +27,15 @@ import software.bluelib.loader.json.model.object.BoneTree;
 import software.bluelib.loader.json.object.QuadData;
 import software.bluelib.loader.json.object.VertexData;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 public interface ModelCacheFactory extends CacheFactory<ModelCache, Model> {
 
-	@NotNull Map<String, ModelCacheFactory> FACTORIES = new Object2ObjectOpenHashMap<>(1);
-	@NotNull ModelCacheFactory DEFAULT_FACTORY = new Builtin();
+	@NotNull
+	Map<String, ModelCacheFactory> FACTORIES = new Object2ObjectOpenHashMap<>(1);
+	@NotNull
+	ModelCacheFactory DEFAULT_FACTORY = new Builtin();
 
-	@NotNull CacheFactory.Registry<ModelCache, Model, ModelCacheFactory> REGISTRY = new CacheFactory.Registry<>() {
+	@NotNull
+	CacheFactory.Registry<ModelCache, Model, ModelCacheFactory> REGISTRY = new CacheFactory.Registry<>() {
 
 		@Override
 		public @NotNull Map<String, ModelCacheFactory> factories() {
@@ -51,11 +53,14 @@ public interface ModelCacheFactory extends CacheFactory<ModelCache, Model> {
 		return constructBlueModel(pSource);
 	}
 
-	@NotNull ModelCache constructBlueModel(@NotNull Model pModel);
+	@NotNull
+	ModelCache constructBlueModel(@NotNull Model pModel);
 
-	@NotNull BoneCache constructBone(@NotNull BoneStructure pBoneStructure, @Nullable ModelDescription pModelDescription, @Nullable BoneCache pParent);
+	@NotNull
+	BoneCache constructBone(@NotNull BoneStructure pBoneStructure, @Nullable ModelDescription pModelDescription, @Nullable BoneCache pParent);
 
-	@NotNull CubeCache constructCube(@NotNull Cube pCube, @Nullable ModelDescription pModelDescription, @NotNull BoneCache pBone);
+	@NotNull
+	CubeCache constructCube(@NotNull Cube pCube, @Nullable ModelDescription pModelDescription, @NotNull BoneCache pBone);
 
 	default @NotNull List<QuadData> buildQuads(@NotNull UVUnion pUvUnion, @NotNull VertexSet pVertices, @NotNull Cube pCube, @NotNull Float pTextureWidth, @NotNull Float pTextureHeight, boolean pMirror) {
 		List<QuadData> quads = new ArrayList<>(6);
@@ -189,11 +194,11 @@ public interface ModelCacheFactory extends CacheFactory<ModelCache, Model> {
 	}
 
 	record VertexSet(@NotNull VertexData bottomLeftBack, @NotNull VertexData bottomRightBack,
-	                 @NotNull VertexData topLeftBack,
-	                 @NotNull VertexData topRightBack,
-	                 @NotNull VertexData topLeftFront, @NotNull VertexData topRightFront,
-	                 @NotNull VertexData bottomLeftFront,
-	                 @NotNull VertexData bottomRightFront) {
+			@NotNull VertexData topLeftBack,
+			@NotNull VertexData topRightBack,
+			@NotNull VertexData topLeftFront, @NotNull VertexData topRightFront,
+			@NotNull VertexData bottomLeftFront,
+			@NotNull VertexData bottomRightFront) {
 
 		public VertexSet(@NotNull Vec3 pOrigin, @NotNull Vec3 pVertexSize, @NotNull Double pInflation) {
 			this(

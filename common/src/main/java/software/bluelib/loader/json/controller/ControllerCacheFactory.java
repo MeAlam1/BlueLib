@@ -8,19 +8,21 @@
 package software.bluelib.loader.json.controller;
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+import java.util.Map;
 import org.jetbrains.annotations.NotNull;
-import software.bluelib.loader.json.deserialize.controller.Controller;
 import software.bluelib.loader.cache.controller.ControllerCache;
 import software.bluelib.loader.json.CacheFactory;
-
-import java.util.Map;
+import software.bluelib.loader.json.deserialize.controller.Controller;
 
 public interface ControllerCacheFactory extends CacheFactory<ControllerCache, Controller> {
 
-	@NotNull Map<String, ControllerCacheFactory> FACTORIES = new Object2ObjectOpenHashMap<>(1);
-	@NotNull ControllerCacheFactory DEFAULT_FACTORY = new Builtin();
+	@NotNull
+	Map<String, ControllerCacheFactory> FACTORIES = new Object2ObjectOpenHashMap<>(1);
+	@NotNull
+	ControllerCacheFactory DEFAULT_FACTORY = new Builtin();
 
-	@NotNull CacheFactory.Registry<ControllerCache, Controller, ControllerCacheFactory> REGISTRY = new CacheFactory.Registry<>() {
+	@NotNull
+	CacheFactory.Registry<ControllerCache, Controller, ControllerCacheFactory> REGISTRY = new CacheFactory.Registry<>() {
 
 		@Override
 		public @NotNull Map<String, ControllerCacheFactory> factories() {
@@ -38,7 +40,8 @@ public interface ControllerCacheFactory extends CacheFactory<ControllerCache, Co
 		return constructBlueController(pSource);
 	}
 
-	@NotNull ControllerCache constructBlueController(@NotNull Controller pController);
+	@NotNull
+	ControllerCache constructBlueController(@NotNull Controller pController);
 
 	final class Builtin implements ControllerCacheFactory {
 

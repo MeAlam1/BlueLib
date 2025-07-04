@@ -8,15 +8,14 @@
 package software.bluelib.loader.json.model.object;
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+import java.util.List;
+import java.util.Map;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.loader.json.deserialize.model.Bone;
 import software.bluelib.loader.json.deserialize.model.Model;
 import software.bluelib.loader.json.deserialize.model.ModelDescription;
 import software.bluelib.loader.json.deserialize.model.ModelGeometry;
-
-import java.util.List;
-import java.util.Map;
 
 public record BoneTree(
 		@NotNull Map<String, BoneStructure> topLevelBones,

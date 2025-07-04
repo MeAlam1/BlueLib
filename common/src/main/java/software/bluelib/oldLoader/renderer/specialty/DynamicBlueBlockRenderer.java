@@ -21,13 +21,13 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
+import software.bluelib.client.utils.RenderUtils;
 import software.bluelib.loader.cache.model.BoneCache;
 import software.bluelib.loader.cache.model.ModelCache;
-import software.bluelib.client.utils.RenderUtils;
 import software.bluelib.loader.json.object.QuadData;
 import software.bluelib.loader.json.object.VertexData;
-import software.bluelib.oldLoader.model.BlueModel;
 import software.bluelib.oldLoader.animatable.BlueAnimatable;
+import software.bluelib.oldLoader.model.BlueModel;
 import software.bluelib.oldLoader.renderer.BlueBlockRenderer;
 
 public abstract class DynamicBlueBlockRenderer<T extends BlockEntity & BlueAnimatable> extends BlueBlockRenderer<T> {
@@ -111,7 +111,7 @@ public abstract class DynamicBlueBlockRenderer<T extends BlockEntity & BlueAnima
 
 	@Override
 	public void createVerticesOfQuad(QuadData quad, Matrix4f poseState, Vector3f normal, VertexConsumer buffer,
-	                                 int pPackedLight, int pPackedOverlay, int colour) {
+			int pPackedLight, int pPackedOverlay, int colour) {
 		if (this.textureOverride == null) {
 			super.createVerticesOfQuad(quad, poseState, normal, buffer, pPackedLight, pPackedOverlay,
 					colour);

@@ -19,12 +19,12 @@ import software.bluelib.api.molang.context.AnimatableMoLang;
 import software.bluelib.loader.cache.animations.AnimationCache;
 import software.bluelib.loader.cache.model.BoneCache;
 import software.bluelib.loader.cache.model.ModelCache;
-import software.bluelib.oldLoader.model.BlueModel;
 import software.bluelib.oldLoader.animatable.BlueAnimatable;
 import software.bluelib.oldLoader.animation.keyframe.AnimationPoint;
 import software.bluelib.oldLoader.animation.keyframe.BoneAnimationQueue;
 import software.bluelib.oldLoader.animation.state.BoneSnapshot;
 import software.bluelib.oldLoader.loading.math.MoLangQueries;
+import software.bluelib.oldLoader.model.BlueModel;
 
 public class AnimationProcessor<T extends BlueAnimatable> {
 

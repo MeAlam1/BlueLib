@@ -7,18 +7,20 @@
  */
 package software.bluelib.oldLoader.model;
 
+import java.util.Optional;
+import java.util.function.BiConsumer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
+import software.bluelib.client.utils.RenderUtils;
+import software.bluelib.loader.cache.ResourceCache;
 import software.bluelib.loader.cache.animations.AnimationCache;
 import software.bluelib.loader.cache.animations.AnimationLibraryCache;
 import software.bluelib.loader.cache.model.BoneCache;
 import software.bluelib.loader.cache.model.ModelCache;
-import software.bluelib.client.utils.RenderUtils;
-import software.bluelib.loader.cache.ResourceCache;
 import software.bluelib.oldLoader.animatable.BlueAnimatable;
 import software.bluelib.oldLoader.animatable.BlueReplacedEntity;
 import software.bluelib.oldLoader.animation.AnimatableManager;
@@ -27,9 +29,6 @@ import software.bluelib.oldLoader.animation.AnimationState;
 import software.bluelib.oldLoader.constant.DataTickets;
 import software.bluelib.oldLoader.constant.dataticket.DataTicket;
 import software.bluelib.oldLoader.renderer.BlueRenderer;
-
-import java.util.Optional;
-import java.util.function.BiConsumer;
 
 public abstract class BlueModel<T extends BlueAnimatable> {
 
@@ -80,7 +79,7 @@ public abstract class BlueModel<T extends BlueAnimatable> {
 	}
 
 	public ModelCache getBakedModel(ResourceLocation pLocation) {
-		ResourceLocation[] attempts = new ResourceLocation[]{
+		ResourceLocation[] attempts = new ResourceLocation[] {
 				pLocation,
 				stripSuffix(".json", pLocation),
 				stripSuffix(".geo.json", pLocation)
@@ -110,7 +109,7 @@ public abstract class BlueModel<T extends BlueAnimatable> {
 	@Nullable
 	public AnimationCache getAnimation(T pAnimatable, String pName) {
 		ResourceLocation location = getAnimationResource(pAnimatable);
-		ResourceLocation[] attempts = new ResourceLocation[]{
+		ResourceLocation[] attempts = new ResourceLocation[] {
 				location,
 				stripSuffix(".json", location),
 				stripSuffix(".animation.json", location)
@@ -140,8 +139,7 @@ public abstract class BlueModel<T extends BlueAnimatable> {
 		return this.processor;
 	}
 
-	public void addAdditionalStateData(T pAnimatable, long pInstanceId, BiConsumer<DataTicket<T>, T> pDataConsumer) {
-	}
+	public void addAdditionalStateData(T pAnimatable, long pInstanceId, BiConsumer<DataTicket<T>, T> pDataConsumer) {}
 
 	@ApiStatus.Internal
 	public void handleAnimations(T pAnimatable, long pInstanceId, AnimationState<T> pAnimationState, float pPartialTick) {
@@ -181,8 +179,7 @@ public abstract class BlueModel<T extends BlueAnimatable> {
 		setCustomAnimations(pAnimatable, pInstanceId, pAnimationState);
 	}
 
-	public void setCustomAnimations(T pAnimatable, long pInstanceId, AnimationState<T> pAnimationState) {
-	}
+	public void setCustomAnimations(T pAnimatable, long pInstanceId, AnimationState<T> pAnimationState) {}
 
 	public void applyMolangQueries(AnimationState<T> pAnimationState, double pAnimTime) {
 		this.animTime = pAnimTime;

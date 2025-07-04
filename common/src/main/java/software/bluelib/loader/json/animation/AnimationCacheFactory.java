@@ -8,19 +8,21 @@
 package software.bluelib.loader.json.animation;
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+import java.util.Map;
 import org.jetbrains.annotations.NotNull;
-import software.bluelib.loader.json.deserialize.animation.AnimationLibrary;
 import software.bluelib.loader.cache.animations.AnimationLibraryCache;
 import software.bluelib.loader.json.CacheFactory;
-
-import java.util.Map;
+import software.bluelib.loader.json.deserialize.animation.AnimationLibrary;
 
 public interface AnimationCacheFactory extends CacheFactory<AnimationLibraryCache, AnimationLibrary> {
 
-	@NotNull Map<String, AnimationCacheFactory> FACTORIES = new Object2ObjectOpenHashMap<>(1);
-	@NotNull AnimationCacheFactory DEFAULT_FACTORY = new Builtin();
+	@NotNull
+	Map<String, AnimationCacheFactory> FACTORIES = new Object2ObjectOpenHashMap<>(1);
+	@NotNull
+	AnimationCacheFactory DEFAULT_FACTORY = new Builtin();
 
-	@NotNull CacheFactory.Registry<AnimationLibraryCache, AnimationLibrary, AnimationCacheFactory> REGISTRY = new CacheFactory.Registry<>() {
+	@NotNull
+	CacheFactory.Registry<AnimationLibraryCache, AnimationLibrary, AnimationCacheFactory> REGISTRY = new CacheFactory.Registry<>() {
 
 		@Override
 		public @NotNull Map<String, AnimationCacheFactory> factories() {
@@ -38,7 +40,8 @@ public interface AnimationCacheFactory extends CacheFactory<AnimationLibraryCach
 		return constructBlueAnimator(pSource);
 	}
 
-	@NotNull AnimationLibraryCache constructBlueAnimator(@NotNull AnimationLibrary pAnimations);
+	@NotNull
+	AnimationLibraryCache constructBlueAnimator(@NotNull AnimationLibrary pAnimations);
 
 	final class Builtin implements AnimationCacheFactory {
 

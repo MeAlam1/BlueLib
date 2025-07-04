@@ -13,6 +13,19 @@ import com.google.gson.JsonObject;
 import it.unimi.dsi.fastutil.Pair;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import java.io.IOException;
+import java.io.Reader;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
+import java.util.function.BiFunction;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.regex.Matcher;
+import java.util.stream.Collectors;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -24,7 +37,6 @@ import software.bluelib.api.entity.variant.IVariantProvider;
 import software.bluelib.api.json.JSONMerger;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
-import software.bluelib.internal.BlueTranslation;
 import software.bluelib.loader.cache.ResourceCache;
 import software.bluelib.loader.cache.animations.AnimationLibraryCache;
 import software.bluelib.loader.cache.animations.keyframe.KeyframeLibraryCache;
@@ -50,21 +62,6 @@ import software.bluelib.loader.json.variants.VariantsCacheFactory;
 import software.bluelib.loader.json.variants.VariantsFormatVersion;
 import software.bluelib.oldLoader.loading.json.typeadapter.BakedAnimationsAdapter;
 import software.bluelib.oldLoader.loading.json.typeadapter.KeyFramesAdapter;
-
-import java.io.IOException;
-import java.io.Reader;
-import java.lang.reflect.Array;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executor;
-import java.util.function.BiFunction;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.regex.Matcher;
-import java.util.stream.Collectors;
 
 public class BlueLoader {
 
@@ -108,7 +105,7 @@ public class BlueLoader {
 
 	@NotNull
 	private static ResourceLocation stripPrefixAndSuffix(@NotNull ResourceLocation pResourceLocation) {
-		BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("strip.prefix_suffix", pResourceLocation.toString()));
+		BaseLogger.log(true, BaseLogLevel.INFO, String.format("Stripping prefix and suffix for: %1$s", pResourceLocation));
 		String newPath = pResourceLocation.getPath();
 		Matcher prefixMatcher = BlueLibConstants.BlueLoader.PREFIX_STRIPPER.matcher(newPath);
 		newPath = prefixMatcher.find() ? newPath.substring(prefixMatcher.end()) : newPath;
@@ -116,7 +113,7 @@ public class BlueLoader {
 		newPath = suffixMatcher.find() ? newPath.substring(0, suffixMatcher.start()) : newPath;
 
 		ResourceLocation result = newPath.length() == pResourceLocation.getPath().length() ? pResourceLocation : pResourceLocation.withPath(newPath);
-		BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("strip.result", result.toString()));
+		BaseLogger.log(true, BaseLogLevel.INFO, String.format("Result after strip: %1$s", result));
 		return result;
 	}
 
@@ -140,19 +137,18 @@ public class BlueLoader {
 			@NotNull Executor pBackgroundExecutor,
 			@NotNull ResourceManager pResourceManager,
 			@NotNull List<IVariantProvider> pProviders) {
-		BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("variants.load.start", pProviders.size()));
+		BaseLogger.log(true, BaseLogLevel.INFO, String.format("Starting loadVariants with providers: %1$s", pProviders.size()));
 		List<CompletableFuture<Map.Entry<ResourceLocation, EntityCache>>> futures = new ObjectArrayList<>();
 
 		for (IVariantProvider provider : pProviders) {
-			BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("variants.provider", provider.getBasePath()));
 			for (String entity : provider.getEntityNames()) {
 				if (BlueLibConstants.PlatformHelper.EVENT_PROXY.allVariantsLoadedPre(entity)) {
-					BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("variants.load.cancelled", entity));
+					BaseLogger.log(true, BaseLogLevel.INFO, String.format("variant loading cancelled for entity: %1$s", entity));
 					continue;
 				}
 
 				String entityPath = provider.getBasePath() + entity;
-				BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("variants.entity.processing", entityPath));
+				BaseLogger.log(true, BaseLogLevel.INFO, String.format("Processing entity: %1$s", entityPath));
 
 				Map<ResourceLocation, Resource> resources = pResourceManager.listResources(entityPath, fileName -> fileName.getPath().endsWith(".json"));
 				JsonObject merged = new JsonObject();
@@ -166,7 +162,7 @@ public class BlueLoader {
 
 				futures.add(CompletableFuture.supplyAsync(() -> {
 					if (BlueLibConstants.PlatformHelper.EVENT_PROXY.variantLoadedPre(entity, key.toString())) {
-						BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("variants.variant.load.cancelled", key));
+						BaseLogger.log(true, BaseLogLevel.INFO, String.format("variant loading cancelled for: %1$s", key));
 						return null;
 					}
 					EntityCache cache = bakeVariants(key, merged);
@@ -176,7 +172,6 @@ public class BlueLoader {
 				BlueLibConstants.PlatformHelper.EVENT_PROXY.allVariantsLoadedPost(entity);
 			}
 		}
-
 		return CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]))
 				.thenApply(ignored -> {
 					Map<ResourceLocation, EntityCache> combined = new java.util.HashMap<>();
@@ -197,36 +192,30 @@ public class BlueLoader {
 			@NotNull String pAssetPath,
 			@NotNull BiFunction<ResourceLocation, JsonObject, BAKED> pElementFactory,
 			@NotNull Function<Throwable, BAKED> pExceptionalFactory) {
-		BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("bakejson.start", pAssetPath));
 		return loadResources(pBackgroundExecutor, pResourceManager, pAssetPath, "json", ResourceCache::readJsonFile)
 				.thenCompose(resources -> {
-					BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("bakejson.resources.loaded", resources.size()));
 					List<CompletableFuture<Pair<ResourceLocation, BAKED>>> tasks = new ObjectArrayList<>(resources.size());
-					BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("bakejson.resources.tobake", Arrays.toString(resources.stream().map(Pair::left).toList().toArray())));
+					BaseLogger.log(true, BaseLogLevel.INFO, String.format("Resources to bake: %1$s", Arrays.toString(resources.stream().map(Pair::left).toList().toArray())));
 
 					resources.forEach(pair -> tasks.add(
 							CompletableFuture.supplyAsync(() -> {
-										BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("bakejson.baking", pair.left().toString()));
-										try {
-											Pair<ResourceLocation, BAKED> baked = Pair.of(stripPrefixAndSuffix(pair.left()), pElementFactory.apply(pair.left(), pair.right()));
-											BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("bakejson.baked", pair.left().toString()));
-											return baked;
-										} catch (Exception ex) {
-											BaseLogger.log(true, BaseLogLevel.ERROR, BlueTranslation.log("bakejson.error", pair.left().toString(), ex.getMessage()));
-											throw ex;
-										}
-									}, pBackgroundExecutor)
+								try {
+									Pair<ResourceLocation, BAKED> baked = Pair.of(stripPrefixAndSuffix(pair.left()), pElementFactory.apply(pair.left(), pair.right()));
+									BaseLogger.log(true, BaseLogLevel.INFO, String.format("Baked resource: %1$s", pair.left().toString()));
+									return baked;
+								} catch (Exception ex) {
+									BaseLogger.log(true, BaseLogLevel.ERROR, String.format("Error deserializing file: %1$s - %2$s", pair.left().toString(), ex.getMessage()));
+									throw ex;
+								}
+							}, pBackgroundExecutor)
 									.exceptionally(ex -> {
-										BaseLogger.log(true, BaseLogLevel.ERROR, BlueTranslation.log("bakejson.exceptionally", pair.left().toString(), ex.getMessage()));
+										BaseLogger.log(true, BaseLogLevel.ERROR, String.format("Exceptionally handling: %1$s - %2$s", pair.left().toString(), ex.getMessage()));
 										ex.printStackTrace();
 										return Pair.of(pair.left(), pExceptionalFactory.apply(ex));
 									})));
 
 					return CompletableFuture.allOf(tasks.toArray(new CompletableFuture[0]))
-							.thenApply(ignored -> {
-								BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("bakejson.tasks.completed"));
-								return tasks.stream().map(CompletableFuture::join).filter(Objects::nonNull).collect(Collectors.toMap(Pair::left, Pair::right));
-							});
+							.thenApply(ignored -> tasks.stream().map(CompletableFuture::join).filter(Objects::nonNull).collect(Collectors.toMap(Pair::left, Pair::right)));
 				});
 	}
 
@@ -238,35 +227,25 @@ public class BlueLoader {
 			@NotNull String pFileType,
 			@NotNull BiFunction<ResourceLocation, Resource, UNBAKED> pElementFactory) {
 		final String fileTypeSuffix = "." + pFileType;
-		BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("resources.listing", pAssetPath, pFileType));
 
 		return CompletableFuture.supplyAsync(() -> {
-			BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("resources.listresources", pAssetPath, fileTypeSuffix));
 			Map<ResourceLocation, Resource> allResources = pResourceManager.listResources(pAssetPath, fileName -> fileName.getPath().endsWith(fileTypeSuffix));
-			BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("resources.found", Arrays.toString(allResources.keySet().toArray())));
 
 			Map<ResourceLocation, Resource> listed = allResources.entrySet().stream()
 					.filter(entry -> !BlueLibConstants.BlueLoader.SKIPPED_NAMESPACES.contains(entry.getKey().getNamespace()))
 					.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
-			BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("resources.filtered", Arrays.toString(listed.keySet().toArray())));
-			BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("resources.count", listed.size()));
+			BaseLogger.log(true, BaseLogLevel.INFO, String.format("Resource keys found after filtering: %1$s", Arrays.toString(listed.keySet().toArray())));
 			return listed;
 		}, pExecutor).thenCompose(filteredResources -> {
 			List<CompletableFuture<Pair<ResourceLocation, UNBAKED>>> tasks = new ObjectArrayList<>(filteredResources.size());
 
 			filteredResources.forEach((path, resource) -> {
-				BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("resources.loading", path.toString(), resource.toString()));
-				tasks.add(CompletableFuture.supplyAsync(() -> {
-					BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("resources.elementfactory", path.toString()));
-					return Pair.of(path, pElementFactory.apply(path, resource));
-				}, pExecutor));
+				BaseLogger.log(true, BaseLogLevel.INFO, String.format("Loading path: %1$s with resource: %2$s", path.toString(), resource.toString()));
+				tasks.add(CompletableFuture.supplyAsync(() -> Pair.of(path, pElementFactory.apply(path, resource)), pExecutor));
 			});
 			return CompletableFuture.allOf(tasks.toArray(new CompletableFuture[0]))
-					.thenApply(ignored -> {
-						BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("resources.tasks.completed"));
-						return tasks.stream().map(CompletableFuture::join).filter(Objects::nonNull).toList();
-					});
+					.thenApply(ignored -> tasks.stream().map(CompletableFuture::join).filter(Objects::nonNull).toList());
 		});
 	}
 
@@ -353,7 +332,7 @@ public class BlueLoader {
 			String folderName = path.contains("/") ? path.substring(0, path.indexOf('/')) : path;
 			for (Pair<Predicate<ResourceLocation>, String> check : pFileChecks) {
 				if (check.left().test(pResourceLocation)) {
-					BaseLogger.log(true, BaseLogLevel.ERROR, BlueTranslation.log("bakegeneric.filecheck.failed", pResourceLocation.toString()));
+					BaseLogger.log(true, BaseLogLevel.ERROR, String.format("File check failed for: %1$s", pResourceLocation));
 					throw new RuntimeException(String.format("Found %s in %s folder! '%s'",
 							check.right(), folderName, pResourceLocation));
 				}
@@ -364,9 +343,9 @@ public class BlueLoader {
 		V matchedVersion = pVersionMatcher.apply(version);
 
 		if (matchedVersion == null) {
-			BaseLogger.log(true, BaseLogLevel.WARNING, BlueTranslation.log("bakegeneric.version.unknown", pResourceLocation.toString(), version));
+			BaseLogger.log(true, BaseLogLevel.WARNING, String.format("%1$s: Unknown format version: '%2$s'. This may not work correctly", pResourceLocation, version));
 		} else if (!pIsSupported.test(matchedVersion)) {
-			BaseLogger.log(true, BaseLogLevel.ERROR, BlueTranslation.log("bakegeneric.version.unsupported", pResourceLocation.toString(), version, pErrorMessage.apply(matchedVersion)));
+			BaseLogger.log(true, BaseLogLevel.ERROR, String.format("%1$s: Unsupported format version: '%2$s'. %3$s", pResourceLocation, version, pErrorMessage.apply(matchedVersion)));
 		}
 
 		return pCacheFactory.apply(pResourceLocation.getNamespace(), model);
@@ -377,7 +356,7 @@ public class BlueLoader {
 		try (Reader reader = pResource.openAsReader()) {
 			return GsonHelper.parse(reader);
 		} catch (IOException pIoException) {
-			BaseLogger.log(true, BaseLogLevel.ERROR, BlueTranslation.log("readjson.failed", pResourceLocation.toString(), pIoException.getMessage()));
+			BaseLogger.log(true, BaseLogLevel.ERROR, String.format("Failed to read resource: %1$s - %2$s", pResourceLocation, pIoException.getMessage()));
 			throw new RuntimeException("Failed to read resource: " + pResourceLocation, pIoException);
 		}
 	}

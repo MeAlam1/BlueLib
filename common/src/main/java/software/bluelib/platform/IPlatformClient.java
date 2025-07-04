@@ -13,8 +13,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import software.bluelib.oldLoader.model.BlueModel;
 import software.bluelib.oldLoader.animatable.BlueAnimatable;
+import software.bluelib.oldLoader.model.BlueModel;
 
 public interface IPlatformClient {
 

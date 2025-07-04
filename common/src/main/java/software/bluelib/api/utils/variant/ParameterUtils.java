@@ -8,6 +8,7 @@
 package software.bluelib.api.utils.variant;
 
 import com.google.gson.JsonElement;
+import java.util.Set;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -17,12 +18,9 @@ import software.bluelib.loader.cache.ResourceCache;
 import software.bluelib.loader.cache.variants.EntityCache;
 import software.bluelib.loader.cache.variants.VariantCache;
 
-import java.util.Set;
-
 public class ParameterUtils {
 
-	private ParameterUtils() {
-	}
+	private ParameterUtils() {}
 
 	@NotNull
 	public static Set<ResourceLocation> getAllEntities() {

@@ -7,6 +7,12 @@
  */
 package software.bluelib.loader.cache;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Executor;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
@@ -24,16 +30,10 @@ import software.bluelib.loader.cache.model.ModelCache;
 import software.bluelib.loader.cache.variants.EntityCache;
 import software.bluelib.oldLoader.loading.json.typeadapter.BakedAnimationsAdapter;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.Executor;
-
 public class ResourceCache extends BlueLoader {
 
 	public static class Client {
+
 		private static Map<ResourceLocation, AnimationLibraryCache> ANIMATIONS = Collections.emptyMap();
 		private static Map<ResourceLocation, ModelCache> MODELS = Collections.emptyMap();
 
@@ -84,6 +84,7 @@ public class ResourceCache extends BlueLoader {
 	}
 
 	public static class Server {
+
 		@NotNull
 		public static Map<ResourceLocation, EntityCache> VARIANTS = Collections.emptyMap();
 		@NotNull

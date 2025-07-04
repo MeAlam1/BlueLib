@@ -7,13 +7,13 @@
  */
 package software.bluelib.loader.json;
 
+import java.util.Collections;
+import java.util.Map;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collections;
-import java.util.Map;
-
 public abstract class FormatVersion<T extends FormatVersion<T>> {
+
 	@NotNull
 	private final String serializedName;
 	private final boolean supported;

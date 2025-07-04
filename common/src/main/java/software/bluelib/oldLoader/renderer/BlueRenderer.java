@@ -24,15 +24,15 @@ import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 import software.bluelib.api.utils.Color;
+import software.bluelib.client.utils.RenderUtils;
 import software.bluelib.loader.cache.model.BoneCache;
 import software.bluelib.loader.cache.model.CubeCache;
 import software.bluelib.loader.cache.model.ModelCache;
-import software.bluelib.client.utils.RenderUtils;
 import software.bluelib.loader.json.object.QuadData;
 import software.bluelib.loader.json.object.VertexData;
-import software.bluelib.oldLoader.model.BlueModel;
 import software.bluelib.oldLoader.animatable.BlueAnimatable;
 import software.bluelib.oldLoader.loading.math.MoLangQueries;
+import software.bluelib.oldLoader.model.BlueModel;
 import software.bluelib.oldLoader.renderer.layer.BlueRenderLayer;
 
 // TODO Split sources support
@@ -227,7 +227,7 @@ public interface BlueRenderer<T extends BlueAnimatable> {
 	}
 
 	default void createVerticesOfQuad(QuadData pQuad, Matrix4f pPoseState, Vector3f pNormal, VertexConsumer pBuffer,
-	                                  int pPackedLight, int pPackedOverlay, int pColour) {
+			int pPackedLight, int pPackedOverlay, int pColour) {
 		for (VertexData vertex : pQuad.vertices()) {
 			Vector3f position = vertex.position();
 			Vector4f vector4f = pPoseState.transform(new Vector4f(position.x(), position.y(), position.z(), 1.0f));

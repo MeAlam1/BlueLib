@@ -8,10 +8,9 @@
 package software.bluelib.loader.json.model.object;
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+import java.util.Map;
 import org.jetbrains.annotations.NotNull;
 import software.bluelib.loader.json.deserialize.model.Bone;
-
-import java.util.Map;
 
 public record BoneStructure(
 		@NotNull Bone self,

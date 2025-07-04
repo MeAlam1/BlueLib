@@ -8,11 +8,10 @@
 package software.bluelib.loader.json.animation;
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+import java.util.Map;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.loader.json.FormatVersion;
-
-import java.util.Map;
 
 public class AnimationFormatVersion extends FormatVersion<AnimationFormatVersion> {
 

@@ -14,6 +14,9 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 import it.unimi.dsi.fastutil.ints.IntSet;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
 import net.minecraft.client.renderer.texture.AbstractTexture;
 import net.minecraft.client.renderer.texture.SimpleTexture;
 import net.minecraft.client.resources.metadata.animation.AnimationMetadataSection;
@@ -24,10 +27,6 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.Mth;
 import software.bluelib.client.utils.RenderUtils;
 import software.bluelib.client.utils.TextureUtils;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.List;
 
 public class AnimatableTexture extends SimpleTexture {
 
@@ -152,8 +151,7 @@ public class AnimatableTexture extends SimpleTexture {
 			return frames.size() <= 1 ? null : new Texture(pImage, frames.toArray(new Frame[0]), columns, pAnimMeta.isInterpolatedFrames());
 		}
 
-		protected record Frame(int index, int time) {
-		}
+		protected record Frame(int index, int time) {}
 
 		protected class Texture implements AutoCloseable {
 
