@@ -25,7 +25,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import software.bluelib.client.utils.PlayerUtils;
-import software.bluelib.oldLoader.animatable.BlueAnimatable;
+import software.bluelib.loader.animatable.BlueAnimatable;
 import software.bluelib.oldLoader.animation.AnimationState;
 import software.bluelib.oldLoader.constant.DataTickets;
 import software.bluelib.oldLoader.loading.math.value.Variable;

@@ -17,9 +17,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.client.utils.PlayerUtils;
+import software.bluelib.loader.animatable.BlueAnimatable;
 import software.bluelib.loader.cache.model.ModelCache;
 import software.bluelib.loader.cache.texture.AutoGlowingTexture;
-import software.bluelib.oldLoader.animatable.BlueAnimatable;
 import software.bluelib.oldLoader.renderer.BlueRenderer;
 
 public class AutoGlowingBlueLayer<T extends BlueAnimatable> extends BlueRenderLayer<T> {

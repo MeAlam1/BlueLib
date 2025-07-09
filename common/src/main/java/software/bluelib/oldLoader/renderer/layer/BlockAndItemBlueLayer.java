@@ -20,8 +20,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.client.utils.RenderUtils;
+import software.bluelib.loader.animatable.BlueAnimatable;
 import software.bluelib.loader.cache.model.BoneCache;
-import software.bluelib.oldLoader.animatable.BlueAnimatable;
 import software.bluelib.oldLoader.renderer.BlueRenderer;
 
 public class BlockAndItemBlueLayer<T extends BlueAnimatable> extends BlueRenderLayer<T> {

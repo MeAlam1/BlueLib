@@ -21,9 +21,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.molang.MoLang;
-import software.bluelib.api.utils.LoaderUtils;
 import software.bluelib.oldLoader.animatable.BlueEntity;
-import software.bluelib.oldLoader.animatable.instance.AnimatableInstanceCache;
 import software.bluelib.oldLoader.animation.*;
 
 public class ExampleEntity extends PathfinderMob implements BlueEntity {

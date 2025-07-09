@@ -11,7 +11,7 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import software.bluelib.oldLoader.animatable.BlueAnimatable;
+import software.bluelib.loader.animatable.BlueAnimatable;
 import software.bluelib.oldLoader.animation.AnimationController;
 import software.bluelib.oldLoader.animation.AnimationState;
 import software.bluelib.oldLoader.animation.PlayState;

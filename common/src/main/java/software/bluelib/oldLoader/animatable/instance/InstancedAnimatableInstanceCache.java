@@ -7,7 +7,7 @@
  */
 package software.bluelib.oldLoader.animatable.instance;
 
-import software.bluelib.oldLoader.animatable.BlueAnimatable;
+import software.bluelib.loader.animatable.BlueAnimatable;
 import software.bluelib.oldLoader.animation.AnimatableManager;
 
 public class InstancedAnimatableInstanceCache extends AnimatableInstanceCache {

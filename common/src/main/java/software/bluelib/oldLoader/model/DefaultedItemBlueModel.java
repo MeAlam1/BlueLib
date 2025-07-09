@@ -8,7 +8,7 @@
 package software.bluelib.oldLoader.model;
 
 import net.minecraft.resources.ResourceLocation;
-import software.bluelib.oldLoader.animatable.BlueAnimatable;
+import software.bluelib.loader.animatable.BlueAnimatable;
 
 public class DefaultedItemBlueModel<T extends BlueAnimatable> extends DefaultedBlueModel<T> {
 

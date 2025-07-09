@@ -7,7 +7,7 @@
  */
 package software.bluelib.oldLoader.animation.keyframe.event;
 
-import software.bluelib.oldLoader.animatable.BlueAnimatable;
+import software.bluelib.loader.animatable.BlueAnimatable;
 import software.bluelib.oldLoader.animation.AnimationController;
 import software.bluelib.oldLoader.animation.keyframe.event.data.CustomInstructionKeyframeData;
 

@@ -16,10 +16,10 @@ import net.minecraft.util.Mth;
 import software.bluelib.api.molang.MoLang;
 import software.bluelib.api.molang.MoLangType;
 import software.bluelib.api.molang.context.AnimatableMoLang;
+import software.bluelib.loader.animatable.BlueAnimatable;
 import software.bluelib.loader.cache.animations.AnimationCache;
 import software.bluelib.loader.cache.model.BoneCache;
 import software.bluelib.loader.cache.model.ModelCache;
-import software.bluelib.oldLoader.animatable.BlueAnimatable;
 import software.bluelib.oldLoader.animation.keyframe.AnimationPoint;
 import software.bluelib.oldLoader.animation.keyframe.BoneAnimationQueue;
 import software.bluelib.oldLoader.animation.state.BoneSnapshot;
@@ -125,7 +125,7 @@ public class AnimationProcessor<T extends BlueAnimatable> {
 		}
 
 		this.reloadAnimations = false;
-		double resetTickLength = animatable.getBoneResetTime();
+		double resetTickLength = animatable.boneResetTime();
 
 		for (BoneCache bone : getRegisteredBones()) {
 			if (!bone.hasRotationChanged()) {

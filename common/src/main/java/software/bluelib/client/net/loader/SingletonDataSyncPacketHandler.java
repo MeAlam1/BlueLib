@@ -12,8 +12,8 @@ import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.net.ClientNetworkPacketHandler;
 import software.bluelib.api.utils.LoaderUtils;
 import software.bluelib.client.utils.PlayerUtils;
+import software.bluelib.loader.animatable.BlueAnimatable;
 import software.bluelib.net.messages.client.loader.SingletonDataSyncPacket;
-import software.bluelib.oldLoader.animatable.BlueAnimatable;
 import software.bluelib.oldLoader.animatable.SingletonBlueAnimatable;
 
 public class SingletonDataSyncPacketHandler<D> implements ClientNetworkPacketHandler<SingletonDataSyncPacket<D>> {

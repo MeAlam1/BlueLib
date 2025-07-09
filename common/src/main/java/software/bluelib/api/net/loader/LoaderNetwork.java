@@ -14,8 +14,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.net.NetworkRegistry;
 import software.bluelib.api.utils.LoaderUtils;
+import software.bluelib.loader.animatable.BlueAnimatable;
 import software.bluelib.net.messages.client.loader.*;
-import software.bluelib.oldLoader.animatable.BlueAnimatable;
 import software.bluelib.oldLoader.constant.dataticket.SerializableDataTicket;
 
 public class LoaderNetwork extends NetworkRegistry {

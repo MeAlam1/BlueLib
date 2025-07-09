@@ -7,6 +7,9 @@
  */
 package software.bluelib.oldLoader.animatable;
 
+import java.util.EnumMap;
+import java.util.Map;
+import java.util.Optional;
 import net.minecraft.core.component.PatchedDataComponentMap;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemDisplayContext;
@@ -14,16 +17,13 @@ import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.BlueLibConstants;
 import software.bluelib.client.utils.RenderUtils;
+import software.bluelib.loader.animatable.BlueAnimatable;
 import software.bluelib.loader.cache.item.IdCache;
 import software.bluelib.oldLoader.animatable.instance.AnimatableInstanceCache;
 import software.bluelib.oldLoader.animatable.instance.SingletonAnimatableInstanceCache;
 import software.bluelib.oldLoader.animation.AnimatableManager;
 import software.bluelib.oldLoader.animation.ContextAwareAnimatableManager;
 import software.bluelib.oldLoader.constant.DataTickets;
-
-import java.util.EnumMap;
-import java.util.Map;
-import java.util.Optional;
 
 public interface BlueItem extends SingletonBlueAnimatable {
 
@@ -61,11 +61,11 @@ public interface BlueItem extends SingletonBlueAnimatable {
 
 	@Nullable
 	@Override
-	default AnimatableInstanceCache animatableCacheOverride() {
+	default AnimatableInstanceCache useCustomCache() {
 		if (isPerspectiveAware())
 			return new ContextBasedAnimatableInstanceCache(this);
 
-		return SingletonBlueAnimatable.super.animatableCacheOverride();
+		return SingletonBlueAnimatable.super.useCustomCache();
 	}
 
 	class ContextBasedAnimatableInstanceCache extends SingletonAnimatableInstanceCache {

@@ -8,7 +8,7 @@
 package software.bluelib.api.molang.context;
 
 import org.jetbrains.annotations.NotNull;
-import software.bluelib.oldLoader.animatable.BlueAnimatable;
+import software.bluelib.loader.animatable.BlueAnimatable;
 import software.bluelib.oldLoader.animation.AnimationState;
 import software.bluelib.oldLoader.loading.math.MathParser;
 import software.bluelib.oldLoader.loading.math.MoLangQueries;

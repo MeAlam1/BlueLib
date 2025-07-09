@@ -9,22 +9,23 @@ package software.bluelib.oldLoader.animatable.instance;
 
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
-import software.bluelib.oldLoader.animatable.BlueAnimatable;
+import software.bluelib.loader.animatable.BlueAnimatable;
 import software.bluelib.oldLoader.animation.AnimatableManager;
 
 public class SingletonAnimatableInstanceCache extends AnimatableInstanceCache {
 
-	protected final Long2ObjectMap<AnimatableManager<?>> managers = new Long2ObjectOpenHashMap<>();
+	protected final Long2ObjectMap<AnimatableManager<? extends BlueAnimatable>> managers = new Long2ObjectOpenHashMap<>();
 
-	public SingletonAnimatableInstanceCache(BlueAnimatable animatable) {
-		super(animatable);
+	public SingletonAnimatableInstanceCache(BlueAnimatable pAnimatable) {
+		super(pAnimatable);
 	}
 
 	@Override
-	public AnimatableManager<?> getManagerForId(long uniqueId) {
-		if (!this.managers.containsKey(uniqueId))
-			this.managers.put(uniqueId, new AnimatableManager<>(this.animatable));
+	@SuppressWarnings("unchecked")
+	public <T extends BlueAnimatable> AnimatableManager<T> getManagerForId(long pUniqueId) {
+		if (!this.managers.containsKey(pUniqueId))
+			this.managers.put(pUniqueId, new AnimatableManager<>(this.animatable));
 
-		return this.managers.get(uniqueId);
+		return (AnimatableManager<T>) this.managers.get(pUniqueId);
 	}
 }

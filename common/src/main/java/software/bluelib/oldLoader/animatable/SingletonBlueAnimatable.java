@@ -7,18 +7,18 @@
  */
 package software.bluelib.oldLoader.animatable;
 
+import java.util.function.Consumer;
 import net.minecraft.world.entity.Entity;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.net.loader.LoaderNetwork;
 import software.bluelib.api.utils.LoaderUtils;
+import software.bluelib.loader.animatable.BlueAnimatable;
 import software.bluelib.oldLoader.animatable.client.BlueRenderProvider;
 import software.bluelib.oldLoader.animatable.instance.AnimatableInstanceCache;
 import software.bluelib.oldLoader.animatable.instance.SingletonAnimatableInstanceCache;
 import software.bluelib.oldLoader.animation.AnimatableManager;
 import software.bluelib.oldLoader.constant.dataticket.SerializableDataTicket;
-
-import java.util.function.Consumer;
 
 public interface SingletonBlueAnimatable extends BlueAnimatable {
 
@@ -88,12 +88,11 @@ public interface SingletonBlueAnimatable extends BlueAnimatable {
 	}
 
 	@Override
-	default @Nullable AnimatableInstanceCache animatableCacheOverride() {
+	default @Nullable AnimatableInstanceCache useCustomCache() {
 		return new SingletonAnimatableInstanceCache(this);
 	}
 
-	default void createBlueRenderer(Consumer<BlueRenderProvider> pConsumer) {
-	}
+	default void createBlueRenderer(Consumer<BlueRenderProvider> pConsumer) {}
 
 	default Object getRenderProvider() {
 		return getAnimatableInstanceCache().getRenderProvider();

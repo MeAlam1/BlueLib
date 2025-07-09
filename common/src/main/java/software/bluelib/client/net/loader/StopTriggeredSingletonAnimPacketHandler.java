@@ -11,8 +11,8 @@ import net.minecraft.client.Minecraft;
 import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.net.ClientNetworkPacketHandler;
 import software.bluelib.api.utils.LoaderUtils;
+import software.bluelib.loader.animatable.BlueAnimatable;
 import software.bluelib.net.messages.client.loader.StopTriggeredSingletonAnimPacket;
-import software.bluelib.oldLoader.animatable.BlueAnimatable;
 import software.bluelib.oldLoader.animation.AnimatableManager;
 
 public class StopTriggeredSingletonAnimPacketHandler implements ClientNetworkPacketHandler<StopTriggeredSingletonAnimPacket> {

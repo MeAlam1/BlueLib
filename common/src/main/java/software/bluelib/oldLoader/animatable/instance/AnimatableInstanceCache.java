@@ -8,15 +8,14 @@
 package software.bluelib.oldLoader.animatable.instance;
 
 import com.google.common.base.Suppliers;
+import java.util.function.Supplier;
 import org.apache.commons.lang3.mutable.MutableObject;
 import software.bluelib.BlueLibConstants;
-import software.bluelib.oldLoader.animatable.BlueAnimatable;
+import software.bluelib.loader.animatable.BlueAnimatable;
 import software.bluelib.oldLoader.animatable.SingletonBlueAnimatable;
 import software.bluelib.oldLoader.animatable.client.BlueRenderProvider;
 import software.bluelib.oldLoader.animation.AnimatableManager;
 import software.bluelib.oldLoader.constant.dataticket.DataTicket;
-
-import java.util.function.Supplier;
 
 public abstract class AnimatableInstanceCache {
 
@@ -37,7 +36,7 @@ public abstract class AnimatableInstanceCache {
 		});
 	}
 
-	public abstract <T extends BlueAnimatable> AnimatableManager<T> getManagerForId(long uniqueId);
+	public abstract <T extends BlueAnimatable> AnimatableManager<T> getManagerForId(long pUniqueId);
 
 	public <D> void addDataPoint(long pUniqueId, DataTicket<D> pDataTicket, D pData) {
 		getManagerForId(pUniqueId).setData(pDataTicket, pData);

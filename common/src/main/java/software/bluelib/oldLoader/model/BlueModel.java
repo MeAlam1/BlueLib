@@ -16,12 +16,12 @@ import net.minecraft.world.entity.Entity;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.client.utils.RenderUtils;
+import software.bluelib.loader.animatable.BlueAnimatable;
 import software.bluelib.loader.cache.ResourceCache;
 import software.bluelib.loader.cache.animations.AnimationCache;
 import software.bluelib.loader.cache.animations.AnimationLibraryCache;
 import software.bluelib.loader.cache.model.BoneCache;
 import software.bluelib.loader.cache.model.ModelCache;
-import software.bluelib.oldLoader.animatable.BlueAnimatable;
 import software.bluelib.oldLoader.animatable.BlueReplacedEntity;
 import software.bluelib.oldLoader.animation.AnimatableManager;
 import software.bluelib.oldLoader.animation.AnimationProcessor;
@@ -159,7 +159,7 @@ public abstract class BlueModel<T extends BlueAnimatable> {
 		if (pIsReRender && pInstanceId == this.lastRenderedInstance)
 			return;
 
-		if (!mc.isPaused() || pAnimatable.shouldPlayAnimsWhileGamePaused()) {
+		if (!mc.isPaused() || pAnimatable.playWhilePaused()) {
 			animatableManager.updatedAt(currentFrameTime);
 
 			double lastUpdateTime = animatableManager.getLastUpdateTime();
