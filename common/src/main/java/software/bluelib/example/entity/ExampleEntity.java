@@ -38,14 +38,16 @@ public class ExampleEntity extends PathfinderMob implements BlueEntity {
 
 	@Override
 	public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData spawnGroupData) {
-		MoLang.autoMoLang("g.print('hello')");
+		MoLang.load("q.print('hello')");
+		System.out.println(MoLang.load("q.divide('1', '2', '3')"));
 		return super.finalizeSpawn(level, difficulty, spawnType, spawnGroupData);
 	}
 
 	@Override
 	protected InteractionResult mobInteract(Player player, InteractionHand hand) {
 		//System.out.println(MoLang.autoMoLang("o.divide('1', '2', '3')"));
-		//System.out.println("Molang: + " + MoLang.moLangEntity("e.get_pos", this));
+		System.out.println("Molang E: + " + MoLang.entity("e.get_pos", this));
+		System.out.println("Molang Q: + " + MoLang.entity("q.get_pos", this));
 		//System.out.println("Game: + " + position());
 		return super.mobInteract(player, hand);
 	}

@@ -28,11 +28,23 @@ public class MoLang {
 		}
 	}
 
-	public static void registerPrefix(@NotNull String pPrefix, @NotNull MoLangType pType) {
+	protected static void registerPrefix(@NotNull String pPrefix, @NotNull MoLangType pType) {
 		PREFIX_MAP.put(pPrefix, pType);
 	}
 
-	public static @Nullable Object autoMoLang(@NotNull String pExpression) {
+	public static @Nullable Object load(@NotNull String pExpression) {
+		if (pExpression.startsWith("q.")) {
+			String expr = pExpression.substring("q.".length());
+
+			for (MoLangType type : MoLangType.values()) {
+				Object result = service.getRuntimeFor(type).evaluate(type.id() + "." + expr);
+				if (result != null) {
+					return result;
+				}
+			}
+			return null;
+		}
+
 		for (Map.Entry<String, MoLangType> entry : PREFIX_MAP.entrySet()) {
 			if (pExpression.startsWith(entry.getKey())) {
 				String expr = pExpression.substring(entry.getKey().length());
@@ -40,10 +52,36 @@ public class MoLang {
 				return service.getRuntimeFor(entry.getValue()).evaluate(expr);
 			}
 		}
+
 		return service.getRuntimeFor(MoLangType.GENERAL).evaluate(pExpression);
 	}
 
-	public static @Nullable Object moLangWithContext(@NotNull String pExpression, @NotNull MoLangType pType, @NotNull MoLangContext pContext) {
+	public static @Nullable Object entity(@NotNull String pExpression, @NotNull Entity pEntity) {
+		return moLangWithContext(pExpression, MoLangType.ENTITY, new EntityMoLang(() -> pEntity));
+	}
+
+	protected static @Nullable Object moLangWithContext(
+			@NotNull String pExpression,
+			@NotNull MoLangType pType,
+			@NotNull MoLangContext pContext) {
+		if (pExpression.startsWith("q.")) {
+			String expr = pExpression.substring("q.".length());
+
+			for (MoLangType type : MoLangType.values()) {
+				MoLangRuntime runtime = service.getRuntimeFor(type);
+				runtime.pushContext(type.id(), pContext);
+				try {
+					Object result = runtime.evaluate(type.id() + "." + expr);
+					if (result != null) {
+						return result;
+					}
+				} finally {
+					runtime.popContext(type.id());
+				}
+			}
+			return null;
+		}
+
 		MoLangRuntime runtime = service.getRuntimeFor(pType);
 		String prefix = pType.id() + ".";
 
@@ -57,9 +95,5 @@ public class MoLang {
 		} finally {
 			runtime.popContext(pType.id());
 		}
-	}
-
-	public static @Nullable Object moLangEntity(@NotNull String pExpression, @NotNull Entity pEntity) {
-		return moLangWithContext(pExpression, MoLangType.ENTITY, new EntityMoLang(() -> pEntity));
 	}
 }
