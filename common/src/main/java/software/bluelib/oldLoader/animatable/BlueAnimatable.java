@@ -8,13 +8,21 @@
 package software.bluelib.oldLoader.animatable;
 
 import software.bluelib.oldLoader.animatable.instance.AnimatableInstanceCache;
+import software.bluelib.oldLoader.animatable.instance.InstancedAnimatableInstanceCache;
 import software.bluelib.oldLoader.animation.AnimatableManager;
+
+import java.util.Map;
+import java.util.WeakHashMap;
 
 public interface BlueAnimatable {
 
-	void registerControllers(AnimatableManager.ControllerRegistrar controllers);
+	Map<BlueAnimatable, AnimatableInstanceCache> _instanceCacheMap = new WeakHashMap<>();
 
-	AnimatableInstanceCache getAnimatableInstanceCache();
+	void registerControllers(AnimatableManager.ControllerRegistrar pControllers);
+
+	default AnimatableInstanceCache getAnimatableInstanceCache() {
+		return _instanceCacheMap.computeIfAbsent(this, InstancedAnimatableInstanceCache::new);
+	}
 
 	default double getBoneResetTime() {
 		return 5;
@@ -24,7 +32,7 @@ public interface BlueAnimatable {
 		return false;
 	}
 
-	double getTick(Object object);
+	double getTick(Object pObject);
 
 	default AnimatableInstanceCache animatableCacheOverride() {
 		return null;

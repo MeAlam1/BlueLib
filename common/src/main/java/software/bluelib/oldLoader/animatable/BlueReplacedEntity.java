@@ -68,14 +68,14 @@ public interface BlueReplacedEntity extends SingletonBlueAnimatable {
 	}
 
 	@Override
-	default double getTick(Object entity) {
-		return ((Entity) entity).tickCount;
+	default double getTick(Object pEntity) {
+		return ((Entity) pEntity).tickCount;
 	}
 
 	// These methods aren't used for BlueReplacedEntity
 	@ApiStatus.NonExtendable
 	@Override
-	default void createBlueRenderer(Consumer<BlueRenderProvider> consumer) {}
+	default void createBlueRenderer(Consumer<BlueRenderProvider> pConsumer) {}
 
 	// These methods aren't used for BlueReplacedEntity
 	@ApiStatus.NonExtendable

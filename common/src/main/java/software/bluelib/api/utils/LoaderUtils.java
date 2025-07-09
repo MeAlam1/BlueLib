@@ -10,8 +10,6 @@ package software.bluelib.api.utils;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
-import java.util.Map;
-import java.util.function.BiConsumer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import org.jetbrains.annotations.NotNull;
@@ -25,6 +23,9 @@ import software.bluelib.oldLoader.animation.EasingType;
 import software.bluelib.oldLoader.constant.DataTickets;
 import software.bluelib.oldLoader.constant.dataticket.SerializableDataTicket;
 
+import java.util.Map;
+import java.util.function.BiConsumer;
+
 @SuppressWarnings("unused")
 public final class LoaderUtils {
 
@@ -33,12 +34,16 @@ public final class LoaderUtils {
 	@NotNull
 	public static final Map<String, BlueAnimatable> SYNCED_ANIMATABLES = new Object2ObjectOpenHashMap<>();
 
+	// TODO: Remove it if youre done
+	@Deprecated(forRemoval = true)
 	public static @NotNull AnimatableInstanceCache createInstanceCache(@NotNull BlueAnimatable pAnimatable) {
 		AnimatableInstanceCache cache = pAnimatable.animatableCacheOverride();
 
 		return cache != null ? cache : createInstanceCache(pAnimatable, !(pAnimatable instanceof Entity) && !(pAnimatable instanceof BlockEntity));
 	}
 
+	// TODO: Remove it if youre done
+	@Deprecated(forRemoval = true)
 	public static @NotNull AnimatableInstanceCache createInstanceCache(@NotNull BlueAnimatable pAnimatable, boolean pSingletonObject) {
 		AnimatableInstanceCache cache = pAnimatable.animatableCacheOverride();
 

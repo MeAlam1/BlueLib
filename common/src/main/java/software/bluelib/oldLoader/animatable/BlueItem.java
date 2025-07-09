@@ -7,9 +7,6 @@
  */
 package software.bluelib.oldLoader.animatable;
 
-import java.util.EnumMap;
-import java.util.Map;
-import java.util.Optional;
 import net.minecraft.core.component.PatchedDataComponentMap;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemDisplayContext;
@@ -24,33 +21,37 @@ import software.bluelib.oldLoader.animation.AnimatableManager;
 import software.bluelib.oldLoader.animation.ContextAwareAnimatableManager;
 import software.bluelib.oldLoader.constant.DataTickets;
 
+import java.util.EnumMap;
+import java.util.Map;
+import java.util.Optional;
+
 public interface BlueItem extends SingletonBlueAnimatable {
 
-	static void registerSyncedAnimatable(BlueAnimatable animatable) {
-		SingletonBlueAnimatable.registerSyncedAnimatable(animatable);
+	static void registerSyncedAnimatable(BlueAnimatable pAnimatable) {
+		SingletonBlueAnimatable.registerSyncedAnimatable(pAnimatable);
 	}
 
-	static long getId(ItemStack stack) {
-		return Optional.ofNullable(stack.getComponentsPatch().get(BlueLibConstants.STACK_ANIMATABLE_ID_COMPONENT.get()))
+	static long getId(ItemStack pStack) {
+		return Optional.ofNullable(pStack.getComponentsPatch().get(BlueLibConstants.STACK_ANIMATABLE_ID_COMPONENT.get()))
 				.filter(Optional::isPresent)
 				.<Long>map(Optional::get)
 				.orElse(Long.MAX_VALUE);
 	}
 
-	static long getOrAssignId(ItemStack stack, ServerLevel level) {
-		if (!(stack.getComponents() instanceof PatchedDataComponentMap components))
+	static long getOrAssignId(ItemStack pStack, ServerLevel pLevel) {
+		if (!(pStack.getComponents() instanceof PatchedDataComponentMap components))
 			return Long.MAX_VALUE;
 
 		Long id = components.get(BlueLibConstants.STACK_ANIMATABLE_ID_COMPONENT.get());
 
 		if (id == null)
-			components.set(BlueLibConstants.STACK_ANIMATABLE_ID_COMPONENT.get(), id = IdCache.getFreeId(level));
+			components.set(BlueLibConstants.STACK_ANIMATABLE_ID_COMPONENT.get(), id = IdCache.getFreeId(pLevel));
 
 		return id;
 	}
 
 	@Override
-	default double getTick(Object itemStack) {
+	default double getTick(Object pItemStack) {
 		return RenderUtils.getCurrentTick();
 	}
 
@@ -69,21 +70,21 @@ public interface BlueItem extends SingletonBlueAnimatable {
 
 	class ContextBasedAnimatableInstanceCache extends SingletonAnimatableInstanceCache {
 
-		public ContextBasedAnimatableInstanceCache(BlueAnimatable animatable) {
-			super(animatable);
+		public ContextBasedAnimatableInstanceCache(BlueAnimatable pAnimatable) {
+			super(pAnimatable);
 		}
 
 		@Override
-		public AnimatableManager<?> getManagerForId(long uniqueId) {
-			if (!this.managers.containsKey(uniqueId))
-				this.managers.put(uniqueId, new ContextAwareAnimatableManager<BlueItem, ItemDisplayContext>(this.animatable) {
+		public AnimatableManager<?> getManagerForId(long pUniqueId) {
+			if (!this.managers.containsKey(pUniqueId))
+				this.managers.put(pUniqueId, new ContextAwareAnimatableManager<BlueItem, ItemDisplayContext>(this.animatable) {
 
 					@Override
-					protected Map<ItemDisplayContext, AnimatableManager<BlueItem>> buildContextOptions(BlueAnimatable animatable) {
+					protected Map<ItemDisplayContext, AnimatableManager<BlueItem>> buildContextOptions(BlueAnimatable pAnimatable) {
 						Map<ItemDisplayContext, AnimatableManager<BlueItem>> map = new EnumMap<>(ItemDisplayContext.class);
 
 						for (ItemDisplayContext context : ItemDisplayContext.values()) {
-							map.put(context, new AnimatableManager<>(animatable));
+							map.put(context, new AnimatableManager<>(pAnimatable));
 						}
 
 						return map;
@@ -97,7 +98,7 @@ public interface BlueItem extends SingletonBlueAnimatable {
 					}
 				});
 
-			return this.managers.get(uniqueId);
+			return this.managers.get(pUniqueId);
 		}
 	}
 }

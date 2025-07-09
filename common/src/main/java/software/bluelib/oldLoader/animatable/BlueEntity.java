@@ -69,7 +69,7 @@ public interface BlueEntity extends BlueAnimatable {
 	}
 
 	@Override
-	default double getTick(Object entity) {
-		return ((Entity) entity).tickCount;
+	default double getTick(Object pEntity) {
+		return ((Entity) pEntity).tickCount;
 	}
 }

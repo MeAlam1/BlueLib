@@ -8,7 +8,6 @@
 package software.bluelib.oldLoader.animatable.instance;
 
 import com.google.common.base.Suppliers;
-import java.util.function.Supplier;
 import org.apache.commons.lang3.mutable.MutableObject;
 import software.bluelib.BlueLibConstants;
 import software.bluelib.oldLoader.animatable.BlueAnimatable;
@@ -17,13 +16,15 @@ import software.bluelib.oldLoader.animatable.client.BlueRenderProvider;
 import software.bluelib.oldLoader.animation.AnimatableManager;
 import software.bluelib.oldLoader.constant.dataticket.DataTicket;
 
+import java.util.function.Supplier;
+
 public abstract class AnimatableInstanceCache {
 
 	protected final BlueAnimatable animatable;
 	protected final Supplier<BlueRenderProvider> renderProvider;
 
-	public AnimatableInstanceCache(BlueAnimatable animatable) {
-		this.animatable = animatable;
+	public AnimatableInstanceCache(BlueAnimatable pAnimatable) {
+		this.animatable = pAnimatable;
 		this.renderProvider = Suppliers.memoize(() -> {
 			if (!(this.animatable instanceof SingletonBlueAnimatable singleton) || !BlueLibConstants.PlatformHelper.PLATFORM.isPhysicalClient())
 				return null;
@@ -38,12 +39,12 @@ public abstract class AnimatableInstanceCache {
 
 	public abstract <T extends BlueAnimatable> AnimatableManager<T> getManagerForId(long uniqueId);
 
-	public <D> void addDataPoint(long uniqueId, DataTicket<D> dataTicket, D data) {
-		getManagerForId(uniqueId).setData(dataTicket, data);
+	public <D> void addDataPoint(long pUniqueId, DataTicket<D> pDataTicket, D pData) {
+		getManagerForId(pUniqueId).setData(pDataTicket, pData);
 	}
 
-	public <D> D getDataPoint(long uniqueId, DataTicket<D> dataTicket) {
-		return getManagerForId(uniqueId).getData(dataTicket);
+	public <D> D getDataPoint(long pUniqueId, DataTicket<D> pDataTicket) {
+		return getManagerForId(pUniqueId).getData(pDataTicket);
 	}
 
 	public Object getRenderProvider() {

@@ -7,7 +7,6 @@
  */
 package software.bluelib.oldLoader.animatable;
 
-import java.util.function.Consumer;
 import net.minecraft.world.entity.Entity;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
@@ -19,71 +18,73 @@ import software.bluelib.oldLoader.animatable.instance.SingletonAnimatableInstanc
 import software.bluelib.oldLoader.animation.AnimatableManager;
 import software.bluelib.oldLoader.constant.dataticket.SerializableDataTicket;
 
+import java.util.function.Consumer;
+
 public interface SingletonBlueAnimatable extends BlueAnimatable {
 
-	static void registerSyncedAnimatable(BlueAnimatable animatable) {
-		LoaderUtils.registerSyncedAnimatable(animatable);
+	static void registerSyncedAnimatable(BlueAnimatable pAnimatable) {
+		LoaderUtils.registerSyncedAnimatable(pAnimatable);
 	}
 
 	@ApiStatus.NonExtendable
 	@Nullable
-	default <D> D getAnimData(long instanceId, SerializableDataTicket<D> dataTicket) {
-		return getAnimatableInstanceCache().getManagerForId(instanceId).getData(dataTicket);
+	default <D> D getAnimData(long pInstanceId, SerializableDataTicket<D> pDataTicket) {
+		return getAnimatableInstanceCache().getManagerForId(pInstanceId).getData(pDataTicket);
 	}
 
 	@ApiStatus.NonExtendable
-	default <D> void setAnimData(Entity relatedEntity, long instanceId, SerializableDataTicket<D> dataTicket, D data) {
-		if (relatedEntity.level().isClientSide()) {
-			getAnimatableInstanceCache().getManagerForId(instanceId).setData(dataTicket, data);
+	default <D> void setAnimData(Entity pRelatedEntity, long pInstanceId, SerializableDataTicket<D> pDataTicket, D pData) {
+		if (pRelatedEntity.level().isClientSide()) {
+			getAnimatableInstanceCache().getManagerForId(pInstanceId).setData(pDataTicket, pData);
 		} else {
-			syncAnimData(instanceId, dataTicket, data, relatedEntity);
+			syncAnimData(pInstanceId, pDataTicket, pData, pRelatedEntity);
 		}
 	}
 
 	@ApiStatus.NonExtendable
-	default <D> void syncAnimData(long instanceId, SerializableDataTicket<D> dataTicket, D data, Entity entityToTrack) {
-		LoaderNetwork.syncSingletonAnimData(this, instanceId, dataTicket, data, entityToTrack);
+	default <D> void syncAnimData(long pInstanceId, SerializableDataTicket<D> pDataTicket, D pData, Entity pEntityToTrack) {
+		LoaderNetwork.syncSingletonAnimData(this, pInstanceId, pDataTicket, pData, pEntityToTrack);
 	}
 
 	@ApiStatus.NonExtendable
-	default <D> void triggerAnim(Entity relatedEntity, long instanceId, @Nullable String controllerName, String animName) {
-		if (relatedEntity.level().isClientSide()) {
-			if (controllerName != null) {
-				getAnimatableInstanceCache().getManagerForId(instanceId).tryTriggerAnimation(controllerName, animName);
+	default <D> void triggerAnim(Entity pRelatedEntity, long pInstanceId, @Nullable String pControllerName, String pAnimName) {
+		if (pRelatedEntity.level().isClientSide()) {
+			if (pControllerName != null) {
+				getAnimatableInstanceCache().getManagerForId(pInstanceId).tryTriggerAnimation(pControllerName, pAnimName);
 			} else {
-				getAnimatableInstanceCache().getManagerForId(instanceId).tryTriggerAnimation(animName);
+				getAnimatableInstanceCache().getManagerForId(pInstanceId).tryTriggerAnimation(pAnimName);
 			}
 		} else {
-			LoaderNetwork.triggerSingletonAnim(this, relatedEntity, instanceId, controllerName, animName);
+			LoaderNetwork.triggerSingletonAnim(this, pRelatedEntity, pInstanceId, pControllerName, pAnimName);
 		}
 	}
 
 	@ApiStatus.NonExtendable
-	default void stopTriggeredAnim(Entity relatedEntity, long instanceId, @Nullable String controllerName, @Nullable String animName) {
-		if (relatedEntity.level().isClientSide()) {
-			AnimatableManager<BlueAnimatable> animatableManager = getAnimatableInstanceCache().getManagerForId(instanceId);
+	default void stopTriggeredAnim(Entity pRelatedEntity, long pInstanceId, @Nullable String pControllerName, @Nullable String pAnimName) {
+		if (pRelatedEntity.level().isClientSide()) {
+			AnimatableManager<BlueAnimatable> animatableManager = getAnimatableInstanceCache().getManagerForId(pInstanceId);
 
 			if (animatableManager == null)
 				return;
 
-			if (controllerName != null) {
-				animatableManager.stopTriggeredAnimation(controllerName, animName);
+			if (pControllerName != null) {
+				animatableManager.stopTriggeredAnimation(pControllerName, pAnimName);
 			} else {
-				animatableManager.stopTriggeredAnimation(animName);
+				animatableManager.stopTriggeredAnimation(pAnimName);
 			}
 		} else {
-			LoaderNetwork.stopTriggeredSingletonAnim(this, relatedEntity, instanceId, controllerName, animName);
+			LoaderNetwork.stopTriggeredSingletonAnim(this, pRelatedEntity, pInstanceId, pControllerName, pAnimName);
 		}
 	}
 
 	@ApiStatus.NonExtendable
-	default void triggerArmorAnim(Entity relatedEntity, long instanceId, @Nullable String controllerName, String animName) {
-		triggerAnim(relatedEntity, -instanceId, controllerName, animName);
+	default void triggerArmorAnim(Entity pRelatedEntity, long pInstanceId, @Nullable String pControllerName, String pAnimName) {
+		triggerAnim(pRelatedEntity, -pInstanceId, pControllerName, pAnimName);
 	}
 
 	@ApiStatus.NonExtendable
-	default void stopTriggeredArmorAnim(Entity relatedEntity, long instanceId, @Nullable String controllerName, @Nullable String animName) {
-		stopTriggeredAnim(relatedEntity, -instanceId, controllerName, animName);
+	default void stopTriggeredArmorAnim(Entity pRelatedEntity, long pInstanceId, @Nullable String pControllerName, @Nullable String pAnimName) {
+		stopTriggeredAnim(pRelatedEntity, -pInstanceId, pControllerName, pAnimName);
 	}
 
 	@Override
@@ -91,7 +92,8 @@ public interface SingletonBlueAnimatable extends BlueAnimatable {
 		return new SingletonAnimatableInstanceCache(this);
 	}
 
-	default void createBlueRenderer(Consumer<BlueRenderProvider> consumer) {}
+	default void createBlueRenderer(Consumer<BlueRenderProvider> pConsumer) {
+	}
 
 	default Object getRenderProvider() {
 		return getAnimatableInstanceCache().getRenderProvider();

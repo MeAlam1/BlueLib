@@ -14,12 +14,12 @@ public class InstancedAnimatableInstanceCache extends AnimatableInstanceCache {
 
 	protected AnimatableManager<?> manager;
 
-	public InstancedAnimatableInstanceCache(BlueAnimatable animatable) {
-		super(animatable);
+	public InstancedAnimatableInstanceCache(BlueAnimatable pAnimatable) {
+		super(pAnimatable);
 	}
 
 	@Override
-	public AnimatableManager<?> getManagerForId(long uniqueId) {
+	public AnimatableManager<?> getManagerForId(long pUniqueId) {
 		if (this.manager == null)
 			this.manager = new AnimatableManager<>(this.animatable);
 

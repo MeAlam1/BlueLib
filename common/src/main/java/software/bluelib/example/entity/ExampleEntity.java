@@ -28,7 +28,6 @@ import software.bluelib.oldLoader.animation.*;
 
 public class ExampleEntity extends PathfinderMob implements BlueEntity {
 
-	private final AnimatableInstanceCache cache = LoaderUtils.createInstanceCache(this);
 	public final String entityName = "test";
 
 	public ExampleEntity(EntityType<? extends ExampleEntity> pType, Level pLevel) {
@@ -60,10 +59,5 @@ public class ExampleEntity extends PathfinderMob implements BlueEntity {
 
 	protected <E extends ExampleEntity> PlayState idleAnimController(final AnimationState<E> pEvent) {
 		return pEvent.setAndContinue(RawAnimation.begin().thenLoop("animation.bulbasaur.ground_idle"));
-	}
-
-	@Override
-	public AnimatableInstanceCache getAnimatableInstanceCache() {
-		return cache;
 	}
 }
