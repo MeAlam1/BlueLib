@@ -12,18 +12,23 @@ import java.util.List;
 import java.util.Set;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.Entity;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
 import software.bluelib.api.utils.variant.ParameterUtils;
+import software.bluelib.entity.variant.IVariantAccessor;
 import software.bluelib.internal.BlueTranslation;
 
 @SuppressWarnings("unused")
-public interface IVariantEntity {
+public interface IVariantEntity<T extends Entity> {
 
 	@NotNull
 	RandomSource random = RandomSource.create();
+
+	@NotNull
+	T getEntity();
 
 	@Nullable
 	default String getRandomVariant(@NotNull List<String> pVariantNamesList, @Nullable String pDefaultVariant) {
@@ -41,5 +46,16 @@ public interface IVariantEntity {
 	default List<String> getEntityVariants(@NotNull ResourceLocation pEntity) {
 		Set<String> variants = ParameterUtils.getVariantsOfEntity(pEntity);
 		return variants != null ? new ArrayList<>(variants) : null;
+	}
+
+	@NotNull
+	default String getVariantName() {
+		T entity = getEntity();
+		return ((IVariantAccessor) entity).getEntityVariantName();
+	}
+
+	default void setVariantName(@NotNull String pVariantName) {
+		T entity = getEntity();
+		((IVariantAccessor) entity).setEntityVariantName(pVariantName);
 	}
 }

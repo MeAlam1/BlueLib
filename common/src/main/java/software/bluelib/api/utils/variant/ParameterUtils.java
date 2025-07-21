@@ -18,6 +18,7 @@ import software.bluelib.loader.cache.ResourceCache;
 import software.bluelib.loader.cache.variants.EntityCache;
 import software.bluelib.loader.cache.variants.VariantCache;
 
+// TODO: Make Translatable Utils
 public class ParameterUtils {
 
 	private ParameterUtils() {}
