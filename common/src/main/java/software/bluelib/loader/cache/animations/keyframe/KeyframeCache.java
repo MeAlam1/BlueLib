@@ -10,16 +10,19 @@ package software.bluelib.loader.cache.animations.keyframe;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import java.util.List;
 import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import software.bluelib.oldLoader.animation.EasingType;
 import software.bluelib.oldLoader.loading.math.MathValue;
 
-public record KeyframeCache<T extends MathValue>(double length, T startValue, T endValue, EasingType easingType, List<T> easingArgs) {
+public record KeyframeCache<T extends MathValue>(double length, @NotNull T startValue, @NotNull T endValue,
+		@NotNull EasingType easingType, @NotNull List<T> easingArgs) {
 
-	public KeyframeCache(double pLength, T pStartValue, T pEndValue) {
+	public KeyframeCache(double pLength, @NotNull T pStartValue, @NotNull T pEndValue) {
 		this(pLength, pStartValue, pEndValue, EasingType.LINEAR);
 	}
 
-	public KeyframeCache(double pLength, T pStartValue, T pEndValue, EasingType pEasingType) {
+	public KeyframeCache(double pLength, @NotNull T pStartValue, @NotNull T pEndValue, @NotNull EasingType pEasingType) {
 		this(pLength, pStartValue, pEndValue, pEasingType, new ObjectArrayList<>(0));
 	}
 
@@ -29,7 +32,7 @@ public record KeyframeCache<T extends MathValue>(double length, T startValue, T 
 	}
 
 	@Override
-	public boolean equals(Object pObj) {
+	public boolean equals(@Nullable Object pObj) {
 		if (this == pObj)
 			return true;
 

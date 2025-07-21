@@ -8,11 +8,13 @@
 package software.bluelib.loader.cache.controller;
 
 import java.util.List;
+import org.jetbrains.annotations.NotNull;
 
 public record ControllerCache(
-		String formatVersion,
-		List<GroupCache> groups) {
+		@NotNull String formatVersion,
+		@NotNull List<GroupCache> groups) {
 
+	@NotNull
 	public GroupCache getMainGroup() {
 		return groups.getFirst();
 	}

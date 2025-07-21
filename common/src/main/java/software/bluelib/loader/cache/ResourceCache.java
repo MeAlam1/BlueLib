@@ -34,13 +34,17 @@ public class ResourceCache extends BlueLoader {
 
 	public static class Client {
 
+		@NotNull
 		private static Map<ResourceLocation, AnimationLibraryCache> ANIMATIONS = Collections.emptyMap();
+		@NotNull
 		private static Map<ResourceLocation, ModelCache> MODELS = Collections.emptyMap();
 
+		@NotNull
 		public static Map<ResourceLocation, AnimationLibraryCache> getBakedAnimations() {
 			return ANIMATIONS;
 		}
 
+		@NotNull
 		public static Map<ResourceLocation, ModelCache> getBakedModels() {
 			return MODELS;
 		}
@@ -52,13 +56,14 @@ public class ResourceCache extends BlueLoader {
 				pResourceManager.registerReloadListener(ResourceCache.Client::reload);
 		}
 
+		@NotNull
 		public static CompletableFuture<Void> reload(
-				PreparableReloadListener.PreparationBarrier pStage,
-				ResourceManager pResourceManager,
-				ProfilerFiller pProfilerFiller,
-				ProfilerFiller pProfilerFiller1,
-				Executor pBackgroundExecutor,
-				Executor pGameExecutor) {
+				@NotNull PreparableReloadListener.PreparationBarrier pStage,
+				@NotNull ResourceManager pResourceManager,
+				@NotNull ProfilerFiller pProfilerFiller,
+				@NotNull ProfilerFiller pProfilerFiller1,
+				@NotNull Executor pBackgroundExecutor,
+				@NotNull Executor pGameExecutor) {
 			clearCaches();
 
 			CompletableFuture<Map<ResourceLocation, AnimationLibraryCache>> animations = loadAnimations(pBackgroundExecutor, pResourceManager);

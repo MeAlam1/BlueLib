@@ -11,12 +11,16 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonParseException;
 import java.util.ArrayList;
 import java.util.List;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.utils.JsonUtils;
 
 // TODO: Convert to Utils Please or Atleast Cleanup
-public record LocatorValue(@Nullable LocatorClass locatorClass, List<Float> values) {
+public record LocatorValue(
+		@Nullable LocatorClass locatorClass,
+		@NotNull List<Float> values) {
 
+	@NotNull
 	public static JsonDeserializer<LocatorValue> deserializer() throws JsonParseException {
 		return (json, type, context) -> {
 			if (json.isJsonArray()) {

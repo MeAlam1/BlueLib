@@ -12,15 +12,17 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import java.util.List;
 import net.minecraft.util.GsonHelper;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.utils.JsonUtils;
 
 public record State(
-		List<String> conditions,
-		String animation,
+		@NotNull List<String> conditions,
+		@NotNull String animation,
 		@Nullable Integer priority,
 		@Nullable String sound) {
 
+	@NotNull
 	public static JsonDeserializer<State> deserializer() throws JsonParseException {
 		return (json, type, context) -> {
 			JsonObject obj = json.getAsJsonObject();

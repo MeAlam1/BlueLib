@@ -13,12 +13,16 @@ import com.google.gson.JsonParseException;
 import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.List;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.utils.JsonUtils;
 
 // TODO: Convert to Utils Please or Atleast Cleanup
-public record PolysUnion(List<List<List<Float>>> union, @Nullable Type type) {
+public record PolysUnion(
+		@NotNull List<List<List<Float>>> union,
+		@Nullable Type type) {
 
+	@NotNull
 	public static JsonDeserializer<PolysUnion> deserializer() throws JsonParseException {
 		return (json, type, context) -> {
 			if (json.isJsonPrimitive() && json.getAsJsonPrimitive().isString()) {

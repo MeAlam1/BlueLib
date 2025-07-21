@@ -12,11 +12,13 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import java.util.List;
 import java.util.Map;
+import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.utils.JsonUtils;
 
 public record Behaviour(
-		Map<String, List<State>> states) {
+		@NotNull Map<String, List<State>> states) {
 
+	@NotNull
 	public static JsonDeserializer<Behaviour> deserializer() throws JsonParseException {
 		return (json, type, context) -> {
 			JsonObject obj = json.getAsJsonObject();

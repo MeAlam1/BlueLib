@@ -8,10 +8,11 @@
 package software.bluelib.loader.cache.controller;
 
 import java.util.List;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public record StateCache(
-		List<String> conditions,
-		String animation,
+		@NotNull List<String> conditions,
+		@NotNull String animation,
 		@Nullable Integer priority,
 		@Nullable String sound) {}

@@ -12,6 +12,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import java.util.List;
 import net.minecraft.util.GsonHelper;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.utils.JsonUtils;
 
@@ -31,9 +32,10 @@ public record ModelDescription(
 		float textureHeight,
 		float textureWidth,
 		@Nullable Float visibleBoundsHeight,
-		List<Float> visibleBoundsOffset,
+		@NotNull List<Float> visibleBoundsOffset,
 		@Nullable Float visibleBoundsWidth) {
 
+	@NotNull
 	public static JsonDeserializer<ModelDescription> deserializer() throws JsonParseException {
 		return (json, type, context) -> {
 			JsonObject obj = json.getAsJsonObject();

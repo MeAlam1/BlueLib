@@ -24,9 +24,10 @@ import org.jetbrains.annotations.Nullable;
 import software.bluelib.BlueLibConstants;
 import software.bluelib.client.utils.TextureUtils;
 
+// TODO: Clean this up!
 public abstract class BlueAbstractTexture extends AbstractTexture {
 
-	protected static void generateTexture(ResourceLocation pTexturePath, Consumer<TextureManager> pTextureManagerConsumer) {
+	protected static void generateTexture(@NotNull ResourceLocation pTexturePath, @NotNull Consumer<TextureManager> pTextureManagerConsumer) {
 		if (!RenderSystem.isOnRenderThreadOrInit())
 			throw new IllegalThreadStateException("Texture loading called outside of the render thread! This should DEFINITELY not be happening.");
 
@@ -50,7 +51,7 @@ public abstract class BlueAbstractTexture extends AbstractTexture {
 		}
 	}
 
-	protected void printDebugImageToDisk(ResourceLocation pId, NativeImage pNewImage) {
+	protected void printDebugImageToDisk(@NotNull ResourceLocation pId, @NotNull NativeImage pNewImage) {
 		try {
 			File file = new File(BlueLibConstants.PlatformHelper.PLATFORM.getGameDir().toFile(), "BlueTexture Debug Printouts");
 
@@ -73,14 +74,14 @@ public abstract class BlueAbstractTexture extends AbstractTexture {
 	}
 
 	@Nullable
-	protected abstract RenderCall loadTexture(ResourceManager pResourceManager) throws IOException;
+	protected abstract RenderCall loadTexture(@NotNull ResourceManager pResourceManager) throws IOException;
 
-	public static void uploadSimple(int pTexture, NativeImage pImage, boolean pBlur, boolean pClamp) {
+	public static void uploadSimple(@NotNull Integer pTexture, @NotNull NativeImage pImage, boolean pBlur, boolean pClamp) {
 		TextureUtil.prepareImage(pTexture, 0, pImage.getWidth(), pImage.getHeight());
 		pImage.upload(0, 0, 0, 0, 0, pImage.getWidth(), pImage.getHeight(), pBlur, pClamp, false, true);
 	}
 
-	public static ResourceLocation appendToPath(ResourceLocation pLocation, String pSuffix) {
+	public static ResourceLocation appendToPath(@NotNull ResourceLocation pLocation, @NotNull String pSuffix) {
 		String path = pLocation.getPath();
 		int i = path.lastIndexOf('.');
 

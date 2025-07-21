@@ -11,13 +11,16 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import net.minecraft.util.GsonHelper;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.utils.JsonUtils;
 import software.bluelib.loader.cache.animations.AnimationLibraryCache;
 
 public record AnimationLibrary(
-		String formatVersion,
-		AnimationLibraryCache animations) {
+		@NotNull String formatVersion,
+		@Nullable AnimationLibraryCache animations) {
 
+	@NotNull
 	public static JsonDeserializer<AnimationLibrary> deserializer() throws JsonParseException {
 		return (json, type, context) -> {
 			JsonObject obj = json.getAsJsonObject();

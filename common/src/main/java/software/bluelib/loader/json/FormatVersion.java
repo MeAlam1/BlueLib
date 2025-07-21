@@ -20,7 +20,7 @@ public abstract class FormatVersion<T extends FormatVersion<T>> {
 	@Nullable
 	private final String errorMessage;
 
-	protected FormatVersion(@NotNull String pSerializedName, @NotNull Boolean pSupported, @Nullable String pErrorMessage) {
+	protected FormatVersion(@NotNull String pSerializedName, boolean pSupported, @Nullable String pErrorMessage) {
 		this.serializedName = pSerializedName;
 		this.supported = pSupported;
 		this.errorMessage = pErrorMessage;

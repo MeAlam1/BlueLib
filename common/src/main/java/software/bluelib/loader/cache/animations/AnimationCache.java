@@ -11,6 +11,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import software.bluelib.loader.animatable.BlueAnimatable;
 import software.bluelib.loader.cache.animations.keyframe.BoneAnimationCache;
 import software.bluelib.loader.cache.animations.keyframe.KeyframeLibraryCache;
@@ -20,9 +22,14 @@ import software.bluelib.oldLoader.animation.keyframe.event.data.CustomInstructio
 import software.bluelib.oldLoader.animation.keyframe.event.data.ParticleKeyframeData;
 import software.bluelib.oldLoader.animation.keyframe.event.data.SoundKeyframeData;
 
-public record AnimationCache(String name, double length, LoopType loopType, BoneAnimationCache[] boneAnimationCaches,
-		KeyframeLibraryCache keyFrames) {
+public record AnimationCache(
+		@NotNull String name,
+		double length,
+		@NotNull LoopType loopType,
+		@NotNull BoneAnimationCache[] boneAnimationCaches,
+		@NotNull KeyframeLibraryCache keyFrames) {
 
+	@NotNull
 	public static AnimationCache generateWaitAnimation(double pLength) {
 		return new AnimationCache(RawAnimation.Stage.WAIT, pLength, LoopType.PLAY_ONCE, new BoneAnimationCache[0],
 				new KeyframeLibraryCache(new SoundKeyframeData[0], new ParticleKeyframeData[0], new CustomInstructionKeyframeData[0]));
@@ -31,20 +38,26 @@ public record AnimationCache(String name, double length, LoopType loopType, Bone
 	@FunctionalInterface
 	public interface LoopType {
 
+		@NotNull
 		Map<String, LoopType> LOOP_TYPES = new ConcurrentHashMap<>(4);
 
+		@NotNull
 		LoopType DEFAULT = (animatable, controller, currentAnimation) -> currentAnimation.loopType().shouldPlayAgain(animatable, controller, currentAnimation);
+		@NotNull
 		LoopType PLAY_ONCE = register("play_once", register("false", (animatable, controller, currentAnimation) -> false));
+		@NotNull
 		LoopType HOLD_ON_LAST_FRAME = register("hold_on_last_frame", (animatable, controller, currentAnimation) -> {
 			controller.animationState = AnimationController.State.PAUSED;
 
 			return true;
 		});
+		@NotNull
 		LoopType LOOP = register("loop", register("true", (animatable, controller, currentAnimation) -> true));
 
-		boolean shouldPlayAgain(BlueAnimatable pAnimatable, AnimationController<? extends BlueAnimatable> pController, AnimationCache pCurrentAnimationCache);
+		boolean shouldPlayAgain(@NotNull BlueAnimatable pAnimatable, @NotNull AnimationController<? extends BlueAnimatable> pController, @NotNull AnimationCache pCurrentAnimationCache);
 
-		static LoopType fromJson(JsonElement pJson) {
+		@NotNull
+		static LoopType fromJson(@Nullable JsonElement pJson) {
 			if (pJson == null || !pJson.isJsonPrimitive())
 				return PLAY_ONCE;
 
@@ -59,11 +72,13 @@ public record AnimationCache(String name, double length, LoopType loopType, Bone
 			return PLAY_ONCE;
 		}
 
-		static LoopType fromString(String pName) {
+		@NotNull
+		static LoopType fromString(@NotNull String pName) {
 			return LOOP_TYPES.getOrDefault(pName, PLAY_ONCE);
 		}
 
-		static LoopType register(String pName, LoopType pLoopType) {
+		@NotNull
+		static LoopType register(@NotNull String pName, @NotNull LoopType pLoopType) {
 			LOOP_TYPES.put(pName, pLoopType);
 
 			return pLoopType;

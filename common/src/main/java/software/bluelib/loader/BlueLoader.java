@@ -117,17 +117,20 @@ public class BlueLoader {
 		return result;
 	}
 
-	protected static CompletableFuture<Map<ResourceLocation, ControllerCache>> loadControllers(Executor pBackgroundExecutor, ResourceManager pResourceManager) {
+	@NotNull
+	protected static CompletableFuture<Map<ResourceLocation, ControllerCache>> loadControllers(@NotNull Executor pBackgroundExecutor, @NotNull ResourceManager pResourceManager) {
 		return bakeJsonResources(pBackgroundExecutor, pResourceManager, BlueLibConstants.BlueLoader.CONTROLLERS_PATH.getPath(), ResourceCache::bakeController,
 				ex -> null);
 	}
 
-	protected static CompletableFuture<Map<ResourceLocation, AnimationLibraryCache>> loadAnimations(Executor pBackgroundExecutor, ResourceManager pResourceManager) {
+	@NotNull
+	protected static CompletableFuture<Map<ResourceLocation, AnimationLibraryCache>> loadAnimations(@NotNull Executor pBackgroundExecutor, @NotNull ResourceManager pResourceManager) {
 		return bakeJsonResources(pBackgroundExecutor, pResourceManager, BlueLibConstants.BlueLoader.ANIMATIONS_PATH.getPath(), ResourceCache::bakeAnimations,
 				ex -> new AnimationLibraryCache(new Object2ObjectOpenHashMap<>()));
 	}
 
-	protected static CompletableFuture<Map<ResourceLocation, ModelCache>> loadModels(Executor pBackgroundExecutor, ResourceManager pResourceManager) {
+	@NotNull
+	protected static CompletableFuture<Map<ResourceLocation, ModelCache>> loadModels(@NotNull Executor pBackgroundExecutor, @NotNull ResourceManager pResourceManager) {
 		return bakeJsonResources(pBackgroundExecutor, pResourceManager, BlueLibConstants.BlueLoader.MODELS_PATH.getPath(), ResourceCache::bakeModel,
 				ex -> null);
 	}

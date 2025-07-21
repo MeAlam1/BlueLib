@@ -10,6 +10,7 @@ package software.bluelib.loader.json.deserialize.model;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonObject;
 import net.minecraft.core.Direction;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.utils.JsonUtils;
 
@@ -21,6 +22,7 @@ public record UVFaces(
 		@Nullable FaceUV up,
 		@Nullable FaceUV down) {
 
+	@NotNull
 	public static JsonDeserializer<UVFaces> deserializer() {
 		return (json, type, context) -> {
 			JsonObject obj = json.getAsJsonObject();

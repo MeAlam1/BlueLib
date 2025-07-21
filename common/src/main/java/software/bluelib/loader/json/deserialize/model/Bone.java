@@ -14,12 +14,13 @@ import com.google.gson.JsonParseException;
 import java.util.List;
 import java.util.Map;
 import net.minecraft.util.GsonHelper;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.utils.JsonUtils;
 
 public record Bone(
-		List<Float> bindPoseRotation,
-		List<Cube> cubes,
+		@NotNull List<Float> bindPoseRotation,
+		@NotNull List<Cube> cubes,
 		@Nullable Boolean debug,
 		@Nullable Float inflate,
 		@Nullable Map<String, LocatorValue> locators,
@@ -27,13 +28,14 @@ public record Bone(
 		@Nullable String name,
 		@Nullable Boolean neverRender,
 		@Nullable String parent,
-		List<Float> pivot,
+		@NotNull List<Float> pivot,
 		@Nullable PolyMesh polyMesh,
 		@Nullable Long renderGroupId,
 		@Nullable Boolean reset,
-		List<Float> rotation,
+		@NotNull List<Float> rotation,
 		@Nullable List<TextureMesh> textureMeshes) {
 
+	@NotNull
 	public static JsonDeserializer<Bone> deserializer() throws JsonParseException {
 		return (json, type, context) -> {
 			JsonObject obj = json.getAsJsonObject();

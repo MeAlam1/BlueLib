@@ -11,18 +11,20 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import java.util.List;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.utils.JsonUtils;
 
 public record Cube(
-		List<Float> origin,
-		List<Float> size,
-		List<Float> pivot,
-		List<Float> rotation,
-		UVUnion uvUnion,
+		@NotNull List<Float> origin,
+		@NotNull List<Float> size,
+		@NotNull List<Float> pivot,
+		@NotNull List<Float> rotation,
+		@NotNull UVUnion uvUnion,
 		@Nullable Float inflate,
 		@Nullable Boolean mirror) {
 
+	@NotNull
 	public static JsonDeserializer<Cube> deserializer() throws JsonParseException {
 		return (json, type, context) -> {
 			JsonObject obj = json.getAsJsonObject();

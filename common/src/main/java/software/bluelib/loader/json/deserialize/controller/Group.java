@@ -7,13 +7,17 @@
  */
 package software.bluelib.loader.json.deserialize.controller;
 
-import com.google.gson.*;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
 import java.util.Map;
+import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.utils.JsonUtils;
 
 public record Group(
-		Map<String, Behaviour> behaviours) {
+		@NotNull Map<String, Behaviour> behaviours) {
 
+	@NotNull
 	public static JsonDeserializer<Group> deserializer() throws JsonParseException {
 		return (json, type, context) -> {
 			JsonObject obj = json.getAsJsonObject();

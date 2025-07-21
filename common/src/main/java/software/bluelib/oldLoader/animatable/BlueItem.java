@@ -14,7 +14,7 @@ import net.minecraft.core.component.PatchedDataComponentMap;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
-import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.NotNull;
 import software.bluelib.BlueLibConstants;
 import software.bluelib.client.utils.RenderUtils;
 import software.bluelib.loader.animatable.BlueAnimatable;
@@ -51,7 +51,7 @@ public interface BlueItem extends SingletonBlueAnimatable {
 	}
 
 	@Override
-	default double getTick(Object pItemStack) {
+	default double getTick(@NotNull Object pItemStack) {
 		return RenderUtils.getCurrentTick();
 	}
 
@@ -59,9 +59,8 @@ public interface BlueItem extends SingletonBlueAnimatable {
 		return false;
 	}
 
-	@Nullable
 	@Override
-	default AnimatableInstanceCache useCustomCache() {
+	default @NotNull AnimatableInstanceCache useCustomCache() {
 		if (isPerspectiveAware())
 			return new ContextBasedAnimatableInstanceCache(this);
 

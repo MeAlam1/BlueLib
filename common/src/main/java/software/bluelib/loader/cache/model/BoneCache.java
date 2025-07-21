@@ -10,6 +10,7 @@ package software.bluelib.loader.cache.model;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import java.util.List;
 import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
@@ -17,28 +18,41 @@ import org.joml.Vector3d;
 import org.joml.Vector4f;
 import software.bluelib.oldLoader.animation.state.BoneSnapshot;
 
+// TODO: Record Class?!?!?!?
 @SuppressWarnings("unused")
 public class BoneCache {
 
+	@Nullable
 	private final BoneCache parent;
+	@NotNull
 	private final String name;
 
+	@NotNull
 	private final List<BoneCache> children = new ObjectArrayList<>();
+	@NotNull
 	private final List<CubeCache> cubes = new ObjectArrayList<>();
 
+	@NotNull
 	private final Boolean mirror;
+	@Nullable
 	private final Float inflate;
+	@Nullable
 	private final Boolean dontRender;
+	@Nullable
 	private final Boolean reset;
 
+	@Nullable
 	private BoneSnapshot initialSnapshot;
 
 	private boolean hidden;
 	private boolean childrenHidden = false;
 
-	private float scaleX = 1;
-	private float scaleY = 1;
-	private float scaleZ = 1;
+	@NotNull
+	private Float scaleX = 1f;
+	@NotNull
+	private Float scaleY = 1f;
+	@NotNull
+	private Float scaleZ = 1f;
 
 	private float positionX;
 	private float positionY;
@@ -55,14 +69,18 @@ public class BoneCache {
 	private boolean positionChanged = false;
 	private boolean rotationChanged = false;
 	private boolean scaleChanged = false;
+	@NotNull
 	private final Matrix4f modelSpaceMatrix = new Matrix4f();
+	@NotNull
 	private final Matrix4f localSpaceMatrix = new Matrix4f();
+	@NotNull
 	private final Matrix4f worldSpaceMatrix = new Matrix4f();
+	@NotNull
 	private Matrix3f worldSpaceNormal = new Matrix3f();
 
 	private boolean trackingMatrices;
 
-	public BoneCache(@Nullable BoneCache pParent, String pName, Boolean pMirror, @Nullable Float pInflate, @Nullable Boolean pDontRender, @Nullable Boolean pReset) {
+	public BoneCache(@Nullable BoneCache pParent, @NotNull String pName, @NotNull Boolean pMirror, @Nullable Float pInflate, @Nullable Boolean pDontRender, @Nullable Boolean pReset) {
 		this.parent = pParent;
 		this.name = pName;
 		this.mirror = pMirror;
@@ -78,10 +96,12 @@ public class BoneCache {
 		this.modelSpaceMatrix.identity();
 	}
 
+	@NotNull
 	public String getName() {
 		return this.name;
 	}
 
+	@Nullable
 	public BoneCache getParent() {
 		return this.parent;
 	}
@@ -110,15 +130,18 @@ public class BoneCache {
 		return this.positionZ;
 	}
 
-	public float getScaleX() {
+	@NotNull
+	public Float getScaleX() {
 		return this.scaleX;
 	}
 
-	public float getScaleY() {
+	@NotNull
+	public Float getScaleY() {
 		return this.scaleY;
 	}
 
-	public float getScaleZ() {
+	@NotNull
+	public Float getScaleZ() {
 		return this.scaleZ;
 	}
 
@@ -170,19 +193,19 @@ public class BoneCache {
 		setPosZ(pPosZ);
 	}
 
-	public void setScaleX(float pValue) {
+	public void setScaleX(@NotNull Float pValue) {
 		this.scaleX = pValue;
 
 		markScaleAsChanged();
 	}
 
-	public void setScaleY(float pValue) {
+	public void setScaleY(@NotNull Float pValue) {
 		this.scaleY = pValue;
 
 		markScaleAsChanged();
 	}
 
-	public void setScaleZ(float pValue) {
+	public void setScaleZ(@NotNull Float pValue) {
 		this.scaleZ = pValue;
 
 		markScaleAsChanged();
@@ -272,10 +295,12 @@ public class BoneCache {
 		this.positionChanged = false;
 	}
 
+	@Nullable
 	public BoneSnapshot getInitialSnapshot() {
 		return this.initialSnapshot;
 	}
 
+	@NotNull
 	public List<BoneCache> getChildBones() {
 		return this.children;
 	}
@@ -285,22 +310,27 @@ public class BoneCache {
 			this.initialSnapshot = saveSnapshot();
 	}
 
+	@NotNull
 	public Boolean getMirror() {
 		return this.mirror;
 	}
 
+	@Nullable
 	public Float getInflate() {
 		return this.inflate;
 	}
 
+	@Nullable
 	public Boolean shouldNeverRender() {
 		return this.dontRender;
 	}
 
+	@Nullable
 	public Boolean getReset() {
 		return this.reset;
 	}
 
+	@NotNull
 	public List<CubeCache> getCubes() {
 		return this.cubes;
 	}
@@ -313,63 +343,70 @@ public class BoneCache {
 		this.trackingMatrices = pTrackingMatrices;
 	}
 
+	@NotNull
 	public Matrix4f getModelSpaceMatrix() {
 		setTrackingMatrices(true);
 
 		return this.modelSpaceMatrix;
 	}
 
-	public void setModelSpaceMatrix(Matrix4f pMatrix) {
+	public void setModelSpaceMatrix(@NotNull Matrix4f pMatrix) {
 		this.modelSpaceMatrix.set(pMatrix);
 	}
 
+	@NotNull
 	public Matrix4f getLocalSpaceMatrix() {
 		setTrackingMatrices(true);
 
 		return this.localSpaceMatrix;
 	}
 
-	public void setLocalSpaceMatrix(Matrix4f pMatrix) {
+	public void setLocalSpaceMatrix(@NotNull Matrix4f pMatrix) {
 		this.localSpaceMatrix.set(pMatrix);
 	}
 
+	@NotNull
 	public Matrix4f getWorldSpaceMatrix() {
 		setTrackingMatrices(true);
 
 		return this.worldSpaceMatrix;
 	}
 
-	public void setWorldSpaceMatrix(Matrix4f pMatrix) {
+	public void setWorldSpaceMatrix(@NotNull Matrix4f pMatrix) {
 		this.worldSpaceMatrix.set(pMatrix);
 	}
 
-	public void setWorldSpaceNormal(Matrix3f pMatrix) {
+	public void setWorldSpaceNormal(@NotNull Matrix3f pMatrix) {
 		this.worldSpaceNormal = pMatrix;
 	}
 
+	@NotNull
 	public Matrix3f getWorldSpaceNormal() {
 		return worldSpaceNormal;
 	}
 
+	@NotNull
 	public Vector3d getLocalPosition() {
 		Vector4f vec = getLocalSpaceMatrix().transform(new Vector4f(0, 0, 0, 1));
 
 		return new Vector3d(vec.x(), vec.y(), vec.z());
 	}
 
+	@NotNull
 	public Vector3d getModelPosition() {
 		Vector4f vec = getModelSpaceMatrix().transform(new Vector4f(0, 0, 0, 1));
 
 		return new Vector3d(-vec.x() * 16f, vec.y() * 16f, vec.z() * 16f);
 	}
 
+	@NotNull
 	public Vector3d getWorldPosition() {
 		Vector4f vec = getWorldSpaceMatrix().transform(new Vector4f(0, 0, 0, 1));
 
 		return new Vector3d(vec.x(), vec.y(), vec.z());
 	}
 
-	public void setModelPosition(Vector3d pPos) {
+	public void setModelPosition(@NotNull Vector3d pPos) {
 		// Doesn't work on bones with parent transforms
 		BoneCache parent = getParent();
 		Matrix4f matrix = (parent == null ? new Matrix4f().identity() : new Matrix4f(parent.getModelSpaceMatrix())).invert();
@@ -378,6 +415,7 @@ public class BoneCache {
 		updatePosition(-vec.x() * 16f, vec.y() * 16f, vec.z() * 16f);
 	}
 
+	@NotNull
 	public Matrix4f getModelRotationMatrix() {
 		Matrix4f matrix = new Matrix4f(getModelSpaceMatrix());
 		matrix.m03(0);
@@ -387,29 +425,33 @@ public class BoneCache {
 		return matrix;
 	}
 
+	@NotNull
 	public Vector3d getPositionVector() {
 		return new Vector3d(getPosX(), getPosY(), getPosZ());
 	}
 
+	@NotNull
 	public Vector3d getRotationVector() {
 		return new Vector3d(getRotX(), getRotY(), getRotZ());
 	}
 
+	@NotNull
 	public Vector3d getScaleVector() {
 		return new Vector3d(getScaleX(), getScaleY(), getScaleZ());
 	}
 
-	public void addRotationOffsetFromBone(BoneCache pSource) {
+	public void addRotationOffsetFromBone(@NotNull BoneCache pSource) {
 		setRotX(getRotX() + pSource.getRotX() - pSource.getInitialSnapshot().getRotX());
 		setRotY(getRotY() + pSource.getRotY() - pSource.getInitialSnapshot().getRotY());
 		setRotZ(getRotZ() + pSource.getRotZ() - pSource.getInitialSnapshot().getRotZ());
 	}
 
+	@NotNull
 	public BoneSnapshot saveSnapshot() {
 		return new BoneSnapshot(this);
 	}
 
-	public boolean equals(Object pObj) {
+	public boolean equals(@Nullable Object pObj) {
 		if (this == pObj)
 			return true;
 

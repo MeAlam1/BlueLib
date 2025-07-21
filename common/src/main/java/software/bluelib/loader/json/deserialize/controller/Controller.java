@@ -13,12 +13,14 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import java.util.List;
 import net.minecraft.util.GsonHelper;
+import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.utils.JsonUtils;
 
 public record Controller(
-		String formatVersion,
-		List<Group> groups) {
+		@NotNull String formatVersion,
+		@NotNull List<Group> groups) {
 
+	@NotNull
 	public static JsonDeserializer<Controller> deserializer() throws JsonParseException {
 		return (json, type, context) -> {
 			JsonObject obj = json.getAsJsonObject();

@@ -11,6 +11,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.net.loader.LoaderNetwork;
 import software.bluelib.client.utils.RenderUtils;
@@ -91,7 +92,7 @@ public interface BlueBlockEntity extends BlueAnimatable {
 	}
 
 	@Override
-	default double getTick(Object pBlockEntity) {
+	default double getTick(@NotNull Object pBlockEntity) {
 		return RenderUtils.getCurrentTick();
 	}
 }

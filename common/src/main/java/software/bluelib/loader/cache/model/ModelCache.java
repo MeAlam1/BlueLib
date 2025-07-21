@@ -9,11 +9,14 @@ package software.bluelib.loader.cache.model;
 
 import java.util.List;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import software.bluelib.loader.json.deserialize.model.ModelDescription;
 
-public record ModelCache(List<BoneCache> topLevelBones, ModelDescription modelDescription) {
+public record ModelCache(@NotNull List<BoneCache> topLevelBones, @NotNull ModelDescription modelDescription) {
 
-	public Optional<BoneCache> getBone(String pName) {
+	@NotNull
+	public Optional<BoneCache> getBone(@NotNull String pName) {
 		for (BoneCache bone : this.topLevelBones) {
 			BoneCache childBone = searchForChildBone(bone, pName);
 
@@ -24,7 +27,8 @@ public record ModelCache(List<BoneCache> topLevelBones, ModelDescription modelDe
 		return Optional.empty();
 	}
 
-	public BoneCache searchForChildBone(BoneCache pParent, String pName) {
+	@Nullable
+	public BoneCache searchForChildBone(@NotNull BoneCache pParent, @NotNull String pName) {
 		if (pParent.getName().equals(pName))
 			return pParent;
 

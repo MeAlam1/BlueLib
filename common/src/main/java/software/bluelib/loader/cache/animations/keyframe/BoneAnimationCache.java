@@ -7,9 +7,10 @@
  */
 package software.bluelib.loader.cache.animations.keyframe;
 
+import org.jetbrains.annotations.NotNull;
 import software.bluelib.oldLoader.loading.math.MathValue;
 
-public record BoneAnimationCache(String boneName,
-		KeyframeStackCache<KeyframeCache<MathValue>> rotationKeyFrames,
-		KeyframeStackCache<KeyframeCache<MathValue>> positionKeyFrames,
-		KeyframeStackCache<KeyframeCache<MathValue>> scaleKeyFrames) {}
+public record BoneAnimationCache(@NotNull String boneName,
+		@NotNull KeyframeStackCache<KeyframeCache<MathValue>> rotationKeyFrames,
+		@NotNull KeyframeStackCache<KeyframeCache<MathValue>> positionKeyFrames,
+		@NotNull KeyframeStackCache<KeyframeCache<MathValue>> scaleKeyFrames) {}

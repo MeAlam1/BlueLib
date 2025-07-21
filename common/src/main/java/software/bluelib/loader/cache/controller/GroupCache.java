@@ -8,11 +8,13 @@
 package software.bluelib.loader.cache.controller;
 
 import java.util.Map;
+import org.jetbrains.annotations.NotNull;
 
 public record GroupCache(
-		Map<String, BehaviourCache> behaviours) {
+		@NotNull Map<String, BehaviourCache> behaviours) {
 
-	public BehaviourCache getBehaviour(String pName) {
+	@NotNull
+	public BehaviourCache getBehaviour(@NotNull String pName) {
 		return behaviours.get(pName);
 	}
 }

@@ -13,19 +13,21 @@ import com.google.gson.JsonParseException;
 import java.util.List;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.util.Mth;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.utils.JsonUtils;
 
 public record FaceUV(
 		@Nullable String materialInstance,
-		List<Float> uv,
-		List<Float> uvSize,
-		Rotation uvRotation) {
+		@NotNull List<Float> uv,
+		@NotNull List<Float> uvSize,
+		@NotNull Rotation uvRotation) {
 
-	public FaceUV(@Nullable String pMaterialInstance, List<Float> pUv, List<Float> pUvSize) {
+	public FaceUV(@Nullable String pMaterialInstance, @NotNull List<Float> pUv, @NotNull List<Float> pUvSize) {
 		this(pMaterialInstance, pUv, pUvSize, Rotation.NONE);
 	}
 
+	@NotNull
 	public static JsonDeserializer<FaceUV> deserializer() throws JsonParseException {
 		return (json, type, context) -> {
 			JsonObject obj = json.getAsJsonObject();
@@ -50,7 +52,8 @@ public record FaceUV(
 		CLOCKWISE_180,
 		CLOCKWISE_270;
 
-		public static Rotation fromValue(int pValue) {
+		@NotNull
+		public static Rotation fromValue(@NotNull Integer pValue) {
 			try {
 				return Rotation.values()[(pValue % 360) / 90];
 			} catch (Exception pException) {
@@ -59,7 +62,8 @@ public record FaceUV(
 			}
 		}
 
-		public List<Float> rotateUvs(float pU, float pV, float pUWidth, float pVHeight) {
+		@NotNull
+		public List<Float> rotateUvs(@NotNull Float pU, @NotNull Float pV, @NotNull Float pUWidth, @NotNull Float pVHeight) {
 			return switch (this) {
 				case NONE -> List.of(pU, pV, pUWidth, pV, pUWidth, pVHeight, pU, pVHeight);
 				case CLOCKWISE_90 -> List.of(pUWidth, pV, pUWidth, pVHeight, pU, pVHeight, pU, pV);

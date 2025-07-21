@@ -9,6 +9,8 @@ package software.bluelib.loader.animatable;
 
 import java.util.Map;
 import java.util.WeakHashMap;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import software.bluelib.oldLoader.animatable.instance.AnimatableInstanceCache;
 import software.bluelib.oldLoader.animatable.instance.InstancedAnimatableInstanceCache;
 import software.bluelib.oldLoader.animatable.instance.SingletonAnimatableInstanceCache;
@@ -16,10 +18,12 @@ import software.bluelib.oldLoader.animation.AnimatableManager;
 
 public interface BlueAnimatable {
 
+	@NotNull
 	Map<BlueAnimatable, AnimatableInstanceCache> CACHE = new WeakHashMap<>();
 
-	void registerControllers(AnimatableManager.ControllerRegistrar pControllers);
+	void registerControllers(@NotNull AnimatableManager.ControllerRegistrar pControllers);
 
+	@NotNull
 	default AnimatableInstanceCache getAnimatableInstanceCache() {
 		AnimatableInstanceCache customCache = useCustomCache();
 		if (customCache != null) {
@@ -42,8 +46,9 @@ public interface BlueAnimatable {
 		return false;
 	}
 
-	double getTick(Object pObject);
+	double getTick(@NotNull Object pObject);
 
+	@Nullable
 	default AnimatableInstanceCache useCustomCache() {
 		return null;
 	}

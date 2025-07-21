@@ -9,15 +9,19 @@ package software.bluelib.loader.cache.controller;
 
 import java.util.List;
 import java.util.Map;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public record BehaviourCache(
-		Map<String, List<StateCache>> states) {
+		@NotNull Map<String, List<StateCache>> states) {
 
-	public List<StateCache> getStates(String pName) {
+	@NotNull
+	public List<StateCache> getStates(@NotNull String pName) {
 		return states.get(pName);
 	}
 
-	public StateCache getMainState(String pName) {
+	@Nullable
+	public StateCache getMainState(@NotNull String pName) {
 		List<StateCache> stateList = states.get(pName);
 		if (stateList == null || stateList.isEmpty()) {
 			return null;

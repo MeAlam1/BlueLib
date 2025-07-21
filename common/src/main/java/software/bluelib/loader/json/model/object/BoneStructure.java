@@ -16,7 +16,7 @@ public record BoneStructure(
 		@NotNull Bone self,
 		@NotNull Map<String, BoneStructure> children) {
 
-	public BoneStructure(Bone pSelf) {
+	public BoneStructure(@NotNull Bone pSelf) {
 		this(pSelf, new Object2ObjectOpenHashMap<>());
 	}
 }

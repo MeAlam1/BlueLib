@@ -11,16 +11,18 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import java.util.List;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.utils.JsonUtils;
 
 public record PolyMesh(
 		@Nullable Boolean normalizedUVs,
-		List<Float> normals,
+		@NotNull List<Float> normals,
 		@Nullable PolysUnion polysUnion,
-		List<Float> positions,
-		List<Float> uvs) {
+		@NotNull List<Float> positions,
+		@NotNull List<Float> uvs) {
 
+	@NotNull
 	public static JsonDeserializer<PolyMesh> deserializer() throws JsonParseException {
 		return (json, type, context) -> {
 			JsonObject obj = json.getAsJsonObject();

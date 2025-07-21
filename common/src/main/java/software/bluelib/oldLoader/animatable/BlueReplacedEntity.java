@@ -11,6 +11,7 @@ import java.util.function.Consumer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.net.loader.LoaderNetwork;
 import software.bluelib.loader.animatable.BlueAnimatable;
@@ -69,7 +70,7 @@ public interface BlueReplacedEntity extends SingletonBlueAnimatable {
 	}
 
 	@Override
-	default double getTick(Object pEntity) {
+	default double getTick(@NotNull Object pEntity) {
 		return ((Entity) pEntity).tickCount;
 	}
 

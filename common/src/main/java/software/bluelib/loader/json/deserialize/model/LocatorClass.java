@@ -11,14 +11,16 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import java.util.List;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.utils.JsonUtils;
 
 public record LocatorClass(
 		@Nullable Boolean ignoreInheritedScale,
-		List<Float> offset,
-		List<Float> rotation) {
+		@NotNull List<Float> offset,
+		@NotNull List<Float> rotation) {
 
+	@NotNull
 	public static JsonDeserializer<LocatorClass> deserializer() throws JsonParseException {
 		return (json, type, context) -> {
 			JsonObject obj = json.getAsJsonObject();

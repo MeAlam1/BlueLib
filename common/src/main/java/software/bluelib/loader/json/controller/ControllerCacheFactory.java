@@ -58,18 +58,21 @@ public interface ControllerCacheFactory extends CacheFactory<ControllerCache, Co
 			return new ControllerCache(pController.formatVersion(), groupCaches);
 		}
 
-		private List<GroupCache> constructGroupCaches(List<Group> pGroups) {
+		@NotNull
+		private List<GroupCache> constructGroupCaches(@NotNull List<Group> pGroups) {
 			return pGroups.stream()
 					.map(this::constructGroupCache)
 					.toList();
 		}
 
-		private GroupCache constructGroupCache(Group pGroup) {
+		@NotNull
+		private GroupCache constructGroupCache(@NotNull Group pGroup) {
 			Map<String, BehaviourCache> behaviourCaches = constructBehaviourCaches(pGroup.behaviours());
 			return new GroupCache(behaviourCaches);
 		}
 
-		private Map<String, BehaviourCache> constructBehaviourCaches(Map<String, Behaviour> pBehaviours) {
+		@NotNull
+		private Map<String, BehaviourCache> constructBehaviourCaches(@NotNull Map<String, Behaviour> pBehaviours) {
 			Map<String, BehaviourCache> behaviourCaches = new Object2ObjectOpenHashMap<>(pBehaviours.size());
 
 			for (Map.Entry<String, Behaviour> entry : pBehaviours.entrySet()) {
@@ -83,7 +86,8 @@ public interface ControllerCacheFactory extends CacheFactory<ControllerCache, Co
 			return behaviourCaches;
 		}
 
-		private Map<String, List<StateCache>> constructStateCaches(Map<String, List<State>> pStates) {
+		@NotNull
+		private Map<String, List<StateCache>> constructStateCaches(@NotNull Map<String, List<State>> pStates) {
 			Map<String, List<StateCache>> stateCaches = new Object2ObjectOpenHashMap<>(pStates.size());
 
 			for (Map.Entry<String, List<State>> entry : pStates.entrySet()) {
@@ -98,7 +102,8 @@ public interface ControllerCacheFactory extends CacheFactory<ControllerCache, Co
 			return stateCaches;
 		}
 
-		private StateCache constructStateCache(State pState) {
+		@NotNull
+		private StateCache constructStateCache(@NotNull State pState) {
 			return new StateCache(
 					pState.conditions(),
 					pState.animation(),

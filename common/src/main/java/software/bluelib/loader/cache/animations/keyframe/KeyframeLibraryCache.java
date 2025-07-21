@@ -7,9 +7,12 @@
  */
 package software.bluelib.loader.cache.animations.keyframe;
 
+import org.jetbrains.annotations.NotNull;
 import software.bluelib.oldLoader.animation.keyframe.event.data.CustomInstructionKeyframeData;
 import software.bluelib.oldLoader.animation.keyframe.event.data.ParticleKeyframeData;
 import software.bluelib.oldLoader.animation.keyframe.event.data.SoundKeyframeData;
 
-public record KeyframeLibraryCache(SoundKeyframeData[] sounds, ParticleKeyframeData[] particles,
-		CustomInstructionKeyframeData[] customInstructions) {}
+public record KeyframeLibraryCache(
+		@NotNull SoundKeyframeData[] sounds,
+		@NotNull ParticleKeyframeData[] particles,
+		@NotNull CustomInstructionKeyframeData[] customInstructions) {}

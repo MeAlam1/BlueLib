@@ -11,16 +11,18 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import java.util.List;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.utils.JsonUtils;
 
 public record TextureMesh(
-		List<Float> localPivot,
-		List<Float> position,
-		List<Float> rotation,
-		List<Float> scale,
+		@NotNull List<Float> localPivot,
+		@NotNull List<Float> position,
+		@NotNull List<Float> rotation,
+		@NotNull List<Float> scale,
 		@Nullable String texture) {
 
+	@NotNull
 	public static JsonDeserializer<TextureMesh> deserializer() throws JsonParseException {
 		return (json, type, context) -> {
 			JsonObject obj = json.getAsJsonObject();

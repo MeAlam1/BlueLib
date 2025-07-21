@@ -15,17 +15,19 @@ import org.jetbrains.annotations.NotNull;
 
 public final class IdCache extends SavedData {
 
+	@NotNull
 	private static final Factory<IdCache> FACTORY = new Factory<>(IdCache::new, IdCache::new, null);
+	@NotNull
 	private static final String DATA_KEY = "bluelib_id_cache";
 	private long lastId;
 
 	private IdCache() {}
 
-	private IdCache(CompoundTag pTag, HolderLookup.Provider pRegistryLookup) {
+	private IdCache(@NotNull CompoundTag pTag, @NotNull HolderLookup.Provider pRegistryLookup) {
 		this.lastId = pTag.getLong("last_id");
 	}
 
-	public static long getFreeId(ServerLevel pLevel) {
+	public static long getFreeId(@NotNull ServerLevel pLevel) {
 		return getCache(pLevel).getNextId();
 	}
 
@@ -36,13 +38,14 @@ public final class IdCache extends SavedData {
 	}
 
 	@Override
-	public @NotNull CompoundTag save(CompoundTag pTag, HolderLookup.@NotNull Provider pRegistryLookup) {
+	public @NotNull CompoundTag save(@NotNull CompoundTag pTag, @NotNull HolderLookup.@NotNull Provider pRegistryLookup) {
 		pTag.putLong("last_id", this.lastId);
 
 		return pTag;
 	}
 
-	private static IdCache getCache(ServerLevel pLevel) {
+	@NotNull
+	private static IdCache getCache(@NotNull ServerLevel pLevel) {
 		return pLevel.getServer().overworld().getDataStorage().computeIfAbsent(FACTORY, DATA_KEY);
 	}
 }

@@ -19,6 +19,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.molang.MoLang;
 import software.bluelib.internal.BlueResource;
@@ -55,7 +56,7 @@ public class ExampleEntity extends PathfinderMob implements BlueEntity {
 	}
 
 	@Override
-	public void registerControllers(final AnimatableManager.ControllerRegistrar pControllers) {
+	public void registerControllers(final AnimatableManager.@NotNull ControllerRegistrar pControllers) {
 		pControllers.add(new AnimationController<>(this, "Idle", 5, this::idleAnimController));
 	}
 

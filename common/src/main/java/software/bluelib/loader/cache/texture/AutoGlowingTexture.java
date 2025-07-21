@@ -28,14 +28,18 @@ import net.minecraft.client.resources.metadata.texture.TextureMetadataSection;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.BlueLibConstants;
 import software.bluelib.api.json.resource.GlowingTextureMeta;
 import software.bluelib.client.utils.TextureUtils;
 
+// TODO: Clean This Up
 public class AutoGlowingTexture extends BlueAbstractTexture {
 
+	@NotNull
 	private static final RenderStateShard.ShaderStateShard SHADER_STATE = new RenderStateShard.ShaderStateShard(GameRenderer::getRendertypeEntityTranslucentEmissiveShader);
+	@NotNull
 	private static final RenderStateShard.TransparencyStateShard TRANSPARENCY_STATE = new RenderStateShard.TransparencyStateShard("translucent_transparency", () -> {
 		RenderSystem.enableBlend();
 		RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
@@ -43,7 +47,9 @@ public class AutoGlowingTexture extends BlueAbstractTexture {
 		RenderSystem.disableBlend();
 		RenderSystem.defaultBlendFunc();
 	});
+	@NotNull
 	private static final RenderStateShard.WriteMaskStateShard WRITE_MASK = new RenderStateShard.WriteMaskStateShard(true, true);
+	@NotNull
 	private static final BiFunction<ResourceLocation, Boolean, RenderType> GLOWING_RENDER_TYPE = Util.memoize((texture, isGlowing) -> {
 		RenderStateShard.TextureStateShard textureState = new RenderStateShard.TextureStateShard(texture, false, false);
 
@@ -56,19 +62,23 @@ public class AutoGlowingTexture extends BlueAbstractTexture {
 						.setWriteMaskState(WRITE_MASK).createCompositeState(isGlowing));
 	});
 
+	@NotNull
 	private static final String APPENDIX = "_glowmask";
 
 	public static boolean PRINT_DEBUG_IMAGES = false;
 
+	@NotNull
 	protected final ResourceLocation textureBase;
+	@NotNull
 	protected final ResourceLocation glowLayer;
 
-	public AutoGlowingTexture(ResourceLocation pOriginalLocation, ResourceLocation pLocation) {
+	public AutoGlowingTexture(@NotNull ResourceLocation pOriginalLocation, @NotNull ResourceLocation pLocation) {
 		this.textureBase = pOriginalLocation;
 		this.glowLayer = pLocation;
 	}
 
-	public static ResourceLocation getEmissiveResource(ResourceLocation pBaseResource) {
+	@NotNull
+	public static ResourceLocation getEmissiveResource(@NotNull ResourceLocation pBaseResource) {
 		ResourceLocation path = appendToPath(pBaseResource, APPENDIX);
 
 		generateTexture(path, textureManager -> textureManager.register(path, new AutoGlowingTexture(pBaseResource, path)));
@@ -78,7 +88,7 @@ public class AutoGlowingTexture extends BlueAbstractTexture {
 
 	@Nullable
 	@Override
-	protected RenderCall loadTexture(ResourceManager pResourceManager) throws IOException {
+	protected RenderCall loadTexture(@NotNull ResourceManager pResourceManager) throws IOException {
 		AbstractTexture originalTexture;
 
 		try {
@@ -144,11 +154,13 @@ public class AutoGlowingTexture extends BlueAbstractTexture {
 		};
 	}
 
-	public static RenderType getRenderType(ResourceLocation pTexture) {
+	@NotNull
+	public static RenderType getRenderType(@NotNull ResourceLocation pTexture) {
 		return GLOWING_RENDER_TYPE.apply(getEmissiveResource(pTexture), false);
 	}
 
-	public static RenderType getOutlineRenderType(ResourceLocation pTexture) {
+	@NotNull
+	public static RenderType getOutlineRenderType(@NotNull ResourceLocation pTexture) {
 		return GLOWING_RENDER_TYPE.apply(getEmissiveResource(pTexture), true);
 	}
 }
