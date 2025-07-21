@@ -21,6 +21,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.molang.MoLang;
+import software.bluelib.internal.BlueResource;
+import software.bluelib.loader.cache.ResourceCache;
 import software.bluelib.oldLoader.animatable.BlueEntity;
 import software.bluelib.oldLoader.animation.*;
 
@@ -58,6 +60,6 @@ public class ExampleEntity extends PathfinderMob implements BlueEntity {
 	}
 
 	protected <E extends ExampleEntity> PlayState idleAnimController(final AnimationState<E> pEvent) {
-		return pEvent.setAndContinue(RawAnimation.begin().thenLoop("animation.bulbasaur.ground_idle"));
+		return pEvent.setAndContinue(RawAnimation.begin().thenLoop(ResourceCache.Server.getControllers().get(BlueResource.resource("controllers/test")).getMainGroup().getBehaviour("idle").getMainState("base").animation()));
 	}
 }

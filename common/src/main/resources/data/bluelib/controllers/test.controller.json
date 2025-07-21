@@ -5,19 +5,19 @@
         "base": [
           {
             "conditions": [
-              "q.is_in_water"
-            ],
-            "animation": "animation.bulbasaur.battle_idle",
-            "priority": 1,
-            "sound": "sound.bulbasaur.idle_water"
-          },
-          {
-            "conditions": [
               "true"
             ],
             "animation": "animation.bulbasaur.ground_idle",
             "priority": 0,
             "sound": "sound.bulbasaur.idle_ground"
+          },
+          {
+            "conditions": [
+              "q.is_in_water"
+            ],
+            "animation": "animation.bulbasaur.battle_idle",
+            "priority": 1,
+            "sound": "sound.bulbasaur.idle_water"
           }
         ],
         "quirks": [
