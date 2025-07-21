@@ -11,4 +11,9 @@ import java.util.List;
 
 public record ControllerCache(
 		String formatVersion,
-		List<GroupCache> groups) {}
+		List<GroupCache> groups) {
+
+	public GroupCache getMainGroup() {
+		return groups.getFirst();
+	}
+}

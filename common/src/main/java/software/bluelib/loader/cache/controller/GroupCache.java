@@ -10,4 +10,9 @@ package software.bluelib.loader.cache.controller;
 import java.util.Map;
 
 public record GroupCache(
-		Map<String, BehaviourCache> behaviours) {}
+		Map<String, BehaviourCache> behaviours) {
+
+	public BehaviourCache getBehaviour(String pName) {
+		return behaviours.get(pName);
+	}
+}

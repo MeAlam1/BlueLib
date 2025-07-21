@@ -11,4 +11,17 @@ import java.util.List;
 import java.util.Map;
 
 public record BehaviourCache(
-		Map<String, List<StateCache>> states) {}
+		Map<String, List<StateCache>> states) {
+
+	public List<StateCache> getStates(String pName) {
+		return states.get(pName);
+	}
+
+	public StateCache getMainState(String pName) {
+		List<StateCache> stateList = states.get(pName);
+		if (stateList == null || stateList.isEmpty()) {
+			return null;
+		}
+		return stateList.getFirst();
+	}
+}
