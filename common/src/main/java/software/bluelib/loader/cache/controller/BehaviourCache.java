@@ -8,7 +8,7 @@
 package software.bluelib.loader.cache.controller;
 
 import java.util.List;
+import java.util.Map;
 
-public record ControllerCache(
-		String formatVersion,
-		List<GroupCache> groups) {}
+public record BehaviourCache(
+		Map<String, List<StateCache>> states) {}

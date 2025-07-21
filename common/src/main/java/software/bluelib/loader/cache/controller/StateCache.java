@@ -8,7 +8,10 @@
 package software.bluelib.loader.cache.controller;
 
 import java.util.List;
+import org.jetbrains.annotations.Nullable;
 
-public record ControllerCache(
-		String formatVersion,
-		List<GroupCache> groups) {}
+public record StateCache(
+		List<String> conditions,
+		String animation,
+		@Nullable Integer priority,
+		@Nullable String sound) {}

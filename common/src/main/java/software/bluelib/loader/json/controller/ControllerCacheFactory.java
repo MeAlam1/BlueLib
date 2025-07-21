@@ -8,11 +8,18 @@
 package software.bluelib.loader.json.controller;
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+import java.util.List;
 import java.util.Map;
 import org.jetbrains.annotations.NotNull;
+import software.bluelib.loader.cache.controller.BehaviourCache;
 import software.bluelib.loader.cache.controller.ControllerCache;
+import software.bluelib.loader.cache.controller.GroupCache;
+import software.bluelib.loader.cache.controller.StateCache;
 import software.bluelib.loader.json.CacheFactory;
+import software.bluelib.loader.json.deserialize.controller.Behaviour;
 import software.bluelib.loader.json.deserialize.controller.Controller;
+import software.bluelib.loader.json.deserialize.controller.Group;
+import software.bluelib.loader.json.deserialize.controller.State;
 
 public interface ControllerCacheFactory extends CacheFactory<ControllerCache, Controller> {
 
@@ -47,7 +54,56 @@ public interface ControllerCacheFactory extends CacheFactory<ControllerCache, Co
 
 		@Override
 		public @NotNull ControllerCache constructBlueController(@NotNull Controller pController) {
-			return null;
+			List<GroupCache> groupCaches = constructGroupCaches(pController.groups());
+			return new ControllerCache(pController.formatVersion(), groupCaches);
+		}
+
+		private List<GroupCache> constructGroupCaches(List<Group> pGroups) {
+			return pGroups.stream()
+					.map(this::constructGroupCache)
+					.toList();
+		}
+
+		private GroupCache constructGroupCache(Group pGroup) {
+			Map<String, BehaviourCache> behaviourCaches = constructBehaviourCaches(pGroup.behaviours());
+			return new GroupCache(behaviourCaches);
+		}
+
+		private Map<String, BehaviourCache> constructBehaviourCaches(Map<String, Behaviour> pBehaviours) {
+			Map<String, BehaviourCache> behaviourCaches = new Object2ObjectOpenHashMap<>(pBehaviours.size());
+
+			for (Map.Entry<String, Behaviour> entry : pBehaviours.entrySet()) {
+				String name = entry.getKey();
+				Behaviour behaviour = entry.getValue();
+				Map<String, List<StateCache>> stateCache = constructStateCaches(behaviour.states());
+				BehaviourCache behaviourCache = new BehaviourCache(stateCache);
+				behaviourCaches.put(name, behaviourCache);
+			}
+
+			return behaviourCaches;
+		}
+
+		private Map<String, List<StateCache>> constructStateCaches(Map<String, List<State>> pStates) {
+			Map<String, List<StateCache>> stateCaches = new Object2ObjectOpenHashMap<>(pStates.size());
+
+			for (Map.Entry<String, List<State>> entry : pStates.entrySet()) {
+				String name = entry.getKey();
+				List<State> states = entry.getValue();
+				List<StateCache> stateCacheList = states.stream()
+						.map(this::constructStateCache)
+						.toList();
+				stateCaches.put(name, stateCacheList);
+			}
+
+			return stateCaches;
+		}
+
+		private StateCache constructStateCache(State pState) {
+			return new StateCache(
+					pState.conditions(),
+					pState.animation(),
+					pState.priority(),
+					pState.sound());
 		}
 	}
 }
