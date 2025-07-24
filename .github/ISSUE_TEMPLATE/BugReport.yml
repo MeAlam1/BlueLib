@@ -13,8 +13,6 @@ body:
       options:
         - label: "I have checked that my problem <a href='https://github.com/MeAlam1/BlueLib/issues' target='_blank'>is not already reported</a>"
           required: true
-        - label: "I have checked that my problem <a href='https://github.com/MeAlam1/BlueLib/discussions/9' target='_blank'>is not a known bug</a>"
-          required: true
   - type: textarea
     id: what-happened
     attributes:
