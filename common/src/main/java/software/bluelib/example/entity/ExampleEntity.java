@@ -8,6 +8,7 @@
 
 package software.bluelib.example.entity;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -23,9 +24,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.molang.MoLang;
 import software.bluelib.internal.BlueResource;
-import software.bluelib.loader.cache.ResourceCache;
 import software.bluelib.oldLoader.animatable.BlueEntity;
-import software.bluelib.oldLoader.animation.*;
 
 public class ExampleEntity extends PathfinderMob implements BlueEntity {
 
@@ -56,11 +55,7 @@ public class ExampleEntity extends PathfinderMob implements BlueEntity {
 	}
 
 	@Override
-	public void registerControllers(final AnimatableManager.@NotNull ControllerRegistrar pControllers) {
-		pControllers.add(new AnimationController<>(this, "Idle", 5, this::idleAnimController));
-	}
-
-	protected <E extends ExampleEntity> PlayState idleAnimController(final AnimationState<E> pEvent) {
-		return pEvent.setAndContinue(RawAnimation.begin().thenLoop(ResourceCache.Server.getControllers().get(BlueResource.resource("controllers/test")).getMainGroup().getBehaviour("idle").getMainState("base").animation()));
+	public @NotNull ResourceLocation getControllerResource() {
+		return BlueResource.resource("controllers/test.controller.json");
 	}
 }

@@ -10,7 +10,7 @@ package software.bluelib.oldLoader.animatable.instance;
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import software.bluelib.loader.animatable.BlueAnimatable;
-import software.bluelib.oldLoader.animation.AnimatableManager;
+import software.bluelib.loader.animatable.AnimatableManager;
 
 public class SingletonAnimatableInstanceCache extends AnimatableInstanceCache {
 

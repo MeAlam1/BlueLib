@@ -21,7 +21,7 @@ import software.bluelib.loader.animatable.BlueAnimatable;
 import software.bluelib.loader.cache.item.IdCache;
 import software.bluelib.oldLoader.animatable.instance.AnimatableInstanceCache;
 import software.bluelib.oldLoader.animatable.instance.SingletonAnimatableInstanceCache;
-import software.bluelib.oldLoader.animation.AnimatableManager;
+import software.bluelib.loader.animatable.AnimatableManager;
 import software.bluelib.oldLoader.animation.ContextAwareAnimatableManager;
 import software.bluelib.oldLoader.constant.DataTickets;
 
@@ -79,7 +79,7 @@ public interface BlueItem extends SingletonBlueAnimatable {
 				this.managers.put(pUniqueId, new ContextAwareAnimatableManager<BlueItem, ItemDisplayContext>(this.animatable) {
 
 					@Override
-					protected Map<ItemDisplayContext, AnimatableManager<BlueItem>> buildContextOptions(BlueAnimatable pAnimatable) {
+					protected Map<ItemDisplayContext, AnimatableManager<BlueItem>> buildContextOptions(@NotNull BlueAnimatable pAnimatable) {
 						Map<ItemDisplayContext, AnimatableManager<BlueItem>> map = new EnumMap<>(ItemDisplayContext.class);
 
 						for (ItemDisplayContext context : ItemDisplayContext.values()) {

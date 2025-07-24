@@ -16,7 +16,7 @@ import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.net.loader.LoaderNetwork;
 import software.bluelib.loader.animatable.BlueAnimatable;
 import software.bluelib.oldLoader.animatable.client.BlueRenderProvider;
-import software.bluelib.oldLoader.animation.AnimatableManager;
+import software.bluelib.loader.animatable.AnimatableManager;
 import software.bluelib.oldLoader.constant.dataticket.SerializableDataTicket;
 
 public interface BlueReplacedEntity extends SingletonBlueAnimatable {

@@ -7,21 +7,23 @@
  */
 package software.bluelib.loader.animatable;
 
-import java.util.Map;
-import java.util.WeakHashMap;
+import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.oldLoader.animatable.instance.AnimatableInstanceCache;
 import software.bluelib.oldLoader.animatable.instance.InstancedAnimatableInstanceCache;
 import software.bluelib.oldLoader.animatable.instance.SingletonAnimatableInstanceCache;
-import software.bluelib.oldLoader.animation.AnimatableManager;
+
+import java.util.Map;
+import java.util.WeakHashMap;
 
 public interface BlueAnimatable {
 
 	@NotNull
 	Map<BlueAnimatable, AnimatableInstanceCache> CACHE = new WeakHashMap<>();
-
-	void registerControllers(@NotNull AnimatableManager.ControllerRegistrar pControllers);
+	
+	@NotNull
+	ResourceLocation getControllerResource();
 
 	@NotNull
 	default AnimatableInstanceCache getAnimatableInstanceCache() {

@@ -7,36 +7,39 @@
  */
 package software.bluelib.oldLoader.animation;
 
-import java.util.Map;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import software.bluelib.loader.animatable.AnimatableManager;
 import software.bluelib.loader.animatable.BlueAnimatable;
 import software.bluelib.oldLoader.animation.state.BoneSnapshot;
 import software.bluelib.oldLoader.constant.dataticket.DataTicket;
+
+import java.util.Map;
 
 public abstract class ContextAwareAnimatableManager<T extends BlueAnimatable, C> extends AnimatableManager<T> {
 
 	private final Map<C, AnimatableManager<T>> managers;
 
-	public ContextAwareAnimatableManager(BlueAnimatable animatable) {
-		super(animatable);
+	public ContextAwareAnimatableManager(@NotNull BlueAnimatable pAnimatable) {
+		super(pAnimatable);
 
-		this.managers = buildContextOptions(animatable);
+		this.managers = buildContextOptions(pAnimatable);
 	}
 
-	protected abstract Map<C, AnimatableManager<T>> buildContextOptions(BlueAnimatable animatable);
+	protected abstract Map<C, AnimatableManager<T>> buildContextOptions(@NotNull BlueAnimatable pAnimatable);
 
 	public abstract C getCurrentContext();
 
-	public AnimatableManager<T> getManagerForContext(C context) {
-		return this.managers.get(context);
+	public AnimatableManager<T> getManagerForContext(@NotNull C pContext) {
+		return this.managers.get(pContext);
 	}
 
-	public void addController(AnimationController controller) {
-		getManagerForContext(getCurrentContext()).addController(controller);
+	public void addController(@NotNull AnimationController pController) {
+		getManagerForContext(getCurrentContext()).addController(pController);
 	}
 
-	public void removeController(String name) {
-		getManagerForContext(getCurrentContext()).removeController(name);
+	public void removeController(@NotNull String pName) {
+		getManagerForContext(getCurrentContext()).removeController(pName);
 	}
 
 	public Map<String, AnimationController<T>> getAnimationControllers() {
@@ -55,55 +58,55 @@ public abstract class ContextAwareAnimatableManager<T extends BlueAnimatable, C>
 		return getManagerForContext(getCurrentContext()).getLastUpdateTime();
 	}
 
-	public void updatedAt(double updateTime) {
-		getManagerForContext(getCurrentContext()).updatedAt(updateTime);
+	public void updatedAt(@NotNull Double pUpdateTime) {
+		getManagerForContext(getCurrentContext()).updatedAt(pUpdateTime);
 	}
 
 	public double getFirstTickTime() {
 		return getManagerForContext(getCurrentContext()).getFirstTickTime();
 	}
 
-	public void startedAt(double time) {
-		getManagerForContext(getCurrentContext()).startedAt(time);
+	public void startedAt(@NotNull Double pTime) {
+		getManagerForContext(getCurrentContext()).startedAt(pTime);
 	}
 
 	public boolean isFirstTick() {
 		return getManagerForContext(getCurrentContext()).isFirstTick();
 	}
 
-	protected void finishFirstTick() {
+	public void finishFirstTick() {
 		getManagerForContext(getCurrentContext()).finishFirstTick();
 	}
 
-	public void tryTriggerAnimation(String animName) {
+	public void tryTriggerAnimation(@NotNull String pAnimName) {
 		for (AnimatableManager<T> manager : this.managers.values()) {
-			manager.tryTriggerAnimation(animName);
+			manager.tryTriggerAnimation(pAnimName);
 		}
 	}
 
-	public void tryTriggerAnimation(String controllerName, String animName) {
+	public void tryTriggerAnimation(@NotNull String pControllerName, @NotNull String pAnimName) {
 		for (AnimatableManager<T> manager : this.managers.values()) {
-			manager.tryTriggerAnimation(controllerName, animName);
+			manager.tryTriggerAnimation(pControllerName, pAnimName);
 		}
 	}
 
-	public void stopTriggeredAnimation(@Nullable String animName) {
+	public void stopTriggeredAnimation(@Nullable String pAnimName) {
 		for (AnimatableManager<T> manager : this.managers.values()) {
-			manager.stopTriggeredAnimation(animName);
+			manager.stopTriggeredAnimation(pAnimName);
 		}
 	}
 
-	public void stopTriggeredAnimation(String controllerName, @Nullable String animName) {
+	public void stopTriggeredAnimation(@NotNull String pControllerName, @Nullable String pAnimName) {
 		for (AnimatableManager<T> manager : this.managers.values()) {
-			manager.stopTriggeredAnimation(controllerName, animName);
+			manager.stopTriggeredAnimation(pControllerName, pAnimName);
 		}
 	}
 
-	public <D> void setData(DataTicket<D> dataTicket, D data) {
-		super.setData(dataTicket, data);
+	public <D> void setData(@NotNull DataTicket<D> pDataTicket, @NotNull D pData) {
+		super.setData(pDataTicket, pData);
 	}
 
-	public <D> D getData(DataTicket<D> dataTicket) {
-		return super.getData(dataTicket);
+	public <D> D getData(@NotNull DataTicket<D> pDataTicket) {
+		return super.getData(pDataTicket);
 	}
 }

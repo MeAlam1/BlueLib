@@ -7,8 +7,10 @@
  */
 package software.bluelib.loader.cache.controller;
 
-import java.util.List;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public record ControllerCache(
 		@NotNull String formatVersion,
@@ -17,5 +19,15 @@ public record ControllerCache(
 	@NotNull
 	public GroupCache getMainGroup() {
 		return groups.getFirst();
+	}
+
+	@Nullable
+	public GroupCache getGroup(@NotNull String pGroupName) {
+		for (GroupCache group : groups) {
+			if (group.behaviours().containsKey(pGroupName)) {
+				return group;
+			}
+		}
+		return null;
 	}
 }

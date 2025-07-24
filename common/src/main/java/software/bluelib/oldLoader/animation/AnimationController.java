@@ -52,7 +52,7 @@ public class AnimationController<T extends BlueAnimatable> {
 	protected ParticleKeyframeHandler<T> particleKeyframeHandler = null;
 	protected CustomKeyframeHandler<T> customKeyframeHandler = null;
 
-	protected final Map<String, RawAnimation> triggerableAnimations = new Object2ObjectOpenHashMap<>(0);
+	public final Map<String, RawAnimation> triggerableAnimations = new Object2ObjectOpenHashMap<>(0);
 	protected RawAnimation triggeredAnimation = null;
 	protected boolean handlingTriggeredAnimations = false;
 
@@ -234,7 +234,7 @@ public class AnimationController<T extends BlueAnimatable> {
 		return true;
 	}
 
-	protected boolean stopTriggeredAnimation() {
+	public boolean stopTriggeredAnimation() {
 		if (this.triggeredAnimation == null)
 			return false;
 

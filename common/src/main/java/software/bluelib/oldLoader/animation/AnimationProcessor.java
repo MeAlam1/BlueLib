@@ -16,6 +16,7 @@ import net.minecraft.util.Mth;
 import software.bluelib.api.molang.MoLang;
 import software.bluelib.api.molang.MoLangType;
 import software.bluelib.api.molang.context.AnimatableMoLang;
+import software.bluelib.loader.animatable.AnimatableManager;
 import software.bluelib.loader.animatable.BlueAnimatable;
 import software.bluelib.loader.cache.animations.AnimationCache;
 import software.bluelib.loader.cache.model.BoneCache;

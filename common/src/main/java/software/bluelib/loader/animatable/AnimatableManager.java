@@ -5,19 +5,23 @@
  * If a copy of the MIT License was not distributed with this file,
  * You can obtain one at https://opensource.org/licenses/MIT.
  */
-package software.bluelib.oldLoader.animation;
+package software.bluelib.loader.animatable;
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import software.bluelib.loader.cache.controller.ControllerCache;
+import software.bluelib.loader.controller.ControllerManager;
+import software.bluelib.oldLoader.animation.AnimationController;
+import software.bluelib.oldLoader.animation.state.BoneSnapshot;
+import software.bluelib.oldLoader.constant.dataticket.DataTicket;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import org.jetbrains.annotations.ApiStatus;
-import org.jetbrains.annotations.Nullable;
-import software.bluelib.loader.animatable.BlueAnimatable;
-import software.bluelib.oldLoader.animation.state.BoneSnapshot;
-import software.bluelib.oldLoader.constant.dataticket.DataTicket;
 
 public class AnimatableManager<T extends BlueAnimatable> {
 
@@ -29,20 +33,21 @@ public class AnimatableManager<T extends BlueAnimatable> {
 	private boolean isFirstTick = true;
 	private double firstTickTime = -1;
 
-	public AnimatableManager(BlueAnimatable animatable) {
+	public AnimatableManager(@NotNull BlueAnimatable pAnimatable) {
 		ControllerRegistrar registrar = new ControllerRegistrar(new ObjectArrayList<>(2));
-
-		animatable.registerControllers(registrar);
+		
+		ControllerCache controllerCache = ControllerManager.getBakedController(pAnimatable.getControllerResource());
+		ControllerManager.registerControllers(pAnimatable, controllerCache, registrar, null);
 
 		this.animationControllers = registrar.build();
 	}
 
-	public void addController(AnimationController controller) {
-		getAnimationControllers().put(controller.getName(), controller);
+	public void addController(@NotNull AnimationController pController) {
+		getAnimationControllers().put(pController.getName(), pController);
 	}
 
-	public void removeController(String name) {
-		getAnimationControllers().remove(name);
+	public void removeController(@NotNull String pName) {
+		getAnimationControllers().remove(pName);
 	}
 
 	public Map<String, AnimationController<T>> getAnimationControllers() {
@@ -61,81 +66,81 @@ public class AnimatableManager<T extends BlueAnimatable> {
 		return this.lastUpdateTime;
 	}
 
-	public void updatedAt(double updateTime) {
-		this.lastUpdateTime = updateTime;
+	public void updatedAt(@NotNull Double pUpdateTime) {
+		this.lastUpdateTime = pUpdateTime;
 	}
 
 	public double getFirstTickTime() {
 		return this.firstTickTime;
 	}
 
-	public void startedAt(double time) {
-		this.firstTickTime = time;
+	public void startedAt(@NotNull Double pTime) {
+		this.firstTickTime = pTime;
 	}
 
 	public boolean isFirstTick() {
 		return this.isFirstTick;
 	}
 
-	protected void finishFirstTick() {
+	public void finishFirstTick() {
 		this.isFirstTick = false;
 	}
 
-	public <D> void setData(DataTicket<D> dataTicket, D data) {
+	public <D> void setData(@NotNull DataTicket<D> pDataTicket, @NotNull D pData) {
 		if (this.extraData == null)
 			this.extraData = new Object2ObjectOpenHashMap<>();
 
-		this.extraData.put(dataTicket, data);
+		this.extraData.put(pDataTicket, pData);
 	}
 
-	public <D> D getData(DataTicket<D> dataTicket) {
-		return this.extraData != null ? dataTicket.getData(this.extraData) : null;
+	public <D> D getData(@NotNull DataTicket<D> pDataTicket) {
+		return this.extraData != null ? pDataTicket.getData(this.extraData) : null;
 	}
 
-	public void tryTriggerAnimation(String animName) {
+	public void tryTriggerAnimation(@NotNull String pAnimName) {
 		for (AnimationController<?> controller : getAnimationControllers().values()) {
-			if (controller.tryTriggerAnimation(animName))
+			if (controller.tryTriggerAnimation(pAnimName))
 				return;
 		}
 	}
 
-	public void tryTriggerAnimation(String controllerName, String animName) {
-		AnimationController<?> controller = getAnimationControllers().get(controllerName);
+	public void tryTriggerAnimation(@NotNull String pControllerName, @NotNull String pAnimName) {
+		AnimationController<?> controller = getAnimationControllers().get(pControllerName);
 
 		if (controller != null)
-			controller.tryTriggerAnimation(animName);
+			controller.tryTriggerAnimation(pAnimName);
 	}
 
-	public void stopTriggeredAnimation(@Nullable String animName) {
+	public void stopTriggeredAnimation(@Nullable String pAnimName) {
 		for (AnimationController<?> controller : getAnimationControllers().values()) {
-			if ((animName == null || controller.triggerableAnimations.get(animName) == controller.getTriggeredAnimation()) && controller.stopTriggeredAnimation())
+			if ((pAnimName == null || controller.triggerableAnimations.get(pAnimName) == controller.getTriggeredAnimation()) && controller.stopTriggeredAnimation())
 				return;
 		}
 	}
 
-	public void stopTriggeredAnimation(String controllerName, @Nullable String animName) {
-		AnimationController<?> controller = getAnimationControllers().get(controllerName);
+	public void stopTriggeredAnimation(@NotNull String pControllerName, @Nullable String pAnimName) {
+		AnimationController<?> controller = getAnimationControllers().get(pControllerName);
 
-		if (controller != null && (animName == null || controller.triggerableAnimations.get(animName) == controller.getTriggeredAnimation()))
+		if (controller != null && (pAnimName == null || controller.triggerableAnimations.get(pAnimName) == controller.getTriggeredAnimation()))
 			controller.stopTriggeredAnimation();
 	}
 
 	public record ControllerRegistrar(List<AnimationController<? extends BlueAnimatable>> controllers) {
 
-		public ControllerRegistrar add(AnimationController<?>... controllers) {
-			controllers().addAll(Arrays.asList(controllers));
+		public ControllerRegistrar add(@NotNull AnimationController<?>... pControllers) {
+			controllers().addAll(Arrays.asList(pControllers));
 
 			return this;
 		}
 
-		public ControllerRegistrar add(AnimationController<?> controller) {
-			controllers().add(controller);
+		public ControllerRegistrar add(@NotNull AnimationController<?> pController) {
+			controllers().add(pController);
 
 			return this;
 		}
 
-		public ControllerRegistrar remove(String name) {
-			controllers().removeIf(controller -> controller.getName().equals(name));
+		public ControllerRegistrar remove(@NotNull String pName) {
+			controllers().removeIf(controller -> controller.getName().equals(pName));
 
 			return this;
 		}

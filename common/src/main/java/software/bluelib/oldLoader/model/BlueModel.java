@@ -15,6 +15,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
+import software.bluelib.api.utils.LoaderUtils;
 import software.bluelib.client.utils.RenderUtils;
 import software.bluelib.loader.animatable.BlueAnimatable;
 import software.bluelib.loader.cache.ResourceCache;
@@ -23,7 +24,7 @@ import software.bluelib.loader.cache.animations.AnimationLibraryCache;
 import software.bluelib.loader.cache.model.BoneCache;
 import software.bluelib.loader.cache.model.ModelCache;
 import software.bluelib.oldLoader.animatable.BlueReplacedEntity;
-import software.bluelib.oldLoader.animation.AnimatableManager;
+import software.bluelib.loader.animatable.AnimatableManager;
 import software.bluelib.oldLoader.animation.AnimationProcessor;
 import software.bluelib.oldLoader.animation.AnimationState;
 import software.bluelib.oldLoader.constant.DataTickets;
@@ -68,21 +69,11 @@ public abstract class BlueModel<T extends BlueAnimatable> {
 		return RenderType.entityCutoutNoCull(pTexture);
 	}
 
-	public static ResourceLocation stripSuffix(String pSuffix, ResourceLocation pLocation) {
-		String path = pLocation.getPath();
-		if (path.endsWith(pSuffix)) {
-			String newPath = path.substring(0, path.length() - pSuffix.length());
-			return pLocation.withPath(newPath);
-		} else {
-			throw new RuntimeException("Invalid file type: expected a " + pSuffix + " file, got: " + path);
-		}
-	}
-
 	public ModelCache getBakedModel(ResourceLocation pLocation) {
 		ResourceLocation[] attempts = new ResourceLocation[] {
 				pLocation,
-				stripSuffix(".json", pLocation),
-				stripSuffix(".geo.json", pLocation)
+				LoaderUtils.stripSuffix(".json", pLocation),
+				LoaderUtils.stripSuffix(".geo.json", pLocation)
 		};
 
 		for (ResourceLocation loc : attempts) {
@@ -111,8 +102,8 @@ public abstract class BlueModel<T extends BlueAnimatable> {
 		ResourceLocation location = getAnimationResource(pAnimatable);
 		ResourceLocation[] attempts = new ResourceLocation[] {
 				location,
-				stripSuffix(".json", location),
-				stripSuffix(".animation.json", location)
+				LoaderUtils.stripSuffix(".json", location),
+				LoaderUtils.stripSuffix(".animation.json", location)
 		};
 
 		for (ResourceLocation loc : attempts) {
