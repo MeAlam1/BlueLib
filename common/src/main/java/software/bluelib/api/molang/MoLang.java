@@ -33,6 +33,13 @@ public class MoLang {
 	}
 
 	public static @Nullable Object load(@NotNull String pExpression) {
+		if (pExpression.equals("true") || pExpression.equals("q.true")) {
+			return Boolean.TRUE;
+		}
+		if (pExpression.equals("false") || pExpression.equals("q.false")) {
+			return Boolean.FALSE;
+		}
+
 		if (pExpression.startsWith("q.")) {
 			String expr = pExpression.substring("q.".length());
 
@@ -56,14 +63,17 @@ public class MoLang {
 		return service.getRuntimeFor(MoLangType.GENERAL).evaluate(pExpression);
 	}
 
-	public static @Nullable Object entity(@NotNull String pExpression, @NotNull Entity pEntity) {
-		return moLangWithContext(pExpression, MoLangType.ENTITY, new EntityMoLang(() -> pEntity));
-	}
-
 	protected static @Nullable Object moLangWithContext(
 			@NotNull String pExpression,
 			@NotNull MoLangType pType,
 			@NotNull MoLangContext pContext) {
+		if (pExpression.equals("true") || pExpression.equals("q.true")) {
+			return Boolean.TRUE;
+		}
+		if (pExpression.equals("false") || pExpression.equals("q.false")) {
+			return Boolean.FALSE;
+		}
+
 		if (pExpression.startsWith("q.")) {
 			String expr = pExpression.substring("q.".length());
 
@@ -95,5 +105,9 @@ public class MoLang {
 		} finally {
 			runtime.popContext(pType.id());
 		}
+	}
+
+	public static @Nullable Object entity(@NotNull String pExpression, @NotNull Entity pEntity) {
+		return moLangWithContext(pExpression, MoLangType.ENTITY, new EntityMoLang(() -> pEntity));
 	}
 }

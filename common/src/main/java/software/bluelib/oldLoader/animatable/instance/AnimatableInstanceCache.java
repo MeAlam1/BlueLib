@@ -11,10 +11,10 @@ import com.google.common.base.Suppliers;
 import java.util.function.Supplier;
 import org.apache.commons.lang3.mutable.MutableObject;
 import software.bluelib.BlueLibConstants;
+import software.bluelib.loader.animatable.AnimatableManager;
 import software.bluelib.loader.animatable.BlueAnimatable;
 import software.bluelib.oldLoader.animatable.SingletonBlueAnimatable;
 import software.bluelib.oldLoader.animatable.client.BlueRenderProvider;
-import software.bluelib.loader.animatable.AnimatableManager;
 import software.bluelib.oldLoader.constant.dataticket.DataTicket;
 
 public abstract class AnimatableInstanceCache {

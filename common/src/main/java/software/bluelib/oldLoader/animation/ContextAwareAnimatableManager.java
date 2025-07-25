@@ -7,14 +7,13 @@
  */
 package software.bluelib.oldLoader.animation;
 
+import java.util.Map;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.loader.animatable.AnimatableManager;
 import software.bluelib.loader.animatable.BlueAnimatable;
 import software.bluelib.oldLoader.animation.state.BoneSnapshot;
 import software.bluelib.oldLoader.constant.dataticket.DataTicket;
-
-import java.util.Map;
 
 public abstract class ContextAwareAnimatableManager<T extends BlueAnimatable, C> extends AnimatableManager<T> {
 

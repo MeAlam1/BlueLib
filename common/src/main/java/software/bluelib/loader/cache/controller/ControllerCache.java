@@ -7,10 +7,9 @@
  */
 package software.bluelib.loader.cache.controller;
 
+import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.List;
 
 public record ControllerCache(
 		@NotNull String formatVersion,

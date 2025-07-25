@@ -10,6 +10,9 @@ package software.bluelib.loader.animatable;
 import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -18,10 +21,6 @@ import software.bluelib.loader.controller.ControllerManager;
 import software.bluelib.oldLoader.animation.AnimationController;
 import software.bluelib.oldLoader.animation.state.BoneSnapshot;
 import software.bluelib.oldLoader.constant.dataticket.DataTicket;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
 
 public class AnimatableManager<T extends BlueAnimatable> {
 
@@ -35,7 +34,7 @@ public class AnimatableManager<T extends BlueAnimatable> {
 
 	public AnimatableManager(@NotNull BlueAnimatable pAnimatable) {
 		ControllerRegistrar registrar = new ControllerRegistrar(new ObjectArrayList<>(2));
-		
+
 		ControllerCache controllerCache = ControllerManager.getBakedController(pAnimatable.getControllerResource());
 		ControllerManager.registerControllers(pAnimatable, controllerCache, registrar, null);
 

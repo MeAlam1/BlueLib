@@ -17,11 +17,11 @@ import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import software.bluelib.BlueLibConstants;
 import software.bluelib.client.utils.RenderUtils;
+import software.bluelib.loader.animatable.AnimatableManager;
 import software.bluelib.loader.animatable.BlueAnimatable;
 import software.bluelib.loader.cache.item.IdCache;
 import software.bluelib.oldLoader.animatable.instance.AnimatableInstanceCache;
 import software.bluelib.oldLoader.animatable.instance.SingletonAnimatableInstanceCache;
-import software.bluelib.loader.animatable.AnimatableManager;
 import software.bluelib.oldLoader.animation.ContextAwareAnimatableManager;
 import software.bluelib.oldLoader.constant.DataTickets;
 
