@@ -52,7 +52,12 @@ public class MoLangRuntime {
 
 		if ((pExpression.startsWith("'") && pExpression.endsWith("'")) ||
 				(pExpression.startsWith("\"") && pExpression.endsWith("\""))) {
-			return pExpression.substring(1, pExpression.length() - 1);
+			String inner = pExpression.substring(1, pExpression.length() - 1);
+			if (looksLikeMoLang(inner)) {
+				return evaluate(inner);
+			}
+			if (isNumeric(inner)) return Double.parseDouble(inner);
+			return inner;
 		}
 
 		if (isNumeric(pExpression)) return Double.parseDouble(pExpression);
@@ -80,6 +85,10 @@ public class MoLangRuntime {
 		return null;
 	}
 
+	private boolean looksLikeMoLang(@NotNull String pExpr) {
+		return pExpr.matches("[a-zA-Z]\\w*\\.[\\w_]+(\\(.*\\))?");
+	}
+
 	private @NotNull List<Object> parseArgs(@NotNull String pArgStr) {
 		List<Object> args = new ArrayList<>();
 		int depth = 0;
@@ -87,7 +96,7 @@ public class MoLangRuntime {
 		for (int i = 0; i < pArgStr.length(); i++) {
 			char c = pArgStr.charAt(i);
 			if (c == ',' && depth == 0) {
-				args.add(evaluate(current.toString().trim()));
+				args.add(evaluateNested(current.toString().trim()));
 				current.setLength(0);
 			} else {
 				if (c == '(') depth++;
@@ -96,9 +105,13 @@ public class MoLangRuntime {
 			}
 		}
 		if (!current.isEmpty()) {
-			args.add(evaluate(current.toString().trim()));
+			args.add(evaluateNested(current.toString().trim()));
 		}
 		return args;
+	}
+
+	private Object evaluateNested(String pExpr) {
+		return evaluate(pExpr);
 	}
 
 	private boolean isNumeric(@NotNull String pString) {

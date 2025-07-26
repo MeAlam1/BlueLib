@@ -104,7 +104,12 @@ public class BlueArmorRenderer<T extends Item & BlueItem> extends HumanoidModel 
 
 	@Override
 	public long getInstanceId(T pAnimatable) {
-		return -BlueItem.getId(this.currentStack);
+		long stackId = BlueItem.getId(this.currentStack);
+
+		if (stackId == Long.MAX_VALUE)
+			return (long) Math.pow(this.currentEntity.getId(), 7) * -(this.currentSlot.ordinal() + 1);
+
+		return -stackId;
 	}
 
 	@Override

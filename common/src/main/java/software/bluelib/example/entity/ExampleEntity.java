@@ -22,7 +22,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import software.bluelib.api.molang.MoLang;
 import software.bluelib.internal.BlueResource;
 import software.bluelib.oldLoader.animatable.BlueEntity;
 
@@ -40,16 +39,19 @@ public class ExampleEntity extends PathfinderMob implements BlueEntity {
 
 	@Override
 	public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData spawnGroupData) {
-		MoLang.load("q.print('hello')");
-		System.out.println(MoLang.load("q.divide('1', '2', '3')"));
+		//MoLang.load("q.print(q.add('1', '2', '3'))");
+		//System.out.println(MoLang.load("q.add('1', '2', '3')"));
+		//System.out.println(MoLang.load("q.equals(q.add('1', '2', '3'), '6')"));
 		return super.finalizeSpawn(level, difficulty, spawnType, spawnGroupData);
 	}
 
 	@Override
 	protected InteractionResult mobInteract(Player player, InteractionHand hand) {
-		//System.out.println(MoLang.autoMoLang("o.divide('1', '2', '3')"));
-		System.out.println("Molang E: + " + MoLang.entity("e.get_pos", this));
-		System.out.println("Molang Q: + " + MoLang.entity("q.get_pos", this));
+		//MoLang.load("q.print(q.add('1', '2', '3'))");
+		//System.out.println(MoLang.load("q.add('1', '2', '3')"));
+		//System.out.println(MoLang.load("q.equals(q.add('1', '2', '3'), '6')"));
+		//System.out.println("Molang E: + " + MoLang.entity("e.get_pos", this));
+		//System.out.println("Molang Q: + " + MoLang.entity("q.get_pos", this));
 		//System.out.println("Game: + " + position());
 		return super.mobInteract(player, hand);
 	}

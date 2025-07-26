@@ -36,7 +36,7 @@ public class AnimatableManager<T extends BlueAnimatable> {
 		ControllerRegistrar registrar = new ControllerRegistrar(new ObjectArrayList<>(2));
 
 		ControllerCache controllerCache = ControllerManager.getBakedController(pAnimatable.getControllerResource());
-		ControllerManager.registerControllers(pAnimatable, controllerCache, registrar, null);
+		ControllerManager.registerControllers(pAnimatable, controllerCache, registrar);
 
 		this.animationControllers = registrar.build();
 	}

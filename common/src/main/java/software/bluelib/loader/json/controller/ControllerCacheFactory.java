@@ -68,7 +68,8 @@ public interface ControllerCacheFactory extends CacheFactory<ControllerCache, Co
 		@NotNull
 		private GroupCache constructGroupCache(@NotNull Group pGroup) {
 			Map<String, BehaviourCache> behaviourCaches = constructBehaviourCaches(pGroup.behaviours());
-			return new GroupCache(behaviourCaches);
+			return new GroupCache(
+					behaviourCaches);
 		}
 
 		@NotNull
@@ -79,7 +80,10 @@ public interface ControllerCacheFactory extends CacheFactory<ControllerCache, Co
 				String name = entry.getKey();
 				Behaviour behaviour = entry.getValue();
 				Map<String, List<StateCache>> stateCache = constructStateCaches(behaviour.states());
-				BehaviourCache behaviourCache = new BehaviourCache(stateCache);
+				BehaviourCache behaviourCache = new BehaviourCache(
+						behaviour.conditions(),
+						behaviour.priority(),
+						stateCache);
 				behaviourCaches.put(name, behaviourCache);
 			}
 

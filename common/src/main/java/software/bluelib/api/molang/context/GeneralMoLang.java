@@ -10,8 +10,10 @@ package software.bluelib.api.molang.context;
 public class GeneralMoLang extends BaseMoLangContext {
 
 	public GeneralMoLang() {
-		registerFunction("print", (args, rt) -> {
-			if (!args.isEmpty()) System.out.println(args.getFirst());
+		registerFunction("print", (arguments, runtime) -> {
+			for (Object arg : arguments) {
+				System.out.println(arg);
+			}
 			return null;
 		});
 	}

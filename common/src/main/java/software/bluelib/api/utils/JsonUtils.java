@@ -129,6 +129,25 @@ public final class JsonUtils {
 		return map;
 	}
 
+	@NotNull
+	public static JsonObject filterJsonObject(@NotNull JsonObject pSource, @NotNull String... pAvoid) {
+		JsonObject result = new JsonObject();
+		for (Map.Entry<String, com.google.gson.JsonElement> entry : pSource.entrySet()) {
+			String key = entry.getKey();
+			boolean skip = false;
+			for (String avoid : pAvoid) {
+				if (key.equals(avoid)) {
+					skip = true;
+					break;
+				}
+			}
+			if (!skip) {
+				result.add(key, entry.getValue());
+			}
+		}
+		return result;
+	}
+
 	@Nullable
 	public static Long getOptionalLong(@NotNull JsonObject pObj, @NotNull String pElementName) {
 		return pObj.has(pElementName) ? GsonHelper.getAsLong(pObj, pElementName) : null;

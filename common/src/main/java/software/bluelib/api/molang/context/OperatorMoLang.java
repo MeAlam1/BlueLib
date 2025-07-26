@@ -24,6 +24,7 @@ public class OperatorMoLang extends BaseMoLangContext {
 	public OperatorMoLang() {
 		Arithmetic();
 		Unary();
+		Comparison();
 	}
 
 	private void Arithmetic() {
@@ -86,6 +87,33 @@ public class OperatorMoLang extends BaseMoLangContext {
 		registerFunction("decrement", (arguments, runtime) -> {
 			if (arguments.isEmpty()) return -1.0;
 			return toDouble(arguments.getFirst()) - 1;
+		});
+	}
+
+	private void Comparison() {
+		registerFunction("equals", (arguments, runtime) -> {
+			if (arguments.size() < 2) return false;
+			return toDouble(arguments.get(0)) == toDouble(arguments.get(1));
+		});
+		registerFunction("not_equals", (arguments, runtime) -> {
+			if (arguments.size() < 2) return false;
+			return toDouble(arguments.get(0)) != toDouble(arguments.get(1));
+		});
+		registerFunction("less_than", (arguments, runtime) -> {
+			if (arguments.size() < 2) return false;
+			return toDouble(arguments.get(0)) < toDouble(arguments.get(1));
+		});
+		registerFunction("less_than_or_equal", (arguments, runtime) -> {
+			if (arguments.size() < 2) return false;
+			return toDouble(arguments.get(0)) <= toDouble(arguments.get(1));
+		});
+		registerFunction("greater_than", (arguments, runtime) -> {
+			if (arguments.size() < 2) return false;
+			return toDouble(arguments.get(0)) > toDouble(arguments.get(1));
+		});
+		registerFunction("greater_than_or_equal", (arguments, runtime) -> {
+			if (arguments.size() < 2) return false;
+			return toDouble(arguments.get(0)) >= toDouble(arguments.get(1));
 		});
 	}
 

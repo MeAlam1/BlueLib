@@ -12,7 +12,10 @@ import java.util.Map;
 import net.minecraft.world.entity.Entity;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import software.bluelib.api.molang.context.CompositeMoLangContext;
 import software.bluelib.api.molang.context.EntityMoLang;
+
+// TODO: Rewrite how all the MoLang is loaded and evaluated.
 
 public class MoLang {
 
@@ -32,7 +35,11 @@ public class MoLang {
 		PREFIX_MAP.put(pPrefix, pType);
 	}
 
-	public static @Nullable Object load(@NotNull String pExpression) {
+	public static @Nullable Object load(@Nullable String pExpression) {
+		if (pExpression == null || pExpression.isEmpty()) {
+			return null;
+		}
+
 		if (pExpression.equals("true") || pExpression.equals("q.true")) {
 			return Boolean.TRUE;
 		}
@@ -40,33 +47,34 @@ public class MoLang {
 			return Boolean.FALSE;
 		}
 
+		CompositeMoLangContext composite = new CompositeMoLangContext();
+		for (MoLangContext ctx : service.getSharedComposite().contexts) {
+			composite.addContext(ctx);
+		}
+
 		if (pExpression.startsWith("q.")) {
 			String expr = pExpression.substring("q.".length());
-
-			for (MoLangType type : MoLangType.values()) {
-				Object result = service.getRuntimeFor(type).evaluate(type.id() + "." + expr);
-				if (result != null) {
-					return result;
-				}
-			}
-			return null;
+			return moLangWithContext("q." + expr, MoLangType.ANIMATABLE, composite);
 		}
 
 		for (Map.Entry<String, MoLangType> entry : PREFIX_MAP.entrySet()) {
 			if (pExpression.startsWith(entry.getKey())) {
 				String expr = pExpression.substring(entry.getKey().length());
 				expr = entry.getValue().id() + "." + expr;
-				return service.getRuntimeFor(entry.getValue()).evaluate(expr);
+				return moLangWithContext(expr, entry.getValue(), composite);
 			}
 		}
 
-		return service.getRuntimeFor(MoLangType.GENERAL).evaluate(pExpression);
+		return moLangWithContext(pExpression, MoLangType.GENERAL, composite);
 	}
 
 	protected static @Nullable Object moLangWithContext(
-			@NotNull String pExpression,
+			@Nullable String pExpression,
 			@NotNull MoLangType pType,
 			@NotNull MoLangContext pContext) {
+		if (pExpression == null || pExpression.isEmpty()) {
+			return null;
+		}
 		if (pExpression.equals("true") || pExpression.equals("q.true")) {
 			return Boolean.TRUE;
 		}
@@ -107,7 +115,18 @@ public class MoLang {
 		}
 	}
 
-	public static @Nullable Object entity(@NotNull String pExpression, @NotNull Entity pEntity) {
-		return moLangWithContext(pExpression, MoLangType.ENTITY, new EntityMoLang(() -> pEntity));
+	public static @Nullable Object entity(@Nullable String pExpression, @NotNull Entity pEntity) {
+		if (pExpression == null || pExpression.isEmpty()) {
+			return null;
+		}
+		CompositeMoLangContext composite = new CompositeMoLangContext();
+		for (MoLangContext ctx : service.getSharedComposite().contexts) {
+			composite.addContext(ctx);
+		}
+		composite.addContext(new EntityMoLang(() -> pEntity));
+		if (pExpression.startsWith("q.")) {
+			return moLangWithContext(pExpression, MoLangType.ANIMATABLE, composite);
+		}
+		return moLangWithContext(pExpression, MoLangType.ENTITY, composite);
 	}
 }

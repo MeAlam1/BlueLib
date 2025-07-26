@@ -1,3 +1,10 @@
+/*
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
+ */
 package software.bluelib.loader.controller;
 
 import java.util.ArrayList;
@@ -6,11 +13,8 @@ import java.util.Map;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.molang.MoLang;
 import software.bluelib.api.utils.LoaderUtils;
-import software.bluelib.api.utils.logging.BaseLogLevel;
-import software.bluelib.api.utils.logging.BaseLogger;
 import software.bluelib.loader.animatable.AnimatableManager;
 import software.bluelib.loader.animatable.BlueAnimatable;
 import software.bluelib.loader.cache.ResourceCache;
@@ -25,17 +29,48 @@ import software.bluelib.oldLoader.animation.RawAnimation;
 
 public class ControllerManager {
 
-	public static void registerControllers(BlueAnimatable pAnimatable, @NotNull ControllerCache pCache, @NotNull AnimatableManager.ControllerRegistrar pControllers, @Nullable String pGroupName) {
-		GroupCache group = pGroupName == null ? pCache.getMainGroup() : pCache.getGroup(pGroupName);
-		Map<String, BehaviourCache> behaviours = group.behaviours();
-		if (behaviours.isEmpty()) {
-			return;
+	public static void registerControllers(BlueAnimatable pAnimatable, @NotNull ControllerCache pCache, @NotNull AnimatableManager.ControllerRegistrar pControllers) {
+		List<GroupCache> groups = pCache.groups();
+		for (GroupCache group : groups) {
+			Map<String, BehaviourCache> behaviours = group.behaviours();
+			if (behaviours.isEmpty()) continue;
+
+			pControllers.add(new AnimationController<>(pAnimatable, "main", 5, k -> {
+				List<Map.Entry<String, BehaviourCache>> validBehaviours = new ArrayList<>();
+				int maxPriority = Integer.MIN_VALUE;
+				for (Map.Entry<String, BehaviourCache> entry : behaviours.entrySet()) {
+					BehaviourCache behaviour = entry.getValue();
+					if (isOverlay(behaviour)) continue;
+					int priority = getEffectiveBehaviourPriority(behaviour, pAnimatable);
+					if (priority > maxPriority) {
+						validBehaviours.clear();
+						maxPriority = priority;
+					}
+					if (priority == maxPriority && priority != Integer.MIN_VALUE) {
+						validBehaviours.add(entry);
+					}
+				}
+				for (Map.Entry<String, BehaviourCache> entry : validBehaviours) {
+					return ControllerManager.animationController(k, entry.getValue(), pAnimatable);
+				}
+				return PlayState.CONTINUE;
+			}));
+
+			for (Map.Entry<String, BehaviourCache> entry : behaviours.entrySet()) {
+				BehaviourCache behaviour = entry.getValue();
+				if (isOverlay(behaviour)) {
+					pControllers.add(new AnimationController<>(pAnimatable, "overlay" + "_" + entry.getKey(), 5, k -> {
+						int priority = getEffectiveBehaviourPriority(behaviour, pAnimatable);
+						if (priority == Integer.MIN_VALUE) return PlayState.CONTINUE;
+						return ControllerManager.animationController(k, behaviour, pAnimatable);
+					}));
+				}
+			}
 		}
-		for (Map.Entry<String, BehaviourCache> entry : group.behaviours().entrySet()) {
-			String behaviourName = entry.getKey();
-			BehaviourCache behaviourCache = entry.getValue();
-			pControllers.add(new AnimationController<>(pAnimatable, behaviourName, 5, k -> ControllerManager.animationController(k, behaviourCache, pAnimatable)));
-		}
+	}
+
+	private static boolean isOverlay(BehaviourCache behaviour) {
+		return false;
 	}
 
 	protected static <E extends BlueAnimatable> PlayState animationController(final AnimationState<E> pEvent, BehaviourCache pBehaviour, BlueAnimatable pAnimatable) {
@@ -55,24 +90,37 @@ public class ControllerManager {
 			if (selectedPriority == Integer.MIN_VALUE) {
 				continue;
 			}
-			BaseLogger.log(BaseLogLevel.BLUELIB, "Animation playing: " + selected.animation());
+			//BaseLogger.log(BaseLogLevel.BLUELIB, "Animation playing: " + selected.animation());
 			return pEvent.setAndContinue(RawAnimation.begin().thenLoop(selected.animation()));
 		}
 		return PlayState.CONTINUE;
 	}
 
-	private static int getEffectivePriority(StateCache pState, BlueAnimatable pAnimatable) {
-		int priority = pState.priority() == null ? Integer.MIN_VALUE : pState.priority();
+	private static int getEffectivePriority(
+			Integer pPriority,
+			List<String> pConditions,
+			BlueAnimatable pAnimatable) {
+		int effectivePriority = pPriority == null ? Integer.MIN_VALUE : pPriority;
 		if (pAnimatable instanceof Entity entity) {
-			for (var condition : pState.conditions()) {
-				Object result = MoLang.entity(condition, entity);
-				BaseLogger.log(BaseLogLevel.BLUELIB, "MoLang result for condition '" + condition + "': " + result);
-				if (!(Boolean) result) {
-					return Integer.MIN_VALUE;
+			for (String condition : pConditions) {
+				Object loadedResult = MoLang.load(condition);
+				Object entityResult = MoLang.entity(condition, entity);
+				if ((loadedResult instanceof Boolean && (Boolean) loadedResult) ||
+						(entityResult instanceof Boolean && (Boolean) entityResult)) {
+					return effectivePriority;
 				}
 			}
+			return Integer.MIN_VALUE;
 		}
-		return priority;
+		return effectivePriority;
+	}
+
+	private static int getEffectivePriority(StateCache pState, BlueAnimatable pAnimatable) {
+		return getEffectivePriority(pState.priority(), pState.conditions(), pAnimatable);
+	}
+
+	private static int getEffectiveBehaviourPriority(BehaviourCache pBehaviour, BlueAnimatable pAnimatable) {
+		return getEffectivePriority(pBehaviour.priority(), pBehaviour.conditions(), pAnimatable);
 	}
 
 	public static ControllerCache getBakedController(ResourceLocation pLocation) {

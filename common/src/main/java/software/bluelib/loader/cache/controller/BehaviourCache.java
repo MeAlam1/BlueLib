@@ -13,6 +13,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public record BehaviourCache(
+		@NotNull List<String> conditions,
+		@Nullable Integer priority,
 		@NotNull Map<String, List<StateCache>> states) {
 
 	@NotNull
