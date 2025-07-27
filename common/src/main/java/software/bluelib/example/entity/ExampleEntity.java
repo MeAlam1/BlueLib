@@ -9,19 +9,16 @@
 package software.bluelib.example.entity;
 
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.PathfinderMob;
-import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.ServerLevelAccessor;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import software.bluelib.api.molang.MoLang;
+import software.bluelib.api.molang.MoLangUtils;
 import software.bluelib.internal.BlueResource;
 import software.bluelib.oldLoader.animatable.BlueEntity;
 
@@ -38,21 +35,12 @@ public class ExampleEntity extends PathfinderMob implements BlueEntity {
 	}
 
 	@Override
-	public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData spawnGroupData) {
-		//MoLang.load("q.print(q.add('1', '2', '3'))");
-		//System.out.println(MoLang.load("q.add('1', '2', '3')"));
-		//System.out.println(MoLang.load("q.equals(q.add('1', '2', '3'), '6')"));
-		return super.finalizeSpawn(level, difficulty, spawnType, spawnGroupData);
-	}
-
-	@Override
 	protected InteractionResult mobInteract(Player player, InteractionHand hand) {
-		//MoLang.load("q.print(q.add('1', '2', '3'))");
-		//System.out.println(MoLang.load("q.add('1', '2', '3')"));
-		//System.out.println(MoLang.load("q.equals(q.add('1', '2', '3'), '6')"));
-		//System.out.println("Molang E: + " + MoLang.entity("e.get_pos", this));
-		//System.out.println("Molang Q: + " + MoLang.entity("q.get_pos", this));
-		//System.out.println("Game: + " + position());
+		MoLang.evaluate("q.print(q.add(1, 2, 3))");
+		System.out.println("Add: " + MoLang.evaluate("q.add(1, 2, 3)"));
+		System.out.println("Equals: " + MoLangUtils.entity("q.equals(q.get_health, 1)", this));
+		System.out.println("Molang: + " + MoLangUtils.entity("q.get_pos", this));
+		System.out.println("Game: + " + position());
 		return super.mobInteract(player, hand);
 	}
 

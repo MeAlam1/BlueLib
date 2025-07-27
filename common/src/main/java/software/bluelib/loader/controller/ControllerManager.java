@@ -14,6 +14,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.molang.MoLang;
+import software.bluelib.api.molang.MoLangUtils;
 import software.bluelib.api.utils.LoaderUtils;
 import software.bluelib.loader.animatable.AnimatableManager;
 import software.bluelib.loader.animatable.BlueAnimatable;
@@ -103,8 +104,8 @@ public class ControllerManager {
 		int effectivePriority = pPriority == null ? Integer.MIN_VALUE : pPriority;
 		if (pAnimatable instanceof Entity entity) {
 			for (String condition : pConditions) {
-				Object loadedResult = MoLang.load(condition);
-				Object entityResult = MoLang.entity(condition, entity);
+				Object loadedResult = MoLang.evaluate(condition);
+				Object entityResult = MoLangUtils.entity(condition, entity);
 				if ((loadedResult instanceof Boolean && (Boolean) loadedResult) ||
 						(entityResult instanceof Boolean && (Boolean) entityResult)) {
 					return effectivePriority;

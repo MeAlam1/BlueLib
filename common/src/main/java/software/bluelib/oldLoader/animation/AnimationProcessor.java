@@ -13,9 +13,6 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
 import net.minecraft.util.Mth;
-import software.bluelib.api.molang.MoLang;
-import software.bluelib.api.molang.MoLangType;
-import software.bluelib.api.molang.context.AnimatableMoLang;
 import software.bluelib.loader.animatable.AnimatableManager;
 import software.bluelib.loader.animatable.BlueAnimatable;
 import software.bluelib.loader.cache.animations.AnimationCache;
@@ -24,6 +21,7 @@ import software.bluelib.loader.cache.model.ModelCache;
 import software.bluelib.oldLoader.animation.keyframe.AnimationPoint;
 import software.bluelib.oldLoader.animation.keyframe.BoneAnimationQueue;
 import software.bluelib.oldLoader.animation.state.BoneSnapshot;
+import software.bluelib.oldLoader.loading.math.MathParser;
 import software.bluelib.oldLoader.loading.math.MoLangQueries;
 import software.bluelib.oldLoader.model.BlueModel;
 
@@ -77,7 +75,7 @@ public class AnimationProcessor<T extends BlueAnimatable> {
 			controller.isJustStarting = animatableManager.isFirstTick();
 
 			state.withController(controller);
-			MoLang.service.getRuntimeFor(MoLangType.ANIMATABLE).registerContext(MoLangType.ANIMATABLE.id(), new AnimatableMoLang(state));
+			MathParser.setVariable(MoLangQueries.ANIM_TIME, () -> state.getController() != null ? state.getController().getAnimTime() : 0d);
 			controller.process(model, state, this.bones, boneSnapshots, animTime, crashWhenCantFindBone);
 
 			for (BoneAnimationQueue boneAnimation : controller.getBoneAnimationQueues().values()) {

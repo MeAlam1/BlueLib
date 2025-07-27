@@ -17,7 +17,7 @@
           },
           {
             "conditions": [
-              "q.is_in_water"
+              "q.equals(q.get_health, 1)"
             ],
             "animation": "animation.bulbasaur.battle_idle",
             "priority": 1,

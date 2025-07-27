@@ -16,5 +16,13 @@ public class GeneralMoLang extends BaseMoLangContext {
 			}
 			return null;
 		});
+
+		setVariable("true", true);
+		setVariable("false", false);
+		setVariable("null", null);
+		setVariable("undefined", null);
+		setVariable("NaN", Double.NaN);
+		setVariable("Infinity", Double.POSITIVE_INFINITY);
+		setVariable("NEGATIVE_INFINITY", Double.NEGATIVE_INFINITY);
 	}
 }
