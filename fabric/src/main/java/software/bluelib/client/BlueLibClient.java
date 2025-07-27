@@ -12,20 +12,24 @@ import java.util.concurrent.Executor;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.profiling.ProfilerFiller;
 import org.jetbrains.annotations.NotNull;
 import software.bluelib.BlueLibConstants;
+import software.bluelib.loader.cache.ResourceCache;
 
 @Environment(EnvType.CLIENT)
 public class BlueLibClient implements ClientModInitializer {
 
 	@Override
 	public void onInitializeClient() {
+		BlueLibCommonClient.registerRenderers(EntityRendererRegistry::register, BlockEntityRenderers::register);
 		ResourceManagerHelper.get(PackType.CLIENT_RESOURCES)
 				.registerReloadListener(new IdentifiableResourceReloadListener() {
 
@@ -42,7 +46,7 @@ public class BlueLibClient implements ClientModInitializer {
 							@NotNull ProfilerFiller pApplyProfiler,
 							@NotNull Executor pPrepareExecutor,
 							@NotNull Executor pApplyExecutor) {
-						return ResourceCache.reloadClient(pSynchronizer, pResourceManager, pPrepareProfiler, pApplyProfiler, pPrepareExecutor, pApplyExecutor);
+						return ResourceCache.Client.reload(pSynchronizer, pResourceManager, pPrepareProfiler, pApplyProfiler, pPrepareExecutor, pApplyExecutor);
 					}
 				});
 	}

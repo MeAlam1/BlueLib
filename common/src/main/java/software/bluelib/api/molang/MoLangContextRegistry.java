@@ -7,16 +7,15 @@
  */
 package software.bluelib.api.molang;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Function;
+import java.util.function.Supplier;
 import net.minecraft.world.entity.Entity;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.molang.context.*;
 import software.bluelib.oldLoader.animation.AnimationState;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Function;
-import java.util.function.Supplier;
 
 public class MoLangContextRegistry {
 
