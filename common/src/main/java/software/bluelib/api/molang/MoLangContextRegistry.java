@@ -40,8 +40,9 @@ public class MoLangContextRegistry {
 			if (supplier instanceof Supplier<?>) {
 				Object obj = supplier.get();
 				if (obj instanceof Entity entity) {
-					if (customEntityContextFactory != null) {
-						return customEntityContextFactory.apply(entity);
+					for (var factory : CUSTOM_ENTITY_CONTEXT_FACTORIES) {
+						BaseMoLangContext ctx = factory.apply(entity);
+						if (ctx != null) return ctx;
 					}
 					return new EntityMoLang(() -> entity);
 				}
@@ -52,10 +53,10 @@ public class MoLangContextRegistry {
 
 	private static final List<Function<MoLangRuntimeBuilder.Input, BaseMoLangContext>> CONTEXT_SUPPLIERS = new ArrayList<>();
 
-	private static Function<Entity, ? extends BaseMoLangContext> customEntityContextFactory = null;
+	private static final List<Function<Entity, ? extends BaseMoLangContext>> CUSTOM_ENTITY_CONTEXT_FACTORIES = new ArrayList<>();
 
 	public static void registerCustomEntityContext(Function<Entity, ? extends BaseMoLangContext> factory) {
-		customEntityContextFactory = factory;
+		CUSTOM_ENTITY_CONTEXT_FACTORIES.add(factory);
 	}
 
 	public static void register(@NotNull Function<MoLangRuntimeBuilder.Input, @Nullable BaseMoLangContext> pFactory) {
