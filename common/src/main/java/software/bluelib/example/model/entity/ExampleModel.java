@@ -17,8 +17,8 @@ import software.bluelib.oldLoader.renderer.BlueRenderer;
 
 public class ExampleModel extends BlueModel<ExampleEntity> {
 
-	private final ResourceLocation model = ResourceLocation.fromNamespaceAndPath(BlueLibConstants.MOD_ID, "models/test.geo.json");
-	private final ResourceLocation animations = ResourceLocation.fromNamespaceAndPath(BlueLibConstants.MOD_ID, "animations/test.animation.json");
+	private final ResourceLocation model = ResourceLocation.fromNamespaceAndPath(BlueLibConstants.MOD_ID, "model/test.geo.json");
+	private final ResourceLocation animations = ResourceLocation.fromNamespaceAndPath(BlueLibConstants.MOD_ID, "animation/test.animation.json");
 
 	@Override
 	public ResourceLocation getModelResource(ExampleEntity pExampleEntity, @Nullable BlueRenderer<ExampleEntity> pBlueRenderer) {

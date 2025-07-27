@@ -138,7 +138,7 @@ public class ControllerManager {
 			}
 		}
 
-		if (!pLocation.getPath().contains("controllers/"))
+		if (!pLocation.getPath().contains("controller/"))
 			throw new RuntimeException("Invalid controller resource path provided - BlueLib controllers must be placed in data/<modid>/controllers/");
 
 		throw new RuntimeException("Unable to find controller file: " + pLocation);

@@ -46,6 +46,6 @@ public class ExampleEntity extends PathfinderMob implements BlueEntity {
 
 	@Override
 	public @NotNull ResourceLocation getControllerResource() {
-		return BlueResource.resource("controllers/test.controller.json");
+		return BlueResource.resource("controller/test.controller.json");
 	}
 }

@@ -63,11 +63,11 @@ public class BlueLibConstants {
 		@NotNull
 		public static final ResourceLocation RELOAD_LISTENER_ID = BlueResource.resource("models_animations");
 		@NotNull
-		public static final ResourceLocation CONTROLLERS_PATH = BlueResource.resource("controllers");
+		public static final ResourceLocation CONTROLLERS_PATH = BlueResource.resource("controller");
 		@NotNull
-		public static final ResourceLocation ANIMATIONS_PATH = BlueResource.resource("animations");
+		public static final ResourceLocation ANIMATIONS_PATH = BlueResource.resource("animation");
 		@NotNull
-		public static final ResourceLocation MODELS_PATH = BlueResource.resource("models");
+		public static final ResourceLocation MODELS_PATH = BlueResource.resource("model");
 		@NotNull
 		public static final Pattern SUFFIX_STRIPPER = Pattern.compile("((\\.geo)|((\\.animation)s?)|(\\.controller))?(\\.json)$");
 		@NotNull

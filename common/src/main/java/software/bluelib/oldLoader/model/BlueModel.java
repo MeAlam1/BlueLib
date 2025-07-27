@@ -87,7 +87,7 @@ public abstract class BlueModel<T extends BlueAnimatable> {
 			}
 		}
 
-		if (!pLocation.getPath().contains("models/"))
+		if (!pLocation.getPath().contains("model/"))
 			throw new RuntimeException("Invalid model resource path provided - BlueLib models must be placed in assets/<modid>/models/");
 
 		throw new RuntimeException("Unable to find model file: " + pLocation);
@@ -120,7 +120,7 @@ public abstract class BlueModel<T extends BlueAnimatable> {
 				return animationCache;
 		}
 
-		if (!location.getPath().contains("animations/"))
+		if (!location.getPath().contains("animation/"))
 			throw new RuntimeException("Invalid animation resource path provided - BlueLib animations must be placed in assets/<modid>/animations/");
 
 		throw new RuntimeException("Unable to find animation file: " + location);
