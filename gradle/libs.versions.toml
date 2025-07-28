@@ -34,7 +34,7 @@ plugin-curseforge-gradle = "1.1.26"
 plugin-idea-ext = "1.1.10"
 plugin-mixin = "0.7.+"
 plugin-loom = "1.11-SNAPSHOT"
-spotless = "7.0.4"
+spotless = "7.2.1"
 license = "0.16.1"
 
 [libraries]
