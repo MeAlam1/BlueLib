@@ -21,6 +21,7 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
+import software.bluelib.api.utils.loader.BufferUtils;
 import software.bluelib.client.utils.RenderUtils;
 import software.bluelib.loader.animatable.BlueAnimatable;
 import software.bluelib.loader.cache.model.BoneCache;
@@ -98,7 +99,7 @@ public abstract class DynamicBlueEntityRenderer<T extends Entity & BlueAnimatabl
 		if (!pIsReRender)
 			applyRenderLayersForBone(pPoseStack, animatable, bone, pRenderType, pBufferSource, buffer, pPartialTick, pPackedLight, pPackedOverlay);
 
-		buffer = checkAndRefreshBuffer(pIsReRender, buffer, pBufferSource, pRenderType);
+		buffer = BufferUtils.checkAndRefreshBuffer(pIsReRender, buffer, pBufferSource, pRenderType);
 
 		super.renderChildBones(pPoseStack, animatable, bone, pRenderType, pBufferSource, buffer, pIsReRender, pPartialTick, pPackedLight, pPackedOverlay, colour);
 

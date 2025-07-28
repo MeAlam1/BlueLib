@@ -23,6 +23,8 @@ import software.bluelib.loader.animatable.BlueAnimatable;
 import software.bluelib.loader.cache.model.BoneCache;
 import software.bluelib.loader.cache.model.ModelCache;
 import software.bluelib.loader.cache.texture.AnimatableTexture;
+import software.bluelib.loader.renderer.base.BlueRenderer;
+import software.bluelib.loader.renderer.context.RenderContext;
 import software.bluelib.oldLoader.animation.AnimationState;
 import software.bluelib.oldLoader.model.BlueModel;
 import software.bluelib.oldLoader.renderer.layer.BlueRenderLayer;
@@ -89,7 +91,19 @@ public class BlueObjectRenderer<T extends BlueAnimatable> implements BlueRendere
 		if (pBuffer == null)
 			pBufferSource = Minecraft.getInstance().levelRenderer.renderBuffers.bufferSource();
 
-		defaultRender(pPoseStack, pAnimatable, pBufferSource, pRenderType, pBuffer, 0, pPartialTick, pPackedLight);
+		defaultRender(new RenderContext<>(
+				pPoseStack,
+				this.animatable,
+				this.model.getBakedModel(getBlueModel().getModelResource(animatable, this)),
+				pRenderType,
+				pBufferSource,
+				pBuffer,
+				false, // isReRender
+				pPartialTick,
+				pPackedLight,
+				getPackedOverlay(this.animatable, 0, pPartialTick),
+				getRenderColor(this.animatable, pPartialTick, pPackedLight).argbInt()
+		));
 	}
 
 	@Override

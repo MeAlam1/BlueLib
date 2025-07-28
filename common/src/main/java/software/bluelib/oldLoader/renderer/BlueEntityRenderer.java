@@ -10,7 +10,6 @@ package software.bluelib.oldLoader.renderer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
-import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -35,18 +34,23 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import software.bluelib.BlueLibConstants;
 import software.bluelib.api.utils.Color;
+import software.bluelib.api.utils.loader.BufferUtils;
 import software.bluelib.client.utils.PlayerUtils;
 import software.bluelib.client.utils.RenderUtils;
 import software.bluelib.loader.animatable.BlueAnimatable;
 import software.bluelib.loader.cache.model.BoneCache;
 import software.bluelib.loader.cache.model.ModelCache;
 import software.bluelib.loader.cache.texture.AnimatableTexture;
+import software.bluelib.loader.renderer.base.BlueRenderer;
+import software.bluelib.loader.renderer.context.RenderContext;
 import software.bluelib.oldLoader.animation.AnimationState;
 import software.bluelib.oldLoader.constant.DataTickets;
 import software.bluelib.oldLoader.model.BlueModel;
 import software.bluelib.oldLoader.model.data.EntityModelData;
 import software.bluelib.oldLoader.renderer.layer.BlueRenderLayer;
 import software.bluelib.oldLoader.renderer.layer.BlueRenderLayersContainer;
+
+import java.util.List;
 
 public class BlueEntityRenderer<T extends Entity & BlueAnimatable> extends EntityRenderer<T> implements BlueRenderer<T> {
 
@@ -143,16 +147,28 @@ public class BlueEntityRenderer<T extends Entity & BlueAnimatable> extends Entit
 	@ApiStatus.Internal
 	public void render(T entity, float entityYaw, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBufferSource, int pPackedLight) {
 		this.animatable = entity;
-
-		defaultRender(pPoseStack, entity, pBufferSource, null, null, entityYaw, pPartialTick, pPackedLight);
+		
+		defaultRender(new RenderContext<>(
+				pPoseStack,
+				entity,
+				this.model.getBakedModel(getBlueModel().getModelResource(animatable, this)),
+				null, // renderType
+				pBufferSource,
+				null, // buffer
+				false, // isReRender
+				pPartialTick,
+				pPackedLight,
+				getPackedOverlay(entity, 0, pPartialTick),
+				getRenderColor(entity, pPartialTick, pPackedLight).argbInt()
+		));
 
 		this.animatable = null;
 	}
 
 	@Override
 	public void actuallyRender(PoseStack pPoseStack, T animatable, ModelCache model, @Nullable RenderType pRenderType,
-			MultiBufferSource pBufferSource, @Nullable VertexConsumer buffer, boolean pIsReRender, float pPartialTick,
-			int pPackedLight, int pPackedOverlay, int colour) {
+	                           MultiBufferSource pBufferSource, @Nullable VertexConsumer buffer, boolean pIsReRender, float pPartialTick,
+	                           int pPackedLight, int pPackedOverlay, int colour) {
 		pPoseStack.pushPose();
 
 		LivingEntity livingEntity = animatable instanceof LivingEntity entity ? entity : null;
@@ -231,8 +247,8 @@ public class BlueEntityRenderer<T extends Entity & BlueAnimatable> extends Entit
 
 	@Override
 	public void applyRenderLayers(PoseStack pPoseStack, T animatable, ModelCache model, @Nullable RenderType pRenderType,
-			MultiBufferSource pBufferSource, @Nullable VertexConsumer buffer, float pPartialTick,
-			int pPackedLight, int pPackedOverlay) {
+	                              MultiBufferSource pBufferSource, @Nullable VertexConsumer buffer, float pPartialTick,
+	                              int pPackedLight, int pPackedOverlay) {
 		if (!animatable.isSpectator())
 			BlueRenderer.super.applyRenderLayers(pPoseStack, animatable, model, pRenderType, pBufferSource, buffer, pPartialTick, pPackedLight, pPackedOverlay);
 	}
@@ -256,7 +272,7 @@ public class BlueEntityRenderer<T extends Entity & BlueAnimatable> extends Entit
 
 	@Override
 	public void renderRecursively(PoseStack pPoseStack, T animatable, BoneCache bone, RenderType pRenderType, MultiBufferSource pBufferSource, VertexConsumer buffer, boolean pIsReRender, float pPartialTick, int pPackedLight,
-			int pPackedOverlay, int colour) {
+	                              int pPackedOverlay, int colour) {
 		pPoseStack.pushPose();
 		RenderUtils.translateMatrixToBone(pPoseStack, bone);
 		RenderUtils.translateToPivotPoint(pPoseStack, bone);
@@ -274,7 +290,7 @@ public class BlueEntityRenderer<T extends Entity & BlueAnimatable> extends Entit
 
 		RenderUtils.translateAwayFromPivotPoint(pPoseStack, bone);
 
-		buffer = checkAndRefreshBuffer(pIsReRender, buffer, pBufferSource, pRenderType);
+		buffer = BufferUtils.checkAndRefreshBuffer(pIsReRender, buffer, pBufferSource, pRenderType);
 
 		renderCubesOfBone(pPoseStack, bone, buffer, pPackedLight, pPackedOverlay, colour);
 
@@ -347,8 +363,10 @@ public class BlueEntityRenderer<T extends Entity & BlueAnimatable> extends Entit
 		return switch (entityTeam.getNameTagVisibility()) {
 			case ALWAYS -> visibleToClient;
 			case NEVER -> false;
-			case HIDE_FOR_OTHER_TEAMS -> playerTeam == null ? visibleToClient : entityTeam.isAlliedTo(playerTeam) && (entityTeam.canSeeFriendlyInvisibles() || visibleToClient);
-			case HIDE_FOR_OWN_TEAM -> playerTeam == null ? visibleToClient : !entityTeam.isAlliedTo(playerTeam) && visibleToClient;
+			case HIDE_FOR_OTHER_TEAMS ->
+					playerTeam == null ? visibleToClient : entityTeam.isAlliedTo(playerTeam) && (entityTeam.canSeeFriendlyInvisibles() || visibleToClient);
+			case HIDE_FOR_OWN_TEAM ->
+					playerTeam == null ? visibleToClient : !entityTeam.isAlliedTo(playerTeam) && visibleToClient;
 		};
 	}
 
@@ -366,7 +384,7 @@ public class BlueEntityRenderer<T extends Entity & BlueAnimatable> extends Entit
 	}
 
 	public <E extends Entity, M extends Mob> void renderLeash(M mob, float pPartialTick, PoseStack pPoseStack,
-			MultiBufferSource pBufferSource, E leashHolder) {
+	                                                          MultiBufferSource pBufferSource, E leashHolder) {
 		double lerpBodyAngle = (Mth.lerp(pPartialTick, mob.yBodyRotO, mob.yBodyRot) * Mth.DEG_TO_RAD) + Mth.HALF_PI;
 		Vec3 leashOffset = mob.getLeashOffset(pPartialTick);
 		double xAngleOffset = Math.cos(lerpBodyAngle) * leashOffset.z + Math.sin(lerpBodyAngle) * leashOffset.x;
@@ -408,8 +426,8 @@ public class BlueEntityRenderer<T extends Entity & BlueAnimatable> extends Entit
 	}
 
 	private static void renderLeashPiece(VertexConsumer buffer, Matrix4f positionMatrix, float xDif, float yDif,
-			float zDif, int entityBlockLight, int holderBlockLight, int entitySkyLight,
-			int holderSkyLight, float width, float yOffset, float xOffset, float zOffset, int segment, boolean isLeashKnot) {
+	                                     float zDif, int entityBlockLight, int holderBlockLight, int entitySkyLight,
+	                                     int holderSkyLight, float width, float yOffset, float xOffset, float zOffset, int segment, boolean isLeashKnot) {
 		float piecePosPercent = segment / 24f;
 		int lerpBlockLight = (int) Mth.lerp(piecePosPercent, entityBlockLight, holderBlockLight);
 		int lerpSkyLight = (int) Mth.lerp(piecePosPercent, entitySkyLight, holderSkyLight);

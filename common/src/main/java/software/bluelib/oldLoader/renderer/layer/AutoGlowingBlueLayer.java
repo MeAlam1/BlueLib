@@ -20,7 +20,7 @@ import software.bluelib.client.utils.PlayerUtils;
 import software.bluelib.loader.animatable.BlueAnimatable;
 import software.bluelib.loader.cache.model.ModelCache;
 import software.bluelib.loader.cache.texture.AutoGlowingTexture;
-import software.bluelib.oldLoader.renderer.BlueRenderer;
+import software.bluelib.loader.renderer.base.BlueRenderer;
 
 public class AutoGlowingBlueLayer<T extends BlueAnimatable> extends BlueRenderLayer<T> {
 

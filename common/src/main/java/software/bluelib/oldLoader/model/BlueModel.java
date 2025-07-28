@@ -29,7 +29,7 @@ import software.bluelib.oldLoader.animation.AnimationProcessor;
 import software.bluelib.oldLoader.animation.AnimationState;
 import software.bluelib.oldLoader.constant.DataTickets;
 import software.bluelib.oldLoader.constant.dataticket.DataTicket;
-import software.bluelib.oldLoader.renderer.BlueRenderer;
+import software.bluelib.loader.renderer.base.BlueRenderer;
 
 public abstract class BlueModel<T extends BlueAnimatable> {
 

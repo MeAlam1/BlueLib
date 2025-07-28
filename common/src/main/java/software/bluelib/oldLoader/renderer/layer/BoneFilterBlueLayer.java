@@ -16,7 +16,7 @@ import org.jetbrains.annotations.Nullable;
 import software.bluelib.loader.animatable.BlueAnimatable;
 import software.bluelib.loader.cache.model.BoneCache;
 import software.bluelib.loader.cache.model.ModelCache;
-import software.bluelib.oldLoader.renderer.BlueRenderer;
+import software.bluelib.loader.renderer.base.BlueRenderer;
 
 public class BoneFilterBlueLayer<T extends BlueAnimatable> extends BlueRenderLayer<T> {
 

@@ -48,8 +48,7 @@ import software.bluelib.loader.cache.model.BoneCache;
 import software.bluelib.loader.cache.model.CubeCache;
 import software.bluelib.oldLoader.animatable.client.BlueRenderProvider;
 import software.bluelib.oldLoader.model.BlueModel;
-import software.bluelib.oldLoader.renderer.BlueArmorRenderer;
-import software.bluelib.oldLoader.renderer.BlueRenderer;
+import software.bluelib.loader.renderer.base.BlueRenderer;
 import software.bluelib.oldLoader.renderer.BlueReplacedEntityRenderer;
 
 @SuppressWarnings("unused")

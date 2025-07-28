@@ -10,7 +10,7 @@ package software.bluelib.oldLoader.renderer.layer;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import java.util.List;
 import software.bluelib.loader.animatable.BlueAnimatable;
-import software.bluelib.oldLoader.renderer.BlueRenderer;
+import software.bluelib.loader.renderer.base.BlueRenderer;
 
 public class BlueRenderLayersContainer<T extends BlueAnimatable> {
 

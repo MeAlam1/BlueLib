@@ -34,6 +34,8 @@ import software.bluelib.loader.animatable.BlueAnimatable;
 import software.bluelib.loader.cache.model.BoneCache;
 import software.bluelib.loader.cache.model.ModelCache;
 import software.bluelib.loader.cache.texture.AnimatableTexture;
+import software.bluelib.loader.renderer.base.BlueRenderer;
+import software.bluelib.loader.renderer.context.RenderContext;
 import software.bluelib.oldLoader.animatable.BlueItem;
 import software.bluelib.oldLoader.animation.AnimationState;
 import software.bluelib.oldLoader.constant.DataTickets;
@@ -214,8 +216,19 @@ public class BlueArmorRenderer<T extends Item & BlueItem> extends HumanoidModel 
 		RenderType pRenderType = getRenderType(this.animatable, getTextureLocation(this.animatable), pBufferSource, pPartialTick);
 		pBuffer = ItemRenderer.getArmorFoilBuffer(pBufferSource, pRenderType, this.currentStack.hasFoil());
 
-		defaultRender(pPoseStack, this.animatable, pBufferSource, null, pBuffer,
-				0, pPartialTick, pPackedLight);
+		defaultRender(new RenderContext<>(
+				pPoseStack,
+				this.animatable,
+				this.model.getBakedModel(getBlueModel().getModelResource(animatable, this)),
+				pRenderType,
+				pBufferSource,
+				pBuffer,
+				false, // isReRender
+				pPartialTick,
+				pPackedLight,
+				getPackedOverlay(this.animatable, 0, pPartialTick),
+				getRenderColor(this.animatable, pPartialTick, pPackedLight).argbInt()
+		));
 
 		this.animatable = null;
 	}

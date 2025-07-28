@@ -10,7 +10,7 @@ package software.bluelib.oldLoader.model;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.loader.animatable.BlueAnimatable;
-import software.bluelib.oldLoader.renderer.BlueRenderer;
+import software.bluelib.loader.renderer.base.BlueRenderer;
 
 public abstract class DefaultedBlueModel<T extends BlueAnimatable> extends BlueModel<T> {
 

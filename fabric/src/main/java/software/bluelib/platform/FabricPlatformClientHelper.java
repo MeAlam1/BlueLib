@@ -17,7 +17,7 @@ import software.bluelib.loader.animatable.BlueAnimatable;
 import software.bluelib.oldLoader.animatable.client.BlueRenderProvider;
 import software.bluelib.oldLoader.model.BlueModel;
 import software.bluelib.oldLoader.renderer.BlueArmorRenderer;
-import software.bluelib.oldLoader.renderer.BlueRenderer;
+import software.bluelib.loader.renderer.base.BlueRenderer;
 
 public class FabricPlatformClientHelper implements IPlatformClient {
 
