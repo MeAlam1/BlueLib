@@ -12,45 +12,41 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.Nullable;
 import software.bluelib.loader.animatable.BlueAnimatable;
 import software.bluelib.loader.cache.model.BoneCache;
 import software.bluelib.loader.cache.model.ModelCache;
 import software.bluelib.loader.renderer.base.BlueRenderer;
+import software.bluelib.loader.renderer.context.IRenderContext;
 import software.bluelib.oldLoader.model.BlueModel;
 
 public abstract class BlueRenderLayer<T extends BlueAnimatable> {
 
 	protected final BlueRenderer<T> renderer;
 
-	public BlueRenderLayer(BlueRenderer<T> entityRendererIn) {
-		this.renderer = entityRendererIn;
+	public BlueRenderLayer(BlueRenderer<T> pEntityRendererIn) {
+		this.renderer = pEntityRendererIn;
 	}
 
 	public BlueModel<T> getBlueModel() {
 		return this.renderer.getBlueModel();
 	}
 
-	public ModelCache getDefaultBakedModel(T animatable) {
-		return getBlueModel().getBakedModel(getBlueModel().getModelResource(animatable, getRenderer()));
+	public ModelCache getDefaultBakedModel(T pAnimatable) {
+		return getBlueModel().getBakedModel(getBlueModel().getModelResource(pAnimatable, getRenderer()));
 	}
 
 	public BlueRenderer<T> getRenderer() {
 		return this.renderer;
 	}
 
-	protected ResourceLocation getTextureResource(T animatable) {
-		return getRenderer().getTextureLocation(animatable);
+	protected ResourceLocation getTextureResource(T pAnimatable) {
+		return getRenderer().getTextureLocation(pAnimatable);
 	}
 
-	public void preRender(PoseStack pPoseStack, T animatable, ModelCache bakedModel, @Nullable RenderType pRenderType,
-			MultiBufferSource pBufferSource, @Nullable VertexConsumer buffer, float pPartialTick,
-			int pPackedLight, int pPackedOverlay) {}
+	public void preRender(IRenderContext<T> pContext) {}
 
-	public void render(PoseStack pPoseStack, T animatable, ModelCache bakedModel, @Nullable RenderType pRenderType,
-			MultiBufferSource pBufferSource, @Nullable VertexConsumer buffer, float pPartialTick,
-			int pPackedLight, int pPackedOverlay) {}
+	public void render(IRenderContext<T> pContext) {}
 
-	public void renderForBone(PoseStack pPoseStack, T animatable, BoneCache bone, RenderType pRenderType,
-			MultiBufferSource pBufferSource, VertexConsumer buffer, float pPartialTick, int pPackedLight, int pPackedOverlay) {}
+	public void renderForBone(PoseStack pPoseStack, T pAnimatable, BoneCache pBone, RenderType pRenderType,
+			MultiBufferSource pBufferSource, VertexConsumer pBuffer, float pPartialTick, int pPackedLight, int pPackedOverlay) {}
 }

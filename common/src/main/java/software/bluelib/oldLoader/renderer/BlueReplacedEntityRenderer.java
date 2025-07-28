@@ -257,9 +257,9 @@ public class BlueReplacedEntityRenderer<E extends Entity, T extends BlueAnimatab
 	}
 
 	@Override
-	public void applyRenderLayers(PoseStack pPoseStack, T pAnimatable, ModelCache pModel, @Nullable RenderType pRenderType, MultiBufferSource pBufferSource, @Nullable VertexConsumer pBuffer, float pPartialTick, int pPackedLight, int pPackedOverlay) {
+	public void applyRenderLayers(IRenderContext<T> pContext) {
 		if (!this.currentEntity.isSpectator())
-			BlueRenderer.super.applyRenderLayers(pPoseStack, pAnimatable, pModel, pRenderType, pBufferSource, pBuffer, pPartialTick, pPackedLight, pPackedOverlay);
+			BlueRenderer.super.applyRenderLayers(pContext);
 	}
 
 	@Override

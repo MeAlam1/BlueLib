@@ -112,9 +112,9 @@ public interface BlueRenderer<T extends BlueAnimatable> {
 			preRender(full.poseStack(), full.animatable(), full.model(), full.bufferSource(), full.buffer(), false, full.partialTick(), full.packedLight(), full.packedOverlay(), full.color());
 
 			if (firePreRenderEvent(full.poseStack(), full.model(), full.bufferSource(), full.partialTick(), full.packedLight())) {
-				preApplyRenderLayers(full.poseStack(), full.animatable(), full.model(), full.renderType(), full.bufferSource(), full.buffer(), full.partialTick(), full.packedLight(), full.packedOverlay());
+				preApplyRenderLayers(full);
 				actuallyRender(full);
-				applyRenderLayers(full.poseStack(), full.animatable(), full.model(), full.renderType(), full.bufferSource(), full.buffer(), full.partialTick(), full.packedLight(), full.packedOverlay());
+				applyRenderLayers(full);
 				postRender(full.poseStack(), full.animatable(), full.model(), full.bufferSource(), full.buffer(), false, full.partialTick(), full.packedLight(), full.packedOverlay(), full.color());
 				firePostRenderEvent(full.poseStack(), full.model(), full.bufferSource(), full.partialTick(), full.packedLight());
 			}
@@ -195,13 +195,13 @@ public interface BlueRenderer<T extends BlueAnimatable> {
 		handleBaseRenderContextInternal(pContext, pRenderer, BlueRenderer::actuallyRender);
 	}
 
-	default void preApplyRenderLayers(PoseStack pPoseStack, T pAnimatable, ModelCache pModel, @Nullable RenderType pRenderType, MultiBufferSource pBufferSource,
-			@Nullable VertexConsumer pBuffer, float pPartialTick, int pPackedLight, int pPackedOverlay) {
+	default void preApplyRenderLayers(IRenderContext<T> pContext) {
 		for (BlueRenderLayer<T> renderLayer : getRenderLayers()) {
-			renderLayer.preRender(pPoseStack, pAnimatable, pModel, pRenderType, pBufferSource, pBuffer, pPartialTick, pPackedLight, pPackedOverlay);
+			renderLayer.preRender(pContext);
 		}
 	}
 
+	// TODO: Make a Context for Bones in stead of Model Later
 	default void applyRenderLayersForBone(PoseStack pPoseStack, T pAnimatable, BoneCache bone, RenderType pRenderType, MultiBufferSource pBufferSource,
 			VertexConsumer pBuffer, float pPartialTick, int pPackedLight, int pPackedOverlay) {
 		for (BlueRenderLayer<T> renderLayer : getRenderLayers()) {
@@ -211,10 +211,9 @@ public interface BlueRenderer<T extends BlueAnimatable> {
 
 	// TODO append renderColor to layers
 
-	default void applyRenderLayers(PoseStack pPoseStack, T pAnimatable, ModelCache pModel, @Nullable RenderType pRenderType, MultiBufferSource pBufferSource,
-			@Nullable VertexConsumer pBuffer, float pPartialTick, int pPackedLight, int pPackedOverlay) {
+	default void applyRenderLayers(IRenderContext<T> pContext) {
 		for (BlueRenderLayer<T> renderLayer : getRenderLayers()) {
-			renderLayer.render(pPoseStack, pAnimatable, pModel, pRenderType, pBufferSource, pBuffer, pPartialTick, pPackedLight, pPackedOverlay);
+			renderLayer.render(pContext);
 		}
 	}
 

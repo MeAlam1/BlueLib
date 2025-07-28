@@ -7,16 +7,11 @@
  */
 package software.bluelib.oldLoader.renderer.layer;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
 import org.apache.logging.log4j.util.TriConsumer;
-import org.jetbrains.annotations.Nullable;
 import software.bluelib.loader.animatable.BlueAnimatable;
 import software.bluelib.loader.cache.model.BoneCache;
-import software.bluelib.loader.cache.model.ModelCache;
 import software.bluelib.loader.renderer.base.BlueRenderer;
+import software.bluelib.loader.renderer.context.IRenderContext;
 
 public class BoneFilterBlueLayer<T extends BlueAnimatable> extends BlueRenderLayer<T> {
 
@@ -37,9 +32,9 @@ public class BoneFilterBlueLayer<T extends BlueAnimatable> extends BlueRenderLay
 	}
 
 	@Override
-	public void preRender(PoseStack pPoseStack, T animatable, ModelCache bakedModel, @Nullable RenderType pRenderType, MultiBufferSource pBufferSource, @Nullable VertexConsumer buffer, float pPartialTick, int pPackedLight, int pPackedOverlay) {
-		for (BoneCache bone : bakedModel.topLevelBones()) {
-			checkChildBones(bone, animatable, pPartialTick);
+	public void preRender(IRenderContext<T> pContext) {
+		for (BoneCache bone : pContext.model().topLevelBones()) {
+			checkChildBones(bone, pContext.animatable(), pContext.partialTick());
 		}
 	}
 

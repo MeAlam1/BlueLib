@@ -55,22 +55,22 @@ public class BlockAndItemBlueLayer<T extends BlueAnimatable> extends BlueRenderL
 	}
 
 	@Override
-	public void renderForBone(PoseStack pPoseStack, T animatable, BoneCache bone, RenderType pRenderType, MultiBufferSource pBufferSource,
-			VertexConsumer buffer, float pPartialTick, int pPackedLight, int pPackedOverlay) {
-		ItemStack stack = getStackForBone(bone, animatable);
-		BlockState blockState = getBlockForBone(bone, animatable);
+	public void renderForBone(PoseStack pPoseStack, T pAnimatable, BoneCache pBone, RenderType pRenderType, MultiBufferSource pBufferSource,
+			VertexConsumer pBuffer, float pPartialTick, int pPackedLight, int pPackedOverlay) {
+		ItemStack stack = getStackForBone(pBone, pAnimatable);
+		BlockState blockState = getBlockForBone(pBone, pAnimatable);
 
 		if (stack == null && blockState == null)
 			return;
 
 		pPoseStack.pushPose();
-		RenderUtils.translateAndRotateMatrixForBone(pPoseStack, bone);
+		RenderUtils.translateAndRotateMatrixForBone(pPoseStack, pBone);
 
 		if (stack != null)
-			renderStackForBone(pPoseStack, bone, stack, animatable, pBufferSource, pPartialTick, pPackedLight, pPackedOverlay);
+			renderStackForBone(pPoseStack, pBone, stack, pAnimatable, pBufferSource, pPartialTick, pPackedLight, pPackedOverlay);
 
 		if (blockState != null)
-			renderBlockForBone(pPoseStack, bone, blockState, animatable, pBufferSource, pPartialTick, pPackedLight, pPackedOverlay);
+			renderBlockForBone(pPoseStack, pBone, blockState, pAnimatable, pBufferSource, pPartialTick, pPackedLight, pPackedOverlay);
 
 		pPoseStack.popPose();
 	}

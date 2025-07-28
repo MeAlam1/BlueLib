@@ -250,11 +250,10 @@ public class BlueEntityRenderer<T extends Entity & BlueAnimatable> extends Entit
 	}
 
 	@Override
-	public void applyRenderLayers(PoseStack pPoseStack, T animatable, ModelCache model, @Nullable RenderType pRenderType,
-			MultiBufferSource pBufferSource, @Nullable VertexConsumer buffer, float pPartialTick,
-			int pPackedLight, int pPackedOverlay) {
-		if (!animatable.isSpectator())
-			BlueRenderer.super.applyRenderLayers(pPoseStack, animatable, model, pRenderType, pBufferSource, buffer, pPartialTick, pPackedLight, pPackedOverlay);
+	public void applyRenderLayers(IRenderContext<T> pContext) {
+		if (!pContext.animatable().isSpectator()) {
+			BlueRenderer.super.applyRenderLayers(pContext);
+		}
 	}
 
 	@Override

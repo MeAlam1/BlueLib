@@ -7,10 +7,7 @@
  */
 package software.bluelib.oldLoader.renderer.layer;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
@@ -18,10 +15,10 @@ import net.minecraft.world.entity.Entity;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.client.utils.PlayerUtils;
 import software.bluelib.loader.animatable.BlueAnimatable;
-import software.bluelib.loader.cache.model.ModelCache;
 import software.bluelib.loader.cache.texture.AutoGlowingTexture;
 import software.bluelib.loader.renderer.base.BlueRenderer;
 import software.bluelib.loader.renderer.context.FullRenderContext;
+import software.bluelib.loader.renderer.context.IRenderContext;
 
 public class AutoGlowingBlueLayer<T extends BlueAnimatable> extends BlueRenderLayer<T> {
 
@@ -51,23 +48,26 @@ public class AutoGlowingBlueLayer<T extends BlueAnimatable> extends BlueRenderLa
 	}
 
 	@Override
-	public void render(PoseStack pPoseStack, T animatable, ModelCache bakedModel, @Nullable RenderType pRenderType, MultiBufferSource pBufferSource, @Nullable VertexConsumer buffer, float pPartialTick, int pPackedLight, int pPackedOverlay) {
-		pRenderType = getRenderType(animatable, pBufferSource);
-
-		if (pRenderType != null) {
-			FullRenderContext<T> context = new FullRenderContext<>(
-					pPoseStack,
-					animatable,
-					bakedModel,
-					pRenderType,
-					pBufferSource,
-					pBufferSource.getBuffer(pRenderType),
-					true,
-					pPartialTick,
-					LightTexture.FULL_SKY,
-					pPackedOverlay,
-					getRenderer().getRenderColor(animatable, pPartialTick, pPackedLight).argbInt());
-			getRenderer().reRender(context);
+	public void render(IRenderContext<T> pContext) {
+		if (pContext instanceof FullRenderContext<T> full) {
+			if (full.renderType() != null) {
+				getRenderer().reRender(full);
+			}
+		} else if (pContext instanceof IRenderContext<T> base) {
+			RenderType renderType = getRenderType(base.animatable(), base.bufferSource());
+			FullRenderContext<T> full = new FullRenderContext<>(
+					pContext.poseStack(),
+					pContext.animatable(),
+					pContext.model(),
+					renderType,
+					pContext.bufferSource(),
+					null,
+					pContext.isReRender(),
+					pContext.partialTick(),
+					pContext.packedLight(),
+					pContext.packedOverlay(),
+					pContext.color());
+			render(full);
 		}
 	}
 }
