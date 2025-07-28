@@ -26,17 +26,7 @@ public class ExampleModel extends BlueModel<ExampleEntity> {
 	}
 
 	@Override
-	public ResourceLocation getModelResource(ExampleEntity pAnimatable) {
-		return model;
-	}
-
-	@Override
 	public ResourceLocation getTextureResource(ExampleEntity pExampleEntity, @Nullable BlueRenderer<ExampleEntity> pBlueRenderer) {
-		return ResourceLocation.fromNamespaceAndPath(BlueLibConstants.MOD_ID, "textures/test.png");
-	}
-
-	@Override
-	public ResourceLocation getTextureResource(ExampleEntity pAnimatable) {
 		return ResourceLocation.fromNamespaceAndPath(BlueLibConstants.MOD_ID, "textures/test.png");
 	}
 

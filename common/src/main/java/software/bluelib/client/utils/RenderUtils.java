@@ -260,10 +260,7 @@ public final class RenderUtils {
 
 		pParentModel.copyPropertiesTo(pBaseModel);
 		pPartVisibilitySetter.accept(pBaseModel, pEquipmentSlot);
-
-		if (model instanceof BlueArmorRenderer<?> BlueArmorRenderer)
-			BlueArmorRenderer.prepForRender(pEntity, pStack, pEquipmentSlot, pBaseModel, pBufferSource, pPartialTick, pLimbSwing, pLimbSwingAmount, pNetHeadYaw, pHeadPitch);
-
+		
 		pBaseModel.copyPropertiesTo((A) model);
 		model.renderToBuffer(pPoseStack, null, pPackedLight, OverlayTexture.NO_OVERLAY, Color.WHITE.argbInt());
 

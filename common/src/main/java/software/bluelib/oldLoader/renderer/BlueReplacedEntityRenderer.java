@@ -298,12 +298,6 @@ public class BlueReplacedEntityRenderer<E extends Entity, T extends BlueAnimatab
 		pPoseStack.popPose();
 	}
 
-	@Deprecated(forRemoval = true)
-	protected void applyRotations(T pAnimatable, PoseStack pPoseStack, float ageInTicks, float rotationYaw,
-			float pPartialTick) {
-		applyRotations(pAnimatable, pPoseStack, ageInTicks, rotationYaw, pPartialTick, 1);
-	}
-
 	protected void applyRotations(T pAnimatable, PoseStack pPoseStack, float ageInTicks, float rotationYaw,
 			float pPartialTick, float nativeScale) {
 		if (isShaking(pAnimatable))

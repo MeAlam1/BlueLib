@@ -28,11 +28,6 @@ public class AutoGlowingBlueLayer<T extends BlueAnimatable> extends BlueRenderLa
 		super(renderer);
 	}
 
-	@Deprecated(forRemoval = true)
-	protected RenderType getRenderType(T animatable) {
-		return getRenderType(animatable, null);
-	}
-
 	@Nullable
 	protected RenderType getRenderType(T animatable, @Nullable MultiBufferSource pBufferSource) {
 		if (!(animatable instanceof Entity entity))
@@ -56,7 +51,7 @@ public class AutoGlowingBlueLayer<T extends BlueAnimatable> extends BlueRenderLa
 
 	@Override
 	public void render(PoseStack pPoseStack, T animatable, ModelCache bakedModel, @Nullable RenderType pRenderType, MultiBufferSource pBufferSource, @Nullable VertexConsumer buffer, float pPartialTick, int pPackedLight, int pPackedOverlay) {
-		pRenderType = getRenderType(animatable);
+		pRenderType = getRenderType(animatable, pBufferSource);
 
 		if (pRenderType != null) {
 			getRenderer().reRender(bakedModel, pPoseStack, pBufferSource, animatable, pRenderType,

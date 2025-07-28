@@ -40,19 +40,9 @@ public abstract class BlueModel<T extends BlueAnimatable> {
 	private double lastGameTickTime;
 	private long lastRenderedInstance = -1;
 
-	public ResourceLocation getModelResource(T pAnimatable, @Nullable BlueRenderer<T> pRenderer) {
-		return getModelResource(pAnimatable);
-	}
-
-	@Deprecated
-	public abstract ResourceLocation getModelResource(T pAnimatable);
-
-	public ResourceLocation getTextureResource(T pAnimatable, @Nullable BlueRenderer<T> pRenderer) {
-		return getTextureResource(pAnimatable);
-	}
-
-	@Deprecated
-	public abstract ResourceLocation getTextureResource(T pAnimatable);
+	public abstract ResourceLocation getModelResource(T pAnimatable, @Nullable BlueRenderer<T> pRenderer);
+	
+	public abstract ResourceLocation getTextureResource(T pAnimatable, @Nullable BlueRenderer<T> pRenderer);
 
 	public abstract ResourceLocation getAnimationResource(T pAnimatable);
 

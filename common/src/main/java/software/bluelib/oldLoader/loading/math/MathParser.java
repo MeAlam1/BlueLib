@@ -11,16 +11,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
 import com.mojang.datafixers.util.Either;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Optional;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.DoubleSupplier;
-import java.util.function.Supplier;
-import java.util.regex.Pattern;
 import net.minecraft.Util;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.exception.CompoundException;
 import software.bluelib.oldLoader.loading.math.function.MathFunction;
@@ -37,6 +28,15 @@ import software.bluelib.oldLoader.loading.math.function.random.RandomFunction;
 import software.bluelib.oldLoader.loading.math.function.random.RandomIntegerFunction;
 import software.bluelib.oldLoader.loading.math.function.round.*;
 import software.bluelib.oldLoader.loading.math.value.*;
+
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.DoubleSupplier;
+import java.util.function.Supplier;
+import java.util.regex.Pattern;
 
 public class MathParser {
 
@@ -435,27 +435,12 @@ public class MathParser {
 		return buildFunction(name, args.toArray(new MathValue[0]));
 	}
 
-	@Deprecated(forRemoval = true)
-	public static boolean isOperativeSymbol(char symbol) {
-		return isOperativeSymbol(String.valueOf(symbol));
-	}
-
-	@Deprecated(forRemoval = true)
-	public static boolean isOperativeSymbol(@NotNull String symbol) {
-		return Operator.isOperator(symbol) || symbol.equals("?") || symbol.equals(":");
-	}
-
 	public static boolean isNumeric(String string) {
 		return NUMERIC.matcher(string).matches();
 	}
 
 	protected static Operator getOperatorFor(String op) throws CompoundException {
 		return Operator.getOperatorFor(op).orElseThrow(() -> new CompoundException("Unknown operator symbol '" + op + "'"));
-	}
-
-	@Deprecated(forRemoval = true)
-	protected static boolean isQueryOrFunctionName(String string) {
-		return !isNumeric(string) && !isOperativeSymbol(string);
 	}
 
 	protected static boolean isLikelyVariable(String string) {

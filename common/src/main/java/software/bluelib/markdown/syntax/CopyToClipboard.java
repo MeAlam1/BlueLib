@@ -43,16 +43,6 @@ public class CopyToClipboard extends MarkdownFeature {
 		return result;
 	}
 
-	/**
-	 * @return true if the CopyToClipboard feature is enabled, false otherwise.
-	 * @deprecated Use {@link CopyToClipboard#isFeatureEnabled} instead.
-	 */
-	@NotNull
-	@Deprecated(forRemoval = true, since = "2.2.0")
-	public static Boolean isCopyToClipboardEnabled() {
-		return MarkdownConfig.isCopyToClipboardEnabled;
-	}
-
 	@Override
 	protected @NotNull Boolean isFeatureEnabled() {
 		return MarkdownConfig.isCopyToClipboardEnabled;

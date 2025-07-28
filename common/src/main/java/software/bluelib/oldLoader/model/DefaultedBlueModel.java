@@ -8,7 +8,9 @@
 package software.bluelib.oldLoader.model;
 
 import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.Nullable;
 import software.bluelib.loader.animatable.BlueAnimatable;
+import software.bluelib.oldLoader.renderer.BlueRenderer;
 
 public abstract class DefaultedBlueModel<T extends BlueAnimatable> extends BlueModel<T> {
 
@@ -55,15 +57,15 @@ public abstract class DefaultedBlueModel<T extends BlueAnimatable> extends BlueM
 	protected abstract String subtype();
 
 	@Override
-	public ResourceLocation getModelResource(T pAnimatable) {
-		return this.modelPath;
+	public ResourceLocation getModelResource(T pAnimatable, @Nullable BlueRenderer<T> pRenderer) {
+		return modelPath;
 	}
 
 	@Override
-	public ResourceLocation getTextureResource(T pAnimatable) {
-		return this.texturePath;
+	public ResourceLocation getTextureResource(T pAnimatable, @Nullable BlueRenderer<T> pRenderer) {
+		return texturePath;
 	}
-
+	
 	@Override
 	public ResourceLocation getAnimationResource(T pAnimatable) {
 		return this.animationsPath;

@@ -8,7 +8,9 @@
 package software.bluelib.oldLoader.model;
 
 import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.Nullable;
 import software.bluelib.loader.animatable.BlueAnimatable;
+import software.bluelib.oldLoader.renderer.BlueRenderer;
 
 public class DefaultedBlockBlueModel<T extends BlueAnimatable> extends DefaultedBlueModel<T> {
 

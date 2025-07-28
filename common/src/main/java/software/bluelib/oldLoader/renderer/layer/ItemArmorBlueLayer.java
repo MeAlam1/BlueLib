@@ -119,7 +119,6 @@ public class ItemArmorBlueLayer<T extends LivingEntity & BlueAnimatable> extends
 
 				if (model instanceof BlueArmorRenderer<?> BlueArmorRenderer) {
 					prepModelPartForRender(pPoseStack, bone, modelPart);
-					BlueArmorRenderer.prepForRender(animatable, armorStack, slot, model);
 					BlueArmorRenderer.applyBoneVisibilityByPart(slot, modelPart, model);
 					BlueArmorRenderer.renderToBuffer(pPoseStack, null, pPackedLight, pPackedOverlay, Color.WHITE.argbInt());
 				} else if (armorStack.getItem() instanceof ArmorItem) {

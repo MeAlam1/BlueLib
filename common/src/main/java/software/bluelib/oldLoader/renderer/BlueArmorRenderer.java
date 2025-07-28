@@ -265,9 +265,6 @@ public class BlueArmorRenderer<T extends Item & BlueItem> extends HumanoidModel 
 		this.headPitch = 0;
 	}
 
-	@Deprecated(forRemoval = true)
-	public void doArmourPostRenderCleanup() {}
-
 	@Override
 	public void renderRecursively(PoseStack pPoseStack, T pAnimatable, BoneCache pBone, RenderType pRenderType, MultiBufferSource pBufferSource, VertexConsumer pBuffer, boolean pIsReRender, float pPartialTick, int pPackedLight,
 			int pPackedOverlay, int pColour) {
@@ -295,31 +292,6 @@ public class BlueArmorRenderer<T extends Item & BlueItem> extends HumanoidModel 
 		this.leftLeg = getLeftLegBone(pModel);
 		this.rightBoot = getRightBootBone(pModel);
 		this.leftBoot = getLeftBootBone(pModel);
-	}
-
-	@Deprecated(forRemoval = true)
-	public void prepForRender(@Nullable Entity pEntity, ItemStack pStack, @Nullable EquipmentSlot slot, @Nullable HumanoidModel<?> baseModel) {
-		if (pEntity == null || slot == null || baseModel == null)
-			return;
-
-		final Minecraft mc = Minecraft.getInstance();
-
-		prepForRender(pEntity, pStack, slot, baseModel, mc.levelRenderer.renderBuffers.bufferSource(), mc.getTimer().getGameTimeDeltaPartialTick(true), 0, 0, 0, 0);
-	}
-
-	public void prepForRender(Entity entity, ItemStack stack, EquipmentSlot slot, HumanoidModel<?> baseModel, MultiBufferSource pBufferSource,
-			float pPartialTick, float limbSwing, float limbSwingAmount, float netHeadYaw, float headPitch) {
-		this.baseModel = baseModel;
-		this.currentEntity = entity;
-		this.currentStack = stack;
-		this.animatable = (T) stack.getItem();
-		this.currentSlot = slot;
-		this.pBufferSource = pBufferSource;
-		this.pPartialTick = pPartialTick;
-		this.limbSwing = limbSwing;
-		this.limbSwingAmount = limbSwingAmount;
-		this.netHeadYaw = netHeadYaw;
-		this.headPitch = headPitch;
 	}
 
 	protected void applyBaseModel(HumanoidModel<?> baseModel) {

@@ -286,12 +286,6 @@ public class BlueEntityRenderer<T extends Entity & BlueAnimatable> extends Entit
 		pPoseStack.popPose();
 	}
 
-	@Deprecated(forRemoval = true)
-	protected void applyRotations(T animatable, PoseStack pPoseStack, float ageInTicks, float rotationYaw,
-			float pPartialTick) {
-		applyRotations(animatable, pPoseStack, ageInTicks, rotationYaw, pPartialTick, 1);
-	}
-
 	protected void applyRotations(T animatable, PoseStack pPoseStack, float ageInTicks, float rotationYaw, float pPartialTick, float nativeScale) {
 		if (isShaking(animatable))
 			rotationYaw += (float) (Math.cos(animatable.tickCount * 3.25d) * Math.PI * 0.4d);

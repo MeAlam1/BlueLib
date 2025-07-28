@@ -79,14 +79,4 @@ public class Hyperlink extends MarkdownFeature {
 	protected @NotNull String getFeatureName() {
 		return "Hyperlink";
 	}
-
-	/**
-	 * @return true if the hyperlink feature is enabled, false otherwise.
-	 * @deprecated Use {@link Hyperlink#isFeatureEnabled} instead.
-	 */
-	@NotNull
-	@Deprecated(forRemoval = true, since = "2.2.0")
-	public static Boolean isHyperlinkEnabled() {
-		return MarkdownConfig.isHyperlinkEnabled;
-	}
 }

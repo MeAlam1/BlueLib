@@ -250,7 +250,6 @@ public interface BlueRenderer<T extends BlueAnimatable> {
 
 	void updateAnimatedTextureFrame(T pAnimatable);
 
-	//@Deprecated(forRemoval = true)
 	@ApiStatus.Internal
 	default VertexConsumer checkAndRefreshBuffer(boolean pIsReRender, VertexConsumer pBuffer, MultiBufferSource pBufferSource, RenderType pRenderType) {
 		if (pIsReRender)
@@ -264,7 +263,6 @@ public interface BlueRenderer<T extends BlueAnimatable> {
 		};
 	}
 
-	//@Deprecated(forRemoval = true)
 	@ApiStatus.Internal
 	private boolean bufferNeedsRefresh(VertexConsumer pBuffer) {
 		return switch (pBuffer) {
