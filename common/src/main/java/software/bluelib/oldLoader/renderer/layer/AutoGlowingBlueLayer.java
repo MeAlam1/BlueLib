@@ -21,6 +21,7 @@ import software.bluelib.loader.animatable.BlueAnimatable;
 import software.bluelib.loader.cache.model.ModelCache;
 import software.bluelib.loader.cache.texture.AutoGlowingTexture;
 import software.bluelib.loader.renderer.base.BlueRenderer;
+import software.bluelib.loader.renderer.context.FullRenderContext;
 
 public class AutoGlowingBlueLayer<T extends BlueAnimatable> extends BlueRenderLayer<T> {
 
@@ -54,9 +55,20 @@ public class AutoGlowingBlueLayer<T extends BlueAnimatable> extends BlueRenderLa
 		pRenderType = getRenderType(animatable, pBufferSource);
 
 		if (pRenderType != null) {
-			getRenderer().reRender(bakedModel, pPoseStack, pBufferSource, animatable, pRenderType,
-					pBufferSource.getBuffer(pRenderType), pPartialTick, LightTexture.FULL_SKY, pPackedOverlay,
-					getRenderer().getRenderColor(animatable, pPartialTick, pPackedLight).argbInt());
+			FullRenderContext<T> context = new FullRenderContext<>(
+					pPoseStack,
+					animatable,
+					bakedModel,
+					pRenderType,
+					pBufferSource,
+					pBufferSource.getBuffer(pRenderType),
+					true,
+					pPartialTick,
+					LightTexture.FULL_SKY,
+					pPackedOverlay,
+					getRenderer().getRenderColor(animatable, pPartialTick, pPackedLight).argbInt()
+			);
+			getRenderer().reRender(context);
 		}
 	}
 }
