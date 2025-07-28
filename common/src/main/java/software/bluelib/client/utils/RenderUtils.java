@@ -46,9 +46,9 @@ import software.bluelib.api.utils.Color;
 import software.bluelib.loader.animatable.BlueAnimatable;
 import software.bluelib.loader.cache.model.BoneCache;
 import software.bluelib.loader.cache.model.CubeCache;
+import software.bluelib.loader.renderer.base.BlueRenderer;
 import software.bluelib.oldLoader.animatable.client.BlueRenderProvider;
 import software.bluelib.oldLoader.model.BlueModel;
-import software.bluelib.loader.renderer.base.BlueRenderer;
 import software.bluelib.oldLoader.renderer.BlueReplacedEntityRenderer;
 
 @SuppressWarnings("unused")
@@ -259,7 +259,7 @@ public final class RenderUtils {
 
 		pParentModel.copyPropertiesTo(pBaseModel);
 		pPartVisibilitySetter.accept(pBaseModel, pEquipmentSlot);
-		
+
 		pBaseModel.copyPropertiesTo((A) model);
 		model.renderToBuffer(pPoseStack, null, pPackedLight, OverlayTexture.NO_OVERLAY, Color.WHITE.argbInt());
 

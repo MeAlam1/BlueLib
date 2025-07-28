@@ -16,8 +16,8 @@ import org.jetbrains.annotations.Nullable;
 import software.bluelib.loader.animatable.BlueAnimatable;
 import software.bluelib.loader.cache.model.BoneCache;
 import software.bluelib.loader.cache.model.ModelCache;
-import software.bluelib.oldLoader.model.BlueModel;
 import software.bluelib.loader.renderer.base.BlueRenderer;
+import software.bluelib.oldLoader.model.BlueModel;
 
 public abstract class BlueRenderLayer<T extends BlueAnimatable> {
 

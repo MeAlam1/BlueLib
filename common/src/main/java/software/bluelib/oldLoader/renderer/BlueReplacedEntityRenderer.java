@@ -42,7 +42,7 @@ import software.bluelib.loader.cache.model.BoneCache;
 import software.bluelib.loader.cache.model.ModelCache;
 import software.bluelib.loader.cache.texture.AnimatableTexture;
 import software.bluelib.loader.renderer.base.BlueRenderer;
-import software.bluelib.loader.renderer.context.RenderContext;
+import software.bluelib.loader.renderer.context.BaseRenderContext;
 import software.bluelib.oldLoader.animation.AnimationState;
 import software.bluelib.oldLoader.constant.DataTickets;
 import software.bluelib.oldLoader.model.BlueModel;
@@ -142,19 +142,16 @@ public class BlueReplacedEntityRenderer<E extends Entity, T extends BlueAnimatab
 	public void render(E pEntity, float pEntityYaw, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBufferSource, int pPackedLight) {
 		this.currentEntity = pEntity;
 
-		defaultRender(new RenderContext<>(
+		defaultRender(new BaseRenderContext<>(
 				pPoseStack,
 				this.animatable,
 				this.model.getBakedModel(getBlueModel().getModelResource(animatable, this)),
-				null,
 				pBufferSource,
-				null,
 				false, // isReRender
 				pPartialTick,
 				pPackedLight,
 				getPackedOverlay(this.animatable, 0, pPartialTick),
-				getRenderColor(this.animatable, pPartialTick, pPackedLight).argbInt()
-		));
+				getRenderColor(this.animatable, pPartialTick, pPackedLight).argbInt()));
 	}
 
 	@Override

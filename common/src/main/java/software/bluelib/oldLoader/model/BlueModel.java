@@ -24,12 +24,12 @@ import software.bluelib.loader.cache.animations.AnimationCache;
 import software.bluelib.loader.cache.animations.AnimationLibraryCache;
 import software.bluelib.loader.cache.model.BoneCache;
 import software.bluelib.loader.cache.model.ModelCache;
+import software.bluelib.loader.renderer.base.BlueRenderer;
 import software.bluelib.oldLoader.animatable.BlueReplacedEntity;
 import software.bluelib.oldLoader.animation.AnimationProcessor;
 import software.bluelib.oldLoader.animation.AnimationState;
 import software.bluelib.oldLoader.constant.DataTickets;
 import software.bluelib.oldLoader.constant.dataticket.DataTicket;
-import software.bluelib.loader.renderer.base.BlueRenderer;
 
 public abstract class BlueModel<T extends BlueAnimatable> {
 
@@ -41,7 +41,7 @@ public abstract class BlueModel<T extends BlueAnimatable> {
 	private long lastRenderedInstance = -1;
 
 	public abstract ResourceLocation getModelResource(T pAnimatable, @Nullable BlueRenderer<T> pRenderer);
-	
+
 	public abstract ResourceLocation getTextureResource(T pAnimatable, @Nullable BlueRenderer<T> pRenderer);
 
 	public abstract ResourceLocation getAnimationResource(T pAnimatable);

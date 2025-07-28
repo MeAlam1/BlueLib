@@ -9,8 +9,8 @@ import net.minecraft.client.renderer.RenderType;
 import org.jetbrains.annotations.ApiStatus;
 
 public final class BufferUtils {
-	private BufferUtils() {
-	}
+
+	private BufferUtils() {}
 
 	@ApiStatus.Internal
 	public static VertexConsumer checkAndRefreshBuffer(boolean pIsReRender, VertexConsumer pBuffer, MultiBufferSource pBufferSource, RenderType pRenderType) {
@@ -19,10 +19,8 @@ public final class BufferUtils {
 
 		return switch (pBuffer) {
 			case BufferBuilder builder when !builder.building -> pBufferSource.getBuffer(pRenderType);
-			case OutlineBufferSource.EntityOutlineGenerator outlines when bufferNeedsRefresh(outlines.delegate()) ->
-					new OutlineBufferSource.EntityOutlineGenerator(pBufferSource.getBuffer(pRenderType), outlines.color());
-			case VertexMultiConsumer.Double pair when bufferNeedsRefresh(pair.first) || bufferNeedsRefresh(pair.second) ->
-					new VertexMultiConsumer.Double(bufferNeedsRefresh(pair.first) ? pBufferSource.getBuffer(pRenderType) : pair.first, bufferNeedsRefresh(pair.second) ? pBufferSource.getBuffer(pRenderType) : pair.second);
+			case OutlineBufferSource.EntityOutlineGenerator outlines when bufferNeedsRefresh(outlines.delegate()) -> new OutlineBufferSource.EntityOutlineGenerator(pBufferSource.getBuffer(pRenderType), outlines.color());
+			case VertexMultiConsumer.Double pair when bufferNeedsRefresh(pair.first) || bufferNeedsRefresh(pair.second) -> new VertexMultiConsumer.Double(bufferNeedsRefresh(pair.first) ? pBufferSource.getBuffer(pRenderType) : pair.first, bufferNeedsRefresh(pair.second) ? pBufferSource.getBuffer(pRenderType) : pair.second);
 			default -> pBuffer;
 		};
 	}

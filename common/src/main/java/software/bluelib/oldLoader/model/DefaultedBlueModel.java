@@ -65,7 +65,7 @@ public abstract class DefaultedBlueModel<T extends BlueAnimatable> extends BlueM
 	public ResourceLocation getTextureResource(T pAnimatable, @Nullable BlueRenderer<T> pRenderer) {
 		return texturePath;
 	}
-	
+
 	@Override
 	public ResourceLocation getAnimationResource(T pAnimatable) {
 		return this.animationsPath;

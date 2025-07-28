@@ -11,6 +11,14 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
 import com.mojang.datafixers.util.Either;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.DoubleSupplier;
+import java.util.function.Supplier;
+import java.util.regex.Pattern;
 import net.minecraft.Util;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.exception.CompoundException;
@@ -28,15 +36,6 @@ import software.bluelib.oldLoader.loading.math.function.random.RandomFunction;
 import software.bluelib.oldLoader.loading.math.function.random.RandomIntegerFunction;
 import software.bluelib.oldLoader.loading.math.function.round.*;
 import software.bluelib.oldLoader.loading.math.value.*;
-
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Optional;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.DoubleSupplier;
-import java.util.function.Supplier;
-import java.util.regex.Pattern;
 
 public class MathParser {
 
