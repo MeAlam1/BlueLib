@@ -32,6 +32,8 @@ import software.bluelib.loader.cache.model.ModelCache;
 import software.bluelib.loader.cache.texture.AnimatableTexture;
 import software.bluelib.loader.renderer.base.BlueRenderer;
 import software.bluelib.loader.renderer.context.BaseRenderContext;
+import software.bluelib.loader.renderer.context.FullRenderContext;
+import software.bluelib.loader.renderer.context.IRenderContext;
 import software.bluelib.oldLoader.animation.AnimationState;
 import software.bluelib.oldLoader.constant.DataTickets;
 import software.bluelib.oldLoader.model.BlueModel;
@@ -120,26 +122,33 @@ public class BlueBlockRenderer<T extends BlockEntity & BlueAnimatable> implement
 	}
 
 	@Override
-	public void actuallyRender(PoseStack pPoseStack, T animatable, ModelCache model, @Nullable RenderType pRenderType,
-			MultiBufferSource pBufferSource, @Nullable VertexConsumer buffer, boolean pIsReRender, float pPartialTick, int pPackedLight,
-			int pPackedOverlay, int colour) {
-		if (!pIsReRender) {
-			AnimationState<T> animationState = new AnimationState<T>(animatable, 0, 0, pPartialTick, false);
-			long instanceId = getInstanceId(animatable);
-			BlueModel<T> currentModel = getBlueModel();
+	public void actuallyRender(IRenderContext<T> pContext) {
+		if (pContext instanceof FullRenderContext<T> full) {
+			PoseStack pPoseStack = full.poseStack();
+			T animatable = full.animatable();
+			VertexConsumer buffer = full.buffer();
+			boolean pIsReRender = full.isReRender();
+			float pPartialTick = full.partialTick();
 
-			animationState.setData(DataTickets.TICK, animatable.getTick(animatable));
-			animationState.setData(DataTickets.BLOCK_ENTITY, animatable);
-			currentModel.addAdditionalStateData(animatable, instanceId, animationState::setData);
-			rotateBlock(getFacing(animatable), pPoseStack);
-			currentModel.handleAnimations(animatable, instanceId, animationState, pPartialTick);
+			if (!pIsReRender) {
+				AnimationState<T> animationState = new AnimationState<>(animatable, 0, 0, pPartialTick, false);
+				long instanceId = getInstanceId(animatable);
+				BlueModel<T> currentModel = getBlueModel();
+
+				animationState.setData(DataTickets.TICK, animatable.getTick(animatable));
+				animationState.setData(DataTickets.BLOCK_ENTITY, animatable);
+				currentModel.addAdditionalStateData(animatable, instanceId, animationState::setData);
+				rotateBlock(getFacing(animatable), pPoseStack);
+				currentModel.handleAnimations(animatable, instanceId, animationState, pPartialTick);
+			}
+
+			this.modelRenderTranslations = new Matrix4f(pPoseStack.last().pose());
+
+			if (buffer != null)
+				BlueRenderer.super.actuallyRender(full);
+		} else if (pContext instanceof BaseRenderContext<T> base) {
+			handleBaseActuallyRenderContext(base, this);
 		}
-
-		this.modelRenderTranslations = new Matrix4f(pPoseStack.last().pose());
-
-		if (buffer != null)
-			BlueRenderer.super.actuallyRender(pPoseStack, animatable, model, pRenderType, pBufferSource, buffer, pIsReRender, pPartialTick,
-					pPackedLight, pPackedOverlay, colour);
 	}
 
 	@Override

@@ -66,8 +66,7 @@ public class AutoGlowingBlueLayer<T extends BlueAnimatable> extends BlueRenderLa
 					pPartialTick,
 					LightTexture.FULL_SKY,
 					pPackedOverlay,
-					getRenderer().getRenderColor(animatable, pPartialTick, pPackedLight).argbInt()
-			);
+					getRenderer().getRenderColor(animatable, pPartialTick, pPackedLight).argbInt());
 			getRenderer().reRender(context);
 		}
 	}

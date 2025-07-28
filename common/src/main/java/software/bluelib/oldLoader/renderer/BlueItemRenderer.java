@@ -34,7 +34,9 @@ import software.bluelib.loader.cache.model.BoneCache;
 import software.bluelib.loader.cache.model.ModelCache;
 import software.bluelib.loader.cache.texture.AnimatableTexture;
 import software.bluelib.loader.renderer.base.BlueRenderer;
+import software.bluelib.loader.renderer.context.BaseRenderContext;
 import software.bluelib.loader.renderer.context.FullRenderContext;
+import software.bluelib.loader.renderer.context.IRenderContext;
 import software.bluelib.oldLoader.animatable.BlueItem;
 import software.bluelib.oldLoader.animation.AnimationState;
 import software.bluelib.oldLoader.constant.DataTickets;
@@ -190,27 +192,34 @@ public class BlueItemRenderer<T extends Item & BlueAnimatable> extends BlockEnti
 	}
 
 	@Override
-	public void actuallyRender(PoseStack pPoseStack, T pAnimatable, ModelCache pModel, @Nullable RenderType pRenderType,
-			MultiBufferSource pBufferSource, @Nullable VertexConsumer pBuffer, boolean pIsReRender, float pPartialTick,
-			int pPackedLight, int pPackedOverlay, int pColour) {
-		if (!pIsReRender) {
-			AnimationState<T> animationState = new AnimationState<>(pAnimatable, 0, 0, pPartialTick, false);
-			long instanceId = getInstanceId(pAnimatable);
-			BlueModel<T> currentModel = getBlueModel();
+	public void actuallyRender(IRenderContext<T> pContext) {
+		if (pContext instanceof FullRenderContext<T> full) {
+			PoseStack pPoseStack = full.poseStack();
+			T pAnimatable = full.animatable();
+			VertexConsumer pBuffer = full.buffer();
+			boolean pIsReRender = full.isReRender();
+			float pPartialTick = full.partialTick();
 
-			animationState.setData(DataTickets.TICK, pAnimatable.getTick(this.currentItemStack));
-			animationState.setData(DataTickets.ITEM_RENDER_PERSPECTIVE, this.renderPerspective);
-			animationState.setData(DataTickets.ITEMSTACK, this.currentItemStack);
-			pAnimatable.getAnimatableInstanceCache().getManagerForId(instanceId).setData(DataTickets.ITEM_RENDER_PERSPECTIVE, this.renderPerspective);
-			currentModel.addAdditionalStateData(pAnimatable, instanceId, animationState::setData);
-			currentModel.handleAnimations(pAnimatable, instanceId, animationState, pPartialTick);
+			if (!pIsReRender) {
+				AnimationState<T> animationState = new AnimationState<>(pAnimatable, 0, 0, pPartialTick, false);
+				long instanceId = getInstanceId(pAnimatable);
+				BlueModel<T> currentModel = getBlueModel();
+
+				animationState.setData(DataTickets.TICK, pAnimatable.getTick(this.currentItemStack));
+				animationState.setData(DataTickets.ITEM_RENDER_PERSPECTIVE, this.renderPerspective);
+				animationState.setData(DataTickets.ITEMSTACK, this.currentItemStack);
+				pAnimatable.getAnimatableInstanceCache().getManagerForId(instanceId).setData(DataTickets.ITEM_RENDER_PERSPECTIVE, this.renderPerspective);
+				currentModel.addAdditionalStateData(pAnimatable, instanceId, animationState::setData);
+				currentModel.handleAnimations(pAnimatable, instanceId, animationState, pPartialTick);
+			}
+
+			this.modelRenderTranslations = new Matrix4f(pPoseStack.last().pose());
+
+			if (pBuffer != null)
+				BlueRenderer.super.actuallyRender(full);
+		} else if (pContext instanceof BaseRenderContext<T> base) {
+			handleBaseActuallyRenderContext(base, this);
 		}
-
-		this.modelRenderTranslations = new Matrix4f(pPoseStack.last().pose());
-
-		if (pBuffer != null)
-			BlueRenderer.super.actuallyRender(pPoseStack, pAnimatable, pModel, pRenderType, pBufferSource, pBuffer, pIsReRender, pPartialTick,
-					pPackedLight, pPackedOverlay, pColour);
 	}
 
 	@Override

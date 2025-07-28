@@ -24,12 +24,8 @@ public class BasicMathMoLang extends BaseMoLangContext {
 			return Math.max(min, Math.min(max, value));
 		});
 
-		registerFunction(MoLangNamespaceUtils.withMathNamespace("min"), (args, runtime) ->
-				args.stream().mapToDouble(MoLangMathUtils::toDouble).min().orElse(0.0)
-		);
+		registerFunction(MoLangNamespaceUtils.withMathNamespace("min"), (args, runtime) -> args.stream().mapToDouble(MoLangMathUtils::toDouble).min().orElse(0.0));
 
-		registerFunction(MoLangNamespaceUtils.withMathNamespace("max"), (args, runtime) ->
-				args.stream().mapToDouble(MoLangMathUtils::toDouble).max().orElse(0.0)
-		);
+		registerFunction(MoLangNamespaceUtils.withMathNamespace("max"), (args, runtime) -> args.stream().mapToDouble(MoLangMathUtils::toDouble).max().orElse(0.0));
 	}
 }

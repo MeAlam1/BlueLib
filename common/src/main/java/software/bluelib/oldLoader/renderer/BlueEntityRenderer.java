@@ -44,6 +44,8 @@ import software.bluelib.loader.cache.model.ModelCache;
 import software.bluelib.loader.cache.texture.AnimatableTexture;
 import software.bluelib.loader.renderer.base.BlueRenderer;
 import software.bluelib.loader.renderer.context.BaseRenderContext;
+import software.bluelib.loader.renderer.context.FullRenderContext;
+import software.bluelib.loader.renderer.context.IRenderContext;
 import software.bluelib.oldLoader.animation.AnimationState;
 import software.bluelib.oldLoader.constant.DataTickets;
 import software.bluelib.oldLoader.model.BlueModel;
@@ -162,83 +164,89 @@ public class BlueEntityRenderer<T extends Entity & BlueAnimatable> extends Entit
 	}
 
 	@Override
-	public void actuallyRender(PoseStack pPoseStack, T animatable, ModelCache model, @Nullable RenderType pRenderType,
-			MultiBufferSource pBufferSource, @Nullable VertexConsumer buffer, boolean pIsReRender, float pPartialTick,
-			int pPackedLight, int pPackedOverlay, int colour) {
-		pPoseStack.pushPose();
+	public void actuallyRender(IRenderContext<T> pContext) {
+		if (pContext instanceof FullRenderContext<T> full) {
+			PoseStack pPoseStack = full.poseStack();
+			T animatable = full.animatable();
+			VertexConsumer buffer = full.buffer();
+			boolean pIsReRender = full.isReRender();
+			float pPartialTick = full.partialTick();
 
-		LivingEntity livingEntity = animatable instanceof LivingEntity entity ? entity : null;
-		boolean shouldSit = animatable.isPassenger() && (animatable.getVehicle() != null);
-		float lerpBodyRot = livingEntity == null ? 0 : Mth.rotLerp(pPartialTick, livingEntity.yBodyRotO, livingEntity.yBodyRot);
-		float lerpHeadRot = livingEntity == null ? 0 : Mth.rotLerp(pPartialTick, livingEntity.yHeadRotO, livingEntity.yHeadRot);
-		float netHeadYaw = lerpHeadRot - lerpBodyRot;
+			pPoseStack.pushPose();
 
-		if (shouldSit && animatable.getVehicle() instanceof LivingEntity livingentity) {
-			lerpBodyRot = Mth.rotLerp(pPartialTick, livingentity.yBodyRotO, livingentity.yBodyRot);
-			netHeadYaw = lerpHeadRot - lerpBodyRot;
-			float clampedHeadYaw = Mth.clamp(Mth.wrapDegrees(netHeadYaw), -85, 85);
-			lerpBodyRot = lerpHeadRot - clampedHeadYaw;
+			LivingEntity livingEntity = animatable instanceof LivingEntity entity ? entity : null;
+			boolean shouldSit = animatable.isPassenger() && (animatable.getVehicle() != null);
+			float lerpBodyRot = livingEntity == null ? 0 : Mth.rotLerp(pPartialTick, livingEntity.yBodyRotO, livingEntity.yBodyRot);
+			float lerpHeadRot = livingEntity == null ? 0 : Mth.rotLerp(pPartialTick, livingEntity.yHeadRotO, livingEntity.yHeadRot);
+			float netHeadYaw = lerpHeadRot - lerpBodyRot;
 
-			if (clampedHeadYaw * clampedHeadYaw > 2500f)
-				lerpBodyRot += clampedHeadYaw * 0.2f;
+			if (shouldSit && animatable.getVehicle() instanceof LivingEntity livingentity) {
+				lerpBodyRot = Mth.rotLerp(pPartialTick, livingentity.yBodyRotO, livingentity.yBodyRot);
+				netHeadYaw = lerpHeadRot - lerpBodyRot;
+				float clampedHeadYaw = Mth.clamp(Mth.wrapDegrees(netHeadYaw), -85, 85);
+				lerpBodyRot = lerpHeadRot - clampedHeadYaw;
 
-			netHeadYaw = lerpHeadRot - lerpBodyRot;
-		}
+				if (clampedHeadYaw * clampedHeadYaw > 2500f)
+					lerpBodyRot += clampedHeadYaw * 0.2f;
 
-		if (animatable.getPose() == Pose.SLEEPING && livingEntity != null) {
-			Direction bedDirection = livingEntity.getBedOrientation();
-
-			if (bedDirection != null) {
-				float eyePosOffset = livingEntity.getEyeHeight(Pose.STANDING) - 0.1F;
-
-				pPoseStack.translate(-bedDirection.getStepX() * eyePosOffset, 0, -bedDirection.getStepZ() * eyePosOffset);
+				netHeadYaw = lerpHeadRot - lerpBodyRot;
 			}
+
+			if (animatable.getPose() == Pose.SLEEPING && livingEntity != null) {
+				Direction bedDirection = livingEntity.getBedOrientation();
+
+				if (bedDirection != null) {
+					float eyePosOffset = livingEntity.getEyeHeight(Pose.STANDING) - 0.1F;
+					pPoseStack.translate(-bedDirection.getStepX() * eyePosOffset, 0, -bedDirection.getStepZ() * eyePosOffset);
+				}
+			}
+
+			float nativeScale = livingEntity != null ? livingEntity.getScale() : 1;
+			float ageInTicks = animatable.tickCount + pPartialTick;
+			float limbSwingAmount = 0;
+			float limbSwing = 0;
+
+			pPoseStack.scale(nativeScale, nativeScale, nativeScale);
+			applyRotations(animatable, pPoseStack, ageInTicks, lerpBodyRot, pPartialTick, nativeScale);
+
+			if (!shouldSit && animatable.isAlive() && livingEntity != null) {
+				limbSwingAmount = livingEntity.walkAnimation.speed(pPartialTick);
+				limbSwing = livingEntity.walkAnimation.position(pPartialTick);
+
+				if (livingEntity.isBaby())
+					limbSwing *= 3f;
+
+				if (limbSwingAmount > 1f)
+					limbSwingAmount = 1f;
+			}
+
+			if (!pIsReRender) {
+				float headPitch = Mth.lerp(pPartialTick, animatable.xRotO, animatable.getXRot());
+				float motionThreshold = getMotionAnimThreshold(animatable);
+				Vec3 velocity = animatable.getDeltaMovement();
+				float avgVelocity = (float) ((Math.abs(velocity.x) + Math.abs(velocity.z)) / 2f);
+				AnimationState<T> animationState = new AnimationState<T>(animatable, limbSwing, limbSwingAmount, pPartialTick, avgVelocity >= motionThreshold && limbSwingAmount != 0);
+				long instanceId = getInstanceId(animatable);
+				BlueModel<T> currentModel = getBlueModel();
+
+				animationState.setData(DataTickets.TICK, animatable.getTick(animatable));
+				animationState.setData(DataTickets.ENTITY, animatable);
+				animationState.setData(DataTickets.ENTITY_MODEL_DATA, new EntityModelData(shouldSit, livingEntity != null && livingEntity.isBaby(), -netHeadYaw, -headPitch));
+				currentModel.addAdditionalStateData(animatable, instanceId, animationState::setData);
+				currentModel.handleAnimations(animatable, instanceId, animationState, pPartialTick);
+			}
+
+			pPoseStack.translate(0, 0.01f, 0);
+
+			this.modelRenderTranslations = new Matrix4f(pPoseStack.last().pose());
+
+			if (buffer != null)
+				BlueRenderer.super.actuallyRender(full);
+
+			pPoseStack.popPose();
+		} else if (pContext instanceof BaseRenderContext<T> base) {
+			handleBaseActuallyRenderContext(base, this);
 		}
-
-		float nativeScale = livingEntity != null ? livingEntity.getScale() : 1;
-		float ageInTicks = animatable.tickCount + pPartialTick;
-		float limbSwingAmount = 0;
-		float limbSwing = 0;
-
-		pPoseStack.scale(nativeScale, nativeScale, nativeScale);
-		applyRotations(animatable, pPoseStack, ageInTicks, lerpBodyRot, pPartialTick, nativeScale);
-
-		if (!shouldSit && animatable.isAlive() && livingEntity != null) {
-			limbSwingAmount = livingEntity.walkAnimation.speed(pPartialTick);
-			limbSwing = livingEntity.walkAnimation.position(pPartialTick);
-
-			if (livingEntity.isBaby())
-				limbSwing *= 3f;
-
-			if (limbSwingAmount > 1f)
-				limbSwingAmount = 1f;
-		}
-
-		if (!pIsReRender) {
-			float headPitch = Mth.lerp(pPartialTick, animatable.xRotO, animatable.getXRot());
-			float motionThreshold = getMotionAnimThreshold(animatable);
-			Vec3 velocity = animatable.getDeltaMovement();
-			float avgVelocity = (float) ((Math.abs(velocity.x) + Math.abs(velocity.z)) / 2f);
-			AnimationState<T> animationState = new AnimationState<T>(animatable, limbSwing, limbSwingAmount, pPartialTick, avgVelocity >= motionThreshold && limbSwingAmount != 0);
-			long instanceId = getInstanceId(animatable);
-			BlueModel<T> currentModel = getBlueModel();
-
-			animationState.setData(DataTickets.TICK, animatable.getTick(animatable));
-			animationState.setData(DataTickets.ENTITY, animatable);
-			animationState.setData(DataTickets.ENTITY_MODEL_DATA, new EntityModelData(shouldSit, livingEntity != null && livingEntity.isBaby(), -netHeadYaw, -headPitch));
-			currentModel.addAdditionalStateData(animatable, instanceId, animationState::setData);
-			currentModel.handleAnimations(animatable, instanceId, animationState, pPartialTick);
-		}
-
-		pPoseStack.translate(0, 0.01f, 0);
-
-		this.modelRenderTranslations = new Matrix4f(pPoseStack.last().pose());
-
-		if (buffer != null)
-			BlueRenderer.super.actuallyRender(pPoseStack, animatable, model, pRenderType, pBufferSource, buffer, pIsReRender, pPartialTick,
-					pPackedLight, pPackedOverlay, colour);
-
-		pPoseStack.popPose();
 	}
 
 	@Override
