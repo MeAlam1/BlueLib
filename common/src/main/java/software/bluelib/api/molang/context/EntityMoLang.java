@@ -21,7 +21,6 @@ import org.jetbrains.annotations.NotNull;
 /*
  * TODO:
  * All Getters need Setters
- * All Getters need an is method like get_x -> is_x(10) to check if the value is equal to the given value
  * Add Null Checks to all like with get_vehicle
  * Add:
  * AbstractVillager

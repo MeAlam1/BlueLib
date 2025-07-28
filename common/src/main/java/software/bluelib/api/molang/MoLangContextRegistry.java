@@ -15,13 +15,20 @@ import net.minecraft.world.entity.Entity;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.molang.context.*;
+import software.bluelib.api.molang.context.math.AdvancedMathMoLang;
+import software.bluelib.api.molang.context.math.BasicMathMoLang;
+import software.bluelib.api.molang.context.math.RandomMoLang;
+import software.bluelib.api.molang.context.math.TrigMoLang;
 import software.bluelib.oldLoader.animation.AnimationState;
 
 public class MoLangContextRegistry {
 
 	public static void init() {
 		MoLangContextRegistry.register(input -> new GeneralMoLang());
-		MoLangContextRegistry.register(input -> new MathMoLang());
+		MoLangContextRegistry.register(input -> new BasicMathMoLang());
+		MoLangContextRegistry.register(input -> new AdvancedMathMoLang());
+		MoLangContextRegistry.register(input -> new RandomMoLang());
+		MoLangContextRegistry.register(input -> new TrigMoLang());
 		MoLangContextRegistry.register(input -> new OperatorMoLang());
 
 		MoLangContextRegistry.register(input -> {
