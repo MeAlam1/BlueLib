@@ -13,6 +13,7 @@ import java.util.*;
 import java.util.function.Function;
 import net.minecraft.core.Direction.Axis;
 import org.jetbrains.annotations.Nullable;
+import software.bluelib.api.molang.MoLangUtils;
 import software.bluelib.loader.animatable.BlueAnimatable;
 import software.bluelib.loader.cache.animations.keyframe.BoneAnimationCache;
 import software.bluelib.loader.cache.animations.keyframe.KeyframeCache;
@@ -322,6 +323,7 @@ public class AnimationController<T extends BlueAnimatable> {
 			}
 
 			if (this.currentAnimation != null) {
+				// TODO: REMOVE!!!!! 
 				MathParser.setVariable(MoLangQueries.ANIM_TIME, () -> 0);
 
 				for (BoneAnimationCache boneAnimationCache : this.currentAnimation.animationCache().boneAnimationCaches()) {
@@ -397,6 +399,7 @@ public class AnimationController<T extends BlueAnimatable> {
 
 		final double finalAdjustedTick = adjustedTick;
 
+		// TODO: REMOVE!!!!!
 		MathParser.setVariable(MoLangQueries.ANIM_TIME, () -> finalAdjustedTick / 20d);
 
 		for (BoneAnimationCache boneAnimationCache : this.currentAnimation.animationCache().boneAnimationCaches()) {

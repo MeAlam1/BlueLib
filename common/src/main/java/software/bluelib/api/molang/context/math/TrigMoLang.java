@@ -19,5 +19,11 @@ public class TrigMoLang extends BaseMoLangContext {
 		registerFunction(MoLangNamespaceUtils.withMathNamespace("asin"), (args, runtime) -> Math.asin(MoLangMathUtils.toDouble(args, 0)));
 		registerFunction(MoLangNamespaceUtils.withMathNamespace("acos"), (args, runtime) -> Math.acos(MoLangMathUtils.toDouble(args, 0)));
 		registerFunction(MoLangNamespaceUtils.withMathNamespace("atan"), (args, runtime) -> Math.atan(MoLangMathUtils.toDouble(args, 0)));
+		registerFunction(MoLangNamespaceUtils.withMathNamespace("atan2"), (args, runtime) ->
+				Math.atan2(MoLangMathUtils.toDouble(args, 0), MoLangMathUtils.toDouble(args, 1)));
+		registerFunction(MoLangNamespaceUtils.withMathNamespace("to_deg"), (args, runtime) ->
+				Math.toDegrees(MoLangMathUtils.toDouble(args, 0)));
+		registerFunction(MoLangNamespaceUtils.withMathNamespace("to_rad"), (args, runtime) ->
+				Math.toRadians(MoLangMathUtils.toDouble(args, 0)));
 	}
 }

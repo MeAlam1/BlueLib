@@ -7,9 +7,11 @@
  */
 package software.bluelib.api.molang.expression;
 
+import org.jetbrains.annotations.Nullable;
+import software.bluelib.api.molang.MoLangRuntime;
+
 import java.util.ArrayList;
 import java.util.List;
-import software.bluelib.api.molang.MoLangRuntime;
 
 public class MoLangExpression {
 
@@ -24,31 +26,49 @@ public class MoLangExpression {
 	}
 
 	public Object evaluate(MoLangRuntime pRuntime) {
+		if (raw.startsWith("query.")) {
+			String remapped = "q." + raw.substring("query.".length());
+			return new MoLangExpression(remapped).evaluate(pRuntime);
+		}
+		
 		if (raw.startsWith("q.")) {
-			String expr = raw.substring(2);
-			if (expr.endsWith(")")) {
-				// Function call: q.foo(1, 2)
-				String name = expr.substring(0, expr.indexOf('('));
-				String argsRaw = expr.substring(expr.indexOf('(') + 1, expr.length() - 1);
-				List<Object> args = parseArguments(argsRaw, pRuntime);
-				return pRuntime.callFunction(name, args);
-			} else {
-				// Variable: q.var
-				return pRuntime.getVariable(expr);
+			String expr = raw.substring(2); // Strip only the `q.`
+
+			// Delegate q.math.* to math.*
+			if (expr.startsWith("math.")) {
+				return new MoLangExpression(expr).evaluate(pRuntime);
 			}
+
+			return getObject(pRuntime, expr);
 		}
-		if (raw.equalsIgnoreCase("true")) {
-			return true;
+
+		// Direct access: math.foo() or math.var
+		if (raw.startsWith("math.")) {
+			return getObject(pRuntime, raw);
 		}
-		if (raw.equalsIgnoreCase("false")) {
-			return false;
-		}
+
+		if (raw.equalsIgnoreCase("true")) return true;
+		if (raw.equalsIgnoreCase("false")) return false;
+
 		try {
 			return Double.parseDouble(raw);
 		} catch (NumberFormatException e) {
 			return raw;
 		}
 	}
+
+	@Nullable
+	private Object getObject(MoLangRuntime pRuntime, String pRaw) {
+		if (pRaw.endsWith(")")) {
+			String name = pRaw.substring(0, pRaw.indexOf('('));
+			String argsRaw = pRaw.substring(pRaw.indexOf('(') + 1, pRaw.length() - 1);
+			List<Object> args = parseArguments(argsRaw, pRuntime);
+			return pRuntime.callFunction(name, args);
+		} else {
+			return pRuntime.getVariable(pRaw);
+		}
+	}
+
 
 	private List<Object> parseArguments(String pArgsRaw, MoLangRuntime pRuntime) {
 		List<Object> args = new ArrayList<>();

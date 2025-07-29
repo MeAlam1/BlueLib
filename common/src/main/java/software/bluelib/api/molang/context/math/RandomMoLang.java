@@ -7,9 +7,10 @@
  */
 package software.bluelib.api.molang.context.math;
 
-import java.util.concurrent.ThreadLocalRandom;
 import software.bluelib.api.molang.MoLangNamespaceUtils;
 import software.bluelib.api.molang.context.BaseMoLangContext;
+
+import java.util.concurrent.ThreadLocalRandom;
 
 public class RandomMoLang extends BaseMoLangContext {
 
@@ -24,6 +25,22 @@ public class RandomMoLang extends BaseMoLangContext {
 			double min = MoLangMathUtils.toDouble(args.get(0));
 			double max = MoLangMathUtils.toDouble(args.get(1));
 			return ThreadLocalRandom.current().nextDouble(min, max);
+		});
+
+		registerFunction(MoLangNamespaceUtils.withMathNamespace("random_integer"), (args, runtime) -> {
+			int min = (int) MoLangMathUtils.toDouble(args, 0);
+			int max = (int) MoLangMathUtils.toDouble(args, 1);
+			return ThreadLocalRandom.current().nextInt(min, max + 1);
+		});
+
+		registerFunction(MoLangNamespaceUtils.withMathNamespace("die_roll"), (args, runtime) -> {
+			int sides = (int) MoLangMathUtils.toDouble(args, 0);
+			return 1 + ThreadLocalRandom.current().nextDouble() * sides;
+		});
+
+		registerFunction(MoLangNamespaceUtils.withMathNamespace("die_roll_integer"), (args, runtime) -> {
+			int sides = (int) MoLangMathUtils.toDouble(args, 0);
+			return 1 + ThreadLocalRandom.current().nextInt(sides);
 		});
 	}
 }

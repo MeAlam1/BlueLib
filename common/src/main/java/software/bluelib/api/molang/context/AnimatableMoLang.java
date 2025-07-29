@@ -10,13 +10,12 @@ package software.bluelib.api.molang.context;
 import org.jetbrains.annotations.NotNull;
 import software.bluelib.loader.animatable.BlueAnimatable;
 import software.bluelib.oldLoader.animation.AnimationState;
-import software.bluelib.oldLoader.loading.math.MathParser;
-import software.bluelib.oldLoader.loading.math.MoLangQueries;
 
 public class AnimatableMoLang extends BaseMoLangContext {
 
 	public AnimatableMoLang(@NotNull AnimationState<? extends BlueAnimatable> pState) {
 		setVariable("anim_time", pState.getController() != null ? pState.getController().getAnimTime() : 0d);
-		MathParser.setVariable(MoLangQueries.ANIM_TIME, () -> pState.getController() != null ? pState.getController().getAnimTime() : 0d);
+		setVariable("life_time", pState.getController() != null ? pState.getController().getAnimTime() / 20d : 0d);
+
 	}
 }
