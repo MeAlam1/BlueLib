@@ -7,9 +7,6 @@
  */
 package software.bluelib.api.entity.variant;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
@@ -21,6 +18,10 @@ import software.bluelib.api.utils.variant.ParameterUtils;
 import software.bluelib.entity.variant.IVariantAccessor;
 import software.bluelib.internal.BlueTranslation;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
 @SuppressWarnings("unused")
 public interface IVariantEntity<T extends Entity> {
 
@@ -30,8 +31,8 @@ public interface IVariantEntity<T extends Entity> {
 	@NotNull
 	T getEntity();
 
-	@Nullable
-	default String getRandomVariant(@NotNull List<String> pVariantNamesList, @Nullable String pDefaultVariant) {
+	@NotNull
+	default String getRandomVariant(@NotNull List<String> pVariantNamesList, @NotNull String pDefaultVariant) {
 		if (pVariantNamesList.isEmpty()) {
 			BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("variant.list.empty", pDefaultVariant));
 			return pDefaultVariant;
