@@ -36,7 +36,7 @@ public class NeoForgeNetworkManager implements NetworkManager {
 		var syncPackets = new HashSet<ResourceLocation>();
 		var asyncPackets = new HashSet<ResourceLocation>();
 
-		NetworkRegistry.s2cPayloads.stream()
+		NetworkRegistry.getS2CPayloads().stream()
 				.map(NeoForgePacketInfo::new)
 				.forEach(it -> {
 					boolean handleAsync = it.info().getHandler() instanceof DataRegistrySyncPacketHandler<?, ?>;
@@ -49,7 +49,7 @@ public class NeoForgeNetworkManager implements NetworkManager {
 					it.registerToClient(handleAsync ? netRegistrar : registrar);
 				});
 
-		NetworkRegistry.c2sPayloads.stream()
+		NetworkRegistry.getC2SPayloads().stream()
 				.map(NeoForgePacketInfo::new)
 				.forEach(it -> it.registerToServer(registrar));
 	}

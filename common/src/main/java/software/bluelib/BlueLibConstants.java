@@ -20,9 +20,7 @@ import software.bluelib.api.event.IEventProxy;
 import software.bluelib.platform.IPlatformHelper;
 import software.bluelib.platform.IRegistryHelper;
 
-public class BlueLibConstants {
-
-	private BlueLibConstants() {}
+public class BlueLibConstants implements BuildDetails {
 
 	public static void init() {}
 
@@ -31,6 +29,11 @@ public class BlueLibConstants {
 		return ServiceLoader.load(pClazz)
 				.findFirst()
 				.orElseThrow(() -> new NullPointerException("Failed to load service for " + pClazz.getName()));
+	}
+
+	@NotNull
+	public static <T> ServiceLoader<T> loadAll(@NotNull Class<T> pClazz) {
+		return ServiceLoader.load(pClazz);
 	}
 
 	@NotNull
@@ -45,8 +48,26 @@ public class BlueLibConstants {
 	@NotNull
 	public static final String MOD_NAME = "BlueLib";
 
+	@NotNull
+	public static final String VERSION = "2.3.0";
+
 	@Nullable
 	public static MinecraftServer server;
+
+	@Override
+	public @NotNull String getModId() {
+		return MOD_ID;
+	}
+
+	@Override
+	public @NotNull String getVersion() {
+		return VERSION;
+	}
+
+	@Override
+	public boolean displayWarning() {
+		return false;
+	}
 
 	public static class BlueLoader {
 
