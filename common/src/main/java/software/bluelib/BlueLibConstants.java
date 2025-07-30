@@ -7,12 +7,6 @@
  */
 package software.bluelib;
 
-import java.util.List;
-import java.util.ServiceLoader;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.logging.Logger;
-import java.util.regex.Pattern;
 import net.minecraft.server.MinecraftServer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -20,17 +14,28 @@ import software.bluelib.api.event.IEventProxy;
 import software.bluelib.platform.IPlatformHelper;
 import software.bluelib.platform.IRegistryHelper;
 
-public class BlueLibConstants {
+import java.util.List;
+import java.util.ServiceLoader;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.logging.Logger;
+import java.util.regex.Pattern;
 
-	private BlueLibConstants() {}
+public class BlueLibConstants implements BuildDetails {
 
-	public static void init() {}
+	public static void init() {
+	}
 
 	@NotNull
 	public static <T> T load(@NotNull Class<T> pClazz) {
 		return ServiceLoader.load(pClazz)
 				.findFirst()
 				.orElseThrow(() -> new NullPointerException("Failed to load service for " + pClazz.getName()));
+	}
+
+	@NotNull
+	public static <T> ServiceLoader<T> loadAll(@NotNull Class<T> pClazz) {
+		return ServiceLoader.load(pClazz);
 	}
 
 	@NotNull
@@ -45,8 +50,26 @@ public class BlueLibConstants {
 	@NotNull
 	public static final String MOD_NAME = "BlueLib";
 
+	@NotNull
+	public static final String VERSION = "2.2.0";
+
 	@Nullable
 	public static MinecraftServer server;
+
+	@Override
+	public @NotNull String getModId() {
+		return MOD_ID;
+	}
+
+	@Override
+	public @NotNull String getVersion() {
+		return VERSION;
+	}
+
+	@Override
+	public boolean displayWarning() {
+		return false;
+	}
 
 	public static class BlueLoader {
 
