@@ -7,6 +7,9 @@
  */
 package software.bluelib.api.entity.variant;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
@@ -17,10 +20,6 @@ import software.bluelib.api.utils.logging.BaseLogger;
 import software.bluelib.api.utils.variant.ParameterUtils;
 import software.bluelib.entity.variant.IVariantAccessor;
 import software.bluelib.internal.BlueTranslation;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 
 @SuppressWarnings("unused")
 public interface IVariantEntity<T extends Entity> {

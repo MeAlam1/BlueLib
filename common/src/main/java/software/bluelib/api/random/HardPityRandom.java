@@ -1,9 +1,15 @@
+/*
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
+ */
 package software.bluelib.api.random;
 
+import java.util.*;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.*;
 
 /**
  * <b>WARNING:</b> <i>Still a massive Work in Progress.</i> <br>
@@ -11,36 +17,36 @@ import java.util.*;
  * <p>
  * This class extends {@link PityRandom}, retaining all standard pity random behavior:
  * <ul>
- *   <li>Each call to {@link #nextValue()} uses the pity system to weight less-picked values higher.</li>
- *   <li>The hard pity threshold guarantees that after a specified number of attempts, the least-picked value will be selected.</li>
- *   <li>The pity system may select the least-picked value <b>before</b> the hard pity threshold is reached.</li>
- *   <li>When the hard pity is triggered, or (optionally) when the least-picked value is selected by the pity system, all selection counts can be reset (configurable).</li>
+ * <li>Each call to {@link #nextValue()} uses the pity system to weight less-picked values higher.</li>
+ * <li>The hard pity threshold guarantees that after a specified number of attempts, the least-picked value will be selected.</li>
+ * <li>The pity system may select the least-picked value <b>before</b> the hard pity threshold is reached.</li>
+ * <li>When the hard pity is triggered, or (optionally) when the least-picked value is selected by the pity system, all selection counts can be reset (configurable).</li>
  * </ul>
  * <p>
  * <b>Supported types:</b>
  * <ul>
- *   <li>Any type (T) provided as a collection of values</li>
- *   <li>Convenience factory methods are available for common types such as Integer, Boolean, Float, and Double</li>
+ * <li>Any type (T) provided as a collection of values</li>
+ * <li>Convenience factory methods are available for common types such as Integer, Boolean, Float, and Double</li>
  * </ul>
  * <p>
  * <b>How it works:</b>
  * <ul>
- *   <li>Each call to {@link #nextValue()} increments an attempt counter.</li>
- *   <li>If the number of attempts reaches the hard pity threshold, the least-picked value is forcibly selected, and all selection counts are reset.</li>
- *   <li>If the least-picked value is selected by the pity system before the threshold, selection counts may also be reset (if configured).</li>
- *   <li>After a hard pity trigger or reset, the attempt counter is reset.</li>
+ * <li>Each call to {@link #nextValue()} increments an attempt counter.</li>
+ * <li>If the number of attempts reaches the hard pity threshold, the least-picked value is forcibly selected, and all selection counts are reset.</li>
+ * <li>If the least-picked value is selected by the pity system before the threshold, selection counts may also be reset (if configured).</li>
+ * <li>After a hard pity trigger or reset, the attempt counter is reset.</li>
  * </ul>
  * <p>
  * <b>Use cases:</b>
  * <ul>
- *   <li>Ensures fairness by guaranteeing a rare outcome after repeated failures, while still allowing for early success via the pity system.</li>
- *   <li>Useful for systems like loot boxes or gacha, where both randomness and guaranteed outcomes are desired.</li>
+ * <li>Ensures fairness by guaranteeing a rare outcome after repeated failures, while still allowing for early success via the pity system.</li>
+ * <li>Useful for systems like loot boxes or gacha, where both randomness and guaranteed outcomes are desired.</li>
  * </ul>
  * <p>
  * <b>Parameters:</b>
  * <ul>
- *   <li><code>hardPity</code>: The number of attempts after which the hard pity is triggered.</li>
- *   <li><code>resetOnAnyPity</code> (if implemented): Whether to reset selection counts when the least-picked value is selected by the pity system before the hard pity threshold.</li>
+ * <li><code>hardPity</code>: The number of attempts after which the hard pity is triggered.</li>
+ * <li><code>resetOnAnyPity</code> (if implemented): Whether to reset selection counts when the least-picked value is selected by the pity system before the hard pity threshold.</li>
  * </ul>
  */
 @SuppressWarnings("unused")
@@ -105,7 +111,6 @@ public class HardPityRandom<T> extends PityRandom<T> {
 
 		T value = super.nextValue();
 
-
 		int minCount = selectionCounts.values().stream().min(Integer::compareTo).orElse(0);
 
 		if (selectionCounts.get(value) == minCount + 1) {
@@ -115,7 +120,6 @@ public class HardPityRandom<T> extends PityRandom<T> {
 				attempts = 0;
 			}
 		}
-
 
 		return value;
 	}

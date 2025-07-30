@@ -1,15 +1,11 @@
+/*
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
+ */
 package software.bluelib.mixin.client;
-
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screens.Screen;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import software.bluelib.BlueLibConstants;
-import software.bluelib.BuildDetails;
-import software.bluelib.client.gui.version.VersionWarningScreen;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -21,6 +17,16 @@ import java.util.List;
 import java.util.ServiceLoader;
 import java.util.Set;
 import java.util.function.Function;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.Screen;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import software.bluelib.BlueLibConstants;
+import software.bluelib.BuildDetails;
+import software.bluelib.client.gui.version.VersionWarningScreen;
 
 @Mixin(Minecraft.class)
 public final class VersionWarningMixin {
@@ -43,8 +49,7 @@ public final class VersionWarningMixin {
 				while ((line = reader.readLine()) != null) {
 					blueLib$dontShowAgain.add(line.trim());
 				}
-			} catch (IOException ignored) {
-			}
+			} catch (IOException ignored) {}
 		}
 	}
 
@@ -56,8 +61,7 @@ public final class VersionWarningMixin {
 				writer.write(key);
 				writer.newLine();
 			}
-		} catch (IOException ignored) {
-		}
+		} catch (IOException ignored) {}
 	}
 
 	@Inject(method = "addInitialScreens", at = @At("TAIL"))
@@ -79,8 +83,7 @@ public final class VersionWarningMixin {
 								blueLib$saveDontShowAgain();
 							}
 							runnable.run();
-						}
-				));
+						}));
 			}
 		}
 	}

@@ -7,10 +7,9 @@
  */
 package software.bluelib.api.random;
 
+import java.util.*;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.*;
 
 /**
  * <b>WARNING:</b> <i>Still a massive Work in Progress.</i> <br>
@@ -61,6 +60,7 @@ import java.util.*;
 @SuppressWarnings("unused")
 @ApiStatus.Experimental
 public class PityRandom<T> extends Random {
+
 	@NotNull
 	protected final Map<T, Integer> selectionCounts = new LinkedHashMap<>();
 	@NotNull

@@ -1,3 +1,10 @@
+/*
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
+ */
 package software.bluelib.client.gui.version;
 
 import net.minecraft.client.Minecraft;
@@ -13,6 +20,7 @@ import net.minecraft.network.chat.Component;
 public class VersionWarningScreen extends Screen {
 
 	public interface Consumer {
+
 		void accept(Acknowledgement pAck, boolean pDontShowAgain);
 	}
 
@@ -44,9 +52,8 @@ public class VersionWarningScreen extends Screen {
 		helper.addChild(new MultiLineTextWidget(description, this.font).setCentered(true).setMaxWidth(310), 2, settings);
 
 		Checkbox dontShowAgainCheckbox = Checkbox.builder(
-						getTranslatableOrFallback(modId, "version.warning.dont_show_again", modId),
-						Minecraft.getInstance().font
-				)
+				getTranslatableOrFallback(modId, "version.warning.dont_show_again", modId),
+				Minecraft.getInstance().font)
 				.selected(dontShowAgain.get())
 				.tooltip(Tooltip.create(dontShowAgainTip))
 				.build();

@@ -7,6 +7,12 @@
  */
 package software.bluelib;
 
+import java.util.List;
+import java.util.ServiceLoader;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.logging.Logger;
+import java.util.regex.Pattern;
 import net.minecraft.server.MinecraftServer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -14,17 +20,9 @@ import software.bluelib.api.event.IEventProxy;
 import software.bluelib.platform.IPlatformHelper;
 import software.bluelib.platform.IRegistryHelper;
 
-import java.util.List;
-import java.util.ServiceLoader;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.logging.Logger;
-import java.util.regex.Pattern;
-
 public class BlueLibConstants implements BuildDetails {
 
-	public static void init() {
-	}
+	public static void init() {}
 
 	@NotNull
 	public static <T> T load(@NotNull Class<T> pClazz) {
