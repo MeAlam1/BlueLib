@@ -10,7 +10,6 @@ package software.bluelib.oldLoader.renderer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
-import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -51,6 +50,8 @@ import software.bluelib.oldLoader.model.BlueModel;
 import software.bluelib.oldLoader.model.data.EntityModelData;
 import software.bluelib.oldLoader.renderer.layer.BlueRenderLayer;
 import software.bluelib.oldLoader.renderer.layer.BlueRenderLayersContainer;
+
+import java.util.List;
 
 public class BlueReplacedEntityRenderer<E extends Entity, T extends BlueAnimatable> extends EntityRenderer<E> implements BlueRenderer<T> {
 
@@ -133,10 +134,10 @@ public class BlueReplacedEntityRenderer<E extends Entity, T extends BlueAnimatab
 	}
 
 	@Override
-	public void preRender(PoseStack pPoseStack, T pAnimatable, ModelCache pModel, @Nullable MultiBufferSource pBufferSource, @Nullable VertexConsumer pBuffer, boolean pIsReRender, float pPartialTick, int pPackedLight, int pPackedOverlay, int pColour) {
-		this.entityRenderTranslations = new Matrix4f(pPoseStack.last().pose());
+	public void preRender(IRenderContext<T> pContext) {
+		this.entityRenderTranslations = new Matrix4f(pContext.poseStack().last().pose());
 
-		scaleModelForRender(this.scaleWidth, this.scaleHeight, pPoseStack, pAnimatable, pModel, pIsReRender, pPartialTick, pPackedLight, pPackedOverlay);
+		scaleModelForRender(this.scaleWidth, this.scaleHeight, pContext.poseStack(), pContext.animatable(), pContext.model(), pContext.isReRender(), pContext.partialTick(), pContext.packedLight(), pContext.packedOverlay());
 	}
 
 	@Override
@@ -287,7 +288,7 @@ public class BlueReplacedEntityRenderer<E extends Entity, T extends BlueAnimatab
 
 	@Override
 	public void renderRecursively(PoseStack pPoseStack, T pAnimatable, BoneCache bone, RenderType pRenderType, MultiBufferSource pBufferSource, VertexConsumer pBuffer, boolean pIsReRender, float pPartialTick, int pPackedLight,
-			int pPackedOverlay, int pColour) {
+	                              int pPackedOverlay, int pColour) {
 		pPoseStack.pushPose();
 		RenderUtils.translateMatrixToBone(pPoseStack, bone);
 		RenderUtils.translateToPivotPoint(pPoseStack, bone);
@@ -318,7 +319,7 @@ public class BlueReplacedEntityRenderer<E extends Entity, T extends BlueAnimatab
 	}
 
 	protected void applyRotations(T pAnimatable, PoseStack pPoseStack, float ageInTicks, float rotationYaw,
-			float pPartialTick, float nativeScale) {
+	                              float pPartialTick, float nativeScale) {
 		if (isShaking(pAnimatable))
 			rotationYaw += (float) (Math.cos(this.currentEntity.tickCount * 3.25d) * Math.PI * 0.4d);
 
@@ -379,8 +380,10 @@ public class BlueReplacedEntityRenderer<E extends Entity, T extends BlueAnimatab
 		return switch (entityTeam.getNameTagVisibility()) {
 			case ALWAYS -> visibleToClient;
 			case NEVER -> false;
-			case HIDE_FOR_OTHER_TEAMS -> playerTeam == null ? visibleToClient : entityTeam.isAlliedTo(playerTeam) && (entityTeam.canSeeFriendlyInvisibles() || visibleToClient);
-			case HIDE_FOR_OWN_TEAM -> playerTeam == null ? visibleToClient : !entityTeam.isAlliedTo(playerTeam) && visibleToClient;
+			case HIDE_FOR_OTHER_TEAMS ->
+					playerTeam == null ? visibleToClient : entityTeam.isAlliedTo(playerTeam) && (entityTeam.canSeeFriendlyInvisibles() || visibleToClient);
+			case HIDE_FOR_OWN_TEAM ->
+					playerTeam == null ? visibleToClient : !entityTeam.isAlliedTo(playerTeam) && visibleToClient;
 		};
 	}
 
@@ -398,7 +401,7 @@ public class BlueReplacedEntityRenderer<E extends Entity, T extends BlueAnimatab
 	}
 
 	public <H extends Entity, M extends Mob> void renderLeash(M mob, float pPartialTick, PoseStack pPoseStack,
-			MultiBufferSource pBufferSource, H leashHolder) {
+	                                                          MultiBufferSource pBufferSource, H leashHolder) {
 		double lerpBodyAngle = (Mth.lerp(pPartialTick, mob.yBodyRotO, mob.yBodyRot) * Mth.DEG_TO_RAD) + Mth.HALF_PI;
 		Vec3 leashOffset = mob.getLeashOffset(pPartialTick);
 		double xAngleOffset = Math.cos(lerpBodyAngle) * leashOffset.z + Math.sin(lerpBodyAngle) * leashOffset.x;
@@ -440,8 +443,8 @@ public class BlueReplacedEntityRenderer<E extends Entity, T extends BlueAnimatab
 	}
 
 	private static void renderLeashPiece(VertexConsumer pBuffer, Matrix4f positionMatrix, float xDif, float yDif,
-			float zDif, int entityBlockLight, int holderBlockLight, int entitySkyLight,
-			int holderSkyLight, float width, float yOffset, float xOffset, float zOffset, int segment, boolean isLeashKnot) {
+	                                     float zDif, int entityBlockLight, int holderBlockLight, int entitySkyLight,
+	                                     int holderSkyLight, float width, float yOffset, float xOffset, float zOffset, int segment, boolean isLeashKnot) {
 		float piecePosPercent = segment / 24f;
 		int lerpBlockLight = (int) Mth.lerp(piecePosPercent, entityBlockLight, holderBlockLight);
 		int lerpSkyLight = (int) Mth.lerp(piecePosPercent, entitySkyLight, holderSkyLight);

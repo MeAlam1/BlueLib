@@ -10,19 +10,19 @@ package software.bluelib.oldLoader.renderer.specialty;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import it.unimi.dsi.fastutil.objects.ObjectArraySet;
-import java.util.Collection;
-import java.util.Set;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.util.FastColor;
 import net.minecraft.world.item.Item;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.utils.Color;
 import software.bluelib.loader.cache.model.BoneCache;
 import software.bluelib.loader.cache.model.ModelCache;
+import software.bluelib.loader.renderer.context.IRenderContext;
 import software.bluelib.oldLoader.animatable.BlueItem;
 import software.bluelib.oldLoader.model.BlueModel;
 import software.bluelib.oldLoader.renderer.BlueArmorRenderer;
+
+import java.util.Collection;
+import java.util.Set;
 
 public abstract class DyeableBlueArmorRenderer<T extends Item & BlueItem> extends BlueArmorRenderer<T> {
 
@@ -34,11 +34,11 @@ public abstract class DyeableBlueArmorRenderer<T extends Item & BlueItem> extend
 	}
 
 	@Override
-	public void preRender(PoseStack pPoseStack, T pAnimatable, ModelCache model, @Nullable MultiBufferSource pBufferSource, @Nullable VertexConsumer buffer, boolean pIsReRender, float pPartialTick, int pPackedLight, int pPackedOverlay, int colour) {
-		super.preRender(pPoseStack, pAnimatable, model, pBufferSource, buffer, pIsReRender, pPartialTick, pPackedLight, pPackedOverlay, colour);
+	public void preRender(IRenderContext<T> pContext) {
+		super.preRender(pContext);
 
-		if (!pIsReRender)
-			checkBoneDyeCache(pAnimatable, model, pPartialTick, pPackedLight, pPackedOverlay, colour);
+		if (!pContext.isReRender())
+			checkBoneDyeCache(pContext.animatable(), pContext.model(), pContext.partialTick(), pContext.packedLight(), pContext.packedOverlay(), pContext.color());
 	}
 
 	@Override
