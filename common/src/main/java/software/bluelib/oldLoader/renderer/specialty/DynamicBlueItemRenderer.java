@@ -27,6 +27,7 @@ import software.bluelib.loader.cache.model.BoneCache;
 import software.bluelib.loader.cache.model.ModelCache;
 import software.bluelib.loader.json.object.QuadData;
 import software.bluelib.loader.json.object.VertexData;
+import software.bluelib.loader.renderer.context.IRenderContext;
 import software.bluelib.oldLoader.model.BlueModel;
 import software.bluelib.oldLoader.renderer.BlueItemRenderer;
 
@@ -99,10 +100,10 @@ public abstract class DynamicBlueItemRenderer<T extends Item & BlueAnimatable> e
 	}
 
 	@Override
-	public void postRender(PoseStack pPoseStack, T animatable, ModelCache model, MultiBufferSource pBufferSource, @Nullable VertexConsumer buffer, boolean pIsReRender, float pPartialTick, int pPackedLight, int pPackedOverlay, int colour) {
+	public void postRender(IRenderContext<T> pContext) {
 		this.textureOverride = null;
 
-		super.postRender(pPoseStack, animatable, model, pBufferSource, buffer, pIsReRender, pPartialTick, pPackedLight, pPackedOverlay, colour);
+		super.postRender(pContext);
 	}
 
 	@Override

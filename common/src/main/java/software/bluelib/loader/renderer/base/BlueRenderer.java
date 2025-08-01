@@ -114,7 +114,7 @@ public interface BlueRenderer<T extends BlueAnimatable> {
 				preApplyRenderLayers(full);
 				actuallyRender(full);
 				applyRenderLayers(full);
-				postRender(full.poseStack(), full.animatable(), full.model(), full.bufferSource(), full.buffer(), false, full.partialTick(), full.packedLight(), full.packedOverlay(), full.color());
+				postRender(full);
 				firePostRenderEvent(full.poseStack(), full.model(), full.bufferSource(), full.partialTick(), full.packedLight());
 			}
 
@@ -138,7 +138,7 @@ public interface BlueRenderer<T extends BlueAnimatable> {
 		if (pContext instanceof FullRenderContext<T> full) {
 			preRender(full);
 			actuallyRender(full);
-			postRender(full.poseStack(), full.animatable(), full.model(), full.bufferSource(), full.buffer(), true, full.partialTick(), full.packedLight(), full.packedOverlay(), full.color());
+			postRender(full);
 			full.poseStack().popPose();
 		} else if (pContext instanceof BaseRenderContext<T> base) {
 			handleBaseReRenderContext(base, this);
@@ -217,7 +217,7 @@ public interface BlueRenderer<T extends BlueAnimatable> {
 	default void preRender(IRenderContext<T> pContext) {
 	}
 
-	default void postRender(PoseStack pPoseStack, T pAnimatable, ModelCache pModel, MultiBufferSource pBufferSource, @Nullable VertexConsumer pBuffer, boolean pIsReRender, float pPartialTick, int pPackedLight, int pPackedOverlay, int pColour) {
+	default void postRender(IRenderContext<T> pContext) {
 	}
 
 	default void renderFinal(PoseStack pPoseStack, T pAnimatable, ModelCache pModel, MultiBufferSource pBufferSource, @Nullable VertexConsumer pBuffer, float pPartialTick, int pPackedLight,

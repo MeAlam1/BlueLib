@@ -276,9 +276,9 @@ public class BlueReplacedEntityRenderer<E extends Entity, T extends BlueAnimatab
 	}
 
 	@Override
-	public void postRender(PoseStack pPoseStack, T pAnimatable, ModelCache pModel, MultiBufferSource pBufferSource, VertexConsumer pBuffer, boolean pIsReRender, float pPartialTick, int pPackedLight, int pPackedOverlay, int pColour) {
-		if (!pIsReRender)
-			super.render(this.currentEntity, 0, pPartialTick, pPoseStack, pBufferSource, pPackedLight);
+	public void postRender(IRenderContext<T> pContext) {
+		if (!pContext.isReRender())
+			super.render(this.currentEntity, 0, pContext.partialTick(), pContext.poseStack(), pContext.bufferSource(), pContext.packedLight());
 	}
 
 	@Override
