@@ -258,19 +258,19 @@ public class BlueEntityRenderer<T extends Entity & BlueAnimatable> extends Entit
 	}
 
 	@Override
-	public void renderFinal(PoseStack pPoseStack, T animatable, ModelCache model, MultiBufferSource pBufferSource, @Nullable VertexConsumer buffer, float pPartialTick, int pPackedLight, int pPackedOverlay, int colour) {
-		super.render(animatable, 0, pPartialTick, pPoseStack, pBufferSource, pPackedLight);
+	public void renderFinal(IRenderContext<T> pContext) {
+		super.render(animatable, 0, pContext.partialTick(), pContext.poseStack(), pContext.bufferSource(), pContext.packedLight());
 
 		if (animatable instanceof Mob mob) {
 			Entity leashHolder = mob.getLeashHolder();
 
 			if (leashHolder != null)
-				renderLeash(mob, pPartialTick, pPoseStack, pBufferSource, leashHolder);
+				renderLeash(mob, pContext.partialTick(), pContext.poseStack(), pContext.bufferSource(), leashHolder);
 		}
 	}
 
 	@Override
-	public void doPostRenderCleanup() {
+	public void doPostRenderCleanup(IRenderContext<T> pContext) {
 		this.animatable = null;
 	}
 

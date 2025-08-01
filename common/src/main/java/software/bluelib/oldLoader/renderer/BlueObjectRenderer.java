@@ -149,7 +149,7 @@ public class BlueObjectRenderer<T extends BlueAnimatable> implements BlueRendere
 	}
 
 	@Override
-	public void doPostRenderCleanup() {
+	public void doPostRenderCleanup(IRenderContext<T> pContext) {
 		this.animatable = null;
 	}
 

@@ -223,7 +223,7 @@ public class BlueItemRenderer<T extends Item & BlueAnimatable> extends BlockEnti
 	}
 
 	@Override
-	public void doPostRenderCleanup() {
+	public void doPostRenderCleanup(IRenderContext<T> pContext) {
 		this.animatable = null;
 		this.currentItemStack = null;
 		this.renderPerspective = null;

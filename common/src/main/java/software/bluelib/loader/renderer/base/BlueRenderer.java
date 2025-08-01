@@ -120,8 +120,8 @@ public interface BlueRenderer<T extends BlueAnimatable> {
 
 			full.poseStack().popPose();
 
-			renderFinal(full.poseStack(), full.animatable(), full.model(), full.bufferSource(), full.buffer(), full.partialTick(), full.packedLight(), full.packedOverlay(), full.color());
-			doPostRenderCleanup();
+			renderFinal(full);
+			doPostRenderCleanup(full);
 			MoLangQueries.clearActor();
 		} else if (pContext instanceof BaseRenderContext<T> base) {
 			handleBaseDefaultRenderContext(base, this);
@@ -220,11 +220,10 @@ public interface BlueRenderer<T extends BlueAnimatable> {
 	default void postRender(IRenderContext<T> pContext) {
 	}
 
-	default void renderFinal(PoseStack pPoseStack, T pAnimatable, ModelCache pModel, MultiBufferSource pBufferSource, @Nullable VertexConsumer pBuffer, float pPartialTick, int pPackedLight,
-	                         int pPackedOverlay, int pColour) {
+	default void renderFinal(IRenderContext<T> pContext) {
 	}
 
-	default void doPostRenderCleanup() {
+	default void doPostRenderCleanup(IRenderContext<T> pContext) {
 	}
 
 	default void renderRecursively(PoseStack pPoseStack, T pAnimatable, BoneCache pBone, RenderType pRenderType, MultiBufferSource pBufferSource,

@@ -271,7 +271,7 @@ public class BlueArmorRenderer<T extends Item & BlueItem> extends HumanoidModel 
 	}
 
 	@Override
-	public void doPostRenderCleanup() {
+	public void doPostRenderCleanup(IRenderContext<T> pContext) {
 		this.baseModel = null;
 		this.currentEntity = null;
 		this.currentStack = null;

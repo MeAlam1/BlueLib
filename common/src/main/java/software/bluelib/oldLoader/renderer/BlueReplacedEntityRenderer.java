@@ -264,14 +264,14 @@ public class BlueReplacedEntityRenderer<E extends Entity, T extends BlueAnimatab
 	}
 
 	@Override
-	public void renderFinal(PoseStack pPoseStack, T pAnimatable, ModelCache pModel, MultiBufferSource pBufferSource, @Nullable VertexConsumer pBuffer, float pPartialTick, int pPackedLight, int pPackedOverlay, int pColour) {
-		super.render(this.currentEntity, 0, pPartialTick, pPoseStack, pBufferSource, pPackedLight);
+	public void renderFinal(IRenderContext<T> pContext) {
+		super.render(this.currentEntity, 0, pContext.partialTick(), pContext.poseStack(), pContext.bufferSource(), pContext.packedLight());
 
 		if (this.currentEntity instanceof Mob mob) {
 			Entity leashHolder = mob.getLeashHolder();
 
 			if (leashHolder != null)
-				renderLeash(mob, pPartialTick, pPoseStack, pBufferSource, leashHolder);
+				renderLeash(mob, pContext.partialTick(), pContext.poseStack(), pContext.bufferSource(), leashHolder);
 		}
 	}
 
@@ -282,7 +282,7 @@ public class BlueReplacedEntityRenderer<E extends Entity, T extends BlueAnimatab
 	}
 
 	@Override
-	public void doPostRenderCleanup() {
+	public void doPostRenderCleanup(IRenderContext<T> pContext) {
 		this.currentEntity = null;
 	}
 
@@ -400,6 +400,8 @@ public class BlueReplacedEntityRenderer<E extends Entity, T extends BlueAnimatab
 		return this.currentEntity.isFullyFrozen();
 	}
 
+	
+	// TODO: WHAT THE ACTUAL FUCK IS THIS? PLEASE CLEAN IT UP FUTURE ARAM.
 	public <H extends Entity, M extends Mob> void renderLeash(M mob, float pPartialTick, PoseStack pPoseStack,
 	                                                          MultiBufferSource pBufferSource, H leashHolder) {
 		double lerpBodyAngle = (Mth.lerp(pPartialTick, mob.yBodyRotO, mob.yBodyRot) * Mth.DEG_TO_RAD) + Mth.HALF_PI;
