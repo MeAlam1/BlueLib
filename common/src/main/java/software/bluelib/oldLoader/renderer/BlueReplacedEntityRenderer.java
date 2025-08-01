@@ -474,12 +474,12 @@ public class BlueReplacedEntityRenderer<E extends Entity, T extends BlueAnimatab
 	}
 
 	@Override
-	public boolean firePreRenderEvent(PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight) {
-		return BlueLibConstants.PlatformHelper.EVENT_PROXY.fireReplacedEntityPreRender(this, pPoseStack, pModel, pBufferSource, pPartialTick, pPackedLight);
+	public boolean firePreRenderEvent(IRenderContext<T> pContext) {
+		return BlueLibConstants.PlatformHelper.EVENT_PROXY.fireReplacedEntityPreRender(this, pContext);
 	}
 
 	@Override
-	public void firePostRenderEvent(PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight) {
-		BlueLibConstants.PlatformHelper.EVENT_PROXY.fireReplacedEntityPostRender(this, pPoseStack, pModel, pBufferSource, pPartialTick, pPackedLight);
+	public void firePostRenderEvent(IRenderContext<T> pContext) {
+		BlueLibConstants.PlatformHelper.EVENT_PROXY.fireReplacedEntityPostRender(this, pContext);
 	}
 }

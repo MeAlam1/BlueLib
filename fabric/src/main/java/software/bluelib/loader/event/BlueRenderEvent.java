@@ -7,17 +7,15 @@
  */
 package software.bluelib.loader.event;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import software.bluelib.loader.cache.model.ModelCache;
 import software.bluelib.loader.renderer.base.BlueRenderer;
+import software.bluelib.loader.renderer.context.IRenderContext;
 import software.bluelib.oldLoader.renderer.*;
 import software.bluelib.oldLoader.renderer.layer.BlueRenderLayer;
 
@@ -69,44 +67,16 @@ public interface BlueRenderEvent {
 			});
 
 			@NotNull
-			private final PoseStack poseStack;
-			@NotNull
-			private final ModelCache model;
-			@NotNull
-			private final MultiBufferSource bufferSource;
-			@NotNull
-			private final Float partialTick;
-			@NotNull
-			private final Integer packedLight;
+			private final IRenderContext<?> context;
 
-			public Pre(@NotNull BlueArmorRenderer<?> pRenderer, @NotNull PoseStack pPoseStack, @NotNull ModelCache pModel, @NotNull MultiBufferSource pBufferSource, @NotNull Float pPartialTick, @NotNull Integer pPackedLight) {
+			public Pre(@NotNull BlueArmorRenderer<?> pRenderer, IRenderContext<?> pContext) {
 				super(pRenderer);
 
-				this.poseStack = pPoseStack;
-				this.model = pModel;
-				this.bufferSource = pBufferSource;
-				this.partialTick = pPartialTick;
-				this.packedLight = pPackedLight;
+				this.context = pContext;
 			}
 
-			public @NotNull PoseStack getPoseStack() {
-				return this.poseStack;
-			}
-
-			public @NotNull ModelCache getModel() {
-				return this.model;
-			}
-
-			public @NotNull MultiBufferSource getBufferSource() {
-				return this.bufferSource;
-			}
-
-			public @NotNull Float getPartialTick() {
-				return this.partialTick;
-			}
-
-			public @NotNull Integer getPackedLight() {
-				return this.packedLight;
+			public @NotNull IRenderContext<?> getContext() {
+				return this.context;
 			}
 
 			@FunctionalInterface
@@ -119,51 +89,24 @@ public interface BlueRenderEvent {
 		public static class Post extends Armor {
 
 			@NotNull
-			public static final Event<Listener> EVENT = EventFactory.createArrayBacked(Listener.class, post -> {}, listeners -> event -> {
+			public static final Event<Listener> EVENT = EventFactory.createArrayBacked(Listener.class, post -> {
+			}, listeners -> event -> {
 				for (Listener listener : listeners) {
 					listener.handle(event);
 				}
 			});
 
 			@NotNull
-			private final PoseStack poseStack;
-			@NotNull
-			private final ModelCache model;
-			@NotNull
-			private final MultiBufferSource bufferSource;
-			@NotNull
-			private final Float partialTick;
-			@NotNull
-			private final Integer packedLight;
+			private final IRenderContext<?> context;
 
-			public Post(@NotNull BlueArmorRenderer<?> pRenderer, @NotNull PoseStack pPoseStack, @NotNull ModelCache pModel, @NotNull MultiBufferSource pBufferSource, @NotNull Float pPartialTick, @NotNull Integer pPackedLight) {
+			public Post(@NotNull BlueArmorRenderer<?> pRenderer, IRenderContext<?> pContext) {
 				super(pRenderer);
 
-				this.poseStack = pPoseStack;
-				this.model = pModel;
-				this.bufferSource = pBufferSource;
-				this.partialTick = pPartialTick;
-				this.packedLight = pPackedLight;
+				this.context = pContext;
 			}
 
-			public @NotNull PoseStack getPoseStack() {
-				return this.poseStack;
-			}
-
-			public @NotNull ModelCache getModel() {
-				return this.model;
-			}
-
-			public @NotNull MultiBufferSource getBufferSource() {
-				return this.bufferSource;
-			}
-
-			public @NotNull Float getPartialTick() {
-				return this.partialTick;
-			}
-
-			public @NotNull Integer getPackedLight() {
-				return this.packedLight;
+			public @NotNull IRenderContext<?> getContext() {
+				return this.context;
 			}
 
 			@FunctionalInterface
@@ -176,7 +119,8 @@ public interface BlueRenderEvent {
 		public static class CompileRenderLayers extends Armor {
 
 			@NotNull
-			public static final Event<Listener> EVENT = EventFactory.createArrayBacked(Listener.class, post -> {}, listeners -> event -> {
+			public static final Event<Listener> EVENT = EventFactory.createArrayBacked(Listener.class, post -> {
+			}, listeners -> event -> {
 				for (Listener listener : listeners) {
 					listener.handle(event);
 				}
@@ -229,44 +173,16 @@ public interface BlueRenderEvent {
 			});
 
 			@NotNull
-			private final PoseStack poseStack;
-			@NotNull
-			private final ModelCache model;
-			@NotNull
-			private final MultiBufferSource bufferSource;
-			@NotNull
-			private final Float partialTick;
-			@NotNull
-			private final Integer packedLight;
+			private final IRenderContext<?> context;
 
-			public Pre(@NotNull BlueBlockRenderer<?> pRenderer, @NotNull PoseStack pPoseStack, @NotNull ModelCache pModel, @NotNull MultiBufferSource pBufferSource, @NotNull Float pPartialTick, @NotNull Integer pPackedLight) {
+			public Pre(@NotNull BlueBlockRenderer<?> pRenderer, IRenderContext<?> pContext) {
 				super(pRenderer);
 
-				this.poseStack = pPoseStack;
-				this.model = pModel;
-				this.bufferSource = pBufferSource;
-				this.partialTick = pPartialTick;
-				this.packedLight = pPackedLight;
+				this.context = pContext;
 			}
 
-			public @NotNull PoseStack getPoseStack() {
-				return this.poseStack;
-			}
-
-			public @NotNull ModelCache getModel() {
-				return this.model;
-			}
-
-			public @NotNull MultiBufferSource getBufferSource() {
-				return this.bufferSource;
-			}
-
-			public @NotNull Float getPartialTick() {
-				return this.partialTick;
-			}
-
-			public @NotNull Integer getPackedLight() {
-				return this.packedLight;
+			public @NotNull IRenderContext<?> getContext() {
+				return this.context;
 			}
 
 			@FunctionalInterface
@@ -279,51 +195,24 @@ public interface BlueRenderEvent {
 		public static class Post extends Block {
 
 			@NotNull
-			public static final Event<Listener> EVENT = EventFactory.createArrayBacked(Listener.class, post -> {}, listeners -> event -> {
+			public static final Event<Listener> EVENT = EventFactory.createArrayBacked(Listener.class, post -> {
+			}, listeners -> event -> {
 				for (Listener listener : listeners) {
 					listener.handle(event);
 				}
 			});
 
 			@NotNull
-			private final PoseStack poseStack;
-			@NotNull
-			private final ModelCache model;
-			@NotNull
-			private final MultiBufferSource bufferSource;
-			@NotNull
-			private final Float partialTick;
-			@NotNull
-			private final Integer packedLight;
+			private final IRenderContext<?> context;
 
-			public Post(@NotNull BlueBlockRenderer<?> pRenderer, @NotNull PoseStack pPoseStack, @NotNull ModelCache pModel, @NotNull MultiBufferSource pBufferSource, @NotNull Float pPartialTick, @NotNull Integer pPackedLight) {
+			public Post(@NotNull BlueBlockRenderer<?> pRenderer, IRenderContext<?> pContext) {
 				super(pRenderer);
 
-				this.poseStack = pPoseStack;
-				this.model = pModel;
-				this.bufferSource = pBufferSource;
-				this.partialTick = pPartialTick;
-				this.packedLight = pPackedLight;
+				this.context = pContext;
 			}
 
-			public @NotNull PoseStack getPoseStack() {
-				return this.poseStack;
-			}
-
-			public @NotNull ModelCache getModel() {
-				return this.model;
-			}
-
-			public @NotNull MultiBufferSource getBufferSource() {
-				return this.bufferSource;
-			}
-
-			public @NotNull Float getPartialTick() {
-				return this.partialTick;
-			}
-
-			public @NotNull Integer getPackedLight() {
-				return this.packedLight;
+			public @NotNull IRenderContext<?> getContext() {
+				return this.context;
 			}
 
 			@FunctionalInterface
@@ -336,7 +225,8 @@ public interface BlueRenderEvent {
 		public static class CompileRenderLayers extends Block {
 
 			@NotNull
-			public static final Event<Listener> EVENT = EventFactory.createArrayBacked(Listener.class, post -> {}, listeners -> event -> {
+			public static final Event<Listener> EVENT = EventFactory.createArrayBacked(Listener.class, post -> {
+			}, listeners -> event -> {
 				for (Listener listener : listeners) {
 					listener.handle(event);
 				}
@@ -389,44 +279,16 @@ public interface BlueRenderEvent {
 			});
 
 			@NotNull
-			private final PoseStack poseStack;
-			@NotNull
-			private final ModelCache model;
-			@NotNull
-			private final MultiBufferSource bufferSource;
-			@NotNull
-			private final Float partialTick;
-			@NotNull
-			private final Integer packedLight;
+			private final IRenderContext<?> context;
 
-			public Pre(@NotNull BlueEntityRenderer<?> pRenderer, @NotNull PoseStack pPoseStack, @NotNull ModelCache pModel, @NotNull MultiBufferSource pBufferSource, @NotNull Float pPartialTick, @NotNull Integer pPackedLight) {
+			public Pre(@NotNull BlueEntityRenderer<?> pRenderer, IRenderContext<?> pContext) {
 				super(pRenderer);
 
-				this.poseStack = pPoseStack;
-				this.model = pModel;
-				this.bufferSource = pBufferSource;
-				this.partialTick = pPartialTick;
-				this.packedLight = pPackedLight;
+				this.context = pContext;
 			}
 
-			public @NotNull PoseStack getPoseStack() {
-				return this.poseStack;
-			}
-
-			public @NotNull ModelCache getModel() {
-				return this.model;
-			}
-
-			public @NotNull MultiBufferSource getBufferSource() {
-				return this.bufferSource;
-			}
-
-			public @NotNull Float getPartialTick() {
-				return this.partialTick;
-			}
-
-			public @NotNull Integer getPackedLight() {
-				return this.packedLight;
+			public @NotNull IRenderContext<?> getContext() {
+				return this.context;
 			}
 
 			@FunctionalInterface
@@ -439,51 +301,24 @@ public interface BlueRenderEvent {
 		public static class Post extends Entity {
 
 			@NotNull
-			public static final Event<Listener> EVENT = EventFactory.createArrayBacked(Listener.class, post -> {}, listeners -> event -> {
+			public static final Event<Listener> EVENT = EventFactory.createArrayBacked(Listener.class, post -> {
+			}, listeners -> event -> {
 				for (Listener listener : listeners) {
 					listener.handle(event);
 				}
 			});
 
 			@NotNull
-			private final PoseStack poseStack;
-			@NotNull
-			private final ModelCache model;
-			@NotNull
-			private final MultiBufferSource bufferSource;
-			@NotNull
-			private final Float partialTick;
-			@NotNull
-			private final Integer packedLight;
+			private final IRenderContext<?> context;
 
-			public Post(@NotNull BlueEntityRenderer<?> pRenderer, @NotNull PoseStack pPoseStack, @NotNull ModelCache pModel, @NotNull MultiBufferSource pBufferSource, @NotNull Float pPartialTick, @NotNull Integer pPackedLight) {
+			public Post(@NotNull BlueEntityRenderer<?> pRenderer, IRenderContext<?> pContext) {
 				super(pRenderer);
 
-				this.poseStack = pPoseStack;
-				this.model = pModel;
-				this.bufferSource = pBufferSource;
-				this.partialTick = pPartialTick;
-				this.packedLight = pPackedLight;
+				this.context = pContext;
 			}
 
-			public @NotNull PoseStack getPoseStack() {
-				return this.poseStack;
-			}
-
-			public @NotNull ModelCache getModel() {
-				return this.model;
-			}
-
-			public @NotNull MultiBufferSource getBufferSource() {
-				return this.bufferSource;
-			}
-
-			public @NotNull Float getPartialTick() {
-				return this.partialTick;
-			}
-
-			public @NotNull Integer getPackedLight() {
-				return this.packedLight;
+			public @NotNull IRenderContext<?> getContext() {
+				return this.context;
 			}
 
 			@FunctionalInterface
@@ -496,7 +331,8 @@ public interface BlueRenderEvent {
 		public static class CompileRenderLayers extends Entity {
 
 			@NotNull
-			public static final Event<Listener> EVENT = EventFactory.createArrayBacked(Listener.class, post -> {}, listeners -> event -> {
+			public static final Event<Listener> EVENT = EventFactory.createArrayBacked(Listener.class, post -> {
+			}, listeners -> event -> {
 				for (Listener listener : listeners) {
 					listener.handle(event);
 				}
@@ -549,44 +385,16 @@ public interface BlueRenderEvent {
 			});
 
 			@NotNull
-			private final PoseStack poseStack;
-			@NotNull
-			private final ModelCache model;
-			@NotNull
-			private final MultiBufferSource bufferSource;
-			@NotNull
-			private final Float partialTick;
-			@NotNull
-			private final Integer packedLight;
+			private final IRenderContext<?> context;
 
-			public Pre(@NotNull BlueItemRenderer<?> pRenderer, @NotNull PoseStack pPoseStack, @NotNull ModelCache pModel, @NotNull MultiBufferSource pBufferSource, @NotNull Float pPartialTick, @NotNull Integer pPackedLight) {
+			public Pre(@NotNull BlueItemRenderer<?> pRenderer, IRenderContext<?> pContext) {
 				super(pRenderer);
 
-				this.poseStack = pPoseStack;
-				this.model = pModel;
-				this.bufferSource = pBufferSource;
-				this.partialTick = pPartialTick;
-				this.packedLight = pPackedLight;
+				this.context = pContext;
 			}
 
-			public @NotNull PoseStack getPoseStack() {
-				return this.poseStack;
-			}
-
-			public @NotNull ModelCache getModel() {
-				return this.model;
-			}
-
-			public @NotNull MultiBufferSource getBufferSource() {
-				return this.bufferSource;
-			}
-
-			public @NotNull Float getPartialTick() {
-				return this.partialTick;
-			}
-
-			public @NotNull Integer getPackedLight() {
-				return this.packedLight;
+			public @NotNull IRenderContext<?> getContext() {
+				return this.context;
 			}
 
 			@FunctionalInterface
@@ -599,51 +407,24 @@ public interface BlueRenderEvent {
 		public static class Post extends Item {
 
 			@NotNull
-			public static final Event<Listener> EVENT = EventFactory.createArrayBacked(Listener.class, post -> {}, listeners -> event -> {
+			public static final Event<Listener> EVENT = EventFactory.createArrayBacked(Listener.class, post -> {
+			}, listeners -> event -> {
 				for (Listener listener : listeners) {
 					listener.handle(event);
 				}
 			});
 
 			@NotNull
-			private final PoseStack poseStack;
-			@NotNull
-			private final ModelCache model;
-			@NotNull
-			private final MultiBufferSource bufferSource;
-			@NotNull
-			private final Float partialTick;
-			@NotNull
-			private final Integer packedLight;
+			private final IRenderContext<?> context;
 
-			public Post(@NotNull BlueItemRenderer<?> pRenderer, @NotNull PoseStack pPoseStack, @NotNull ModelCache pModel, @NotNull MultiBufferSource pBufferSource, @NotNull Float pPartialTick, @NotNull Integer pPackedLight) {
+			public Post(@NotNull BlueItemRenderer<?> pRenderer, IRenderContext<?> pContext) {
 				super(pRenderer);
 
-				this.poseStack = pPoseStack;
-				this.model = pModel;
-				this.bufferSource = pBufferSource;
-				this.partialTick = pPartialTick;
-				this.packedLight = pPackedLight;
+				this.context = pContext;
 			}
 
-			public @NotNull PoseStack getPoseStack() {
-				return this.poseStack;
-			}
-
-			public @NotNull ModelCache getModel() {
-				return this.model;
-			}
-
-			public @NotNull MultiBufferSource getBufferSource() {
-				return this.bufferSource;
-			}
-
-			public @NotNull Float getPartialTick() {
-				return this.partialTick;
-			}
-
-			public @NotNull Integer getPackedLight() {
-				return this.packedLight;
+			public @NotNull IRenderContext<?> getContext() {
+				return this.context;
 			}
 
 			@FunctionalInterface
@@ -656,7 +437,8 @@ public interface BlueRenderEvent {
 		public static class CompileRenderLayers extends Item {
 
 			@NotNull
-			public static final Event<Listener> EVENT = EventFactory.createArrayBacked(Listener.class, post -> {}, listeners -> event -> {
+			public static final Event<Listener> EVENT = EventFactory.createArrayBacked(Listener.class, post -> {
+			}, listeners -> event -> {
 				for (Listener listener : listeners) {
 					listener.handle(event);
 				}
@@ -705,44 +487,16 @@ public interface BlueRenderEvent {
 			});
 
 			@NotNull
-			private final PoseStack poseStack;
-			@NotNull
-			private final ModelCache model;
-			@NotNull
-			private final MultiBufferSource bufferSource;
-			@NotNull
-			private final Float partialTick;
-			@NotNull
-			private final Integer packedLight;
+			private final IRenderContext<?> context;
 
-			public Pre(@NotNull BlueObjectRenderer<?> pRenderer, @NotNull PoseStack pPoseStack, @NotNull ModelCache pModel, @NotNull MultiBufferSource pBufferSource, @NotNull Float pPartialTick, @NotNull Integer pPackedLight) {
+			public Pre(@NotNull BlueObjectRenderer<?> pRenderer, IRenderContext<?> pContext) {
 				super(pRenderer);
 
-				this.poseStack = pPoseStack;
-				this.model = pModel;
-				this.bufferSource = pBufferSource;
-				this.partialTick = pPartialTick;
-				this.packedLight = pPackedLight;
+				this.context = pContext;
 			}
 
-			public @NotNull PoseStack getPoseStack() {
-				return this.poseStack;
-			}
-
-			public @NotNull ModelCache getModel() {
-				return this.model;
-			}
-
-			public @NotNull MultiBufferSource getBufferSource() {
-				return this.bufferSource;
-			}
-
-			public @NotNull Float getPartialTick() {
-				return this.partialTick;
-			}
-
-			public @NotNull Integer getPackedLight() {
-				return this.packedLight;
+			public @NotNull IRenderContext<?> getContext() {
+				return this.context;
 			}
 
 			@FunctionalInterface
@@ -755,51 +509,24 @@ public interface BlueRenderEvent {
 		public static class Post extends Object {
 
 			@NotNull
-			public static final Event<Listener> EVENT = EventFactory.createArrayBacked(Listener.class, post -> {}, listeners -> event -> {
+			public static final Event<Listener> EVENT = EventFactory.createArrayBacked(Listener.class, post -> {
+			}, listeners -> event -> {
 				for (Listener listener : listeners) {
 					listener.handle(event);
 				}
 			});
 
 			@NotNull
-			private final PoseStack poseStack;
-			@NotNull
-			private final ModelCache model;
-			@NotNull
-			private final MultiBufferSource bufferSource;
-			@NotNull
-			private final Float partialTick;
-			@NotNull
-			private final Integer packedLight;
+			private final IRenderContext<?> context;
 
-			public Post(@NotNull BlueObjectRenderer<?> pRenderer, @NotNull PoseStack pPoseStack, @NotNull ModelCache pModel, @NotNull MultiBufferSource pBufferSource, @NotNull Float pPartialTick, @NotNull Integer pPackedLight) {
+			public Post(@NotNull BlueObjectRenderer<?> pRenderer, IRenderContext<?> pContext) {
 				super(pRenderer);
 
-				this.poseStack = pPoseStack;
-				this.model = pModel;
-				this.bufferSource = pBufferSource;
-				this.partialTick = pPartialTick;
-				this.packedLight = pPackedLight;
+				this.context = pContext;
 			}
 
-			public @NotNull PoseStack getPoseStack() {
-				return this.poseStack;
-			}
-
-			public @NotNull ModelCache getModel() {
-				return this.model;
-			}
-
-			public @NotNull MultiBufferSource getBufferSource() {
-				return this.bufferSource;
-			}
-
-			public @NotNull Float getPartialTick() {
-				return this.partialTick;
-			}
-
-			public @NotNull Integer getPackedLight() {
-				return this.packedLight;
+			public @NotNull IRenderContext<?> getContext() {
+				return this.context;
 			}
 
 			@FunctionalInterface
@@ -812,7 +539,8 @@ public interface BlueRenderEvent {
 		public static class CompileRenderLayers extends Object {
 
 			@NotNull
-			public static final Event<Listener> EVENT = EventFactory.createArrayBacked(Listener.class, post -> {}, listeners -> event -> {
+			public static final Event<Listener> EVENT = EventFactory.createArrayBacked(Listener.class, post -> {
+			}, listeners -> event -> {
 				for (Listener listener : listeners) {
 					listener.handle(event);
 				}
@@ -865,44 +593,16 @@ public interface BlueRenderEvent {
 			});
 
 			@NotNull
-			private final PoseStack poseStack;
-			@NotNull
-			private final ModelCache model;
-			@NotNull
-			private final MultiBufferSource bufferSource;
-			@NotNull
-			private final Float partialTick;
-			@NotNull
-			private final Integer packedLight;
+			private final IRenderContext<?> context;
 
-			public Pre(@NotNull BlueReplacedEntityRenderer<?, ?> pRenderer, @NotNull PoseStack pPoseStack, @NotNull ModelCache pModel, @NotNull MultiBufferSource pBufferSource, @NotNull Float pPartialTick, @NotNull Integer pPackedLight) {
+			public Pre(@NotNull BlueReplacedEntityRenderer<?, ?> pRenderer, IRenderContext<?> pContext) {
 				super(pRenderer);
 
-				this.poseStack = pPoseStack;
-				this.model = pModel;
-				this.bufferSource = pBufferSource;
-				this.partialTick = pPartialTick;
-				this.packedLight = pPackedLight;
+				this.context = pContext;
 			}
 
-			public @NotNull PoseStack getPoseStack() {
-				return this.poseStack;
-			}
-
-			public @NotNull ModelCache getModel() {
-				return this.model;
-			}
-
-			public @NotNull MultiBufferSource getBufferSource() {
-				return this.bufferSource;
-			}
-
-			public @NotNull Float getPartialTick() {
-				return this.partialTick;
-			}
-
-			public @NotNull Integer getPackedLight() {
-				return this.packedLight;
+			public @NotNull IRenderContext<?> getContext() {
+				return this.context;
 			}
 
 			@FunctionalInterface
@@ -915,51 +615,24 @@ public interface BlueRenderEvent {
 		public static class Post extends ReplacedEntity {
 
 			@NotNull
-			public static final Event<Listener> EVENT = EventFactory.createArrayBacked(Listener.class, post -> {}, listeners -> event -> {
+			public static final Event<Listener> EVENT = EventFactory.createArrayBacked(Listener.class, post -> {
+			}, listeners -> event -> {
 				for (Listener listener : listeners) {
 					listener.handle(event);
 				}
 			});
 
 			@NotNull
-			private final PoseStack poseStack;
-			@NotNull
-			private final ModelCache model;
-			@NotNull
-			private final MultiBufferSource bufferSource;
-			@NotNull
-			private final Float partialTick;
-			@NotNull
-			private final Integer packedLight;
+			private final IRenderContext<?> context;
 
-			public Post(@NotNull BlueReplacedEntityRenderer<?, ?> pRenderer, @NotNull PoseStack pPoseStack, @NotNull ModelCache pModel, @NotNull MultiBufferSource pBufferSource, @NotNull Float pPartialTick, @NotNull Integer pPackedLight) {
+			public Post(@NotNull BlueReplacedEntityRenderer<?, ?> pRenderer, IRenderContext<?> pContext) {
 				super(pRenderer);
 
-				this.poseStack = pPoseStack;
-				this.model = pModel;
-				this.bufferSource = pBufferSource;
-				this.partialTick = pPartialTick;
-				this.packedLight = pPackedLight;
+				this.context = pContext;
 			}
 
-			public @NotNull PoseStack getPoseStack() {
-				return this.poseStack;
-			}
-
-			public @NotNull ModelCache getModel() {
-				return this.model;
-			}
-
-			public @NotNull MultiBufferSource getBufferSource() {
-				return this.bufferSource;
-			}
-
-			public @NotNull Float getPartialTick() {
-				return this.partialTick;
-			}
-
-			public @NotNull Integer getPackedLight() {
-				return this.packedLight;
+			public @NotNull IRenderContext<?> getContext() {
+				return this.context;
 			}
 
 			@FunctionalInterface
@@ -972,7 +645,8 @@ public interface BlueRenderEvent {
 		public static class CompileRenderLayers extends ReplacedEntity {
 
 			@NotNull
-			public static final Event<Listener> EVENT = EventFactory.createArrayBacked(Listener.class, post -> {}, listeners -> event -> {
+			public static final Event<Listener> EVENT = EventFactory.createArrayBacked(Listener.class, post -> {
+			}, listeners -> event -> {
 				for (Listener listener : listeners) {
 					listener.handle(event);
 				}

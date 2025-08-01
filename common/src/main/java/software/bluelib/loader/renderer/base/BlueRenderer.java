@@ -110,12 +110,12 @@ public interface BlueRenderer<T extends BlueAnimatable> {
 		if (pContext instanceof FullRenderContext<T> full) {
 			preRender(full);
 
-			if (firePreRenderEvent(full.poseStack(), full.model(), full.bufferSource(), full.partialTick(), full.packedLight())) {
+			if (firePreRenderEvent(full)) {
 				preApplyRenderLayers(full);
 				actuallyRender(full);
 				applyRenderLayers(full);
 				postRender(full);
-				firePostRenderEvent(full.poseStack(), full.model(), full.bufferSource(), full.partialTick(), full.packedLight());
+				firePostRenderEvent(full);
 			}
 
 			full.poseStack().popPose();
@@ -298,9 +298,9 @@ public interface BlueRenderer<T extends BlueAnimatable> {
 
 	void fireCompileRenderLayersEvent();
 
-	boolean firePreRenderEvent(PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight);
+	boolean firePreRenderEvent(IRenderContext<T> pContext);
 
-	void firePostRenderEvent(PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight);
+	void firePostRenderEvent(IRenderContext<T> pContext);
 
 	default void scaleModelForRender(float widthScale, float heightScale, PoseStack pPoseStack, T pAnimatable, ModelCache pModel, boolean pIsReRender, float pPartialTick, int pPackedLight, int pPackedOverlay) {
 		if (!pIsReRender && (widthScale != 1 || heightScale != 1))

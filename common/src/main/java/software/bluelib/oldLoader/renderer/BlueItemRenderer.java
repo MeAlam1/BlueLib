@@ -262,12 +262,12 @@ public class BlueItemRenderer<T extends Item & BlueAnimatable> extends BlockEnti
 	}
 
 	@Override
-	public boolean firePreRenderEvent(PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight) {
-		return BlueLibConstants.PlatformHelper.EVENT_PROXY.fireItemPreRender(this, pPoseStack, pModel, pBufferSource, pPartialTick, pPackedLight);
+	public boolean firePreRenderEvent(IRenderContext<T> pContext) {
+		return BlueLibConstants.PlatformHelper.EVENT_PROXY.fireItemPreRender(this, pContext);
 	}
 
 	@Override
-	public void firePostRenderEvent(PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight) {
-		BlueLibConstants.PlatformHelper.EVENT_PROXY.fireItemPostRender(this, pPoseStack, pModel, pBufferSource, pPartialTick, pPackedLight);
+	public void firePostRenderEvent(IRenderContext<T> pContext) {
+		BlueLibConstants.PlatformHelper.EVENT_PROXY.fireItemPostRender(this, pContext);
 	}
 }

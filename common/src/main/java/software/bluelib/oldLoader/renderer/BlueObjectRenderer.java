@@ -178,12 +178,12 @@ public class BlueObjectRenderer<T extends BlueAnimatable> implements BlueRendere
 	}
 
 	@Override
-	public boolean firePreRenderEvent(PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight) {
-		return BlueLibConstants.PlatformHelper.EVENT_PROXY.fireObjectPreRender(this, pPoseStack, pModel, pBufferSource, pPartialTick, pPackedLight);
+	public boolean firePreRenderEvent(IRenderContext<T> pContext) {
+		return BlueLibConstants.PlatformHelper.EVENT_PROXY.fireObjectPreRender(this, pContext);
 	}
 
 	@Override
-	public void firePostRenderEvent(PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight) {
-		BlueLibConstants.PlatformHelper.EVENT_PROXY.fireObjectPostRender(this, pPoseStack, pModel, pBufferSource, pPartialTick, pPackedLight);
+	public void firePostRenderEvent(IRenderContext<T> pContext) {
+		BlueLibConstants.PlatformHelper.EVENT_PROXY.fireObjectPostRender(this, pContext);
 	}
 }

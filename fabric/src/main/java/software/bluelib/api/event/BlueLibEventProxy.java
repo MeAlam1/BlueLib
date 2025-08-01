@@ -18,6 +18,7 @@ import software.bluelib.api.event.mod.ModLoadedEvent;
 import software.bluelib.api.event.mod.ModMeta;
 import software.bluelib.loader.cache.model.ModelCache;
 import software.bluelib.loader.event.BlueRenderEvent;
+import software.bluelib.loader.renderer.context.IRenderContext;
 import software.bluelib.oldLoader.renderer.*;
 
 public class BlueLibEventProxy implements IEventProxy {
@@ -58,13 +59,13 @@ public class BlueLibEventProxy implements IEventProxy {
 	}
 
 	@Override
-	public @NotNull Boolean fireBlockPreRender(@NotNull BlueBlockRenderer<?> pRenderer, @NotNull PoseStack pPoseStack, @NotNull ModelCache pModel, @NotNull MultiBufferSource pBufferSource, @NotNull Float pPartialTick, @NotNull Integer pPackedLight) {
-		return BlueRenderEvent.Block.Pre.EVENT.invoker().handle(new BlueRenderEvent.Block.Pre(pRenderer, pPoseStack, pModel, pBufferSource, pPartialTick, pPackedLight));
+	public @NotNull Boolean fireBlockPreRender(@NotNull BlueBlockRenderer<?> pRenderer, IRenderContext<?> pContext) {
+		return BlueRenderEvent.Block.Pre.EVENT.invoker().handle(new BlueRenderEvent.Block.Pre(pRenderer, pContext));
 	}
 
 	@Override
-	public void fireBlockPostRender(@NotNull BlueBlockRenderer<?> pRenderer, @NotNull PoseStack pPoseStack, @NotNull ModelCache pModel, @NotNull MultiBufferSource pBufferSource, @NotNull Float pPartialTick, @NotNull Integer pPackedLight) {
-		BlueRenderEvent.Block.Post.EVENT.invoker().handle(new BlueRenderEvent.Block.Post(pRenderer, pPoseStack, pModel, pBufferSource, pPartialTick, pPackedLight));
+	public void fireBlockPostRender(@NotNull BlueBlockRenderer<?> pRenderer, IRenderContext<?> pContext) {
+		BlueRenderEvent.Block.Post.EVENT.invoker().handle(new BlueRenderEvent.Block.Post(pRenderer, pContext));
 	}
 
 	@Override
@@ -73,13 +74,13 @@ public class BlueLibEventProxy implements IEventProxy {
 	}
 
 	@Override
-	public @NotNull Boolean fireArmorPreRender(@NotNull BlueArmorRenderer<?> pRenderer, @NotNull PoseStack pPoseStack, @NotNull ModelCache pModel, @NotNull MultiBufferSource pBufferSource, @NotNull Float pPartialTick, @NotNull Integer pPackedLight) {
-		return BlueRenderEvent.Armor.Pre.EVENT.invoker().handle(new BlueRenderEvent.Armor.Pre(pRenderer, pPoseStack, pModel, pBufferSource, pPartialTick, pPackedLight));
+	public @NotNull Boolean fireArmorPreRender(@NotNull BlueArmorRenderer<?> pRenderer, IRenderContext<?> pContext) {
+		return BlueRenderEvent.Armor.Pre.EVENT.invoker().handle(new BlueRenderEvent.Armor.Pre(pRenderer, pContext));
 	}
 
 	@Override
-	public void fireArmorPostRender(@NotNull BlueArmorRenderer<?> pRenderer, @NotNull PoseStack pPoseStack, @NotNull ModelCache pModel, @NotNull MultiBufferSource pBufferSource, @NotNull Float pPartialTick, @NotNull Integer pPackedLight) {
-		BlueRenderEvent.Armor.Post.EVENT.invoker().handle(new BlueRenderEvent.Armor.Post(pRenderer, pPoseStack, pModel, pBufferSource, pPartialTick, pPackedLight));
+	public void fireArmorPostRender(@NotNull BlueArmorRenderer<?> pRenderer, IRenderContext<?> pContext) {
+		BlueRenderEvent.Armor.Post.EVENT.invoker().handle(new BlueRenderEvent.Armor.Post(pRenderer, pContext));
 	}
 
 	@Override
@@ -88,13 +89,13 @@ public class BlueLibEventProxy implements IEventProxy {
 	}
 
 	@Override
-	public @NotNull Boolean fireEntityPreRender(@NotNull BlueEntityRenderer<?> pRenderer, @NotNull PoseStack pPoseStack, @NotNull ModelCache pModel, @NotNull MultiBufferSource pBufferSource, @NotNull Float pPartialTick, @NotNull Integer pPackedLight) {
-		return BlueRenderEvent.Entity.Pre.EVENT.invoker().handle(new BlueRenderEvent.Entity.Pre(pRenderer, pPoseStack, pModel, pBufferSource, pPartialTick, pPackedLight));
+	public @NotNull Boolean fireEntityPreRender(@NotNull BlueEntityRenderer<?> pRenderer, IRenderContext<?> pContext) {
+		return BlueRenderEvent.Entity.Pre.EVENT.invoker().handle(new BlueRenderEvent.Entity.Pre(pRenderer, pContext));
 	}
 
 	@Override
-	public void fireEntityPostRender(@NotNull BlueEntityRenderer<?> pRenderer, @NotNull PoseStack pPoseStack, @NotNull ModelCache pModel, @NotNull MultiBufferSource pBufferSource, @NotNull Float pPartialTick, @NotNull Integer pPackedLight) {
-		BlueRenderEvent.Entity.Post.EVENT.invoker().handle(new BlueRenderEvent.Entity.Post(pRenderer, pPoseStack, pModel, pBufferSource, pPartialTick, pPackedLight));
+	public void fireEntityPostRender(@NotNull BlueEntityRenderer<?> pRenderer, IRenderContext<?> pContext) {
+		BlueRenderEvent.Entity.Post.EVENT.invoker().handle(new BlueRenderEvent.Entity.Post(pRenderer, pContext));
 	}
 
 	@Override
@@ -103,13 +104,13 @@ public class BlueLibEventProxy implements IEventProxy {
 	}
 
 	@Override
-	public @NotNull Boolean fireReplacedEntityPreRender(@NotNull BlueReplacedEntityRenderer<?, ?> pRenderer, @NotNull PoseStack pPoseStack, @NotNull ModelCache pModel, @NotNull MultiBufferSource pBufferSource, @NotNull Float pPartialTick, @NotNull Integer pPackedLight) {
-		return BlueRenderEvent.ReplacedEntity.Pre.EVENT.invoker().handle(new BlueRenderEvent.ReplacedEntity.Pre(pRenderer, pPoseStack, pModel, pBufferSource, pPartialTick, pPackedLight));
+	public @NotNull Boolean fireReplacedEntityPreRender(@NotNull BlueReplacedEntityRenderer<?, ?> pRenderer, IRenderContext<?> pContext) {
+		return BlueRenderEvent.ReplacedEntity.Pre.EVENT.invoker().handle(new BlueRenderEvent.ReplacedEntity.Pre(pRenderer, pContext));
 	}
 
 	@Override
-	public void fireReplacedEntityPostRender(@NotNull BlueReplacedEntityRenderer<?, ?> pRenderer, @NotNull PoseStack pPoseStack, @NotNull ModelCache pModel, @NotNull MultiBufferSource pBufferSource, @NotNull Float pPartialTick, @NotNull Integer pPackedLight) {
-		BlueRenderEvent.ReplacedEntity.Post.EVENT.invoker().handle(new BlueRenderEvent.ReplacedEntity.Post(pRenderer, pPoseStack, pModel, pBufferSource, pPartialTick, pPackedLight));
+	public void fireReplacedEntityPostRender(@NotNull BlueReplacedEntityRenderer<?, ?> pRenderer, IRenderContext<?> pContext) {
+		BlueRenderEvent.ReplacedEntity.Post.EVENT.invoker().handle(new BlueRenderEvent.ReplacedEntity.Post(pRenderer, pContext));
 	}
 
 	@Override
@@ -118,13 +119,13 @@ public class BlueLibEventProxy implements IEventProxy {
 	}
 
 	@Override
-	public @NotNull Boolean fireItemPreRender(@NotNull BlueItemRenderer<?> pRenderer, @NotNull PoseStack pPoseStack, @NotNull ModelCache pModel, @NotNull MultiBufferSource pBufferSource, @NotNull Float pPartialTick, @NotNull Integer pPackedLight) {
-		return BlueRenderEvent.Item.Pre.EVENT.invoker().handle(new BlueRenderEvent.Item.Pre(pRenderer, pPoseStack, pModel, pBufferSource, pPartialTick, pPackedLight));
+	public @NotNull Boolean fireItemPreRender(@NotNull BlueItemRenderer<?> pRenderer, IRenderContext<?> pContext) {
+		return BlueRenderEvent.Item.Pre.EVENT.invoker().handle(new BlueRenderEvent.Item.Pre(pRenderer, pContext));
 	}
 
 	@Override
-	public void fireItemPostRender(@NotNull BlueItemRenderer<?> pRenderer, @NotNull PoseStack pPoseStack, @NotNull ModelCache pModel, @NotNull MultiBufferSource pBufferSource, @NotNull Float pPartialTick, @NotNull Integer pPackedLight) {
-		BlueRenderEvent.Item.Post.EVENT.invoker().handle(new BlueRenderEvent.Item.Post(pRenderer, pPoseStack, pModel, pBufferSource, pPartialTick, pPackedLight));
+	public void fireItemPostRender(@NotNull BlueItemRenderer<?> pRenderer, IRenderContext<?> pContext) {
+		BlueRenderEvent.Item.Post.EVENT.invoker().handle(new BlueRenderEvent.Item.Post(pRenderer, pContext));
 	}
 
 	@Override
@@ -133,12 +134,12 @@ public class BlueLibEventProxy implements IEventProxy {
 	}
 
 	@Override
-	public @NotNull Boolean fireObjectPreRender(@NotNull BlueObjectRenderer<?> pRenderer, @NotNull PoseStack pPoseStack, @NotNull ModelCache pModel, @NotNull MultiBufferSource pBufferSource, @NotNull Float pPartialTick, @NotNull Integer pPackedLight) {
-		return BlueRenderEvent.Object.Pre.EVENT.invoker().handle(new BlueRenderEvent.Object.Pre(pRenderer, pPoseStack, pModel, pBufferSource, pPartialTick, pPackedLight));
+	public @NotNull Boolean fireObjectPreRender(@NotNull BlueObjectRenderer<?> pRenderer, IRenderContext<?> pContext) {
+		return BlueRenderEvent.Object.Pre.EVENT.invoker().handle(new BlueRenderEvent.Object.Pre(pRenderer, pContext));
 	}
 
 	@Override
-	public void fireObjectPostRender(@NotNull BlueObjectRenderer<?> pRenderer, @NotNull PoseStack pPoseStack, @NotNull ModelCache pModel, @NotNull MultiBufferSource pBufferSource, @NotNull Float pPartialTick, @NotNull Integer pPackedLight) {
-		BlueRenderEvent.Object.Post.EVENT.invoker().handle(new BlueRenderEvent.Object.Post(pRenderer, pPoseStack, pModel, pBufferSource, pPartialTick, pPackedLight));
+	public void fireObjectPostRender(@NotNull BlueObjectRenderer<?> pRenderer, IRenderContext<?> pContext) {
+		BlueRenderEvent.Object.Post.EVENT.invoker().handle(new BlueRenderEvent.Object.Post(pRenderer, pContext));
 	}
 }

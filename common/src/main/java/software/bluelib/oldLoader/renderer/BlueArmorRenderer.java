@@ -489,12 +489,12 @@ public class BlueArmorRenderer<T extends Item & BlueItem> extends HumanoidModel 
 	}
 
 	@Override
-	public boolean firePreRenderEvent(PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight) {
-		return BlueLibConstants.PlatformHelper.EVENT_PROXY.fireArmorPreRender(this, pPoseStack, pModel, pBufferSource, pPartialTick, pPackedLight);
+	public boolean firePreRenderEvent(IRenderContext<T> pContext) {
+		return BlueLibConstants.PlatformHelper.EVENT_PROXY.fireArmorPreRender(this, pContext);
 	}
 
 	@Override
-	public void firePostRenderEvent(PoseStack pPoseStack, ModelCache pModel, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight) {
-		BlueLibConstants.PlatformHelper.EVENT_PROXY.fireArmorPostRender(this, pPoseStack, pModel, pBufferSource, pPartialTick, pPackedLight);
+	public void firePostRenderEvent(IRenderContext<T> pContext) {
+		BlueLibConstants.PlatformHelper.EVENT_PROXY.fireArmorPostRender(this, pContext);
 	}
 }

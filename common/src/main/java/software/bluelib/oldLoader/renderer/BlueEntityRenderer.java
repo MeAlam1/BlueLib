@@ -39,7 +39,6 @@ import software.bluelib.client.utils.PlayerUtils;
 import software.bluelib.client.utils.RenderUtils;
 import software.bluelib.loader.animatable.BlueAnimatable;
 import software.bluelib.loader.cache.model.BoneCache;
-import software.bluelib.loader.cache.model.ModelCache;
 import software.bluelib.loader.cache.texture.AnimatableTexture;
 import software.bluelib.loader.renderer.base.BlueRenderer;
 import software.bluelib.loader.renderer.context.BaseRenderContext;
@@ -459,12 +458,12 @@ public class BlueEntityRenderer<T extends Entity & BlueAnimatable> extends Entit
 	}
 
 	@Override
-	public boolean firePreRenderEvent(PoseStack pPoseStack, ModelCache model, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight) {
-		return BlueLibConstants.PlatformHelper.EVENT_PROXY.fireEntityPreRender(this, pPoseStack, model, pBufferSource, pPartialTick, pPackedLight);
+	public boolean firePreRenderEvent(IRenderContext<T> pContext) {
+		return BlueLibConstants.PlatformHelper.EVENT_PROXY.fireEntityPreRender(this, pContext);
 	}
 
 	@Override
-	public void firePostRenderEvent(PoseStack pPoseStack, ModelCache model, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight) {
-		BlueLibConstants.PlatformHelper.EVENT_PROXY.fireEntityPostRender(this, pPoseStack, model, pBufferSource, pPartialTick, pPackedLight);
+	public void firePostRenderEvent(IRenderContext<T> pContext) {
+		BlueLibConstants.PlatformHelper.EVENT_PROXY.fireEntityPostRender(this, pContext);
 	}
 }

@@ -7,8 +7,6 @@
  */
 package software.bluelib.loader.event;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -16,8 +14,8 @@ import net.neoforged.bus.api.Event;
 import net.neoforged.bus.api.ICancellableEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import software.bluelib.loader.cache.model.ModelCache;
 import software.bluelib.loader.renderer.base.BlueRenderer;
+import software.bluelib.loader.renderer.context.IRenderContext;
 import software.bluelib.oldLoader.renderer.*;
 import software.bluelib.oldLoader.renderer.layer.BlueRenderLayer;
 
@@ -59,88 +57,32 @@ public interface BlueRenderEvent {
 		public static class Pre extends Armor implements ICancellableEvent {
 
 			@NotNull
-			private final PoseStack pPoseStack;
-			@NotNull
-			private final ModelCache model;
-			@NotNull
-			private final MultiBufferSource pBufferSource;
-			@NotNull
-			private final Float pPartialTick;
-			@NotNull
-			private final Integer pPackedLight;
+			private final IRenderContext<?> context;
 
-			public Pre(@NotNull BlueArmorRenderer<?> pRenderer, @NotNull PoseStack pPoseStack, @NotNull ModelCache pModel, @NotNull MultiBufferSource pBufferSource, @NotNull Float pPartialTick, @NotNull Integer pPackedLight) {
+			public Pre(@NotNull BlueArmorRenderer<?> pRenderer, IRenderContext<?> pContext) {
 				super(pRenderer);
 
-				this.pPoseStack = pPoseStack;
-				this.model = pModel;
-				this.pBufferSource = pBufferSource;
-				this.pPartialTick = pPartialTick;
-				this.pPackedLight = pPackedLight;
+				this.context = pContext;
 			}
 
-			public @NotNull PoseStack getPoseStack() {
-				return this.pPoseStack;
-			}
-
-			public @NotNull ModelCache getModel() {
-				return this.model;
-			}
-
-			public @NotNull MultiBufferSource getBufferSource() {
-				return this.pBufferSource;
-			}
-
-			public @NotNull Float getPartialTick() {
-				return this.pPartialTick;
-			}
-
-			public @NotNull Integer getPackedLight() {
-				return this.pPackedLight;
+			public @NotNull IRenderContext<?> getContext() {
+				return this.context;
 			}
 		}
 
 		public static class Post extends Armor {
 
 			@NotNull
-			private final PoseStack pPoseStack;
-			@NotNull
-			private final ModelCache model;
-			@NotNull
-			private final MultiBufferSource pBufferSource;
-			@NotNull
-			private final Float pPartialTick;
-			@NotNull
-			private final Integer pPackedLight;
+			private final IRenderContext<?> context;
 
-			public Post(@NotNull BlueArmorRenderer<?> pRenderer, @NotNull PoseStack pPoseStack, @NotNull ModelCache pModel, @NotNull MultiBufferSource pBufferSource, @NotNull Float pPartialTick, @NotNull Integer pPackedLight) {
+			public Post(@NotNull BlueArmorRenderer<?> pRenderer, IRenderContext<?> pContext) {
 				super(pRenderer);
 
-				this.pPoseStack = pPoseStack;
-				this.model = pModel;
-				this.pBufferSource = pBufferSource;
-				this.pPartialTick = pPartialTick;
-				this.pPackedLight = pPackedLight;
+				this.context = pContext;
 			}
 
-			public @NotNull PoseStack getPoseStack() {
-				return this.pPoseStack;
-			}
-
-			public @NotNull ModelCache getModel() {
-				return this.model;
-			}
-
-			public @NotNull MultiBufferSource getBufferSource() {
-				return this.pBufferSource;
-			}
-
-			public @NotNull Float getPartialTick() {
-				return this.pPartialTick;
-			}
-
-			public @NotNull Integer getPackedLight() {
-				return this.pPackedLight;
+			public @NotNull IRenderContext<?> getContext() {
+				return this.context;
 			}
 		}
 
@@ -177,88 +119,32 @@ public interface BlueRenderEvent {
 		public static class Pre extends Block implements ICancellableEvent {
 
 			@NotNull
-			private final PoseStack pPoseStack;
-			@NotNull
-			private final ModelCache model;
-			@NotNull
-			private final MultiBufferSource pBufferSource;
-			@NotNull
-			private final Float pPartialTick;
-			@NotNull
-			private final Integer pPackedLight;
+			private final IRenderContext<?> context;
 
-			public Pre(@NotNull BlueBlockRenderer<?> pRenderer, @NotNull PoseStack pPoseStack, @NotNull ModelCache pModel, @NotNull MultiBufferSource pBufferSource, @NotNull Float pPartialTick, @NotNull Integer pPackedLight) {
+			public Pre(@NotNull BlueBlockRenderer<?> pRenderer, IRenderContext<?> pContext) {
 				super(pRenderer);
 
-				this.pPoseStack = pPoseStack;
-				this.model = pModel;
-				this.pBufferSource = pBufferSource;
-				this.pPartialTick = pPartialTick;
-				this.pPackedLight = pPackedLight;
+				this.context = pContext;
 			}
 
-			public @NotNull PoseStack getPoseStack() {
-				return this.pPoseStack;
-			}
-
-			public @NotNull ModelCache getModel() {
-				return this.model;
-			}
-
-			public @NotNull MultiBufferSource getBufferSource() {
-				return this.pBufferSource;
-			}
-
-			public @NotNull Float getPartialTick() {
-				return this.pPartialTick;
-			}
-
-			public @NotNull Integer getPackedLight() {
-				return this.pPackedLight;
+			public @NotNull IRenderContext<?> getContext() {
+				return this.context;
 			}
 		}
 
 		public static class Post extends Block {
 
 			@NotNull
-			private final PoseStack pPoseStack;
-			@NotNull
-			private final ModelCache model;
-			@NotNull
-			private final MultiBufferSource pBufferSource;
-			@NotNull
-			private final Float pPartialTick;
-			@NotNull
-			private final Integer pPackedLight;
+			private final IRenderContext<?> context;
 
-			public Post(@NotNull BlueBlockRenderer<?> pRenderer, @NotNull PoseStack pPoseStack, @NotNull ModelCache pModel, @NotNull MultiBufferSource pBufferSource, @NotNull Float pPartialTick, @NotNull Integer pPackedLight) {
+			public Post(@NotNull BlueBlockRenderer<?> pRenderer, IRenderContext<?> pContext) {
 				super(pRenderer);
 
-				this.pPoseStack = pPoseStack;
-				this.model = pModel;
-				this.pBufferSource = pBufferSource;
-				this.pPartialTick = pPartialTick;
-				this.pPackedLight = pPackedLight;
+				this.context = pContext;
 			}
 
-			public @NotNull PoseStack getPoseStack() {
-				return this.pPoseStack;
-			}
-
-			public @NotNull ModelCache getModel() {
-				return this.model;
-			}
-
-			public @NotNull MultiBufferSource getBufferSource() {
-				return this.pBufferSource;
-			}
-
-			public @NotNull Float getPartialTick() {
-				return this.pPartialTick;
-			}
-
-			public @NotNull Integer getPackedLight() {
-				return this.pPackedLight;
+			public @NotNull IRenderContext<?> getContext() {
+				return this.context;
 			}
 		}
 
@@ -295,88 +181,32 @@ public interface BlueRenderEvent {
 		public static class Pre extends Entity implements ICancellableEvent {
 
 			@NotNull
-			private final PoseStack pPoseStack;
-			@NotNull
-			private final ModelCache model;
-			@NotNull
-			private final MultiBufferSource pBufferSource;
-			@NotNull
-			private final Float pPartialTick;
-			@NotNull
-			private final Integer pPackedLight;
+			private final IRenderContext<?> context;
 
-			public Pre(@NotNull BlueEntityRenderer<?> pRenderer, @NotNull PoseStack pPoseStack, @NotNull ModelCache pModel, @NotNull MultiBufferSource pBufferSource, @NotNull Float pPartialTick, @NotNull Integer pPackedLight) {
+			public Pre(@NotNull BlueEntityRenderer<?> pRenderer, IRenderContext<?> pContext) {
 				super(pRenderer);
 
-				this.pPoseStack = pPoseStack;
-				this.model = pModel;
-				this.pBufferSource = pBufferSource;
-				this.pPartialTick = pPartialTick;
-				this.pPackedLight = pPackedLight;
+				this.context = pContext;
 			}
 
-			public @NotNull PoseStack getPoseStack() {
-				return this.pPoseStack;
-			}
-
-			public @NotNull ModelCache getModel() {
-				return this.model;
-			}
-
-			public @NotNull MultiBufferSource getBufferSource() {
-				return this.pBufferSource;
-			}
-
-			public @NotNull Float getPartialTick() {
-				return this.pPartialTick;
-			}
-
-			public @NotNull Integer getPackedLight() {
-				return this.pPackedLight;
+			public @NotNull IRenderContext<?> getContext() {
+				return this.context;
 			}
 		}
 
 		public static class Post extends Entity {
 
 			@NotNull
-			private final PoseStack pPoseStack;
-			@NotNull
-			private final ModelCache model;
-			@NotNull
-			private final MultiBufferSource pBufferSource;
-			@NotNull
-			private final Float pPartialTick;
-			@NotNull
-			private final Integer pPackedLight;
+			private final IRenderContext<?> context;
 
-			public Post(@NotNull BlueEntityRenderer<?> pRenderer, @NotNull PoseStack pPoseStack, @NotNull ModelCache pModel, @NotNull MultiBufferSource pBufferSource, @NotNull Float pPartialTick, @NotNull Integer pPackedLight) {
+			public Post(@NotNull BlueEntityRenderer<?> pRenderer, IRenderContext<?> pContext) {
 				super(pRenderer);
 
-				this.pPoseStack = pPoseStack;
-				this.model = pModel;
-				this.pBufferSource = pBufferSource;
-				this.pPartialTick = pPartialTick;
-				this.pPackedLight = pPackedLight;
+				this.context = pContext;
 			}
 
-			public @NotNull PoseStack getPoseStack() {
-				return this.pPoseStack;
-			}
-
-			public @NotNull ModelCache getModel() {
-				return this.model;
-			}
-
-			public @NotNull MultiBufferSource getBufferSource() {
-				return this.pBufferSource;
-			}
-
-			public @NotNull Float getPartialTick() {
-				return this.pPartialTick;
-			}
-
-			public @NotNull Integer getPackedLight() {
-				return this.pPackedLight;
+			public @NotNull IRenderContext<?> getContext() {
+				return this.context;
 			}
 		}
 
@@ -413,88 +243,32 @@ public interface BlueRenderEvent {
 		public static class Pre extends Item implements ICancellableEvent {
 
 			@NotNull
-			private final PoseStack pPoseStack;
-			@NotNull
-			private final ModelCache model;
-			@NotNull
-			private final MultiBufferSource pBufferSource;
-			@NotNull
-			private final Float pPartialTick;
-			@NotNull
-			private final Integer pPackedLight;
+			private final IRenderContext<?> context;
 
-			public Pre(@NotNull BlueItemRenderer<?> pRenderer, @NotNull PoseStack pPoseStack, @NotNull ModelCache pModel, @NotNull MultiBufferSource pBufferSource, @NotNull Float pPartialTick, @NotNull Integer pPackedLight) {
+			public Pre(@NotNull BlueItemRenderer<?> pRenderer, IRenderContext<?> pContext) {
 				super(pRenderer);
 
-				this.pPoseStack = pPoseStack;
-				this.model = pModel;
-				this.pBufferSource = pBufferSource;
-				this.pPartialTick = pPartialTick;
-				this.pPackedLight = pPackedLight;
+				this.context = pContext;
 			}
 
-			public @NotNull PoseStack getPoseStack() {
-				return this.pPoseStack;
-			}
-
-			public @NotNull ModelCache getModel() {
-				return this.model;
-			}
-
-			public @NotNull MultiBufferSource getBufferSource() {
-				return this.pBufferSource;
-			}
-
-			public @NotNull Float getPartialTick() {
-				return this.pPartialTick;
-			}
-
-			public @NotNull Integer getPackedLight() {
-				return this.pPackedLight;
+			public @NotNull IRenderContext<?> getContext() {
+				return this.context;
 			}
 		}
 
 		public static class Post extends Item {
 
 			@NotNull
-			private final PoseStack pPoseStack;
-			@NotNull
-			private final ModelCache model;
-			@NotNull
-			private final MultiBufferSource pBufferSource;
-			@NotNull
-			private final Float pPartialTick;
-			@NotNull
-			private final Integer pPackedLight;
+			private final IRenderContext<?> context;
 
-			public Post(@NotNull BlueItemRenderer<?> pRenderer, @NotNull PoseStack pPoseStack, @NotNull ModelCache pModel, @NotNull MultiBufferSource pBufferSource, @NotNull Float pPartialTick, @NotNull Integer pPackedLight) {
+			public Post(@NotNull BlueItemRenderer<?> pRenderer, IRenderContext<?> pContext) {
 				super(pRenderer);
 
-				this.pPoseStack = pPoseStack;
-				this.model = pModel;
-				this.pBufferSource = pBufferSource;
-				this.pPartialTick = pPartialTick;
-				this.pPackedLight = pPackedLight;
+				this.context = pContext;
 			}
 
-			public @NotNull PoseStack getPoseStack() {
-				return this.pPoseStack;
-			}
-
-			public @NotNull ModelCache getModel() {
-				return this.model;
-			}
-
-			public @NotNull MultiBufferSource getBufferSource() {
-				return this.pBufferSource;
-			}
-
-			public @NotNull Float getPartialTick() {
-				return this.pPartialTick;
-			}
-
-			public @NotNull Integer getPackedLight() {
-				return this.pPackedLight;
+			public @NotNull IRenderContext<?> getContext() {
+				return this.context;
 			}
 		}
 
@@ -527,88 +301,32 @@ public interface BlueRenderEvent {
 		public static class Pre extends Object implements ICancellableEvent {
 
 			@NotNull
-			private final PoseStack pPoseStack;
-			@NotNull
-			private final ModelCache model;
-			@NotNull
-			private final MultiBufferSource pBufferSource;
-			@NotNull
-			private final Float pPartialTick;
-			@NotNull
-			private final Integer pPackedLight;
+			private final IRenderContext<?> context;
 
-			public Pre(@NotNull BlueObjectRenderer<?> pRenderer, @NotNull PoseStack pPoseStack, @NotNull ModelCache pModel, @NotNull MultiBufferSource pBufferSource, @NotNull Float pPartialTick, @NotNull Integer pPackedLight) {
+			public Pre(@NotNull BlueObjectRenderer<?> pRenderer, IRenderContext<?> pContext) {
 				super(pRenderer);
 
-				this.pPoseStack = pPoseStack;
-				this.model = pModel;
-				this.pBufferSource = pBufferSource;
-				this.pPartialTick = pPartialTick;
-				this.pPackedLight = pPackedLight;
+				this.context = pContext;
 			}
 
-			public @NotNull PoseStack getPoseStack() {
-				return this.pPoseStack;
-			}
-
-			public @NotNull ModelCache getModel() {
-				return this.model;
-			}
-
-			public @NotNull MultiBufferSource getBufferSource() {
-				return this.pBufferSource;
-			}
-
-			public @NotNull Float getPartialTick() {
-				return this.pPartialTick;
-			}
-
-			public @NotNull Integer getPackedLight() {
-				return this.pPackedLight;
+			public @NotNull IRenderContext<?> getContext() {
+				return this.context;
 			}
 		}
 
 		public static class Post extends Object {
 
 			@NotNull
-			private final PoseStack pPoseStack;
-			@NotNull
-			private final ModelCache model;
-			@NotNull
-			private final MultiBufferSource pBufferSource;
-			@NotNull
-			private final Float pPartialTick;
-			@NotNull
-			private final Integer pPackedLight;
+			private final IRenderContext<?> context;
 
-			public Post(@NotNull BlueObjectRenderer<?> pRenderer, @NotNull PoseStack pPoseStack, @NotNull ModelCache pModel, @NotNull MultiBufferSource pBufferSource, @NotNull Float pPartialTick, @NotNull Integer pPackedLight) {
+			public Post(@NotNull BlueObjectRenderer<?> pRenderer, IRenderContext<?> pContext) {
 				super(pRenderer);
 
-				this.pPoseStack = pPoseStack;
-				this.model = pModel;
-				this.pBufferSource = pBufferSource;
-				this.pPartialTick = pPartialTick;
-				this.pPackedLight = pPackedLight;
+				this.context = pContext;
 			}
 
-			public @NotNull PoseStack getPoseStack() {
-				return this.pPoseStack;
-			}
-
-			public @NotNull ModelCache getModel() {
-				return this.model;
-			}
-
-			public @NotNull MultiBufferSource getBufferSource() {
-				return this.pBufferSource;
-			}
-
-			public @NotNull Float getPartialTick() {
-				return this.pPartialTick;
-			}
-
-			public @NotNull Integer getPackedLight() {
-				return this.pPackedLight;
+			public @NotNull IRenderContext<?> getContext() {
+				return this.context;
 			}
 		}
 
@@ -645,88 +363,32 @@ public interface BlueRenderEvent {
 		public static class Pre extends ReplacedEntity implements ICancellableEvent {
 
 			@NotNull
-			private final PoseStack pPoseStack;
-			@NotNull
-			private final ModelCache model;
-			@NotNull
-			private final MultiBufferSource pBufferSource;
-			@NotNull
-			private final Float pPartialTick;
-			@NotNull
-			private final Integer pPackedLight;
+			private final IRenderContext<?> context;
 
-			public Pre(@NotNull BlueReplacedEntityRenderer<?, ?> pRenderer, @NotNull PoseStack pPoseStack, @NotNull ModelCache pModel, @NotNull MultiBufferSource pBufferSource, @NotNull Float pPartialTick, @NotNull Integer pPackedLight) {
+			public Pre(@NotNull BlueReplacedEntityRenderer<?, ?> pRenderer, IRenderContext<?> pContext) {
 				super(pRenderer);
 
-				this.pPoseStack = pPoseStack;
-				this.model = pModel;
-				this.pBufferSource = pBufferSource;
-				this.pPartialTick = pPartialTick;
-				this.pPackedLight = pPackedLight;
+				this.context = pContext;
 			}
 
-			public @NotNull PoseStack getPoseStack() {
-				return this.pPoseStack;
-			}
-
-			public @NotNull ModelCache getModel() {
-				return this.model;
-			}
-
-			public @NotNull MultiBufferSource getBufferSource() {
-				return this.pBufferSource;
-			}
-
-			public @NotNull Float getPartialTick() {
-				return this.pPartialTick;
-			}
-
-			public @NotNull Integer getPackedLight() {
-				return this.pPackedLight;
+			public @NotNull IRenderContext<?> getContext() {
+				return this.context;
 			}
 		}
 
 		public static class Post extends ReplacedEntity {
 
 			@NotNull
-			private final PoseStack pPoseStack;
-			@NotNull
-			private final ModelCache model;
-			@NotNull
-			private final MultiBufferSource pBufferSource;
-			@NotNull
-			private final Float pPartialTick;
-			@NotNull
-			private final Integer pPackedLight;
+			private final IRenderContext<?> context;
 
-			public Post(@NotNull BlueReplacedEntityRenderer<?, ?> pRenderer, @NotNull PoseStack pPoseStack, @NotNull ModelCache pModel, @NotNull MultiBufferSource pBufferSource, @NotNull Float pPartialTick, @NotNull Integer pPackedLight) {
+			public Post(@NotNull BlueReplacedEntityRenderer<?, ?> pRenderer, IRenderContext<?> pContext) {
 				super(pRenderer);
 
-				this.pPoseStack = pPoseStack;
-				this.model = pModel;
-				this.pBufferSource = pBufferSource;
-				this.pPartialTick = pPartialTick;
-				this.pPackedLight = pPackedLight;
+				this.context = pContext;
 			}
 
-			public @NotNull PoseStack getPoseStack() {
-				return this.pPoseStack;
-			}
-
-			public @NotNull ModelCache getModel() {
-				return this.model;
-			}
-
-			public @NotNull MultiBufferSource getBufferSource() {
-				return this.pBufferSource;
-			}
-
-			public @NotNull Float getPartialTick() {
-				return this.pPartialTick;
-			}
-
-			public @NotNull Integer getPackedLight() {
-				return this.pPackedLight;
+			public @NotNull IRenderContext<?> getContext() {
+				return this.context;
 			}
 		}
 
