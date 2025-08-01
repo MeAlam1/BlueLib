@@ -7,6 +7,7 @@
  */
 package software.bluelib.api.event;
 
+import java.util.List;
 import net.neoforged.fml.ModLoader;
 import net.neoforged.neoforge.common.NeoForge;
 import org.jetbrains.annotations.NotNull;
@@ -18,8 +19,6 @@ import software.bluelib.api.event.mod.ModMeta;
 import software.bluelib.loader.event.BlueRenderEvent;
 import software.bluelib.loader.renderer.context.IRenderContext;
 import software.bluelib.oldLoader.renderer.*;
-
-import java.util.List;
 
 // TODO: Take a Look into Events, maybe post through NeoForge.EVENT_BUS and Check the Cancelling!!!!
 public class BlueLibEventProxy implements IEventProxy {

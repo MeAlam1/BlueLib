@@ -11,6 +11,7 @@ import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
@@ -29,7 +30,6 @@ import software.bluelib.BlueLibConstants;
 import software.bluelib.client.utils.RenderUtils;
 import software.bluelib.loader.animatable.BlueAnimatable;
 import software.bluelib.loader.cache.model.BoneCache;
-import software.bluelib.loader.cache.model.ModelCache;
 import software.bluelib.loader.cache.texture.AnimatableTexture;
 import software.bluelib.loader.renderer.base.BlueRenderer;
 import software.bluelib.loader.renderer.context.BaseRenderContext;
@@ -41,8 +41,6 @@ import software.bluelib.oldLoader.constant.DataTickets;
 import software.bluelib.oldLoader.model.BlueModel;
 import software.bluelib.oldLoader.renderer.layer.BlueRenderLayer;
 import software.bluelib.oldLoader.renderer.layer.BlueRenderLayersContainer;
-
-import java.util.List;
 
 public class BlueItemRenderer<T extends Item & BlueAnimatable> extends BlockEntityWithoutLevelRenderer implements BlueRenderer<T> {
 
@@ -135,7 +133,7 @@ public class BlueItemRenderer<T extends Item & BlueAnimatable> extends BlockEnti
 	@Override
 	@ApiStatus.Internal
 	public void renderByItem(ItemStack pStack, @NotNull ItemDisplayContext pTransformType, @NotNull PoseStack pPoseStack,
-	                         @NotNull MultiBufferSource pBufferSource, int pPackedLight, int pPackedOverlay) {
+			@NotNull MultiBufferSource pBufferSource, int pPackedLight, int pPackedOverlay) {
 		this.animatable = (T) pStack.getItem();
 		this.currentItemStack = pStack;
 		this.renderPerspective = pTransformType;
@@ -165,7 +163,7 @@ public class BlueItemRenderer<T extends Item & BlueAnimatable> extends BlockEnti
 	}
 
 	protected void renderInGui(ItemDisplayContext pTransformType, PoseStack pPoseStack,
-	                           MultiBufferSource pBufferSource, int pPackedLight, int pPackedOverlay, float pPartialTick) {
+			MultiBufferSource pBufferSource, int pPackedLight, int pPackedOverlay, float pPartialTick) {
 		setupLightingForGuiRender();
 
 		MultiBufferSource.BufferSource defaultBufferSource = pBufferSource instanceof MultiBufferSource.BufferSource bufferSource2 ? bufferSource2 : Minecraft.getInstance().levelRenderer.renderBuffers.bufferSource();
@@ -231,7 +229,7 @@ public class BlueItemRenderer<T extends Item & BlueAnimatable> extends BlockEnti
 
 	@Override
 	public void renderRecursively(PoseStack pPoseStack, T pAnimatable, BoneCache pBone, RenderType pRenderType, MultiBufferSource pBufferSource, VertexConsumer pBuffer, boolean pIsReRender, float pPartialTick, int pPackedLight,
-	                              int pPackedOverlay, int pColour) {
+			int pPackedOverlay, int pColour) {
 		if (pBone.isTrackingMatrices()) {
 			Matrix4f poseState = new Matrix4f(pPoseStack.last().pose());
 

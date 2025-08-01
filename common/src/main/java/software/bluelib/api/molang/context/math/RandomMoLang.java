@@ -7,10 +7,9 @@
  */
 package software.bluelib.api.molang.context.math;
 
+import java.util.concurrent.ThreadLocalRandom;
 import software.bluelib.api.molang.MoLangNamespaceUtils;
 import software.bluelib.api.molang.context.BaseMoLangContext;
-
-import java.util.concurrent.ThreadLocalRandom;
 
 public class RandomMoLang extends BaseMoLangContext {
 

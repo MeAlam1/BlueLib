@@ -9,6 +9,7 @@ package software.bluelib.oldLoader.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -20,7 +21,6 @@ import software.bluelib.BlueLibConstants;
 import software.bluelib.client.utils.RenderUtils;
 import software.bluelib.loader.animatable.BlueAnimatable;
 import software.bluelib.loader.cache.model.BoneCache;
-import software.bluelib.loader.cache.model.ModelCache;
 import software.bluelib.loader.cache.texture.AnimatableTexture;
 import software.bluelib.loader.renderer.base.BlueRenderer;
 import software.bluelib.loader.renderer.context.BaseRenderContext;
@@ -30,8 +30,6 @@ import software.bluelib.oldLoader.animation.AnimationState;
 import software.bluelib.oldLoader.model.BlueModel;
 import software.bluelib.oldLoader.renderer.layer.BlueRenderLayer;
 import software.bluelib.oldLoader.renderer.layer.BlueRenderLayersContainer;
-
-import java.util.List;
 
 public class BlueObjectRenderer<T extends BlueAnimatable> implements BlueRenderer<T> {
 
@@ -88,7 +86,7 @@ public class BlueObjectRenderer<T extends BlueAnimatable> implements BlueRendere
 
 	@ApiStatus.Internal
 	public void render(PoseStack pPoseStack, T pAnimatable, @Nullable MultiBufferSource pBufferSource, @Nullable RenderType pRenderType,
-	                   @Nullable VertexConsumer pBuffer, int pPackedLight, float pPartialTick) {
+			@Nullable VertexConsumer pBuffer, int pPackedLight, float pPartialTick) {
 		this.animatable = pAnimatable;
 
 		if (pBuffer == null)
@@ -155,7 +153,7 @@ public class BlueObjectRenderer<T extends BlueAnimatable> implements BlueRendere
 
 	@Override
 	public void renderRecursively(PoseStack pPoseStack, T pAnimatable, BoneCache pBone, RenderType pRenderType, MultiBufferSource pBufferSource, VertexConsumer pBuffer, boolean pIsReRender, float pPartialTick, int pPackedLight,
-	                              int pPackedOverlay, int pColour) {
+			int pPackedOverlay, int pColour) {
 		if (pBone.isTrackingMatrices()) {
 			Matrix4f poseState = new Matrix4f(pPoseStack.last().pose());
 

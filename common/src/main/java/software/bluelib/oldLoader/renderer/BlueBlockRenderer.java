@@ -10,6 +10,7 @@ package software.bluelib.oldLoader.renderer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
+import java.util.List;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
@@ -26,7 +27,6 @@ import software.bluelib.BlueLibConstants;
 import software.bluelib.client.utils.RenderUtils;
 import software.bluelib.loader.animatable.BlueAnimatable;
 import software.bluelib.loader.cache.model.BoneCache;
-import software.bluelib.loader.cache.model.ModelCache;
 import software.bluelib.loader.cache.texture.AnimatableTexture;
 import software.bluelib.loader.renderer.base.BlueRenderer;
 import software.bluelib.loader.renderer.context.BaseRenderContext;
@@ -37,8 +37,6 @@ import software.bluelib.oldLoader.constant.DataTickets;
 import software.bluelib.oldLoader.model.BlueModel;
 import software.bluelib.oldLoader.renderer.layer.BlueRenderLayer;
 import software.bluelib.oldLoader.renderer.layer.BlueRenderLayersContainer;
-
-import java.util.List;
 
 public class BlueBlockRenderer<T extends BlockEntity & BlueAnimatable> implements BlueRenderer<T>, BlockEntityRenderer<T> {
 
@@ -106,7 +104,7 @@ public class BlueBlockRenderer<T extends BlockEntity & BlueAnimatable> implement
 	@Override
 	@ApiStatus.Internal
 	public void render(T animatable, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBufferSource,
-	                   int pPackedLight, int pPackedOverlay) {
+			int pPackedLight, int pPackedOverlay) {
 		this.animatable = animatable;
 
 		defaultRender(new BaseRenderContext<>(
@@ -158,7 +156,7 @@ public class BlueBlockRenderer<T extends BlockEntity & BlueAnimatable> implement
 
 	@Override
 	public void renderRecursively(PoseStack pPoseStack, T animatable, BoneCache bone, RenderType pRenderType, MultiBufferSource pBufferSource, VertexConsumer buffer, boolean pIsReRender, float pPartialTick, int pPackedLight,
-	                              int pPackedOverlay, int colour) {
+			int pPackedOverlay, int colour) {
 		if (bone.isTrackingMatrices()) {
 			Matrix4f poseState = new Matrix4f(pPoseStack.last().pose());
 			Matrix4f localMatrix = RenderUtils.invertAndMultiplyMatrices(poseState, this.blockRenderTranslations);

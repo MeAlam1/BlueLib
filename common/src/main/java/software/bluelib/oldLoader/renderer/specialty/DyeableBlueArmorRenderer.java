@@ -10,6 +10,8 @@ package software.bluelib.oldLoader.renderer.specialty;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import it.unimi.dsi.fastutil.objects.ObjectArraySet;
+import java.util.Collection;
+import java.util.Set;
 import net.minecraft.util.FastColor;
 import net.minecraft.world.item.Item;
 import org.jetbrains.annotations.NotNull;
@@ -20,9 +22,6 @@ import software.bluelib.loader.renderer.context.IRenderContext;
 import software.bluelib.oldLoader.animatable.BlueItem;
 import software.bluelib.oldLoader.model.BlueModel;
 import software.bluelib.oldLoader.renderer.BlueArmorRenderer;
-
-import java.util.Collection;
-import java.util.Set;
 
 public abstract class DyeableBlueArmorRenderer<T extends Item & BlueItem> extends BlueArmorRenderer<T> {
 

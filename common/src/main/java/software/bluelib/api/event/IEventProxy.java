@@ -7,12 +7,9 @@
  */
 package software.bluelib.api.event;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import java.util.List;
-import net.minecraft.client.renderer.MultiBufferSource;
 import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.event.mod.ModMeta;
-import software.bluelib.loader.cache.model.ModelCache;
 import software.bluelib.loader.renderer.context.IRenderContext;
 import software.bluelib.oldLoader.renderer.*;
 

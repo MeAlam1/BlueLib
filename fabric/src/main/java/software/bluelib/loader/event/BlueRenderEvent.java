@@ -89,8 +89,7 @@ public interface BlueRenderEvent {
 		public static class Post extends Armor {
 
 			@NotNull
-			public static final Event<Listener> EVENT = EventFactory.createArrayBacked(Listener.class, post -> {
-			}, listeners -> event -> {
+			public static final Event<Listener> EVENT = EventFactory.createArrayBacked(Listener.class, post -> {}, listeners -> event -> {
 				for (Listener listener : listeners) {
 					listener.handle(event);
 				}
@@ -119,8 +118,7 @@ public interface BlueRenderEvent {
 		public static class CompileRenderLayers extends Armor {
 
 			@NotNull
-			public static final Event<Listener> EVENT = EventFactory.createArrayBacked(Listener.class, post -> {
-			}, listeners -> event -> {
+			public static final Event<Listener> EVENT = EventFactory.createArrayBacked(Listener.class, post -> {}, listeners -> event -> {
 				for (Listener listener : listeners) {
 					listener.handle(event);
 				}
@@ -195,8 +193,7 @@ public interface BlueRenderEvent {
 		public static class Post extends Block {
 
 			@NotNull
-			public static final Event<Listener> EVENT = EventFactory.createArrayBacked(Listener.class, post -> {
-			}, listeners -> event -> {
+			public static final Event<Listener> EVENT = EventFactory.createArrayBacked(Listener.class, post -> {}, listeners -> event -> {
 				for (Listener listener : listeners) {
 					listener.handle(event);
 				}
@@ -225,8 +222,7 @@ public interface BlueRenderEvent {
 		public static class CompileRenderLayers extends Block {
 
 			@NotNull
-			public static final Event<Listener> EVENT = EventFactory.createArrayBacked(Listener.class, post -> {
-			}, listeners -> event -> {
+			public static final Event<Listener> EVENT = EventFactory.createArrayBacked(Listener.class, post -> {}, listeners -> event -> {
 				for (Listener listener : listeners) {
 					listener.handle(event);
 				}
@@ -301,8 +297,7 @@ public interface BlueRenderEvent {
 		public static class Post extends Entity {
 
 			@NotNull
-			public static final Event<Listener> EVENT = EventFactory.createArrayBacked(Listener.class, post -> {
-			}, listeners -> event -> {
+			public static final Event<Listener> EVENT = EventFactory.createArrayBacked(Listener.class, post -> {}, listeners -> event -> {
 				for (Listener listener : listeners) {
 					listener.handle(event);
 				}
@@ -331,8 +326,7 @@ public interface BlueRenderEvent {
 		public static class CompileRenderLayers extends Entity {
 
 			@NotNull
-			public static final Event<Listener> EVENT = EventFactory.createArrayBacked(Listener.class, post -> {
-			}, listeners -> event -> {
+			public static final Event<Listener> EVENT = EventFactory.createArrayBacked(Listener.class, post -> {}, listeners -> event -> {
 				for (Listener listener : listeners) {
 					listener.handle(event);
 				}
@@ -407,8 +401,7 @@ public interface BlueRenderEvent {
 		public static class Post extends Item {
 
 			@NotNull
-			public static final Event<Listener> EVENT = EventFactory.createArrayBacked(Listener.class, post -> {
-			}, listeners -> event -> {
+			public static final Event<Listener> EVENT = EventFactory.createArrayBacked(Listener.class, post -> {}, listeners -> event -> {
 				for (Listener listener : listeners) {
 					listener.handle(event);
 				}
@@ -437,8 +430,7 @@ public interface BlueRenderEvent {
 		public static class CompileRenderLayers extends Item {
 
 			@NotNull
-			public static final Event<Listener> EVENT = EventFactory.createArrayBacked(Listener.class, post -> {
-			}, listeners -> event -> {
+			public static final Event<Listener> EVENT = EventFactory.createArrayBacked(Listener.class, post -> {}, listeners -> event -> {
 				for (Listener listener : listeners) {
 					listener.handle(event);
 				}
@@ -509,8 +501,7 @@ public interface BlueRenderEvent {
 		public static class Post extends Object {
 
 			@NotNull
-			public static final Event<Listener> EVENT = EventFactory.createArrayBacked(Listener.class, post -> {
-			}, listeners -> event -> {
+			public static final Event<Listener> EVENT = EventFactory.createArrayBacked(Listener.class, post -> {}, listeners -> event -> {
 				for (Listener listener : listeners) {
 					listener.handle(event);
 				}
@@ -539,8 +530,7 @@ public interface BlueRenderEvent {
 		public static class CompileRenderLayers extends Object {
 
 			@NotNull
-			public static final Event<Listener> EVENT = EventFactory.createArrayBacked(Listener.class, post -> {
-			}, listeners -> event -> {
+			public static final Event<Listener> EVENT = EventFactory.createArrayBacked(Listener.class, post -> {}, listeners -> event -> {
 				for (Listener listener : listeners) {
 					listener.handle(event);
 				}
@@ -615,8 +605,7 @@ public interface BlueRenderEvent {
 		public static class Post extends ReplacedEntity {
 
 			@NotNull
-			public static final Event<Listener> EVENT = EventFactory.createArrayBacked(Listener.class, post -> {
-			}, listeners -> event -> {
+			public static final Event<Listener> EVENT = EventFactory.createArrayBacked(Listener.class, post -> {}, listeners -> event -> {
 				for (Listener listener : listeners) {
 					listener.handle(event);
 				}
@@ -645,8 +634,7 @@ public interface BlueRenderEvent {
 		public static class CompileRenderLayers extends ReplacedEntity {
 
 			@NotNull
-			public static final Event<Listener> EVENT = EventFactory.createArrayBacked(Listener.class, post -> {
-			}, listeners -> event -> {
+			public static final Event<Listener> EVENT = EventFactory.createArrayBacked(Listener.class, post -> {}, listeners -> event -> {
 				for (Listener listener : listeners) {
 					listener.handle(event);
 				}

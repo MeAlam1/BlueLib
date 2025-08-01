@@ -16,6 +16,5 @@ public class AnimatableMoLang extends BaseMoLangContext {
 	public AnimatableMoLang(@NotNull AnimationState<? extends BlueAnimatable> pState) {
 		setVariable("anim_time", pState.getController() != null ? pState.getController().getAnimTime() : 0d);
 		setVariable("life_time", pState.getController() != null ? pState.getController().getAnimTime() / 20d : 0d);
-
 	}
 }

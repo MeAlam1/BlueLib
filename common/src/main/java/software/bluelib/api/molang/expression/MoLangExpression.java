@@ -7,11 +7,10 @@
  */
 package software.bluelib.api.molang.expression;
 
-import org.jetbrains.annotations.Nullable;
-import software.bluelib.api.molang.MoLangRuntime;
-
 import java.util.ArrayList;
 import java.util.List;
+import org.jetbrains.annotations.Nullable;
+import software.bluelib.api.molang.MoLangRuntime;
 
 public class MoLangExpression {
 
@@ -30,7 +29,7 @@ public class MoLangExpression {
 			String remapped = "q." + raw.substring("query.".length());
 			return new MoLangExpression(remapped).evaluate(pRuntime);
 		}
-		
+
 		if (raw.startsWith("q.")) {
 			String expr = raw.substring(2); // Strip only the `q.`
 
@@ -68,7 +67,6 @@ public class MoLangExpression {
 			return pRuntime.getVariable(pRaw);
 		}
 	}
-
 
 	private List<Object> parseArguments(String pArgsRaw, MoLangRuntime pRuntime) {
 		List<Object> args = new ArrayList<>();

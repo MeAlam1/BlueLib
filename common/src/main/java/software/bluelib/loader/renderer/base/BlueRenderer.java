@@ -9,10 +9,13 @@ package software.bluelib.loader.renderer.base;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import java.util.List;
+import java.util.function.BiConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
@@ -34,9 +37,6 @@ import software.bluelib.oldLoader.loading.math.MoLangQueries;
 import software.bluelib.oldLoader.model.BlueModel;
 import software.bluelib.oldLoader.renderer.layer.BlueRenderLayer;
 
-import java.util.List;
-import java.util.function.BiConsumer;
-
 public interface BlueRenderer<T extends BlueAnimatable> {
 
 	BlueModel<T> getBlueModel();
@@ -53,8 +53,8 @@ public interface BlueRenderer<T extends BlueAnimatable> {
 
 	@Nullable
 	default RenderType getRenderType(T pAnimatable, ResourceLocation pTexture,
-	                                 @Nullable MultiBufferSource pBufferSource,
-	                                 float pPartialTick) {
+			@Nullable MultiBufferSource pBufferSource,
+			float pPartialTick) {
 		return getBlueModel().getRenderType(pAnimatable, pTexture);
 	}
 
@@ -128,6 +128,7 @@ public interface BlueRenderer<T extends BlueAnimatable> {
 		}
 	}
 
+	@ApiStatus.NonExtendable
 	default <M extends BlueAnimatable> void handleBaseDefaultRenderContext(BaseRenderContext<M> pContext, BlueRenderer<M> pRenderer) {
 		handleBaseRenderContextInternal(pContext, pRenderer, BlueRenderer::defaultRender);
 	}
@@ -145,6 +146,7 @@ public interface BlueRenderer<T extends BlueAnimatable> {
 		}
 	}
 
+	@ApiStatus.NonExtendable
 	default <M extends BlueAnimatable> void handleBaseReRenderContext(BaseRenderContext<M> pContext, BlueRenderer<M> pRenderer) {
 		handleBaseRenderContextInternal(pContext, pRenderer, BlueRenderer::reRender);
 	}
@@ -190,6 +192,7 @@ public interface BlueRenderer<T extends BlueAnimatable> {
 		}
 	}
 
+	@ApiStatus.NonExtendable
 	default <M extends BlueAnimatable> void handleBaseActuallyRenderContext(BaseRenderContext<M> pContext, BlueRenderer<M> pRenderer) {
 		handleBaseRenderContextInternal(pContext, pRenderer, BlueRenderer::actuallyRender);
 	}
@@ -202,7 +205,7 @@ public interface BlueRenderer<T extends BlueAnimatable> {
 
 	// TODO: Make a Context for Bones in stead of Model Later
 	default void applyRenderLayersForBone(PoseStack pPoseStack, T pAnimatable, BoneCache bone, RenderType pRenderType, MultiBufferSource pBufferSource,
-	                                      VertexConsumer pBuffer, float pPartialTick, int pPackedLight, int pPackedOverlay) {
+			VertexConsumer pBuffer, float pPartialTick, int pPackedLight, int pPackedOverlay) {
 		for (BlueRenderLayer<T> renderLayer : getRenderLayers()) {
 			renderLayer.renderForBone(pPoseStack, pAnimatable, bone, pRenderType, pBufferSource, pBuffer, pPartialTick, pPackedLight, pPackedOverlay);
 		}
@@ -214,21 +217,17 @@ public interface BlueRenderer<T extends BlueAnimatable> {
 		}
 	}
 
-	default void preRender(IRenderContext<T> pContext) {
-	}
+	default void preRender(IRenderContext<T> pContext) {}
 
-	default void postRender(IRenderContext<T> pContext) {
-	}
+	default void postRender(IRenderContext<T> pContext) {}
 
-	default void renderFinal(IRenderContext<T> pContext) {
-	}
+	default void renderFinal(IRenderContext<T> pContext) {}
 
-	default void doPostRenderCleanup(IRenderContext<T> pContext) {
-	}
+	default void doPostRenderCleanup(IRenderContext<T> pContext) {}
 
 	default void renderRecursively(PoseStack pPoseStack, T pAnimatable, BoneCache pBone, RenderType pRenderType, MultiBufferSource pBufferSource,
-	                               VertexConsumer pBuffer, boolean pIsReRender, float pPartialTick, int pPackedLight,
-	                               int pPackedOverlay, int pColour) {
+			VertexConsumer pBuffer, boolean pIsReRender, float pPartialTick, int pPackedLight,
+			int pPackedOverlay, int pColour) {
 		pPoseStack.pushPose();
 		RenderUtils.prepMatrixForBone(pPoseStack, pBone);
 
@@ -244,7 +243,7 @@ public interface BlueRenderer<T extends BlueAnimatable> {
 	}
 
 	default void renderCubesOfBone(PoseStack pPoseStack, BoneCache pBone, VertexConsumer pBuffer, int pPackedLight,
-	                               int pPackedOverlay, int pColour) {
+			int pPackedOverlay, int pColour) {
 		if (pBone.isHidden())
 			return;
 
@@ -256,7 +255,7 @@ public interface BlueRenderer<T extends BlueAnimatable> {
 	}
 
 	default void renderChildBones(PoseStack pPoseStack, T pAnimatable, BoneCache pBone, RenderType pRenderType, MultiBufferSource pBufferSource, VertexConsumer pBuffer,
-	                              boolean pIsReRender, float pPartialTick, int pPackedLight, int pPackedOverlay, int pColour) {
+			boolean pIsReRender, float pPartialTick, int pPackedLight, int pPackedOverlay, int pColour) {
 		if (pBone.isHidingChildren())
 			return;
 
@@ -266,7 +265,7 @@ public interface BlueRenderer<T extends BlueAnimatable> {
 	}
 
 	default void renderCube(PoseStack pPoseStack, CubeCache pCube, VertexConsumer pBuffer, int pPackedLight,
-	                        int pPackedOverlay, int pColour) {
+			int pPackedOverlay, int pColour) {
 		RenderUtils.translateToPivotPoint(pPoseStack, pCube);
 		RenderUtils.rotateMatrixAroundCube(pPoseStack, pCube);
 		RenderUtils.translateAwayFromPivotPoint(pPoseStack, pCube);
@@ -286,7 +285,7 @@ public interface BlueRenderer<T extends BlueAnimatable> {
 	}
 
 	default void createVerticesOfQuad(QuadData pQuad, Matrix4f pPoseState, Vector3f pNormal, VertexConsumer pBuffer,
-	                                  int pPackedLight, int pPackedOverlay, int pColour) {
+			int pPackedLight, int pPackedOverlay, int pColour) {
 		for (VertexData vertex : pQuad.vertices()) {
 			Vector3f position = vertex.position();
 			Vector4f vector4f = pPoseState.transform(new Vector4f(position.x(), position.y(), position.z(), 1.0f));

@@ -9,6 +9,7 @@ package software.bluelib.oldLoader.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelLayers;
@@ -43,8 +44,6 @@ import software.bluelib.oldLoader.constant.DataTickets;
 import software.bluelib.oldLoader.model.BlueModel;
 import software.bluelib.oldLoader.renderer.layer.BlueRenderLayer;
 import software.bluelib.oldLoader.renderer.layer.BlueRenderLayersContainer;
-
-import java.util.List;
 
 public class BlueArmorRenderer<T extends Item & BlueItem> extends HumanoidModel implements BlueRenderer<T> {
 
@@ -206,7 +205,7 @@ public class BlueArmorRenderer<T extends Item & BlueItem> extends HumanoidModel 
 	@Override
 	@ApiStatus.Internal
 	public void renderToBuffer(PoseStack pPoseStack, @Nullable VertexConsumer pBuffer, int pPackedLight,
-	                           int pPackedOverlay, int colour) {
+			int pPackedOverlay, int colour) {
 		Minecraft mc = Minecraft.getInstance();
 		MultiBufferSource pBufferSource = mc.levelRenderer.renderBuffers.bufferSource();
 
@@ -287,7 +286,7 @@ public class BlueArmorRenderer<T extends Item & BlueItem> extends HumanoidModel 
 
 	@Override
 	public void renderRecursively(PoseStack pPoseStack, T pAnimatable, BoneCache pBone, RenderType pRenderType, MultiBufferSource pBufferSource, VertexConsumer pBuffer, boolean pIsReRender, float pPartialTick, int pPackedLight,
-	                              int pPackedOverlay, int pColour) {
+			int pPackedOverlay, int pColour) {
 		if (pBone.isTrackingMatrices()) {
 			Matrix4f poseState = new Matrix4f(pPoseStack.last().pose());
 
@@ -350,8 +349,7 @@ public class BlueArmorRenderer<T extends Item & BlueItem> extends HumanoidModel 
 				setBoneVisible(this.rightBoot, pModel.rightLeg.visible);
 				setBoneVisible(this.leftBoot, pModel.leftLeg.visible);
 			}
-			default -> {
-			}
+			default -> {}
 		}
 	}
 
