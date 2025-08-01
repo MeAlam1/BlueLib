@@ -61,8 +61,18 @@ public class NetworkRegistry {
 	private static final List<PacketProvider.C2SPacketProvider> c2sProviders = new ArrayList<>();
 	private static final List<PacketProvider.S2CPacketProvider> s2cProviders = new ArrayList<>();
 
-	public static List<PacketRegisterInfo<?>> s2cPayloads = generateS2CPacketInfoList();
-	public static List<PacketRegisterInfo<?>> c2sPayloads = generateC2SPacketInfoList();
+	private static List<PacketRegisterInfo<?>> c2sPayloads = null;
+	private static List<PacketRegisterInfo<?>> s2cPayloads = null;
+
+	public static List<PacketRegisterInfo<?>> getC2SPayloads() {
+		if (c2sPayloads == null) c2sPayloads = generateC2SPacketInfoList();
+		return c2sPayloads;
+	}
+
+	public static List<PacketRegisterInfo<?>> getS2CPayloads() {
+		if (s2cPayloads == null) s2cPayloads = generateS2CPacketInfoList();
+		return s2cPayloads;
+	}
 
 	@NotNull
 	private static List<PacketRegisterInfo<?>> generateS2CPacketInfoList() {
@@ -84,11 +94,11 @@ public class NetworkRegistry {
 
 	public static void registerC2SPacketProvider(@NotNull PacketProvider.C2SPacketProvider pProvider) {
 		c2sProviders.add(pProvider);
-		c2sPayloads = generateC2SPacketInfoList();
+		c2sPayloads = null;
 	}
 
 	public static void registerS2CPacketProvider(@NotNull PacketProvider.S2CPacketProvider pProvider) {
 		s2cProviders.add(pProvider);
-		s2cPayloads = generateS2CPacketInfoList();
+		s2cPayloads = null;
 	}
 }

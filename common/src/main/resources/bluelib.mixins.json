@@ -16,7 +16,8 @@
   "client": [
     "client.BlockEntityWithoutLevelRendererMixin",
     "client.LevelRendererMixin",
-    "client.TextureManagerMixin"
+    "client.TextureManagerMixin",
+    "client.VersionWarningMixin"
   ],
   "server": [],
   "injectors": {

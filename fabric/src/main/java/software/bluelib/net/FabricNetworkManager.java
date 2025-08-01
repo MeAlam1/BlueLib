@@ -22,18 +22,18 @@ import software.bluelib.api.net.NetworkRegistry;
 public class FabricNetworkManager implements NetworkManager {
 
 	public static void registerMessages() {
-		NetworkRegistry.s2cPayloads.forEach(info -> FabricPacketInfo.registerPacket(info, true));
-		NetworkRegistry.c2sPayloads.forEach(info -> FabricPacketInfo.registerPacket(info, false));
+		NetworkRegistry.getS2CPayloads().forEach(info -> FabricPacketInfo.registerPacket(info, true));
+		NetworkRegistry.getC2SPayloads().forEach(info -> FabricPacketInfo.registerPacket(info, false));
 	}
 
 	public static void registerClientHandlers() {
-		NetworkRegistry.s2cPayloads.stream()
+		NetworkRegistry.getS2CPayloads().stream()
 				.map(FabricPacketInfo::new)
 				.forEach(FabricPacketInfo::registerClientHandler);
 	}
 
 	public static void registerServerHandlers() {
-		NetworkRegistry.c2sPayloads.stream()
+		NetworkRegistry.getC2SPayloads().stream()
 				.map(FabricPacketInfo::new)
 				.forEach(FabricPacketInfo::registerServerHandler);
 	}
