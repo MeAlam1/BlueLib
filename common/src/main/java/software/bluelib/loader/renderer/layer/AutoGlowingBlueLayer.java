@@ -5,7 +5,7 @@
  * If a copy of the MIT License was not distributed with this file,
  * You can obtain one at https://opensource.org/licenses/MIT.
  */
-package software.bluelib.oldLoader.renderer.layer;
+package software.bluelib.loader.renderer.layer;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -16,23 +16,24 @@ import org.jetbrains.annotations.Nullable;
 import software.bluelib.client.utils.PlayerUtils;
 import software.bluelib.loader.animatable.BlueAnimatable;
 import software.bluelib.loader.cache.texture.AutoGlowingTexture;
+import software.bluelib.loader.renderer.base.BlueRenderLayer;
 import software.bluelib.loader.renderer.base.BlueRenderer;
 import software.bluelib.loader.renderer.context.FullRenderContext;
 import software.bluelib.loader.renderer.context.IRenderContext;
 
 public class AutoGlowingBlueLayer<T extends BlueAnimatable> extends BlueRenderLayer<T> {
 
-	public AutoGlowingBlueLayer(BlueRenderer<T> renderer) {
-		super(renderer);
+	public AutoGlowingBlueLayer(BlueRenderer<T> pRenderer) {
+		super(pRenderer);
 	}
 
 	@Nullable
-	protected RenderType getRenderType(T animatable, @Nullable MultiBufferSource pBufferSource) {
-		if (!(animatable instanceof Entity entity))
-			return AutoGlowingTexture.getRenderType(getTextureResource(animatable));
+	protected RenderType getRenderType(T pAnimatable, @Nullable MultiBufferSource pBufferSource) {
+		if (!(pAnimatable instanceof Entity entity))
+			return AutoGlowingTexture.getRenderType(getTextureResource(pAnimatable));
 
 		boolean invisible = entity.isInvisible();
-		ResourceLocation texture = AutoGlowingTexture.getEmissiveResource(getTextureResource(animatable));
+		ResourceLocation texture = AutoGlowingTexture.getEmissiveResource(getTextureResource(pAnimatable));
 
 		if (invisible && !entity.isInvisibleTo(PlayerUtils.getClientPlayer()))
 			return RenderType.itemEntityTranslucentCull(texture);
@@ -41,10 +42,10 @@ public class AutoGlowingBlueLayer<T extends BlueAnimatable> extends BlueRenderLa
 			if (invisible)
 				return RenderType.outline(texture);
 
-			return AutoGlowingTexture.getOutlineRenderType(getTextureResource(animatable));
+			return AutoGlowingTexture.getOutlineRenderType(getTextureResource(pAnimatable));
 		}
 
-		return invisible ? null : AutoGlowingTexture.getRenderType(getTextureResource(animatable));
+		return invisible ? null : AutoGlowingTexture.getRenderType(getTextureResource(pAnimatable));
 	}
 
 	@Override

@@ -11,7 +11,7 @@ package software.bluelib.example.render.entity;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import software.bluelib.example.entity.ExampleEntity;
 import software.bluelib.example.model.entity.ExampleModel;
-import software.bluelib.oldLoader.renderer.BlueEntityRenderer;
+import software.bluelib.loader.renderer.entity.BlueEntityRenderer;
 
 public class ExampleRender extends BlueEntityRenderer<ExampleEntity> {
 

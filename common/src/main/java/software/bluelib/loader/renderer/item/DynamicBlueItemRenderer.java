@@ -5,7 +5,7 @@
  * If a copy of the MIT License was not distributed with this file,
  * You can obtain one at https://opensource.org/licenses/MIT.
  */
-package software.bluelib.oldLoader.renderer.specialty;
+package software.bluelib.loader.renderer.item;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -28,7 +28,6 @@ import software.bluelib.loader.json.object.QuadData;
 import software.bluelib.loader.json.object.VertexData;
 import software.bluelib.loader.renderer.context.IRenderContext;
 import software.bluelib.oldLoader.model.BlueModel;
-import software.bluelib.oldLoader.renderer.BlueItemRenderer;
 
 public abstract class DynamicBlueItemRenderer<T extends Item & BlueAnimatable> extends BlueItemRenderer<T> {
 
@@ -36,27 +35,27 @@ public abstract class DynamicBlueItemRenderer<T extends Item & BlueAnimatable> e
 
 	protected ResourceLocation textureOverride = null;
 
-	public DynamicBlueItemRenderer(BlueModel<T> model) {
-		super(model);
+	public DynamicBlueItemRenderer(BlueModel<T> pModel) {
+		super(pModel);
 	}
 
 	@Nullable
-	protected ResourceLocation getTextureOverrideForBone(BoneCache bone, T animatable, float pPartialTick) {
+	protected ResourceLocation getTextureOverrideForBone(BoneCache pBone, T pAnimatable, float pPartialTick) {
 		return null;
 	}
 
 	@Nullable
-	protected RenderType getRenderTypeOverrideForBone(BoneCache bone, T animatable, ResourceLocation texturePath, MultiBufferSource pBufferSource, float pPartialTick) {
+	protected RenderType getRenderTypeOverrideForBone(BoneCache pBone, T pAnimatable, ResourceLocation pTexturePath, MultiBufferSource pBufferSource, float pPartialTick) {
 		return null;
 	}
 
-	protected boolean boneRenderOverride(PoseStack pPoseStack, BoneCache bone, MultiBufferSource pBufferSource, VertexConsumer buffer,
-			float pPartialTick, int pPackedLight, int pPackedOverlay, int colour) {
+	protected boolean boneRenderOverride(PoseStack pPoseStack, BoneCache pBone, MultiBufferSource pBufferSource, VertexConsumer pBuffer,
+			float pPartialTick, int pPackedLight, int pPackedOverlay, int pColour) {
 		return false;
 	}
 
 	@Override
-	public void renderRecursively(PoseStack pPoseStack, T animatable, BoneCache pBone, RenderType pRenderType, MultiBufferSource pBufferSource, VertexConsumer pBuffer, boolean pIsReRender, float pPartialTick, int pPackedLight, int pPackedOverlay, int pColour) {
+	public void renderRecursively(PoseStack pPoseStack, T pAnimatable, BoneCache pBone, RenderType pRenderType, MultiBufferSource pBufferSource, VertexConsumer pBuffer, boolean pIsReRender, float pPartialTick, int pPackedLight, int pPackedOverlay, int pColour) {
 		pPoseStack.pushPose();
 		RenderUtils.translateMatrixToBone(pPoseStack, pBone);
 		RenderUtils.translateToPivotPoint(pPoseStack, pBone);
@@ -89,11 +88,11 @@ public abstract class DynamicBlueItemRenderer<T extends Item & BlueAnimatable> e
 			pBuffer = pBufferSource.getBuffer(pRenderType);
 
 		if (!pIsReRender)
-			applyRenderLayersForBone(pPoseStack, animatable, pBone, pRenderType, pBufferSource, pBuffer, pPartialTick, pPackedLight, pPackedOverlay);
+			applyRenderLayersForBone(pPoseStack, pAnimatable, pBone, pRenderType, pBufferSource, pBuffer, pPartialTick, pPackedLight, pPackedOverlay);
 
 		pBuffer = BufferUtils.checkAndRefreshBuffer(pIsReRender, pBuffer, pBufferSource, pRenderType);
 
-		super.renderChildBones(pPoseStack, animatable, pBone, pRenderType, pBufferSource, pBuffer, pIsReRender, pPartialTick, pPackedLight, pPackedOverlay, pColour);
+		super.renderChildBones(pPoseStack, pAnimatable, pBone, pRenderType, pBufferSource, pBuffer, pIsReRender, pPartialTick, pPackedLight, pPackedOverlay, pColour);
 
 		pPoseStack.popPose();
 	}
@@ -106,11 +105,11 @@ public abstract class DynamicBlueItemRenderer<T extends Item & BlueAnimatable> e
 	}
 
 	@Override
-	public void createVerticesOfQuad(QuadData quad, Matrix4f poseState, Vector3f normal, VertexConsumer buffer,
-			int pPackedLight, int pPackedOverlay, int colour) {
+	public void createVerticesOfQuad(QuadData pQuad, Matrix4f pPoseState, Vector3f pNormal, VertexConsumer pBuffer,
+			int pPackedLight, int pPackedOverlay, int pColour) {
 		if (this.textureOverride == null) {
-			super.createVerticesOfQuad(quad, poseState, normal, buffer, pPackedLight, pPackedOverlay,
-					colour);
+			super.createVerticesOfQuad(pQuad, pPoseState, pNormal, pBuffer, pPackedLight, pPackedOverlay,
+					pColour);
 
 			return;
 		}
@@ -119,23 +118,23 @@ public abstract class DynamicBlueItemRenderer<T extends Item & BlueAnimatable> e
 		IntIntPair itemTextureSize = computeTextureSize(getTextureLocation(this.animatable));
 
 		if (boneTextureSize == null || itemTextureSize == null) {
-			super.createVerticesOfQuad(quad, poseState, normal, buffer, pPackedLight, pPackedOverlay,
-					colour);
+			super.createVerticesOfQuad(pQuad, pPoseState, pNormal, pBuffer, pPackedLight, pPackedOverlay,
+					pColour);
 
 			return;
 		}
 
-		for (VertexData vertex : quad.vertices()) {
-			Vector4f vector4f = poseState.transform(new Vector4f(vertex.position().x(), vertex.position().y(), vertex.position().z(), 1.0f));
+		for (VertexData vertex : pQuad.vertices()) {
+			Vector4f vector4f = pPoseState.transform(new Vector4f(vertex.position().x(), vertex.position().y(), vertex.position().z(), 1.0f));
 			float texU = (vertex.texU() * itemTextureSize.firstInt()) / boneTextureSize.firstInt();
 			float texV = (vertex.texV() * itemTextureSize.secondInt()) / boneTextureSize.secondInt();
 
-			buffer.addVertex(vector4f.x(), vector4f.y(), vector4f.z(), colour, texU, texV,
-					pPackedOverlay, pPackedLight, normal.x(), normal.y(), normal.z());
+			pBuffer.addVertex(vector4f.x(), vector4f.y(), vector4f.z(), pColour, texU, texV,
+					pPackedOverlay, pPackedLight, pNormal.x(), pNormal.y(), pNormal.z());
 		}
 	}
 
-	protected IntIntPair computeTextureSize(ResourceLocation texture) {
-		return TEXTURE_DIMENSIONS_CACHE.computeIfAbsent(texture, RenderUtils::getTextureDimensions);
+	protected IntIntPair computeTextureSize(ResourceLocation pTexture) {
+		return TEXTURE_DIMENSIONS_CACHE.computeIfAbsent(pTexture, RenderUtils::getTextureDimensions);
 	}
 }

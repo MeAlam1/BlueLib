@@ -5,7 +5,7 @@
  * If a copy of the MIT License was not distributed with this file,
  * You can obtain one at https://opensource.org/licenses/MIT.
  */
-package software.bluelib.oldLoader.renderer.layer;
+package software.bluelib.loader.renderer.layer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -22,6 +22,7 @@ import org.jetbrains.annotations.Nullable;
 import software.bluelib.client.utils.RenderUtils;
 import software.bluelib.loader.animatable.BlueAnimatable;
 import software.bluelib.loader.cache.model.BoneCache;
+import software.bluelib.loader.renderer.base.BlueRenderLayer;
 import software.bluelib.loader.renderer.base.BlueRenderer;
 
 public class BlockAndItemBlueLayer<T extends BlueAnimatable> extends BlueRenderLayer<T> {
@@ -29,28 +30,28 @@ public class BlockAndItemBlueLayer<T extends BlueAnimatable> extends BlueRenderL
 	protected final BiFunction<BoneCache, T, ItemStack> stackForBone;
 	protected final BiFunction<BoneCache, T, BlockState> blockForBone;
 
-	public BlockAndItemBlueLayer(BlueRenderer<T> renderer) {
-		this(renderer, (bone, animatable) -> null, (bone, animatable) -> null);
+	public BlockAndItemBlueLayer(BlueRenderer<T> pRenderer) {
+		this(pRenderer, (bone, animatable) -> null, (bone, animatable) -> null);
 	}
 
-	public BlockAndItemBlueLayer(BlueRenderer<T> renderer, BiFunction<BoneCache, T, ItemStack> stackForBone, BiFunction<BoneCache, T, BlockState> blockForBone) {
-		super(renderer);
+	public BlockAndItemBlueLayer(BlueRenderer<T> pRenderer, BiFunction<BoneCache, T, ItemStack> pStackForBone, BiFunction<BoneCache, T, BlockState> pBlockForBone) {
+		super(pRenderer);
 
-		this.stackForBone = stackForBone;
-		this.blockForBone = blockForBone;
-	}
-
-	@Nullable
-	protected ItemStack getStackForBone(BoneCache bone, T animatable) {
-		return this.stackForBone.apply(bone, animatable);
+		this.stackForBone = pStackForBone;
+		this.blockForBone = pBlockForBone;
 	}
 
 	@Nullable
-	protected BlockState getBlockForBone(BoneCache bone, T animatable) {
-		return this.blockForBone.apply(bone, animatable);
+	protected ItemStack getStackForBone(BoneCache pBone, T pAnimatable) {
+		return this.stackForBone.apply(pBone, pAnimatable);
 	}
 
-	protected ItemDisplayContext getTransformTypeForStack(BoneCache bone, ItemStack stack, T animatable) {
+	@Nullable
+	protected BlockState getBlockForBone(BoneCache pBone, T pAnimatable) {
+		return this.blockForBone.apply(pBone, pAnimatable);
+	}
+
+	protected ItemDisplayContext getTransformTypeForStack(BoneCache pBone, ItemStack pStack, T pAnimatable) {
 		return ItemDisplayContext.NONE;
 	}
 
@@ -75,24 +76,24 @@ public class BlockAndItemBlueLayer<T extends BlueAnimatable> extends BlueRenderL
 		pPoseStack.popPose();
 	}
 
-	protected void renderStackForBone(PoseStack pPoseStack, BoneCache bone, ItemStack stack, T animatable, MultiBufferSource pBufferSource,
+	protected void renderStackForBone(PoseStack pPoseStack, BoneCache pBone, ItemStack pStack, T pAnimatable, MultiBufferSource pBufferSource,
 			float pPartialTick, int pPackedLight, int pPackedOverlay) {
-		if (animatable instanceof LivingEntity livingEntity) {
-			Minecraft.getInstance().getItemRenderer().renderStatic(livingEntity, stack,
-					getTransformTypeForStack(bone, stack, animatable), false, pPoseStack, pBufferSource, livingEntity.level(),
+		if (pAnimatable instanceof LivingEntity livingEntity) {
+			Minecraft.getInstance().getItemRenderer().renderStatic(livingEntity, pStack,
+					getTransformTypeForStack(pBone, pStack, pAnimatable), false, pPoseStack, pBufferSource, livingEntity.level(),
 					pPackedLight, pPackedOverlay, livingEntity.getId());
 		} else {
-			Minecraft.getInstance().getItemRenderer().renderStatic(stack, getTransformTypeForStack(bone, stack, animatable),
-					pPackedLight, pPackedOverlay, pPoseStack, pBufferSource, Minecraft.getInstance().level, (int) this.renderer.getInstanceId(animatable));
+			Minecraft.getInstance().getItemRenderer().renderStatic(pStack, getTransformTypeForStack(pBone, pStack, pAnimatable),
+					pPackedLight, pPackedOverlay, pPoseStack, pBufferSource, Minecraft.getInstance().level, (int) this.renderer.getInstanceId(pAnimatable));
 		}
 	}
 
-	protected void renderBlockForBone(PoseStack pPoseStack, BoneCache bone, BlockState state, T animatable, MultiBufferSource pBufferSource,
+	protected void renderBlockForBone(PoseStack pPoseStack, BoneCache pBone, BlockState pState, T pAnimatable, MultiBufferSource pBufferSource,
 			float pPartialTick, int pPackedLight, int pPackedOverlay) {
 		pPoseStack.pushPose();
 		pPoseStack.translate(-0.25f, -0.25f, -0.25f);
 		pPoseStack.scale(0.5f, 0.5f, 0.5f);
-		Minecraft.getInstance().getBlockRenderer().renderSingleBlock(state, pPoseStack, pBufferSource, pPackedLight, OverlayTexture.NO_OVERLAY);
+		Minecraft.getInstance().getBlockRenderer().renderSingleBlock(pState, pPoseStack, pBufferSource, pPackedLight, OverlayTexture.NO_OVERLAY);
 		pPoseStack.popPose();
 	}
 }

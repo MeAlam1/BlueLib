@@ -14,10 +14,15 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import software.bluelib.loader.renderer.BlueObjectRenderer;
+import software.bluelib.loader.renderer.armor.BlueArmorRenderer;
+import software.bluelib.loader.renderer.base.BlueRenderLayer;
 import software.bluelib.loader.renderer.base.BlueRenderer;
+import software.bluelib.loader.renderer.block.BlueBlockRenderer;
 import software.bluelib.loader.renderer.context.IRenderContext;
-import software.bluelib.oldLoader.renderer.*;
-import software.bluelib.oldLoader.renderer.layer.BlueRenderLayer;
+import software.bluelib.loader.renderer.entity.BlueEntityRenderer;
+import software.bluelib.loader.renderer.entity.BlueReplacedEntityRenderer;
+import software.bluelib.loader.renderer.item.BlueItemRenderer;
 
 @SuppressWarnings("unused")
 public interface BlueRenderEvent {

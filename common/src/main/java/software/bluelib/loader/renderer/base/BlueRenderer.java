@@ -27,7 +27,6 @@ import software.bluelib.client.utils.RenderUtils;
 import software.bluelib.loader.animatable.BlueAnimatable;
 import software.bluelib.loader.cache.model.BoneCache;
 import software.bluelib.loader.cache.model.CubeCache;
-import software.bluelib.loader.cache.model.ModelCache;
 import software.bluelib.loader.json.object.QuadData;
 import software.bluelib.loader.json.object.VertexData;
 import software.bluelib.loader.renderer.context.BaseRenderContext;
@@ -35,7 +34,6 @@ import software.bluelib.loader.renderer.context.FullRenderContext;
 import software.bluelib.loader.renderer.context.IRenderContext;
 import software.bluelib.oldLoader.loading.math.MoLangQueries;
 import software.bluelib.oldLoader.model.BlueModel;
-import software.bluelib.oldLoader.renderer.layer.BlueRenderLayer;
 
 public interface BlueRenderer<T extends BlueAnimatable> {
 
@@ -204,10 +202,10 @@ public interface BlueRenderer<T extends BlueAnimatable> {
 	}
 
 	// TODO: Make a Context for Bones in stead of Model Later
-	default void applyRenderLayersForBone(PoseStack pPoseStack, T pAnimatable, BoneCache bone, RenderType pRenderType, MultiBufferSource pBufferSource,
+	default void applyRenderLayersForBone(PoseStack pPoseStack, T pAnimatable, BoneCache pBone, RenderType pRenderType, MultiBufferSource pBufferSource,
 			VertexConsumer pBuffer, float pPartialTick, int pPackedLight, int pPackedOverlay) {
 		for (BlueRenderLayer<T> renderLayer : getRenderLayers()) {
-			renderLayer.renderForBone(pPoseStack, pAnimatable, bone, pRenderType, pBufferSource, pBuffer, pPartialTick, pPackedLight, pPackedOverlay);
+			renderLayer.renderForBone(pPoseStack, pAnimatable, pBone, pRenderType, pBufferSource, pBuffer, pPartialTick, pPackedLight, pPackedOverlay);
 		}
 	}
 
@@ -301,9 +299,9 @@ public interface BlueRenderer<T extends BlueAnimatable> {
 
 	void firePostRenderEvent(IRenderContext<T> pContext);
 
-	default void scaleModelForRender(float widthScale, float heightScale, PoseStack pPoseStack, T pAnimatable, ModelCache pModel, boolean pIsReRender, float pPartialTick, int pPackedLight, int pPackedOverlay) {
-		if (!pIsReRender && (widthScale != 1 || heightScale != 1))
-			pPoseStack.scale(widthScale, heightScale, widthScale);
+	default void scaleModelForRender(float pWidthScale, float pHeightScale, IRenderContext<T> pContext) {
+		if (!pContext.isReRender() && (pWidthScale != 1 || pHeightScale != 1))
+			pContext.poseStack().scale(pWidthScale, pHeightScale, pWidthScale);
 	}
 
 	void updateAnimatedTextureFrame(T pAnimatable);

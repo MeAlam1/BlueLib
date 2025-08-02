@@ -5,7 +5,7 @@
  * If a copy of the MIT License was not distributed with this file,
  * You can obtain one at https://opensource.org/licenses/MIT.
  */
-package software.bluelib.oldLoader.renderer;
+package software.bluelib.loader.renderer.item;
 
 import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -31,6 +31,8 @@ import software.bluelib.client.utils.RenderUtils;
 import software.bluelib.loader.animatable.BlueAnimatable;
 import software.bluelib.loader.cache.model.BoneCache;
 import software.bluelib.loader.cache.texture.AnimatableTexture;
+import software.bluelib.loader.renderer.base.BlueRenderLayer;
+import software.bluelib.loader.renderer.base.BlueRenderLayersContainer;
 import software.bluelib.loader.renderer.base.BlueRenderer;
 import software.bluelib.loader.renderer.context.BaseRenderContext;
 import software.bluelib.loader.renderer.context.FullRenderContext;
@@ -39,8 +41,6 @@ import software.bluelib.oldLoader.animatable.BlueItem;
 import software.bluelib.oldLoader.animation.AnimationState;
 import software.bluelib.oldLoader.constant.DataTickets;
 import software.bluelib.oldLoader.model.BlueModel;
-import software.bluelib.oldLoader.renderer.layer.BlueRenderLayer;
-import software.bluelib.oldLoader.renderer.layer.BlueRenderLayersContainer;
 
 public class BlueItemRenderer<T extends Item & BlueAnimatable> extends BlockEntityWithoutLevelRenderer implements BlueRenderer<T> {
 
@@ -103,19 +103,19 @@ public class BlueItemRenderer<T extends Item & BlueAnimatable> extends BlockEnti
 		return this.renderLayers.getRenderLayers();
 	}
 
-	public BlueItemRenderer<T> addRenderLayer(BlueRenderLayer<T> renderLayer) {
-		this.renderLayers.addLayer(renderLayer);
+	public BlueItemRenderer<T> addRenderLayer(BlueRenderLayer<T> pRenderLayer) {
+		this.renderLayers.addLayer(pRenderLayer);
 
 		return this;
 	}
 
-	public BlueItemRenderer<T> withScale(float scale) {
-		return withScale(scale, scale);
+	public BlueItemRenderer<T> withScale(float pScale) {
+		return withScale(pScale, pScale);
 	}
 
-	public BlueItemRenderer<T> withScale(float scaleWidth, float scaleHeight) {
-		this.scaleWidth = scaleWidth;
-		this.scaleHeight = scaleHeight;
+	public BlueItemRenderer<T> withScale(float pScaleWidth, float pScaleHeight) {
+		this.scaleWidth = pScaleWidth;
+		this.scaleHeight = pScaleHeight;
 
 		return this;
 	}
@@ -124,7 +124,7 @@ public class BlueItemRenderer<T extends Item & BlueAnimatable> extends BlockEnti
 	public void preRender(IRenderContext<T> pContext) {
 		this.itemRenderTranslations = new Matrix4f(pContext.poseStack().last().pose());
 
-		scaleModelForRender(this.scaleWidth, this.scaleHeight, pContext.poseStack(), pContext.animatable(), pContext.model(), pContext.isReRender(), pContext.partialTick(), pContext.packedLight(), pContext.packedOverlay());
+		scaleModelForRender(this.scaleWidth, this.scaleHeight, pContext);
 
 		if (!pContext.isReRender())
 			pContext.poseStack().translate(0.5f, 0.51f, 0.5f);

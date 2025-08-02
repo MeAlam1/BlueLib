@@ -10,8 +10,13 @@ package software.bluelib.api.event;
 import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.event.mod.ModMeta;
+import software.bluelib.loader.renderer.BlueObjectRenderer;
+import software.bluelib.loader.renderer.armor.BlueArmorRenderer;
+import software.bluelib.loader.renderer.block.BlueBlockRenderer;
 import software.bluelib.loader.renderer.context.IRenderContext;
-import software.bluelib.oldLoader.renderer.*;
+import software.bluelib.loader.renderer.entity.BlueEntityRenderer;
+import software.bluelib.loader.renderer.entity.BlueReplacedEntityRenderer;
+import software.bluelib.loader.renderer.item.BlueItemRenderer;
 
 public interface IEventProxy {
 

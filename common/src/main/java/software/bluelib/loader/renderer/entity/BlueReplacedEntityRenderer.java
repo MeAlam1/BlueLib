@@ -5,7 +5,7 @@
  * If a copy of the MIT License was not distributed with this file,
  * You can obtain one at https://opensource.org/licenses/MIT.
  */
-package software.bluelib.oldLoader.renderer;
+package software.bluelib.loader.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -41,6 +41,8 @@ import software.bluelib.loader.animatable.BlueAnimatable;
 import software.bluelib.loader.cache.model.BoneCache;
 import software.bluelib.loader.cache.model.ModelCache;
 import software.bluelib.loader.cache.texture.AnimatableTexture;
+import software.bluelib.loader.renderer.base.BlueRenderLayer;
+import software.bluelib.loader.renderer.base.BlueRenderLayersContainer;
 import software.bluelib.loader.renderer.base.BlueRenderer;
 import software.bluelib.loader.renderer.context.BaseRenderContext;
 import software.bluelib.loader.renderer.context.FullRenderContext;
@@ -49,8 +51,6 @@ import software.bluelib.oldLoader.animation.AnimationState;
 import software.bluelib.oldLoader.constant.DataTickets;
 import software.bluelib.oldLoader.model.BlueModel;
 import software.bluelib.oldLoader.model.data.EntityModelData;
-import software.bluelib.oldLoader.renderer.layer.BlueRenderLayer;
-import software.bluelib.oldLoader.renderer.layer.BlueRenderLayersContainer;
 
 public class BlueReplacedEntityRenderer<E extends Entity, T extends BlueAnimatable> extends EntityRenderer<E> implements BlueRenderer<T> {
 
@@ -136,7 +136,7 @@ public class BlueReplacedEntityRenderer<E extends Entity, T extends BlueAnimatab
 	public void preRender(IRenderContext<T> pContext) {
 		this.entityRenderTranslations = new Matrix4f(pContext.poseStack().last().pose());
 
-		scaleModelForRender(this.scaleWidth, this.scaleHeight, pContext.poseStack(), pContext.animatable(), pContext.model(), pContext.isReRender(), pContext.partialTick(), pContext.packedLight(), pContext.packedOverlay());
+		scaleModelForRender(this.scaleWidth, this.scaleHeight, pContext);
 	}
 
 	@Override
@@ -286,44 +286,44 @@ public class BlueReplacedEntityRenderer<E extends Entity, T extends BlueAnimatab
 	}
 
 	@Override
-	public void renderRecursively(PoseStack pPoseStack, T pAnimatable, BoneCache bone, RenderType pRenderType, MultiBufferSource pBufferSource, VertexConsumer pBuffer, boolean pIsReRender, float pPartialTick, int pPackedLight,
+	public void renderRecursively(PoseStack pPoseStack, T pAnimatable, BoneCache pBone, RenderType pRenderType, MultiBufferSource pBufferSource, VertexConsumer pBuffer, boolean pIsReRender, float pPartialTick, int pPackedLight,
 			int pPackedOverlay, int pColour) {
 		pPoseStack.pushPose();
-		RenderUtils.translateMatrixToBone(pPoseStack, bone);
-		RenderUtils.translateToPivotPoint(pPoseStack, bone);
-		RenderUtils.rotateMatrixAroundBone(pPoseStack, bone);
-		RenderUtils.scaleMatrixForBone(pPoseStack, bone);
+		RenderUtils.translateMatrixToBone(pPoseStack, pBone);
+		RenderUtils.translateToPivotPoint(pPoseStack, pBone);
+		RenderUtils.rotateMatrixAroundBone(pPoseStack, pBone);
+		RenderUtils.scaleMatrixForBone(pPoseStack, pBone);
 
-		if (bone.isTrackingMatrices()) {
+		if (pBone.isTrackingMatrices()) {
 			Matrix4f poseState = new Matrix4f(pPoseStack.last().pose());
 			Matrix4f localMatrix = RenderUtils.invertAndMultiplyMatrices(poseState, this.entityRenderTranslations);
 
-			bone.setModelSpaceMatrix(RenderUtils.invertAndMultiplyMatrices(poseState, this.modelRenderTranslations));
-			bone.setLocalSpaceMatrix(RenderUtils.translateMatrix(localMatrix, getRenderOffset(this.currentEntity, 1).toVector3f()));
-			bone.setWorldSpaceMatrix(RenderUtils.translateMatrix(new Matrix4f(localMatrix), this.currentEntity.position().toVector3f()));
+			pBone.setModelSpaceMatrix(RenderUtils.invertAndMultiplyMatrices(poseState, this.modelRenderTranslations));
+			pBone.setLocalSpaceMatrix(RenderUtils.translateMatrix(localMatrix, getRenderOffset(this.currentEntity, 1).toVector3f()));
+			pBone.setWorldSpaceMatrix(RenderUtils.translateMatrix(new Matrix4f(localMatrix), this.currentEntity.position().toVector3f()));
 		}
 
-		RenderUtils.translateAwayFromPivotPoint(pPoseStack, bone);
+		RenderUtils.translateAwayFromPivotPoint(pPoseStack, pBone);
 
 		pBuffer = BufferUtils.checkAndRefreshBuffer(pIsReRender, pBuffer, pBufferSource, pRenderType);
 
-		renderCubesOfBone(pPoseStack, bone, pBuffer, pPackedLight, pPackedOverlay, pColour);
+		renderCubesOfBone(pPoseStack, pBone, pBuffer, pPackedLight, pPackedOverlay, pColour);
 
 		if (!pIsReRender)
-			applyRenderLayersForBone(pPoseStack, pAnimatable, bone, pRenderType, pBufferSource, pBuffer, pPartialTick, pPackedLight, pPackedOverlay);
+			applyRenderLayersForBone(pPoseStack, pAnimatable, pBone, pRenderType, pBufferSource, pBuffer, pPartialTick, pPackedLight, pPackedOverlay);
 
-		renderChildBones(pPoseStack, pAnimatable, bone, pRenderType, pBufferSource, pBuffer, pIsReRender, pPartialTick, pPackedLight, pPackedOverlay, pColour);
+		renderChildBones(pPoseStack, pAnimatable, pBone, pRenderType, pBufferSource, pBuffer, pIsReRender, pPartialTick, pPackedLight, pPackedOverlay, pColour);
 
 		pPoseStack.popPose();
 	}
 
-	protected void applyRotations(T pAnimatable, PoseStack pPoseStack, float ageInTicks, float rotationYaw,
-			float pPartialTick, float nativeScale) {
+	protected void applyRotations(T pAnimatable, PoseStack pPoseStack, float pAgeInTicks, float pRotationYaw,
+			float pPartialTick, float pNativeScale) {
 		if (isShaking(pAnimatable))
-			rotationYaw += (float) (Math.cos(this.currentEntity.tickCount * 3.25d) * Math.PI * 0.4d);
+			pRotationYaw += (float) (Math.cos(this.currentEntity.tickCount * 3.25d) * Math.PI * 0.4d);
 
 		if (!this.currentEntity.hasPose(Pose.SLEEPING))
-			pPoseStack.mulPose(Axis.YP.rotationDegrees(180f - rotationYaw));
+			pPoseStack.mulPose(Axis.YP.rotationDegrees(180f - pRotationYaw));
 
 		if (this.currentEntity instanceof LivingEntity livingEntity) {
 			if (livingEntity.deathTime > 0) {
@@ -336,11 +336,11 @@ public class BlueReplacedEntityRenderer<E extends Entity, T extends BlueAnimatab
 			} else if (livingEntity.hasPose(Pose.SLEEPING)) {
 				Direction bedOrientation = livingEntity.getBedOrientation();
 
-				pPoseStack.mulPose(Axis.YP.rotationDegrees(bedOrientation != null ? RenderUtils.getDirectionAngle(bedOrientation) : rotationYaw));
+				pPoseStack.mulPose(Axis.YP.rotationDegrees(bedOrientation != null ? RenderUtils.getDirectionAngle(bedOrientation) : pRotationYaw));
 				pPoseStack.mulPose(Axis.ZP.rotationDegrees(getDeathMaxRotation(pAnimatable)));
 				pPoseStack.mulPose(Axis.YP.rotationDegrees(270f));
 			} else if (LivingEntityRenderer.isEntityUpsideDown(livingEntity)) {
-				pPoseStack.translate(0, (livingEntity.getBbHeight() + 0.1f) / nativeScale, 0);
+				pPoseStack.translate(0, (livingEntity.getBbHeight() + 0.1f) / pNativeScale, 0);
 				pPoseStack.mulPose(Axis.ZP.rotationDegrees(180f));
 			}
 		}
@@ -350,29 +350,29 @@ public class BlueReplacedEntityRenderer<E extends Entity, T extends BlueAnimatab
 		return 90f;
 	}
 
-	public double getNameRenderCutoffDistance(E entity, T pAnimatable) {
-		return entity.isDiscrete() ? 32d : 64d;
+	public double getNameRenderCutoffDistance(E pEntity, T pAnimatable) {
+		return pEntity.isDiscrete() ? 32d : 64d;
 	}
 
 	@Override
-	public boolean shouldShowName(E entity) {
-		if (!(entity instanceof LivingEntity))
-			return super.shouldShowName(entity);
+	public boolean shouldShowName(E pEntity) {
+		if (!(pEntity instanceof LivingEntity))
+			return super.shouldShowName(pEntity);
 
-		double nameRenderCutoff = getNameRenderCutoffDistance(entity, this.animatable);
+		double nameRenderCutoff = getNameRenderCutoffDistance(pEntity, this.animatable);
 
-		if (this.entityRenderDispatcher.distanceToSqr(entity) >= nameRenderCutoff * nameRenderCutoff)
+		if (this.entityRenderDispatcher.distanceToSqr(pEntity) >= nameRenderCutoff * nameRenderCutoff)
 			return false;
 
-		if (entity instanceof Mob && (!entity.shouldShowName() && (!entity.hasCustomName() || entity != this.entityRenderDispatcher.crosshairPickEntity)))
+		if (pEntity instanceof Mob && (!pEntity.shouldShowName() && (!pEntity.hasCustomName() || pEntity != this.entityRenderDispatcher.crosshairPickEntity)))
 			return false;
 
 		final Minecraft minecraft = Minecraft.getInstance();
-		boolean visibleToClient = !entity.isInvisibleTo(minecraft.player);
-		Team entityTeam = entity.getTeam();
+		boolean visibleToClient = !pEntity.isInvisibleTo(minecraft.player);
+		Team entityTeam = pEntity.getTeam();
 
 		if (entityTeam == null)
-			return Minecraft.renderNames() && entity != minecraft.getCameraEntity() && visibleToClient && !entity.isVehicle();
+			return Minecraft.renderNames() && pEntity != minecraft.getCameraEntity() && visibleToClient && !pEntity.isVehicle();
 
 		Team playerTeam = minecraft.player.getTeam();
 
@@ -385,11 +385,11 @@ public class BlueReplacedEntityRenderer<E extends Entity, T extends BlueAnimatab
 	}
 
 	@Override
-	public int getPackedOverlay(T pAnimatable, float u, float pPartialTick) {
+	public int getPackedOverlay(T pAnimatable, float pU, float pPartialTick) {
 		if (!(this.currentEntity instanceof LivingEntity entity))
 			return OverlayTexture.NO_OVERLAY;
 
-		return OverlayTexture.pack(OverlayTexture.u(u),
+		return OverlayTexture.pack(OverlayTexture.u(pU),
 				OverlayTexture.v(entity.hurtTime > 0 || entity.deathTime > 0));
 	}
 
@@ -398,16 +398,16 @@ public class BlueReplacedEntityRenderer<E extends Entity, T extends BlueAnimatab
 	}
 
 	// TODO: WHAT THE ACTUAL FUCK IS THIS? PLEASE CLEAN IT UP FUTURE ARAM.
-	public <H extends Entity, M extends Mob> void renderLeash(M mob, float pPartialTick, PoseStack pPoseStack,
-			MultiBufferSource pBufferSource, H leashHolder) {
-		double lerpBodyAngle = (Mth.lerp(pPartialTick, mob.yBodyRotO, mob.yBodyRot) * Mth.DEG_TO_RAD) + Mth.HALF_PI;
-		Vec3 leashOffset = mob.getLeashOffset(pPartialTick);
+	public <H extends Entity, M extends Mob> void renderLeash(M pMob, float pPartialTick, PoseStack pPoseStack,
+			MultiBufferSource pBufferSource, H pLeashHolder) {
+		double lerpBodyAngle = (Mth.lerp(pPartialTick, pMob.yBodyRotO, pMob.yBodyRot) * Mth.DEG_TO_RAD) + Mth.HALF_PI;
+		Vec3 leashOffset = pMob.getLeashOffset(pPartialTick);
 		double xAngleOffset = Math.cos(lerpBodyAngle) * leashOffset.z + Math.sin(lerpBodyAngle) * leashOffset.x;
 		double zAngleOffset = Math.sin(lerpBodyAngle) * leashOffset.z - Math.cos(lerpBodyAngle) * leashOffset.x;
-		double lerpOriginX = Mth.lerp(pPartialTick, mob.xo, mob.getX()) + xAngleOffset;
-		double lerpOriginY = Mth.lerp(pPartialTick, mob.yo, mob.getY()) + leashOffset.y;
-		double lerpOriginZ = Mth.lerp(pPartialTick, mob.zo, mob.getZ()) + zAngleOffset;
-		Vec3 ropeGripPosition = leashHolder.getRopeHoldPosition(pPartialTick);
+		double lerpOriginX = Mth.lerp(pPartialTick, pMob.xo, pMob.getX()) + xAngleOffset;
+		double lerpOriginY = Mth.lerp(pPartialTick, pMob.yo, pMob.getY()) + leashOffset.y;
+		double lerpOriginZ = Mth.lerp(pPartialTick, pMob.zo, pMob.getZ()) + zAngleOffset;
+		Vec3 ropeGripPosition = pLeashHolder.getRopeHoldPosition(pPartialTick);
 		float xDif = (float) (ropeGripPosition.x - lerpOriginX);
 		float yDif = (float) (ropeGripPosition.y - lerpOriginY);
 		float zDif = (float) (ropeGripPosition.z - lerpOriginZ);
@@ -415,12 +415,12 @@ public class BlueReplacedEntityRenderer<E extends Entity, T extends BlueAnimatab
 		float xOffset = zDif * offsetMod;
 		float zOffset = xDif * offsetMod;
 		VertexConsumer vertexConsumer = pBufferSource.getBuffer(RenderType.leash());
-		BlockPos entityEyePos = BlockPos.containing(mob.getEyePosition(pPartialTick));
-		BlockPos holderEyePos = BlockPos.containing(leashHolder.getEyePosition(pPartialTick));
-		int entityBlockLight = getBlockLightLevel((E) mob, entityEyePos);
-		int holderBlockLight = leashHolder.isOnFire() ? 15 : leashHolder.level().getBrightness(LightLayer.BLOCK, holderEyePos);
-		int entitySkyLight = mob.level().getBrightness(LightLayer.SKY, entityEyePos);
-		int holderSkyLight = mob.level().getBrightness(LightLayer.SKY, holderEyePos);
+		BlockPos entityEyePos = BlockPos.containing(pMob.getEyePosition(pPartialTick));
+		BlockPos holderEyePos = BlockPos.containing(pLeashHolder.getEyePosition(pPartialTick));
+		int entityBlockLight = getBlockLightLevel((E) pMob, entityEyePos);
+		int holderBlockLight = pLeashHolder.isOnFire() ? 15 : pLeashHolder.level().getBrightness(LightLayer.BLOCK, holderEyePos);
+		int entitySkyLight = pMob.level().getBrightness(LightLayer.SKY, entityEyePos);
+		int holderSkyLight = pMob.level().getBrightness(LightLayer.SKY, holderEyePos);
 
 		pPoseStack.pushPose();
 		pPoseStack.translate(xAngleOffset, leashOffset.y, zAngleOffset);
@@ -440,23 +440,23 @@ public class BlueReplacedEntityRenderer<E extends Entity, T extends BlueAnimatab
 		pPoseStack.popPose();
 	}
 
-	private static void renderLeashPiece(VertexConsumer pBuffer, Matrix4f positionMatrix, float xDif, float yDif,
-			float zDif, int entityBlockLight, int holderBlockLight, int entitySkyLight,
-			int holderSkyLight, float width, float yOffset, float xOffset, float zOffset, int segment, boolean isLeashKnot) {
-		float piecePosPercent = segment / 24f;
-		int lerpBlockLight = (int) Mth.lerp(piecePosPercent, entityBlockLight, holderBlockLight);
-		int lerpSkyLight = (int) Mth.lerp(piecePosPercent, entitySkyLight, holderSkyLight);
+	private static void renderLeashPiece(VertexConsumer pBuffer, Matrix4f pPositionMatrix, float pXDif, float pYDif,
+			float pZDif, int pEntityBlockLight, int pHolderBlockLight, int pEntitySkyLight,
+			int pHolderSkyLight, float pWidth, float pYOffset, float pXOffset, float pZOffset, int pSegment, boolean pIsLeashKnot) {
+		float piecePosPercent = pSegment / 24f;
+		int lerpBlockLight = (int) Mth.lerp(piecePosPercent, pEntityBlockLight, pHolderBlockLight);
+		int lerpSkyLight = (int) Mth.lerp(piecePosPercent, pEntitySkyLight, pHolderSkyLight);
 		int pPackedLight = LightTexture.pack(lerpBlockLight, lerpSkyLight);
-		float knotColourMod = segment % 2 == (isLeashKnot ? 1 : 0) ? 0.7f : 1f;
+		float knotColourMod = pSegment % 2 == (pIsLeashKnot ? 1 : 0) ? 0.7f : 1f;
 		float red = 0.5f * knotColourMod;
 		float green = 0.4f * knotColourMod;
 		float blue = 0.3f * knotColourMod;
-		float x = xDif * piecePosPercent;
-		float y = yDif > 0.0f ? yDif * piecePosPercent * piecePosPercent : yDif - yDif * (1.0f - piecePosPercent) * (1.0f - piecePosPercent);
-		float z = zDif * piecePosPercent;
+		float x = pXDif * piecePosPercent;
+		float y = pYDif > 0.0f ? pYDif * piecePosPercent * piecePosPercent : pYDif - pYDif * (1.0f - piecePosPercent) * (1.0f - piecePosPercent);
+		float z = pZDif * piecePosPercent;
 
-		pBuffer.addVertex(positionMatrix, x - xOffset, y + yOffset, z + zOffset).setColor(red, green, blue, 1).setLight(pPackedLight);
-		pBuffer.addVertex(positionMatrix, x + xOffset, y + width - yOffset, z - zOffset).setColor(red, green, blue, 1).setLight(pPackedLight);
+		pBuffer.addVertex(pPositionMatrix, x - pXOffset, y + pYOffset, z + pZOffset).setColor(red, green, blue, 1).setLight(pPackedLight);
+		pBuffer.addVertex(pPositionMatrix, x + pXOffset, y + pWidth - pYOffset, z - pZOffset).setColor(red, green, blue, 1).setLight(pPackedLight);
 	}
 
 	@Override

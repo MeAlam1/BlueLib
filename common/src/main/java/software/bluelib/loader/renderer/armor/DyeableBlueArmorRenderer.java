@@ -5,7 +5,7 @@
  * If a copy of the MIT License was not distributed with this file,
  * You can obtain one at https://opensource.org/licenses/MIT.
  */
-package software.bluelib.oldLoader.renderer.specialty;
+package software.bluelib.loader.renderer.armor;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -21,15 +21,14 @@ import software.bluelib.loader.cache.model.ModelCache;
 import software.bluelib.loader.renderer.context.IRenderContext;
 import software.bluelib.oldLoader.animatable.BlueItem;
 import software.bluelib.oldLoader.model.BlueModel;
-import software.bluelib.oldLoader.renderer.BlueArmorRenderer;
 
 public abstract class DyeableBlueArmorRenderer<T extends Item & BlueItem> extends BlueArmorRenderer<T> {
 
 	protected final Set<BoneCache> dyeableBones = new ObjectArraySet<>();
 	protected ModelCache lastModel = null;
 
-	public DyeableBlueArmorRenderer(BlueModel<T> model) {
-		super(model);
+	public DyeableBlueArmorRenderer(BlueModel<T> pModel) {
+		super(pModel);
 	}
 
 	@Override
@@ -41,31 +40,31 @@ public abstract class DyeableBlueArmorRenderer<T extends Item & BlueItem> extend
 	}
 
 	@Override
-	public void renderCubesOfBone(PoseStack pPoseStack, BoneCache bone, VertexConsumer buffer, int pPackedLight, int pPackedOverlay, int colour) {
-		if (this.dyeableBones.contains(bone)) {
-			final Color color = getColorForBone(bone);
+	public void renderCubesOfBone(PoseStack pPoseStack, BoneCache pBone, VertexConsumer pBuffer, int pPackedLight, int pPackedOverlay, int pColour) {
+		if (this.dyeableBones.contains(pBone)) {
+			final Color color = getColorForBone(pBone);
 
-			colour = FastColor.ARGB32.multiply(colour, color.argbInt());
+			pColour = FastColor.ARGB32.multiply(pColour, color.argbInt());
 		}
 
-		super.renderCubesOfBone(pPoseStack, bone, buffer, pPackedLight, pPackedOverlay, colour);
+		super.renderCubesOfBone(pPoseStack, pBone, pBuffer, pPackedLight, pPackedOverlay, pColour);
 	}
 
-	protected abstract boolean isBoneDyeable(BoneCache bone);
+	protected abstract boolean isBoneDyeable(BoneCache pBone);
 
 	@NotNull
-	protected abstract Color getColorForBone(BoneCache bone);
+	protected abstract Color getColorForBone(BoneCache pBone);
 
-	protected void checkBoneDyeCache(T animatable, ModelCache model, float pPartialTick, int pPackedLight, int pPackedOverlay, int colour) {
-		if (model != this.lastModel) {
+	protected void checkBoneDyeCache(T pAnimatable, ModelCache pModel, float pPartialTick, int pPackedLight, int pPackedOverlay, int pColour) {
+		if (pModel != this.lastModel) {
 			this.dyeableBones.clear();
-			this.lastModel = model;
-			collectDyeableBones(model.topLevelBones());
+			this.lastModel = pModel;
+			collectDyeableBones(pModel.topLevelBones());
 		}
 	}
 
-	protected void collectDyeableBones(Collection<BoneCache> bones) {
-		for (BoneCache bone : bones) {
+	protected void collectDyeableBones(Collection<BoneCache> pBones) {
+		for (BoneCache bone : pBones) {
 			if (isBoneDyeable(bone))
 				this.dyeableBones.add(bone);
 

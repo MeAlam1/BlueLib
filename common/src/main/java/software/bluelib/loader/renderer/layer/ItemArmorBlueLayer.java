@@ -5,7 +5,7 @@
  * If a copy of the MIT License was not distributed with this file,
  * You can obtain one at https://opensource.org/licenses/MIT.
  */
-package software.bluelib.oldLoader.renderer.layer;
+package software.bluelib.loader.renderer.layer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -38,10 +38,11 @@ import software.bluelib.client.utils.RenderUtils;
 import software.bluelib.loader.animatable.BlueAnimatable;
 import software.bluelib.loader.cache.model.BoneCache;
 import software.bluelib.loader.cache.model.CubeCache;
+import software.bluelib.loader.renderer.armor.BlueArmorRenderer;
+import software.bluelib.loader.renderer.base.BlueRenderLayer;
 import software.bluelib.loader.renderer.base.BlueRenderer;
 import software.bluelib.loader.renderer.context.IRenderContext;
 import software.bluelib.oldLoader.animatable.BlueItem;
-import software.bluelib.oldLoader.renderer.BlueArmorRenderer;
 
 public class ItemArmorBlueLayer<T extends LivingEntity & BlueAnimatable> extends BlueRenderLayer<T> {
 
@@ -61,15 +62,15 @@ public class ItemArmorBlueLayer<T extends LivingEntity & BlueAnimatable> extends
 	@Nullable
 	protected ItemStack bootsStack;
 
-	public ItemArmorBlueLayer(BlueRenderer<T> blueRenderer) {
-		super(blueRenderer);
+	public ItemArmorBlueLayer(BlueRenderer<T> pBlueRenderer) {
+		super(pBlueRenderer);
 	}
 
 	@NotNull
-	protected EquipmentSlot getEquipmentSlotForBone(BoneCache bone, ItemStack stack, T animatable) {
+	protected EquipmentSlot getEquipmentSlotForBone(BoneCache pBone, ItemStack pStack, T pAnimatable) {
 		for (EquipmentSlot slot : EquipmentSlot.values()) {
 			if (slot.getType() == EquipmentSlot.Type.HUMANOID_ARMOR) {
-				if (stack == animatable.getItemBySlot(slot))
+				if (pStack == pAnimatable.getItemBySlot(slot))
 					return slot;
 			}
 		}
@@ -78,12 +79,12 @@ public class ItemArmorBlueLayer<T extends LivingEntity & BlueAnimatable> extends
 	}
 
 	@NotNull
-	protected ModelPart getModelPartForBone(BoneCache bone, EquipmentSlot slot, ItemStack stack, T animatable, HumanoidModel<?> baseModel) {
-		return baseModel.body;
+	protected ModelPart getModelPartForBone(BoneCache pBone, EquipmentSlot pSlot, ItemStack pStack, T pAnimatable, HumanoidModel<?> pBaseModel) {
+		return pBaseModel.body;
 	}
 
 	@Nullable
-	protected ItemStack getArmorItemForBone(BoneCache bone, T animatable) {
+	protected ItemStack getArmorItemForBone(BoneCache pBone, T pAnimatable) {
 		return null;
 	}
 
@@ -130,59 +131,59 @@ public class ItemArmorBlueLayer<T extends LivingEntity & BlueAnimatable> extends
 		}
 	}
 
-	protected <I extends Item & BlueItem> void renderVanillaArmorPiece(PoseStack pPoseStack, T animatable, BoneCache bone, EquipmentSlot slot, ItemStack armorStack,
-			ModelPart modelPart, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight, int pPackedOverlay) {
-		Holder<ArmorMaterial> material = ((ArmorItem) armorStack.getItem()).getMaterial();
+	protected <I extends Item & BlueItem> void renderVanillaArmorPiece(PoseStack pPoseStack, T pAnimatable, BoneCache pBone, EquipmentSlot pSlot, ItemStack pArmorStack,
+			ModelPart pModelPart, MultiBufferSource pBufferSource, float pPartialTick, int pPackedLight, int pPackedOverlay) {
+		Holder<ArmorMaterial> material = ((ArmorItem) pArmorStack.getItem()).getMaterial();
 
 		for (ArmorMaterial.Layer layer : material.value().layers()) {
-			int color = armorStack.is(ItemTags.DYEABLE) ? DyedItemColor.getOrDefault(armorStack, -6265536) : -1;
-			VertexConsumer buffer = getVanillaArmorBuffer(pBufferSource, animatable, armorStack, slot, bone, layer, pPackedLight, pPackedOverlay, false);
+			int color = pArmorStack.is(ItemTags.DYEABLE) ? DyedItemColor.getOrDefault(pArmorStack, -6265536) : -1;
+			VertexConsumer buffer = getVanillaArmorBuffer(pBufferSource, pAnimatable, pArmorStack, pSlot, pBone, layer, pPackedLight, pPackedOverlay, false);
 
-			modelPart.render(pPoseStack, buffer, pPackedLight, pPackedOverlay, color);
+			pModelPart.render(pPoseStack, buffer, pPackedLight, pPackedOverlay, color);
 		}
 
-		ArmorTrim trim = armorStack.get(DataComponents.TRIM);
+		ArmorTrim trim = pArmorStack.get(DataComponents.TRIM);
 
 		if (trim != null) {
-			TextureAtlasSprite sprite = Minecraft.getInstance().getModelManager().getAtlas(Sheets.ARMOR_TRIMS_SHEET).getSprite(slot == EquipmentSlot.LEGS ? trim.innerTexture(material) : trim.outerTexture(material));
+			TextureAtlasSprite sprite = Minecraft.getInstance().getModelManager().getAtlas(Sheets.ARMOR_TRIMS_SHEET).getSprite(pSlot == EquipmentSlot.LEGS ? trim.innerTexture(material) : trim.outerTexture(material));
 			VertexConsumer buffer = sprite.wrap(pBufferSource.getBuffer(Sheets.armorTrimsSheet(trim.pattern().value().decal())));
-			modelPart.render(pPoseStack, buffer, pPackedLight, pPackedOverlay);
+			pModelPart.render(pPoseStack, buffer, pPackedLight, pPackedOverlay);
 		}
 
-		if (armorStack.hasFoil())
-			modelPart.render(pPoseStack, getVanillaArmorBuffer(pBufferSource, animatable, armorStack, slot, bone, null, pPackedLight, pPackedOverlay, true), pPackedLight, pPackedOverlay, Color.WHITE.argbInt());
+		if (pArmorStack.hasFoil())
+			pModelPart.render(pPoseStack, getVanillaArmorBuffer(pBufferSource, pAnimatable, pArmorStack, pSlot, pBone, null, pPackedLight, pPackedOverlay, true), pPackedLight, pPackedOverlay, Color.WHITE.argbInt());
 	}
 
-	protected VertexConsumer getVanillaArmorBuffer(MultiBufferSource pBufferSource, T animatable, ItemStack stack, EquipmentSlot slot, BoneCache bone, @Nullable ArmorMaterial.Layer layer, int pPackedLight, int pPackedOverlay, boolean forGlint) {
-		if (forGlint)
+	protected VertexConsumer getVanillaArmorBuffer(MultiBufferSource pBufferSource, T pAnimatable, ItemStack pStack, EquipmentSlot pSlot, BoneCache pBone, @Nullable ArmorMaterial.Layer pLayer, int pPackedLight, int pPackedOverlay, boolean pForGlint) {
+		if (pForGlint)
 			return pBufferSource.getBuffer(RenderType.armorEntityGlint());
 
-		return pBufferSource.getBuffer(RenderType.armorCutoutNoCull(layer.texture(slot == EquipmentSlot.LEGS)));
+		return pBufferSource.getBuffer(RenderType.armorCutoutNoCull(pLayer.texture(pSlot == EquipmentSlot.LEGS)));
 	}
 
 	@NotNull
-	protected HumanoidModel<?> getModelForItem(BoneCache bone, EquipmentSlot slot, ItemStack stack, T animatable) {
-		HumanoidModel<LivingEntity> defaultModel = slot == EquipmentSlot.LEGS ? INNER_ARMOR_MODEL : OUTER_ARMOR_MODEL;
+	protected HumanoidModel<?> getModelForItem(BoneCache pBone, EquipmentSlot pSlot, ItemStack pStack, T pAnimatable) {
+		HumanoidModel<LivingEntity> defaultModel = pSlot == EquipmentSlot.LEGS ? INNER_ARMOR_MODEL : OUTER_ARMOR_MODEL;
 
-		return BlueLibConstants.PlatformHelper.ITEM_RENDERING.getArmorModelForItem(animatable, stack, slot, defaultModel);
+		return BlueLibConstants.PlatformHelper.ITEM_RENDERING.getArmorModelForItem(pAnimatable, pStack, pSlot, defaultModel);
 	}
 
-	protected void renderSkullAsArmor(PoseStack pPoseStack, BoneCache bone, ItemStack stack, AbstractSkullBlock skullBlock, MultiBufferSource pBufferSource, int pPackedLight) {
-		SkullBlock.Type type = skullBlock.getType();
+	protected void renderSkullAsArmor(PoseStack pPoseStack, BoneCache pBone, ItemStack pStack, AbstractSkullBlock pSkullBlock, MultiBufferSource pBufferSource, int pPackedLight) {
+		SkullBlock.Type type = pSkullBlock.getType();
 		SkullModelBase model = SkullBlockRenderer.createSkullRenderers(Minecraft.getInstance().getEntityModels()).get(type);
-		RenderType pRenderType = SkullBlockRenderer.getRenderType(type, stack.get(DataComponents.PROFILE));
+		RenderType pRenderType = SkullBlockRenderer.getRenderType(type, pStack.get(DataComponents.PROFILE));
 
 		pPoseStack.pushPose();
-		RenderUtils.translateAndRotateMatrixForBone(pPoseStack, bone);
+		RenderUtils.translateAndRotateMatrixForBone(pPoseStack, pBone);
 		pPoseStack.scale(1.1875f, 1.1875f, 1.1875f);
 		pPoseStack.translate(-0.5f, 0, -0.5f);
 		SkullBlockRenderer.renderSkull(null, 0, 0, pPoseStack, pBufferSource, pPackedLight, model, pRenderType);
 		pPoseStack.popPose();
 	}
 
-	protected void prepModelPartForRender(PoseStack pPoseStack, BoneCache bone, ModelPart sourcePart) {
-		final CubeCache firstCube = bone.getCubes().getFirst();
-		final Cube armorCube = getReferenceCubeForModel(bone, sourcePart);
+	protected void prepModelPartForRender(PoseStack pPoseStack, BoneCache pBone, ModelPart pSourcePart) {
+		final CubeCache firstCube = pBone.getCubes().getFirst();
+		final Cube armorCube = getReferenceCubeForModel(pBone, pSourcePart);
 		final double armorBoneSizeX = firstCube.size().x();
 		final double armorBoneSizeY = firstCube.size().y();
 		final double armorBoneSizeZ = firstCube.size().z();
@@ -193,18 +194,18 @@ public class ItemArmorBlueLayer<T extends LivingEntity & BlueAnimatable> extends
 		float scaleY = (float) (armorBoneSizeY / actualArmorSizeY);
 		float scaleZ = (float) (armorBoneSizeZ / actualArmorSizeZ);
 
-		sourcePart.setPos(-(bone.getPivotX() - ((bone.getPivotX() * scaleX) - bone.getPivotX()) / scaleX),
-				-(bone.getPivotY() - ((bone.getPivotY() * scaleY) - bone.getPivotY()) / scaleY),
-				(bone.getPivotZ() - ((bone.getPivotZ() * scaleZ) - bone.getPivotZ()) / scaleZ));
+		pSourcePart.setPos(-(pBone.getPivotX() - ((pBone.getPivotX() * scaleX) - pBone.getPivotX()) / scaleX),
+				-(pBone.getPivotY() - ((pBone.getPivotY() * scaleY) - pBone.getPivotY()) / scaleY),
+				(pBone.getPivotZ() - ((pBone.getPivotZ() * scaleZ) - pBone.getPivotZ()) / scaleZ));
 
-		sourcePart.xRot = -bone.getRotX();
-		sourcePart.yRot = -bone.getRotY();
-		sourcePart.zRot = bone.getRotZ();
+		pSourcePart.xRot = -pBone.getRotX();
+		pSourcePart.yRot = -pBone.getRotY();
+		pSourcePart.zRot = pBone.getRotZ();
 
 		pPoseStack.scale(scaleX, scaleY, scaleZ);
 	}
 
-	protected Cube getReferenceCubeForModel(BoneCache bone, ModelPart sourcePart) {
-		return sourcePart.cubes.getFirst();
+	protected Cube getReferenceCubeForModel(BoneCache pBone, ModelPart pSourcePart) {
+		return pSourcePart.cubes.getFirst();
 	}
 }

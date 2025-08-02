@@ -5,31 +5,29 @@
  * If a copy of the MIT License was not distributed with this file,
  * You can obtain one at https://opensource.org/licenses/MIT.
  */
-package software.bluelib.oldLoader.renderer;
+package software.bluelib.loader.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import java.util.List;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.ApiStatus;
-import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import software.bluelib.BlueLibConstants;
 import software.bluelib.client.utils.RenderUtils;
 import software.bluelib.loader.animatable.BlueAnimatable;
 import software.bluelib.loader.cache.model.BoneCache;
 import software.bluelib.loader.cache.texture.AnimatableTexture;
+import software.bluelib.loader.renderer.base.BlueRenderLayer;
+import software.bluelib.loader.renderer.base.BlueRenderLayersContainer;
 import software.bluelib.loader.renderer.base.BlueRenderer;
 import software.bluelib.loader.renderer.context.BaseRenderContext;
 import software.bluelib.loader.renderer.context.FullRenderContext;
 import software.bluelib.loader.renderer.context.IRenderContext;
 import software.bluelib.oldLoader.animation.AnimationState;
 import software.bluelib.oldLoader.model.BlueModel;
-import software.bluelib.oldLoader.renderer.layer.BlueRenderLayer;
-import software.bluelib.oldLoader.renderer.layer.BlueRenderLayersContainer;
 
 public class BlueObjectRenderer<T extends BlueAnimatable> implements BlueRenderer<T> {
 
@@ -85,32 +83,16 @@ public class BlueObjectRenderer<T extends BlueAnimatable> implements BlueRendere
 	}
 
 	@ApiStatus.Internal
-	public void render(PoseStack pPoseStack, T pAnimatable, @Nullable MultiBufferSource pBufferSource, @Nullable RenderType pRenderType,
-			@Nullable VertexConsumer pBuffer, int pPackedLight, float pPartialTick) {
-		this.animatable = pAnimatable;
-
-		if (pBuffer == null)
-			pBufferSource = Minecraft.getInstance().levelRenderer.renderBuffers.bufferSource();
-
-		defaultRender(new FullRenderContext<>(
-				pPoseStack,
-				this.animatable,
-				this.model.getBakedModel(getBlueModel().getModelResource(animatable, this)),
-				pRenderType,
-				pBufferSource,
-				pBuffer,
-				false, // isReRender
-				pPartialTick,
-				pPackedLight,
-				getPackedOverlay(this.animatable, 0, pPartialTick),
-				getRenderColor(this.animatable, pPartialTick, pPackedLight).argbInt()));
+	public void render(IRenderContext<T> pContext) {
+		this.animatable = pContext.animatable();
+		defaultRender(pContext);
 	}
 
 	@Override
 	public void preRender(IRenderContext<T> pContext) {
 		this.objectRenderTranslations = new Matrix4f(pContext.poseStack().last().pose());
 
-		scaleModelForRender(this.scaleWidth, this.scaleHeight, pContext.poseStack(), pContext.animatable(), pContext.model(), pContext.isReRender(), pContext.partialTick(), pContext.packedLight(), pContext.packedOverlay());
+		scaleModelForRender(this.scaleWidth, this.scaleHeight, pContext);
 
 		pContext.poseStack().translate(0.5f, 0.51f, 0.5f);
 	}

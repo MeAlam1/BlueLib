@@ -5,7 +5,7 @@
  * If a copy of the MIT License was not distributed with this file,
  * You can obtain one at https://opensource.org/licenses/MIT.
  */
-package software.bluelib.oldLoader.renderer.layer;
+package software.bluelib.loader.renderer.base;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -15,7 +15,6 @@ import net.minecraft.resources.ResourceLocation;
 import software.bluelib.loader.animatable.BlueAnimatable;
 import software.bluelib.loader.cache.model.BoneCache;
 import software.bluelib.loader.cache.model.ModelCache;
-import software.bluelib.loader.renderer.base.BlueRenderer;
 import software.bluelib.loader.renderer.context.IRenderContext;
 import software.bluelib.oldLoader.model.BlueModel;
 
@@ -23,8 +22,8 @@ public abstract class BlueRenderLayer<T extends BlueAnimatable> {
 
 	protected final BlueRenderer<T> renderer;
 
-	public BlueRenderLayer(BlueRenderer<T> pEntityRendererIn) {
-		this.renderer = pEntityRendererIn;
+	public BlueRenderLayer(BlueRenderer<T> pEntityRenderer) {
+		this.renderer = pEntityRenderer;
 	}
 
 	public BlueModel<T> getBlueModel() {

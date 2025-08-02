@@ -5,12 +5,11 @@
  * If a copy of the MIT License was not distributed with this file,
  * You can obtain one at https://opensource.org/licenses/MIT.
  */
-package software.bluelib.oldLoader.renderer.layer;
+package software.bluelib.loader.renderer.base;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import java.util.List;
 import software.bluelib.loader.animatable.BlueAnimatable;
-import software.bluelib.loader.renderer.base.BlueRenderer;
 
 public class BlueRenderLayersContainer<T extends BlueAnimatable> {
 
@@ -18,8 +17,8 @@ public class BlueRenderLayersContainer<T extends BlueAnimatable> {
 	private final List<BlueRenderLayer<T>> layers = new ObjectArrayList<>();
 	private boolean compiledLayers = false;
 
-	public BlueRenderLayersContainer(BlueRenderer<T> renderer) {
-		this.renderer = renderer;
+	public BlueRenderLayersContainer(BlueRenderer<T> pRenderer) {
+		this.renderer = pRenderer;
 	}
 
 	public List<BlueRenderLayer<T>> getRenderLayers() {
@@ -29,8 +28,8 @@ public class BlueRenderLayersContainer<T extends BlueAnimatable> {
 		return this.layers;
 	}
 
-	public void addLayer(BlueRenderLayer<T> layer) {
-		this.layers.add(layer);
+	public void addLayer(BlueRenderLayer<T> pLayer) {
+		this.layers.add(pLayer);
 	}
 
 	public void fireCompileRenderLayersEvent() {

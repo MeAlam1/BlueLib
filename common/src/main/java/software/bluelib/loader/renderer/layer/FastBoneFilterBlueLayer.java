@@ -5,7 +5,7 @@
  * If a copy of the MIT License was not distributed with this file,
  * You can obtain one at https://opensource.org/licenses/MIT.
  */
-package software.bluelib.oldLoader.renderer.layer;
+package software.bluelib.loader.renderer.layer;
 
 import java.util.List;
 import java.util.function.Supplier;
@@ -19,18 +19,18 @@ public class FastBoneFilterBlueLayer<T extends BlueAnimatable> extends BoneFilte
 
 	protected final Supplier<List<String>> boneSupplier;
 
-	public FastBoneFilterBlueLayer(BlueRenderer<T> renderer) {
-		this(renderer, List::of);
+	public FastBoneFilterBlueLayer(BlueRenderer<T> pRenderer) {
+		this(pRenderer, List::of);
 	}
 
-	public FastBoneFilterBlueLayer(BlueRenderer<T> renderer, Supplier<List<String>> boneSupplier) {
-		this(renderer, boneSupplier, (bone, animatable, pPartialTick) -> {});
+	public FastBoneFilterBlueLayer(BlueRenderer<T> pRenderer, Supplier<List<String>> pBoneSupplier) {
+		this(pRenderer, pBoneSupplier, (bone, animatable, pPartialTick) -> {});
 	}
 
-	public FastBoneFilterBlueLayer(BlueRenderer<T> renderer, Supplier<List<String>> boneSupplier, TriConsumer<BoneCache, T, Float> checkAndApply) {
-		super(renderer, checkAndApply);
+	public FastBoneFilterBlueLayer(BlueRenderer<T> pRenderer, Supplier<List<String>> pBoneSupplier, TriConsumer<BoneCache, T, Float> pCheckAndApply) {
+		super(pRenderer, pCheckAndApply);
 
-		this.boneSupplier = boneSupplier;
+		this.boneSupplier = pBoneSupplier;
 	}
 
 	protected List<String> getAffectedBones() {

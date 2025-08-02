@@ -5,7 +5,7 @@
  * If a copy of the MIT License was not distributed with this file,
  * You can obtain one at https://opensource.org/licenses/MIT.
  */
-package software.bluelib.oldLoader.renderer;
+package software.bluelib.loader.renderer.block;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -28,6 +28,8 @@ import software.bluelib.client.utils.RenderUtils;
 import software.bluelib.loader.animatable.BlueAnimatable;
 import software.bluelib.loader.cache.model.BoneCache;
 import software.bluelib.loader.cache.texture.AnimatableTexture;
+import software.bluelib.loader.renderer.base.BlueRenderLayer;
+import software.bluelib.loader.renderer.base.BlueRenderLayersContainer;
 import software.bluelib.loader.renderer.base.BlueRenderer;
 import software.bluelib.loader.renderer.context.BaseRenderContext;
 import software.bluelib.loader.renderer.context.FullRenderContext;
@@ -35,8 +37,6 @@ import software.bluelib.loader.renderer.context.IRenderContext;
 import software.bluelib.oldLoader.animation.AnimationState;
 import software.bluelib.oldLoader.constant.DataTickets;
 import software.bluelib.oldLoader.model.BlueModel;
-import software.bluelib.oldLoader.renderer.layer.BlueRenderLayer;
-import software.bluelib.oldLoader.renderer.layer.BlueRenderLayersContainer;
 
 public class BlueBlockRenderer<T extends BlockEntity & BlueAnimatable> implements BlueRenderer<T>, BlockEntityRenderer<T> {
 
@@ -50,8 +50,8 @@ public class BlueBlockRenderer<T extends BlockEntity & BlueAnimatable> implement
 	protected Matrix4f blockRenderTranslations = new Matrix4f();
 	protected Matrix4f modelRenderTranslations = new Matrix4f();
 
-	public BlueBlockRenderer(BlueModel<T> model) {
-		this.model = model;
+	public BlueBlockRenderer(BlueModel<T> pModel) {
+		this.model = pModel;
 	}
 
 	@Override
@@ -65,8 +65,8 @@ public class BlueBlockRenderer<T extends BlockEntity & BlueAnimatable> implement
 	}
 
 	@Override
-	public long getInstanceId(T animatable) {
-		return animatable.getBlockPos().hashCode();
+	public long getInstanceId(T pAnimatable) {
+		return pAnimatable.getBlockPos().hashCode();
 	}
 
 	@Override
@@ -74,19 +74,19 @@ public class BlueBlockRenderer<T extends BlockEntity & BlueAnimatable> implement
 		return this.renderLayers.getRenderLayers();
 	}
 
-	public BlueBlockRenderer<T> addRenderLayer(BlueRenderLayer<T> renderLayer) {
-		this.renderLayers.addLayer(renderLayer);
+	public BlueBlockRenderer<T> addRenderLayer(BlueRenderLayer<T> pRenderLayer) {
+		this.renderLayers.addLayer(pRenderLayer);
 
 		return this;
 	}
 
-	public BlueBlockRenderer<T> withScale(float scale) {
-		return withScale(scale, scale);
+	public BlueBlockRenderer<T> withScale(float pScale) {
+		return withScale(pScale, pScale);
 	}
 
-	public BlueBlockRenderer<T> withScale(float scaleWidth, float scaleHeight) {
-		this.scaleWidth = scaleWidth;
-		this.scaleHeight = scaleHeight;
+	public BlueBlockRenderer<T> withScale(float pScaleWidth, float pScaleHeight) {
+		this.scaleWidth = pScaleWidth;
+		this.scaleHeight = pScaleHeight;
 
 		return this;
 	}
@@ -98,19 +98,19 @@ public class BlueBlockRenderer<T extends BlockEntity & BlueAnimatable> implement
 		if (!pContext.isReRender())
 			pContext.poseStack().translate(0.5, 0, 0.5);
 
-		scaleModelForRender(this.scaleWidth, this.scaleHeight, pContext.poseStack(), pContext.animatable(), pContext.model(), pContext.isReRender(), pContext.partialTick(), pContext.packedLight(), pContext.packedOverlay());
+		scaleModelForRender(this.scaleWidth, this.scaleHeight, pContext);
 	}
 
 	@Override
 	@ApiStatus.Internal
-	public void render(T animatable, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBufferSource,
+	public void render(T pAnimatable, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBufferSource,
 			int pPackedLight, int pPackedOverlay) {
-		this.animatable = animatable;
+		this.animatable = pAnimatable;
 
 		defaultRender(new BaseRenderContext<>(
 				pPoseStack,
 				this.animatable,
-				this.model.getBakedModel(getBlueModel().getModelResource(animatable, this)),
+				this.model.getBakedModel(getBlueModel().getModelResource(pAnimatable, this)),
 				pBufferSource,
 				false, // isReRender
 				pPartialTick,
@@ -155,25 +155,25 @@ public class BlueBlockRenderer<T extends BlockEntity & BlueAnimatable> implement
 	}
 
 	@Override
-	public void renderRecursively(PoseStack pPoseStack, T animatable, BoneCache bone, RenderType pRenderType, MultiBufferSource pBufferSource, VertexConsumer buffer, boolean pIsReRender, float pPartialTick, int pPackedLight,
-			int pPackedOverlay, int colour) {
-		if (bone.isTrackingMatrices()) {
+	public void renderRecursively(PoseStack pPoseStack, T pAnimatable, BoneCache pBone, RenderType pRenderType, MultiBufferSource pBufferSource, VertexConsumer pBuffer, boolean pIsReRender, float pPartialTick, int pPackedLight,
+			int pPackedOverlay, int pColour) {
+		if (pBone.isTrackingMatrices()) {
 			Matrix4f poseState = new Matrix4f(pPoseStack.last().pose());
 			Matrix4f localMatrix = RenderUtils.invertAndMultiplyMatrices(poseState, this.blockRenderTranslations);
 			Matrix4f worldState = new Matrix4f(localMatrix);
 			BlockPos pos = this.animatable.getBlockPos();
 
-			bone.setModelSpaceMatrix(RenderUtils.invertAndMultiplyMatrices(poseState, this.modelRenderTranslations));
-			bone.setLocalSpaceMatrix(localMatrix);
-			bone.setWorldSpaceMatrix(worldState.translate(new Vector3f(pos.getX(), pos.getY(), pos.getZ())));
+			pBone.setModelSpaceMatrix(RenderUtils.invertAndMultiplyMatrices(poseState, this.modelRenderTranslations));
+			pBone.setLocalSpaceMatrix(localMatrix);
+			pBone.setWorldSpaceMatrix(worldState.translate(new Vector3f(pos.getX(), pos.getY(), pos.getZ())));
 		}
 
-		BlueRenderer.super.renderRecursively(pPoseStack, animatable, bone, pRenderType, pBufferSource, buffer, pIsReRender, pPartialTick, pPackedLight, pPackedOverlay,
-				colour);
+		BlueRenderer.super.renderRecursively(pPoseStack, pAnimatable, pBone, pRenderType, pBufferSource, pBuffer, pIsReRender, pPartialTick, pPackedLight, pPackedOverlay,
+				pColour);
 	}
 
-	protected void rotateBlock(Direction facing, PoseStack pPoseStack) {
-		switch (facing) {
+	protected void rotateBlock(Direction pFacing, PoseStack pPoseStack) {
+		switch (pFacing) {
 			case SOUTH -> pPoseStack.mulPose(Axis.YP.rotationDegrees(180));
 			case WEST -> pPoseStack.mulPose(Axis.YP.rotationDegrees(90));
 			case NORTH -> pPoseStack.mulPose(Axis.YP.rotationDegrees(0));
@@ -183,8 +183,8 @@ public class BlueBlockRenderer<T extends BlockEntity & BlueAnimatable> implement
 		}
 	}
 
-	protected Direction getFacing(T block) {
-		BlockState blockState = block.getBlockState();
+	protected Direction getFacing(T pBlock) {
+		BlockState blockState = pBlock.getBlockState();
 
 		if (blockState.hasProperty(HorizontalDirectionalBlock.FACING))
 			return blockState.getValue(HorizontalDirectionalBlock.FACING);
@@ -196,8 +196,8 @@ public class BlueBlockRenderer<T extends BlockEntity & BlueAnimatable> implement
 	}
 
 	@Override
-	public void updateAnimatedTextureFrame(T animatable) {
-		AnimatableTexture.setAndUpdate(getTextureLocation(animatable));
+	public void updateAnimatedTextureFrame(T pAnimatable) {
+		AnimatableTexture.setAndUpdate(getTextureLocation(pAnimatable));
 	}
 
 	@Override
