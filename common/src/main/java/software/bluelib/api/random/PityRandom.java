@@ -7,16 +7,13 @@
  */
 package software.bluelib.api.random;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
-import java.util.TreeMap;
+import java.util.*;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
 /**
  * <b>WARNING:</b> <i>Still a massive Work in Progress.</i> <br>
- * A randomizer with a pity system to balance probability.
+ * A generic randomizer with a pity system to balance probability.
  * <p>
  * The probability of selecting a specific value decreases slightly after it is picked.
  * The least selected value has a significantly higher chance of appearing.
@@ -30,16 +27,15 @@ import org.jetbrains.annotations.NotNull;
  * <p>
  * Supported types:
  * <ul>
- * <li>Integer (default range-based selection)</li>
- * <li>Boolean (weighted random true/false selection)</li>
- * <li>Float and Double (randomized within a range, with pity weighting applied)</li>
+ * <li>Any type (T) provided as a collection of values</li>
+ * <li>Convenience factory methods can be used for common types such as Integer, Boolean, Float, and Double</li>
  * </ul>
  * <p>
  * Probability Breakdown:
  * <ul>
  * <li>If all values have been picked equally, they each have a 1/N chance.</li>
  * <li>If one value has been picked more times than another, its weight is halved per additional selection.</li>
- * <li>Example: If we have (1,2,3,4,5) and 3 has been picked twice while others once, then 3's weight is reduced by half.</li>
+ * <li>Example: If we have (A, B, C, D, E) and C has been picked twice while others once, then C's weight is reduced by half.</li>
  * </ul>
  * <p>
  * Math formula for weighting:
@@ -63,109 +59,77 @@ import org.jetbrains.annotations.NotNull;
  */
 @SuppressWarnings("unused")
 @ApiStatus.Experimental
-public class PityRandom {
+public class PityRandom<T> extends Random {
 
 	@NotNull
-	private final Integer minInteger;
+	protected final Map<T, Integer> selectionCounts = new LinkedHashMap<>();
 	@NotNull
-	private final Integer maxInteger;
+	protected final List<T> values;
 	@NotNull
-	private final Double minDouble;
-	@NotNull
-	private final Double maxDouble;
-	@NotNull
-	private final Map<Integer, Integer> selectionCountInteger;
-	@NotNull
-	private final Map<Double, Integer> selectionCountDouble;
-	@NotNull
-	private final Random random;
+	protected Integer totalSelections = 0;
 
-	public PityRandom(@NotNull Integer pMin, @NotNull Integer pMax) {
-		this.minInteger = pMin;
-		this.maxInteger = pMax;
-		this.minDouble = pMin.doubleValue();
-		this.maxDouble = pMax.doubleValue();
-		this.selectionCountInteger = new HashMap<>();
-		this.selectionCountDouble = new HashMap<>();
-		this.random = new Random();
-
-		for (Integer i = pMin; i <= pMax; i++) {
-			selectionCountInteger.put(i, 0);
+	public PityRandom(@NotNull Collection<T> pValues) {
+		this.values = new ArrayList<>(pValues);
+		for (T value : pValues) {
+			selectionCounts.put(value, 0);
 		}
 	}
 
 	@NotNull
-	public Integer nextInteger() {
-		Map<Integer, Double> weights = new HashMap<>();
-		Integer maxCount = selectionCountInteger.values().stream().max(Integer::compareTo).orElse(1);
+	public static PityRandom<Double> ofRange(@NotNull Double pMin, @NotNull Double pMax, @NotNull Double pStep) {
+		List<Double> range = new ArrayList<>();
+		for (double d = pMin; d <= pMax + 1e-9; d += pStep) {
+			range.add(Math.round(d * 1_000_000.0) / 1_000_000.0);
+		}
+		return new PityRandom<>(range);
+	}
 
-		for (Integer num = minInteger; num <= maxInteger; num++) {
-			Integer count = selectionCountInteger.get(num);
-			weights.put(num, Math.pow(2, maxCount - count));
+	@NotNull
+	public T nextValue() {
+		int maxCount = selectionCounts.values().stream().max(Integer::compareTo).orElse(1);
+		Map<T, Double> weights = new LinkedHashMap<>();
+		double totalWeight = 0.0;
+
+		for (T value : values) {
+			int count = selectionCounts.get(value);
+			double weight = getWeight(value, count, maxCount);
+			weights.put(value, weight);
+			totalWeight += weight;
 		}
 
-		Double totalWeight = weights.values().stream().mapToDouble(Double::doubleValue).sum();
-		TreeMap<Double, Integer> probabilityMap = new TreeMap<>();
+		double roll = nextDouble() * totalWeight;
 		double cumulative = 0.0;
 
-		for (Map.Entry<Integer, Double> entry : weights.entrySet()) {
-			cumulative += entry.getValue() / totalWeight;
-			probabilityMap.put(cumulative, entry.getKey());
+		for (Map.Entry<T, Double> entry : weights.entrySet()) {
+			cumulative += entry.getValue();
+			if (roll <= cumulative) {
+				T selected = entry.getKey();
+				selectionCounts.put(selected, selectionCounts.get(selected) + 1);
+				totalSelections++;
+				return selected;
+			}
 		}
 
-		Double roll = random.nextDouble();
-		Integer selected = probabilityMap.ceilingEntry(roll).getValue();
-		selectionCountInteger.put(selected, selectionCountInteger.get(selected) + 1);
-		return selected;
+		return values.getFirst();
 	}
 
 	@NotNull
-	public Boolean nextBoolean() {
-		Integer trueCount = selectionCountInteger.getOrDefault(1, 0);
-		Integer falseCount = selectionCountInteger.getOrDefault(0, 0);
-		Integer maxCount = Math.max(trueCount, falseCount);
+	protected Double getWeight(@NotNull T pValue, @NotNull Integer pCount, @NotNull Integer pMaxCount) {
+		return Math.pow(2, pMaxCount - pCount);
+	}
 
-		Double trueWeight = Math.pow(2, maxCount - trueCount);
-		Double falseWeight = Math.pow(2, maxCount - falseCount);
-		Double totalWeight = trueWeight + falseWeight;
-
-		boolean selected = (random.nextDouble() < (trueWeight / totalWeight));
-		selectionCountInteger.put(selected ? 1 : 0, selectionCountInteger.getOrDefault(selected ? 1 : 0, 0) + 1);
-		return selected;
+	public void resetCounts() {
+		selectionCounts.replaceAll((k, v) -> 0);
+		totalSelections = 0;
 	}
 
 	@NotNull
-	private Double getNextValue(@NotNull Double min, @NotNull Double max, @NotNull Map<Double, Integer> selectionCount) {
-		Map<Double, Double> weights = new HashMap<>();
-		double maxCount = selectionCount.values().stream().mapToInt(Integer::intValue).max().orElse(1);
-
-		for (Double num = min; num <= max; num += 0.01) {
-			Integer count = selectionCount.getOrDefault(num, 0);
-			weights.put(num, Math.pow(2, maxCount - count));
-		}
-
-		Double totalWeight = weights.values().stream().mapToDouble(Double::doubleValue).sum();
-		TreeMap<Double, Double> probabilityMap = new TreeMap<>();
-		double cumulative = 0.0;
-
-		for (Map.Entry<Double, Double> entry : weights.entrySet()) {
-			cumulative += entry.getValue() / totalWeight;
-			probabilityMap.put(cumulative, entry.getKey());
-		}
-
-		Double roll = random.nextDouble();
-		Double selected = probabilityMap.ceilingEntry(roll).getValue();
-		selectionCount.put(selected, selectionCount.getOrDefault(selected, 0) + 1);
-		return selected;
+	public Integer getTotalSelections() {
+		return totalSelections;
 	}
 
 	@NotNull
-	public Float nextFloat() {
-		return getNextValue(minDouble, maxDouble, selectionCountDouble).floatValue();
-	}
-
-	@NotNull
-	public Double nextDouble() {
-		return getNextValue(minDouble, maxDouble, selectionCountDouble);
+	public Map<T, Integer> getSelectionCounts() {
+		return Collections.unmodifiableMap(selectionCounts);
 	}
 }

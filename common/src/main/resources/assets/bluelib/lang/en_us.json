@@ -68,7 +68,11 @@
     "bluelib.log.bakegeneric.version.unsupported": "%1$s: Unsupported format version: '%2$s'. %3$s",
     "bluelib.log.readjson.failed": "Failed to read resource: %1$s - %2$s",
 
-
+    "bluelib.version.warning.title": "%s Version Warning",
+    "bluelib.version.warning.description": "You're using the %s version of %s. Features in this build are still in development, and may not be safe to use in your worlds. Would you like to move forward knowing these risks?",
+    "bluelib.version.warning.dont_show_again": "Don't Show Again",
+    "bluelib.version.warning.dont_show_again_tip": "This setting may be ignored on newer %s versions.",
+    
     "bluelib.server.null": "Server is null.",
     "bluelib.null": "Input is null",
     "bluelib.notfound": "Input not found or recognized",
