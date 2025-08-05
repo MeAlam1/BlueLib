@@ -1,10 +1,8 @@
 package software.bluelib.api.registry;
 
 import java.util.function.Function;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.MobCategory;
+
+import net.minecraft.world.entity.*;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -34,7 +32,7 @@ public abstract class AbstractRegistryBuilder {
         return modID;
     }
 
-    public <T extends Mob> EntityBuilder<T> entity(String name, EntityType.EntityFactory<T> factory, MobCategory category) {
+    public <T extends LivingEntity> EntityBuilder<T> livingEntity(String name, EntityType.EntityFactory<T> factory, MobCategory category) {
         return new EntityBuilder<>(name, factory, category);
     }
 

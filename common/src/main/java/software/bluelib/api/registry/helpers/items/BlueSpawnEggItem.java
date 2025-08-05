@@ -42,7 +42,7 @@ public class BlueSpawnEggItem extends Item {
     private final int highlightColor;
     private final EntityType<?> defaultType;
 
-    public BlueSpawnEggItem(EntityType<? extends Entity> defaultType, int backgroundColor, int highlightColor, Item.Properties properties) {
+    public BlueSpawnEggItem(EntityType<? extends Mob> defaultType, int backgroundColor, int highlightColor, Item.Properties properties) {
         super(properties);
         this.defaultType = defaultType;
         this.backgroundColor = backgroundColor;
