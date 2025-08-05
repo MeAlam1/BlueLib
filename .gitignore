@@ -59,3 +59,6 @@ build/tmp/spotless-register-dependencies
 common/src/main/resources/assets/bluelib/animations/test.animation.json
 common/src/main/resources/assets/bluelib/textures/test.png
 common/src/main/resources/assets/bluelib/models/test.geo.json
+common/src/main/resources/assets/bluelib/animation/test.animation.json
+common/src/main/resources/assets/bluelib/model/test.geo.json
+common/src/main/resources/data/bluelib/controller/test.controller.json

@@ -11,7 +11,9 @@
     "common.brewing.PotionSlotMixin",
     "common.variant.LivingEntityMixin"
   ],
-  "client": [],
+  "client": [
+    "client.VersionWarningMixin"
+  ],
   "server": [],
   "injectors": {
     "maxShiftBy": 2
