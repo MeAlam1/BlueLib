@@ -18,6 +18,7 @@ import software.bluelib.api.registry.datagen.blockstates.BlockstateGenerator;
 import software.bluelib.api.registry.datagen.blockstates.BlockstateTemplates;
 import software.bluelib.api.registry.datagen.items.ItemModelGenerator;
 import software.bluelib.api.registry.datagen.items.ItemModelTemplates;
+import software.bluelib.api.registry.builders.items.ItemBuilder;
 
 public class BlockBuilder<T extends Block> {
 
@@ -31,6 +32,11 @@ public class BlockBuilder<T extends Block> {
     public static BlockstateTemplates blockstateTemplate;
     public static BlockModelTemplates blockModelTemplate;
     private BiConsumer<RecipeContext, RecipeOutput> recipeConsumer;
+    private boolean isOre = false;
+    private boolean hasRaw = false;
+    private boolean hasIngot = false;
+    private boolean hasNugget = false;
+    private boolean hasDeepslate = false;
 
     public BlockBuilder(String name, Function<Block.Properties, T> blockConstructor) {
         this.blockName = name;
@@ -52,6 +58,11 @@ public class BlockBuilder<T extends Block> {
                 .blockstate(BlockstateTemplates.SIMPLE_BLOCK)
                 .model(BlockModelTemplates.CUBE_ALL)
                 .finish();
+    }
+
+    public OreBuilder ore() {
+        this.isOre = true;
+        return new OreBuilder();
     }
 
     public BlockBuilder<T> button() {
@@ -76,7 +87,7 @@ public class BlockBuilder<T extends Block> {
 
     public BlockBuilder<T> fence() {
         generate(blockName, BlockstateTemplates.FENCE_BLOCK, BlockModelTemplates.FENCE, ItemModelTemplates.BLOCK_WITH_INVENTORY_MODEL);
-        ItemModelGenerator.generateItemModel(modId, blockName, ItemModelTemplates.GENERATED); // Extra model
+        ItemModelGenerator.generateItemModel(modId, blockName, ItemModelTemplates.GENERATED);
         return this;
     }
 
@@ -111,7 +122,7 @@ public class BlockBuilder<T extends Block> {
         generate(blockName + "_log", BlockstateTemplates.ORIENTED_BLOCK, BlockModelTemplates.COLUMN, ItemModelTemplates.BLOCK_ITEM);
         generate(blockName + "_planks", BlockstateTemplates.SIMPLE_BLOCK, BlockModelTemplates.CUBE_ALL, ItemModelTemplates.BLOCK_ITEM);
         generate(blockName + "_fence", BlockstateTemplates.FENCE_BLOCK, BlockModelTemplates.FENCE, ItemModelTemplates.BLOCK_WITH_INVENTORY_MODEL);
-        ItemModelGenerator.generateItemModel(modId, blockName + "_fence", ItemModelTemplates.GENERATED); // extra
+        ItemModelGenerator.generateItemModel(modId, blockName + "_fence", ItemModelTemplates.GENERATED);
         generate(blockName + "_door", BlockstateTemplates.DOOR_BLOCK, BlockModelTemplates.DOOR, ItemModelTemplates.BLOCK_SPRITE);
         generate(blockName + "_button", BlockstateTemplates.BUTTON_BLOCK, BlockModelTemplates.BUTTON, ItemModelTemplates.BLOCK_WITH_INVENTORY_MODEL);
         generate(blockName + "_slab", BlockstateTemplates.SLAB_BLOCK, BlockModelTemplates.SLAB, ItemModelTemplates.BLOCK_SPRITE);
@@ -142,15 +153,54 @@ public class BlockBuilder<T extends Block> {
             properties = Block.Properties.of();
         }
 
-        Supplier<Block> blockSupplier = BlueLibConstants.PlatformHelper.REGISTRY.registerBlock(blockName, () -> {
-            T block = blockConstructor.apply(properties);
-            this.registeredBlock = block;
-            return block;
-        });
+        Supplier<Block> blockSupplier = null;
 
-        if (createDefaultItem) {
-            Supplier<Item> itemSupplier = () -> new BlockItem(registeredBlock, new Item.Properties());
-            BlueLibConstants.PlatformHelper.REGISTRY.registerItem(blockName, itemSupplier);
+        if (!isOre) {
+            blockSupplier = BlueLibConstants.PlatformHelper.REGISTRY.registerBlock(blockName, () -> {
+                T block = blockConstructor.apply(properties);
+                this.registeredBlock = block;
+                return block;
+            });
+
+            if (createDefaultItem) {
+                Supplier<Item> itemSupplier = () -> new BlockItem(registeredBlock, new Item.Properties());
+                BlueLibConstants.PlatformHelper.REGISTRY.registerItem(blockName, itemSupplier);
+            }
+        }
+
+        if (isOre) {
+            blockSupplier = BlueLibConstants.PlatformHelper.REGISTRY.registerBlock(blockName + "_block", () -> {
+                T block = blockConstructor.apply(properties);
+                this.registeredBlock = block;
+                return block;
+            });
+
+            generate(blockName + "_ore", BlockstateTemplates.SIMPLE_BLOCK, BlockModelTemplates.CUBE_ALL, ItemModelTemplates.BLOCK_ITEM);
+            generate(blockName + "_block", BlockstateTemplates.SIMPLE_BLOCK, BlockModelTemplates.CUBE_ALL, ItemModelTemplates.BLOCK_ITEM);
+
+            if (createDefaultItem) {
+                Supplier<Item> itemSupplier = () -> new BlockItem(registeredBlock, new Item.Properties());
+                BlueLibConstants.PlatformHelper.REGISTRY.registerItem(blockName + "_block", itemSupplier);
+            }
+
+            if (hasDeepslate) {
+                generate(blockName + "_deepslate_ore", BlockstateTemplates.SIMPLE_BLOCK, BlockModelTemplates.CUBE_ALL, ItemModelTemplates.BLOCK_ITEM);
+            }
+            if (hasRaw) {
+                ItemBuilder.item("raw_" + blockName, Item::new)
+                        .model(ItemModelTemplates.GENERATED)
+                        .register();
+            }
+            if (hasIngot) {
+                ItemBuilder.item(blockName + "_ingot", Item::new)
+                        .model(ItemModelTemplates.GENERATED)
+                        .register();
+            }
+            if (hasNugget) {
+                ItemBuilder.item(blockName + "_nugget", Item::new)
+                        .model(ItemModelTemplates.GENERATED)
+                        .register();
+            }
         }
 
         REGISTERED_BUILDERS.add(this);
@@ -159,10 +209,10 @@ public class BlockBuilder<T extends Block> {
 
     public static void doBlockModelGen(String modId) {
         for (BlockBuilder<?> builder : REGISTERED_BUILDERS) {
-            if (builder.createDefaultItem) {
+            if (!builder.isOre && builder.createDefaultItem) {
                 ItemModelGenerator.generateItemModel(modId, builder.blockName, ItemModelTemplates.BLOCK_ITEM);
             }
-            if (blockstateTemplate != null) {
+            if (!builder.isOre && blockstateTemplate != null) {
                 BlockstateGenerator.generateBlockstate(modId, builder.blockName, blockstateTemplate);
                 BlockModelGenerator.generateBlockModel(modId, builder.blockName, blockModelTemplate);
             }
@@ -181,7 +231,6 @@ public class BlockBuilder<T extends Block> {
     }
 
     public static class RecipeContext {
-
         private final Block block;
 
         public RecipeContext(Block block) {
@@ -194,7 +243,6 @@ public class BlockBuilder<T extends Block> {
     }
 
     public class BlockstateBuilder {
-
         private final BlockBuilder<T> parent;
 
         public BlockstateBuilder() {
@@ -208,6 +256,38 @@ public class BlockBuilder<T extends Block> {
 
         public BlockstateBuilder model(BlockModelTemplates models) {
             blockModelTemplate = models;
+            return this;
+        }
+
+        public BlockBuilder<T> finish() {
+            return parent;
+        }
+    }
+
+    public class OreBuilder {
+        private final BlockBuilder<T> parent;
+
+        public OreBuilder() {
+            this.parent = BlockBuilder.this;
+        }
+
+        public OreBuilder hasRaw() {
+            hasRaw = true;
+            return this;
+        }
+
+        public OreBuilder hasIngot() {
+            hasIngot = true;
+            return this;
+        }
+
+        public OreBuilder hasNugget() {
+            hasNugget = true;
+            return this;
+        }
+
+        public OreBuilder hasDeepslate() {
+            hasDeepslate = true;
             return this;
         }
 

@@ -5,7 +5,6 @@ import static software.bluelib.api.registry.AbstractRegistryBuilder.getModID;
 
 import java.util.function.Supplier;
 import net.minecraft.client.renderer.entity.PigRenderer;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
@@ -22,7 +21,7 @@ public class TestEntityReg {
         //BaseLogger.log(BaseLogLevel.SUCCESS, "Registered Entities!");
     }
 
-    public static final Supplier<EntityType<Pig>> TEST_ENTITY = REGISTRIES.entity("test", Pig::new, MobCategory.CREATURE)
+    public static final Supplier<EntityType<Pig>> TEST_ENTITY = REGISTRIES.entity("test_e", Pig::new, MobCategory.CREATURE)
             .attributes(Pig::createAttributes)
             .renderer(PigRenderer::new)
             .spawnEgg(0x0000, 0x0000)
@@ -35,6 +34,18 @@ public class TestEntityReg {
                     .requires(Items.APPLE)
                     .unlockedBy("has_diamond", RecipeProvider.has(Items.DIAMOND))
                     .save(prov))
+            .defaultBlockstate()
+            .register();
+
+    public static final Supplier<Block> TEST_ORE = REGISTRIES.block("text", Block::new)
+            .properties(Block.Properties.of().strength(1.0F, 1.0F))
+            .defaultItem()
+            .ore()
+                .hasRaw()
+                .hasIngot()
+                .hasNugget()
+                .hasDeepslate()
+            .finish()
             .defaultBlockstate()
             .register();
 
