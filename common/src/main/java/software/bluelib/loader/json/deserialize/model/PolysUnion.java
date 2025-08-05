@@ -7,8 +7,9 @@
  */
 package software.bluelib.loader.json.deserialize.model;
 
-import com.google.gson.JsonArray;
+import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
@@ -17,38 +18,34 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.utils.JsonUtils;
 
-// TODO: Convert to Utils Please or Atleast Cleanup
 public record PolysUnion(
 		@NotNull List<List<List<Float>>> union,
 		@Nullable Type type) {
 
 	@NotNull
 	public static JsonDeserializer<PolysUnion> deserializer() throws JsonParseException {
-		return (json, type, context) -> {
-			if (json.isJsonPrimitive() && json.getAsJsonPrimitive().isString()) {
-				return new PolysUnion(new ArrayList<>(), context.deserialize(json.getAsJsonPrimitive(), Type.class));
-			} else if (json.isJsonArray()) {
-				JsonArray array = json.getAsJsonArray();
-				List<List<List<Float>>> matrix = new ArrayList<>();
+		return (json, type, context) -> fromJson(json, context);
+	}
 
-				for (int x = 0; x < array.size(); x++) {
-					JsonArray xArray = array.get(x).getAsJsonArray();
-					List<List<Float>> yList = new ArrayList<>();
-
-					for (int y = 0; y < xArray.size(); y++) {
-						JsonArray yArray = xArray.get(y).getAsJsonArray();
-						List<Float> zList = JsonUtils.jsonArrayToFloatList(yArray);
-						yList.add(zList);
-					}
-
-					matrix.add(yList);
+	@NotNull
+	public static PolysUnion fromJson(@NotNull JsonElement pJson, @NotNull JsonDeserializationContext pContext) throws JsonParseException {
+		if (pJson.isJsonPrimitive() && pJson.getAsJsonPrimitive().isString()) {
+			Type type = pContext.deserialize(pJson.getAsJsonPrimitive(), PolysUnion.Type.class);
+			return new PolysUnion(new ArrayList<>(), type);
+		}
+		if (pJson.isJsonArray()) {
+			List<List<List<Float>>> matrix = new ArrayList<>();
+			for (JsonElement xElem : pJson.getAsJsonArray()) {
+				List<List<Float>> yList = new ArrayList<>();
+				for (JsonElement yElem : xElem.getAsJsonArray()) {
+					List<Float> zList = JsonUtils.jsonArrayToFloatList(yElem.getAsJsonArray());
+					yList.add(zList);
 				}
-
-				return new PolysUnion(matrix, null);
-			} else {
-				throw new JsonParseException("Invalid format for PolysUnion, must be either string or array");
+				matrix.add(yList);
 			}
-		};
+			return new PolysUnion(matrix, null);
+		}
+		throw new JsonParseException("Invalid format for PolysUnion, must be either string or array");
 	}
 
 	public enum Type {

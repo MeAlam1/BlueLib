@@ -16,6 +16,8 @@ import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.utils.JsonUtils;
+import software.bluelib.api.utils.logging.BaseLogLevel;
+import software.bluelib.api.utils.logging.BaseLogger;
 
 public record FaceUV(
 		@Nullable String materialInstance,
@@ -57,8 +59,9 @@ public record FaceUV(
 			try {
 				return Rotation.values()[(pValue % 360) / 90];
 			} catch (Exception pException) {
-				// TODO: Log a warning about an invalid rotation value
-				return fromValue(Mth.floor(Math.abs(pValue) / 90f) * 90);
+				Rotation rotation = fromValue(Mth.floor(Math.abs(pValue) / 90f) * 90);
+				BaseLogger.log(BaseLogLevel.ERROR, "Invalid rotation value: " + pValue + ", defaulting to" + rotation, pException);
+				return rotation;
 			}
 		}
 

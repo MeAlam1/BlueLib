@@ -13,6 +13,7 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import net.minecraft.util.GsonHelper;
 import org.jetbrains.annotations.NotNull;
@@ -146,6 +147,21 @@ public final class JsonUtils {
 			}
 		}
 		return result;
+	}
+
+	@NotNull
+	public static <T> JsonDeserializer<T> unionDeserializer(
+			@NotNull BiFunction<JsonArray, JsonDeserializationContext, T> pArrayMapper,
+			@NotNull BiFunction<JsonObject, JsonDeserializationContext, T> objectMapper) {
+		return (json, type, context) -> {
+			if (json.isJsonArray()) {
+				return pArrayMapper.apply(json.getAsJsonArray(), context);
+			} else if (json.isJsonObject()) {
+				return objectMapper.apply(json.getAsJsonObject(), context);
+			} else {
+				throw new JsonParseException("Expected JSON array or object but got: " + json);
+			}
+		};
 	}
 
 	@Nullable
