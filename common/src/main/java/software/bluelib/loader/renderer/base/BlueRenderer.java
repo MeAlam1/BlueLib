@@ -68,7 +68,7 @@ public interface BlueRenderer<T extends BlueAnimatable> {
 		return pAnimatable.hashCode();
 	}
 
-	default float getMotionAnimThreshold(T pAnimatable) {
+	default float getMotionAnimThreshold(IRenderContext<T> pContext) {
 		return 0.015f;
 	}
 

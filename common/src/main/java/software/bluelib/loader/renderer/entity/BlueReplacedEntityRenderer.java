@@ -222,7 +222,7 @@ public class BlueReplacedEntityRenderer<E extends Entity, T extends BlueAnimatab
 			}
 
 			float headPitch = Mth.lerp(pPartialTick, this.currentEntity.xRotO, this.currentEntity.getXRot());
-			float motionThreshold = getMotionAnimThreshold(pAnimatable);
+			float motionThreshold = getMotionAnimThreshold(pContext);
 			boolean isMoving;
 			if (livingEntity != null) {
 				Vec3 velocity = livingEntity.getDeltaMovement();

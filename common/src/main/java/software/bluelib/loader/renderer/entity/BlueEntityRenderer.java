@@ -221,7 +221,7 @@ public class BlueEntityRenderer<T extends Entity & BlueAnimatable> extends Entit
 
 			if (!pIsReRender) {
 				float headPitch = Mth.lerp(pPartialTick, animatable.xRotO, animatable.getXRot());
-				float motionThreshold = getMotionAnimThreshold(animatable);
+				float motionThreshold = getMotionAnimThreshold(pContext);
 				Vec3 velocity = animatable.getDeltaMovement();
 				float avgVelocity = (float) ((Math.abs(velocity.x) + Math.abs(velocity.z)) / 2f);
 				AnimationState<T> animationState = new AnimationState<T>(animatable, limbSwing, limbSwingAmount, pPartialTick, avgVelocity >= motionThreshold && limbSwingAmount != 0);
@@ -383,65 +383,74 @@ public class BlueEntityRenderer<T extends Entity & BlueAnimatable> extends Entit
 		return animatable.isFullyFrozen();
 	}
 
-	public <E extends Entity, M extends Mob> void renderLeash(M pMob, float pPartialTick, PoseStack pPoseStack,
+	public <E extends Entity, M extends Mob> void renderLeash(
+			M pMob, float pPartialTick, PoseStack pPoseStack,
 			MultiBufferSource pBufferSource, E pLeashHolder) {
-		double lerpBodyAngle = (Mth.lerp(pPartialTick, pMob.yBodyRotO, pMob.yBodyRot) * Mth.DEG_TO_RAD) + Mth.HALF_PI;
+		float bodyAngle = (Mth.lerp(pPartialTick, pMob.yBodyRotO, pMob.yBodyRot) * Mth.DEG_TO_RAD) + Mth.HALF_PI;
 		Vec3 leashOffset = pMob.getLeashOffset(pPartialTick);
-		double xAngleOffset = Math.cos(lerpBodyAngle) * leashOffset.z + Math.sin(lerpBodyAngle) * leashOffset.x;
-		double zAngleOffset = Math.sin(lerpBodyAngle) * leashOffset.z - Math.cos(lerpBodyAngle) * leashOffset.x;
+		float cos = (float) Math.cos(bodyAngle), sin = (float) Math.sin(bodyAngle);
+
+		double xAngleOffset = cos * leashOffset.z + sin * leashOffset.x;
+		double zAngleOffset = sin * leashOffset.z - cos * leashOffset.x;
+
 		double lerpOriginX = Mth.lerp(pPartialTick, pMob.xo, pMob.getX()) + xAngleOffset;
 		double lerpOriginY = Mth.lerp(pPartialTick, pMob.yo, pMob.getY()) + leashOffset.y;
 		double lerpOriginZ = Mth.lerp(pPartialTick, pMob.zo, pMob.getZ()) + zAngleOffset;
-		Vec3 ropeGripPosition = pLeashHolder.getRopeHoldPosition(pPartialTick);
-		float xDif = (float) (ropeGripPosition.x - lerpOriginX);
-		float yDif = (float) (ropeGripPosition.y - lerpOriginY);
-		float zDif = (float) (ropeGripPosition.z - lerpOriginZ);
-		float offsetMod = Mth.invSqrt(xDif * xDif + zDif * zDif) * 0.025f / 2f;
-		float xOffset = zDif * offsetMod;
-		float zOffset = xDif * offsetMod;
-		VertexConsumer vertexConsumer = pBufferSource.getBuffer(RenderType.leash());
-		BlockPos entityEyePos = BlockPos.containing(pMob.getEyePosition(pPartialTick));
-		BlockPos holderEyePos = BlockPos.containing(pLeashHolder.getEyePosition(pPartialTick));
-		int entityBlockLight = getBlockLightLevel((T) pMob, entityEyePos);
-		int holderBlockLight = pLeashHolder.isOnFire() ? 15 : pLeashHolder.level().getBrightness(LightLayer.BLOCK, holderEyePos);
-		int entitySkyLight = pMob.level().getBrightness(LightLayer.SKY, entityEyePos);
-		int holderSkyLight = pMob.level().getBrightness(LightLayer.SKY, holderEyePos);
+
+		Vec3 ropePos = pLeashHolder.getRopeHoldPosition(pPartialTick);
+		float xDif = (float) (ropePos.x - lerpOriginX);
+		float yDif = (float) (ropePos.y - lerpOriginY);
+		float zDif = (float) (ropePos.z - lerpOriginZ);
+
+		float offsetMod = Mth.invSqrt(xDif * xDif + zDif * zDif) * 0.0125f;
+		float xOffset = zDif * offsetMod, zOffset = xDif * offsetMod;
+
+		VertexConsumer vc = pBufferSource.getBuffer(RenderType.leash());
+
+		BlockPos mobEye = BlockPos.containing(pMob.getEyePosition(pPartialTick));
+		BlockPos holderEye = BlockPos.containing(pLeashHolder.getEyePosition(pPartialTick));
+
+		int mobBlockLight = getBlockLightLevel((T) pMob, mobEye);
+		int holderBlockLight = pLeashHolder.isOnFire() ? 15 : pLeashHolder.level().getBrightness(LightLayer.BLOCK, holderEye);
+		int mobSkyLight = pMob.level().getBrightness(LightLayer.SKY, mobEye);
+		int holderSkyLight = pMob.level().getBrightness(LightLayer.SKY, holderEye);
 
 		pPoseStack.pushPose();
 		pPoseStack.translate(xAngleOffset, leashOffset.y, zAngleOffset);
 
-		Matrix4f posMatrix = new Matrix4f(pPoseStack.last().pose());
+		Matrix4f matrix = pPoseStack.last().pose();
 
-		for (int segment = 0; segment <= 24; ++segment) {
-			BlueEntityRenderer.renderLeashPiece(vertexConsumer, posMatrix, xDif, yDif, zDif, entityBlockLight, holderBlockLight,
-					entitySkyLight, holderSkyLight, 0.025f, 0.025f, xOffset, zOffset, segment, false);
+		for (int i = 0; i <= 24; i++) {
+			float t = i / 24f;
+			addLeashVertices(vc, matrix, xDif, yDif, zDif, mobBlockLight, holderBlockLight, mobSkyLight, holderSkyLight, xOffset, zOffset, t, false);
 		}
-
-		for (int segment = 24; segment >= 0; --segment) {
-			BlueEntityRenderer.renderLeashPiece(vertexConsumer, posMatrix, xDif, yDif, zDif, entityBlockLight, holderBlockLight,
-					entitySkyLight, holderSkyLight, 0.025f, 0.0f, xOffset, zOffset, segment, true);
+		for (int i = 24; i >= 0; i--) {
+			float t = i / 24f;
+			addLeashVertices(vc, matrix, xDif, yDif, zDif, mobBlockLight, holderBlockLight, mobSkyLight, holderSkyLight, xOffset, zOffset, t, true);
 		}
 
 		pPoseStack.popPose();
 	}
 
-	private static void renderLeashPiece(VertexConsumer pBuffer, Matrix4f pPositionMatrix, float pXDif, float pYDif,
-			float pZDif, int pEntityBlockLight, int pHolderBlockLight, int pEntitySkyLight,
-			int pHolderSkyLight, float pWidth, float pYOffset, float pXOffset, float pZOffset, int pSegment, boolean pIsLeashKnot) {
-		float piecePosPercent = pSegment / 24f;
-		int lerpBlockLight = (int) Mth.lerp(piecePosPercent, pEntityBlockLight, pHolderBlockLight);
-		int lerpSkyLight = (int) Mth.lerp(piecePosPercent, pEntitySkyLight, pHolderSkyLight);
-		int pPackedLight = LightTexture.pack(lerpBlockLight, lerpSkyLight);
-		float knotColourMod = pSegment % 2 == (pIsLeashKnot ? 1 : 0) ? 0.7f : 1f;
-		float red = 0.5f * knotColourMod;
-		float green = 0.4f * knotColourMod;
-		float blue = 0.3f * knotColourMod;
-		float x = pXDif * piecePosPercent;
-		float y = pYDif > 0.0f ? pYDif * piecePosPercent * piecePosPercent : pYDif - pYDif * (1.0f - piecePosPercent) * (1.0f - piecePosPercent);
-		float z = pZDif * piecePosPercent;
+	private static void addLeashVertices(VertexConsumer pBuffer, Matrix4f pMatrix4f,
+			float pXDif, float pYDif, float pZDif,
+			int pMobBlockLight, int pHolderBlockLight,
+			int pMobSkyLight, int pHolderSkyLight,
+			float pXOffset, float pZOffset, float pSegment, boolean pIsKnot) {
+		int packedLight = LightTexture.pack(
+				(int) Mth.lerp(pSegment, pMobBlockLight, pHolderBlockLight),
+				(int) Mth.lerp(pSegment, pMobSkyLight, pHolderSkyLight));
 
-		pBuffer.addVertex(pPositionMatrix, x - pXOffset, y + pYOffset, z + pZOffset).setColor(red, green, blue, 1).setLight(pPackedLight);
-		pBuffer.addVertex(pPositionMatrix, x + pXOffset, y + pWidth - pYOffset, z - pZOffset).setColor(red, green, blue, 1).setLight(pPackedLight);
+		float colourMod = (Math.round(pSegment * 24) % 2 == (pIsKnot ? 1 : 0)) ? 0.7f : 1f;
+		float red = 0.5f * colourMod, green = 0.4f * colourMod, blue = 0.3f * colourMod;
+
+		float x = pXDif * pSegment;
+		float y = pYDif > 0 ? pYDif * pSegment * pSegment : pYDif - pYDif * (1 - pSegment) * (1 - pSegment);
+		float z = pZDif * pSegment;
+		float width = pIsKnot ? 0f : 0.025f;
+
+		pBuffer.addVertex(pMatrix4f, x - pXOffset, y + width, z + pZOffset).setColor(red, green, blue, 1).setLight(packedLight);
+		pBuffer.addVertex(pMatrix4f, x + pXOffset, y + 0.025f - width, z - pZOffset).setColor(red, green, blue, 1).setLight(packedLight);
 	}
 
 	@Override
