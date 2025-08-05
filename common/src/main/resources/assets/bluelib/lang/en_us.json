@@ -82,7 +82,8 @@
     "bluelib.config.markdown.failed": "The Markdown Config of BlueLib has failed to load. %1$s",
     "bluelib.config.logger.loaded": "The Logger Config of BlueLib has been loaded.",
     "bluelib.config.logger.failed": "The Logger Config of BlueLib has failed to load. %1$s",
-  
+
+    "bluelib.command.logger.no_player": "You must be a player to use this command.",
     "bluelib.command.logger.no_permission": "You do not have permission to use this command.",
     "bluelib.ui.logger.title": "Logger Screen!",
   
