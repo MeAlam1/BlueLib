@@ -38,6 +38,20 @@ public class BlockBuilder<T extends Block> {
     private boolean hasNugget = false;
     private boolean hasDeepslate = false;
 
+    private boolean hasLog = false;
+    private boolean hasStrippedLog = false;
+    private boolean hasPlanks = false;
+    private boolean hasFence = false;
+    private boolean hasDoor = false;
+    private boolean hasButton = false;
+    private boolean hasSlab = false;
+    private boolean hasPressurePlate = false;
+    private boolean hasStairs = false;
+    private boolean hasTrapdoor = false;
+    private boolean hasFenceGate = false;
+    //private boolean hasSign = false;
+    //private boolean hasHangingSign = false;
+
     public BlockBuilder(String name, Function<Block.Properties, T> blockConstructor) {
         this.blockName = name;
         this.blockConstructor = blockConstructor;
@@ -65,72 +79,8 @@ public class BlockBuilder<T extends Block> {
         return new OreBuilder();
     }
 
-    public BlockBuilder<T> button() {
-        generate(blockName, BlockstateTemplates.BUTTON_BLOCK, BlockModelTemplates.BUTTON, ItemModelTemplates.BLOCK_WITH_INVENTORY_MODEL);
-        return this;
-    }
-
-    public BlockBuilder<T> log() {
-        generate(blockName, BlockstateTemplates.ORIENTED_BLOCK, BlockModelTemplates.COLUMN, ItemModelTemplates.BLOCK_ITEM);
-        return this;
-    }
-
-    public BlockBuilder<T> slab() {
-        generate(blockName, BlockstateTemplates.SLAB_BLOCK, BlockModelTemplates.SLAB, ItemModelTemplates.BLOCK_SPRITE);
-        return this;
-    }
-
-    public BlockBuilder<T> door() {
-        generate(blockName, BlockstateTemplates.DOOR_BLOCK, BlockModelTemplates.DOOR, ItemModelTemplates.BLOCK_SPRITE);
-        return this;
-    }
-
-    public BlockBuilder<T> fence() {
-        generate(blockName, BlockstateTemplates.FENCE_BLOCK, BlockModelTemplates.FENCE, ItemModelTemplates.BLOCK_WITH_INVENTORY_MODEL);
-        ItemModelGenerator.generateItemModel(modId, blockName, ItemModelTemplates.GENERATED);
-        return this;
-    }
-
-    public BlockBuilder<T> fenceGate() {
-        generate(blockName, BlockstateTemplates.FENCE_GATE_BLOCK, BlockModelTemplates.FENCE_GATE, ItemModelTemplates.BLOCK_SPRITE);
-        return this;
-    }
-
-    public BlockBuilder<T> trapdoor() {
-        generate(blockName, BlockstateTemplates.TRAPDOOR_BLOCK, BlockModelTemplates.TRAPDOOR, ItemModelTemplates.BLOCK_SPRITE);
-        return this;
-    }
-
-    public BlockBuilder<T> stairs() {
-        generate(blockName, BlockstateTemplates.STAIRS_BLOCK, BlockModelTemplates.STAIRS, ItemModelTemplates.BLOCK_SPRITE);
-        return this;
-    }
-
-    public BlockBuilder<T> pressurePlate() {
-        generate(blockName, BlockstateTemplates.PRESSURE_PLATE_BLOCK, BlockModelTemplates.PRESSURE_PLATE, ItemModelTemplates.BLOCK_SPRITE);
-        return this;
-    }
-
-    public BlockBuilder<T> tree() {
-        generate(blockName + "_log", BlockstateTemplates.ORIENTED_BLOCK, BlockModelTemplates.COLUMN, ItemModelTemplates.BLOCK_ITEM);
-        generate(blockName + "_planks", BlockstateTemplates.SIMPLE_BLOCK, BlockModelTemplates.CUBE_ALL, ItemModelTemplates.BLOCK_ITEM);
-        generate(blockName + "_leaves", BlockstateTemplates.SIMPLE_BLOCK, BlockModelTemplates.CUBE_ALL, ItemModelTemplates.BLOCK_ITEM);
-        return this;
-    }
-
-    public BlockBuilder<T> wood() {
-        generate(blockName + "_log", BlockstateTemplates.ORIENTED_BLOCK, BlockModelTemplates.COLUMN, ItemModelTemplates.BLOCK_ITEM);
-        generate(blockName + "_planks", BlockstateTemplates.SIMPLE_BLOCK, BlockModelTemplates.CUBE_ALL, ItemModelTemplates.BLOCK_ITEM);
-        generate(blockName + "_fence", BlockstateTemplates.FENCE_BLOCK, BlockModelTemplates.FENCE, ItemModelTemplates.BLOCK_WITH_INVENTORY_MODEL);
-        ItemModelGenerator.generateItemModel(modId, blockName + "_fence", ItemModelTemplates.GENERATED);
-        generate(blockName + "_door", BlockstateTemplates.DOOR_BLOCK, BlockModelTemplates.DOOR, ItemModelTemplates.BLOCK_SPRITE);
-        generate(blockName + "_button", BlockstateTemplates.BUTTON_BLOCK, BlockModelTemplates.BUTTON, ItemModelTemplates.BLOCK_WITH_INVENTORY_MODEL);
-        generate(blockName + "_slab", BlockstateTemplates.SLAB_BLOCK, BlockModelTemplates.SLAB, ItemModelTemplates.BLOCK_SPRITE);
-        generate(blockName + "_pressure_plate", BlockstateTemplates.PRESSURE_PLATE_BLOCK, BlockModelTemplates.PRESSURE_PLATE, ItemModelTemplates.BLOCK_SPRITE);
-        generate(blockName + "_stairs", BlockstateTemplates.STAIRS_BLOCK, BlockModelTemplates.STAIRS, ItemModelTemplates.BLOCK_SPRITE);
-        generate(blockName + "_trapdoor", BlockstateTemplates.TRAPDOOR_BLOCK, BlockModelTemplates.TRAPDOOR, ItemModelTemplates.BLOCK_SPRITE);
-        generate(blockName + "_fence_gate", BlockstateTemplates.FENCE_GATE_BLOCK, BlockModelTemplates.FENCE_GATE, ItemModelTemplates.BLOCK_SPRITE);
-        return this;
+    public WoodBuilder wood() {
+        return new WoodBuilder();
     }
 
     public BlockBuilder<T> recipe(BiConsumer<RecipeContext, RecipeOutput> recipeConsumer) {
@@ -292,6 +242,124 @@ public class BlockBuilder<T extends Block> {
         }
 
         public BlockBuilder<T> finish() {
+            return parent;
+        }
+    }
+
+    public class WoodBuilder {
+        private final BlockBuilder<T> parent;
+
+        public WoodBuilder() {
+            this.parent = BlockBuilder.this;
+        }
+
+        public WoodBuilder hasLog() {
+            hasLog = true;
+            return this;
+        }
+
+        public WoodBuilder hasStrippedLog() {
+            hasStrippedLog = true;
+            return this;
+        }
+
+        public WoodBuilder hasPlanks() {
+            hasPlanks = true;
+            return this;
+        }
+
+        public WoodBuilder hasFence() {
+            hasFence = true;
+            return this;
+        }
+
+        public WoodBuilder hasDoor() {
+            hasDoor = true;
+            return this;
+        }
+
+        public WoodBuilder hasButton() {
+            hasButton = true;
+            return this;
+        }
+
+        public WoodBuilder hasSlab() {
+            hasSlab = true;
+            return this;
+        }
+
+        public WoodBuilder hasPressurePlate() {
+            hasPressurePlate = true;
+            return this;
+        }
+
+        public WoodBuilder hasStairs() {
+            hasStairs = true;
+            return this;
+        }
+
+        public WoodBuilder hasTrapdoor() {
+            hasTrapdoor = true;
+            return this;
+        }
+
+        public WoodBuilder hasFenceGate() {
+            hasFenceGate = true;
+            return this;
+        }
+
+        /*public WoodBuilder hasSign() {
+            hasSign = true;
+            return this;
+        }
+
+        public WoodBuilder hasHangingSign() {
+            hasHangingSign = true;
+            return this;
+        }*/
+
+        public BlockBuilder<T> finish() {
+            if (hasLog) {
+                generate(blockName + "_log", BlockstateTemplates.ORIENTED_BLOCK, BlockModelTemplates.COLUMN, ItemModelTemplates.BLOCK_ITEM);
+            }
+            if (hasStrippedLog) {
+                generate(blockName + "_log_stripped", BlockstateTemplates.ORIENTED_BLOCK, BlockModelTemplates.COLUMN, ItemModelTemplates.BLOCK_ITEM);
+            }
+            if (hasPlanks) {
+                generate(blockName + "_planks", BlockstateTemplates.SIMPLE_BLOCK, BlockModelTemplates.CUBE_ALL, ItemModelTemplates.BLOCK_ITEM);
+            }
+            if (hasFence) {
+                generate(blockName + "_fence", BlockstateTemplates.FENCE_BLOCK, BlockModelTemplates.FENCE, ItemModelTemplates.BLOCK_WITH_INVENTORY_MODEL);
+                ItemModelGenerator.generateItemModel(modId, blockName + "_fence", ItemModelTemplates.GENERATED);
+            }
+            if (hasDoor) {
+                generate(blockName + "_door", BlockstateTemplates.DOOR_BLOCK, BlockModelTemplates.DOOR, ItemModelTemplates.BLOCK_SPRITE);
+            }
+            if (hasButton) {
+                generate(blockName + "_button", BlockstateTemplates.BUTTON_BLOCK, BlockModelTemplates.BUTTON, ItemModelTemplates.BLOCK_WITH_INVENTORY_MODEL);
+            }
+            if (hasSlab) {
+                generate(blockName + "_slab", BlockstateTemplates.SLAB_BLOCK, BlockModelTemplates.SLAB, ItemModelTemplates.BLOCK_SPRITE);
+            }
+            if (hasPressurePlate) {
+                generate(blockName + "_pressure_plate", BlockstateTemplates.PRESSURE_PLATE_BLOCK, BlockModelTemplates.PRESSURE_PLATE, ItemModelTemplates.BLOCK_SPRITE);
+            }
+            if (hasStairs) {
+                generate(blockName + "_stairs", BlockstateTemplates.STAIRS_BLOCK, BlockModelTemplates.STAIRS, ItemModelTemplates.BLOCK_SPRITE);
+            }
+            if (hasTrapdoor) {
+                generate(blockName + "_trapdoor", BlockstateTemplates.TRAPDOOR_BLOCK, BlockModelTemplates.TRAPDOOR, ItemModelTemplates.BLOCK_SPRITE);
+            }
+            if (hasFenceGate) {
+                generate(blockName + "_fence_gate", BlockstateTemplates.FENCE_GATE_BLOCK, BlockModelTemplates.FENCE_GATE, ItemModelTemplates.BLOCK_SPRITE);
+            }
+            /*if (hasSign) {
+                generate(blockName + "_fence_gate", BlockstateTemplates.FENCE_GATE_BLOCK, BlockModelTemplates.FENCE_GATE, ItemModelTemplates.BLOCK_SPRITE);
+            }
+            if (hasHangingSign) {
+                generate(blockName + "_fence_gate", BlockstateTemplates.FENCE_GATE_BLOCK, BlockModelTemplates.FENCE_GATE, ItemModelTemplates.BLOCK_SPRITE);
+            }*/
+
             return parent;
         }
     }
