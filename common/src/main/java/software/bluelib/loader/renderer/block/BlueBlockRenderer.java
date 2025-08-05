@@ -12,7 +12,6 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import java.util.List;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -65,8 +64,8 @@ public class BlueBlockRenderer<T extends BlockEntity & BlueAnimatable> implement
 	}
 
 	@Override
-	public long getInstanceId(T pAnimatable) {
-		return pAnimatable.getBlockPos().hashCode();
+	public long getInstanceId(IRenderContext<T> pContext) {
+		return pContext.animatable().getBlockPos().hashCode();
 	}
 
 	@Override
@@ -130,7 +129,7 @@ public class BlueBlockRenderer<T extends BlockEntity & BlueAnimatable> implement
 
 			if (!pIsReRender) {
 				AnimationState<T> animationState = new AnimationState<>(animatable, 0, 0, pPartialTick, false);
-				long instanceId = getInstanceId(animatable);
+				long instanceId = getInstanceId(pContext);
 				BlueModel<T> currentModel = getBlueModel();
 
 				animationState.setData(DataTickets.TICK, animatable.getTick(animatable));
@@ -155,10 +154,9 @@ public class BlueBlockRenderer<T extends BlockEntity & BlueAnimatable> implement
 	}
 
 	@Override
-	public void renderRecursively(PoseStack pPoseStack, T pAnimatable, BoneCache pBone, RenderType pRenderType, MultiBufferSource pBufferSource, VertexConsumer pBuffer, boolean pIsReRender, float pPartialTick, int pPackedLight,
-			int pPackedOverlay, int pColour) {
+	public void renderRecursively(BoneCache pBone, FullRenderContext<T> pContext) {
 		if (pBone.isTrackingMatrices()) {
-			Matrix4f poseState = new Matrix4f(pPoseStack.last().pose());
+			Matrix4f poseState = new Matrix4f(pContext.poseStack().last().pose());
 			Matrix4f localMatrix = RenderUtils.invertAndMultiplyMatrices(poseState, this.blockRenderTranslations);
 			Matrix4f worldState = new Matrix4f(localMatrix);
 			BlockPos pos = this.animatable.getBlockPos();
@@ -168,8 +166,7 @@ public class BlueBlockRenderer<T extends BlockEntity & BlueAnimatable> implement
 			pBone.setWorldSpaceMatrix(worldState.translate(new Vector3f(pos.getX(), pos.getY(), pos.getZ())));
 		}
 
-		BlueRenderer.super.renderRecursively(pPoseStack, pAnimatable, pBone, pRenderType, pBufferSource, pBuffer, pIsReRender, pPartialTick, pPackedLight, pPackedOverlay,
-				pColour);
+		BlueRenderer.super.renderRecursively(pBone, pContext);
 	}
 
 	protected void rotateBlock(Direction pFacing, PoseStack pPoseStack) {

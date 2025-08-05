@@ -81,8 +81,8 @@ public class BlueEntityRenderer<T extends Entity & BlueAnimatable> extends Entit
 	}
 
 	@Override
-	public long getInstanceId(T pAnimatable) {
-		return pAnimatable.getId();
+	public long getInstanceId(IRenderContext<T> pContext) {
+		return pContext.animatable().getId();
 	}
 
 	@Override
@@ -124,16 +124,16 @@ public class BlueEntityRenderer<T extends Entity & BlueAnimatable> extends Entit
 
 	@Nullable
 	@Override
-	public RenderType getRenderType(T pAnimatable, ResourceLocation pTexture, @Nullable MultiBufferSource pBufferSource, float pPartialTick) {
-		final boolean invisible = pAnimatable.isInvisible();
+	public RenderType getRenderType(ResourceLocation pTexture, IRenderContext<T> pContext) {
+		final boolean invisible = pContext.animatable().isInvisible();
 
-		if (invisible && !pAnimatable.isInvisibleTo(PlayerUtils.getClientPlayer()))
+		if (invisible && !pContext.animatable().isInvisibleTo(PlayerUtils.getClientPlayer()))
 			return RenderType.itemEntityTranslucentCull(pTexture);
 
 		if (!invisible)
-			return BlueRenderer.super.getRenderType(pAnimatable, pTexture, pBufferSource, pPartialTick);
+			return BlueRenderer.super.getRenderType(pTexture, pContext);
 
-		return Minecraft.getInstance().shouldEntityAppearGlowing(pAnimatable) ? RenderType.outline(pTexture) : null;
+		return Minecraft.getInstance().shouldEntityAppearGlowing(pContext.animatable()) ? RenderType.outline(pTexture) : null;
 	}
 
 	@Override
@@ -225,7 +225,7 @@ public class BlueEntityRenderer<T extends Entity & BlueAnimatable> extends Entit
 				Vec3 velocity = animatable.getDeltaMovement();
 				float avgVelocity = (float) ((Math.abs(velocity.x) + Math.abs(velocity.z)) / 2f);
 				AnimationState<T> animationState = new AnimationState<T>(animatable, limbSwing, limbSwingAmount, pPartialTick, avgVelocity >= motionThreshold && limbSwingAmount != 0);
-				long instanceId = getInstanceId(animatable);
+				long instanceId = getInstanceId(pContext);
 				BlueModel<T> currentModel = getBlueModel();
 
 				animationState.setData(DataTickets.TICK, animatable.getTick(animatable));
@@ -273,16 +273,15 @@ public class BlueEntityRenderer<T extends Entity & BlueAnimatable> extends Entit
 	}
 
 	@Override
-	public void renderRecursively(PoseStack pPoseStack, T pAnimatable, BoneCache pBone, RenderType pRenderType, MultiBufferSource pBufferSource, VertexConsumer pBuffer, boolean pIsReRender, float pPartialTick, int pPackedLight,
-			int pPackedOverlay, int pColour) {
-		pPoseStack.pushPose();
-		RenderUtils.translateMatrixToBone(pPoseStack, pBone);
-		RenderUtils.translateToPivotPoint(pPoseStack, pBone);
-		RenderUtils.rotateMatrixAroundBone(pPoseStack, pBone);
-		RenderUtils.scaleMatrixForBone(pPoseStack, pBone);
+	public void renderRecursively(BoneCache pBone, FullRenderContext<T> pContext) {
+		pContext.poseStack().pushPose();
+		RenderUtils.translateMatrixToBone(pContext.poseStack(), pBone);
+		RenderUtils.translateToPivotPoint(pContext.poseStack(), pBone);
+		RenderUtils.rotateMatrixAroundBone(pContext.poseStack(), pBone);
+		RenderUtils.scaleMatrixForBone(pContext.poseStack(), pBone);
 
 		if (pBone.isTrackingMatrices()) {
-			Matrix4f poseState = new Matrix4f(pPoseStack.last().pose());
+			Matrix4f poseState = new Matrix4f(pContext.poseStack().last().pose());
 			Matrix4f localMatrix = RenderUtils.invertAndMultiplyMatrices(poseState, this.entityRenderTranslations);
 
 			pBone.setModelSpaceMatrix(RenderUtils.invertAndMultiplyMatrices(poseState, this.modelRenderTranslations));
@@ -290,18 +289,18 @@ public class BlueEntityRenderer<T extends Entity & BlueAnimatable> extends Entit
 			pBone.setWorldSpaceMatrix(RenderUtils.translateMatrix(new Matrix4f(localMatrix), this.animatable.position().toVector3f()));
 		}
 
-		RenderUtils.translateAwayFromPivotPoint(pPoseStack, pBone);
+		RenderUtils.translateAwayFromPivotPoint(pContext.poseStack(), pBone);
 
-		pBuffer = BufferUtils.checkAndRefreshBuffer(pIsReRender, pBuffer, pBufferSource, pRenderType);
+		pContext.setBuffer(BufferUtils.checkAndRefreshBuffer(pContext.isReRender(), pContext.buffer(), pContext.bufferSource(), pContext.renderType()));
 
-		renderCubesOfBone(pPoseStack, pBone, pBuffer, pPackedLight, pPackedOverlay, pColour);
+		renderCubesOfBone(pBone, pContext);
 
-		if (!pIsReRender)
-			applyRenderLayersForBone(pPoseStack, pAnimatable, pBone, pRenderType, pBufferSource, pBuffer, pPartialTick, pPackedLight, pPackedOverlay);
+		if (!pContext.isReRender())
+			applyRenderLayersForBone(pBone, pContext);
 
-		renderChildBones(pPoseStack, pAnimatable, pBone, pRenderType, pBufferSource, pBuffer, pIsReRender, pPartialTick, pPackedLight, pPackedOverlay, pColour);
+		renderChildBones(pBone, pContext);
 
-		pPoseStack.popPose();
+		pContext.poseStack().popPose();
 	}
 
 	protected void applyRotations(T pAnimatable, PoseStack pPoseStack, float pAgeInTicks, float pRotationYaw, float pPartialTick, float pNativeScale) {

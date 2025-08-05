@@ -7,10 +7,6 @@
  */
 package software.bluelib.loader.renderer.base;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import software.bluelib.loader.animatable.BlueAnimatable;
 import software.bluelib.loader.cache.model.BoneCache;
@@ -46,6 +42,5 @@ public abstract class BlueRenderLayer<T extends BlueAnimatable> {
 
 	public void render(IRenderContext<T> pContext) {}
 
-	public void renderForBone(PoseStack pPoseStack, T pAnimatable, BoneCache pBone, RenderType pRenderType,
-			MultiBufferSource pBufferSource, VertexConsumer pBuffer, float pPartialTick, int pPackedLight, int pPackedOverlay) {}
+	public void renderForBone(BoneCache pBone, IRenderContext<T> pContext) {}
 }

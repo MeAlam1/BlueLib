@@ -7,8 +7,6 @@
  */
 package software.bluelib.loader.renderer.entity;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import it.unimi.dsi.fastutil.ints.IntIntPair;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import java.util.Map;
@@ -27,6 +25,7 @@ import software.bluelib.loader.animatable.BlueAnimatable;
 import software.bluelib.loader.cache.model.BoneCache;
 import software.bluelib.loader.json.object.QuadData;
 import software.bluelib.loader.json.object.VertexData;
+import software.bluelib.loader.renderer.context.FullRenderContext;
 import software.bluelib.loader.renderer.context.IRenderContext;
 import software.bluelib.oldLoader.model.BlueModel;
 
@@ -50,21 +49,20 @@ public abstract class DynamicBlueEntityRenderer<T extends Entity & BlueAnimatabl
 		return null;
 	}
 
-	protected boolean boneRenderOverride(PoseStack pPoseStack, BoneCache pBone, MultiBufferSource pBufferSource, VertexConsumer pBuffer,
-			float pPartialTick, int pPackedLight, int pPackedOverlay, int colour) {
+	protected boolean boneRenderOverride(BoneCache pBone, FullRenderContext<T> pContext) {
 		return false;
 	}
 
 	@Override
-	public void renderRecursively(PoseStack pPoseStack, T pAnimatable, BoneCache pBone, RenderType pRenderType, MultiBufferSource pBufferSource, VertexConsumer pBuffer, boolean pIsReRender, float pPartialTick, int pPackedLight, int pPackedOverlay, int pColour) {
-		pPoseStack.pushPose();
-		RenderUtils.translateMatrixToBone(pPoseStack, pBone);
-		RenderUtils.translateToPivotPoint(pPoseStack, pBone);
-		RenderUtils.rotateMatrixAroundBone(pPoseStack, pBone);
-		RenderUtils.scaleMatrixForBone(pPoseStack, pBone);
+	public void renderRecursively(BoneCache pBone, FullRenderContext<T> pContext) {
+		pContext.poseStack().pushPose();
+		RenderUtils.translateMatrixToBone(pContext.poseStack(), pBone);
+		RenderUtils.translateToPivotPoint(pContext.poseStack(), pBone);
+		RenderUtils.rotateMatrixAroundBone(pContext.poseStack(), pBone);
+		RenderUtils.scaleMatrixForBone(pContext.poseStack(), pBone);
 
 		if (pBone.isTrackingMatrices()) {
-			Matrix4f poseState = new Matrix4f(pPoseStack.last().pose());
+			Matrix4f poseState = new Matrix4f(pContext.poseStack().last().pose());
 			Matrix4f localMatrix = RenderUtils.invertAndMultiplyMatrices(poseState, this.entityRenderTranslations);
 
 			pBone.setModelSpaceMatrix(RenderUtils.invertAndMultiplyMatrices(poseState, this.modelRenderTranslations));
@@ -77,32 +75,32 @@ public abstract class DynamicBlueEntityRenderer<T extends Entity & BlueAnimatabl
 			pBone.setWorldSpaceMatrix(worldState);
 		}
 
-		RenderUtils.translateAwayFromPivotPoint(pPoseStack, pBone);
+		RenderUtils.translateAwayFromPivotPoint(pContext.poseStack(), pBone);
 
-		this.textureOverride = getTextureOverrideForBone(pBone, this.animatable, pPartialTick);
+		this.textureOverride = getTextureOverrideForBone(pBone, this.animatable, pContext.partialTick());
 		ResourceLocation texture = this.textureOverride == null ? getTextureLocation(this.animatable) : this.textureOverride;
-		RenderType renderTypeOverride = getRenderTypeOverrideForBone(pBone, this.animatable, texture, pBufferSource, pPartialTick);
+		RenderType renderTypeOverride = getRenderTypeOverrideForBone(pBone, this.animatable, texture, pContext.bufferSource(), pContext.partialTick());
 
 		if (texture != null && renderTypeOverride == null)
-			renderTypeOverride = getRenderType(this.animatable, texture, pBufferSource, pPartialTick);
+			renderTypeOverride = getRenderType(texture, pContext);
 
 		if (renderTypeOverride != null)
-			pBuffer = pBufferSource.getBuffer(renderTypeOverride);
+			pContext.setBuffer(pContext.bufferSource().getBuffer(renderTypeOverride));
 
-		if (!boneRenderOverride(pPoseStack, pBone, pBufferSource, pBuffer, pPartialTick, pPackedLight, pPackedOverlay, pColour))
-			super.renderCubesOfBone(pPoseStack, pBone, pBuffer, pPackedLight, pPackedOverlay, pColour);
+		if (!boneRenderOverride(pBone, pContext))
+			super.renderCubesOfBone(pBone, pContext);
 
 		if (renderTypeOverride != null)
-			pBuffer = pBufferSource.getBuffer(pRenderType);
+			pContext.setBuffer(pContext.bufferSource().getBuffer(pContext.renderType()));
 
-		if (!pIsReRender)
-			applyRenderLayersForBone(pPoseStack, pAnimatable, pBone, pRenderType, pBufferSource, pBuffer, pPartialTick, pPackedLight, pPackedOverlay);
+		if (!pContext.isReRender())
+			applyRenderLayersForBone(pBone, pContext);
 
-		pBuffer = BufferUtils.checkAndRefreshBuffer(pIsReRender, pBuffer, pBufferSource, pRenderType);
+		pContext.setBuffer(BufferUtils.checkAndRefreshBuffer(pContext.isReRender(), pContext.buffer(), pContext.bufferSource(), pContext.renderType()));
 
-		super.renderChildBones(pPoseStack, pAnimatable, pBone, pRenderType, pBufferSource, pBuffer, pIsReRender, pPartialTick, pPackedLight, pPackedOverlay, pColour);
+		super.renderChildBones(pBone, pContext);
 
-		pPoseStack.popPose();
+		pContext.poseStack().popPose();
 	}
 
 	@Override
@@ -113,11 +111,9 @@ public abstract class DynamicBlueEntityRenderer<T extends Entity & BlueAnimatabl
 	}
 
 	@Override
-	public void createVerticesOfQuad(QuadData pQuad, Matrix4f pPoseState, Vector3f pNormal, VertexConsumer pBuffer,
-			int pPackedLight, int pPackedOverlay, int pColour) {
+	public void createVerticesOfQuad(QuadData pQuad, Matrix4f pPoseState, Vector3f pNormal, FullRenderContext<T> pContext) {
 		if (this.textureOverride == null) {
-			super.createVerticesOfQuad(pQuad, pPoseState, pNormal, pBuffer, pPackedLight, pPackedOverlay,
-					pColour);
+			super.createVerticesOfQuad(pQuad, pPoseState, pNormal, pContext);
 
 			return;
 		}
@@ -126,8 +122,7 @@ public abstract class DynamicBlueEntityRenderer<T extends Entity & BlueAnimatabl
 		IntIntPair entityTextureSize = computeTextureSize(getTextureLocation(this.animatable));
 
 		if (boneTextureSize == null || entityTextureSize == null) {
-			super.createVerticesOfQuad(pQuad, pPoseState, pNormal, pBuffer, pPackedLight, pPackedOverlay,
-					pColour);
+			super.createVerticesOfQuad(pQuad, pPoseState, pNormal, pContext);
 
 			return;
 		}
@@ -137,8 +132,8 @@ public abstract class DynamicBlueEntityRenderer<T extends Entity & BlueAnimatabl
 			float texU = (vertex.texU() * entityTextureSize.firstInt()) / boneTextureSize.firstInt();
 			float texV = (vertex.texV() * entityTextureSize.secondInt()) / boneTextureSize.secondInt();
 
-			pBuffer.addVertex(vector4f.x(), vector4f.y(), vector4f.z(), pColour, texU, texV,
-					pPackedOverlay, pPackedLight, pNormal.x(), pNormal.y(), pNormal.z());
+			pContext.buffer().addVertex(vector4f.x(), vector4f.y(), vector4f.z(), pContext.color(), texU, texV,
+					pContext.packedOverlay(), pContext.packedLight(), pNormal.x(), pNormal.y(), pNormal.z());
 		}
 	}
 

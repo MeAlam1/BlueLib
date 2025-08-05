@@ -99,34 +99,33 @@ public class ItemArmorBlueLayer<T extends LivingEntity & BlueAnimatable> extends
 	}
 
 	@Override
-	public void renderForBone(PoseStack pPoseStack, T pAnimatable, BoneCache pBone, RenderType pRenderType, MultiBufferSource pBufferSource,
-			VertexConsumer pBuffer, float pPartialTick, int pPackedLight, int pPackedOverlay) {
-		ItemStack armorStack = getArmorItemForBone(pBone, pAnimatable);
+	public void renderForBone(BoneCache pBone, IRenderContext<T> pContext) {
+		ItemStack armorStack = getArmorItemForBone(pBone, pContext.animatable());
 
 		if (armorStack == null)
 			return;
 
 		if (armorStack.getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof AbstractSkullBlock skullBlock) {
-			renderSkullAsArmor(pPoseStack, pBone, armorStack, skullBlock, pBufferSource, pPackedLight);
+			renderSkullAsArmor(pContext.poseStack(), pBone, armorStack, skullBlock, pContext.bufferSource(), pContext.packedLight());
 		} else {
-			EquipmentSlot slot = getEquipmentSlotForBone(pBone, armorStack, pAnimatable);
-			HumanoidModel<?> model = getModelForItem(pBone, slot, armorStack, pAnimatable);
-			ModelPart modelPart = getModelPartForBone(pBone, slot, armorStack, pAnimatable, model);
+			EquipmentSlot slot = getEquipmentSlotForBone(pBone, armorStack, pContext.animatable());
+			HumanoidModel<?> model = getModelForItem(pBone, slot, armorStack, pContext.animatable());
+			ModelPart modelPart = getModelPartForBone(pBone, slot, armorStack, pContext.animatable(), model);
 
 			if (!modelPart.cubes.isEmpty()) {
-				pPoseStack.pushPose();
-				pPoseStack.scale(-1, -1, 1);
+				pContext.poseStack().pushPose();
+				pContext.poseStack().scale(-1, -1, 1);
 
 				if (model instanceof BlueArmorRenderer<?> BlueArmorRenderer) {
-					prepModelPartForRender(pPoseStack, pBone, modelPart);
+					prepModelPartForRender(pContext.poseStack(), pBone, modelPart);
 					BlueArmorRenderer.applyBoneVisibilityByPart(slot, modelPart, model);
-					BlueArmorRenderer.renderToBuffer(pPoseStack, null, pPackedLight, pPackedOverlay, Color.WHITE.argbInt());
+					BlueArmorRenderer.renderToBuffer(pContext.poseStack(), null, pContext.packedLight(), pContext.packedOverlay(), Color.WHITE.argbInt());
 				} else if (armorStack.getItem() instanceof ArmorItem) {
-					prepModelPartForRender(pPoseStack, pBone, modelPart);
-					renderVanillaArmorPiece(pPoseStack, pAnimatable, pBone, slot, armorStack, modelPart, pBufferSource, pPartialTick, pPackedLight, pPackedOverlay);
+					prepModelPartForRender(pContext.poseStack(), pBone, modelPart);
+					renderVanillaArmorPiece(pContext.poseStack(), pContext.animatable(), pBone, slot, armorStack, modelPart, pContext.bufferSource(), pContext.partialTick(), pContext.packedLight(), pContext.packedOverlay());
 				}
 
-				pPoseStack.popPose();
+				pContext.poseStack().popPose();
 			}
 		}
 	}

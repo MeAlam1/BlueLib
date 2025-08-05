@@ -71,8 +71,8 @@ public class BlueArmorRenderer<T extends Item & BlueItem> extends HumanoidModel 
 	protected Entity currentEntity = null;
 	protected ItemStack currentStack = null;
 	protected EquipmentSlot currentSlot = null;
-	protected MultiBufferSource pBufferSource = null;
-	protected float pPartialTick;
+	protected MultiBufferSource bufferSource = null;
+	protected float partialTick;
 	protected float limbSwing;
 	protected float limbSwingAmount;
 	protected float netHeadYaw;
@@ -107,7 +107,7 @@ public class BlueArmorRenderer<T extends Item & BlueItem> extends HumanoidModel 
 	}
 
 	@Override
-	public long getInstanceId(T pAnimatable) {
+	public long getInstanceId(IRenderContext<T> pContext) {
 		long stackId = BlueItem.getId(this.currentStack);
 
 		if (stackId == Long.MAX_VALUE)
@@ -117,7 +117,7 @@ public class BlueArmorRenderer<T extends Item & BlueItem> extends HumanoidModel 
 	}
 
 	@Override
-	public RenderType getRenderType(T pAnimatable, ResourceLocation pTexture, @Nullable MultiBufferSource pBufferSource, float pPartialTick) {
+	public RenderType getRenderType(ResourceLocation pTexture, IRenderContext<T> pContext) {
 		return RenderType.armorCutoutNoCull(pTexture);
 	}
 
@@ -205,7 +205,7 @@ public class BlueArmorRenderer<T extends Item & BlueItem> extends HumanoidModel 
 	@Override
 	@ApiStatus.Internal
 	public void renderToBuffer(PoseStack pPoseStack, @Nullable VertexConsumer pBuffer, int pPackedLight,
-			int pPackedOverlay, int pColour) {
+			int pPackedOverlay, int pColor) {
 		Minecraft mc = Minecraft.getInstance();
 		MultiBufferSource pBufferSource = mc.levelRenderer.renderBuffers.bufferSource();
 
@@ -213,7 +213,18 @@ public class BlueArmorRenderer<T extends Item & BlueItem> extends HumanoidModel 
 			pBufferSource = mc.levelRenderer.renderBuffers.outlineBufferSource();
 
 		float pPartialTick = mc.getTimer().getGameTimeDeltaPartialTick(true);
-		RenderType pRenderType = getRenderType(this.animatable, getTextureLocation(this.animatable), pBufferSource, pPartialTick);
+		RenderType pRenderType = getRenderType(getTextureLocation(this.animatable), new BaseRenderContext<>(
+				pPoseStack,
+				this.animatable,
+				this.model.getBakedModel(getBlueModel().getModelResource(this.animatable, this)),
+				bufferSource,
+				false,
+				pPartialTick,
+				pPackedLight,
+				pPackedOverlay,
+				pColor
+
+		));
 		pBuffer = ItemRenderer.getArmorFoilBuffer(pBufferSource, pRenderType, this.currentStack.hasFoil());
 
 		defaultRender(new FullRenderContext<>(
@@ -247,7 +258,7 @@ public class BlueArmorRenderer<T extends Item & BlueItem> extends HumanoidModel 
 
 			if (!pIsReRender) {
 				AnimationState<T> animationState = new AnimationState<>(pAnimatable, 0, 0, pPartialTick, false);
-				long instanceId = getInstanceId(pAnimatable);
+				long instanceId = getInstanceId(pContext);
 				BlueModel<T> currentModel = getBlueModel();
 
 				animationState.setData(DataTickets.TICK, pAnimatable.getTick(this.currentEntity));
@@ -276,8 +287,8 @@ public class BlueArmorRenderer<T extends Item & BlueItem> extends HumanoidModel 
 		this.currentStack = null;
 		this.animatable = null;
 		this.currentSlot = null;
-		this.pBufferSource = null;
-		this.pPartialTick = 0;
+		this.bufferSource = null;
+		this.partialTick = 0;
 		this.limbSwing = 0;
 		this.limbSwingAmount = 0;
 		this.netHeadYaw = 0;
@@ -285,16 +296,15 @@ public class BlueArmorRenderer<T extends Item & BlueItem> extends HumanoidModel 
 	}
 
 	@Override
-	public void renderRecursively(PoseStack pPoseStack, T pAnimatable, BoneCache pBone, RenderType pRenderType, MultiBufferSource pBufferSource, VertexConsumer pBuffer, boolean pIsReRender, float pPartialTick, int pPackedLight,
-			int pPackedOverlay, int pColour) {
+	public void renderRecursively(BoneCache pBone, FullRenderContext<T> pContext) {
 		if (pBone.isTrackingMatrices()) {
-			Matrix4f poseState = new Matrix4f(pPoseStack.last().pose());
+			Matrix4f poseState = new Matrix4f(pContext.poseStack().last().pose());
 
 			pBone.setModelSpaceMatrix(RenderUtils.invertAndMultiplyMatrices(poseState, this.modelRenderTranslations));
 			pBone.setLocalSpaceMatrix(RenderUtils.invertAndMultiplyMatrices(poseState, this.entityRenderTranslations));
 		}
 
-		BlueRenderer.super.renderRecursively(pPoseStack, pAnimatable, pBone, pRenderType, pBufferSource, pBuffer, pIsReRender, pPartialTick, pPackedLight, pPackedOverlay, pColour);
+		BlueRenderer.super.renderRecursively(pBone, pContext);
 	}
 
 	protected void grabRelevantBones(ModelCache pBakedModel) {

@@ -7,12 +7,8 @@
  */
 package software.bluelib.loader.renderer.layer;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import java.util.function.BiFunction;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemDisplayContext;
@@ -24,6 +20,7 @@ import software.bluelib.loader.animatable.BlueAnimatable;
 import software.bluelib.loader.cache.model.BoneCache;
 import software.bluelib.loader.renderer.base.BlueRenderLayer;
 import software.bluelib.loader.renderer.base.BlueRenderer;
+import software.bluelib.loader.renderer.context.IRenderContext;
 
 public class BlockAndItemBlueLayer<T extends BlueAnimatable> extends BlueRenderLayer<T> {
 
@@ -51,49 +48,46 @@ public class BlockAndItemBlueLayer<T extends BlueAnimatable> extends BlueRenderL
 		return this.blockForBone.apply(pBone, pAnimatable);
 	}
 
-	protected ItemDisplayContext getTransformTypeForStack(BoneCache pBone, ItemStack pStack, T pAnimatable) {
+	protected ItemDisplayContext getTransformTypeForStack(BoneCache pBone, ItemStack pStack, IRenderContext<T> pContext) {
 		return ItemDisplayContext.NONE;
 	}
 
 	@Override
-	public void renderForBone(PoseStack pPoseStack, T pAnimatable, BoneCache pBone, RenderType pRenderType, MultiBufferSource pBufferSource,
-			VertexConsumer pBuffer, float pPartialTick, int pPackedLight, int pPackedOverlay) {
-		ItemStack stack = getStackForBone(pBone, pAnimatable);
-		BlockState blockState = getBlockForBone(pBone, pAnimatable);
+	public void renderForBone(BoneCache pBone, IRenderContext<T> pContext) {
+		ItemStack stack = getStackForBone(pBone, pContext.animatable());
+		BlockState blockState = getBlockForBone(pBone, pContext.animatable());
 
 		if (stack == null && blockState == null)
 			return;
 
-		pPoseStack.pushPose();
-		RenderUtils.translateAndRotateMatrixForBone(pPoseStack, pBone);
+		pContext.poseStack().pushPose();
+		RenderUtils.translateAndRotateMatrixForBone(pContext.poseStack(), pBone);
 
 		if (stack != null)
-			renderStackForBone(pPoseStack, pBone, stack, pAnimatable, pBufferSource, pPartialTick, pPackedLight, pPackedOverlay);
+			renderStackForBone(pBone, stack, pContext);
 
 		if (blockState != null)
-			renderBlockForBone(pPoseStack, pBone, blockState, pAnimatable, pBufferSource, pPartialTick, pPackedLight, pPackedOverlay);
+			renderBlockForBone(pBone, blockState, pContext);
 
-		pPoseStack.popPose();
+		pContext.poseStack().popPose();
 	}
 
-	protected void renderStackForBone(PoseStack pPoseStack, BoneCache pBone, ItemStack pStack, T pAnimatable, MultiBufferSource pBufferSource,
-			float pPartialTick, int pPackedLight, int pPackedOverlay) {
-		if (pAnimatable instanceof LivingEntity livingEntity) {
+	protected void renderStackForBone(BoneCache pBone, ItemStack pStack, IRenderContext<T> pContext) {
+		if (pContext.animatable() instanceof LivingEntity livingEntity) {
 			Minecraft.getInstance().getItemRenderer().renderStatic(livingEntity, pStack,
-					getTransformTypeForStack(pBone, pStack, pAnimatable), false, pPoseStack, pBufferSource, livingEntity.level(),
-					pPackedLight, pPackedOverlay, livingEntity.getId());
+					getTransformTypeForStack(pBone, pStack, pContext), false, pContext.poseStack(), pContext.bufferSource(), livingEntity.level(),
+					pContext.packedLight(), pContext.packedOverlay(), livingEntity.getId());
 		} else {
-			Minecraft.getInstance().getItemRenderer().renderStatic(pStack, getTransformTypeForStack(pBone, pStack, pAnimatable),
-					pPackedLight, pPackedOverlay, pPoseStack, pBufferSource, Minecraft.getInstance().level, (int) this.renderer.getInstanceId(pAnimatable));
+			Minecraft.getInstance().getItemRenderer().renderStatic(pStack, getTransformTypeForStack(pBone, pStack, pContext),
+					pContext.packedLight(), pContext.packedOverlay(), pContext.poseStack(), pContext.bufferSource(), Minecraft.getInstance().level, (int) this.renderer.getInstanceId(pContext));
 		}
 	}
 
-	protected void renderBlockForBone(PoseStack pPoseStack, BoneCache pBone, BlockState pState, T pAnimatable, MultiBufferSource pBufferSource,
-			float pPartialTick, int pPackedLight, int pPackedOverlay) {
-		pPoseStack.pushPose();
-		pPoseStack.translate(-0.25f, -0.25f, -0.25f);
-		pPoseStack.scale(0.5f, 0.5f, 0.5f);
-		Minecraft.getInstance().getBlockRenderer().renderSingleBlock(pState, pPoseStack, pBufferSource, pPackedLight, OverlayTexture.NO_OVERLAY);
-		pPoseStack.popPose();
+	protected void renderBlockForBone(BoneCache pBone, BlockState pState, IRenderContext<T> pContext) {
+		pContext.poseStack().pushPose();
+		pContext.poseStack().translate(-0.25f, -0.25f, -0.25f);
+		pContext.poseStack().scale(0.5f, 0.5f, 0.5f);
+		Minecraft.getInstance().getBlockRenderer().renderSingleBlock(pState, pContext.poseStack(), pContext.bufferSource(), pContext.packedLight(), OverlayTexture.NO_OVERLAY);
+		pContext.poseStack().popPose();
 	}
 }

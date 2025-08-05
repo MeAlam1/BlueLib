@@ -7,11 +7,9 @@
  */
 package software.bluelib.loader.renderer.base;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import java.util.List;
 import java.util.function.BiConsumer;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
@@ -50,10 +48,8 @@ public interface BlueRenderer<T extends BlueAnimatable> {
 	}
 
 	@Nullable
-	default RenderType getRenderType(T pAnimatable, ResourceLocation pTexture,
-			@Nullable MultiBufferSource pBufferSource,
-			float pPartialTick) {
-		return getBlueModel().getRenderType(pAnimatable, pTexture);
+	default RenderType getRenderType(ResourceLocation pTexture, IRenderContext<T> pContext) {
+		return getBlueModel().getRenderType(pContext.animatable(), pTexture);
 	}
 
 	default Color getRenderColor(T pAnimatable, float pPartialTick, int pPackedLight) {
@@ -64,8 +60,8 @@ public interface BlueRenderer<T extends BlueAnimatable> {
 		return OverlayTexture.NO_OVERLAY;
 	}
 
-	default long getInstanceId(T pAnimatable) {
-		return pAnimatable.hashCode();
+	default long getInstanceId(IRenderContext<T> pContext) {
+		return pContext.animatable().hashCode();
 	}
 
 	default float getMotionAnimThreshold(IRenderContext<T> pContext) {
@@ -77,10 +73,8 @@ public interface BlueRenderer<T extends BlueAnimatable> {
 			BlueRenderer<M> pRenderer,
 			BiConsumer<BlueRenderer<M>, FullRenderContext<M>> pRenderMethod) {
 		RenderType type = pRenderer.getRenderType(
-				pContext.animatable(),
 				pRenderer.getTextureLocation(pContext.animatable()),
-				pContext.bufferSource(),
-				pContext.partialTick());
+				pContext);
 		VertexConsumer buffer = type != null ? pContext.bufferSource().getBuffer(type) : null;
 		if (type == null) {
 			pContext.poseStack().popPose();
@@ -173,17 +167,8 @@ public interface BlueRenderer<T extends BlueAnimatable> {
 
 			for (BoneCache group : full.model().topLevelBones()) {
 				renderRecursively(
-						full.poseStack(),
-						full.animatable(),
 						group,
-						full.renderType(),
-						full.bufferSource(),
-						full.buffer(),
-						full.isReRender(),
-						full.partialTick(),
-						full.packedLight(),
-						full.packedOverlay(),
-						full.color());
+						full);
 			}
 		} else if (pContext instanceof BaseRenderContext<T> base) {
 			handleBaseActuallyRenderContext(base, this);
@@ -201,11 +186,9 @@ public interface BlueRenderer<T extends BlueAnimatable> {
 		}
 	}
 
-	// TODO: Make a Context for Bones in stead of Model Later
-	default void applyRenderLayersForBone(PoseStack pPoseStack, T pAnimatable, BoneCache pBone, RenderType pRenderType, MultiBufferSource pBufferSource,
-			VertexConsumer pBuffer, float pPartialTick, int pPackedLight, int pPackedOverlay) {
+	default void applyRenderLayersForBone(BoneCache pBone, IRenderContext<T> pContext) {
 		for (BlueRenderLayer<T> renderLayer : getRenderLayers()) {
-			renderLayer.renderForBone(pPoseStack, pAnimatable, pBone, pRenderType, pBufferSource, pBuffer, pPartialTick, pPackedLight, pPackedOverlay);
+			renderLayer.renderForBone(pBone, pContext);
 		}
 	}
 
@@ -223,53 +206,48 @@ public interface BlueRenderer<T extends BlueAnimatable> {
 
 	default void doPostRenderCleanup(IRenderContext<T> pContext) {}
 
-	default void renderRecursively(PoseStack pPoseStack, T pAnimatable, BoneCache pBone, RenderType pRenderType, MultiBufferSource pBufferSource,
-			VertexConsumer pBuffer, boolean pIsReRender, float pPartialTick, int pPackedLight,
-			int pPackedOverlay, int pColour) {
-		pPoseStack.pushPose();
-		RenderUtils.prepMatrixForBone(pPoseStack, pBone);
+	default void renderRecursively(BoneCache pBone, FullRenderContext<T> pContext) {
+		pContext.poseStack().pushPose();
+		RenderUtils.prepMatrixForBone(pContext.poseStack(), pBone);
 
-		pBuffer = BufferUtils.checkAndRefreshBuffer(pIsReRender, pBuffer, pBufferSource, pRenderType);
+		pContext.setBuffer(BufferUtils.checkAndRefreshBuffer(pContext.isReRender(), pContext.buffer(), pContext.bufferSource(), pContext.renderType()));
 
-		renderCubesOfBone(pPoseStack, pBone, pBuffer, pPackedLight, pPackedOverlay, pColour);
+		renderCubesOfBone(pBone, pContext);
 
-		if (!pIsReRender)
-			applyRenderLayersForBone(pPoseStack, getAnimatable(), pBone, pRenderType, pBufferSource, pBuffer, pPartialTick, pPackedLight, pPackedOverlay);
+		if (!pContext.isReRender())
+			applyRenderLayersForBone(pBone, pContext);
 
-		renderChildBones(pPoseStack, pAnimatable, pBone, pRenderType, pBufferSource, pBuffer, pIsReRender, pPartialTick, pPackedLight, pPackedOverlay, pColour);
-		pPoseStack.popPose();
+		renderChildBones(pBone, pContext);
+		pContext.poseStack().popPose();
 	}
 
-	default void renderCubesOfBone(PoseStack pPoseStack, BoneCache pBone, VertexConsumer pBuffer, int pPackedLight,
-			int pPackedOverlay, int pColour) {
+	default void renderCubesOfBone(BoneCache pBone, FullRenderContext<T> pContext) {
 		if (pBone.isHidden())
 			return;
 
 		for (CubeCache cube : pBone.getCubes()) {
-			pPoseStack.pushPose();
-			renderCube(pPoseStack, cube, pBuffer, pPackedLight, pPackedOverlay, pColour);
-			pPoseStack.popPose();
+			pContext.poseStack().pushPose();
+			renderCube(cube, pContext);
+			pContext.poseStack().popPose();
 		}
 	}
 
-	default void renderChildBones(PoseStack pPoseStack, T pAnimatable, BoneCache pBone, RenderType pRenderType, MultiBufferSource pBufferSource, VertexConsumer pBuffer,
-			boolean pIsReRender, float pPartialTick, int pPackedLight, int pPackedOverlay, int pColour) {
+	default void renderChildBones(BoneCache pBone, FullRenderContext<T> pContext) {
 		if (pBone.isHidingChildren())
 			return;
 
 		for (BoneCache childBone : pBone.getChildBones()) {
-			renderRecursively(pPoseStack, pAnimatable, childBone, pRenderType, pBufferSource, pBuffer, pIsReRender, pPartialTick, pPackedLight, pPackedOverlay, pColour);
+			renderRecursively(childBone, pContext);
 		}
 	}
 
-	default void renderCube(PoseStack pPoseStack, CubeCache pCube, VertexConsumer pBuffer, int pPackedLight,
-			int pPackedOverlay, int pColour) {
-		RenderUtils.translateToPivotPoint(pPoseStack, pCube);
-		RenderUtils.rotateMatrixAroundCube(pPoseStack, pCube);
-		RenderUtils.translateAwayFromPivotPoint(pPoseStack, pCube);
+	default void renderCube(CubeCache pCube, FullRenderContext<T> pContext) {
+		RenderUtils.translateToPivotPoint(pContext.poseStack(), pCube);
+		RenderUtils.rotateMatrixAroundCube(pContext.poseStack(), pCube);
+		RenderUtils.translateAwayFromPivotPoint(pContext.poseStack(), pCube);
 
-		Matrix3f normalisedPoseState = pPoseStack.last().normal();
-		Matrix4f poseState = new Matrix4f(pPoseStack.last().pose());
+		Matrix3f normalisedPoseState = pContext.poseStack().last().normal();
+		Matrix4f poseState = new Matrix4f(pContext.poseStack().last().pose());
 
 		for (QuadData quad : pCube.quads()) {
 			if (quad == null)
@@ -278,18 +256,17 @@ public interface BlueRenderer<T extends BlueAnimatable> {
 			Vector3f normal = normalisedPoseState.transform(new Vector3f(quad.normal()));
 
 			RenderUtils.fixInvertedFlatCube(pCube, normal);
-			createVerticesOfQuad(quad, poseState, normal, pBuffer, pPackedLight, pPackedOverlay, pColour);
+			createVerticesOfQuad(quad, poseState, normal, pContext);
 		}
 	}
 
-	default void createVerticesOfQuad(QuadData pQuad, Matrix4f pPoseState, Vector3f pNormal, VertexConsumer pBuffer,
-			int pPackedLight, int pPackedOverlay, int pColour) {
+	default void createVerticesOfQuad(QuadData pQuad, Matrix4f pPoseState, Vector3f pNormal, FullRenderContext<T> pContext) {
 		for (VertexData vertex : pQuad.vertices()) {
 			Vector3f position = vertex.position();
 			Vector4f vector4f = pPoseState.transform(new Vector4f(position.x(), position.y(), position.z(), 1.0f));
 
-			pBuffer.addVertex(vector4f.x(), vector4f.y(), vector4f.z(), pColour, vertex.texU(),
-					vertex.texV(), pPackedOverlay, pPackedLight, pNormal.x(), pNormal.y(), pNormal.z());
+			pContext.buffer().addVertex(vector4f.x(), vector4f.y(), vector4f.z(), pContext.color(), vertex.texU(),
+					vertex.texV(), pContext.packedOverlay(), pContext.packedLight(), pNormal.x(), pNormal.y(), pNormal.z());
 		}
 	}
 
