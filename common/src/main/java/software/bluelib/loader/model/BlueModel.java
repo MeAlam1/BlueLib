@@ -5,7 +5,7 @@
  * If a copy of the MIT License was not distributed with this file,
  * You can obtain one at https://opensource.org/licenses/MIT.
  */
-package software.bluelib.oldLoader.model;
+package software.bluelib.loader.model;
 
 import java.util.Optional;
 import java.util.function.BiConsumer;

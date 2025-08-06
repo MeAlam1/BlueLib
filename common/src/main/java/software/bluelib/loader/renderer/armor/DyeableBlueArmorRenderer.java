@@ -16,10 +16,10 @@ import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.utils.Color;
 import software.bluelib.loader.cache.model.BoneCache;
 import software.bluelib.loader.cache.model.ModelCache;
+import software.bluelib.loader.model.BlueModel;
 import software.bluelib.loader.renderer.context.FullRenderContext;
 import software.bluelib.loader.renderer.context.IRenderContext;
 import software.bluelib.oldLoader.animatable.BlueItem;
-import software.bluelib.oldLoader.model.BlueModel;
 
 public abstract class DyeableBlueArmorRenderer<T extends Item & BlueItem> extends BlueArmorRenderer<T> {
 

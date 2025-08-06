@@ -20,10 +20,10 @@ import software.bluelib.loader.cache.model.BoneCache;
 import software.bluelib.loader.cache.model.ModelCache;
 import software.bluelib.loader.geckolib.math.MathParser;
 import software.bluelib.loader.geckolib.math.MoLangQueries;
+import software.bluelib.loader.model.BlueModel;
 import software.bluelib.oldLoader.animation.keyframe.AnimationPoint;
 import software.bluelib.oldLoader.animation.keyframe.BoneAnimationQueue;
 import software.bluelib.oldLoader.animation.state.BoneSnapshot;
-import software.bluelib.oldLoader.model.BlueModel;
 
 public class AnimationProcessor<T extends BlueAnimatable> {
 

@@ -22,6 +22,7 @@ import software.bluelib.loader.geckolib.math.MathParser;
 import software.bluelib.loader.geckolib.math.MathValue;
 import software.bluelib.loader.geckolib.math.MoLangQueries;
 import software.bluelib.loader.geckolib.math.value.Constant;
+import software.bluelib.loader.model.BlueModel;
 import software.bluelib.oldLoader.animation.keyframe.AnimationPoint;
 import software.bluelib.oldLoader.animation.keyframe.BoneAnimationQueue;
 import software.bluelib.oldLoader.animation.keyframe.KeyframeLocation;
@@ -33,7 +34,6 @@ import software.bluelib.oldLoader.animation.keyframe.event.data.KeyFrameData;
 import software.bluelib.oldLoader.animation.keyframe.event.data.ParticleKeyframeData;
 import software.bluelib.oldLoader.animation.keyframe.event.data.SoundKeyframeData;
 import software.bluelib.oldLoader.animation.state.BoneSnapshot;
-import software.bluelib.oldLoader.model.BlueModel;
 
 public class AnimationController<T extends BlueAnimatable> {
 

@@ -43,6 +43,7 @@ import software.bluelib.loader.cache.model.ModelCache;
 import software.bluelib.loader.cache.texture.AnimatableTexture;
 import software.bluelib.loader.geckolib.constant.DataTickets;
 import software.bluelib.loader.geckolib.data.EntityModelData;
+import software.bluelib.loader.model.BlueModel;
 import software.bluelib.loader.renderer.base.BlueRenderLayer;
 import software.bluelib.loader.renderer.base.BlueRenderLayersContainer;
 import software.bluelib.loader.renderer.base.BlueRenderer;
@@ -50,7 +51,6 @@ import software.bluelib.loader.renderer.context.BaseRenderContext;
 import software.bluelib.loader.renderer.context.FullRenderContext;
 import software.bluelib.loader.renderer.context.IRenderContext;
 import software.bluelib.oldLoader.animation.AnimationState;
-import software.bluelib.oldLoader.model.BlueModel;
 
 public class BlueReplacedEntityRenderer<E extends Entity, T extends BlueAnimatable> extends EntityRenderer<E> implements BlueRenderer<T> {
 

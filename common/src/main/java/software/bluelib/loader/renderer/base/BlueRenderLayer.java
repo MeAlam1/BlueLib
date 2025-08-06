@@ -11,8 +11,8 @@ import net.minecraft.resources.ResourceLocation;
 import software.bluelib.loader.animatable.BlueAnimatable;
 import software.bluelib.loader.cache.model.BoneCache;
 import software.bluelib.loader.cache.model.ModelCache;
+import software.bluelib.loader.model.BlueModel;
 import software.bluelib.loader.renderer.context.IRenderContext;
-import software.bluelib.oldLoader.model.BlueModel;
 
 public abstract class BlueRenderLayer<T extends BlueAnimatable> {
 

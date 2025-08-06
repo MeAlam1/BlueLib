@@ -35,6 +35,7 @@ import software.bluelib.loader.cache.model.BoneCache;
 import software.bluelib.loader.cache.model.ModelCache;
 import software.bluelib.loader.cache.texture.AnimatableTexture;
 import software.bluelib.loader.geckolib.constant.DataTickets;
+import software.bluelib.loader.model.BlueModel;
 import software.bluelib.loader.renderer.base.BlueRenderLayer;
 import software.bluelib.loader.renderer.base.BlueRenderLayersContainer;
 import software.bluelib.loader.renderer.base.BlueRenderer;
@@ -43,7 +44,6 @@ import software.bluelib.loader.renderer.context.FullRenderContext;
 import software.bluelib.loader.renderer.context.IRenderContext;
 import software.bluelib.oldLoader.animatable.BlueItem;
 import software.bluelib.oldLoader.animation.AnimationState;
-import software.bluelib.oldLoader.model.BlueModel;
 
 public class BlueArmorRenderer<T extends Item & BlueItem> extends HumanoidModel implements BlueRenderer<T> {
 

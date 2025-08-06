@@ -28,10 +28,10 @@ import software.bluelib.loader.cache.model.CubeCache;
 import software.bluelib.loader.geckolib.math.MoLangQueries;
 import software.bluelib.loader.json.object.QuadData;
 import software.bluelib.loader.json.object.VertexData;
+import software.bluelib.loader.model.BlueModel;
 import software.bluelib.loader.renderer.context.BaseRenderContext;
 import software.bluelib.loader.renderer.context.FullRenderContext;
 import software.bluelib.loader.renderer.context.IRenderContext;
-import software.bluelib.oldLoader.model.BlueModel;
 
 public interface BlueRenderer<T extends BlueAnimatable> {
 

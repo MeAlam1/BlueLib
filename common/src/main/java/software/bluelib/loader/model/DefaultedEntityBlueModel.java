@@ -5,7 +5,7 @@
  * If a copy of the MIT License was not distributed with this file,
  * You can obtain one at https://opensource.org/licenses/MIT.
  */
-package software.bluelib.oldLoader.model;
+package software.bluelib.loader.model;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -19,14 +19,14 @@ public class DefaultedEntityBlueModel<T extends BlueAnimatable> extends Defaulte
 
 	protected final boolean turnsHead;
 
-	public DefaultedEntityBlueModel(ResourceLocation assetSubpath) {
-		this(assetSubpath, false);
+	public DefaultedEntityBlueModel(ResourceLocation pAssetSubpath) {
+		this(pAssetSubpath, false);
 	}
 
-	public DefaultedEntityBlueModel(ResourceLocation assetSubpath, boolean turnsHead) {
-		super(assetSubpath);
+	public DefaultedEntityBlueModel(ResourceLocation pAssetSubpath, boolean pTurnsHead) {
+		super(pAssetSubpath);
 
-		this.turnsHead = turnsHead;
+		this.turnsHead = pTurnsHead;
 	}
 
 	@Override
@@ -50,17 +50,17 @@ public class DefaultedEntityBlueModel<T extends BlueAnimatable> extends Defaulte
 	}
 
 	@Override
-	public DefaultedEntityBlueModel<T> withAltModel(ResourceLocation altPath) {
-		return (DefaultedEntityBlueModel<T>) super.withAltModel(altPath);
+	public DefaultedEntityBlueModel<T> withAltModel(ResourceLocation pAltPath) {
+		return (DefaultedEntityBlueModel<T>) super.withAltModel(pAltPath);
 	}
 
 	@Override
-	public DefaultedEntityBlueModel<T> withAltAnimations(ResourceLocation altPath) {
-		return (DefaultedEntityBlueModel<T>) super.withAltAnimations(altPath);
+	public DefaultedEntityBlueModel<T> withAltAnimations(ResourceLocation pAltPath) {
+		return (DefaultedEntityBlueModel<T>) super.withAltAnimations(pAltPath);
 	}
 
 	@Override
-	public DefaultedEntityBlueModel<T> withAltTexture(ResourceLocation altPath) {
-		return (DefaultedEntityBlueModel<T>) super.withAltTexture(altPath);
+	public DefaultedEntityBlueModel<T> withAltTexture(ResourceLocation pAltPath) {
+		return (DefaultedEntityBlueModel<T>) super.withAltTexture(pAltPath);
 	}
 }
