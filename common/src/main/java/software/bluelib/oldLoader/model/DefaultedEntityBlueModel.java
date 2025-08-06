@@ -11,9 +11,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import software.bluelib.loader.animatable.BlueAnimatable;
 import software.bluelib.loader.cache.model.BoneCache;
+import software.bluelib.loader.geckolib.constant.DataTickets;
+import software.bluelib.loader.geckolib.data.EntityModelData;
 import software.bluelib.oldLoader.animation.AnimationState;
-import software.bluelib.oldLoader.constant.DataTickets;
-import software.bluelib.oldLoader.model.data.EntityModelData;
 
 public class DefaultedEntityBlueModel<T extends BlueAnimatable> extends DefaultedBlueModel<T> {
 

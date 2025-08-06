@@ -28,7 +28,7 @@ import software.bluelib.loader.cache.animations.AnimationLibraryCache;
 import software.bluelib.loader.cache.controller.ControllerCache;
 import software.bluelib.loader.cache.model.ModelCache;
 import software.bluelib.loader.cache.variants.EntityCache;
-import software.bluelib.oldLoader.loading.json.typeadapter.BakedAnimationsAdapter;
+import software.bluelib.loader.json.deserialize.animation.BakedAnimationsAdapter;
 
 public class ResourceCache extends BlueLoader {
 

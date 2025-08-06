@@ -16,8 +16,8 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.Nullable;
+import software.bluelib.loader.geckolib.math.MathValue;
 import software.bluelib.oldLoader.animation.keyframe.AnimationPoint;
-import software.bluelib.oldLoader.loading.math.MathValue;
 
 @FunctionalInterface
 public interface EasingType {

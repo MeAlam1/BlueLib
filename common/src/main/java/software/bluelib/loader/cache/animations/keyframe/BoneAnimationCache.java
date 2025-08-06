@@ -8,7 +8,7 @@
 package software.bluelib.loader.cache.animations.keyframe;
 
 import org.jetbrains.annotations.NotNull;
-import software.bluelib.oldLoader.loading.math.MathValue;
+import software.bluelib.loader.geckolib.math.MathValue;
 
 public record BoneAnimationCache(@NotNull String boneName,
 		@NotNull KeyframeStackCache<KeyframeCache<MathValue>> rotationKeyFrames,

@@ -17,9 +17,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.loader.animatable.BlueAnimatable;
 import software.bluelib.loader.cache.animations.AnimationCache;
+import software.bluelib.loader.geckolib.constant.DataTickets;
+import software.bluelib.loader.geckolib.constant.dataticket.SerializableDataTicket;
 import software.bluelib.oldLoader.animation.EasingType;
-import software.bluelib.oldLoader.constant.DataTickets;
-import software.bluelib.oldLoader.constant.dataticket.SerializableDataTicket;
 
 @SuppressWarnings("unused")
 public final class LoaderUtils {

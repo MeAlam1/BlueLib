@@ -12,7 +12,7 @@ import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.net.NetworkPacket;
 import software.bluelib.internal.BlueResource;
-import software.bluelib.oldLoader.constant.dataticket.SerializableDataTicket;
+import software.bluelib.loader.geckolib.constant.dataticket.SerializableDataTicket;
 
 public record SingletonDataSyncPacket<D>(
 		@NotNull String syncableId,

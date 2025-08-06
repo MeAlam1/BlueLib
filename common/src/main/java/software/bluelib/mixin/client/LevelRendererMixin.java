@@ -19,8 +19,8 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import software.bluelib.oldLoader.loading.math.MathParser;
-import software.bluelib.oldLoader.loading.math.MoLangQueries;
+import software.bluelib.loader.geckolib.math.MathParser;
+import software.bluelib.loader.geckolib.math.MoLangQueries;
 
 @Mixin(LevelRenderer.class)
 public class LevelRendererMixin {

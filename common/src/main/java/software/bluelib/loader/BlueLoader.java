@@ -49,6 +49,8 @@ import software.bluelib.loader.json.animation.AnimationFormatVersion;
 import software.bluelib.loader.json.controller.ControllerCacheFactory;
 import software.bluelib.loader.json.controller.ControllerFormatVersion;
 import software.bluelib.loader.json.deserialize.animation.AnimationLibrary;
+import software.bluelib.loader.json.deserialize.animation.BakedAnimationsAdapter;
+import software.bluelib.loader.json.deserialize.animation.KeyFramesAdapter;
 import software.bluelib.loader.json.deserialize.controller.Behaviour;
 import software.bluelib.loader.json.deserialize.controller.Controller;
 import software.bluelib.loader.json.deserialize.controller.Group;
@@ -60,8 +62,6 @@ import software.bluelib.loader.json.model.ModelCacheFactory;
 import software.bluelib.loader.json.model.ModelFormatVersion;
 import software.bluelib.loader.json.variants.VariantsCacheFactory;
 import software.bluelib.loader.json.variants.VariantsFormatVersion;
-import software.bluelib.oldLoader.loading.json.typeadapter.BakedAnimationsAdapter;
-import software.bluelib.oldLoader.loading.json.typeadapter.KeyFramesAdapter;
 
 public class BlueLoader {
 

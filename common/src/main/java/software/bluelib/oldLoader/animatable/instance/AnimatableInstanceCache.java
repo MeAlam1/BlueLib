@@ -13,9 +13,9 @@ import org.apache.commons.lang3.mutable.MutableObject;
 import software.bluelib.BlueLibConstants;
 import software.bluelib.loader.animatable.AnimatableManager;
 import software.bluelib.loader.animatable.BlueAnimatable;
+import software.bluelib.loader.geckolib.constant.dataticket.DataTicket;
 import software.bluelib.oldLoader.animatable.SingletonBlueAnimatable;
 import software.bluelib.oldLoader.animatable.client.BlueRenderProvider;
-import software.bluelib.oldLoader.constant.dataticket.DataTicket;
 
 public abstract class AnimatableInstanceCache {
 
