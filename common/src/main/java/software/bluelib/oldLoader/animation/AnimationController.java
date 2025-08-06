@@ -258,8 +258,8 @@ public class AnimationController<T extends BlueAnimatable> {
 
 			setAnimation(this.triggeredAnimation);
 
-			if (!hasAnimationFinished() && (!this.handlingTriggeredAnimations || this.stateHandler.handle(state) == PlayState.CONTINUE))
-				return PlayState.CONTINUE;
+			if (!hasAnimationFinished() && (!this.handlingTriggeredAnimations || this.stateHandler.handle(state) == PlayState.PLAY))
+				return PlayState.PLAY;
 
 			this.triggeredAnimation = null;
 			this.needsAnimationReload = true;

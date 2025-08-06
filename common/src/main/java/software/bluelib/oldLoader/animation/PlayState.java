@@ -8,6 +8,6 @@
 package software.bluelib.oldLoader.animation;
 
 public enum PlayState {
-	CONTINUE,
+	PLAY,
 	STOP
 }

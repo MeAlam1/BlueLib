@@ -54,7 +54,7 @@ public class ControllerManager {
 				for (Map.Entry<String, BehaviourCache> entry : validBehaviours) {
 					return ControllerManager.animationController(k, entry.getValue(), pAnimatable);
 				}
-				return PlayState.CONTINUE;
+				return PlayState.PLAY;
 			}));
 
 			for (Map.Entry<String, BehaviourCache> entry : behaviours.entrySet()) {
@@ -62,7 +62,7 @@ public class ControllerManager {
 				if (isOverlay(behaviour)) {
 					pControllers.add(new AnimationController<>(pAnimatable, "overlay" + "_" + entry.getKey(), 5, k -> {
 						int priority = getEffectiveBehaviourPriority(behaviour, pAnimatable);
-						if (priority == Integer.MIN_VALUE) return PlayState.CONTINUE;
+						if (priority == Integer.MIN_VALUE) return PlayState.PLAY;
 						return ControllerManager.animationController(k, behaviour, pAnimatable);
 					}));
 				}
@@ -70,7 +70,7 @@ public class ControllerManager {
 		}
 	}
 
-	private static boolean isOverlay(BehaviourCache behaviour) {
+	private static boolean isOverlay(BehaviourCache pBehaviour) {
 		return false;
 	}
 
@@ -94,7 +94,7 @@ public class ControllerManager {
 			//BaseLogger.log(BaseLogLevel.BLUELIB, "Animation playing: " + selected.animation());
 			return pEvent.setAndContinue(RawAnimation.begin().thenLoop(selected.animation()));
 		}
-		return PlayState.CONTINUE;
+		return PlayState.PLAY;
 	}
 
 	private static int getEffectivePriority(

@@ -88,7 +88,7 @@ public class AnimationState<T extends BlueAnimatable> {
 	public PlayState setAndContinue(RawAnimation animation) {
 		getController().setAnimation(animation);
 
-		return PlayState.CONTINUE;
+		return PlayState.PLAY;
 	}
 
 	public boolean isCurrentAnimation(RawAnimation animation) {
