@@ -14,7 +14,7 @@ import org.jetbrains.annotations.Nullable;
 import software.bluelib.BlueLibConstants;
 
 @ApiStatus.Internal
-public class Translation {
+public class BlueTranslation {
 
 	@NotNull
 	public static Component translate(@NotNull String pString) {

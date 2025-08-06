@@ -13,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
 import software.bluelib.BlueLibConstants;
 
 @ApiStatus.Internal
-public class Resource {
+public class BlueResource {
 
 	@NotNull
 	public static ResourceLocation resource(@NotNull String pPath) {

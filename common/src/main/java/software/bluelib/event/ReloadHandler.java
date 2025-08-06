@@ -16,12 +16,8 @@ import software.bluelib.BlueLibConstants;
 import software.bluelib.api.entity.variant.IVariantProvider;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
-import software.bluelib.entity.variant.VariantLoader;
 import software.bluelib.internal.BlueTranslation;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
+import software.bluelib.loader.cache.ResourceCache;
 
 public class ReloadHandler {
 

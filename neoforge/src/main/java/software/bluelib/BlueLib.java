@@ -65,8 +65,8 @@ public class BlueLib {
 	}
 
     private void onGatherData(GatherDataEvent event) {
-        LOGGER.info("Starting data generation for mod {}", BlueLibConstants.MOD_ID);
+        //LOGGER.info("Starting data generation for mod {}", BlueLibConstants.MOD_ID);
         AbstractRegistryBuilder.doDatagen();
-        LOGGER.info("Data providers registered");
+        //LOGGER.info("Data providers registered");
     }
 }

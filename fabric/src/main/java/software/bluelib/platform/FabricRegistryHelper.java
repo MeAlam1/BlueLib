@@ -40,11 +40,6 @@ import software.bluelib.net.FabricNetworkManager;
 public class FabricRegistryHelper implements IRegistryHelper {
 
     @Override
-    public BlueLibConstants.NetworkManager getNetwork() {
-        return new FabricNetworkManager();
-    }
-
-    @Override
     public <T extends Entity> Supplier<EntityType<T>> registerEntity(String pId, Supplier<EntityType<T>> pEntity) {
         return registerSupplier(BuiltInRegistries.ENTITY_TYPE, pId, pEntity);
     }
@@ -86,21 +81,6 @@ public class FabricRegistryHelper implements IRegistryHelper {
         return () -> keyMapping;
     }
 
-    /**
-     * Quick wrapper to make the individual registration lines cleaner but still return the multiloader-compatible supplier
-     */
-    private static <T, R extends Registry<? super T>> Supplier<T> registerSupplier(R pRegistry, String pId, Supplier<T> pObject) {
-        final T registeredObject = Registry.register((Registry<T>) pRegistry, ResourceLocation.fromNamespaceAndPath(BlueLibConstants.MOD_ID, pId), pObject.get());
-
-        return () -> registeredObject;
-    }
-
-    /**
-     * Quick wrapper to make the individual registration lines cleaner but still return the multiloader-compatible supplier
-     */
-    private static <T, R extends Registry<? super T>> Holder<T> registerHolder(R pRegistry, String pId, Supplier<T> pObject) {
-        return Registry.registerForHolder((Registry<T>) pRegistry, ResourceLocation.fromNamespaceAndPath(BlueLibConstants.MOD_ID, pId), pObject.get());
-    }
 	@Override
 	public @NotNull NetworkManager getNetwork() {
 		return new FabricNetworkManager();
