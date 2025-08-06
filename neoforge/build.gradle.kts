@@ -6,6 +6,8 @@ plugins {
     alias(libs.plugins.minotaur)
     alias(libs.plugins.curseforgegradle)
     alias(libs.plugins.moddevgradle)
+    alias(libs.plugins.com.diffplug.spotless)
+    alias(libs.plugins.com.github.hierynomus.license)
 }
 
 val modId: String by project
@@ -52,8 +54,6 @@ repositories {
 
 dependencies {
     compileOnly(project(":common"))
-    jarJar(libs.molang)
-    compileOnly(libs.molang)
     runtimeOnly(libs.jei.neoforge)
 }
 
@@ -120,4 +120,30 @@ publishing {
 tasks.named<DefaultTask>("publish").configure {
     finalizedBy("modrinth")
     finalizedBy("publishToCurseForge")
+}
+
+spotless {
+    java {
+        leadingSpacesToTabs()
+        endWithNewline()
+        removeUnusedImports()
+        toggleOffOn()
+
+        // Pin version to 4.31 due to Spotless bug https://github.com/diffplug/spotless/issues/1992
+        eclipse("4.31").configFile(rootProject.file("codeformat/formatter-config.xml"))
+
+        importOrder()
+
+        bumpThisNumberIfACustomStepChanges(3)
+    }
+}
+
+license {
+    header = rootProject.file("HEADER")
+    include("**/*.java")
+    strictCheck = true
+
+    mapping("java", "SLASHSTAR_STYLE")
+
+    skipExistingHeaders = false
 }

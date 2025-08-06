@@ -8,26 +8,32 @@
 package software.bluelib.api.config;
 
 import net.neoforged.neoforge.common.ModConfigSpec;
+import org.jetbrains.annotations.NotNull;
 
 public class ConfigBuilder {
 
-    public static ModConfigSpec.IntValue buildInt(ModConfigSpec.Builder pBuilder, String pName, int pDefaultValue, int pMin, int pMax, String pComment) {
-        return pBuilder.comment(pComment).translation(pName).defineInRange(pName, pDefaultValue, pMin, pMax);
-    }
+	@NotNull
+	public static ModConfigSpec.IntValue buildInt(@NotNull ModConfigSpec.Builder pBuilder, @NotNull String pName, @NotNull Integer pDefaultValue, @NotNull Integer pMin, @NotNull Integer pMax, @NotNull String pComment) {
+		return pBuilder.comment(pComment).translation(pName).defineInRange(pName, pDefaultValue, pMin, pMax);
+	}
 
-    public static ModConfigSpec.DoubleValue buildDouble(ModConfigSpec.Builder pBuilder, String pName, double pDefaultValue, double pMin, double pMax, String pComment) {
-        return pBuilder.comment(pComment).translation(pName).defineInRange(pName, pDefaultValue, pMin, pMax);
-    }
+	@NotNull
+	public static ModConfigSpec.DoubleValue buildDouble(@NotNull ModConfigSpec.Builder pBuilder, @NotNull String pName, @NotNull Double pDefaultValue, @NotNull Double pMin, @NotNull Double pMax, @NotNull String pComment) {
+		return pBuilder.comment(pComment).translation(pName).defineInRange(pName, pDefaultValue, pMin, pMax);
+	}
 
-    public static ModConfigSpec.BooleanValue buildBoolean(ModConfigSpec.Builder pBuilder, String pName, boolean pDefaultValue, String pComment) {
-        return pBuilder.comment(pComment).translation(pName).define(pName, pDefaultValue);
-    }
+	@NotNull
+	public static ModConfigSpec.BooleanValue buildBoolean(@NotNull ModConfigSpec.Builder pBuilder, @NotNull String pName, boolean pDefaultValue, @NotNull String pComment) {
+		return pBuilder.comment(pComment).translation(pName).define(pName, pDefaultValue);
+	}
 
-    public static ModConfigSpec.LongValue buildLong(ModConfigSpec.Builder pBuilder, String pName, long pDefaultValue, long pMin, long pMax, String pComment) {
-        return pBuilder.comment(pComment).translation(pName).defineInRange(pName, pDefaultValue, pMin, pMax);
-    }
+	@NotNull
+	public static ModConfigSpec.LongValue buildLong(@NotNull ModConfigSpec.Builder pBuilder, @NotNull String pName, @NotNull Long pDefaultValue, @NotNull Long pMin, @NotNull Long pMax, @NotNull String pComment) {
+		return pBuilder.comment(pComment).translation(pName).defineInRange(pName, pDefaultValue, pMin, pMax);
+	}
 
-    public static ModConfigSpec.ConfigValue<String> buildString(ModConfigSpec.Builder pBuilder, String pName, String pDefaultValue, String pComment) {
-        return pBuilder.comment(pComment).translation(pName).define(pName, pDefaultValue);
-    }
+	@NotNull
+	public static ModConfigSpec.ConfigValue<String> buildString(@NotNull ModConfigSpec.Builder pBuilder, @NotNull String pName, @NotNull String pDefaultValue, @NotNull String pComment) {
+		return pBuilder.comment(pComment).translation(pName).define(pName, pDefaultValue);
+	}
 }

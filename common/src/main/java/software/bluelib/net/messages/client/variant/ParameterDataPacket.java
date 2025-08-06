@@ -9,29 +9,31 @@ package software.bluelib.net.messages.client.variant;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.net.NetworkPacket;
-import software.bluelib.internal.Resource;
+import software.bluelib.internal.BlueResource;
 
-public record ParameterDataPacket(JsonElement parameterData) implements NetworkPacket<ParameterDataPacket> {
+public record ParameterDataPacket(@NotNull JsonElement parameterData) implements NetworkPacket<ParameterDataPacket> {
 
-    public static final ResourceLocation ID = Resource.resource("parameter_data_packet");
+	@NotNull
+	public static final ResourceLocation ID = BlueResource.resource("parameter_data_packet");
 
-    @Override
-    public void encode(RegistryFriendlyByteBuf pBuffer) {
-        pBuffer.writeUtf(parameterData.toString());
-    }
+	@Override
+	public void encode(@NotNull RegistryFriendlyByteBuf pBuffer) {
+		pBuffer.writeUtf(parameterData.toString());
+	}
 
-    public static ParameterDataPacket decode(FriendlyByteBuf pBuffer) {
-        String json = pBuffer.readUtf();
-        JsonElement element = JsonParser.parseString(json);
-        return new ParameterDataPacket(element);
-    }
+	@NotNull
+	public static ParameterDataPacket decode(@NotNull RegistryFriendlyByteBuf pBuffer) {
+		String json = pBuffer.readUtf();
+		JsonElement element = JsonParser.parseString(json);
+		return new ParameterDataPacket(element);
+	}
 
-    @Override
-    public ResourceLocation getId() {
-        return ID;
-    }
+	@Override
+	public @NotNull ResourceLocation getId() {
+		return ID;
+	}
 }

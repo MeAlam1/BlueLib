@@ -22,6 +22,8 @@ import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.block.entity.BrewingStandBlockEntity;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -32,61 +34,66 @@ import software.bluelib.recipe.brewing.BrewingRecipe;
 @Mixin(BrewingStandBlockEntity.class)
 public class BrewingStandBlockEntityMixin {
 
-    @WrapOperation(method = "serverTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/entity/BrewingStandBlockEntity;doBrew(Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/core/NonNullList;)V"))
-    private static void blueLib$doBrew(Level pLevel, BlockPos pPos, NonNullList<ItemStack> pSlots, Operation<Void> pOriginal) {
-        var recipe = blueLib$fetchBrewingRecipe(pSlots, pLevel);
-        if (recipe == null) {
-            pOriginal.call(pLevel, pPos, pSlots);
-            return;
-        }
+	@WrapOperation(method = "serverTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/entity/BrewingStandBlockEntity;doBrew(Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/core/NonNullList;)V"))
+	private static void blueLib$doBrew(@NotNull Level pLevel, @NotNull BlockPos pPos, @NotNull NonNullList<ItemStack> pSlots, @NotNull Operation<Void> pOriginal) {
+		var recipe = blueLib$fetchBrewingRecipe(pSlots, pLevel);
+		if (recipe == null) {
+			pOriginal.call(pLevel, pPos, pSlots);
+			return;
+		}
+		ItemStack itemStack = pSlots.get(3);
+		for (int i = 0; i < 3; ++i) {
+			pSlots.set(i, recipe.getResult().copy());
+		}
 
-        ItemStack itemStack = pSlots.get(3);
-        for (int i = 0; i < 3; ++i) {
-            pSlots.set(i, recipe.getResult().copy());
-        }
+		itemStack.shrink(1);
+		ItemStack remaining = null;
+		if (itemStack.getItem().hasCraftingRemainingItem()) {
+			var remainingItem = itemStack.getItem().getCraftingRemainingItem();
+			if (remainingItem != null) {
+				remaining = new ItemStack(remainingItem);
+			}
+			if (itemStack.isEmpty()) {
+				itemStack = remaining;
+			} else if (remaining != null) {
+				Containers.dropItemStack(pLevel, pPos.getX(), pPos.getY(), pPos.getZ(), remaining);
+			}
+		}
+		if (itemStack != null) {
+			pSlots.set(3, itemStack);
+		}
+		pLevel.levelEvent(LevelEvent.SOUND_BREWING_STAND_BREW, pPos, 0);
+	}
 
-        itemStack.shrink(1);
-        if (itemStack.getItem().hasCraftingRemainingItem()) {
-            ItemStack itemStack2 = new ItemStack(itemStack.getItem().getCraftingRemainingItem());
-            if (itemStack.isEmpty()) {
-                itemStack = itemStack2;
-            } else {
-                Containers.dropItemStack(pLevel, pPos.getX(), pPos.getY(), pPos.getZ(), itemStack2);
-            }
-        }
+	@WrapOperation(method = "serverTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/entity/BrewingStandBlockEntity;isBrewable(Lnet/minecraft/world/item/alchemy/PotionBrewing;Lnet/minecraft/core/NonNullList;)Z"))
+	private static boolean blueLib$isBrewable(@NotNull PotionBrewing pPotionBrewing, @NotNull NonNullList<ItemStack> pItems, @NotNull Operation<Boolean> pOriginal,
+			@Local(argsOnly = true) @NotNull Level pLevel) {
+		return blueLib$fetchBrewingRecipe(pItems, pLevel) != null || pOriginal.call(pPotionBrewing, pItems);
+	}
 
-        pSlots.set(3, itemStack);
-        pLevel.levelEvent(LevelEvent.SOUND_BREWING_STAND_BREW, pPos, 0);
-    }
+	@Unique
+	@Nullable
+	private static BrewingRecipe blueLib$fetchBrewingRecipe(@NotNull NonNullList<ItemStack> pItems, @NotNull Level pLevel) {
+		ItemStack ingredient = pItems.get(3);
+		List<ItemStack> bottles = pItems.subList(0, 3);
 
-    @WrapOperation(method = "serverTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/entity/BrewingStandBlockEntity;isBrewable(Lnet/minecraft/world/item/alchemy/PotionBrewing;Lnet/minecraft/core/NonNullList;)Z"))
-    private static boolean blueLib$isBrewable(PotionBrewing pPotionBrewing, NonNullList<ItemStack> pItems, Operation<Boolean> pOriginal,
-            @Local(argsOnly = true) Level pLevel) {
-        return blueLib$fetchBrewingRecipe(pItems, pLevel) != null || pOriginal.call(pPotionBrewing, pItems);
-    }
+		boolean allBottlesEmpty = true;
+		for (ItemStack bottle : bottles) {
+			if (!bottle.isEmpty()) {
+				allBottlesEmpty = false;
+				break;
+			}
+		}
 
-    @Unique
-    private static BrewingRecipe blueLib$fetchBrewingRecipe(NonNullList<ItemStack> pItems, Level pLevel) {
-        ItemStack ingredient = pItems.get(3);
-        List<ItemStack> bottles = pItems.subList(0, 3);
+		if (ingredient.isEmpty() || allBottlesEmpty) {
+			return null;
+		}
 
-        boolean allBottlesEmpty = true;
-        for (ItemStack bottle : bottles) {
-            if (!bottle.isEmpty()) {
-                allBottlesEmpty = false;
-                break;
-            }
-        }
+		BrewingInput input = new BrewingInput(ingredient, bottles);
+		RecipeManager recipeManager = pLevel.getRecipeManager();
 
-        if (ingredient.isEmpty() || allBottlesEmpty) {
-            return null;
-        }
+		Optional<RecipeHolder<BrewingRecipe>> recipeHolder = recipeManager.getRecipeFor(BlueRecipeTypeRegistry.BREWING.get(), input, pLevel);
 
-        BrewingInput input = new BrewingInput(ingredient, bottles);
-        RecipeManager recipeManager = pLevel.getRecipeManager();
-
-        Optional<RecipeHolder<BrewingRecipe>> recipeHolder = recipeManager.getRecipeFor(BlueRecipeTypeRegistry.BREWING.get(), input, pLevel);
-
-        return recipeHolder.map(RecipeHolder::value).orElse(null);
-    }
+		return recipeHolder.map(RecipeHolder::value).orElse(null);
+	}
 }

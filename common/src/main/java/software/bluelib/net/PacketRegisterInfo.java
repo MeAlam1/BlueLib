@@ -12,62 +12,77 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.net.Encodable;
 import software.bluelib.api.net.NetworkPacket;
 import software.bluelib.api.net.PacketHandler;
 
 public class PacketRegisterInfo<T extends NetworkPacket<T> & Encodable> {
 
-    private final ResourceLocation id;
-    private final Function<RegistryFriendlyByteBuf, T> decoder;
-    private final PacketHandler<T> handler;
-    private final CustomPacketPayload.Type<T> payloadId;
-    private final StreamCodec<RegistryFriendlyByteBuf, T> codec;
+	@NotNull
+	private final ResourceLocation id;
+	@NotNull
+	private final Function<RegistryFriendlyByteBuf, T> decoder;
+	@NotNull
+	private final PacketHandler<T> handler;
+	@NotNull
+	private final CustomPacketPayload.Type<T> payloadId;
+	@NotNull
+	private final StreamCodec<RegistryFriendlyByteBuf, T> codec;
 
-    public PacketRegisterInfo(ResourceLocation pId,
-            Function<RegistryFriendlyByteBuf, T> pDecoder,
-            PacketHandler<T> pHandler,
-            StreamCodec<RegistryFriendlyByteBuf, T> pCodec) {
-        this.id = pId;
-        this.decoder = pDecoder;
-        this.handler = pHandler;
-        this.payloadId = new CustomPacketPayload.Type<>(pId);
-        this.codec = pCodec != null ? pCodec : createDefaultCodec(pDecoder);
-    }
+	public PacketRegisterInfo(
+			@NotNull ResourceLocation pId,
+			@NotNull Function<RegistryFriendlyByteBuf, T> pDecoder,
+			@NotNull PacketHandler<T> pHandler,
+			@Nullable StreamCodec<RegistryFriendlyByteBuf, T> pCodec) {
+		this.id = pId;
+		this.decoder = pDecoder;
+		this.handler = pHandler;
+		this.payloadId = new CustomPacketPayload.Type<>(pId);
+		this.codec = pCodec != null ? pCodec : createDefaultCodec(pDecoder);
+	}
 
-    public PacketRegisterInfo(ResourceLocation pId,
-            Function<RegistryFriendlyByteBuf, T> pDecoder,
-            PacketHandler<T> pHandler) {
-        this.id = pId;
-        this.decoder = pDecoder;
-        this.handler = pHandler;
-        this.payloadId = new CustomPacketPayload.Type<>(pId);
-        this.codec = createDefaultCodec(pDecoder);
-    }
+	public PacketRegisterInfo(
+			@NotNull ResourceLocation pId,
+			@NotNull Function<RegistryFriendlyByteBuf, T> pDecoder,
+			@NotNull PacketHandler<T> pHandler) {
+		this.id = pId;
+		this.decoder = pDecoder;
+		this.handler = pHandler;
+		this.payloadId = new CustomPacketPayload.Type<>(pId);
+		this.codec = createDefaultCodec(pDecoder);
+	}
 
-    private StreamCodec<RegistryFriendlyByteBuf, T> createDefaultCodec(Function<RegistryFriendlyByteBuf, T> pDecoder) {
-        return StreamCodec.of(
-                (buf, packet) -> packet.encode(buf),
-                pDecoder::apply);
-    }
+	@NotNull
+	private StreamCodec<RegistryFriendlyByteBuf, T> createDefaultCodec(@NotNull Function<RegistryFriendlyByteBuf, T> pDecoder) {
+		return StreamCodec.of(
+				(buf, packet) -> packet.encode(buf),
+				pDecoder::apply);
+	}
 
-    public ResourceLocation getId() {
-        return id;
-    }
+	@NotNull
+	public ResourceLocation getId() {
+		return id;
+	}
 
-    public Function<RegistryFriendlyByteBuf, T> getDecoder() {
-        return decoder;
-    }
+	@NotNull
+	public Function<RegistryFriendlyByteBuf, T> getDecoder() {
+		return decoder;
+	}
 
-    public PacketHandler<T> getHandler() {
-        return handler;
-    }
+	@NotNull
+	public PacketHandler<T> getHandler() {
+		return handler;
+	}
 
-    public CustomPacketPayload.Type<T> getPayloadId() {
-        return payloadId;
-    }
+	@NotNull
+	public CustomPacketPayload.Type<T> getPayloadId() {
+		return payloadId;
+	}
 
-    public StreamCodec<RegistryFriendlyByteBuf, T> getCodec() {
-        return codec;
-    }
+	@NotNull
+	public StreamCodec<RegistryFriendlyByteBuf, T> getCodec() {
+		return codec;
+	}
 }

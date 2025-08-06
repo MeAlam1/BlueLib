@@ -8,6 +8,7 @@
 package software.bluelib.platform;
 
 import java.util.function.Supplier;
+import java.util.function.Supplier;
 
 import net.minecraft.client.KeyMapping;
 import net.minecraft.core.registries.Registries;
@@ -27,15 +28,17 @@ import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.registries.DeferredRegister;
+import org.jetbrains.annotations.NotNull;
 import software.bluelib.BlueLibConstants;
+import software.bluelib.api.net.NetworkManager;
 import software.bluelib.NeoRegistries;
 import software.bluelib.api.registry.AbstractRegistryBuilder;
 import software.bluelib.api.registry.builders.keybinds.KeybindBuilder;
 import software.bluelib.api.registry.helpers.entity.AttributeHelper;
 import software.bluelib.api.registry.helpers.entity.RenderHelper;
 import software.bluelib.net.NeoForgeNetworkManager;
-
-import java.util.function.Supplier;
 
 public class NeoForgeRegistryHelper implements IRegistryHelper {
     private static final DeferredRegister<Item> itemRegistry = DeferredRegister.create(Registries.ITEM, AbstractRegistryBuilder.getModID());
@@ -46,19 +49,24 @@ public class NeoForgeRegistryHelper implements IRegistryHelper {
     private static final DeferredRegister<BlockEntityType<?>> blockEntityRegistry = DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, AbstractRegistryBuilder.getModID());
     private static final DeferredRegister<Biome> biomeRegistry = DeferredRegister.create(Registries.BIOME, AbstractRegistryBuilder.getModID());
 
-    @Override
-    public BlueLibConstants.NetworkManager getNetwork() {
-        return new NeoForgeNetworkManager();
-    }
+	@NotNull
+	public static final DeferredRegister<RecipeType<?>> RECIPE_TYPES = DeferredRegister.create(Registries.RECIPE_TYPE, BlueLibConstants.MOD_ID);
+	@NotNull
+	public static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(Registries.RECIPE_SERIALIZER, BlueLibConstants.MOD_ID);
 
 	@Override
-	public <T extends RecipeType<?>> Supplier<T> registerRecipeType(String pId, Supplier<T> pRecipeType) {
-		return NeoRegistries.RECIPE_TYPES.register(pId, pRecipeType);
+	public @NotNull NetworkManager getNetwork() {
+		return new NeoForgeNetworkManager();
 	}
 
 	@Override
-	public <T extends RecipeSerializer<?>> Supplier<T> registerRecipeSerializer(String pId, Supplier<T> pRecipeSerializer) {
-		return NeoRegistries.RECIPE_SERIALIZERS.register(pId, pRecipeSerializer);
+	public <T extends RecipeType<?>> @NotNull Supplier<T> registerRecipeType(@NotNull String pId, @NotNull Supplier<T> pRecipeType) {
+		return RECIPE_TYPES.register(pId, pRecipeType);
+	}
+
+	@Override
+	public <T extends RecipeSerializer<?>> @NotNull Supplier<T> registerRecipeSerializer(@NotNull String pId, @NotNull Supplier<T> pRecipeSerializer) {
+		return RECIPE_SERIALIZERS.register(pId, pRecipeSerializer);
 	}
 
     @Override
@@ -102,15 +110,8 @@ public class NeoForgeRegistryHelper implements IRegistryHelper {
         return pKeybind;
     }
 
-    public static void register(IEventBus modEventBus) {
-        entityRegistry.register(modEventBus);
-        itemRegistry.register(modEventBus);
-        blockRegistry.register(modEventBus);
-        tabRegistry.register(modEventBus);
-        menuRegistry.register(modEventBus);
-        biomeRegistry.register(modEventBus);
-        modEventBus.<EntityAttributeCreationEvent>addListener(pEvent -> AttributeHelper.registerAttributes(pEvent::put));
-        modEventBus.<RegisterKeyMappingsEvent>addListener(event -> KeybindBuilder.REGISTERED_BUILDERS.forEach(builder -> event.register(builder.getKeyMapping().get())));
-        modEventBus.<EntityRenderersEvent.RegisterRenderers>addListener(event -> RenderHelper.registerRenderers(event::registerEntityRenderer, event::registerBlockEntityRenderer));
-    }
+	public static void register(@NotNull IEventBus pModEventBus) {
+		RECIPE_TYPES.register(pModEventBus);
+		RECIPE_SERIALIZERS.register(pModEventBus);
+	}
 }

@@ -7,37 +7,41 @@
  */
 package software.bluelib.platform;
 
-import com.google.gson.JsonElement;
-import java.nio.file.Path;
 import java.util.List;
 import java.util.Set;
-import java.util.function.BiConsumer;
-import java.util.function.Supplier;
-import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.server.MinecraftServer;
-import software.bluelib.BlueLibConstants;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import software.bluelib.api.Environment;
+import software.bluelib.api.ModAPI;
 import software.bluelib.api.event.mod.ModMeta;
 
 @SuppressWarnings("unused")
 public interface IPlatformHelper {
 
-    String getPlatformName();
+	@NotNull
+	String getPlatformName();
 
-    boolean isModLoaded(String pModId);
+	boolean isModLoaded(@NotNull String pModId);
 
-    Set<String> getLoadedMods();
+	@NotNull
+	Set<String> getLoadedMods();
 
-    List<ModMeta> getLoadedModMetadata();
+	@NotNull
+	List<ModMeta> getLoadedModMetadata();
 
-    boolean isDevelopmentEnvironment();
+	boolean isDevelopmentEnvironment();
 
-    default String getEnvironmentName() {
-        return isDevelopmentEnvironment() ? "development" : "production";
-    }
+	@NotNull
+	default String getEnvironmentName() {
+		return isDevelopmentEnvironment() ? "development" : "production";
+	}
 
-    BlueLibConstants.Environment getEnvironment();
+	@NotNull
+	Environment getEnvironment();
 
-    BlueLibConstants.ModAPI getAPI();
+	@NotNull
+	ModAPI getAPI();
 
     MinecraftServer getServer();
 
@@ -46,4 +50,6 @@ public interface IPlatformHelper {
     Path getAssetsDir(boolean isCommon);
 
     Path getDataDir(boolean isCommon);
+	@Nullable
+	MinecraftServer getServer();
 }

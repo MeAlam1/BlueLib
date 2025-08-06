@@ -7,45 +7,48 @@
  */
 package software.bluelib.config;
 
+import java.nio.file.Path;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.packs.resources.CloseableResourceManager;
 import net.minecraft.world.level.storage.LevelResource;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import software.bluelib.BlueLibConstants;
 import software.bluelib.api.config.ConfigBuilder;
 import software.bluelib.config.bluelib.LoggerConfig;
 import software.bluelib.config.bluelib.MarkdownConfig;
 
-import java.nio.file.Path;
-
 public class ConfigLoader {
 
+	@Nullable
 	private static ConfigBuilder<MarkdownConfig> markdownConfigBuilder;
+	@Nullable
 	private static ConfigBuilder<LoggerConfig> loggerConfigBuilder;
 
-	public static void createConfigs(MinecraftServer pServer) {
+	public static void createConfigs(@NotNull MinecraftServer pServer) {
 		createMarkdownConfig(pServer);
 		createLoggerConfig(pServer);
 	}
 
-	public static void createMarkdownConfig(MinecraftServer pServer) {
+	public static void createMarkdownConfig(@NotNull MinecraftServer pServer) {
 		Path MARKDOWN_CONFIG = pServer.getWorldPath(LevelResource.ROOT).resolve("serverConfig/" + BlueLibConstants.MOD_ID + "-markdown.json");
-		markdownConfigBuilder = new ConfigBuilder<>(MARKDOWN_CONFIG, MarkdownConfig.class);
 		MarkdownConfig defaultMarkdownConfig = new MarkdownConfig();
+		markdownConfigBuilder = new ConfigBuilder<>(MARKDOWN_CONFIG, MarkdownConfig.class, defaultMarkdownConfig);
 		markdownConfigBuilder.createIfAbsent(defaultMarkdownConfig);
 		markdownConfigBuilder.load();
 		BlueLibConfig.bakeMarkdown(markdownConfigBuilder.getConfig());
 	}
 
-	public static void createLoggerConfig(MinecraftServer pServer) {
+	public static void createLoggerConfig(@NotNull MinecraftServer pServer) {
 		Path LOGGER_CONFIG = pServer.getWorldPath(LevelResource.ROOT).resolve("serverConfig/" + BlueLibConstants.MOD_ID + "-logger.json");
-		loggerConfigBuilder = new ConfigBuilder<>(LOGGER_CONFIG, LoggerConfig.class);
 		LoggerConfig defaultLoggerConfig = new LoggerConfig();
+		loggerConfigBuilder = new ConfigBuilder<>(LOGGER_CONFIG, LoggerConfig.class, defaultLoggerConfig);
 		loggerConfigBuilder.createIfAbsent(defaultLoggerConfig);
 		loggerConfigBuilder.load();
 		BlueLibConfig.bakeLogger(loggerConfigBuilder.getConfig());
 	}
 
-	public static void reloadConfigs(MinecraftServer pServer, CloseableResourceManager pCloseableResourceManager, boolean pBoolean) {
+	public static void reloadConfigs(@NotNull MinecraftServer pServer, @NotNull CloseableResourceManager pCloseableResourceManager, @NotNull Boolean pBoolean) {
 		markdownConfigBuilder.load();
 		BlueLibConfig.bakeMarkdown(markdownConfigBuilder.getConfig());
 		BlueLibConfig.bakeLogger(loggerConfigBuilder.getConfig());

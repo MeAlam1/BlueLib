@@ -9,32 +9,40 @@ package software.bluelib.internal;
 
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import software.bluelib.BlueLibConstants;
 
 @ApiStatus.Internal
 public class Translation {
 
-    public static Component translate(String pString) {
-        return Component.translatable(BlueLibConstants.MOD_ID + "." + pString);
-    }
+	@NotNull
+	public static Component translate(@NotNull String pString) {
+		return Component.translatable(BlueLibConstants.MOD_ID + "." + pString);
+	}
 
-    public static Component translate(String pString, Object... pArgs) {
-        return Component.translatable(BlueLibConstants.MOD_ID + "." + pString, pArgs);
-    }
+	@NotNull
+	public static Component translate(@NotNull String pString, @Nullable Object... pArgs) {
+		return Component.translatable(BlueLibConstants.MOD_ID + "." + pString, pArgs);
+	}
 
-    public static Component log(String pString) {
-        return Component.translatable(BlueLibConstants.MOD_ID + ".log." + pString);
-    }
+	@NotNull
+	public static Component log(@NotNull String pString) {
+		return Component.translatable(BlueLibConstants.MOD_ID + ".log." + pString);
+	}
 
-    public static Component log(String pString, Object... pArgs) {
-        return Component.translatable(BlueLibConstants.MOD_ID + ".log." + pString, pArgs);
-    }
+	@NotNull
+	public static Component log(@NotNull String pString, @Nullable Object... pArgs) {
+		return Component.translatable(BlueLibConstants.MOD_ID + ".log." + pString, pArgs);
+	}
 
-    public static Component config(String pString) {
-        return Component.translatable(BlueLibConstants.MOD_ID + ".config." + pString);
-    }
+	@NotNull
+	public static Component config(@NotNull String pString) {
+		return Component.translatable(BlueLibConstants.MOD_ID + ".config." + pString);
+	}
 
-    public static Component config(String pString, Object... pArgs) {
-        return Component.translatable(BlueLibConstants.MOD_ID + ".config." + pString, pArgs);
-    }
+	@NotNull
+	public static Component config(@NotNull String pString, @Nullable Object... pArgs) {
+		return Component.translatable(BlueLibConstants.MOD_ID + ".config." + pString, pArgs);
+	}
 }

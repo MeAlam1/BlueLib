@@ -2,8 +2,8 @@ plugins {
     id("bluelib-convention")
     alias(libs.plugins.curseforgegradle)
     alias(libs.plugins.moddevgradle)
-    id("com.diffplug.spotless") version "6.25.0"
-    id("com.github.hierynomus.license") version "0.16.1"
+    alias(libs.plugins.com.diffplug.spotless)
+    alias(libs.plugins.com.github.hierynomus.license)
 }
 
 repositories {
@@ -29,8 +29,6 @@ neoForge {
 dependencies {
     compileOnly(libs.mixin)
     compileOnly(libs.mixinextras.common)
-    jarJar(libs.molang)
-    compileOnly(libs.molang)
     compileOnlyApi(libs.jei.api)
 
     // Only enable for testing as needed
@@ -51,6 +49,7 @@ publishing {
 
 spotless {
     java {
+        leadingSpacesToTabs()
         endWithNewline()
         removeUnusedImports()
         toggleOffOn()
@@ -59,11 +58,8 @@ spotless {
         eclipse("4.31").configFile(rootProject.file("codeformat/formatter-config.xml"))
 
         importOrder()
-        custom("jetbrainsNullable") { fileContents: String ->
-            fileContents.replace("javax.annotation.Nullable", "org.jetbrains.annotations.Nullable")
-        }
 
-        bumpThisNumberIfACustomStepChanges(2)
+        bumpThisNumberIfACustomStepChanges(3)
     }
 }
 

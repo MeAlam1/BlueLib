@@ -13,31 +13,34 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.chunk.LevelChunk;
+import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
-import software.bluelib.internal.Translation;
+import software.bluelib.internal.BlueTranslation;
 
 @SuppressWarnings("unused")
 public class ChunkUtils {
 
-    private ChunkUtils() {}
+	private ChunkUtils() {}
 
-    public static Biome getBiomeOfChunk(Level pLevel, ChunkPos pChunkPos) {
-        try {
-            return pLevel.getBiome(pChunkPos.getWorldPosition()).value();
-        } catch (Exception pException) {
-            BaseLogger.log(true, BaseLogLevel.ERROR, Translation.log("chunk.biome.error"), pException);
-            throw pException;
-        }
-    }
+	@NotNull
+	public static Biome getBiomeOfChunk(@NotNull Level pLevel, @NotNull ChunkPos pChunkPos) {
+		try {
+			return pLevel.getBiome(pChunkPos.getWorldPosition()).value();
+		} catch (Exception pException) {
+			BaseLogger.log(true, BaseLogLevel.ERROR, BlueTranslation.log("chunk.biome.error"), pException);
+			throw pException;
+		}
+	}
 
-    public static Collection<BlockEntity> getChunkTileEntities(Level pLevel, ChunkPos pChunkPos) {
-        try {
-            LevelChunk chunk = pLevel.getChunk(pChunkPos.x, pChunkPos.z);
-            return chunk.getBlockEntities().values();
-        } catch (Exception pException) {
-            BaseLogger.log(true, BaseLogLevel.ERROR, Translation.log("chunk.tile.error"), pException);
-            throw pException;
-        }
-    }
+	@NotNull
+	public static Collection<BlockEntity> getChunkTileEntities(@NotNull Level pLevel, @NotNull ChunkPos pChunkPos) {
+		try {
+			LevelChunk chunk = pLevel.getChunk(pChunkPos.x, pChunkPos.z);
+			return chunk.getBlockEntities().values();
+		} catch (Exception pException) {
+			BaseLogger.log(true, BaseLogLevel.ERROR, BlueTranslation.log("chunk.tile.error"), pException);
+			throw pException;
+		}
+	}
 }

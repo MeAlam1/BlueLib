@@ -18,6 +18,8 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.message.v1.ServerMessageEvents;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.fabricmc.loader.api.FabricLoader;
+import org.jetbrains.annotations.NotNull;
+import software.bluelib.event.FabricReloadHandler;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import software.bluelib.api.registry.BlueRegistryBuilder;
 import software.bluelib.api.registry.AbstractRegistryBuilder;
@@ -36,13 +38,13 @@ public class BlueLib implements ModInitializer, DataGeneratorEntrypoint {
 
 	@Override
 	public void onInitialize() {
-		BlueLibCommon.doRegistration();
 		FabricEvents.register();
+		BlueLibCommon.doRegistration();
 
 		clientEndTick();
 		registerNetwork();
 
-		ReloadHandler.registerProvider(new VariantProvider());
+		FabricReloadHandler.registerProvider(new VariantProvider());
 	}
 
 	private void registerNetwork() {
@@ -50,7 +52,8 @@ public class BlueLib implements ModInitializer, DataGeneratorEntrypoint {
 		FabricNetworkManager.registerServerHandlers();
 	}
 
-	private boolean isClientEnvironment() {
+	@NotNull
+	private Boolean isClientEnvironment() {
 		return FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT;
 	}
 

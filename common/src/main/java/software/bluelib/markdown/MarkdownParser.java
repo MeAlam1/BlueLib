@@ -9,34 +9,36 @@ package software.bluelib.markdown;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
 import software.bluelib.config.MarkdownConfig;
-import software.bluelib.internal.Translation;
+import software.bluelib.internal.BlueTranslation;
 import software.bluelib.markdown.syntax.*;
 
 @SuppressWarnings("unused")
 public class MarkdownParser {
 
-    public static MutableComponent parseMarkdown(Component pMessage) {
-        if (!MarkdownConfig.isMarkdownEnabled) {
-            BaseLogger.log(true, BaseLogLevel.INFO, Translation.log("markdown.disabled"));
-            return pMessage.copy();
-        }
+	@NotNull
+	public static MutableComponent parseMarkdown(@NotNull Component pMessage) {
+		if (!MarkdownConfig.isMarkdownEnabled) {
+			BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("markdown.disabled"));
+			return pMessage.copy();
+		}
 
-        String text = pMessage.getString();
-        MutableComponent formattedMessage = Component.literal(text);
+		String text = pMessage.getString();
+		MutableComponent formattedMessage = Component.literal(text);
 
-        formattedMessage = new Bold().apply(formattedMessage);
-        formattedMessage = new Italic().apply(formattedMessage);
-        formattedMessage = new Underline().apply(formattedMessage);
-        formattedMessage = new Strikethrough().apply(formattedMessage);
-        formattedMessage = new Spoiler().apply(formattedMessage);
-        formattedMessage = new Hyperlink().apply(formattedMessage);
-        formattedMessage = new Color().apply(formattedMessage);
-        formattedMessage = new CopyToClipboard().apply(formattedMessage, text);
+		formattedMessage = new Bold().apply(formattedMessage);
+		formattedMessage = new Italic().apply(formattedMessage);
+		formattedMessage = new Underline().apply(formattedMessage);
+		formattedMessage = new Strikethrough().apply(formattedMessage);
+		formattedMessage = new Spoiler().apply(formattedMessage);
+		formattedMessage = new Hyperlink().apply(formattedMessage);
+		formattedMessage = new Color().apply(formattedMessage);
+		formattedMessage = new CopyToClipboard().apply(formattedMessage, text);
 
-        BaseLogger.log(true, BaseLogLevel.INFO, Translation.log("markdown.message"));
-        return formattedMessage;
-    }
+		BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("markdown.message"));
+		return formattedMessage;
+	}
 }

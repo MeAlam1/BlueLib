@@ -12,25 +12,27 @@ import java.util.Set;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.net.NetworkPacket;
-import software.bluelib.internal.Resource;
+import software.bluelib.internal.BlueResource;
 
-public record VariantsPacket(Set<String> allVariants) implements NetworkPacket<VariantsPacket> {
+public record VariantsPacket(@NotNull Set<String> allVariants) implements NetworkPacket<VariantsPacket> {
 
-    public static final ResourceLocation ID = Resource.resource("variants_packet");
+	@NotNull
+	public static final ResourceLocation ID = BlueResource.resource("variants_packet");
 
-    @Override
-    public void encode(RegistryFriendlyByteBuf pBuffer) {
-        pBuffer.writeCollection(allVariants, FriendlyByteBuf::writeUtf);
-    }
+	@Override
+	public void encode(@NotNull RegistryFriendlyByteBuf pBuffer) {
+		pBuffer.writeCollection(allVariants, FriendlyByteBuf::writeUtf);
+	}
 
-    public static VariantsPacket decode(FriendlyByteBuf pBuffer) {
-        Set<String> allVariants = pBuffer.readCollection(HashSet::new, FriendlyByteBuf::readUtf);
-        return new VariantsPacket(allVariants);
-    }
+	public static @NotNull VariantsPacket decode(@NotNull RegistryFriendlyByteBuf pBuffer) {
+		Set<String> allVariants = pBuffer.readCollection(HashSet::new, FriendlyByteBuf::readUtf);
+		return new VariantsPacket(allVariants);
+	}
 
-    @Override
-    public ResourceLocation getId() {
-        return ID;
-    }
+	@Override
+	public @NotNull ResourceLocation getId() {
+		return ID;
+	}
 }

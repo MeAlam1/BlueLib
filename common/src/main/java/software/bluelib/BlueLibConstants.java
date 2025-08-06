@@ -7,61 +7,87 @@
  */
 package software.bluelib;
 
+import java.util.List;
 import java.util.ServiceLoader;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.level.ServerPlayer;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.event.IEventProxy;
-import software.bluelib.api.net.NetworkPacket;
 import software.bluelib.platform.IPlatformHelper;
 import software.bluelib.platform.IRegistryHelper;
 
-public class BlueLibConstants {
+public class BlueLibConstants implements BuildDetails {
 
-    private BlueLibConstants() {}
+	public static void init() {}
 
-    public static <T> T load(Class<T> pClazz) {
-        return ServiceLoader.load(pClazz)
-                .findFirst()
-                .orElseThrow(() -> new NullPointerException("Failed to load service for " + pClazz.getName()));
-    }
+	@NotNull
+	public static <T> T load(@NotNull Class<T> pClazz) {
+		return ServiceLoader.load(pClazz)
+				.findFirst()
+				.orElseThrow(() -> new NullPointerException("Failed to load service for " + pClazz.getName()));
+	}
 
-    public static final Logger LOGGER = Logger.getLogger(BlueLibConstants.MOD_NAME);
+	@NotNull
+	public static <T> ServiceLoader<T> loadAll(@NotNull Class<T> pClazz) {
+		return ServiceLoader.load(pClazz);
+	}
 
-    public static ScheduledExecutorService SCHEDULER = Executors.newScheduledThreadPool(1);
+	@NotNull
+	public static final Logger LOGGER = Logger.getLogger(BlueLibConstants.MOD_NAME);
 
-    public static final String MOD_ID = "bluelib";
+	@NotNull
+	public static ScheduledExecutorService SCHEDULER = Executors.newScheduledThreadPool(1);
 
-    public static final String MOD_NAME = "BlueLib";
+	@NotNull
+	public static final String MOD_ID = "bluelib";
 
-    public static MinecraftServer server;
+	@NotNull
+	public static final String MOD_NAME = "BlueLib";
 
-    public static class PlatformHelper {
+	@NotNull
+	public static final String VERSION = "2.3.0";
 
-        public static final IPlatformHelper PLATFORM = load(IPlatformHelper.class);
+	@Nullable
+	public static MinecraftServer server;
 
-        public static final IEventProxy EVENT_PROXY = load(IEventProxy.class);
+	@Override
+	public @NotNull String getModId() {
+		return MOD_ID;
+	}
 
-        public static final IRegistryHelper REGISTRY = load(IRegistryHelper.class);
-    }
+	@Override
+	public @NotNull String getVersion() {
+		return VERSION;
+	}
 
-    public enum ModAPI {
-        FABRIC,
-        FORGE,
-        NEOFORGE
-    }
+	@Override
+	public boolean displayWarning() {
+		return false;
+	}
 
-    public interface NetworkManager {
+	public static class BlueLoader {
 
-        void sendPacketToPlayer(ServerPlayer player, NetworkPacket<?> packet);
+		@NotNull
+		public static final Pattern SUFFIX_STRIPPER = Pattern.compile("((\\.geo)|((\\.animation)s?)|(\\.controller))?(\\.json)$");
+		@NotNull
+		public static final Pattern PREFIX_STRIPPER = Pattern.compile("^(bluelib/)((animations/)|(models/)|(controllers/))?");
+		@NotNull
+		public static final List<String> SKIPPED_NAMESPACES = List.of("minecraft", "neoforge");
+	}
 
-        void sendToServer(NetworkPacket<?> packet);
-    }
+	public static class PlatformHelper {
 
-    public enum Environment {
-        CLIENT,
-        SERVER
-    }
+		@NotNull
+		public static final IPlatformHelper PLATFORM = load(IPlatformHelper.class);
+
+		@NotNull
+		public static final IEventProxy EVENT_PROXY = load(IEventProxy.class);
+
+		@NotNull
+		public static final IRegistryHelper REGISTRY = load(IRegistryHelper.class);
+	}
 }

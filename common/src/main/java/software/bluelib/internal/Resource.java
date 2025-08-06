@@ -9,12 +9,14 @@ package software.bluelib.internal;
 
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.NotNull;
 import software.bluelib.BlueLibConstants;
 
 @ApiStatus.Internal
 public class Resource {
 
-    public static ResourceLocation resource(String pPath) {
-        return ResourceLocation.fromNamespaceAndPath(BlueLibConstants.MOD_ID, pPath);
-    }
+	@NotNull
+	public static ResourceLocation resource(@NotNull String pPath) {
+		return ResourceLocation.fromNamespaceAndPath(BlueLibConstants.MOD_ID, pPath);
+	}
 }
