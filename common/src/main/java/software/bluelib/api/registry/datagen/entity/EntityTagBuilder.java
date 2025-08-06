@@ -16,100 +16,101 @@ import software.bluelib.api.registry.AbstractRegistryBuilder;
 import software.bluelib.api.registry.datagen.DataGenUtils;
 
 public class EntityTagBuilder extends DataGenUtils {
-    private static final List<String> generatedTags = new ArrayList<>();
-    private static final Map<String, List<EntityType<?>>> tagEntityTypes = new HashMap<>();
-    private final String name;
-    private final List<EntityType<?>> entityTypes = new ArrayList<>();
 
-    private EntityTagBuilder(String name) {
-        this.name = name;
-    }
+	private static final List<String> generatedTags = new ArrayList<>();
+	private static final Map<String, List<EntityType<?>>> tagEntityTypes = new HashMap<>();
+	private final String name;
+	private final List<EntityType<?>> entityTypes = new ArrayList<>();
 
-    public static EntityTagBuilder createEntityTag(String name) {
-        return new EntityTagBuilder(name);
-    }
+	private EntityTagBuilder(String name) {
+		this.name = name;
+	}
 
-    public EntityTagBuilder addEntries(EntityType<?>... entityTypes) {
-        this.entityTypes.addAll(Arrays.asList(entityTypes));
-        return this;
-    }
+	public static EntityTagBuilder createEntityTag(String name) {
+		return new EntityTagBuilder(name);
+	}
 
-    public TagKey<EntityType<?>> build() {
-        generatedTags.add(name);
-        tagEntityTypes.put(name, new ArrayList<>(entityTypes));
-        return TagKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(AbstractRegistryBuilder.getModID(), name));
-    }
+	public EntityTagBuilder addEntries(EntityType<?>... entityTypes) {
+		this.entityTypes.addAll(Arrays.asList(entityTypes));
+		return this;
+	}
 
-    public static void doTagJsonGen(String modId) {
-        for (String tagName : generatedTags) {
-            List<EntityType<?>> entities = tagEntityTypes.getOrDefault(tagName, new ArrayList<>());
-            generateTagJson(modId, tagName, entities);
-        }
-    }
+	public TagKey<EntityType<?>> build() {
+		generatedTags.add(name);
+		tagEntityTypes.put(name, new ArrayList<>(entityTypes));
+		return TagKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(AbstractRegistryBuilder.getModID(), name));
+	}
 
-    private static void generateTagJson(String modId, String tagName, List<EntityType<?>> entityTypes) {
-        Path tagPath = findProjectRoot().resolve(modId + "/tags/entity_type/" + tagName + ".json");
+	public static void doTagJsonGen(String modId) {
+		for (String tagName : generatedTags) {
+			List<EntityType<?>> entities = tagEntityTypes.getOrDefault(tagName, new ArrayList<>());
+			generateTagJson(modId, tagName, entities);
+		}
+	}
 
-        try {
-            if (Files.exists(tagPath)) {
-                System.out.println("Entity tag for '" + tagName + "' already exists at: " + tagPath + ". Skipping creation.");
-                return;
-            }
+	private static void generateTagJson(String modId, String tagName, List<EntityType<?>> entityTypes) {
+		Path tagPath = findProjectRoot().resolve(modId + "/tags/entity_type/" + tagName + ".json");
 
-            JsonObject tagJson = new JsonObject();
-            JsonArray values = new JsonArray();
+		try {
+			if (Files.exists(tagPath)) {
+				System.out.println("Entity tag for '" + tagName + "' already exists at: " + tagPath + ". Skipping creation.");
+				return;
+			}
 
-            for (EntityType<?> entityType : entityTypes) {
-                ResourceLocation registryName = EntityType.getKey(entityType);
-                if (registryName != null) {
-                    values.add(registryName.toString());
-                }
-            }
+			JsonObject tagJson = new JsonObject();
+			JsonArray values = new JsonArray();
 
-            tagJson.add("values", values);
+			for (EntityType<?> entityType : entityTypes) {
+				ResourceLocation registryName = EntityType.getKey(entityType);
+				if (registryName != null) {
+					values.add(registryName.toString());
+				}
+			}
 
-            Files.createDirectories(tagPath.getParent());
-            Files.write(tagPath, GSON.toJson(tagJson).getBytes(), StandardOpenOption.CREATE_NEW);
-            System.out.println("Entity tag for '" + tagName + "' created at: " + tagPath);
+			tagJson.add("values", values);
 
-        } catch (IOException e) {
-            System.err.println("Failed [ERROR]: Failed to create entity tag for '" + tagName + "' at " + tagPath + ": " + e.getMessage());
-        }
-    }
+			Files.createDirectories(tagPath.getParent());
+			Files.write(tagPath, GSON.toJson(tagJson).getBytes(), StandardOpenOption.CREATE_NEW);
+			System.out.println("Entity tag for '" + tagName + "' created at: " + tagPath);
 
-    public static Path findProjectRoot() {
-        Path current = Paths.get(System.getProperty("user.dir")).toAbsolutePath();
-        while (current != null) {
-            Path resources = findResourcesPath(current);
-            if (resources != null) return resources;
-            current = current.getParent();
-        }
-        throw new IllegalStateException("Could not locate project root");
-    }
+		} catch (IOException e) {
+			System.err.println("Failed [ERROR]: Failed to create entity tag for '" + tagName + "' at " + tagPath + ": " + e.getMessage());
+		}
+	}
 
-    private static Path findResourcesPath(Path current) {
-        String[] potentialPaths = {
-                "src/main/resources/data",
-                "common/src/main/resources/data"
-        };
+	public static Path findProjectRoot() {
+		Path current = Paths.get(System.getProperty("user.dir")).toAbsolutePath();
+		while (current != null) {
+			Path resources = findResourcesPath(current);
+			if (resources != null) return resources;
+			current = current.getParent();
+		}
+		throw new IllegalStateException("Could not locate project root");
+	}
 
-        for (String path : potentialPaths) {
-            Path resources = current.resolve(path);
-            if (Files.exists(resources) && Files.isDirectory(resources)) {
-                return resources;
-            }
-        }
+	private static Path findResourcesPath(Path current) {
+		String[] potentialPaths = {
+				"src/main/resources/data",
+				"common/src/main/resources/data"
+		};
 
-        String currentDirName = current.getFileName() != null ? current.getFileName().toString() : "";
-        if (currentDirName.matches("fabric|forge|neoforge|quilt")) {
-            for (String path : potentialPaths) {
-                Path parentResources = current.getParent().resolve(path);
-                if (Files.exists(parentResources) && Files.isDirectory(parentResources)) {
-                    return parentResources;
-                }
-            }
-        }
+		for (String path : potentialPaths) {
+			Path resources = current.resolve(path);
+			if (Files.exists(resources) && Files.isDirectory(resources)) {
+				return resources;
+			}
+		}
 
-        return null;
-    }
+		String currentDirName = current.getFileName() != null ? current.getFileName().toString() : "";
+		if (currentDirName.matches("fabric|forge|neoforge|quilt")) {
+			for (String path : potentialPaths) {
+				Path parentResources = current.getParent().resolve(path);
+				if (Files.exists(parentResources) && Files.isDirectory(parentResources)) {
+					return parentResources;
+				}
+			}
+		}
+
+		return null;
+	}
 }

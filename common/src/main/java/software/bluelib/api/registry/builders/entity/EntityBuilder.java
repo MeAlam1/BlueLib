@@ -1,5 +1,10 @@
 package software.bluelib.api.registry.builders.entity;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Supplier;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -14,12 +19,6 @@ import software.bluelib.api.registry.datagen.items.ItemModelTemplates;
 import software.bluelib.api.registry.helpers.entity.AttributeHelper;
 import software.bluelib.api.registry.helpers.entity.RenderHelper;
 import software.bluelib.api.registry.helpers.items.BlueSpawnEggItem;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.function.Supplier;
 
 public class EntityBuilder<T extends LivingEntity> {
 
@@ -129,8 +128,7 @@ public class EntityBuilder<T extends LivingEntity> {
 			Supplier<EntityType<? extends Mob>> entityType,
 			int primaryColor,
 			int secondaryColor,
-			Supplier<CreativeModeTab> tabSupplier
-	) {
+			Supplier<CreativeModeTab> tabSupplier) {
 		hasSpawnEgg = true;
 		Supplier<Item> spawnEggSupplier = BlueLibConstants.PlatformHelper.REGISTRY.registerItem(
 				name + "_spawn_egg",
@@ -138,9 +136,7 @@ public class EntityBuilder<T extends LivingEntity> {
 						entityType.get(),
 						primaryColor,
 						secondaryColor,
-						new Item.Properties()
-				)
-		);
+						new Item.Properties()));
 		if (tabSupplier != null) {
 			SPAWN_EGGS_BY_TAB.computeIfAbsent(tabSupplier, k -> new ArrayList<>()).add(spawnEggSupplier);
 		}

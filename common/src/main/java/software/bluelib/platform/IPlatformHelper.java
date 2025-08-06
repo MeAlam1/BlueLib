@@ -7,13 +7,12 @@
  */
 package software.bluelib.platform;
 
+import com.google.gson.JsonElement;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
-
-import com.google.gson.JsonElement;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.server.MinecraftServer;
 import org.jetbrains.annotations.NotNull;
@@ -49,11 +48,12 @@ public interface IPlatformHelper {
 	@NotNull
 	ModAPI getAPI();
 
-    JsonElement generateRecipeJson(String modId, String name, BiConsumer<RecipeOutput, Supplier<JsonElement>> recipeConsumer);
+	JsonElement generateRecipeJson(String modId, String name, BiConsumer<RecipeOutput, Supplier<JsonElement>> recipeConsumer);
 
-    Path getAssetsDir(boolean isCommon);
+	Path getAssetsDir(boolean isCommon);
 
-    Path getDataDir(boolean isCommon);
+	Path getDataDir(boolean isCommon);
+
 	@Nullable
 	MinecraftServer getServer();
 }

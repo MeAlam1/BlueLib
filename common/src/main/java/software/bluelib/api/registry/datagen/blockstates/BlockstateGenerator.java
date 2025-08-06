@@ -12,33 +12,34 @@ import software.bluelib.BlueLibConstants;
 import software.bluelib.api.registry.datagen.DataGenUtils;
 
 public class BlockstateGenerator extends DataGenUtils {
-    public static void generateBlockstate(String modId, String name, BlockstateTemplates blockstateTemplate) {
-        generateBlockstate(modId, name, blockstateTemplate, Collections.emptyMap());
-    }
 
-    public static void generateBlockstate(String modId, String name, BlockstateTemplates blockstateTemplate, Map<String, String> properties) {
-        Path blockstatePath = Path.of(BlueLibConstants.PlatformHelper.PLATFORM.getAssetsDir(true) + "/blockstates/" + name + ".json");
+	public static void generateBlockstate(String modId, String name, BlockstateTemplates blockstateTemplate) {
+		generateBlockstate(modId, name, blockstateTemplate, Collections.emptyMap());
+	}
 
-        try {
-            if (Files.exists(blockstatePath)) {
-                System.out.println("Blockstate for '" + name + "' already exists at: " + blockstatePath + ". Skipping creation.");
-                return;
-            }
+	public static void generateBlockstate(String modId, String name, BlockstateTemplates blockstateTemplate, Map<String, String> properties) {
+		Path blockstatePath = Path.of(BlueLibConstants.PlatformHelper.PLATFORM.getAssetsDir(true) + "/blockstates/" + name + ".json");
 
-            JsonElement blockstateJson = generateBlockstateJson(modId, name, blockstateTemplate, properties);
+		try {
+			if (Files.exists(blockstatePath)) {
+				System.out.println("Blockstate for '" + name + "' already exists at: " + blockstatePath + ". Skipping creation.");
+				return;
+			}
 
-            Files.createDirectories(blockstatePath.getParent());
-            Files.write(blockstatePath, GSON.toJson(blockstateJson).getBytes(), StandardOpenOption.CREATE_NEW);
-            System.out.println("Blockstate for '" + name + "' created at: " + blockstatePath);
+			JsonElement blockstateJson = generateBlockstateJson(modId, name, blockstateTemplate, properties);
 
-        } catch (IOException e) {
-            System.err.println("[ERROR]: Failed to create blockstate for '" + name + "' at " + blockstatePath + ": " + e.getMessage());
-        }
-    }
+			Files.createDirectories(blockstatePath.getParent());
+			Files.write(blockstatePath, GSON.toJson(blockstateJson).getBytes(), StandardOpenOption.CREATE_NEW);
+			System.out.println("Blockstate for '" + name + "' created at: " + blockstatePath);
 
-    private static JsonElement generateBlockstateJson(String modId, String name, BlockstateTemplates blockstateTemplate, Map<String, String> properties) {
-        JsonObject blockstateJson = blockstateTemplate.generateBlockstate(modId, name, properties);
-        System.out.println("Generated JSON for '" + modId + ":blockstates/" + name + "':\n" + GSON.toJson(blockstateJson));
-        return blockstateJson;
-    }
+		} catch (IOException e) {
+			System.err.println("[ERROR]: Failed to create blockstate for '" + name + "' at " + blockstatePath + ": " + e.getMessage());
+		}
+	}
+
+	private static JsonElement generateBlockstateJson(String modId, String name, BlockstateTemplates blockstateTemplate, Map<String, String> properties) {
+		JsonObject blockstateJson = blockstateTemplate.generateBlockstate(modId, name, properties);
+		System.out.println("Generated JSON for '" + modId + ":blockstates/" + name + "':\n" + GSON.toJson(blockstateJson));
+		return blockstateJson;
+	}
 }

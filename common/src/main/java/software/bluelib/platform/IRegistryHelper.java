@@ -28,21 +28,21 @@ public interface IRegistryHelper {
 	@NotNull
 	NetworkManager getNetwork();
 
-    <T extends Entity> Supplier<EntityType<T>> registerEntity(String pId, Supplier<EntityType<T>> pEntity);
+	<T extends Entity> Supplier<EntityType<T>> registerEntity(String pId, Supplier<EntityType<T>> pEntity);
 
-    <T extends CreativeModeTab> Supplier<T> registerTab(String pId, Supplier<T> pTab);
+	<T extends CreativeModeTab> Supplier<T> registerTab(String pId, Supplier<T> pTab);
 
-    <T extends Item> Supplier<T> registerItem(String id, Supplier<T> pItem);
+	<T extends Item> Supplier<T> registerItem(String id, Supplier<T> pItem);
 
-    <T extends Block> Supplier<T> registerBlock(String pId, Supplier<T> pBlock);
+	<T extends Block> Supplier<T> registerBlock(String pId, Supplier<T> pBlock);
 
-    <T extends BlockEntity> Supplier<BlockEntityType<T>> registerBlockEntity(String pId, Supplier<BlockEntityType<T>> pBlockEntity);
+	<T extends BlockEntity> Supplier<BlockEntityType<T>> registerBlockEntity(String pId, Supplier<BlockEntityType<T>> pBlockEntity);
 
-    <T extends MenuType<?>> Supplier<T> registerMenu(String pId, Supplier<T> pMenu);
+	<T extends MenuType<?>> Supplier<T> registerMenu(String pId, Supplier<T> pMenu);
 
-    <T extends Biome> Supplier<T> registerBiome(String pId, Supplier<T> pBiome);
+	<T extends Biome> Supplier<T> registerBiome(String pId, Supplier<T> pBiome);
 
-    Supplier<KeyMapping> registerKeybind(String pId, Supplier<KeyMapping> pKeybind);
+	Supplier<KeyMapping> registerKeybind(String pId, Supplier<KeyMapping> pKeybind);
 
 	@NotNull
 	<T extends RecipeType<?>> Supplier<T> registerRecipeType(@NotNull String pId, @NotNull Supplier<T> pRecipeType);

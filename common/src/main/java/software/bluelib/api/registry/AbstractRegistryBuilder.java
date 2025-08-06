@@ -1,7 +1,6 @@
 package software.bluelib.api.registry;
 
 import java.util.function.Function;
-
 import net.minecraft.world.entity.*;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -18,55 +17,55 @@ import software.bluelib.api.registry.datagen.entity.EntityTagBuilder;
 
 public abstract class AbstractRegistryBuilder {
 
-    private static String modID;
+	private static String modID;
 
-    public AbstractRegistryBuilder(String modId) {
-        modID = modId;
-    }
+	public AbstractRegistryBuilder(String modId) {
+		modID = modId;
+	}
 
-    public static void setModID(String modId) {
-        modID = modId;
-    }
+	public static void setModID(String modId) {
+		modID = modId;
+	}
 
-    public static String getModID() {
-        return modID;
-    }
+	public static String getModID() {
+		return modID;
+	}
 
-    public <T extends LivingEntity> EntityBuilder<T> livingEntity(String name, EntityType.EntityFactory<T> factory, MobCategory category) {
-        return new EntityBuilder<>(name, factory, category);
-    }
+	public <T extends LivingEntity> EntityBuilder<T> livingEntity(String name, EntityType.EntityFactory<T> factory, MobCategory category) {
+		return new EntityBuilder<>(name, factory, category);
+	}
 
-    public <T extends Entity> ProjectileBuilder<T> projectile(String name, EntityType.EntityFactory<T> factory, MobCategory category, Class<T> entityClass) {
-        return new ProjectileBuilder<>(name, factory, category, entityClass);
-    }
+	public <T extends Entity> ProjectileBuilder<T> projectile(String name, EntityType.EntityFactory<T> factory, MobCategory category, Class<T> entityClass) {
+		return new ProjectileBuilder<>(name, factory, category, entityClass);
+	}
 
-    public <T extends Block> BlockBuilder<T> block(String name, Function<Block.Properties, T> blockFactory) {
-        return new BlockBuilder<>(name, blockFactory);
-    }
+	public <T extends Block> BlockBuilder<T> block(String name, Function<Block.Properties, T> blockFactory) {
+		return new BlockBuilder<>(name, blockFactory);
+	}
 
-    public static <T extends BlockEntity> BlockEntityBuilder<T> blockEntity(String name, BlockEntityType.BlockEntitySupplier<T> factory) {
-        return new BlockEntityBuilder<>(name, factory);
-    }
+	public static <T extends BlockEntity> BlockEntityBuilder<T> blockEntity(String name, BlockEntityType.BlockEntitySupplier<T> factory) {
+		return new BlockEntityBuilder<>(name, factory);
+	}
 
-    public <T extends Item> ItemBuilder<T> item(String name, Function<Item.Properties, T> constructor) {
-        return new ItemBuilder<>(name, constructor);
-    }
+	public <T extends Item> ItemBuilder<T> item(String name, Function<Item.Properties, T> constructor) {
+		return new ItemBuilder<>(name, constructor);
+	}
 
-    public CreativeTabBuilder tab(String id) {
-        return new CreativeTabBuilder(id);
-    }
+	public CreativeTabBuilder tab(String id) {
+		return new CreativeTabBuilder(id);
+	}
 
-    public static KeybindBuilder keybind(String name, int keyCode) {
-        return KeybindBuilder.keybind(name, keyCode);
-    }
+	public static KeybindBuilder keybind(String name, int keyCode) {
+		return KeybindBuilder.keybind(name, keyCode);
+	}
 
-    public static void doDatagen() {
-        ItemBuilder.doItemModelGen(getModID());
-        BlockBuilder.doBlockModelGen(getModID());
-        EntityBuilder.doSpawnEggDatagen(getModID());
-        EntityTagBuilder.doTagJsonGen(getModID());
+	public static void doDatagen() {
+		ItemBuilder.doItemModelGen(getModID());
+		BlockBuilder.doBlockModelGen(getModID());
+		EntityBuilder.doSpawnEggDatagen(getModID());
+		EntityTagBuilder.doTagJsonGen(getModID());
 
-        ItemBuilder.doRecipeGen(getModID());
-        BlockBuilder.doRecipeGen(getModID());
-    }
+		ItemBuilder.doRecipeGen(getModID());
+		BlockBuilder.doRecipeGen(getModID());
+	}
 }

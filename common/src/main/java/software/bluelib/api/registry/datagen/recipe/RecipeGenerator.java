@@ -19,28 +19,29 @@ import software.bluelib.BlueLibConstants;
 import software.bluelib.api.registry.datagen.DataGenUtils;
 
 public class RecipeGenerator extends DataGenUtils {
-    public static void generateRecipe(String modId, String name, BiConsumer<RecipeOutput, Supplier<JsonElement>> recipeConsumer) {
-        Path recipePath = Path.of(BlueLibConstants.PlatformHelper.PLATFORM.getDataDir(true) + "/recipe/" + name + ".json");
 
-        try {
-            if (Files.exists(recipePath)) {
-                System.out.println("Recipe for '" + name + "' already exists at: " + recipePath + ". Skipping creation.");
-                return;
-            }
+	public static void generateRecipe(String modId, String name, BiConsumer<RecipeOutput, Supplier<JsonElement>> recipeConsumer) {
+		Path recipePath = Path.of(BlueLibConstants.PlatformHelper.PLATFORM.getDataDir(true) + "/recipe/" + name + ".json");
 
-            JsonElement recipeJson = BlueLibConstants.PlatformHelper.PLATFORM.generateRecipeJson(modId, name, recipeConsumer);
+		try {
+			if (Files.exists(recipePath)) {
+				System.out.println("Recipe for '" + name + "' already exists at: " + recipePath + ". Skipping creation.");
+				return;
+			}
 
-            if (recipeJson == null) {
-                System.err.println("Failed to generate recipe JSON for '" + name + "'. Skipping file creation.");
-                return;
-            }
+			JsonElement recipeJson = BlueLibConstants.PlatformHelper.PLATFORM.generateRecipeJson(modId, name, recipeConsumer);
 
-            Files.createDirectories(recipePath.getParent());
-            Files.write(recipePath, GSON.toJson(recipeJson).getBytes(), StandardOpenOption.CREATE_NEW);
-            System.out.println("Recipe for '" + name + "' created at: " + recipePath);
+			if (recipeJson == null) {
+				System.err.println("Failed to generate recipe JSON for '" + name + "'. Skipping file creation.");
+				return;
+			}
 
-        } catch (IOException e) {
-            System.err.println("Failed [ERROR]: Failed to create recipe for '" + name + "' at " + recipePath + ": " + e.getMessage());
-        }
-    }
+			Files.createDirectories(recipePath.getParent());
+			Files.write(recipePath, GSON.toJson(recipeJson).getBytes(), StandardOpenOption.CREATE_NEW);
+			System.out.println("Recipe for '" + name + "' created at: " + recipePath);
+
+		} catch (IOException e) {
+			System.err.println("Failed [ERROR]: Failed to create recipe for '" + name + "' at " + recipePath + ": " + e.getMessage());
+		}
+	}
 }

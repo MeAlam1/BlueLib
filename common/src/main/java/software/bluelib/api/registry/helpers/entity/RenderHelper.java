@@ -12,15 +12,15 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 
 public class RenderHelper {
 
-    private static final List<BiConsumer<BiConsumer<EntityType<? extends Entity>, EntityRendererProvider>, BiConsumer<BlockEntityType<? extends BlockEntity>, BlockEntityRendererProvider>>> renderers = new ArrayList<>();
+	private static final List<BiConsumer<BiConsumer<EntityType<? extends Entity>, EntityRendererProvider>, BiConsumer<BlockEntityType<? extends BlockEntity>, BlockEntityRendererProvider>>> renderers = new ArrayList<>();
 
-    public static void queueRenderer(BiConsumer<BiConsumer<EntityType<? extends Entity>, EntityRendererProvider>, BiConsumer<BlockEntityType<? extends BlockEntity>, BlockEntityRendererProvider>> consumer) {
-        renderers.add(consumer);
-    }
+	public static void queueRenderer(BiConsumer<BiConsumer<EntityType<? extends Entity>, EntityRendererProvider>, BiConsumer<BlockEntityType<? extends BlockEntity>, BlockEntityRendererProvider>> consumer) {
+		renderers.add(consumer);
+	}
 
-    public static void registerRenderers(BiConsumer<EntityType<? extends Entity>, EntityRendererProvider> entityConsumer, BiConsumer<BlockEntityType<? extends BlockEntity>, BlockEntityRendererProvider> blockConsumer) {
-        for (var r : renderers) {
-            r.accept(entityConsumer, blockConsumer);
-        }
-    }
+	public static void registerRenderers(BiConsumer<EntityType<? extends Entity>, EntityRendererProvider> entityConsumer, BiConsumer<BlockEntityType<? extends BlockEntity>, BlockEntityRendererProvider> blockConsumer) {
+		for (var r : renderers) {
+			r.accept(entityConsumer, blockConsumer);
+		}
+	}
 }
