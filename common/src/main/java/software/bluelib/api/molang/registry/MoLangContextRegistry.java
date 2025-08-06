@@ -5,7 +5,7 @@
  * If a copy of the MIT License was not distributed with this file,
  * You can obtain one at https://opensource.org/licenses/MIT.
  */
-package software.bluelib.api.molang;
+package software.bluelib.api.molang.registry;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +14,11 @@ import java.util.function.Supplier;
 import net.minecraft.world.entity.Entity;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import software.bluelib.api.molang.context.*;
+import software.bluelib.api.molang.MoLangRuntimeBuilder;
+import software.bluelib.api.molang.context.AnimatableMoLang;
+import software.bluelib.api.molang.context.BaseMoLangContext;
+import software.bluelib.api.molang.context.GeneralMoLang;
+import software.bluelib.api.molang.context.OperatorMoLang;
 import software.bluelib.api.molang.context.math.AdvancedMathMoLang;
 import software.bluelib.api.molang.context.math.BasicMathMoLang;
 import software.bluelib.api.molang.context.math.RandomMoLang;
@@ -42,35 +46,22 @@ public class MoLangContextRegistry {
 			return null;
 		});
 
-		MoLangContextRegistry.register(input -> {
-			Supplier<?> supplier = input.get("bluelib_entity", Supplier.class);
-			if (supplier instanceof Supplier<?>) {
-				Object obj = supplier.get();
-				if (obj instanceof Entity entity) {
-					for (var factory : CUSTOM_ENTITY_CONTEXT_FACTORIES) {
-						BaseMoLangContext ctx = factory.apply(entity);
-						if (ctx != null) return ctx;
-					}
-					return new EntityMoLang(() -> entity);
-				}
-			}
-			return null;
-		});
+		MoLangEntityRegistry.init();
 	}
 
-	private static final List<Function<MoLangRuntimeBuilder.Input, BaseMoLangContext>> CONTEXT_SUPPLIERS = new ArrayList<>();
+	protected static final List<Function<MoLangRuntimeBuilder.Input, BaseMoLangContext>> CONTEXT_SUPPLIERS = new ArrayList<>();
 
-	private static final List<Function<Entity, ? extends BaseMoLangContext>> CUSTOM_ENTITY_CONTEXT_FACTORIES = new ArrayList<>();
+	protected static final List<Function<Entity, ? extends BaseMoLangContext>> ENTITY_CONTEXT_FACTORIES = new ArrayList<>();
 
-	public static void registerCustomEntityContext(Function<Entity, ? extends BaseMoLangContext> factory) {
-		CUSTOM_ENTITY_CONTEXT_FACTORIES.add(factory);
+	public static void registerEntityContext(Function<Entity, ? extends BaseMoLangContext> pFactory) {
+		ENTITY_CONTEXT_FACTORIES.add(pFactory);
 	}
 
 	public static void register(@NotNull Function<MoLangRuntimeBuilder.Input, @Nullable BaseMoLangContext> pFactory) {
 		CONTEXT_SUPPLIERS.add(pFactory);
 	}
 
-	static @NotNull List<BaseMoLangContext> createContexts(MoLangRuntimeBuilder.Input pInput) {
+	public static @NotNull List<BaseMoLangContext> createContexts(MoLangRuntimeBuilder.Input pInput) {
 		List<BaseMoLangContext> result = new ArrayList<>();
 		for (var fn : CONTEXT_SUPPLIERS) {
 			BaseMoLangContext ctx = fn.apply(pInput);

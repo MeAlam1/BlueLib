@@ -8,6 +8,7 @@
 package software.bluelib.api.molang;
 
 import java.util.function.Consumer;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.molang.expression.MoLangExpression;
@@ -31,6 +32,7 @@ public class MoLang {
 		return evaluateInternal(pExpression, pBuilderConsumer);
 	}
 
+	@ApiStatus.Internal
 	private static @Nullable Object evaluateInternal(@NotNull MoLangExpression pExpression, @NotNull Consumer<MoLangRuntimeBuilder> pBuilderConsumer) {
 		MoLangRuntimeBuilder builder = new MoLangRuntimeBuilder();
 		pBuilderConsumer.accept(builder);

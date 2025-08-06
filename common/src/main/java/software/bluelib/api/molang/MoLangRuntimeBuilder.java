@@ -13,6 +13,7 @@ import java.util.Map;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.molang.context.BaseMoLangContext;
+import software.bluelib.api.molang.registry.MoLangContextRegistry;
 
 public class MoLangRuntimeBuilder {
 

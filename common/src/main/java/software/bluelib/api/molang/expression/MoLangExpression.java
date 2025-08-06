@@ -31,7 +31,7 @@ public class MoLangExpression {
 		}
 
 		if (raw.startsWith("q.")) {
-			String expr = raw.substring(2); // Strip only the `q.`
+			String expr = raw.substring(2); // Strip `q.`
 
 			// Delegate q.math.* to math.*
 			if (expr.startsWith("math.")) {
