@@ -24,12 +24,14 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import software.bluelib.api.annotations.WillBeDeprecated;
 import software.bluelib.client.utils.PlayerUtils;
 import software.bluelib.loader.animatable.BlueAnimatable;
 import software.bluelib.oldLoader.animation.AnimationState;
 import software.bluelib.oldLoader.constant.DataTickets;
 import software.bluelib.oldLoader.loading.math.value.Variable;
 
+@WillBeDeprecated(since = "2.5.0", reason = "MoLangQueries will be made redundant with the new MoLang System.")
 public final class MoLangQueries {
 
 	public static final String ACTOR_COUNT = "q.actor_count";

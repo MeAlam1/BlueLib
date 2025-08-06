@@ -7,9 +7,11 @@
  */
 package software.bluelib.oldLoader.loading.math.function.limit;
 
+import software.bluelib.api.annotations.WillBeDeprecated;
 import software.bluelib.oldLoader.loading.math.MathValue;
 import software.bluelib.oldLoader.loading.math.function.MathFunction;
 
+@WillBeDeprecated(since = "2.5.0", reason = "MathFunction will be made redundant with the new MoLang System.")
 public final class MaxFunction extends MathFunction {
 
 	private final MathValue valueA;

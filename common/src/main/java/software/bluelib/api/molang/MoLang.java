@@ -19,11 +19,22 @@ public class MoLang {
 	}
 
 	public static @Nullable Object evaluate(@NotNull String pExpression, @NotNull Consumer<MoLangRuntimeBuilder> pBuilderConsumer) {
+		MoLangExpression parsed = MoLangExpression.parse(pExpression);
+		return evaluateInternal(parsed, pBuilderConsumer);
+	}
+
+	public static @Nullable Object evaluate(@NotNull MoLangExpression pExpression) {
+		return evaluate(pExpression, builder -> {});
+	}
+
+	public static @Nullable Object evaluate(@NotNull MoLangExpression pExpression, @NotNull Consumer<MoLangRuntimeBuilder> pBuilderConsumer) {
+		return evaluateInternal(pExpression, pBuilderConsumer);
+	}
+
+	private static @Nullable Object evaluateInternal(@NotNull MoLangExpression pExpression, @NotNull Consumer<MoLangRuntimeBuilder> pBuilderConsumer) {
 		MoLangRuntimeBuilder builder = new MoLangRuntimeBuilder();
 		pBuilderConsumer.accept(builder);
-
 		MoLangRuntime runtime = builder.build();
-		MoLangExpression parsed = MoLangExpression.parse(pExpression);
-		return parsed.evaluate(runtime);
+		return pExpression.evaluate(runtime);
 	}
 }

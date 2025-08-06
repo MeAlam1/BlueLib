@@ -8,8 +8,10 @@
 package software.bluelib.oldLoader.loading.math.function;
 
 import java.util.StringJoiner;
+import software.bluelib.api.annotations.WillBeDeprecated;
 import software.bluelib.oldLoader.loading.math.MathValue;
 
+@WillBeDeprecated(since = "2.5.0", reason = "MathFunction will be made redundant with the new MoLang System.")
 public abstract class MathFunction implements MathValue {
 
 	private final boolean isMutable;

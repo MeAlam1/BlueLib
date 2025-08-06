@@ -21,6 +21,7 @@ import java.util.function.Supplier;
 import java.util.regex.Pattern;
 import net.minecraft.Util;
 import org.jetbrains.annotations.Nullable;
+import software.bluelib.api.annotations.WillBeDeprecated;
 import software.bluelib.api.exception.CompoundException;
 import software.bluelib.oldLoader.loading.math.function.MathFunction;
 import software.bluelib.oldLoader.loading.math.function.generic.*;
@@ -37,6 +38,7 @@ import software.bluelib.oldLoader.loading.math.function.random.RandomIntegerFunc
 import software.bluelib.oldLoader.loading.math.function.round.*;
 import software.bluelib.oldLoader.loading.math.value.*;
 
+@WillBeDeprecated(since = "2.5.0", reason = "MathParser will be made redundant with the new MoLang System.")
 public class MathParser {
 
 	private static final Pattern EXPRESSION_FORMAT = Pattern.compile("^[\\w\\s_+-/*%^&|<>=!?:.,()]+$");

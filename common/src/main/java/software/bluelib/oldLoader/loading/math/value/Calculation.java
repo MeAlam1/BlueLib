@@ -7,9 +7,11 @@
  */
 package software.bluelib.oldLoader.loading.math.value;
 
+import software.bluelib.api.annotations.WillBeDeprecated;
 import software.bluelib.oldLoader.loading.math.MathValue;
 import software.bluelib.oldLoader.loading.math.Operator;
 
+@WillBeDeprecated(since = "2.5.0", reason = "MathValue will be made redundant with the new MoLang System.")
 public final class Calculation implements MathValue {
 
 	private final Operator operator;

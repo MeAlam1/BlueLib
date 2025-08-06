@@ -16,7 +16,9 @@ import java.util.Objects;
 import java.util.Optional;
 import net.minecraft.Util;
 import org.jetbrains.annotations.NotNull;
+import software.bluelib.api.annotations.WillBeDeprecated;
 
+@WillBeDeprecated(since = "2.5.0", reason = "Operator will be made redundant with the new MoLang System.")
 public record Operator(String symbol, int precedence, Operation operation) implements Comparable<Operator> {
 
 	private static final Map<String, Operator> OPERATORS = new Object2ObjectOpenHashMap<>(14);

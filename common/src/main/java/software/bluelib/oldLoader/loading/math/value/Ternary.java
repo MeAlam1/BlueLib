@@ -7,8 +7,10 @@
  */
 package software.bluelib.oldLoader.loading.math.value;
 
+import software.bluelib.api.annotations.WillBeDeprecated;
 import software.bluelib.oldLoader.loading.math.MathValue;
 
+@WillBeDeprecated(since = "2.5.0", reason = "MathValue will be made redundant with the new MoLang System.")
 public record Ternary(MathValue condition, MathValue trueValue, MathValue falseValue) implements MathValue {
 
 	@Override

@@ -9,9 +9,11 @@ package software.bluelib.oldLoader.loading.math.function.random;
 
 import java.util.Random;
 import org.jetbrains.annotations.Nullable;
+import software.bluelib.api.annotations.WillBeDeprecated;
 import software.bluelib.oldLoader.loading.math.MathValue;
 import software.bluelib.oldLoader.loading.math.function.MathFunction;
 
+@WillBeDeprecated(since = "2.5.0", reason = "MathFunction will be made redundant with the new MoLang System.")
 public final class RandomFunction extends MathFunction {
 
 	private final MathValue valueA;

@@ -7,10 +7,12 @@
  */
 package software.bluelib.oldLoader.loading.math.function.misc;
 
+import software.bluelib.api.annotations.WillBeDeprecated;
 import software.bluelib.oldLoader.loading.math.MathValue;
 import software.bluelib.oldLoader.loading.math.function.MathFunction;
 import software.bluelib.oldLoader.loading.math.value.Constant;
 
+@WillBeDeprecated(since = "2.5.0", reason = "MathFunction will be made redundant with the new MoLang System.")
 public final class PiFunction extends MathFunction {
 
 	public PiFunction(MathValue... values) {

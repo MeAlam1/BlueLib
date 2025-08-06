@@ -8,6 +8,7 @@
 package software.bluelib.api.molang;
 
 import net.minecraft.world.entity.Entity;
+import software.bluelib.api.molang.expression.MoLangExpression;
 import software.bluelib.loader.animatable.BlueAnimatable;
 import software.bluelib.oldLoader.animation.AnimationState;
 
@@ -17,7 +18,15 @@ public class MoLangUtils {
 		return MoLang.evaluate(pExpression, builder -> builder.with("bluelib_state", (java.util.function.Supplier<?>) () -> pState));
 	}
 
+	public static Object state(MoLangExpression pExpression, AnimationState<? extends BlueAnimatable> pState) {
+		return MoLang.evaluate(pExpression, builder -> builder.with("bluelib_state", (java.util.function.Supplier<?>) () -> pState));
+	}
+
 	public static Object entity(String pExpression, Entity pEntity) {
+		return MoLang.evaluate(pExpression, builder -> builder.with("bluelib_entity", (java.util.function.Supplier<?>) () -> pEntity));
+	}
+
+	public static Object entity(MoLangExpression pExpression, Entity pEntity) {
 		return MoLang.evaluate(pExpression, builder -> builder.with("bluelib_entity", (java.util.function.Supplier<?>) () -> pEntity));
 	}
 }

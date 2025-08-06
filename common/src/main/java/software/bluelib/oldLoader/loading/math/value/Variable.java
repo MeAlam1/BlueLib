@@ -9,8 +9,10 @@ package software.bluelib.oldLoader.loading.math.value;
 
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.DoubleSupplier;
+import software.bluelib.api.annotations.WillBeDeprecated;
 import software.bluelib.oldLoader.loading.math.MathValue;
 
+@WillBeDeprecated(since = "2.5.0", reason = "MathValue will be made redundant with the new MoLang System.")
 public record Variable(String name, AtomicReference<DoubleSupplier> value) implements MathValue {
 
 	public Variable(String name, double value) {
