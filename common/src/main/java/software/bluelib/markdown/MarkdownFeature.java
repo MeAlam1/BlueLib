@@ -36,7 +36,6 @@ public abstract class MarkdownFeature {
 		}
 
 		if (prefix == null || suffix == null) {
-			// TODO: add to en_us.json
 			BaseLogger.log(true, BaseLogLevel.WARNING, BlueTranslation.log("markdown.feature.prefix_suffix_not_set", getFeatureName()));
 			return pComponent;
 		}

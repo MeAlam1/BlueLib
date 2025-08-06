@@ -30,6 +30,7 @@
     "bluelib.log.markdown.disabled": "Global markdown is disabled, returning original message",
     "bluelib.log.markdown.message": "Completed message: %1$s",
     "bluelib.log.markdown.feature.disabled": "%1$s is disabled, returning original message",
+    "bluelib.log.markdown.feature.prefix_suffix_not_set": "%1$s prefix and/or suffix are not set, returning original message",
     "bluelib.log.markdown.hyperlink.disabled": "Hyperlink is disabled, returning original message",
     "bluelib.log.markdown.copyToClipboard.disabled": "Copy to Clipboard is disabled, returning original message",
     "bluelib.log.markdown.color.disabled": "Color is disabled, returning original message",
