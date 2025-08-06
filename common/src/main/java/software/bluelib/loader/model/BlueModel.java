@@ -40,11 +40,47 @@ public abstract class BlueModel<T extends BlueAnimatable> {
 	private double lastGameTickTime;
 	private long lastRenderedInstance = -1;
 
-	public abstract ResourceLocation getModelResource(T pAnimatable, @Nullable BlueRenderer<T> pRenderer);
+	@Nullable
+	private final ResourceLocation basePath;
 
-	public abstract ResourceLocation getTextureResource(T pAnimatable, @Nullable BlueRenderer<T> pRenderer);
+	protected BlueModel() {
+		this.basePath = null;
+	}
 
-	public abstract ResourceLocation getAnimationResource(T pAnimatable);
+	protected BlueModel(@Nullable ResourceLocation pBasePath) {
+		this.basePath = pBasePath;
+	}
+
+	protected @Nullable String subtype() {
+		return null;
+	}
+
+	public ResourceLocation getModelResource(T pAnimatable, @Nullable BlueRenderer<T> pRenderer) {
+		if (basePath == null) {
+			throw new IllegalStateException("No basePath specified for model resource.");
+		}
+		String type = subtype();
+		if (type == null) return basePath;
+		return basePath.withPath("geo/" + type + "/" + basePath.getPath() + ".geo.json");
+	}
+
+	public ResourceLocation getTextureResource(T pAnimatable, @Nullable BlueRenderer<T> pRenderer) {
+		if (basePath == null) {
+			throw new IllegalStateException("No basePath specified for texture resource.");
+		}
+		String type = subtype();
+		if (type == null) return basePath;
+		return basePath.withPath("textures/" + type + "/" + basePath.getPath() + ".png");
+	}
+
+	public ResourceLocation getAnimationResource(T pAnimatable) {
+		if (basePath == null) {
+			throw new IllegalStateException("No basePath specified for animation resource.");
+		}
+		String type = subtype();
+		if (type == null) return basePath;
+		return basePath.withPath("animations/" + type + "/" + basePath.getPath() + ".animation.json");
+	}
 
 	public ResourceLocation[] getAnimationResourceFallbacks(T pAnimatable) {
 		return new ResourceLocation[0];
