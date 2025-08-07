@@ -28,9 +28,9 @@ import software.bluelib.platform.NeoForgeRegistryHelper;
 public class BlueLib {
 
 	public BlueLib(@NotNull IEventBus pModEventBus, @NotNull ModContainer pModContainer) {
-		NeoForgeRegistryHelper.register(pModEventBus);
-
 		BlueLibCommon.doRegistration();
+		NeoRegistries.register(pModEventBus);
+		NeoForgeRegistryHelper.register(pModEventBus);
 
 		if (FMLEnvironment.dist == Dist.CLIENT)
 			BlueLibClient.init(pModContainer);

@@ -9,6 +9,7 @@ package software.bluelib;
 
 import static software.bluelib.BlueLibConstants.SCHEDULER;
 
+import java.nio.file.Path;
 import java.util.concurrent.TimeUnit;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.ApiStatus;
@@ -16,15 +17,29 @@ import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.launch.MixinBootstrap;
 import software.bluelib.api.event.mod.ModIntegration;
 import software.bluelib.api.net.NetworkRegistry;
+import software.bluelib.api.registry.AbstractRegistryBuilder;
+import software.bluelib.api.registry.BlueRegistryBuilder;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
 import software.bluelib.internal.BlueTranslation;
 import software.bluelib.internal.registry.BlueNetworkRegistry;
 import software.bluelib.internal.registry.BlueRecipeSerializerRegistry;
 import software.bluelib.internal.registry.BlueRecipeTypeRegistry;
+import software.bluelib.internal.registry.TestEntityReg;
 
 @ApiStatus.Internal
 public class BlueLibCommon {
+
+	/**
+	 * Initializes the {@link AbstractRegistryBuilder} instance with the mod ID. Replace {@link BlueLibConstants#MOD_ID} with your mod's unique mod ID to register content under your mod's namespace.
+	 * <p>
+	 * This is essential for registering mod content such as items, blocks, and entities.
+	 * <p>
+	 * <strong>Do not remove</strong>, as it will break the mod's registration system.
+	 * <p>
+	 * Do not use this, you need to add this line into your own mod.
+	 */
+	public static AbstractRegistryBuilder REGISTRIES = new BlueRegistryBuilder(BlueLibConstants.MOD_ID);
 
 	private BlueLibCommon() {}
 
@@ -49,6 +64,8 @@ public class BlueLibCommon {
 		InternalNetworkRegistry.networkServer();
 		BlueRecipeTypeRegistry.init();
 		BlueRecipeSerializerRegistry.init();
+
+		TestEntityReg.init();
 	}
 
 	public static void doClientRegistration() {

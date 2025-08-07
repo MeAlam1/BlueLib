@@ -53,4 +53,22 @@ public class BlueLib implements ModInitializer {
 			});
 		}
 	}
+	/*@Override
+	public void onInitialize() {
+		ReloadHandler.registerProvider(new VariantProvider());
+		BlueLibCommon.doRegistration();
+		FabricNetworkManager.registerMessages();
+		FabricNetworkManager.registerServerHandlers();
+		AttributeHelper.registerAttributes(FabricDefaultAttributeRegistry::register);
+		RenderHelper.registerRenderers(EntityRendererRegistry::register, BlockEntityRenderers::register);
+		registerModEventListeners();
+		if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
+			ClientTickEvents.END_CLIENT_TICK.register(client -> {
+				if (!hasInitialized) {
+					hasInitialized = true;
+					BlueLibCommon.init();
+				}
+			});
+		}
+	}*/
 }
