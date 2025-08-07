@@ -25,8 +25,8 @@ import software.bluelib.loader.cache.controller.GroupCache;
 import software.bluelib.loader.cache.controller.StateCache;
 import software.bluelib.loader.animation.AnimationController;
 import software.bluelib.loader.animation.AnimationState;
-import software.bluelib.oldLoader.animation.PlayState;
-import software.bluelib.oldLoader.animation.RawAnimation;
+import software.bluelib.loader.animation.state.PlayState;
+import software.bluelib.loader.animation.RawAnimation;
 
 public class ControllerManager<T extends BlueAnimatable> {
 

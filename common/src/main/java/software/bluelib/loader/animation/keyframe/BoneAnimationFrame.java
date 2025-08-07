@@ -5,21 +5,21 @@
  * If a copy of the MIT License was not distributed with this file,
  * You can obtain one at https://opensource.org/licenses/MIT.
  */
-package software.bluelib.oldLoader.animation.keyframe;
+package software.bluelib.loader.animation.keyframe;
 
 import software.bluelib.loader.cache.animations.keyframe.KeyframeCache;
 import software.bluelib.loader.cache.model.BoneCache;
-import software.bluelib.oldLoader.animation.state.BoneSnapshot;
+import software.bluelib.loader.animation.bone.BoneSnapshot;
 
-public record BoneAnimationQueue(BoneCache bone, AnimationPointQueue rotationXQueue, AnimationPointQueue rotationYQueue,
-		AnimationPointQueue rotationZQueue, AnimationPointQueue positionXQueue, AnimationPointQueue positionYQueue,
-		AnimationPointQueue positionZQueue, AnimationPointQueue scaleXQueue, AnimationPointQueue scaleYQueue,
-		AnimationPointQueue scaleZQueue) {
+public record BoneAnimationFrame(BoneCache bone, AnimationPointFrame rotationXQueue, AnimationPointFrame rotationYQueue,
+                                 AnimationPointFrame rotationZQueue, AnimationPointFrame positionXQueue, AnimationPointFrame positionYQueue,
+                                 AnimationPointFrame positionZQueue, AnimationPointFrame scaleXQueue, AnimationPointFrame scaleYQueue,
+                                 AnimationPointFrame scaleZQueue) {
 
-	public BoneAnimationQueue(BoneCache bone) {
-		this(bone, new AnimationPointQueue(), new AnimationPointQueue(), new AnimationPointQueue(),
-				new AnimationPointQueue(), new AnimationPointQueue(), new AnimationPointQueue(),
-				new AnimationPointQueue(), new AnimationPointQueue(), new AnimationPointQueue());
+	public BoneAnimationFrame(BoneCache bone) {
+		this(bone, new AnimationPointFrame(), new AnimationPointFrame(), new AnimationPointFrame(),
+				new AnimationPointFrame(), new AnimationPointFrame(), new AnimationPointFrame(),
+				new AnimationPointFrame(), new AnimationPointFrame(), new AnimationPointFrame());
 	}
 
 	public void addPosXPoint(KeyframeCache<?> keyFrame, double lerpedTick, double transitionLength, double startValue, double endValue) {

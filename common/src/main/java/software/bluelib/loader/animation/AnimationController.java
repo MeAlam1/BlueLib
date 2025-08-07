@@ -23,20 +23,19 @@ import software.bluelib.loader.geckolib.math.MathValue;
 import software.bluelib.loader.geckolib.math.MoLangQueries;
 import software.bluelib.loader.geckolib.math.value.Constant;
 import software.bluelib.loader.model.BlueModel;
-import software.bluelib.oldLoader.animation.EasingType;
-import software.bluelib.oldLoader.animation.PlayState;
-import software.bluelib.oldLoader.animation.RawAnimation;
-import software.bluelib.oldLoader.animation.keyframe.AnimationPoint;
-import software.bluelib.oldLoader.animation.keyframe.BoneAnimationQueue;
-import software.bluelib.oldLoader.animation.keyframe.KeyframeLocation;
-import software.bluelib.oldLoader.animation.keyframe.event.CustomInstructionKeyframeEvent;
-import software.bluelib.oldLoader.animation.keyframe.event.ParticleKeyframeEvent;
-import software.bluelib.oldLoader.animation.keyframe.event.SoundKeyframeEvent;
-import software.bluelib.oldLoader.animation.keyframe.event.data.CustomInstructionKeyframeData;
-import software.bluelib.oldLoader.animation.keyframe.event.data.KeyFrameData;
-import software.bluelib.oldLoader.animation.keyframe.event.data.ParticleKeyframeData;
-import software.bluelib.oldLoader.animation.keyframe.event.data.SoundKeyframeData;
-import software.bluelib.oldLoader.animation.state.BoneSnapshot;
+import software.bluelib.loader.animation.math.Easing;
+import software.bluelib.loader.animation.state.PlayState;
+import software.bluelib.loader.animation.keyframe.AnimationPoint;
+import software.bluelib.loader.animation.keyframe.BoneAnimationFrame;
+import software.bluelib.loader.animation.keyframe.KeyframeLocation;
+import software.bluelib.loader.animation.keyframe.event.CustomInstructionKeyframeEvent;
+import software.bluelib.loader.animation.keyframe.event.ParticleKeyframeEvent;
+import software.bluelib.loader.animation.keyframe.event.SoundKeyframeEvent;
+import software.bluelib.loader.animation.keyframe.data.CustomInstructionKeyframeData;
+import software.bluelib.loader.animation.keyframe.data.KeyFrameData;
+import software.bluelib.loader.animation.keyframe.data.ParticleKeyframeData;
+import software.bluelib.loader.animation.keyframe.data.SoundKeyframeData;
+import software.bluelib.loader.animation.bone.BoneSnapshot;
 
 import java.util.*;
 import java.util.function.Function;
@@ -46,7 +45,7 @@ public class AnimationController<T extends BlueAnimatable> {
 	protected final T animatable;
 	protected final String name;
 	protected final AnimationStateHandler<T> stateHandler;
-	protected final Map<String, BoneAnimationQueue> boneAnimationQueues = new Object2ObjectOpenHashMap<>();
+	protected final Map<String, BoneAnimationFrame> boneAnimationQueues = new Object2ObjectOpenHashMap<>();
 	protected final Map<String, BoneSnapshot> boneSnapshots = new Object2ObjectOpenHashMap<>();
 	protected Queue<AnimationProcessor.QueuedAnimation> animationQueue = new LinkedList<>();
 
@@ -71,7 +70,7 @@ public class AnimationController<T extends BlueAnimatable> {
 	protected double tickOffset;
 	protected double lastPollTime = -1;
 	protected Function<T, Double> animationSpeedModifier = animatable -> 1d;
-	protected Function<T, EasingType> overrideEasingTypeFunction = animatable -> null;
+	protected Function<T, Easing> overrideEasingTypeFunction = animatable -> null;
 	private final Set<KeyFrameData> executedKeyFrames = new ObjectOpenHashSet<>();
 	protected BlueModel<T> lastModel;
 
@@ -124,11 +123,11 @@ public class AnimationController<T extends BlueAnimatable> {
 		return setAnimationSpeedHandler(animatable -> pSpeed);
 	}
 
-	public AnimationController<T> setOverrideEasingType(EasingType pEasingTypeFunction) {
-		return setOverrideEasingTypeFunction(animatable -> pEasingTypeFunction);
+	public AnimationController<T> setOverrideEasingType(Easing pEasingFunction) {
+		return setOverrideEasingTypeFunction(animatable -> pEasingFunction);
 	}
 
-	public AnimationController<T> setOverrideEasingTypeFunction(Function<T, EasingType> pEasingType) {
+	public AnimationController<T> setOverrideEasingTypeFunction(Function<T, Easing> pEasingType) {
 		this.overrideEasingTypeFunction = pEasingType;
 
 		return this;
@@ -164,7 +163,7 @@ public class AnimationController<T extends BlueAnimatable> {
 		return this.animationState;
 	}
 
-	public Map<String, BoneAnimationQueue> getBoneAnimationQueues() {
+	public Map<String, BoneAnimationFrame> getBoneAnimationQueues() {
 		return this.boneAnimationQueues;
 	}
 
@@ -332,7 +331,7 @@ public class AnimationController<T extends BlueAnimatable> {
 				MathParser.setVariable(MoLangQueries.ANIM_TIME, () -> 0);
 
 				for (BoneAnimationCache boneAnimationCache : this.currentAnimation.animationCache().boneAnimationCaches()) {
-					BoneAnimationQueue boneAnimationQueue = this.boneAnimationQueues.get(boneAnimationCache.boneName());
+					BoneAnimationFrame boneAnimationFrame = this.boneAnimationQueues.get(boneAnimationCache.boneName());
 					BoneSnapshot boneSnapshot = this.boneSnapshots.get(boneAnimationCache.boneName());
 					BoneCache bone = pBones.get(boneAnimationCache.boneName());
 
@@ -351,21 +350,21 @@ public class AnimationController<T extends BlueAnimatable> {
 					KeyframeStackCache<KeyframeCache<MathValue>> scaleKeyFrames = boneAnimationCache.scaleKeyFrames();
 
 					if (!rotationKeyFrames.xKeyframes().isEmpty()) {
-						boneAnimationQueue.addNextRotation(null, adjustedTick, this.transitionLength, boneSnapshot, bone.getInitialSnapshot(),
+						boneAnimationFrame.addNextRotation(null, adjustedTick, this.transitionLength, boneSnapshot, bone.getInitialSnapshot(),
 								getAnimationPointAtTick(rotationKeyFrames.xKeyframes(), 0, true, Axis.X),
 								getAnimationPointAtTick(rotationKeyFrames.yKeyframes(), 0, true, Axis.Y),
 								getAnimationPointAtTick(rotationKeyFrames.zKeyframes(), 0, true, Axis.Z));
 					}
 
 					if (!positionKeyFrames.xKeyframes().isEmpty()) {
-						boneAnimationQueue.addNextPosition(null, adjustedTick, this.transitionLength, boneSnapshot,
+						boneAnimationFrame.addNextPosition(null, adjustedTick, this.transitionLength, boneSnapshot,
 								getAnimationPointAtTick(positionKeyFrames.xKeyframes(), 0, false, Axis.X),
 								getAnimationPointAtTick(positionKeyFrames.yKeyframes(), 0, false, Axis.Y),
 								getAnimationPointAtTick(positionKeyFrames.zKeyframes(), 0, false, Axis.Z));
 					}
 
 					if (!scaleKeyFrames.xKeyframes().isEmpty()) {
-						boneAnimationQueue.addNextScale(null, adjustedTick, this.transitionLength, boneSnapshot,
+						boneAnimationFrame.addNextScale(null, adjustedTick, this.transitionLength, boneSnapshot,
 								getAnimationPointAtTick(scaleKeyFrames.xKeyframes(), 0, false, Axis.X),
 								getAnimationPointAtTick(scaleKeyFrames.yKeyframes(), 0, false, Axis.Y),
 								getAnimationPointAtTick(scaleKeyFrames.zKeyframes(), 0, false, Axis.Z));
@@ -408,9 +407,9 @@ public class AnimationController<T extends BlueAnimatable> {
 		MathParser.setVariable(MoLangQueries.ANIM_TIME, () -> finalAdjustedTick / 20d);
 
 		for (BoneAnimationCache boneAnimationCache : this.currentAnimation.animationCache().boneAnimationCaches()) {
-			BoneAnimationQueue boneAnimationQueue = this.boneAnimationQueues.get(boneAnimationCache.boneName());
+			BoneAnimationFrame boneAnimationFrame = this.boneAnimationQueues.get(boneAnimationCache.boneName());
 
-			if (boneAnimationQueue == null) {
+			if (boneAnimationFrame == null) {
 				if (pCrashWhenCantFindBone)
 					throw new RuntimeException("Could not find bone: " + boneAnimationCache.boneName());
 
@@ -422,21 +421,21 @@ public class AnimationController<T extends BlueAnimatable> {
 			KeyframeStackCache<KeyframeCache<MathValue>> scaleKeyFrames = boneAnimationCache.scaleKeyFrames();
 
 			if (!rotationKeyFrames.xKeyframes().isEmpty()) {
-				boneAnimationQueue.addRotations(
+				boneAnimationFrame.addRotations(
 						getAnimationPointAtTick(rotationKeyFrames.xKeyframes(), pAdjustedTick, true, Axis.X),
 						getAnimationPointAtTick(rotationKeyFrames.yKeyframes(), pAdjustedTick, true, Axis.Y),
 						getAnimationPointAtTick(rotationKeyFrames.zKeyframes(), pAdjustedTick, true, Axis.Z));
 			}
 
 			if (!positionKeyFrames.xKeyframes().isEmpty()) {
-				boneAnimationQueue.addPositions(
+				boneAnimationFrame.addPositions(
 						getAnimationPointAtTick(positionKeyFrames.xKeyframes(), pAdjustedTick, false, Axis.X),
 						getAnimationPointAtTick(positionKeyFrames.yKeyframes(), pAdjustedTick, false, Axis.Y),
 						getAnimationPointAtTick(positionKeyFrames.zKeyframes(), pAdjustedTick, false, Axis.Z));
 			}
 
 			if (!scaleKeyFrames.xKeyframes().isEmpty()) {
-				boneAnimationQueue.addScales(
+				boneAnimationFrame.addScales(
 						getAnimationPointAtTick(scaleKeyFrames.xKeyframes(), pAdjustedTick, false, Axis.X),
 						getAnimationPointAtTick(scaleKeyFrames.yKeyframes(), pAdjustedTick, false, Axis.Y),
 						getAnimationPointAtTick(scaleKeyFrames.zKeyframes(), pAdjustedTick, false, Axis.Z));
@@ -490,7 +489,7 @@ public class AnimationController<T extends BlueAnimatable> {
 		this.boneAnimationQueues.clear();
 
 		for (BoneCache modelRenderer : pModelRendererList) {
-			this.boneAnimationQueues.put(modelRenderer.getName(), new BoneAnimationQueue(modelRenderer));
+			this.boneAnimationQueues.put(modelRenderer.getName(), new BoneAnimationFrame(modelRenderer));
 		}
 	}
 

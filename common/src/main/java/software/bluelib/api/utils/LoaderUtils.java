@@ -19,7 +19,7 @@ import software.bluelib.loader.animatable.base.BlueAnimatable;
 import software.bluelib.loader.cache.animations.AnimationCache;
 import software.bluelib.loader.geckolib.constant.DataTickets;
 import software.bluelib.loader.geckolib.constant.dataticket.SerializableDataTicket;
-import software.bluelib.oldLoader.animation.EasingType;
+import software.bluelib.loader.animation.math.Easing;
 
 @SuppressWarnings("unused")
 public final class LoaderUtils {
@@ -39,8 +39,8 @@ public final class LoaderUtils {
 		return AnimationCache.LoopType.register(pName, pLoopType);
 	}
 
-	synchronized public static @NotNull EasingType addCustomEasingType(@NotNull String pName, @NotNull EasingType pEasingType) {
-		return EasingType.register(pName, pEasingType);
+	synchronized public static @NotNull Easing addCustomEasingType(@NotNull String pName, @NotNull Easing pEasing) {
+		return Easing.register(pName, pEasing);
 	}
 
 	synchronized public static <D> @NotNull SerializableDataTicket<D> addDataTicket(@NotNull SerializableDataTicket<D> pDataTicket) {

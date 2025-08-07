@@ -13,8 +13,7 @@ import java.util.Objects;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.loader.animatable.base.BlueAnimatable;
 import software.bluelib.loader.geckolib.constant.dataticket.DataTicket;
-import software.bluelib.oldLoader.animation.PlayState;
-import software.bluelib.oldLoader.animation.RawAnimation;
+import software.bluelib.loader.animation.state.PlayState;
 
 public class AnimationState<T extends BlueAnimatable> {
 

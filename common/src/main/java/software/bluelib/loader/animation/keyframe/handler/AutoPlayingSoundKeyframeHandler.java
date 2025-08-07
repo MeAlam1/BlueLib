@@ -5,7 +5,7 @@
  * If a copy of the MIT License was not distributed with this file,
  * You can obtain one at https://opensource.org/licenses/MIT.
  */
-package software.bluelib.oldLoader.animation.keyframe.event.builtin;
+package software.bluelib.loader.animation.keyframe.handler;
 
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
@@ -18,7 +18,7 @@ import net.minecraft.world.phys.Vec3;
 import software.bluelib.client.utils.LevelUtils;
 import software.bluelib.loader.animatable.base.BlueAnimatable;
 import software.bluelib.loader.animation.AnimationController;
-import software.bluelib.oldLoader.animation.keyframe.event.SoundKeyframeEvent;
+import software.bluelib.loader.animation.keyframe.event.SoundKeyframeEvent;
 
 public class AutoPlayingSoundKeyframeHandler<A extends BlueAnimatable> implements AnimationController.SoundKeyframeHandler<A> {
 

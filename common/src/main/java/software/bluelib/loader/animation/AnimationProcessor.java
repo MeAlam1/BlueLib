@@ -23,11 +23,10 @@ import software.bluelib.loader.cache.model.ModelCache;
 import software.bluelib.loader.geckolib.math.MathParser;
 import software.bluelib.loader.geckolib.math.MoLangQueries;
 import software.bluelib.loader.model.BlueModel;
-import software.bluelib.oldLoader.animation.EasingType;
-import software.bluelib.oldLoader.animation.RawAnimation;
-import software.bluelib.oldLoader.animation.keyframe.AnimationPoint;
-import software.bluelib.oldLoader.animation.keyframe.BoneAnimationQueue;
-import software.bluelib.oldLoader.animation.state.BoneSnapshot;
+import software.bluelib.loader.animation.math.Easing;
+import software.bluelib.loader.animation.keyframe.AnimationPoint;
+import software.bluelib.loader.animation.keyframe.BoneAnimationFrame;
+import software.bluelib.loader.animation.bone.BoneSnapshot;
 
 public class AnimationProcessor<T extends BlueAnimatable> {
 
@@ -81,7 +80,7 @@ public class AnimationProcessor<T extends BlueAnimatable> {
 			MathParser.setVariable(MoLangQueries.ANIM_TIME, () -> pState.getController() != null ? pState.getController().getAnimTime() : 0d);
 			controller.process(pModel, pState, this.bones, boneSnapshots, pAnimTime, pCrashWhenCantFindBone);
 
-			for (BoneAnimationQueue boneAnimation : controller.getBoneAnimationQueues().values()) {
+			for (BoneAnimationFrame boneAnimation : controller.getBoneAnimationQueues().values()) {
 				BoneCache bone = boneAnimation.bone();
 				BoneSnapshot snapshot = boneSnapshots.get(bone.getName());
 				BoneSnapshot initialSnapshot = bone.getInitialSnapshot();
@@ -95,30 +94,30 @@ public class AnimationProcessor<T extends BlueAnimatable> {
 				AnimationPoint scaleXPoint = boneAnimation.scaleXQueue().poll();
 				AnimationPoint scaleYPoint = boneAnimation.scaleYQueue().poll();
 				AnimationPoint scaleZPoint = boneAnimation.scaleZQueue().poll();
-				EasingType easingType = controller.overrideEasingTypeFunction.apply(pAnimatable);
+				Easing easing = controller.overrideEasingTypeFunction.apply(pAnimatable);
 
 				if (rotXPoint != null && rotYPoint != null && rotZPoint != null) {
-					bone.setRotX((float) EasingType.lerpWithOverride(rotXPoint, easingType) + initialSnapshot.getRotX());
-					bone.setRotY((float) EasingType.lerpWithOverride(rotYPoint, easingType) + initialSnapshot.getRotY());
-					bone.setRotZ((float) EasingType.lerpWithOverride(rotZPoint, easingType) + initialSnapshot.getRotZ());
+					bone.setRotX((float) Easing.lerpWithOverride(rotXPoint, easing) + initialSnapshot.getRotX());
+					bone.setRotY((float) Easing.lerpWithOverride(rotYPoint, easing) + initialSnapshot.getRotY());
+					bone.setRotZ((float) Easing.lerpWithOverride(rotZPoint, easing) + initialSnapshot.getRotZ());
 					snapshot.updateRotation(bone.getRotX(), bone.getRotY(), bone.getRotZ());
 					snapshot.startRotAnim();
 					bone.markRotationAsChanged();
 				}
 
 				if (posXPoint != null && posYPoint != null && posZPoint != null) {
-					bone.setPosX((float) EasingType.lerpWithOverride(posXPoint, easingType));
-					bone.setPosY((float) EasingType.lerpWithOverride(posYPoint, easingType));
-					bone.setPosZ((float) EasingType.lerpWithOverride(posZPoint, easingType));
+					bone.setPosX((float) Easing.lerpWithOverride(posXPoint, easing));
+					bone.setPosY((float) Easing.lerpWithOverride(posYPoint, easing));
+					bone.setPosZ((float) Easing.lerpWithOverride(posZPoint, easing));
 					snapshot.updateOffset(bone.getPosX(), bone.getPosY(), bone.getPosZ());
 					snapshot.startPosAnim();
 					bone.markPositionAsChanged();
 				}
 
 				if (scaleXPoint != null && scaleYPoint != null && scaleZPoint != null) {
-					bone.setScaleX((float) EasingType.lerpWithOverride(scaleXPoint, easingType));
-					bone.setScaleY((float) EasingType.lerpWithOverride(scaleYPoint, easingType));
-					bone.setScaleZ((float) EasingType.lerpWithOverride(scaleZPoint, easingType));
+					bone.setScaleX((float) Easing.lerpWithOverride(scaleXPoint, easing));
+					bone.setScaleY((float) Easing.lerpWithOverride(scaleYPoint, easing));
+					bone.setScaleZ((float) Easing.lerpWithOverride(scaleZPoint, easing));
 					snapshot.updateScale(bone.getScaleX(), bone.getScaleY(), bone.getScaleZ());
 					snapshot.startScaleAnim();
 					bone.markScaleAsChanged();

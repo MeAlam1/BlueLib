@@ -17,10 +17,10 @@ import software.bluelib.loader.animatable.base.BlueAnimatable;
 import software.bluelib.loader.cache.animations.keyframe.BoneAnimationCache;
 import software.bluelib.loader.cache.animations.keyframe.KeyframeLibraryCache;
 import software.bluelib.loader.animation.AnimationController;
-import software.bluelib.oldLoader.animation.RawAnimation;
-import software.bluelib.oldLoader.animation.keyframe.event.data.CustomInstructionKeyframeData;
-import software.bluelib.oldLoader.animation.keyframe.event.data.ParticleKeyframeData;
-import software.bluelib.oldLoader.animation.keyframe.event.data.SoundKeyframeData;
+import software.bluelib.loader.animation.RawAnimation;
+import software.bluelib.loader.animation.keyframe.data.CustomInstructionKeyframeData;
+import software.bluelib.loader.animation.keyframe.data.ParticleKeyframeData;
+import software.bluelib.loader.animation.keyframe.data.SoundKeyframeData;
 
 public record AnimationCache(
 		@NotNull String name,
