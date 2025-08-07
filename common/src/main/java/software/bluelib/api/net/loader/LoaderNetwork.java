@@ -14,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.net.NetworkRegistry;
 import software.bluelib.api.utils.LoaderUtils;
-import software.bluelib.loader.animatable.BlueAnimatable;
+import software.bluelib.loader.animatable.base.BlueAnimatable;
 import software.bluelib.loader.geckolib.constant.dataticket.SerializableDataTicket;
 import software.bluelib.net.messages.client.loader.*;
 

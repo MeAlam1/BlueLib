@@ -13,7 +13,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import software.bluelib.loader.animatable.BlueAnimatable;
+import software.bluelib.loader.animatable.base.BlueAnimatable;
 import software.bluelib.loader.model.BlueModel;
 import software.bluelib.loader.renderer.armor.BlueArmorRenderer;
 import software.bluelib.loader.renderer.base.BlueRenderer;

@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.net.ClientNetworkPacketHandler;
 import software.bluelib.api.utils.LoaderUtils;
 import software.bluelib.loader.animatable.AnimatableManager;
-import software.bluelib.loader.animatable.BlueAnimatable;
+import software.bluelib.loader.animatable.base.BlueAnimatable;
 import software.bluelib.net.messages.client.loader.StopTriggeredSingletonAnimPacket;
 
 public class StopTriggeredSingletonAnimPacketHandler implements ClientNetworkPacketHandler<StopTriggeredSingletonAnimPacket> {

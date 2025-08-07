@@ -28,7 +28,7 @@ import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix4f;
 import software.bluelib.BlueLibConstants;
 import software.bluelib.client.utils.RenderUtils;
-import software.bluelib.loader.animatable.BlueAnimatable;
+import software.bluelib.loader.animatable.base.BlueAnimatable;
 import software.bluelib.loader.cache.model.BoneCache;
 import software.bluelib.loader.cache.model.ModelCache;
 import software.bluelib.loader.cache.texture.AnimatableTexture;

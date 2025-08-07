@@ -16,7 +16,7 @@ import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.Vec3;
 import software.bluelib.client.utils.LevelUtils;
-import software.bluelib.loader.animatable.BlueAnimatable;
+import software.bluelib.loader.animatable.base.BlueAnimatable;
 import software.bluelib.oldLoader.animation.AnimationController;
 import software.bluelib.oldLoader.animation.keyframe.event.SoundKeyframeEvent;
 

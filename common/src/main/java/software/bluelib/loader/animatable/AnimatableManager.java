@@ -16,6 +16,7 @@ import java.util.Map;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import software.bluelib.loader.animatable.base.BlueAnimatable;
 import software.bluelib.loader.cache.controller.ControllerCache;
 import software.bluelib.loader.controller.ControllerManager;
 import software.bluelib.loader.geckolib.constant.dataticket.DataTicket;
@@ -33,17 +34,17 @@ public class AnimatableManager<T extends BlueAnimatable> {
 	private double firstTickTime = -1;
 
 	public AnimatableManager(@NotNull BlueAnimatable pAnimatable) {
-		ControllerRegistrar registrar = new ControllerRegistrar(new ObjectArrayList<>(2));
+		ControllerRegistrar<T> registrar = new ControllerRegistrar<>(new ObjectArrayList<>(2));
 
 		pAnimatable.registerControllers(registrar);
 
 		ControllerCache controllerCache = ControllerManager.getBakedController(pAnimatable.getControllerResource());
-		ControllerManager.registerControllers(pAnimatable, controllerCache, registrar);
+		new ControllerManager<T>().registerControllers(pAnimatable, controllerCache, registrar);
 
 		this.animationControllers = registrar.build();
 	}
 
-	public void addController(@NotNull AnimationController pController) {
+	public void addController(@NotNull AnimationController<T> pController) {
 		getAnimationControllers().put(pController.getName(), pController);
 	}
 
@@ -126,33 +127,34 @@ public class AnimatableManager<T extends BlueAnimatable> {
 			controller.stopTriggeredAnimation();
 	}
 
-	public record ControllerRegistrar(List<AnimationController<? extends BlueAnimatable>> controllers) {
+	public record ControllerRegistrar<T extends BlueAnimatable>(List<AnimationController<T>> controllers) {
 
-		public ControllerRegistrar add(@NotNull AnimationController<?>... pControllers) {
+		@SafeVarargs
+		public final ControllerRegistrar<T> add(@NotNull AnimationController<T>... pControllers) {
 			controllers().addAll(Arrays.asList(pControllers));
 
 			return this;
 		}
 
-		public ControllerRegistrar add(@NotNull AnimationController<?> pController) {
+		public ControllerRegistrar<T> add(@NotNull AnimationController<T> pController) {
 			controllers().add(pController);
 
 			return this;
 		}
 
-		public ControllerRegistrar remove(@NotNull String pName) {
+		public ControllerRegistrar<T> remove(@NotNull String pName) {
 			controllers().removeIf(controller -> controller.getName().equals(pName));
 
 			return this;
 		}
 
 		@ApiStatus.Internal
-		private <T extends BlueAnimatable> Object2ObjectArrayMap<String, AnimationController<T>> build() {
-			Object2ObjectArrayMap<String, AnimationController<?>> map = new Object2ObjectArrayMap<>(controllers().size());
+		private Object2ObjectArrayMap<String, AnimationController<T>> build() {
+			Object2ObjectArrayMap<String, AnimationController<T>> map = new Object2ObjectArrayMap<>(controllers().size());
 
 			controllers().forEach(controller -> map.put(controller.getName(), controller));
 
-			return (Object2ObjectArrayMap) map;
+			return map;
 		}
 	}
 }

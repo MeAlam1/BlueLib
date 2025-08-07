@@ -14,7 +14,7 @@ import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.net.loader.LoaderNetwork;
 import software.bluelib.api.utils.LoaderUtils;
 import software.bluelib.loader.animatable.AnimatableManager;
-import software.bluelib.loader.animatable.BlueAnimatable;
+import software.bluelib.loader.animatable.base.BlueAnimatable;
 import software.bluelib.loader.geckolib.constant.dataticket.SerializableDataTicket;
 import software.bluelib.oldLoader.animatable.client.BlueRenderProvider;
 import software.bluelib.oldLoader.animatable.instance.AnimatableInstanceCache;

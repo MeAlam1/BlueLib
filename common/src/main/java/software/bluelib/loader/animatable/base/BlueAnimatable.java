@@ -5,7 +5,7 @@
  * If a copy of the MIT License was not distributed with this file,
  * You can obtain one at https://opensource.org/licenses/MIT.
  */
-package software.bluelib.loader.animatable;
+package software.bluelib.loader.animatable.base;
 
 import java.util.Map;
 import java.util.WeakHashMap;
@@ -13,6 +13,7 @@ import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.annotations.WillBeDeprecated;
+import software.bluelib.loader.animatable.AnimatableManager;
 import software.bluelib.oldLoader.animatable.instance.AnimatableInstanceCache;
 import software.bluelib.oldLoader.animatable.instance.InstancedAnimatableInstanceCache;
 import software.bluelib.oldLoader.animatable.instance.SingletonAnimatableInstanceCache;
@@ -29,7 +30,7 @@ public interface BlueAnimatable {
 			"Use the new Data Driven Controller System.",
 			"Refer to: data/MODID/controller/ENTITY.controller.json"
 	})
-	default void registerControllers(@NotNull AnimatableManager.ControllerRegistrar pRegistrar) {}
+	default void registerControllers(@NotNull AnimatableManager.ControllerRegistrar<? extends BlueAnimatable> pRegistrar) {}
 
 	@NotNull
 	default AnimatableInstanceCache<? extends BlueAnimatable> getAnimatableInstanceCache() {

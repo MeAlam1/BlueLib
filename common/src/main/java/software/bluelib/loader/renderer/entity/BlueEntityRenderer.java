@@ -38,7 +38,7 @@ import software.bluelib.api.utils.Color;
 import software.bluelib.api.utils.loader.BufferUtils;
 import software.bluelib.client.utils.PlayerUtils;
 import software.bluelib.client.utils.RenderUtils;
-import software.bluelib.loader.animatable.BlueAnimatable;
+import software.bluelib.loader.animatable.base.BlueAnimatable;
 import software.bluelib.loader.cache.model.BoneCache;
 import software.bluelib.loader.cache.texture.AnimatableTexture;
 import software.bluelib.loader.geckolib.constant.DataTickets;

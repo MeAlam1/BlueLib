@@ -10,7 +10,7 @@ package software.bluelib.loader.renderer.layer;
 import java.util.List;
 import java.util.function.Supplier;
 import org.apache.logging.log4j.util.TriConsumer;
-import software.bluelib.loader.animatable.BlueAnimatable;
+import software.bluelib.loader.animatable.base.BlueAnimatable;
 import software.bluelib.loader.cache.model.BoneCache;
 import software.bluelib.loader.renderer.base.BlueRenderer;
 import software.bluelib.loader.renderer.context.IRenderContext;

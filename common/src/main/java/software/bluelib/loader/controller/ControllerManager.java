@@ -17,7 +17,7 @@ import software.bluelib.api.molang.MoLang;
 import software.bluelib.api.molang.MoLangUtils;
 import software.bluelib.api.utils.LoaderUtils;
 import software.bluelib.loader.animatable.AnimatableManager;
-import software.bluelib.loader.animatable.BlueAnimatable;
+import software.bluelib.loader.animatable.base.BlueAnimatable;
 import software.bluelib.loader.cache.ResourceCache;
 import software.bluelib.loader.cache.controller.BehaviourCache;
 import software.bluelib.loader.cache.controller.ControllerCache;
@@ -28,15 +28,16 @@ import software.bluelib.oldLoader.animation.AnimationState;
 import software.bluelib.oldLoader.animation.PlayState;
 import software.bluelib.oldLoader.animation.RawAnimation;
 
-public class ControllerManager {
+public class ControllerManager<T extends BlueAnimatable> {
 
-	public static void registerControllers(BlueAnimatable pAnimatable, @NotNull ControllerCache pCache, @NotNull AnimatableManager.ControllerRegistrar pControllers) {
+	@SuppressWarnings("unchecked")
+	public void registerControllers(BlueAnimatable pAnimatable, @NotNull ControllerCache pCache, @NotNull AnimatableManager.ControllerRegistrar<T> pControllers) {
 		List<GroupCache> groups = pCache.groups();
 		for (GroupCache group : groups) {
 			Map<String, BehaviourCache> behaviours = group.behaviours();
 			if (behaviours.isEmpty()) continue;
 
-			pControllers.add(new AnimationController<>(pAnimatable, "main", 5, k -> {
+			pControllers.add(new AnimationController<>((T) pAnimatable, "main", 5, k -> {
 				List<Map.Entry<String, BehaviourCache>> validBehaviours = new ArrayList<>();
 				int maxPriority = Integer.MIN_VALUE;
 				for (Map.Entry<String, BehaviourCache> entry : behaviours.entrySet()) {
@@ -60,7 +61,7 @@ public class ControllerManager {
 			for (Map.Entry<String, BehaviourCache> entry : behaviours.entrySet()) {
 				BehaviourCache behaviour = entry.getValue();
 				if (isOverlay(behaviour)) {
-					pControllers.add(new AnimationController<>(pAnimatable, "overlay" + "_" + entry.getKey(), 5, k -> {
+					pControllers.add(new AnimationController<>((T) pAnimatable, "overlay" + "_" + entry.getKey(), 5, k -> {
 						int priority = getEffectiveBehaviourPriority(behaviour, pAnimatable);
 						if (priority == Integer.MIN_VALUE) return PlayState.PLAY;
 						return ControllerManager.animationController(k, behaviour, pAnimatable);

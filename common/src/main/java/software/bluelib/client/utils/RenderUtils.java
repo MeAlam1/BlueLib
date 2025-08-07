@@ -43,7 +43,7 @@ import org.joml.Quaternionf;
 import org.joml.Vector3f;
 import software.bluelib.BlueLibConstants;
 import software.bluelib.api.utils.Color;
-import software.bluelib.loader.animatable.BlueAnimatable;
+import software.bluelib.loader.animatable.base.BlueAnimatable;
 import software.bluelib.loader.cache.model.BoneCache;
 import software.bluelib.loader.cache.model.CubeCache;
 import software.bluelib.loader.model.BlueModel;

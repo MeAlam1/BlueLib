@@ -18,7 +18,7 @@ import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.utils.LoaderUtils;
 import software.bluelib.client.utils.RenderUtils;
 import software.bluelib.loader.animatable.AnimatableManager;
-import software.bluelib.loader.animatable.BlueAnimatable;
+import software.bluelib.loader.animatable.base.BlueAnimatable;
 import software.bluelib.loader.cache.ResourceCache;
 import software.bluelib.loader.cache.animations.AnimationCache;
 import software.bluelib.loader.cache.animations.AnimationLibraryCache;

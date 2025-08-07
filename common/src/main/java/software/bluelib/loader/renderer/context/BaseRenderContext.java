@@ -9,7 +9,7 @@ package software.bluelib.loader.renderer.context;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.MultiBufferSource;
-import software.bluelib.loader.animatable.BlueAnimatable;
+import software.bluelib.loader.animatable.base.BlueAnimatable;
 import software.bluelib.loader.cache.model.ModelCache;
 
 @SuppressWarnings("unused")

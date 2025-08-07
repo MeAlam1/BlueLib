@@ -8,7 +8,7 @@
 package software.bluelib.loader.renderer.base;
 
 import net.minecraft.resources.ResourceLocation;
-import software.bluelib.loader.animatable.BlueAnimatable;
+import software.bluelib.loader.animatable.base.BlueAnimatable;
 import software.bluelib.loader.cache.model.BoneCache;
 import software.bluelib.loader.cache.model.ModelCache;
 import software.bluelib.loader.model.BlueModel;

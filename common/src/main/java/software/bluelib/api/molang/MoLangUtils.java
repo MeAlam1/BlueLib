@@ -9,7 +9,7 @@ package software.bluelib.api.molang;
 
 import net.minecraft.world.entity.Entity;
 import software.bluelib.api.molang.expression.MoLangExpression;
-import software.bluelib.loader.animatable.BlueAnimatable;
+import software.bluelib.loader.animatable.base.BlueAnimatable;
 import software.bluelib.oldLoader.animation.AnimationState;
 
 public class MoLangUtils {

@@ -22,7 +22,7 @@ import org.joml.Vector4f;
 import software.bluelib.api.utils.Color;
 import software.bluelib.api.utils.loader.BufferUtils;
 import software.bluelib.client.utils.RenderUtils;
-import software.bluelib.loader.animatable.BlueAnimatable;
+import software.bluelib.loader.animatable.base.BlueAnimatable;
 import software.bluelib.loader.cache.model.BoneCache;
 import software.bluelib.loader.cache.model.CubeCache;
 import software.bluelib.loader.geckolib.math.MoLangQueries;
