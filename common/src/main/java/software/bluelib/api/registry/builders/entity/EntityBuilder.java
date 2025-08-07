@@ -50,7 +50,7 @@ public abstract class EntityBuilder<T extends Entity, SELF extends EntityBuilder
 						.build(name));
 
 		if (rendererProvider != null) {
-			RenderHelper.queueRenderer((entityConsumer, blockConsumer) -> {
+            new RenderHelper().queueRenderer((entityConsumer, blockConsumer) -> {
 				entityConsumer.accept(entityTypeSupplier.get(), rendererProvider);
 			});
 		}

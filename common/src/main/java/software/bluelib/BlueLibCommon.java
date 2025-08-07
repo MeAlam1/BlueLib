@@ -66,12 +66,6 @@ public class BlueLibCommon {
 		BlueRecipeSerializerRegistry.init();
 
 		TestEntityReg.init();
-
-		Path assetsPath = BlueLibConstants.PlatformHelper.PLATFORM.getAssetsDir(false);
-		System.out.println("Assets path at:" + assetsPath);
-
-		Path dataPath = BlueLibConstants.PlatformHelper.PLATFORM.getDataDir(false);
-		System.out.println("Data path at:" + dataPath);
 	}
 
 	public static void doClientRegistration() {

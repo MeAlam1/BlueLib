@@ -36,10 +36,6 @@ public class BlockEntityBuilder<T extends BlockEntity> {
 		this.validBlockSuppliers = new ArrayList<>();
 	}
 
-	public static <T extends BlockEntity> BlockEntityBuilder<T> blockEntity(String name, BlockEntityType.BlockEntitySupplier<T> factory, String pModID) {
-		return new BlockEntityBuilder<>(name, factory, pModID);
-	}
-
 	public BlockEntityBuilder<T> validBlocks(Supplier<Block>... blockSuppliers) {
 		this.validBlockSuppliers = Arrays.asList(blockSuppliers);
 		return this;
@@ -61,7 +57,7 @@ public class BlockEntityBuilder<T extends BlockEntity> {
 		});
 
 		if (rendererProvider != null) {
-			RenderHelper.queueRenderer((entityConsumer, blockConsumer) -> {
+			new RenderHelper().queueRenderer((entityConsumer, blockConsumer) -> {
 				blockConsumer.accept(blockEntityType.get(), rendererProvider.get());
 			});
 		}

@@ -82,11 +82,11 @@ public class LivingEntityBuilder<T extends LivingEntity> extends EntityBuilder<T
 		}
 
 		if (attributeBuilder != null) {
-			AttributeHelper.queueAttributes(entityTypeSupplier, attributeBuilder);
+			new AttributeHelper().queueAttributes(entityTypeSupplier, attributeBuilder);
 		}
 
 		if (rendererProvider != null) {
-			RenderHelper.queueRenderer((entityConsumer, blockConsumer) -> entityConsumer.accept(entityTypeSupplier.get(), rendererProvider));
+            new RenderHelper().queueRenderer((entityConsumer, blockConsumer) -> entityConsumer.accept(entityTypeSupplier.get(), rendererProvider));
 		}
 
 		if (hasVariants) {

@@ -15,22 +15,18 @@ import software.bluelib.BlueLibConstants;
 
 public class KeybindBuilder {
 
-	public static final List<KeybindBuilder> REGISTERED_BUILDERS = new ArrayList<>();
+	protected final List<KeybindBuilder> REGISTERED_BUILDERS = new ArrayList<>();
 	protected final String modId;
 	private final String name;
 	private final int keyCode;
 	private String category;
 	private Supplier<KeyMapping> keyMappingSupplier;
 
-	private KeybindBuilder(String name, int keyCode, String pModId) {
+	public KeybindBuilder(String name, int keyCode, String pModId) {
 		this.name = name;
 		this.keyCode = keyCode;
 		this.modId = pModId;
 		this.category = "key.categories." + pModId;
-	}
-
-	public static KeybindBuilder keybind(String name, int keyCode, String pModId) {
-		return new KeybindBuilder(name, keyCode, pModId);
 	}
 
 	public KeybindBuilder category(String category) {

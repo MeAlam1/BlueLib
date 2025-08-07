@@ -24,17 +24,15 @@ import software.bluelib.api.registry.datagen.DataGenUtils;
 
 public class EntityTagBuilder extends DataGenUtils {
 
-	private static final List<String> generatedTags = new ArrayList<>();
-	private static final Map<String, List<EntityType<?>>> tagEntityTypes = new HashMap<>();
+	private final List<String> generatedTags = new ArrayList<>();
+	private final Map<String, List<EntityType<?>>> tagEntityTypes = new HashMap<>();
 	private final String name;
+	protected final String modId;
 	private final List<EntityType<?>> entityTypes = new ArrayList<>();
 
-	private EntityTagBuilder(String name) {
+	public EntityTagBuilder(String name, String pModId) {
 		this.name = name;
-	}
-
-	public static EntityTagBuilder createEntityTag(String name) {
-		return new EntityTagBuilder(name);
+        this.modId = pModId;
 	}
 
 	public EntityTagBuilder addEntries(EntityType<?>... entityTypes) {
@@ -45,17 +43,17 @@ public class EntityTagBuilder extends DataGenUtils {
 	public TagKey<EntityType<?>> build() {
 		generatedTags.add(name);
 		tagEntityTypes.put(name, new ArrayList<>(entityTypes));
-		return TagKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(AbstractRegistryBuilder.getModID(), name));
+		return TagKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(modId, name));
 	}
 
-	public static void doTagJsonGen(String modId) {
+	public void doTagJsonGen(String modId) {
 		for (String tagName : generatedTags) {
 			List<EntityType<?>> entities = tagEntityTypes.getOrDefault(tagName, new ArrayList<>());
 			generateTagJson(modId, tagName, entities);
 		}
 	}
 
-	private static void generateTagJson(String modId, String tagName, List<EntityType<?>> entityTypes) {
+	private void generateTagJson(String modId, String tagName, List<EntityType<?>> entityTypes) {
 		Path tagPath = findProjectRoot().resolve(modId + "/tags/entity_type/" + tagName + ".json");
 
 		try {
@@ -85,7 +83,7 @@ public class EntityTagBuilder extends DataGenUtils {
 		}
 	}
 
-	public static Path findProjectRoot() {
+	public Path findProjectRoot() {
 		Path current = Paths.get(System.getProperty("user.dir")).toAbsolutePath();
 		while (current != null) {
 			Path resources = findResourcesPath(current);
@@ -95,7 +93,7 @@ public class EntityTagBuilder extends DataGenUtils {
 		throw new IllegalStateException("Could not locate project root");
 	}
 
-	private static Path findResourcesPath(Path current) {
+	private Path findResourcesPath(Path current) {
 		String[] potentialPaths = {
 				"src/main/resources/data",
 				"common/src/main/resources/data"

@@ -31,9 +31,9 @@ import software.bluelib.api.registry.helpers.ToolsetConfig;
 @SuppressWarnings("unchecked")
 public class ItemBuilder<T extends Item> {
 
-	public static final List<String> generatedItems = new ArrayList<>();
-	public static final Map<String, ItemModelTemplates> customModelMap = new HashMap<>();
-	public static final List<ItemBuilder<?>> REGISTERED_BUILDERS = new ArrayList<>();
+	public final List<String> generatedItems = new ArrayList<>();
+	public final Map<String, ItemModelTemplates> customModelMap = new HashMap<>();
+	public final List<ItemBuilder<?>> REGISTERED_BUILDERS = new ArrayList<>();
 	public final String itemName;
 	public final Function<Item.Properties, T> itemConstructor;
 	public Consumer<Item.Properties> propertiesConsumer = props -> {};
@@ -53,7 +53,7 @@ public class ItemBuilder<T extends Item> {
 		return new ItemBuilder<>(name, itemConstructor, pModId);
 	}
 
-	public static void doItemModelGen(String modId) {
+	public void doItemModelGen(String modId) {
 		for (String itemName : generatedItems) {
 			ItemModelTemplates template = customModelMap.getOrDefault(itemName, ItemModelTemplates.HANDHELD);
 
@@ -67,7 +67,7 @@ public class ItemBuilder<T extends Item> {
 		}
 	}
 
-	public static void doRecipeGen(String modId) {
+	public void doRecipeGen(String modId) {
 		for (ItemBuilder<?> builder : REGISTERED_BUILDERS) {
 			if (builder.registeredItem != null && builder.recipeConsumer != null) {
 				RecipeGenerator.generateRecipe(modId, builder.itemName, (jsonConsumer, jsonSupplier) -> {

@@ -29,7 +29,7 @@ public class BlockModelGenerator extends DataGenUtils {
 		for (Map.Entry<String, JsonObject> entry : blockModelJsons.entrySet()) {
 			String modelName = entry.getKey();
 			JsonObject blockModelJson = entry.getValue();
-			Path blockModelPath = Path.of(BlueLibConstants.PlatformHelper.PLATFORM.getAssetsDir(true) + "/models/block/" + name + ".json");
+			Path blockModelPath = Path.of(BlueLibConstants.PlatformHelper.PLATFORM.getAssetsDir(true, modId) + "/models/block/" + name + ".json");
 
 			try {
 				if (Files.exists(blockModelPath)) {

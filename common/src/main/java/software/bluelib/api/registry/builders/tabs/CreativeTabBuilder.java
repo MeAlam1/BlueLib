@@ -30,7 +30,7 @@ public class CreativeTabBuilder {
 	private Supplier<Item> iconSupplier;
 	private CreativeModeTab.DisplayItemsGenerator displayItemsGenerator;
 	private String backgroundSuffix;
-	private static final Map<Supplier<CreativeModeTab>, CreativeTabBuilder> TAB_BUILDERS = new HashMap<>();
+	private final Map<Supplier<CreativeModeTab>, CreativeTabBuilder> TAB_BUILDERS = new HashMap<>();
 
 	public CreativeTabBuilder(String id, String modId) {
 		this.id = id;
@@ -112,7 +112,7 @@ public class CreativeTabBuilder {
 		return tabSupplier;
 	}
 
-	public static void addToolset(Item item, CreativeModeTab.Output populator) {
+	public void addToolset(Item item, CreativeModeTab.Output populator) {
 		if (item != null) {
 			Set<Item> addedItems = new HashSet<>(); // Track added items
 			String fullId = BuiltInRegistries.ITEM.getKey(item).getPath();
@@ -144,7 +144,7 @@ public class CreativeTabBuilder {
 		}
 	}
 
-	public static void addArmorSet(Item item, CreativeModeTab.Output populator) {
+	public void addArmorSet(Item item, CreativeModeTab.Output populator) {
 		if (item != null) {
 			Set<Item> addedItems = new HashSet<>(); // Track added items
 			String fullId = BuiltInRegistries.ITEM.getKey(item).getPath();
@@ -176,7 +176,7 @@ public class CreativeTabBuilder {
 		}
 	}
 
-	public static void addSpawnEgg(EntityType<?> entityType, CreativeModeTab.Output populator) {
+	public void addSpawnEgg(EntityType<?> entityType, CreativeModeTab.Output populator) {
 		if (entityType != null) {
 			String entityId = BuiltInRegistries.ENTITY_TYPE.getKey(entityType).getPath();
 			String spawnEggId = entityId + "_spawn_egg";
@@ -185,7 +185,7 @@ public class CreativeTabBuilder {
 		}
 	}
 
-	public static void addAllSpawnEggs(CreativeModeTab.Output populator) {
+	/*public void addAllSpawnEggs(CreativeModeTab.Output populator) {
 		List<String> names = LivingEntityBuilder.getEntityNames();
 		for (String name : names) {
 			String spawnEggId = name + "_spawn_egg";
@@ -196,5 +196,5 @@ public class CreativeTabBuilder {
 				BaseLogger.log(BaseLogLevel.ERROR, Component.literal("Spawn egg for entity " + name + " not found!"));
 			}
 		}
-	}
+	}*/
 }

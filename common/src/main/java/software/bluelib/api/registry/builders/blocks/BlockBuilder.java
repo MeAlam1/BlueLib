@@ -144,17 +144,17 @@ public class BlockBuilder<T extends Block> {
 				generate(blockName + "_deepslate_ore", BlockstateTemplates.SIMPLE_BLOCK, BlockModelTemplates.CUBE_ALL, ItemModelTemplates.BLOCK_ITEM);
 			}
 			if (hasRaw) {
-				ItemBuilder.item("raw_" + blockName, Item::new)
+				ItemBuilder.item("raw_" + blockName, Item::new, modId)
 						.model(ItemModelTemplates.GENERATED)
 						.register();
 			}
 			if (hasIngot) {
-				ItemBuilder.item(blockName + "_ingot", Item::new)
+				ItemBuilder.item(blockName + "_ingot", Item::new, modId)
 						.model(ItemModelTemplates.GENERATED)
 						.register();
 			}
 			if (hasNugget) {
-				ItemBuilder.item(blockName + "_nugget", Item::new)
+				ItemBuilder.item(blockName + "_nugget", Item::new, modId)
 						.model(ItemModelTemplates.GENERATED)
 						.register();
 			}

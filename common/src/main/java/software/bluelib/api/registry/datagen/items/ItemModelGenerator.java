@@ -23,7 +23,7 @@ import software.bluelib.api.registry.datagen.DataGenUtils;
 public class ItemModelGenerator extends DataGenUtils {
 
 	public static void generateItemModel(String modId, String name, ItemModelTemplates modelTemplate) {
-		Path itemModelPath = Path.of(BlueLibConstants.PlatformHelper.PLATFORM.getAssetsDir(true) + "/models/item/" + name + ".json");
+		Path itemModelPath = Path.of(BlueLibConstants.PlatformHelper.PLATFORM.getAssetsDir(true, modId) + "/models/item/" + name + ".json");
 
 		try {
 			if (Files.exists(itemModelPath)) {

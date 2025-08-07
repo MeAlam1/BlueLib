@@ -7,6 +7,7 @@
  */
 package software.bluelib.api.registry;
 
+import java.util.List;
 import java.util.function.Function;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -23,6 +24,7 @@ import software.bluelib.api.registry.builders.entity.ProjectileBuilder;
 import software.bluelib.api.registry.builders.items.ItemBuilder;
 import software.bluelib.api.registry.builders.keybinds.KeybindBuilder;
 import software.bluelib.api.registry.builders.tabs.CreativeTabBuilder;
+import software.bluelib.api.registry.datagen.entity.EntityTagBuilder;
 
 public abstract class AbstractRegistryBuilder {
 
@@ -32,7 +34,7 @@ public abstract class AbstractRegistryBuilder {
 		modID = pModId;
 	}
 
-	public String getModID() {
+    public String getModID() {
 		return modID;
 	}
 
@@ -56,11 +58,15 @@ public abstract class AbstractRegistryBuilder {
 		return new ItemBuilder<>(pName, pConstructor, modID);
 	}
 
+    public EntityTagBuilder entityTag(String pName) {
+        return new EntityTagBuilder(pName, modID);
+    }
+
 	public CreativeTabBuilder tab(String pId) {
 		return new CreativeTabBuilder(pId, modID);
 	}
 
 	public KeybindBuilder keybind(String pName, int pKeyCode) {
-		return KeybindBuilder.keybind(pName, pKeyCode, modID);
+		return new KeybindBuilder(pName, pKeyCode, modID);
 	}
 }

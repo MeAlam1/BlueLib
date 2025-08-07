@@ -87,22 +87,22 @@ public class FabricPlatformHelper implements IPlatformHelper {
 
 	@Override
 	public JsonElement generateRecipeJson(String modId, String name, BiConsumer<RecipeOutput, Supplier<JsonElement>> recipeConsumer) {
-		return FabricRecipeGenerator.generateRecipeJson(recipeConsumer);
+		return new FabricRecipeGenerator().generateRecipeJson(recipeConsumer);
 	}
 
 	@Override
-	public Path getAssetsDir(boolean isCommon) {
+	public Path getAssetsDir(boolean isCommon, String pModID) {
 		if (isCommon) {
-			return FabricLoader.getInstance().getGameDir().getParent().getParent().resolve("common/src/main/resources/assets/" + getModID());
+			return FabricLoader.getInstance().getGameDir().getParent().getParent().resolve("common/src/main/resources/assets/" + pModID);
 		}
-		return FabricLoader.getInstance().getGameDir().getParent().getParent().resolve("src/main/resources/assets/" + getModID());
+		return FabricLoader.getInstance().getGameDir().getParent().getParent().resolve("src/main/resources/assets/" + pModID);
 	}
 
 	@Override
-	public Path getDataDir(boolean isCommon) {
+	public Path getDataDir(boolean isCommon, String pModID) {
 		if (isCommon) {
-			return FabricLoader.getInstance().getGameDir().getParent().getParent().resolve("common/src/main/resources/data/" + getModID());
+			return FabricLoader.getInstance().getGameDir().getParent().getParent().resolve("common/src/main/resources/data/" + pModID);
 		}
-		return FabricLoader.getInstance().getGameDir().getParent().getParent().resolve("src/main/resources/data/" + getModID());
+		return FabricLoader.getInstance().getGameDir().getParent().getParent().resolve("src/main/resources/data/" + pModID);
 	}
 }

@@ -87,22 +87,22 @@ public class NeoForgePlatformHelper implements IPlatformHelper {
 
 	@Override
 	public JsonElement generateRecipeJson(String modId, String name, BiConsumer<RecipeOutput, Supplier<JsonElement>> recipeConsumer) {
-		return NeoRecipeGenerator.generateRecipeJson(recipeConsumer);
+		return new NeoRecipeGenerator().generateRecipeJson(recipeConsumer);
 	}
 
 	@Override
-	public Path getAssetsDir(boolean isCommon) {
+	public Path getAssetsDir(boolean isCommon, String pModID) {
 		if (isCommon) {
-			return FMLPaths.GAMEDIR.get().getParent().getParent().resolve("common/src/main/resources/assets/" + getModID());
+			return FMLPaths.GAMEDIR.get().getParent().getParent().resolve("common/src/main/resources/assets/" + pModID);
 		}
-		return FMLPaths.GAMEDIR.get().getParent().getParent().resolve("src/main/resources/assets/" + getModID());
+		return FMLPaths.GAMEDIR.get().getParent().getParent().resolve("src/main/resources/assets/" + pModID);
 	}
 
 	@Override
-	public Path getDataDir(boolean isCommon) {
+	public Path getDataDir(boolean isCommon, String pModID) {
 		if (isCommon) {
-			return FMLPaths.GAMEDIR.get().getParent().getParent().resolve("common/src/main/resources/data/" + getModID());
+			return FMLPaths.GAMEDIR.get().getParent().getParent().resolve("common/src/main/resources/data/" + pModID);
 		}
-		return FMLPaths.GAMEDIR.get().getParent().getParent().resolve("src/main/resources/data/" + getModID());
+		return FMLPaths.GAMEDIR.get().getParent().getParent().resolve("src/main/resources/data/" + pModID);
 	}
 }

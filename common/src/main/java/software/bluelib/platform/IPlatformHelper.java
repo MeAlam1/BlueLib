@@ -50,9 +50,9 @@ public interface IPlatformHelper {
 
 	JsonElement generateRecipeJson(String modId, String name, BiConsumer<RecipeOutput, Supplier<JsonElement>> recipeConsumer);
 
-	Path getAssetsDir(boolean isCommon);
+	Path getAssetsDir(boolean isCommon, String pModID);
 
-	Path getDataDir(boolean isCommon);
+	Path getDataDir(boolean isCommon, String pModID);
 
 	@Nullable
 	MinecraftServer getServer();

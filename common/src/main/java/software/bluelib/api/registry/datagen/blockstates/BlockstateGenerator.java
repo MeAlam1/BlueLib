@@ -25,7 +25,7 @@ public class BlockstateGenerator extends DataGenUtils {
 	}
 
 	public static void generateBlockstate(String modId, String name, BlockstateTemplates blockstateTemplate, Map<String, String> properties) {
-		Path blockstatePath = Path.of(BlueLibConstants.PlatformHelper.PLATFORM.getAssetsDir(true) + "/blockstates/" + name + ".json");
+		Path blockstatePath = Path.of(BlueLibConstants.PlatformHelper.PLATFORM.getAssetsDir(true, modId) + "/blockstates/" + name + ".json");
 
 		try {
 			if (Files.exists(blockstatePath)) {

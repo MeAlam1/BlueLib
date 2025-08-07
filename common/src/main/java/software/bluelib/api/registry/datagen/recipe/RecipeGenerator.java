@@ -21,7 +21,7 @@ import software.bluelib.api.registry.datagen.DataGenUtils;
 public class RecipeGenerator extends DataGenUtils {
 
 	public static void generateRecipe(String modId, String name, BiConsumer<RecipeOutput, Supplier<JsonElement>> recipeConsumer) {
-		Path recipePath = Path.of(BlueLibConstants.PlatformHelper.PLATFORM.getDataDir(true) + "/recipe/" + name + ".json");
+		Path recipePath = Path.of(BlueLibConstants.PlatformHelper.PLATFORM.getDataDir(true, modId) + "/recipe/" + name + ".json");
 
 		try {
 			if (Files.exists(recipePath)) {

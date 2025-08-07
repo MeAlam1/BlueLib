@@ -30,14 +30,13 @@ import software.bluelib.api.registry.AbstractRegistryBuilder;
 import software.bluelib.net.NeoForgeNetworkManager;
 
 public class NeoForgeRegistryHelper implements IRegistryHelper {
-
-	private static final DeferredRegister<Item> itemRegistry = DeferredRegister.create(Registries.ITEM, AbstractRegistryBuilder.getModID());
-	private static final DeferredRegister<Block> blockRegistry = DeferredRegister.create(Registries.BLOCK, AbstractRegistryBuilder.getModID());
-	private static final DeferredRegister<EntityType<?>> entityRegistry = DeferredRegister.create(Registries.ENTITY_TYPE, AbstractRegistryBuilder.getModID());
-	private static final DeferredRegister<CreativeModeTab> tabRegistry = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, AbstractRegistryBuilder.getModID());
-	private static final DeferredRegister<MenuType<?>> menuRegistry = DeferredRegister.create(Registries.MENU, AbstractRegistryBuilder.getModID());
-	private static final DeferredRegister<BlockEntityType<?>> blockEntityRegistry = DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, AbstractRegistryBuilder.getModID());
-	private static final DeferredRegister<Biome> biomeRegistry = DeferredRegister.create(Registries.BIOME, AbstractRegistryBuilder.getModID());
+	private final DeferredRegister<Item> itemRegistry = DeferredRegister.create(Registries.ITEM, BlueLibConstants.MOD_ID);
+	private final DeferredRegister<Block> blockRegistry = DeferredRegister.create(Registries.BLOCK, BlueLibConstants.MOD_ID);
+	private final DeferredRegister<EntityType<?>> entityRegistry = DeferredRegister.create(Registries.ENTITY_TYPE, BlueLibConstants.MOD_ID);
+	private final DeferredRegister<CreativeModeTab> tabRegistry = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, BlueLibConstants.MOD_ID);
+	private final DeferredRegister<MenuType<?>> menuRegistry = DeferredRegister.create(Registries.MENU, BlueLibConstants.MOD_ID);
+	private final DeferredRegister<BlockEntityType<?>> blockEntityRegistry = DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, BlueLibConstants.MOD_ID);
+	private final DeferredRegister<Biome> biomeRegistry = DeferredRegister.create(Registries.BIOME, BlueLibConstants.MOD_ID);
 
 	@NotNull
 	public static final DeferredRegister<RecipeType<?>> RECIPE_TYPES = DeferredRegister.create(Registries.RECIPE_TYPE, BlueLibConstants.MOD_ID);

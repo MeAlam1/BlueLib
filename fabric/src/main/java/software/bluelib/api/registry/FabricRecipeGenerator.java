@@ -27,7 +27,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class FabricRecipeGenerator {
 
-	public static JsonElement generateRecipeJson(BiConsumer<RecipeOutput, Supplier<JsonElement>> recipeConsumer) {
+	public JsonElement generateRecipeJson(BiConsumer<RecipeOutput, Supplier<JsonElement>> recipeConsumer) {
 		final JsonElement[] capturedJson = new JsonElement[1];
 
 		RecipeOutput tempOutput = new RecipeOutput() {
