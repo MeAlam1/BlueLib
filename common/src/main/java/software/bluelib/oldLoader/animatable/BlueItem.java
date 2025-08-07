@@ -51,7 +51,7 @@ public interface BlueItem extends SingletonBlueAnimatable {
 	}
 
 	@Override
-	default double getTick(@NotNull Object pItemStack) {
+	default @NotNull Double getTick(@NotNull Object pItemStack) {
 		return RenderUtils.getCurrentTick();
 	}
 

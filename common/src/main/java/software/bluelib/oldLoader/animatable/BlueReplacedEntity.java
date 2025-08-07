@@ -70,8 +70,8 @@ public interface BlueReplacedEntity extends SingletonBlueAnimatable {
 	}
 
 	@Override
-	default double getTick(@NotNull Object pEntity) {
-		return ((Entity) pEntity).tickCount;
+	default @NotNull Double getTick(@NotNull Object pEntity) {
+		return (double) ((Entity) pEntity).tickCount;
 	}
 
 	// These methods aren't used for BlueReplacedEntity

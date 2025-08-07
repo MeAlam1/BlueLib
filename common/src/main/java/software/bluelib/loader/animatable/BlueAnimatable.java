@@ -12,6 +12,7 @@ import java.util.WeakHashMap;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import software.bluelib.api.annotations.WillBeDeprecated;
 import software.bluelib.oldLoader.animatable.instance.AnimatableInstanceCache;
 import software.bluelib.oldLoader.animatable.instance.InstancedAnimatableInstanceCache;
 import software.bluelib.oldLoader.animatable.instance.SingletonAnimatableInstanceCache;
@@ -23,6 +24,9 @@ public interface BlueAnimatable {
 
 	@NotNull
 	ResourceLocation getControllerResource();
+
+	@WillBeDeprecated(since = "2.5.0", reason = "Due to the new Data Driven Controller System, ControllerRegistrar will be completely revised in the future.")
+	default void registerControllers(@NotNull AnimatableManager.ControllerRegistrar pRegistrar) {}
 
 	@NotNull
 	default AnimatableInstanceCache getAnimatableInstanceCache() {
@@ -39,15 +43,17 @@ public interface BlueAnimatable {
 		return false;
 	}
 
-	default double boneResetTime() {
-		return 5;
+	@NotNull
+	default Double boneResetTime() {
+		return 5D;
 	}
 
 	default boolean playWhilePaused() {
 		return false;
 	}
 
-	double getTick(@NotNull Object pObject);
+	@NotNull
+	Double getTick(@NotNull Object pObject);
 
 	@Nullable
 	default AnimatableInstanceCache useCustomCache() {

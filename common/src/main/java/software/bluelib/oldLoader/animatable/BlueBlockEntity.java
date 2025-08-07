@@ -92,7 +92,7 @@ public interface BlueBlockEntity extends BlueAnimatable {
 	}
 
 	@Override
-	default double getTick(@NotNull Object pBlockEntity) {
+	default @NotNull Double getTick(@NotNull Object pBlockEntity) {
 		return RenderUtils.getCurrentTick();
 	}
 }
