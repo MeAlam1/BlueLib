@@ -13,7 +13,7 @@ import software.bluelib.api.annotations.WillBeDeprecated;
 import software.bluelib.loader.geckolib.math.MathValue;
 import software.bluelib.loader.geckolib.math.function.MathFunction;
 
-@WillBeDeprecated(since = "2.5.0", reason = "MathFunction will be made redundant with the new MoLang System.")
+@WillBeDeprecated(since = "2.3.1", reason = "MathFunction will be made redundant with the new MoLang System.")
 public final class RandomFunction extends MathFunction {
 
 	private final MathValue valueA;

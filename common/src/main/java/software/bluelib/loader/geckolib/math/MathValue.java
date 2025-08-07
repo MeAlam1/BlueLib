@@ -11,7 +11,7 @@ import java.util.function.DoubleSupplier;
 import org.jetbrains.annotations.ApiStatus;
 import software.bluelib.api.annotations.WillBeDeprecated;
 
-@WillBeDeprecated(since = "2.5.0", reason = "MathValue will be made redundant with the new MoLang System.")
+@WillBeDeprecated(since = "2.3.1", reason = "MathValue will be made redundant with the new MoLang System.")
 public interface MathValue extends DoubleSupplier {
 
 	double get();

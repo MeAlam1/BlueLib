@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.Objects;
 import software.bluelib.api.annotations.WillBeDeprecated;
 
-@WillBeDeprecated(since = "2.5.0", reason = "DataTicket will be made redundant with the new MoLang System.")
+@WillBeDeprecated(since = "2.3.1", reason = "DataTicket will be made redundant with the new MoLang System.")
 public class DataTicket<D> {
 
 	private final String id;

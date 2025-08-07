@@ -11,7 +11,7 @@ import software.bluelib.api.annotations.WillBeDeprecated;
 import software.bluelib.loader.geckolib.math.MathValue;
 import software.bluelib.loader.geckolib.math.Operator;
 
-@WillBeDeprecated(since = "2.5.0", reason = "MathValue will be made redundant with the new MoLang System.")
+@WillBeDeprecated(since = "2.3.1", reason = "MathValue will be made redundant with the new MoLang System.")
 public final class Calculation implements MathValue {
 
 	private final Operator operator;

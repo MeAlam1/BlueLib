@@ -22,7 +22,7 @@ import software.bluelib.loader.geckolib.constant.dataticket.DataTicket;
 import software.bluelib.loader.geckolib.constant.dataticket.SerializableDataTicket;
 import software.bluelib.loader.geckolib.data.EntityModelData;
 
-@WillBeDeprecated(since = "2.5.0", reason = "DataTicket will be made redundant with the new MoLang System.")
+@WillBeDeprecated(since = "2.3.1", reason = "DataTicket will be made redundant with the new MoLang System.")
 public final class DataTickets {
 
 	private static final Map<String, SerializableDataTicket<?>> SERIALIZABLE_TICKETS = new ConcurrentHashMap<>();

@@ -14,7 +14,7 @@ import net.minecraft.resources.ResourceLocation;
 import software.bluelib.api.annotations.WillBeDeprecated;
 import software.bluelib.loader.geckolib.constant.DataTickets;
 
-@WillBeDeprecated(since = "2.5.0", reason = "DataTicket will be made redundant with the new MoLang System.")
+@WillBeDeprecated(since = "2.3.1", reason = "DataTicket will be made redundant with the new MoLang System.")
 public abstract class SerializableDataTicket<D> extends DataTicket<D> {
 
 	public static final StreamCodec<RegistryFriendlyByteBuf, SerializableDataTicket<?>> STREAM_CODEC = StreamCodec.composite(

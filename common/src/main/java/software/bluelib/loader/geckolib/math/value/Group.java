@@ -10,7 +10,7 @@ package software.bluelib.loader.geckolib.math.value;
 import software.bluelib.api.annotations.WillBeDeprecated;
 import software.bluelib.loader.geckolib.math.MathValue;
 
-@WillBeDeprecated(since = "2.5.0", reason = "MathValue will be made redundant with the new MoLang System.")
+@WillBeDeprecated(since = "2.3.1", reason = "MathValue will be made redundant with the new MoLang System.")
 public record Group(MathValue contents) implements MathValue {
 
 	@Override

@@ -38,7 +38,7 @@ import software.bluelib.loader.geckolib.math.function.random.RandomIntegerFuncti
 import software.bluelib.loader.geckolib.math.function.round.*;
 import software.bluelib.loader.geckolib.math.value.*;
 
-@WillBeDeprecated(since = "2.5.0", reason = "MathParser will be made redundant with the new MoLang System.")
+@WillBeDeprecated(since = "2.3.1", reason = "MathParser will be made redundant with the new MoLang System.")
 public class MathParser {
 
 	private static final Pattern EXPRESSION_FORMAT = Pattern.compile("^[\\w\\s_+-/*%^&|<>=!?:.,()]+$");

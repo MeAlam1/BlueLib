@@ -25,7 +25,7 @@ public interface BlueAnimatable {
 	@NotNull
 	ResourceLocation getControllerResource();
 
-	@WillBeDeprecated(since = "2.5.0", reason = "This method will be revised due to the new Data Driven Controller System. Please migrate to the recommended alternatives.", alternatives = {
+	@WillBeDeprecated(since = "2.3.1", reason = "This method will be revised due to the new Data Driven Controller System. Please migrate to the recommended alternatives.", alternatives = {
 			"Use the new Data Driven Controller System.",
 			"Refer to: data/MODID/controller/ENTITY.controller.json"
 	})

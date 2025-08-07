@@ -9,5 +9,5 @@ package software.bluelib.loader.geckolib.data;
 
 import software.bluelib.api.annotations.WillBeDeprecated;
 
-@WillBeDeprecated(since = "2.5.0", reason = "EntityModelData will be made redundant with the new MoLang System.")
+@WillBeDeprecated(since = "2.3.1", reason = "EntityModelData will be made redundant with the new MoLang System.")
 public record EntityModelData(boolean isSitting, boolean isChild, float netHeadYaw, float headPitch) {}
