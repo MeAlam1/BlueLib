@@ -12,23 +12,23 @@ import java.util.List;
 import java.util.Objects;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import software.bluelib.loader.animation.math.Easing;
 import software.bluelib.loader.geckolib.math.MathValue;
+import software.bluelib.oldLoader.animation.EasingType;
 
 public record KeyframeCache<T extends MathValue>(double length, @NotNull T startValue, @NotNull T endValue,
-		@NotNull Easing easing, @NotNull List<T> easingArgs) {
+		@NotNull EasingType easingType, @NotNull List<T> easingArgs) {
 
 	public KeyframeCache(double pLength, @NotNull T pStartValue, @NotNull T pEndValue) {
-		this(pLength, pStartValue, pEndValue, Easing.LINEAR);
+		this(pLength, pStartValue, pEndValue, EasingType.LINEAR);
 	}
 
-	public KeyframeCache(double pLength, @NotNull T pStartValue, @NotNull T pEndValue, @NotNull Easing pEasing) {
-		this(pLength, pStartValue, pEndValue, pEasing, new ObjectArrayList<>(0));
+	public KeyframeCache(double pLength, @NotNull T pStartValue, @NotNull T pEndValue, @NotNull EasingType pEasingType) {
+		this(pLength, pStartValue, pEndValue, pEasingType, new ObjectArrayList<>(0));
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(this.length, this.startValue, this.endValue, this.easing, this.easingArgs);
+		return Objects.hash(this.length, this.startValue, this.endValue, this.easingType, this.easingArgs);
 	}
 
 	@Override

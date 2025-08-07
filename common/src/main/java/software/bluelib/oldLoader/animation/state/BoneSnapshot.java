@@ -5,7 +5,7 @@
  * If a copy of the MIT License was not distributed with this file,
  * You can obtain one at https://opensource.org/licenses/MIT.
  */
-package software.bluelib.loader.animation.bone;
+package software.bluelib.oldLoader.animation.state;
 
 import software.bluelib.loader.cache.model.BoneCache;
 
@@ -33,36 +33,36 @@ public class BoneSnapshot {
 	private boolean posAnimInProgress = true;
 	private boolean scaleAnimInProgress = true;
 
-	public BoneSnapshot(BoneCache pBone) {
-		this.rotX = pBone.getRotX();
-		this.rotY = pBone.getRotY();
-		this.rotZ = pBone.getRotZ();
+	public BoneSnapshot(BoneCache bone) {
+		this.rotX = bone.getRotX();
+		this.rotY = bone.getRotY();
+		this.rotZ = bone.getRotZ();
 
-		this.offsetPosX = pBone.getPosX();
-		this.offsetPosY = pBone.getPosY();
-		this.offsetPosZ = pBone.getPosZ();
+		this.offsetPosX = bone.getPosX();
+		this.offsetPosY = bone.getPosY();
+		this.offsetPosZ = bone.getPosZ();
 
-		this.scaleX = pBone.getScaleX();
-		this.scaleY = pBone.getScaleY();
-		this.scaleZ = pBone.getScaleZ();
+		this.scaleX = bone.getScaleX();
+		this.scaleY = bone.getScaleY();
+		this.scaleZ = bone.getScaleZ();
 
-		this.bone = pBone;
+		this.bone = bone;
 	}
 
-	public static BoneSnapshot copy(BoneSnapshot pSnapshot) {
-		BoneSnapshot newSnapshot = new BoneSnapshot(pSnapshot.bone);
+	public static BoneSnapshot copy(BoneSnapshot snapshot) {
+		BoneSnapshot newSnapshot = new BoneSnapshot(snapshot.bone);
 
-		newSnapshot.scaleX = pSnapshot.scaleX;
-		newSnapshot.scaleY = pSnapshot.scaleY;
-		newSnapshot.scaleZ = pSnapshot.scaleZ;
+		newSnapshot.scaleX = snapshot.scaleX;
+		newSnapshot.scaleY = snapshot.scaleY;
+		newSnapshot.scaleZ = snapshot.scaleZ;
 
-		newSnapshot.offsetPosX = pSnapshot.offsetPosX;
-		newSnapshot.offsetPosY = pSnapshot.offsetPosY;
-		newSnapshot.offsetPosZ = pSnapshot.offsetPosZ;
+		newSnapshot.offsetPosX = snapshot.offsetPosX;
+		newSnapshot.offsetPosY = snapshot.offsetPosY;
+		newSnapshot.offsetPosZ = snapshot.offsetPosZ;
 
-		newSnapshot.rotX = pSnapshot.rotX;
-		newSnapshot.rotY = pSnapshot.rotY;
-		newSnapshot.rotZ = pSnapshot.rotZ;
+		newSnapshot.rotX = snapshot.rotX;
+		newSnapshot.rotY = snapshot.rotY;
+		newSnapshot.rotZ = snapshot.rotZ;
 
 		return newSnapshot;
 	}
@@ -131,60 +131,60 @@ public class BoneSnapshot {
 		return this.scaleAnimInProgress;
 	}
 
-	public void updateScale(float pScaleX, float pScaleY, float pScaleZ) {
-		this.scaleX = pScaleX;
-		this.scaleY = pScaleY;
-		this.scaleZ = pScaleZ;
+	public void updateScale(float scaleX, float scaleY, float scaleZ) {
+		this.scaleX = scaleX;
+		this.scaleY = scaleY;
+		this.scaleZ = scaleZ;
 	}
 
-	public void updateOffset(float pOffsetX, float pOffsetY, float pOffsetZ) {
-		this.offsetPosX = pOffsetX;
-		this.offsetPosY = pOffsetY;
-		this.offsetPosZ = pOffsetZ;
+	public void updateOffset(float offsetX, float offsetY, float offsetZ) {
+		this.offsetPosX = offsetX;
+		this.offsetPosY = offsetY;
+		this.offsetPosZ = offsetZ;
 	}
 
-	public void updateRotation(float pRotX, float pRotY, float pRotZ) {
-		this.rotX = pRotX;
-		this.rotY = pRotY;
-		this.rotZ = pRotZ;
+	public void updateRotation(float rotX, float rotY, float rotZ) {
+		this.rotX = rotX;
+		this.rotY = rotY;
+		this.rotZ = rotZ;
 	}
 
 	public void startPosAnim() {
 		this.posAnimInProgress = true;
 	}
 
-	public void stopPosAnim(double pTick) {
+	public void stopPosAnim(double tick) {
 		this.posAnimInProgress = false;
-		this.lastResetPositionTick = pTick;
+		this.lastResetPositionTick = tick;
 	}
 
 	public void startRotAnim() {
 		this.rotAnimInProgress = true;
 	}
 
-	public void stopRotAnim(double pTick) {
+	public void stopRotAnim(double tick) {
 		this.rotAnimInProgress = false;
-		this.lastResetRotationTick = pTick;
+		this.lastResetRotationTick = tick;
 	}
 
 	public void startScaleAnim() {
 		this.scaleAnimInProgress = true;
 	}
 
-	public void stopScaleAnim(double pTick) {
+	public void stopScaleAnim(double tick) {
 		this.scaleAnimInProgress = false;
-		this.lastResetScaleTick = pTick;
+		this.lastResetScaleTick = tick;
 	}
 
 	@Override
-	public boolean equals(Object pObj) {
-		if (this == pObj)
+	public boolean equals(Object obj) {
+		if (this == obj)
 			return true;
 
-		if (pObj == null || getClass() != pObj.getClass())
+		if (obj == null || getClass() != obj.getClass())
 			return false;
 
-		return hashCode() == pObj.hashCode();
+		return hashCode() == obj.hashCode();
 	}
 
 	@Override

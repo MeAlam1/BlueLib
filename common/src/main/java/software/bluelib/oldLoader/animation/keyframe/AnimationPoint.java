@@ -5,7 +5,7 @@
  * If a copy of the MIT License was not distributed with this file,
  * You can obtain one at https://opensource.org/licenses/MIT.
  */
-package software.bluelib.loader.animation;
+package software.bluelib.oldLoader.animation.keyframe;
 
 import org.jetbrains.annotations.NotNull;
 import software.bluelib.loader.cache.animations.keyframe.KeyframeCache;

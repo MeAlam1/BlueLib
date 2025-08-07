@@ -21,7 +21,6 @@ import software.bluelib.api.exception.CompoundException;
 import software.bluelib.api.utils.JsonUtils;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
-import software.bluelib.loader.animation.math.Easing;
 import software.bluelib.loader.cache.animations.AnimationCache;
 import software.bluelib.loader.cache.animations.AnimationLibraryCache;
 import software.bluelib.loader.cache.animations.keyframe.BoneAnimationCache;
@@ -31,6 +30,7 @@ import software.bluelib.loader.cache.animations.keyframe.KeyframeStackCache;
 import software.bluelib.loader.geckolib.math.MathParser;
 import software.bluelib.loader.geckolib.math.MathValue;
 import software.bluelib.loader.geckolib.math.value.Constant;
+import software.bluelib.oldLoader.animation.EasingType;
 
 public class BakedAnimationsAdapter implements JsonDeserializer<AnimationLibraryCache> {
 
@@ -190,12 +190,12 @@ public class BakedAnimationsAdapter implements JsonDeserializer<AnimationLibrary
 			MathValue zValue = compressMathValue(pIsForRotation && rawZValue instanceof Constant ? new Constant(Math.toRadians(rawZValue.get())) : rawZValue);
 
 			JsonObject entryObj = element instanceof JsonObject obj ? obj : null;
-			Easing easing = entryObj != null && entryObj.has("easing") ? Easing.fromJson(entryObj.get("easing")) : Easing.LINEAR;
+			EasingType easingType = entryObj != null && entryObj.has("easing") ? EasingType.fromJson(entryObj.get("easing")) : EasingType.LINEAR;
 			List<MathValue> easingArgs = entryObj != null && entryObj.has("easingArgs") ? JsonUtils.jsonArrayToList(GsonHelper.getAsJsonArray(entryObj, "easingArgs"), ele -> new Constant(ele.getAsDouble())) : new ObjectArrayList<>();
 
-			xFrames.add(new KeyframeCache<>(timeDelta * 20, prevEntry == null ? xValue : xPrev, xValue, easing, easingArgs));
-			yFrames.add(new KeyframeCache<>(timeDelta * 20, prevEntry == null ? yValue : yPrev, yValue, easing, easingArgs));
-			zFrames.add(new KeyframeCache<>(timeDelta * 20, prevEntry == null ? zValue : zPrev, zValue, easing, easingArgs));
+			xFrames.add(new KeyframeCache<>(timeDelta * 20, prevEntry == null ? xValue : xPrev, xValue, easingType, easingArgs));
+			yFrames.add(new KeyframeCache<>(timeDelta * 20, prevEntry == null ? yValue : yPrev, yValue, easingType, easingArgs));
+			zFrames.add(new KeyframeCache<>(timeDelta * 20, prevEntry == null ? zValue : zPrev, zValue, easingType, easingArgs));
 
 			xPrev = xValue;
 			yPrev = yValue;
@@ -210,7 +210,7 @@ public class BakedAnimationsAdapter implements JsonDeserializer<AnimationLibrary
 		if (pFrames.size() == 1) {
 			KeyframeCache<MathValue> frame = pFrames.getFirst();
 
-			if (frame.easing() != Easing.LINEAR) {
+			if (frame.easingType() != EasingType.LINEAR) {
 				pFrames.set(0, new KeyframeCache<>(frame.length(), frame.startValue(), frame.endValue()));
 
 				return pFrames;
@@ -220,8 +220,8 @@ public class BakedAnimationsAdapter implements JsonDeserializer<AnimationLibrary
 		for (int i = 0; i < pFrames.size(); i++) {
 			KeyframeCache<MathValue> frame = pFrames.get(i);
 
-			if (frame.easing() == Easing.CATMULLROM) {
-				pFrames.set(i, new KeyframeCache<>(frame.length(), frame.startValue(), frame.endValue(), frame.easing(), ObjectArrayList.of(
+			if (frame.easingType() == EasingType.CATMULLROM) {
+				pFrames.set(i, new KeyframeCache<>(frame.length(), frame.startValue(), frame.endValue(), frame.easingType(), ObjectArrayList.of(
 						i == 0 ? frame.startValue() : pFrames.get(i - 1).endValue(),
 						i + 1 >= pFrames.size() ? frame.endValue() : pFrames.get(i + 1).endValue())));
 			}

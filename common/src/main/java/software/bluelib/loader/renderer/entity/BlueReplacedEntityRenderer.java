@@ -38,7 +38,6 @@ import software.bluelib.api.utils.loader.BufferUtils;
 import software.bluelib.client.utils.PlayerUtils;
 import software.bluelib.client.utils.RenderUtils;
 import software.bluelib.loader.animatable.base.BlueAnimatable;
-import software.bluelib.loader.animation.AnimationState;
 import software.bluelib.loader.cache.model.BoneCache;
 import software.bluelib.loader.cache.model.ModelCache;
 import software.bluelib.loader.cache.texture.AnimatableTexture;
@@ -51,6 +50,7 @@ import software.bluelib.loader.renderer.base.BlueRenderer;
 import software.bluelib.loader.renderer.context.BaseRenderContext;
 import software.bluelib.loader.renderer.context.FullRenderContext;
 import software.bluelib.loader.renderer.context.IRenderContext;
+import software.bluelib.oldLoader.animation.AnimationState;
 
 public class BlueReplacedEntityRenderer<E extends Entity, T extends BlueAnimatable> extends EntityRenderer<E> implements BlueRenderer<T> {
 

@@ -16,7 +16,7 @@ import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 import org.joml.Vector3d;
 import org.joml.Vector4f;
-import software.bluelib.loader.animation.bone.BoneSnapshot;
+import software.bluelib.oldLoader.animation.state.BoneSnapshot;
 
 // TODO: Record Class?!?!?!?
 @SuppressWarnings("unused")

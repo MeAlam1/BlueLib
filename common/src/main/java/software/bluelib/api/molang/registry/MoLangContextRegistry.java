@@ -21,7 +21,7 @@ import software.bluelib.api.molang.context.math.AdvancedMathMoLang;
 import software.bluelib.api.molang.context.math.BasicMathMoLang;
 import software.bluelib.api.molang.context.math.RandomMoLang;
 import software.bluelib.api.molang.context.math.TrigMoLang;
-import software.bluelib.loader.animation.AnimationState;
+import software.bluelib.oldLoader.animation.AnimationState;
 
 public class MoLangContextRegistry {
 

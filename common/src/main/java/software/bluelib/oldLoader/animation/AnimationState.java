@@ -5,14 +5,13 @@
  * If a copy of the MIT License was not distributed with this file,
  * You can obtain one at https://opensource.org/licenses/MIT.
  */
-package software.bluelib.loader.animation;
+package software.bluelib.oldLoader.animation;
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import java.util.Map;
 import java.util.Objects;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.loader.animatable.base.BlueAnimatable;
-import software.bluelib.loader.animation.state.PlayState;
 import software.bluelib.loader.geckolib.constant.dataticket.DataTicket;
 
 public class AnimationState<T extends BlueAnimatable> {
@@ -27,12 +26,12 @@ public class AnimationState<T extends BlueAnimatable> {
 	protected AnimationController<T> controller;
 	public double animationTick;
 
-	public AnimationState(T pAnimatable, float pLimbSwing, float pLimbSwingAmount, float pPartialTick, boolean pIsMoving) {
-		this.animatable = pAnimatable;
-		this.limbSwing = pLimbSwing;
-		this.limbSwingAmount = pLimbSwingAmount;
+	public AnimationState(T animatable, float limbSwing, float limbSwingAmount, float pPartialTick, boolean isMoving) {
+		this.animatable = animatable;
+		this.limbSwing = limbSwing;
+		this.limbSwingAmount = limbSwingAmount;
 		this.partialTick = pPartialTick;
-		this.isMoving = pIsMoving;
+		this.isMoving = isMoving;
 	}
 
 	public double getAnimationTick() {
@@ -63,8 +62,8 @@ public class AnimationState<T extends BlueAnimatable> {
 		return this.controller;
 	}
 
-	public AnimationState<T> withController(AnimationController<T> pController) {
-		this.controller = pController;
+	public AnimationState<T> withController(AnimationController<T> controller) {
+		this.controller = controller;
 
 		return this;
 	}
@@ -74,37 +73,37 @@ public class AnimationState<T extends BlueAnimatable> {
 	}
 
 	@Nullable
-	public <D> D getData(DataTicket<D> pDataTicket) {
-		return pDataTicket.getData(this.extraData);
+	public <D> D getData(DataTicket<D> dataTicket) {
+		return dataTicket.getData(this.extraData);
 	}
 
-	public <D> void setData(DataTicket<D> pDataTicket, D pData) {
-		this.extraData.put(pDataTicket, pData);
+	public <D> void setData(DataTicket<D> dataTicket, D data) {
+		this.extraData.put(dataTicket, data);
 	}
 
-	public void setAnimation(Animation pAnimation) {
-		getController().setAnimation(pAnimation);
+	public void setAnimation(RawAnimation animation) {
+		getController().setAnimation(animation);
 	}
 
-	public PlayState setAndContinue(Animation pAnimation) {
-		getController().setAnimation(pAnimation);
+	public PlayState setAndContinue(RawAnimation animation) {
+		getController().setAnimation(animation);
 
 		return PlayState.PLAY;
 	}
 
-	public boolean isCurrentAnimation(Animation pAnimation) {
-		return Objects.equals(getController().currentAnimation, pAnimation);
+	public boolean isCurrentAnimation(RawAnimation animation) {
+		return Objects.equals(getController().currentRawAnimation, animation);
 	}
 
-	public boolean isCurrentAnimationStage(String pName) {
-		return getController().getCurrentAnimation() != null && getController().getCurrentAnimation().animationCache().name().equals(pName);
+	public boolean isCurrentAnimationStage(String name) {
+		return getController().getCurrentAnimation() != null && getController().getCurrentAnimation().animationCache().name().equals(name);
 	}
 
 	public void resetCurrentAnimation() {
 		getController().forceAnimationReset();
 	}
 
-	public void setControllerSpeed(Float pSpeed) {
-		getController().setAnimationSpeed(pSpeed);
+	public void setControllerSpeed(float speed) {
+		getController().setAnimationSpeed(speed);
 	}
 }
