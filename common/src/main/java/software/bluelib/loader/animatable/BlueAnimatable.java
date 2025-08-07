@@ -25,8 +25,16 @@ public interface BlueAnimatable {
 	@NotNull
 	ResourceLocation getControllerResource();
 
-	@WillBeDeprecated(since = "2.5.0", reason = "Due to the new Data Driven Controller System, ControllerRegistrar will be completely revised in the future.")
-	default void registerControllers(@NotNull AnimatableManager.ControllerRegistrar pRegistrar) {}
+	@WillBeDeprecated(
+			since = "2.5.0",
+			reason = "This method will be revised due to the new Data Driven Controller System. Please migrate to the recommended alternatives.",
+			alternatives = {
+					"Use the new Data Driven Controller System.",
+					"Refer to: data/MODID/controller/ENTITY.controller.json"
+			}
+	)
+	default void registerControllers(@NotNull AnimatableManager.ControllerRegistrar pRegistrar) {
+	}
 
 	@NotNull
 	default AnimatableInstanceCache getAnimatableInstanceCache() {
