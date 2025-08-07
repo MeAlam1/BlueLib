@@ -5,8 +5,9 @@
  * If a copy of the MIT License was not distributed with this file,
  * You can obtain one at https://opensource.org/licenses/MIT.
  */
-package software.bluelib.oldLoader.animation.keyframe;
+package software.bluelib.loader.animation.state;
 
-import software.bluelib.loader.cache.animations.keyframe.KeyframeCache;
-
-public record KeyframeLocation<T extends KeyframeCache<?>>(T keyframe, double startTick) {}
+public enum PlayState {
+	PLAY,
+	STOP
+}

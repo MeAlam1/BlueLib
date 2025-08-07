@@ -5,11 +5,11 @@
  * If a copy of the MIT License was not distributed with this file,
  * You can obtain one at https://opensource.org/licenses/MIT.
  */
-package software.bluelib.oldLoader.animation.keyframe.event;
+package software.bluelib.loader.animation.keyframe.event;
 
 import software.bluelib.loader.animatable.base.BlueAnimatable;
-import software.bluelib.oldLoader.animation.AnimationController;
-import software.bluelib.oldLoader.animation.keyframe.event.data.KeyFrameData;
+import software.bluelib.loader.animation.AnimationController;
+import software.bluelib.loader.animation.keyframe.data.KeyFrameData;
 
 public abstract class KeyFrameEvent<T extends BlueAnimatable, E extends KeyFrameData> {
 

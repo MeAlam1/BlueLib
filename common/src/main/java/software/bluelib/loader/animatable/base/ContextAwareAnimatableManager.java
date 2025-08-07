@@ -5,15 +5,14 @@
  * If a copy of the MIT License was not distributed with this file,
  * You can obtain one at https://opensource.org/licenses/MIT.
  */
-package software.bluelib.oldLoader.animation;
+package software.bluelib.loader.animatable.base;
 
 import java.util.Map;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import software.bluelib.loader.animatable.base.AnimatableManager;
-import software.bluelib.loader.animatable.base.BlueAnimatable;
+import software.bluelib.loader.animation.AnimationController;
+import software.bluelib.loader.animation.bone.BoneSnapshot;
 import software.bluelib.loader.geckolib.constant.dataticket.DataTicket;
-import software.bluelib.oldLoader.animation.state.BoneSnapshot;
 
 public abstract class ContextAwareAnimatableManager<T extends BlueAnimatable, C> extends AnimatableManager<T> {
 
@@ -33,7 +32,7 @@ public abstract class ContextAwareAnimatableManager<T extends BlueAnimatable, C>
 		return this.managers.get(pContext);
 	}
 
-	public void addController(@NotNull AnimationController pController) {
+	public void addController(@NotNull AnimationController<T> pController) {
 		getManagerForContext(getCurrentContext()).addController(pController);
 	}
 

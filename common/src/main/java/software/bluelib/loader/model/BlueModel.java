@@ -20,6 +20,8 @@ import software.bluelib.client.utils.RenderUtils;
 import software.bluelib.loader.animatable.base.AnimatableManager;
 import software.bluelib.loader.animatable.base.BlueAnimatable;
 import software.bluelib.loader.animatable.entity.BlueReplacedEntity;
+import software.bluelib.loader.animation.AnimationProcessor;
+import software.bluelib.loader.animation.AnimationState;
 import software.bluelib.loader.cache.ResourceCache;
 import software.bluelib.loader.cache.animations.AnimationCache;
 import software.bluelib.loader.cache.animations.AnimationLibraryCache;
@@ -28,8 +30,6 @@ import software.bluelib.loader.cache.model.ModelCache;
 import software.bluelib.loader.geckolib.constant.DataTickets;
 import software.bluelib.loader.geckolib.constant.dataticket.DataTicket;
 import software.bluelib.loader.renderer.base.BlueRenderer;
-import software.bluelib.oldLoader.animation.AnimationProcessor;
-import software.bluelib.oldLoader.animation.AnimationState;
 
 public abstract class BlueModel<T extends BlueAnimatable> {
 
