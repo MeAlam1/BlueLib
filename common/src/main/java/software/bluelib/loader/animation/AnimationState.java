@@ -82,17 +82,17 @@ public class AnimationState<T extends BlueAnimatable> {
 		this.extraData.put(pDataTicket, pData);
 	}
 
-	public void setAnimation(RawAnimation pAnimation) {
+	public void setAnimation(Animation pAnimation) {
 		getController().setAnimation(pAnimation);
 	}
 
-	public PlayState setAndContinue(RawAnimation pAnimation) {
+	public PlayState setAndContinue(Animation pAnimation) {
 		getController().setAnimation(pAnimation);
 
 		return PlayState.PLAY;
 	}
 
-	public boolean isCurrentAnimation(RawAnimation pAnimation) {
+	public boolean isCurrentAnimation(Animation pAnimation) {
 		return Objects.equals(getController().currentRawAnimation, pAnimation);
 	}
 

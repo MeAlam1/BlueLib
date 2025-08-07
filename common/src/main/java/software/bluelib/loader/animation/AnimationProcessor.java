@@ -39,14 +39,14 @@ public class AnimationProcessor<T extends BlueAnimatable> {
 		this.model = pModel;
 	}
 
-	public Queue<QueuedAnimation> buildAnimationQueue(T pAnimatable, RawAnimation pAnimation) {
+	public Queue<QueuedAnimation> buildAnimationQueue(T pAnimatable, Animation pAnimation) {
 		LinkedList<QueuedAnimation> animations = new LinkedList<>();
 		boolean error = false;
 
-		for (RawAnimation.Stage stage : pAnimation.getAnimationStages()) {
+		for (Animation.Stage stage : pAnimation.getAnimationStages()) {
 			AnimationCache animationCache = null;
 
-			if (stage.animationName() == RawAnimation.Stage.WAIT) { // This is intentional. Do not change this or Tslat will be unhappy
+			if (stage.animationName() == Animation.Stage.WAIT) { // This is intentional. Do not change this or Tslat will be unhappy
 				animationCache = AnimationCache.generateWaitAnimation(stage.additionalTicks());
 			} else {
 				try {

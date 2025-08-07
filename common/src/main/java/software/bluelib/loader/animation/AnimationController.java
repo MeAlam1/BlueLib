@@ -59,12 +59,12 @@ public class AnimationController<T extends BlueAnimatable> {
 	protected ParticleKeyframeHandler<T> particleKeyframeHandler = null;
 	protected CustomKeyframeHandler<T> customKeyframeHandler = null;
 
-	public final Map<String, RawAnimation> triggerableAnimations = new Object2ObjectOpenHashMap<>(0);
-	protected RawAnimation triggeredAnimation = null;
+	public final Map<String, Animation> triggerableAnimations = new Object2ObjectOpenHashMap<>(0);
+	protected Animation triggeredAnimation = null;
 	protected boolean handlingTriggeredAnimations = false;
 
 	protected double transitionLength;
-	protected RawAnimation currentRawAnimation;
+	protected Animation currentRawAnimation;
 	protected AnimationProcessor.QueuedAnimation currentAnimation;
 	public State animationState = State.STOPPED;
 	protected double tickOffset;
@@ -133,7 +133,7 @@ public class AnimationController<T extends BlueAnimatable> {
 		return this;
 	}
 
-	public AnimationController<T> triggerableAnim(String pName, RawAnimation pAnimation) {
+	public AnimationController<T> triggerableAnim(String pName, Animation pAnimation) {
 		this.triggerableAnimations.put(pName, pAnimation);
 
 		return this;
@@ -155,7 +155,7 @@ public class AnimationController<T extends BlueAnimatable> {
 	}
 
 	@Nullable
-	public RawAnimation getTriggeredAnimation() {
+	public Animation getTriggeredAnimation() {
 		return this.triggeredAnimation;
 	}
 
@@ -189,7 +189,7 @@ public class AnimationController<T extends BlueAnimatable> {
 		return this.currentRawAnimation != null && this.animationState == State.STOPPED;
 	}
 
-	public RawAnimation getCurrentRawAnimation() {
+	public Animation getCurrentRawAnimation() {
 		return this.currentRawAnimation;
 	}
 
@@ -197,7 +197,7 @@ public class AnimationController<T extends BlueAnimatable> {
 		return this.triggeredAnimation != null && !hasAnimationFinished();
 	}
 
-	public void setAnimation(RawAnimation pAnimation) {
+	public void setAnimation(Animation pAnimation) {
 		if (pAnimation == null || pAnimation.getAnimationStages().isEmpty()) {
 			stop();
 
@@ -225,7 +225,7 @@ public class AnimationController<T extends BlueAnimatable> {
 	}
 
 	public boolean tryTriggerAnimation(String pAnimName) {
-		RawAnimation anim = this.triggerableAnimations.get(pAnimName);
+		Animation anim = this.triggerableAnimations.get(pAnimName);
 
 		if (anim == null)
 			return false;

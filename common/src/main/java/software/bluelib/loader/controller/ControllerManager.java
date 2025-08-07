@@ -26,7 +26,7 @@ import software.bluelib.loader.cache.controller.StateCache;
 import software.bluelib.loader.animation.AnimationController;
 import software.bluelib.loader.animation.AnimationState;
 import software.bluelib.loader.animation.state.PlayState;
-import software.bluelib.loader.animation.RawAnimation;
+import software.bluelib.loader.animation.Animation;
 
 public class ControllerManager<T extends BlueAnimatable> {
 
@@ -93,7 +93,7 @@ public class ControllerManager<T extends BlueAnimatable> {
 				continue;
 			}
 			//BaseLogger.log(BaseLogLevel.BLUELIB, "Animation playing: " + selected.animation());
-			return pEvent.setAndContinue(RawAnimation.begin().thenLoop(selected.animation()));
+			return pEvent.setAndContinue(Animation.begin().thenLoop(selected.animation()));
 		}
 		return PlayState.PLAY;
 	}

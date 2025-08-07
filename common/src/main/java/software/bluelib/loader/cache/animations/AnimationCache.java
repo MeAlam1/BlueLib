@@ -17,7 +17,7 @@ import software.bluelib.loader.animatable.base.BlueAnimatable;
 import software.bluelib.loader.cache.animations.keyframe.BoneAnimationCache;
 import software.bluelib.loader.cache.animations.keyframe.KeyframeLibraryCache;
 import software.bluelib.loader.animation.AnimationController;
-import software.bluelib.loader.animation.RawAnimation;
+import software.bluelib.loader.animation.Animation;
 import software.bluelib.loader.animation.keyframe.data.CustomInstructionKeyframeData;
 import software.bluelib.loader.animation.keyframe.data.ParticleKeyframeData;
 import software.bluelib.loader.animation.keyframe.data.SoundKeyframeData;
@@ -31,7 +31,7 @@ public record AnimationCache(
 
 	@NotNull
 	public static AnimationCache generateWaitAnimation(double pLength) {
-		return new AnimationCache(RawAnimation.Stage.WAIT, pLength, LoopType.PLAY_ONCE, new BoneAnimationCache[0],
+		return new AnimationCache(Animation.Stage.WAIT, pLength, LoopType.PLAY_ONCE, new BoneAnimationCache[0],
 				new KeyframeLibraryCache(new SoundKeyframeData[0], new ParticleKeyframeData[0], new CustomInstructionKeyframeData[0]));
 	}
 
