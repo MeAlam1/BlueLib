@@ -5,7 +5,7 @@
  * If a copy of the MIT License was not distributed with this file,
  * You can obtain one at https://opensource.org/licenses/MIT.
  */
-package software.bluelib.oldLoader.animatable;
+package software.bluelib.loader.animatable.item;
 
 import java.util.EnumMap;
 import java.util.Map;
@@ -18,12 +18,13 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.BlueLibConstants;
 import software.bluelib.client.utils.RenderUtils;
-import software.bluelib.loader.animatable.AnimatableManager;
+import software.bluelib.loader.animatable.base.AnimatableManager;
 import software.bluelib.loader.animatable.base.BlueAnimatable;
+import software.bluelib.loader.animatable.base.SingletonBlueAnimatable;
+import software.bluelib.loader.animatable.cache.AnimatableInstanceCache;
+import software.bluelib.loader.animatable.cache.SingletonAnimatableInstanceCache;
 import software.bluelib.loader.cache.item.IdCache;
 import software.bluelib.loader.geckolib.constant.DataTickets;
-import software.bluelib.oldLoader.animatable.instance.AnimatableInstanceCache;
-import software.bluelib.oldLoader.animatable.instance.SingletonAnimatableInstanceCache;
 import software.bluelib.oldLoader.animation.ContextAwareAnimatableManager;
 
 public interface BlueItem extends SingletonBlueAnimatable {

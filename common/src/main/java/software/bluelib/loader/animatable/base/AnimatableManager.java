@@ -5,7 +5,7 @@
  * If a copy of the MIT License was not distributed with this file,
  * You can obtain one at https://opensource.org/licenses/MIT.
  */
-package software.bluelib.loader.animatable;
+package software.bluelib.loader.animatable.base;
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
@@ -16,7 +16,6 @@ import java.util.Map;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import software.bluelib.loader.animatable.base.BlueAnimatable;
 import software.bluelib.loader.cache.controller.ControllerCache;
 import software.bluelib.loader.controller.ControllerManager;
 import software.bluelib.loader.geckolib.constant.dataticket.DataTicket;

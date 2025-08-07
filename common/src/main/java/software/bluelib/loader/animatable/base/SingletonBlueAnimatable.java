@@ -5,7 +5,7 @@
  * If a copy of the MIT License was not distributed with this file,
  * You can obtain one at https://opensource.org/licenses/MIT.
  */
-package software.bluelib.oldLoader.animatable;
+package software.bluelib.loader.animatable.base;
 
 import java.util.function.Consumer;
 import net.minecraft.world.entity.Entity;
@@ -13,12 +13,10 @@ import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.net.loader.LoaderNetwork;
 import software.bluelib.api.utils.LoaderUtils;
-import software.bluelib.loader.animatable.AnimatableManager;
-import software.bluelib.loader.animatable.base.BlueAnimatable;
+import software.bluelib.loader.animatable.cache.AnimatableInstanceCache;
+import software.bluelib.loader.animatable.cache.SingletonAnimatableInstanceCache;
 import software.bluelib.loader.geckolib.constant.dataticket.SerializableDataTicket;
-import software.bluelib.oldLoader.animatable.client.BlueRenderProvider;
-import software.bluelib.oldLoader.animatable.instance.AnimatableInstanceCache;
-import software.bluelib.oldLoader.animatable.instance.SingletonAnimatableInstanceCache;
+import software.bluelib.loader.renderer.client.BlueRenderProvider;
 
 public interface SingletonBlueAnimatable extends BlueAnimatable {
 

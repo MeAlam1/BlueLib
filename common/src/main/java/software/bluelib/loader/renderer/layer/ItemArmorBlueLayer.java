@@ -36,13 +36,13 @@ import software.bluelib.BlueLibConstants;
 import software.bluelib.api.utils.Color;
 import software.bluelib.client.utils.RenderUtils;
 import software.bluelib.loader.animatable.base.BlueAnimatable;
+import software.bluelib.loader.animatable.item.BlueItem;
 import software.bluelib.loader.cache.model.BoneCache;
 import software.bluelib.loader.cache.model.CubeCache;
 import software.bluelib.loader.renderer.armor.BlueArmorRenderer;
 import software.bluelib.loader.renderer.base.BlueRenderLayer;
 import software.bluelib.loader.renderer.base.BlueRenderer;
 import software.bluelib.loader.renderer.context.IRenderContext;
-import software.bluelib.oldLoader.animatable.BlueItem;
 
 public class ItemArmorBlueLayer<T extends LivingEntity & BlueAnimatable> extends BlueRenderLayer<T> {
 

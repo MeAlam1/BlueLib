@@ -13,9 +13,9 @@ import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.net.ClientNetworkPacketHandler;
 import software.bluelib.client.utils.LevelUtils;
 import software.bluelib.client.utils.RenderUtils;
+import software.bluelib.loader.animatable.entity.BlueEntity;
+import software.bluelib.loader.animatable.entity.BlueReplacedEntity;
 import software.bluelib.net.messages.client.loader.EntityDataSyncPacket;
-import software.bluelib.oldLoader.animatable.BlueEntity;
-import software.bluelib.oldLoader.animatable.BlueReplacedEntity;
 
 public class EntityDataSyncPacketHandler<D> implements ClientNetworkPacketHandler<EntityDataSyncPacket<D>> {
 

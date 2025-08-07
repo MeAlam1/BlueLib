@@ -11,7 +11,7 @@ import net.minecraft.client.Minecraft;
 import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.net.ClientNetworkPacketHandler;
 import software.bluelib.api.utils.LoaderUtils;
-import software.bluelib.loader.animatable.AnimatableManager;
+import software.bluelib.loader.animatable.base.AnimatableManager;
 import software.bluelib.loader.animatable.base.BlueAnimatable;
 import software.bluelib.net.messages.client.loader.StopTriggeredSingletonAnimPacket;
 

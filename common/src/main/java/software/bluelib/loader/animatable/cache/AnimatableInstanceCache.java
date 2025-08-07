@@ -5,17 +5,17 @@
  * If a copy of the MIT License was not distributed with this file,
  * You can obtain one at https://opensource.org/licenses/MIT.
  */
-package software.bluelib.oldLoader.animatable.instance;
+package software.bluelib.loader.animatable.cache;
 
 import com.google.common.base.Suppliers;
 import java.util.function.Supplier;
 import org.apache.commons.lang3.mutable.MutableObject;
 import software.bluelib.BlueLibConstants;
-import software.bluelib.loader.animatable.AnimatableManager;
+import software.bluelib.loader.animatable.base.AnimatableManager;
 import software.bluelib.loader.animatable.base.BlueAnimatable;
+import software.bluelib.loader.animatable.base.SingletonBlueAnimatable;
 import software.bluelib.loader.geckolib.constant.dataticket.DataTicket;
-import software.bluelib.oldLoader.animatable.SingletonBlueAnimatable;
-import software.bluelib.oldLoader.animatable.client.BlueRenderProvider;
+import software.bluelib.loader.renderer.client.BlueRenderProvider;
 
 public abstract class AnimatableInstanceCache<T extends BlueAnimatable> {
 

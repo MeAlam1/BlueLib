@@ -11,8 +11,8 @@ import net.minecraft.client.Minecraft;
 import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.net.ClientNetworkPacketHandler;
 import software.bluelib.client.utils.LevelUtils;
+import software.bluelib.loader.animatable.block.BlueBlockEntity;
 import software.bluelib.net.messages.client.loader.BlockEntityAnimTriggerPacket;
-import software.bluelib.oldLoader.animatable.BlueBlockEntity;
 
 public class BlockEntityAnimTriggerPacketHandler implements ClientNetworkPacketHandler<BlockEntityAnimTriggerPacket> {
 

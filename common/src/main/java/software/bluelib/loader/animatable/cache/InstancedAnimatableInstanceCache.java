@@ -5,9 +5,9 @@
  * If a copy of the MIT License was not distributed with this file,
  * You can obtain one at https://opensource.org/licenses/MIT.
  */
-package software.bluelib.oldLoader.animatable.instance;
+package software.bluelib.loader.animatable.cache;
 
-import software.bluelib.loader.animatable.AnimatableManager;
+import software.bluelib.loader.animatable.base.AnimatableManager;
 import software.bluelib.loader.animatable.base.BlueAnimatable;
 
 public class InstancedAnimatableInstanceCache<T extends BlueAnimatable> extends AnimatableInstanceCache<T> {

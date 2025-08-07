@@ -20,7 +20,7 @@ import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.molang.MoLang;
 import software.bluelib.api.molang.MoLangUtils;
 import software.bluelib.internal.BlueResource;
-import software.bluelib.oldLoader.animatable.BlueEntity;
+import software.bluelib.loader.animatable.entity.BlueEntity;
 
 public class ExampleEntity extends PathfinderMob implements BlueEntity {
 

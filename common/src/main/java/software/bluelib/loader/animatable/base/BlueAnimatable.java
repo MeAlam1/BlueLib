@@ -13,10 +13,9 @@ import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.annotations.WillBeDeprecated;
-import software.bluelib.loader.animatable.AnimatableManager;
-import software.bluelib.oldLoader.animatable.instance.AnimatableInstanceCache;
-import software.bluelib.oldLoader.animatable.instance.InstancedAnimatableInstanceCache;
-import software.bluelib.oldLoader.animatable.instance.SingletonAnimatableInstanceCache;
+import software.bluelib.loader.animatable.cache.AnimatableInstanceCache;
+import software.bluelib.loader.animatable.cache.InstancedAnimatableInstanceCache;
+import software.bluelib.loader.animatable.cache.SingletonAnimatableInstanceCache;
 
 public interface BlueAnimatable {
 

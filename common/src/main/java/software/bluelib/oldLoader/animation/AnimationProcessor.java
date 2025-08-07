@@ -13,7 +13,7 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
 import net.minecraft.util.Mth;
-import software.bluelib.loader.animatable.AnimatableManager;
+import software.bluelib.loader.animatable.base.AnimatableManager;
 import software.bluelib.loader.animatable.base.BlueAnimatable;
 import software.bluelib.loader.cache.animations.AnimationCache;
 import software.bluelib.loader.cache.model.BoneCache;

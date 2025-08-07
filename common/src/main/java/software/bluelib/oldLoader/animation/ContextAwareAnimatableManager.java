@@ -10,7 +10,7 @@ package software.bluelib.oldLoader.animation;
 import java.util.Map;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import software.bluelib.loader.animatable.AnimatableManager;
+import software.bluelib.loader.animatable.base.AnimatableManager;
 import software.bluelib.loader.animatable.base.BlueAnimatable;
 import software.bluelib.loader.geckolib.constant.dataticket.DataTicket;
 import software.bluelib.oldLoader.animation.state.BoneSnapshot;

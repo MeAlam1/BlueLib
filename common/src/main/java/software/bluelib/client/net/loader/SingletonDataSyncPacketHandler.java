@@ -13,8 +13,8 @@ import software.bluelib.api.net.ClientNetworkPacketHandler;
 import software.bluelib.api.utils.LoaderUtils;
 import software.bluelib.client.utils.PlayerUtils;
 import software.bluelib.loader.animatable.base.BlueAnimatable;
+import software.bluelib.loader.animatable.base.SingletonBlueAnimatable;
 import software.bluelib.net.messages.client.loader.SingletonDataSyncPacket;
-import software.bluelib.oldLoader.animatable.SingletonBlueAnimatable;
 
 public class SingletonDataSyncPacketHandler<D> implements ClientNetworkPacketHandler<SingletonDataSyncPacket<D>> {
 

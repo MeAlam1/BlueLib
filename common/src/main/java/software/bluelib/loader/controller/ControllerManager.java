@@ -16,7 +16,7 @@ import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.molang.MoLang;
 import software.bluelib.api.molang.MoLangUtils;
 import software.bluelib.api.utils.LoaderUtils;
-import software.bluelib.loader.animatable.AnimatableManager;
+import software.bluelib.loader.animatable.base.AnimatableManager;
 import software.bluelib.loader.animatable.base.BlueAnimatable;
 import software.bluelib.loader.cache.ResourceCache;
 import software.bluelib.loader.cache.controller.BehaviourCache;
