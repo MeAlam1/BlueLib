@@ -9,6 +9,7 @@ package software.bluelib.loader.animatable.base;
 
 import java.util.Map;
 import java.util.WeakHashMap;
+
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -29,7 +30,9 @@ public interface BlueAnimatable {
 			"Use the new Data Driven Controller System.",
 			"Refer to: data/MODID/controller/ENTITY.controller.json"
 	})
-	default void registerControllers(@NotNull AnimatableManager.ControllerRegistrar<? extends BlueAnimatable> pRegistrar) {}
+
+	default <T extends BlueAnimatable> void registerControllers(@NotNull AnimatableManager.ControllerRegistrar<T> pRegistrar) {
+	}
 
 	@NotNull
 	default AnimatableInstanceCache<? extends BlueAnimatable> getAnimatableInstanceCache() {
