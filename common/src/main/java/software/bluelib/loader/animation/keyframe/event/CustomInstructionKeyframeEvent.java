@@ -13,9 +13,9 @@ import software.bluelib.loader.animation.keyframe.data.CustomInstructionKeyframe
 
 public class CustomInstructionKeyframeEvent<T extends BlueAnimatable> extends KeyFrameEvent<T, CustomInstructionKeyframeData> {
 
-	public CustomInstructionKeyframeEvent(T entity, double animationTick, AnimationController<T> controller,
-			CustomInstructionKeyframeData customInstructionKeyframeData) {
-		super(entity, animationTick, controller, customInstructionKeyframeData);
+	public CustomInstructionKeyframeEvent(T pEntity, double pAnimationTick, AnimationController<T> pController,
+			CustomInstructionKeyframeData pCustomInstructionKeyframeData) {
+		super(pEntity, pAnimationTick, pController, pCustomInstructionKeyframeData);
 	}
 
 	@Override

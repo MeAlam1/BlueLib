@@ -16,10 +16,10 @@ import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.loader.animatable.base.BlueAnimatable;
+import software.bluelib.loader.animation.math.Easing;
 import software.bluelib.loader.cache.animations.AnimationCache;
 import software.bluelib.loader.geckolib.constant.DataTickets;
 import software.bluelib.loader.geckolib.constant.dataticket.SerializableDataTicket;
-import software.bluelib.loader.animation.math.Easing;
 
 @SuppressWarnings("unused")
 public final class LoaderUtils {

@@ -7,90 +7,90 @@
  */
 package software.bluelib.loader.animation.keyframe;
 
+import software.bluelib.loader.animation.bone.BoneSnapshot;
 import software.bluelib.loader.cache.animations.keyframe.KeyframeCache;
 import software.bluelib.loader.cache.model.BoneCache;
-import software.bluelib.loader.animation.bone.BoneSnapshot;
 
 public record BoneAnimationFrame(BoneCache bone, AnimationPointFrame rotationXQueue, AnimationPointFrame rotationYQueue,
-                                 AnimationPointFrame rotationZQueue, AnimationPointFrame positionXQueue, AnimationPointFrame positionYQueue,
-                                 AnimationPointFrame positionZQueue, AnimationPointFrame scaleXQueue, AnimationPointFrame scaleYQueue,
-                                 AnimationPointFrame scaleZQueue) {
+		AnimationPointFrame rotationZQueue, AnimationPointFrame positionXQueue, AnimationPointFrame positionYQueue,
+		AnimationPointFrame positionZQueue, AnimationPointFrame scaleXQueue, AnimationPointFrame scaleYQueue,
+		AnimationPointFrame scaleZQueue) {
 
-	public BoneAnimationFrame(BoneCache bone) {
-		this(bone, new AnimationPointFrame(), new AnimationPointFrame(), new AnimationPointFrame(),
+	public BoneAnimationFrame(BoneCache pBone) {
+		this(pBone, new AnimationPointFrame(), new AnimationPointFrame(), new AnimationPointFrame(),
 				new AnimationPointFrame(), new AnimationPointFrame(), new AnimationPointFrame(),
 				new AnimationPointFrame(), new AnimationPointFrame(), new AnimationPointFrame());
 	}
 
-	public void addPosXPoint(KeyframeCache<?> keyFrame, double lerpedTick, double transitionLength, double startValue, double endValue) {
-		this.positionXQueue.add(new AnimationPoint(keyFrame, lerpedTick, transitionLength, startValue, endValue));
+	public void addPosXPoint(KeyframeCache<?> pKeyFrame, double pLerpedTick, double pTransitionLength, double pStartValue, double pEndValue) {
+		this.positionXQueue.add(new AnimationPoint(pKeyFrame, pLerpedTick, pTransitionLength, pStartValue, pEndValue));
 	}
 
-	public void addPosYPoint(KeyframeCache<?> keyFrame, double lerpedTick, double transitionLength, double startValue, double endValue) {
-		this.positionYQueue.add(new AnimationPoint(keyFrame, lerpedTick, transitionLength, startValue, endValue));
+	public void addPosYPoint(KeyframeCache<?> pKeyFrame, double pLerpedTick, double pTransitionLength, double pStartValue, double pEndValue) {
+		this.positionYQueue.add(new AnimationPoint(pKeyFrame, pLerpedTick, pTransitionLength, pStartValue, pEndValue));
 	}
 
-	public void addPosZPoint(KeyframeCache<?> keyFrame, double lerpedTick, double transitionLength, double startValue, double endValue) {
-		this.positionZQueue.add(new AnimationPoint(keyFrame, lerpedTick, transitionLength, startValue, endValue));
+	public void addPosZPoint(KeyframeCache<?> pKeyFrame, double pLerpedTick, double pTransitionLength, double pStartValue, double pEndValue) {
+		this.positionZQueue.add(new AnimationPoint(pKeyFrame, pLerpedTick, pTransitionLength, pStartValue, pEndValue));
 	}
 
-	public void addNextPosition(KeyframeCache<?> keyFrame, double lerpedTick, double transitionLength, BoneSnapshot startSnapshot, AnimationPoint nextXPoint, AnimationPoint nextYPoint, AnimationPoint nextZPoint) {
-		addPosXPoint(keyFrame, lerpedTick, transitionLength, startSnapshot.getOffsetX(), nextXPoint.animationStartValue());
-		addPosYPoint(keyFrame, lerpedTick, transitionLength, startSnapshot.getOffsetY(), nextYPoint.animationStartValue());
-		addPosZPoint(keyFrame, lerpedTick, transitionLength, startSnapshot.getOffsetZ(), nextZPoint.animationStartValue());
+	public void addNextPosition(KeyframeCache<?> pKeyFrame, double pLerpedTick, double pTransitionLength, BoneSnapshot pStartSnapshot, AnimationPoint pNextXPoint, AnimationPoint pNextYPoint, AnimationPoint pNextZPoint) {
+		addPosXPoint(pKeyFrame, pLerpedTick, pTransitionLength, pStartSnapshot.getOffsetX(), pNextXPoint.animationStartValue());
+		addPosYPoint(pKeyFrame, pLerpedTick, pTransitionLength, pStartSnapshot.getOffsetY(), pNextYPoint.animationStartValue());
+		addPosZPoint(pKeyFrame, pLerpedTick, pTransitionLength, pStartSnapshot.getOffsetZ(), pNextZPoint.animationStartValue());
 	}
 
-	public void addScaleXPoint(KeyframeCache<?> keyFrame, double lerpedTick, double transitionLength, double startValue, double endValue) {
-		this.scaleXQueue.add(new AnimationPoint(keyFrame, lerpedTick, transitionLength, startValue, endValue));
+	public void addScaleXPoint(KeyframeCache<?> pKeyFrame, double pLerpedTick, double pTransitionLength, double pStartValue, double pEndValue) {
+		this.scaleXQueue.add(new AnimationPoint(pKeyFrame, pLerpedTick, pTransitionLength, pStartValue, pEndValue));
 	}
 
-	public void addScaleYPoint(KeyframeCache<?> keyFrame, double lerpedTick, double transitionLength, double startValue, double endValue) {
-		this.scaleYQueue.add(new AnimationPoint(keyFrame, lerpedTick, transitionLength, startValue, endValue));
+	public void addScaleYPoint(KeyframeCache<?> pKeyFrame, double pLerpedTick, double pTransitionLength, double pStartValue, double pEndValue) {
+		this.scaleYQueue.add(new AnimationPoint(pKeyFrame, pLerpedTick, pTransitionLength, pStartValue, pEndValue));
 	}
 
-	public void addScaleZPoint(KeyframeCache<?> keyFrame, double lerpedTick, double transitionLength, double startValue, double endValue) {
-		this.scaleZQueue.add(new AnimationPoint(keyFrame, lerpedTick, transitionLength, startValue, endValue));
+	public void addScaleZPoint(KeyframeCache<?> pKeyFrame, double pLerpedTick, double pTransitionLength, double pStartValue, double pEndValue) {
+		this.scaleZQueue.add(new AnimationPoint(pKeyFrame, pLerpedTick, pTransitionLength, pStartValue, pEndValue));
 	}
 
-	public void addNextScale(KeyframeCache<?> keyFrame, double lerpedTick, double transitionLength, BoneSnapshot startSnapshot, AnimationPoint nextXPoint, AnimationPoint nextYPoint, AnimationPoint nextZPoint) {
-		addScaleXPoint(keyFrame, lerpedTick, transitionLength, startSnapshot.getScaleX(), nextXPoint.animationStartValue());
-		addScaleYPoint(keyFrame, lerpedTick, transitionLength, startSnapshot.getScaleY(), nextYPoint.animationStartValue());
-		addScaleZPoint(keyFrame, lerpedTick, transitionLength, startSnapshot.getScaleZ(), nextZPoint.animationStartValue());
+	public void addNextScale(KeyframeCache<?> pKeyFrame, double pLerpedTick, double pTransitionLength, BoneSnapshot pStartSnapshot, AnimationPoint pNextXPoint, AnimationPoint pNextYPoint, AnimationPoint pNextZPoint) {
+		addScaleXPoint(pKeyFrame, pLerpedTick, pTransitionLength, pStartSnapshot.getScaleX(), pNextXPoint.animationStartValue());
+		addScaleYPoint(pKeyFrame, pLerpedTick, pTransitionLength, pStartSnapshot.getScaleY(), pNextYPoint.animationStartValue());
+		addScaleZPoint(pKeyFrame, pLerpedTick, pTransitionLength, pStartSnapshot.getScaleZ(), pNextZPoint.animationStartValue());
 	}
 
-	public void addRotationXPoint(KeyframeCache<?> keyFrame, double lerpedTick, double transitionLength, double startValue, double endValue) {
-		this.rotationXQueue.add(new AnimationPoint(keyFrame, lerpedTick, transitionLength, startValue, endValue));
+	public void addRotationXPoint(KeyframeCache<?> pKeyFrame, double pLerpedTick, double pTransitionLength, double pStartValue, double pEndValue) {
+		this.rotationXQueue.add(new AnimationPoint(pKeyFrame, pLerpedTick, pTransitionLength, pStartValue, pEndValue));
 	}
 
-	public void addRotationYPoint(KeyframeCache<?> keyFrame, double lerpedTick, double transitionLength, double startValue, double endValue) {
-		this.rotationYQueue.add(new AnimationPoint(keyFrame, lerpedTick, transitionLength, startValue, endValue));
+	public void addRotationYPoint(KeyframeCache<?> pKeyFrame, double pLerpedTick, double pTransitionLength, double pStartValue, double pEndValue) {
+		this.rotationYQueue.add(new AnimationPoint(pKeyFrame, pLerpedTick, pTransitionLength, pStartValue, pEndValue));
 	}
 
-	public void addRotationZPoint(KeyframeCache<?> keyFrame, double lerpedTick, double transitionLength, double startValue, double endValue) {
-		this.rotationZQueue.add(new AnimationPoint(keyFrame, lerpedTick, transitionLength, startValue, endValue));
+	public void addRotationZPoint(KeyframeCache<?> pKeyFrame, double pLerpedTick, double pTransitionLength, double pStartValue, double pEndValue) {
+		this.rotationZQueue.add(new AnimationPoint(pKeyFrame, pLerpedTick, pTransitionLength, pStartValue, pEndValue));
 	}
 
-	public void addNextRotation(KeyframeCache<?> keyFrame, double lerpedTick, double transitionLength, BoneSnapshot startSnapshot, BoneSnapshot initialSnapshot, AnimationPoint nextXPoint, AnimationPoint nextYPoint, AnimationPoint nextZPoint) {
-		addRotationXPoint(keyFrame, lerpedTick, transitionLength, startSnapshot.getRotX() - initialSnapshot.getRotX(), nextXPoint.animationStartValue());
-		addRotationYPoint(keyFrame, lerpedTick, transitionLength, startSnapshot.getRotY() - initialSnapshot.getRotY(), nextYPoint.animationStartValue());
-		addRotationZPoint(keyFrame, lerpedTick, transitionLength, startSnapshot.getRotZ() - initialSnapshot.getRotZ(), nextZPoint.animationStartValue());
+	public void addNextRotation(KeyframeCache<?> pKeyFrame, double pLerpedTick, double pTransitionLength, BoneSnapshot pStartSnapshot, BoneSnapshot pInitialSnapshot, AnimationPoint pNextXPoint, AnimationPoint pNextYPoint, AnimationPoint pNextZPoint) {
+		addRotationXPoint(pKeyFrame, pLerpedTick, pTransitionLength, pStartSnapshot.getRotX() - pInitialSnapshot.getRotX(), pNextXPoint.animationStartValue());
+		addRotationYPoint(pKeyFrame, pLerpedTick, pTransitionLength, pStartSnapshot.getRotY() - pInitialSnapshot.getRotY(), pNextYPoint.animationStartValue());
+		addRotationZPoint(pKeyFrame, pLerpedTick, pTransitionLength, pStartSnapshot.getRotZ() - pInitialSnapshot.getRotZ(), pNextZPoint.animationStartValue());
 	}
 
-	public void addPositions(AnimationPoint xPoint, AnimationPoint yPoint, AnimationPoint zPoint) {
-		this.positionXQueue.add(xPoint);
-		this.positionYQueue.add(yPoint);
-		this.positionZQueue.add(zPoint);
+	public void addPositions(AnimationPoint pXPoint, AnimationPoint pYPoint, AnimationPoint pZPoint) {
+		this.positionXQueue.add(pXPoint);
+		this.positionYQueue.add(pYPoint);
+		this.positionZQueue.add(pZPoint);
 	}
 
-	public void addScales(AnimationPoint xPoint, AnimationPoint yPoint, AnimationPoint zPoint) {
-		this.scaleXQueue.add(xPoint);
-		this.scaleYQueue.add(yPoint);
-		this.scaleZQueue.add(zPoint);
+	public void addScales(AnimationPoint pXPoint, AnimationPoint pYPoint, AnimationPoint pZPoint) {
+		this.scaleXQueue.add(pXPoint);
+		this.scaleYQueue.add(pYPoint);
+		this.scaleZQueue.add(pZPoint);
 	}
 
-	public void addRotations(AnimationPoint xPoint, AnimationPoint yPoint, AnimationPoint zPoint) {
-		this.rotationXQueue.add(xPoint);
-		this.rotationYQueue.add(yPoint);
-		this.rotationZQueue.add(zPoint);
+	public void addRotations(AnimationPoint pXPoint, AnimationPoint pYPoint, AnimationPoint pZPoint) {
+		this.rotationXQueue.add(pXPoint);
+		this.rotationYQueue.add(pYPoint);
+		this.rotationZQueue.add(pZPoint);
 	}
 }

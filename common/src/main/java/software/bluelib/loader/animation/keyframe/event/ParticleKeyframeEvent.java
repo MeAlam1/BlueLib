@@ -13,8 +13,8 @@ import software.bluelib.loader.animation.keyframe.data.ParticleKeyframeData;
 
 public class ParticleKeyframeEvent<T extends BlueAnimatable> extends KeyFrameEvent<T, ParticleKeyframeData> {
 
-	public ParticleKeyframeEvent(T animatable, double animationTick, AnimationController<T> controller, ParticleKeyframeData particleKeyFrameData) {
-		super(animatable, animationTick, controller, particleKeyFrameData);
+	public ParticleKeyframeEvent(T pAnimatable, double pAnimationTick, AnimationController<T> pController, ParticleKeyframeData pParticleKeyFrameData) {
+		super(pAnimatable, pAnimationTick, pController, pParticleKeyFrameData);
 	}
 
 	@Override

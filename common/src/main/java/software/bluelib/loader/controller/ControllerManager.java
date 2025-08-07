@@ -18,15 +18,15 @@ import software.bluelib.api.molang.MoLangUtils;
 import software.bluelib.api.utils.LoaderUtils;
 import software.bluelib.loader.animatable.base.AnimatableManager;
 import software.bluelib.loader.animatable.base.BlueAnimatable;
+import software.bluelib.loader.animation.Animation;
+import software.bluelib.loader.animation.AnimationController;
+import software.bluelib.loader.animation.AnimationState;
+import software.bluelib.loader.animation.state.PlayState;
 import software.bluelib.loader.cache.ResourceCache;
 import software.bluelib.loader.cache.controller.BehaviourCache;
 import software.bluelib.loader.cache.controller.ControllerCache;
 import software.bluelib.loader.cache.controller.GroupCache;
 import software.bluelib.loader.cache.controller.StateCache;
-import software.bluelib.loader.animation.AnimationController;
-import software.bluelib.loader.animation.AnimationState;
-import software.bluelib.loader.animation.state.PlayState;
-import software.bluelib.loader.animation.Animation;
 
 public class ControllerManager<T extends BlueAnimatable> {
 

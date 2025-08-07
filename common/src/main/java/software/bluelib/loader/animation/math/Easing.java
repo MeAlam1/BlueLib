@@ -16,9 +16,10 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.Nullable;
-import software.bluelib.loader.geckolib.math.MathValue;
 import software.bluelib.loader.animation.keyframe.AnimationPoint;
+import software.bluelib.loader.geckolib.math.MathValue;
 
+@SuppressWarnings("unused")
 @FunctionalInterface
 public interface Easing {
 
@@ -35,12 +36,12 @@ public interface Easing {
 	Easing EASE_IN_CUBIC = register("easeincubic", value -> easeIn(Easing::cubic));
 	Easing EASE_OUT_CUBIC = register("easeoutcubic", value -> easeOut(Easing::cubic));
 	Easing EASE_IN_OUT_CUBIC = register("easeinoutcubic", value -> easeInOut(Easing::cubic));
-	Easing EASE_IN_QUART = register("easeinquart", value -> easeIn(pow(4)));
-	Easing EASE_OUT_QUART = register("easeoutquart", value -> easeOut(pow(4)));
-	Easing EASE_IN_OUT_QUART = register("easeinoutquart", value -> easeInOut(pow(4)));
-	Easing EASE_IN_QUINT = register("easeinquint", value -> easeIn(pow(4)));
-	Easing EASE_OUT_QUINT = register("easeoutquint", value -> easeOut(pow(5)));
-	Easing EASE_IN_OUT_QUINT = register("easeinoutquint", value -> easeInOut(pow(5)));
+	Easing EASE_IN_QUART = register("easeinquart", value -> easeIn(pow(4.0)));
+	Easing EASE_OUT_QUART = register("easeoutquart", value -> easeOut(pow(4.0)));
+	Easing EASE_IN_OUT_QUART = register("easeinoutquart", value -> easeInOut(pow(4.0)));
+	Easing EASE_IN_QUINT = register("easeinquint", value -> easeIn(pow(4.0)));
+	Easing EASE_OUT_QUINT = register("easeoutquint", value -> easeOut(pow(5.0)));
+	Easing EASE_IN_OUT_QUINT = register("easeinoutquint", value -> easeInOut(pow(5.0)));
 	Easing EASE_IN_EXPO = register("easeinexpo", value -> easeIn(Easing::exp));
 	Easing EASE_OUT_EXPO = register("easeoutexpo", value -> easeOut(Easing::exp));
 	Easing EASE_IN_OUT_EXPO = register("easeinoutexpo", value -> easeInOut(Easing::exp));
@@ -58,54 +59,54 @@ public interface Easing {
 	Easing EASE_IN_OUT_BOUNCE = register("easeinoutbounce", value -> easeInOut(bounce(value)));
 	Easing CATMULLROM = register("catmullrom", new CatmullRomEasing());
 
-	Double2DoubleFunction buildTransformer(@Nullable Double value);
+	Double2DoubleFunction buildTransformer(@Nullable Double pValue);
 
-	static double lerpWithOverride(AnimationPoint animationPoint, Easing override) {
-		Easing easing = override;
+	static double lerpWithOverride(AnimationPoint pAnimationPoint, Easing pOverride) {
+		Easing easing = pOverride;
 
-		if (override == null)
-			easing = animationPoint.keyFrame() == null ? LINEAR : animationPoint.keyFrame().easing();
+		if (pOverride == null)
+			easing = pAnimationPoint.keyFrame() == null ? LINEAR : pAnimationPoint.keyFrame().easing();
 
-		return easing.apply(animationPoint);
+		return easing.apply(pAnimationPoint);
 	}
 
-	default double apply(AnimationPoint animationPoint) {
+	default double apply(AnimationPoint pAnimationPoint) {
 		Double easingVariable = null;
 
-		if (animationPoint.keyFrame() != null && !animationPoint.keyFrame().easingArgs().isEmpty())
-			easingVariable = animationPoint.keyFrame().easingArgs().getFirst().get();
+		if (pAnimationPoint.keyFrame() != null && !pAnimationPoint.keyFrame().easingArgs().isEmpty())
+			easingVariable = pAnimationPoint.keyFrame().easingArgs().getFirst().get();
 
-		return apply(animationPoint, easingVariable, animationPoint.currentTick() / animationPoint.transitionLength());
+		return apply(pAnimationPoint, easingVariable, pAnimationPoint.currentTick() / pAnimationPoint.transitionLength());
 	}
 
-	default double apply(AnimationPoint animationPoint, @Nullable Double easingValue, double lerpValue) {
-		if (animationPoint.currentTick() >= animationPoint.transitionLength())
-			return (float) animationPoint.animationEndValue();
+	default double apply(AnimationPoint pAnimationPoint, @Nullable Double pEasingValue, Double pLerpValue) {
+		if (pAnimationPoint.currentTick() >= pAnimationPoint.transitionLength())
+			return (float) pAnimationPoint.animationEndValue();
 
-		return Mth.lerp(buildTransformer(easingValue).apply(lerpValue), animationPoint.animationStartValue(), animationPoint.animationEndValue());
+		return Mth.lerp(buildTransformer(pEasingValue).apply(pLerpValue), pAnimationPoint.animationStartValue(), pAnimationPoint.animationEndValue());
 	}
 
-	static Easing register(String name, Easing easing) {
-		EASING_TYPES.putIfAbsent(name, easing);
+	static Easing register(String pName, Easing pEasing) {
+		EASING_TYPES.putIfAbsent(pName, pEasing);
 
-		return easing;
+		return pEasing;
 	}
 
-	static Easing fromJson(JsonElement json) {
-		if (!(json instanceof JsonPrimitive primitive) || !primitive.isString())
+	static Easing fromJson(JsonElement pJson) {
+		if (!(pJson instanceof JsonPrimitive primitive) || !primitive.isString())
 			return LINEAR;
 
 		return fromString(primitive.getAsString().toLowerCase(Locale.ROOT));
 	}
 
-	static Easing fromString(String name) {
-		return EASING_TYPES.getOrDefault(name, Easing.LINEAR);
+	static Easing fromString(String pName) {
+		return EASING_TYPES.getOrDefault(pName, Easing.LINEAR);
 	}
 
 	// ---> Easing Transition Type Functions <--- //
 
-	static Double2DoubleFunction linear(Double2DoubleFunction function) {
-		return function;
+	static Double2DoubleFunction linear(Double2DoubleFunction pFunction) {
+		return pFunction;
 	}
 
 	static double catmullRom(double n) {
@@ -114,30 +115,30 @@ public interface Easing {
 				+ (3d * (n + 1d) - n - 3d * (n + 2d) + (n + 3d)));
 	}
 
-	static Double2DoubleFunction easeIn(Double2DoubleFunction function) {
-		return function;
+	static Double2DoubleFunction easeIn(Double2DoubleFunction pFunction) {
+		return pFunction;
 	}
 
-	static Double2DoubleFunction easeOut(Double2DoubleFunction function) {
-		return time -> 1 - function.apply(1 - time);
+	static Double2DoubleFunction easeOut(Double2DoubleFunction pFunction) {
+		return time -> 1 - pFunction.apply(1 - time);
 	}
 
-	static Double2DoubleFunction easeInOut(Double2DoubleFunction function) {
+	static Double2DoubleFunction easeInOut(Double2DoubleFunction pFunction) {
 		return time -> {
 			if (time < 0.5d)
-				return function.apply(time * 2d) / 2d;
+				return pFunction.apply(time * 2d) / 2d;
 
-			return 1 - function.apply((1 - time) * 2d) / 2d;
+			return 1 - pFunction.apply((1 - time) * 2d) / 2d;
 		};
 	}
 
 	// ---> Stepping Functions <--- //
 
-	static Double2DoubleFunction stepPositive(Double2DoubleFunction function) {
+	static Double2DoubleFunction stepPositive(Double2DoubleFunction pFunction) {
 		return n -> n > 0 ? 1 : 0;
 	}
 
-	static Double2DoubleFunction stepNonNegative(Double2DoubleFunction function) {
+	static Double2DoubleFunction stepNonNegative(Double2DoubleFunction pFunction) {
 		return n -> n >= 0 ? 1 : 0;
 	}
 
@@ -169,14 +170,14 @@ public interface Easing {
 
 	// ---> Easing Curve Functions <--- //
 
-	static Double2DoubleFunction elastic(Double n) {
-		double n2 = n == null ? 1 : n;
+	static Double2DoubleFunction elastic(Double pNumber) {
+		double n2 = pNumber == null ? 1 : pNumber;
 
 		return t -> 1 - Math.pow(Math.cos(t * Math.PI / 2f), 3) * Math.cos(t * n2 * Math.PI);
 	}
 
-	static Double2DoubleFunction bounce(Double n) {
-		final double n2 = n == null ? 0.5d : n;
+	static Double2DoubleFunction bounce(Double pNumber) {
+		final double n2 = pNumber == null ? 0.5d : pNumber;
 
 		Double2DoubleFunction one = x -> 121f / 16f * x * x;
 		Double2DoubleFunction two = x -> 121f / 4f * n2 * Math.pow(x - 6f / 11f, 2) + 1 - n2;
@@ -186,20 +187,18 @@ public interface Easing {
 		return t -> Math.min(Math.min(one.apply(t), two.apply(t)), Math.min(three.apply(t), four.apply(t)));
 	}
 
-	static Double2DoubleFunction back(Double n) {
-		final double n2 = n == null ? 1.70158d : n * 1.70158d;
+	static Double2DoubleFunction back(Double pNumber) {
+		final double n2 = pNumber == null ? 1.70158d : pNumber * 1.70158d;
 
 		return t -> t * t * ((n2 + 1) * t - n2);
 	}
 
-	static Double2DoubleFunction pow(double n) {
-		return t -> Math.pow(t, n);
+	static Double2DoubleFunction pow(Double pNumber) {
+		return t -> Math.pow(t, pNumber);
 	}
 
-	// The MIT license notice below applies to the function step
-
-	static Double2DoubleFunction step(Double n) {
-		double n2 = n == null ? 2 : n;
+	static Double2DoubleFunction step(Double pNumber) {
+		double n2 = pNumber == null ? 2 : pNumber;
 
 		if (n2 < 2)
 			throw new IllegalArgumentException("Steps must be >= 2, got: " + n2);
@@ -237,28 +236,29 @@ public interface Easing {
 
 	class CatmullRomEasing implements Easing {
 
-		public static double getPointOnSpline(double delta, double p0, double p1, double p2, double p3) {
-			return 0.5d * (2d * p1 + (p2 - p0) * delta +
-					(2d * p0 - 5d * p1 + 4d * p2 - p3) * delta * delta +
-					(3d * p1 - p0 - 3d * p2 + p3) * delta * delta * delta);
+		// TODO: RENAME PARAMETERS
+		public static double getPointOnSpline(double pDelta, double pP0, double pP1, double pP2, double pP3) {
+			return 0.5d * (2d * pP1 + (pP2 - pP0) * pDelta +
+					(2d * pP0 - 5d * pP1 + 4d * pP2 - pP3) * pDelta * pDelta +
+					(3d * pP1 - pP0 - 3d * pP2 + pP3) * pDelta * pDelta * pDelta);
 		}
 
 		@Override
-		public Double2DoubleFunction buildTransformer(Double value) {
+		public Double2DoubleFunction buildTransformer(Double pValue) {
 			return easeInOut(Easing::catmullRom);
 		}
 
 		@Override
-		public double apply(AnimationPoint animationPoint, Double easingValue, double lerpValue) {
-			if (animationPoint.currentTick() >= animationPoint.transitionLength())
-				return animationPoint.animationEndValue();
+		public double apply(AnimationPoint pAnimationPoint, Double pEasingValue, Double pLerpValue) {
+			if (pAnimationPoint.currentTick() >= pAnimationPoint.transitionLength())
+				return pAnimationPoint.animationEndValue();
 
-			List<? extends MathValue> easingArgs = animationPoint.keyFrame().easingArgs();
+			List<? extends MathValue> easingArgs = pAnimationPoint.keyFrame().easingArgs();
 
 			if (easingArgs.size() < 2)
-				return Mth.lerp(buildTransformer(easingValue).apply(lerpValue), animationPoint.animationStartValue(), animationPoint.animationEndValue());
+				return Mth.lerp(buildTransformer(pEasingValue).apply(pLerpValue), pAnimationPoint.animationStartValue(), pAnimationPoint.animationEndValue());
 
-			return getPointOnSpline(lerpValue, easingArgs.get(0).get(), animationPoint.animationStartValue(), animationPoint.animationEndValue(), easingArgs.get(1).get());
+			return getPointOnSpline(pLerpValue, easingArgs.get(0).get(), pAnimationPoint.animationStartValue(), pAnimationPoint.animationEndValue(), easingArgs.get(1).get());
 		}
 	}
 }

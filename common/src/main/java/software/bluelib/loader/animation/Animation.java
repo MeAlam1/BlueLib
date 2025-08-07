@@ -8,10 +8,8 @@
 package software.bluelib.loader.animation;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-
 import java.util.List;
 import java.util.Objects;
-
 import software.bluelib.loader.cache.animations.AnimationCache;
 
 public final class Animation {
@@ -19,8 +17,7 @@ public final class Animation {
 	private final List<Stage> animationList = new ObjectArrayList<>();
 
 	// Private constructor to force usage of factory for logical operations
-	private Animation() {
-	}
+	private Animation() {}
 
 	public static Animation begin() {
 		return new Animation();

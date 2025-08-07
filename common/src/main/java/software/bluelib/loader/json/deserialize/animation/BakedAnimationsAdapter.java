@@ -21,6 +21,7 @@ import software.bluelib.api.exception.CompoundException;
 import software.bluelib.api.utils.JsonUtils;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
+import software.bluelib.loader.animation.math.Easing;
 import software.bluelib.loader.cache.animations.AnimationCache;
 import software.bluelib.loader.cache.animations.AnimationLibraryCache;
 import software.bluelib.loader.cache.animations.keyframe.BoneAnimationCache;
@@ -30,7 +31,6 @@ import software.bluelib.loader.cache.animations.keyframe.KeyframeStackCache;
 import software.bluelib.loader.geckolib.math.MathParser;
 import software.bluelib.loader.geckolib.math.MathValue;
 import software.bluelib.loader.geckolib.math.value.Constant;
-import software.bluelib.loader.animation.math.Easing;
 
 public class BakedAnimationsAdapter implements JsonDeserializer<AnimationLibraryCache> {
 

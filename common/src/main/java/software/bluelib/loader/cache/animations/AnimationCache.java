@@ -14,13 +14,13 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.loader.animatable.base.BlueAnimatable;
-import software.bluelib.loader.cache.animations.keyframe.BoneAnimationCache;
-import software.bluelib.loader.cache.animations.keyframe.KeyframeLibraryCache;
-import software.bluelib.loader.animation.AnimationController;
 import software.bluelib.loader.animation.Animation;
+import software.bluelib.loader.animation.AnimationController;
 import software.bluelib.loader.animation.keyframe.data.CustomInstructionKeyframeData;
 import software.bluelib.loader.animation.keyframe.data.ParticleKeyframeData;
 import software.bluelib.loader.animation.keyframe.data.SoundKeyframeData;
+import software.bluelib.loader.cache.animations.keyframe.BoneAnimationCache;
+import software.bluelib.loader.cache.animations.keyframe.KeyframeLibraryCache;
 
 public record AnimationCache(
 		@NotNull String name,

@@ -13,8 +13,8 @@ import software.bluelib.loader.animation.keyframe.data.SoundKeyframeData;
 
 public class SoundKeyframeEvent<T extends BlueAnimatable> extends KeyFrameEvent<T, SoundKeyframeData> {
 
-	public SoundKeyframeEvent(T entity, double animationTick, AnimationController<T> controller, SoundKeyframeData keyFrameData) {
-		super(entity, animationTick, controller, keyFrameData);
+	public SoundKeyframeEvent(T pAnimatable, double pAnimationTick, AnimationController<T> pController, SoundKeyframeData pKeyFrameData) {
+		super(pAnimatable, pAnimationTick, pController, pKeyFrameData);
 	}
 
 	@Override

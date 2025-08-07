@@ -16,11 +16,11 @@ import java.util.Map;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import software.bluelib.loader.animation.AnimationController;
+import software.bluelib.loader.animation.bone.BoneSnapshot;
 import software.bluelib.loader.cache.controller.ControllerCache;
 import software.bluelib.loader.controller.ControllerManager;
 import software.bluelib.loader.geckolib.constant.dataticket.DataTicket;
-import software.bluelib.loader.animation.AnimationController;
-import software.bluelib.loader.animation.bone.BoneSnapshot;
 
 public class AnimatableManager<T extends BlueAnimatable> {
 
@@ -39,7 +39,7 @@ public class AnimatableManager<T extends BlueAnimatable> {
 		new ControllerManager<T>().registerControllers(pAnimatable, controllerCache, registrar);
 
 		pAnimatable.registerControllers(registrar);
-		
+
 		this.animationControllers = registrar.build();
 	}
 

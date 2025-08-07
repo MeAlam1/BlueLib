@@ -15,12 +15,12 @@ public class ParticleKeyframeData extends KeyFrameData {
 	private final String locator;
 	private final String script;
 
-	public ParticleKeyframeData(double startTick, String effect, String locator, String script) {
-		super(startTick);
+	public ParticleKeyframeData(double pStartTick, String pEffect, String pLocator, String pScript) {
+		super(pStartTick);
 
-		this.script = script;
-		this.locator = locator;
-		this.effect = effect;
+		this.script = pScript;
+		this.locator = pLocator;
+		this.effect = pEffect;
 	}
 
 	public String getEffect() {

@@ -13,10 +13,10 @@ public class SoundKeyframeData extends KeyFrameData {
 
 	private final String sound;
 
-	public SoundKeyframeData(Double startTick, String sound) {
-		super(startTick);
+	public SoundKeyframeData(Double pStartTick, String pSound) {
+		super(pStartTick);
 
-		this.sound = sound;
+		this.sound = pSound;
 	}
 
 	public String getSound() {

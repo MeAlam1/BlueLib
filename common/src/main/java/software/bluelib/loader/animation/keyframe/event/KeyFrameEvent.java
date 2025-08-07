@@ -18,11 +18,11 @@ public abstract class KeyFrameEvent<T extends BlueAnimatable, E extends KeyFrame
 	private final AnimationController<T> controller;
 	private final E eventKeyFrame;
 
-	public KeyFrameEvent(T animatable, double animationTick, AnimationController<T> controller, E eventKeyFrame) {
-		this.animatable = animatable;
-		this.animationTick = animationTick;
-		this.controller = controller;
-		this.eventKeyFrame = eventKeyFrame;
+	public KeyFrameEvent(T pAnimatable, double pAnimationTick, AnimationController<T> pController, E pEventKeyFrame) {
+		this.animatable = pAnimatable;
+		this.animationTick = pAnimationTick;
+		this.controller = pController;
+		this.eventKeyFrame = pEventKeyFrame;
 	}
 
 	public double getAnimationTick() {

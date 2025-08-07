@@ -27,6 +27,10 @@ public class AutoPlayingSoundKeyframeHandler<A extends BlueAnimatable> implement
 		String[] segments = pEvent.getKeyframeData().getSound().split("\\|");
 		SoundEvent sound = BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.read(segments[0]).getOrThrow());
 
+		if (LevelUtils.getLevel() == null) {
+			return;
+		}
+
 		if (sound != null) {
 			Entity entity = pEvent.getAnimatable() instanceof Entity e ? e : null;
 			Vec3 position = entity != null ? entity.position() : pEvent.getAnimatable() instanceof BlockEntity blockEntity ? blockEntity.getBlockPos().getCenter() : null;

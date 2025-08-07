@@ -33,36 +33,36 @@ public class BoneSnapshot {
 	private boolean posAnimInProgress = true;
 	private boolean scaleAnimInProgress = true;
 
-	public BoneSnapshot(BoneCache bone) {
-		this.rotX = bone.getRotX();
-		this.rotY = bone.getRotY();
-		this.rotZ = bone.getRotZ();
+	public BoneSnapshot(BoneCache pBone) {
+		this.rotX = pBone.getRotX();
+		this.rotY = pBone.getRotY();
+		this.rotZ = pBone.getRotZ();
 
-		this.offsetPosX = bone.getPosX();
-		this.offsetPosY = bone.getPosY();
-		this.offsetPosZ = bone.getPosZ();
+		this.offsetPosX = pBone.getPosX();
+		this.offsetPosY = pBone.getPosY();
+		this.offsetPosZ = pBone.getPosZ();
 
-		this.scaleX = bone.getScaleX();
-		this.scaleY = bone.getScaleY();
-		this.scaleZ = bone.getScaleZ();
+		this.scaleX = pBone.getScaleX();
+		this.scaleY = pBone.getScaleY();
+		this.scaleZ = pBone.getScaleZ();
 
-		this.bone = bone;
+		this.bone = pBone;
 	}
 
-	public static BoneSnapshot copy(BoneSnapshot snapshot) {
-		BoneSnapshot newSnapshot = new BoneSnapshot(snapshot.bone);
+	public static BoneSnapshot copy(BoneSnapshot pSnapshot) {
+		BoneSnapshot newSnapshot = new BoneSnapshot(pSnapshot.bone);
 
-		newSnapshot.scaleX = snapshot.scaleX;
-		newSnapshot.scaleY = snapshot.scaleY;
-		newSnapshot.scaleZ = snapshot.scaleZ;
+		newSnapshot.scaleX = pSnapshot.scaleX;
+		newSnapshot.scaleY = pSnapshot.scaleY;
+		newSnapshot.scaleZ = pSnapshot.scaleZ;
 
-		newSnapshot.offsetPosX = snapshot.offsetPosX;
-		newSnapshot.offsetPosY = snapshot.offsetPosY;
-		newSnapshot.offsetPosZ = snapshot.offsetPosZ;
+		newSnapshot.offsetPosX = pSnapshot.offsetPosX;
+		newSnapshot.offsetPosY = pSnapshot.offsetPosY;
+		newSnapshot.offsetPosZ = pSnapshot.offsetPosZ;
 
-		newSnapshot.rotX = snapshot.rotX;
-		newSnapshot.rotY = snapshot.rotY;
-		newSnapshot.rotZ = snapshot.rotZ;
+		newSnapshot.rotX = pSnapshot.rotX;
+		newSnapshot.rotY = pSnapshot.rotY;
+		newSnapshot.rotZ = pSnapshot.rotZ;
 
 		return newSnapshot;
 	}
@@ -131,60 +131,60 @@ public class BoneSnapshot {
 		return this.scaleAnimInProgress;
 	}
 
-	public void updateScale(float scaleX, float scaleY, float scaleZ) {
-		this.scaleX = scaleX;
-		this.scaleY = scaleY;
-		this.scaleZ = scaleZ;
+	public void updateScale(float pScaleX, float pScaleY, float pScaleZ) {
+		this.scaleX = pScaleX;
+		this.scaleY = pScaleY;
+		this.scaleZ = pScaleZ;
 	}
 
-	public void updateOffset(float offsetX, float offsetY, float offsetZ) {
-		this.offsetPosX = offsetX;
-		this.offsetPosY = offsetY;
-		this.offsetPosZ = offsetZ;
+	public void updateOffset(float pOffsetX, float pOffsetY, float pOffsetZ) {
+		this.offsetPosX = pOffsetX;
+		this.offsetPosY = pOffsetY;
+		this.offsetPosZ = pOffsetZ;
 	}
 
-	public void updateRotation(float rotX, float rotY, float rotZ) {
-		this.rotX = rotX;
-		this.rotY = rotY;
-		this.rotZ = rotZ;
+	public void updateRotation(float pRotX, float pRotY, float pRotZ) {
+		this.rotX = pRotX;
+		this.rotY = pRotY;
+		this.rotZ = pRotZ;
 	}
 
 	public void startPosAnim() {
 		this.posAnimInProgress = true;
 	}
 
-	public void stopPosAnim(double tick) {
+	public void stopPosAnim(double pTick) {
 		this.posAnimInProgress = false;
-		this.lastResetPositionTick = tick;
+		this.lastResetPositionTick = pTick;
 	}
 
 	public void startRotAnim() {
 		this.rotAnimInProgress = true;
 	}
 
-	public void stopRotAnim(double tick) {
+	public void stopRotAnim(double pTick) {
 		this.rotAnimInProgress = false;
-		this.lastResetRotationTick = tick;
+		this.lastResetRotationTick = pTick;
 	}
 
 	public void startScaleAnim() {
 		this.scaleAnimInProgress = true;
 	}
 
-	public void stopScaleAnim(double tick) {
+	public void stopScaleAnim(double pTick) {
 		this.scaleAnimInProgress = false;
-		this.lastResetScaleTick = tick;
+		this.lastResetScaleTick = pTick;
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
+	public boolean equals(Object pObj) {
+		if (this == pObj)
 			return true;
 
-		if (obj == null || getClass() != obj.getClass())
+		if (pObj == null || getClass() != pObj.getClass())
 			return false;
 
-		return hashCode() == obj.hashCode();
+		return hashCode() == pObj.hashCode();
 	}
 
 	@Override

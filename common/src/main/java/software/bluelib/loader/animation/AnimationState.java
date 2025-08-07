@@ -12,8 +12,8 @@ import java.util.Map;
 import java.util.Objects;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.loader.animatable.base.BlueAnimatable;
-import software.bluelib.loader.geckolib.constant.dataticket.DataTicket;
 import software.bluelib.loader.animation.state.PlayState;
+import software.bluelib.loader.geckolib.constant.dataticket.DataTicket;
 
 public class AnimationState<T extends BlueAnimatable> {
 

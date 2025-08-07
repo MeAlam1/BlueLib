@@ -13,8 +13,8 @@ public abstract class KeyFrameData {
 
 	private final double startTick;
 
-	public KeyFrameData(double startTick) {
-		this.startTick = startTick;
+	public KeyFrameData(double pStartTick) {
+		this.startTick = pStartTick;
 	}
 
 	public double getStartTick() {
@@ -22,14 +22,14 @@ public abstract class KeyFrameData {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
+	public boolean equals(Object pObj) {
+		if (this == pObj)
 			return true;
 
-		if (obj == null || getClass() != obj.getClass())
+		if (pObj == null || getClass() != pObj.getClass())
 			return false;
 
-		return this.hashCode() == obj.hashCode();
+		return this.hashCode() == pObj.hashCode();
 	}
 
 	@Override

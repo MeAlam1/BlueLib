@@ -10,9 +10,9 @@ package software.bluelib.loader.animatable.base;
 import java.util.Map;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import software.bluelib.loader.geckolib.constant.dataticket.DataTicket;
 import software.bluelib.loader.animation.AnimationController;
 import software.bluelib.loader.animation.bone.BoneSnapshot;
+import software.bluelib.loader.geckolib.constant.dataticket.DataTicket;
 
 public abstract class ContextAwareAnimatableManager<T extends BlueAnimatable, C> extends AnimatableManager<T> {
 

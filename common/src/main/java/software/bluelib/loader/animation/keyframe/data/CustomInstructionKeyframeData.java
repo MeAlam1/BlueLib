@@ -13,10 +13,10 @@ public class CustomInstructionKeyframeData extends KeyFrameData {
 
 	private final String instructions;
 
-	public CustomInstructionKeyframeData(double startTick, String instructions) {
-		super(startTick);
+	public CustomInstructionKeyframeData(double pStartTick, String pInstructions) {
+		super(pStartTick);
 
-		this.instructions = instructions;
+		this.instructions = pInstructions;
 	}
 
 	public String getInstructions() {

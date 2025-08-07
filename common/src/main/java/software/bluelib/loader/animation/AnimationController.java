@@ -9,11 +9,26 @@ package software.bluelib.loader.animation;
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
+import java.util.*;
+import java.util.function.Function;
 import net.minecraft.core.Direction.Axis;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
 import software.bluelib.loader.animatable.base.BlueAnimatable;
+import software.bluelib.loader.animation.bone.BoneSnapshot;
+import software.bluelib.loader.animation.keyframe.AnimationPoint;
+import software.bluelib.loader.animation.keyframe.BoneAnimationFrame;
+import software.bluelib.loader.animation.keyframe.KeyframeLocation;
+import software.bluelib.loader.animation.keyframe.data.CustomInstructionKeyframeData;
+import software.bluelib.loader.animation.keyframe.data.KeyFrameData;
+import software.bluelib.loader.animation.keyframe.data.ParticleKeyframeData;
+import software.bluelib.loader.animation.keyframe.data.SoundKeyframeData;
+import software.bluelib.loader.animation.keyframe.event.CustomInstructionKeyframeEvent;
+import software.bluelib.loader.animation.keyframe.event.ParticleKeyframeEvent;
+import software.bluelib.loader.animation.keyframe.event.SoundKeyframeEvent;
+import software.bluelib.loader.animation.math.Easing;
+import software.bluelib.loader.animation.state.PlayState;
 import software.bluelib.loader.cache.animations.keyframe.BoneAnimationCache;
 import software.bluelib.loader.cache.animations.keyframe.KeyframeCache;
 import software.bluelib.loader.cache.animations.keyframe.KeyframeStackCache;
@@ -23,22 +38,6 @@ import software.bluelib.loader.geckolib.math.MathValue;
 import software.bluelib.loader.geckolib.math.MoLangQueries;
 import software.bluelib.loader.geckolib.math.value.Constant;
 import software.bluelib.loader.model.BlueModel;
-import software.bluelib.loader.animation.math.Easing;
-import software.bluelib.loader.animation.state.PlayState;
-import software.bluelib.loader.animation.keyframe.AnimationPoint;
-import software.bluelib.loader.animation.keyframe.BoneAnimationFrame;
-import software.bluelib.loader.animation.keyframe.KeyframeLocation;
-import software.bluelib.loader.animation.keyframe.event.CustomInstructionKeyframeEvent;
-import software.bluelib.loader.animation.keyframe.event.ParticleKeyframeEvent;
-import software.bluelib.loader.animation.keyframe.event.SoundKeyframeEvent;
-import software.bluelib.loader.animation.keyframe.data.CustomInstructionKeyframeData;
-import software.bluelib.loader.animation.keyframe.data.KeyFrameData;
-import software.bluelib.loader.animation.keyframe.data.ParticleKeyframeData;
-import software.bluelib.loader.animation.keyframe.data.SoundKeyframeData;
-import software.bluelib.loader.animation.bone.BoneSnapshot;
-
-import java.util.*;
-import java.util.function.Function;
 
 public class AnimationController<T extends BlueAnimatable> {
 
@@ -520,7 +519,7 @@ public class AnimationController<T extends BlueAnimatable> {
 	}
 
 	private AnimationPoint getAnimationPointAtTick(List<KeyframeCache<MathValue>> pFrames, double pTick, boolean pIsRotation,
-	                                               Axis pAxis) {
+			Axis pAxis) {
 		KeyframeLocation<KeyframeCache<MathValue>> location = getCurrentKeyFrameLocation(pFrames, pTick);
 		KeyframeCache<MathValue> currentFrame = location.keyframe();
 		double startValue = currentFrame.startValue().get();
@@ -546,7 +545,7 @@ public class AnimationController<T extends BlueAnimatable> {
 	}
 
 	private KeyframeLocation<KeyframeCache<MathValue>> getCurrentKeyFrameLocation(List<KeyframeCache<MathValue>> pFrames,
-	                                                                              double pAgeInTicks) {
+			double pAgeInTicks) {
 		double totalFrameTime = 0;
 
 		for (KeyframeCache<MathValue> frame : pFrames) {

@@ -17,16 +17,16 @@ import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
 import software.bluelib.loader.animatable.base.AnimatableManager;
 import software.bluelib.loader.animatable.base.BlueAnimatable;
+import software.bluelib.loader.animation.bone.BoneSnapshot;
+import software.bluelib.loader.animation.keyframe.AnimationPoint;
+import software.bluelib.loader.animation.keyframe.BoneAnimationFrame;
+import software.bluelib.loader.animation.math.Easing;
 import software.bluelib.loader.cache.animations.AnimationCache;
 import software.bluelib.loader.cache.model.BoneCache;
 import software.bluelib.loader.cache.model.ModelCache;
 import software.bluelib.loader.geckolib.math.MathParser;
 import software.bluelib.loader.geckolib.math.MoLangQueries;
 import software.bluelib.loader.model.BlueModel;
-import software.bluelib.loader.animation.math.Easing;
-import software.bluelib.loader.animation.keyframe.AnimationPoint;
-import software.bluelib.loader.animation.keyframe.BoneAnimationFrame;
-import software.bluelib.loader.animation.bone.BoneSnapshot;
 
 public class AnimationProcessor<T extends BlueAnimatable> {
 
