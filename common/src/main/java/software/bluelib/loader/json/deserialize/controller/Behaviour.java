@@ -20,7 +20,7 @@ import software.bluelib.api.utils.JsonUtils;
 public record Behaviour(
 		@NotNull List<String> conditions,
 		@Nullable Integer priority,
-		@NotNull Map<String, List<State>> states) {
+		@NotNull Map<String, State> states) {
 
 	@NotNull
 	public static JsonDeserializer<Behaviour> deserializer() throws JsonParseException {
@@ -30,7 +30,7 @@ public record Behaviour(
 			List<String> conditions = JsonUtils.jsonArrayToStringList(GsonHelper.getAsJsonArray(obj, "conditions"));
 			Integer priority = JsonUtils.getOptionalInteger(obj, "priority");
 			JsonObject statesObj = JsonUtils.filterJsonObject(obj, "conditions", "priority");
-			Map<String, List<State>> states = JsonUtils.jsonObjToListMap(statesObj, context, State.class);
+			Map<String, State> states = JsonUtils.jsonObjToMap(statesObj, context, State.class);
 
 			return new Behaviour(
 					conditions,

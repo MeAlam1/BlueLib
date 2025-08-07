@@ -23,10 +23,7 @@ import software.bluelib.loader.animation.AnimationController;
 import software.bluelib.loader.animation.AnimationState;
 import software.bluelib.loader.animation.state.PlayState;
 import software.bluelib.loader.cache.ResourceCache;
-import software.bluelib.loader.cache.controller.BehaviourCache;
-import software.bluelib.loader.cache.controller.ControllerCache;
-import software.bluelib.loader.cache.controller.GroupCache;
-import software.bluelib.loader.cache.controller.StateCache;
+import software.bluelib.loader.cache.controller.*;
 
 public class ControllerManager<T extends BlueAnimatable> {
 
@@ -42,7 +39,9 @@ public class ControllerManager<T extends BlueAnimatable> {
 				int maxPriority = Integer.MIN_VALUE;
 				for (Map.Entry<String, BehaviourCache> entry : behaviours.entrySet()) {
 					BehaviourCache behaviour = entry.getValue();
-					if (isOverlay(behaviour)) continue;
+					// Only consider non-overlay states
+					boolean hasNonOverlayState = behaviour.states().values().stream().anyMatch(state -> !state.isOverlay());
+					if (!hasNonOverlayState) continue;
 					int priority = getEffectiveBehaviourPriority(behaviour, pAnimatable);
 					if (priority > maxPriority) {
 						validBehaviours.clear();
@@ -53,46 +52,46 @@ public class ControllerManager<T extends BlueAnimatable> {
 					}
 				}
 				for (Map.Entry<String, BehaviourCache> entry : validBehaviours) {
-					return ControllerManager.animationController(k, entry.getValue(), pAnimatable);
+					return ControllerManager.animationController(k, entry.getValue(), pAnimatable, false);
 				}
 				return PlayState.PLAY;
 			}));
 
 			for (Map.Entry<String, BehaviourCache> entry : behaviours.entrySet()) {
 				BehaviourCache behaviour = entry.getValue();
-				if (isOverlay(behaviour)) {
-					pControllers.add(new AnimationController<>((T) pAnimatable, "overlay" + "_" + entry.getKey(), 5, k -> {
-						int priority = getEffectiveBehaviourPriority(behaviour, pAnimatable);
-						if (priority == Integer.MIN_VALUE) return PlayState.PLAY;
-						return ControllerManager.animationController(k, behaviour, pAnimatable);
-					}));
+				for (Map.Entry<String, StateCache> stateEntry : behaviour.states().entrySet()) {
+					StateCache state = stateEntry.getValue();
+					if (state.isOverlay()) {
+						pControllers.add(new AnimationController<>((T) pAnimatable, "overlay" + "_" + entry.getKey() + "_" + stateEntry.getKey(), 5, k -> {
+							int priority = getEffectiveBehaviourPriority(behaviour, pAnimatable);
+							if (priority == Integer.MIN_VALUE) return PlayState.PLAY;
+							return ControllerManager.animationController(k, behaviour, pAnimatable, true);
+						}));
+					}
 				}
 			}
 		}
 	}
 
-	private static boolean isOverlay(BehaviourCache pBehaviour) {
-		return false;
-	}
+	protected static <E extends BlueAnimatable> PlayState animationController(final AnimationState<E> pEvent, BehaviourCache pBehaviour, BlueAnimatable pAnimatable, boolean pOverlayOnly) {
+		for (Map.Entry<String, StateCache> entry : pBehaviour.states().entrySet()) {
+			StateCache state = entry.getValue();
+			if (pOverlayOnly && !state.isOverlay()) continue;
+			if (!pOverlayOnly && state.isOverlay()) continue;
+			List<AnimationCache> animations = state.animations();
+			if (animations.isEmpty()) continue;
 
-	protected static <E extends BlueAnimatable> PlayState animationController(final AnimationState<E> pEvent, BehaviourCache pBehaviour, BlueAnimatable pAnimatable) {
-		for (Map.Entry<String, List<StateCache>> entry : pBehaviour.states().entrySet()) {
-			List<StateCache> states = entry.getValue();
-			if (states.isEmpty()) {
-				continue;
-			}
-			List<StateCache> mutableStates = new ArrayList<>(states);
-			mutableStates.sort((a, b) -> {
-				int pa = getEffectivePriority(a, pAnimatable);
-				int pb = getEffectivePriority(b, pAnimatable);
-				return Integer.compare(pb, pa);
+			List<AnimationCache> sortedAnimations = new ArrayList<>(animations);
+			sortedAnimations.sort((pA, pB) -> {
+				int a = getEffectivePriority(pA, pAnimatable);
+				int b = getEffectivePriority(pB, pAnimatable);
+				return Integer.compare(b, a);
 			});
-			StateCache selected = mutableStates.getFirst();
+			AnimationCache selected = sortedAnimations.getFirst();
+
 			int selectedPriority = getEffectivePriority(selected, pAnimatable);
-			if (selectedPriority == Integer.MIN_VALUE) {
-				continue;
-			}
-			//BaseLogger.log(BaseLogLevel.BLUELIB, "Animation playing: " + selected.animation());
+			if (selectedPriority == Integer.MIN_VALUE) continue;
+
 			return pEvent.setAndContinue(Animation.begin().thenLoop(selected.animation()));
 		}
 		return PlayState.PLAY;
@@ -117,7 +116,7 @@ public class ControllerManager<T extends BlueAnimatable> {
 		return effectivePriority;
 	}
 
-	private static int getEffectivePriority(StateCache pState, BlueAnimatable pAnimatable) {
+	private static int getEffectivePriority(AnimationCache pState, BlueAnimatable pAnimatable) {
 		return getEffectivePriority(pState.priority(), pState.conditions(), pAnimatable);
 	}
 

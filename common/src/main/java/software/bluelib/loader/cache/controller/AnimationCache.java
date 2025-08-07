@@ -9,7 +9,10 @@ package software.bluelib.loader.cache.controller;
 
 import java.util.List;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-public record StateCache(
-		boolean isOverlay,
-		@NotNull List<AnimationCache> animations) {}
+public record AnimationCache(
+		@NotNull List<String> conditions,
+		@NotNull String animation,
+		@Nullable Integer priority,
+		@Nullable String sound) {}

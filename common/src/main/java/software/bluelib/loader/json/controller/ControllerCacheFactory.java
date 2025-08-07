@@ -11,15 +11,9 @@ import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import java.util.List;
 import java.util.Map;
 import org.jetbrains.annotations.NotNull;
-import software.bluelib.loader.cache.controller.BehaviourCache;
-import software.bluelib.loader.cache.controller.ControllerCache;
-import software.bluelib.loader.cache.controller.GroupCache;
-import software.bluelib.loader.cache.controller.StateCache;
+import software.bluelib.loader.cache.controller.*;
 import software.bluelib.loader.json.CacheFactory;
-import software.bluelib.loader.json.deserialize.controller.Behaviour;
-import software.bluelib.loader.json.deserialize.controller.Controller;
-import software.bluelib.loader.json.deserialize.controller.Group;
-import software.bluelib.loader.json.deserialize.controller.State;
+import software.bluelib.loader.json.deserialize.controller.*;
 
 public interface ControllerCacheFactory extends CacheFactory<ControllerCache, Controller> {
 
@@ -79,7 +73,7 @@ public interface ControllerCacheFactory extends CacheFactory<ControllerCache, Co
 			for (Map.Entry<String, Behaviour> entry : pBehaviours.entrySet()) {
 				String name = entry.getKey();
 				Behaviour behaviour = entry.getValue();
-				Map<String, List<StateCache>> stateCache = constructStateCaches(behaviour.states());
+				Map<String, StateCache> stateCache = constructStateCaches(behaviour.states());
 				BehaviourCache behaviourCache = new BehaviourCache(
 						behaviour.conditions(),
 						behaviour.priority(),
@@ -91,16 +85,14 @@ public interface ControllerCacheFactory extends CacheFactory<ControllerCache, Co
 		}
 
 		@NotNull
-		private Map<String, List<StateCache>> constructStateCaches(@NotNull Map<String, List<State>> pStates) {
-			Map<String, List<StateCache>> stateCaches = new Object2ObjectOpenHashMap<>(pStates.size());
+		private Map<String, StateCache> constructStateCaches(@NotNull Map<String, State> pStates) {
+			Map<String, StateCache> stateCaches = new Object2ObjectOpenHashMap<>(pStates.size());
 
-			for (Map.Entry<String, List<State>> entry : pStates.entrySet()) {
+			for (Map.Entry<String, State> entry : pStates.entrySet()) {
 				String name = entry.getKey();
-				List<State> states = entry.getValue();
-				List<StateCache> stateCacheList = states.stream()
-						.map(this::constructStateCache)
-						.toList();
-				stateCaches.put(name, stateCacheList);
+				State state = entry.getValue();
+				StateCache stateCache = constructStateCache(state);
+				stateCaches.put(name, stateCache);
 			}
 
 			return stateCaches;
@@ -108,11 +100,26 @@ public interface ControllerCacheFactory extends CacheFactory<ControllerCache, Co
 
 		@NotNull
 		private StateCache constructStateCache(@NotNull State pState) {
+			List<AnimationCache> animationCaches = constructAnimationsCaches(pState.animations());
 			return new StateCache(
-					pState.conditions(),
-					pState.animation(),
-					pState.priority(),
-					pState.sound());
+					pState.isOverlay(),
+					animationCaches);
+		}
+
+		@NotNull
+		private List<AnimationCache> constructAnimationsCaches(@NotNull List<Animation> pAnimations) {
+			return pAnimations.stream()
+					.map(this::constructAnimationCache)
+					.toList();
+		}
+
+		@NotNull
+		private AnimationCache constructAnimationCache(@NotNull Animation pAnimation) {
+			return new AnimationCache(
+					pAnimation.conditions(),
+					pAnimation.animation(),
+					pAnimation.priority(),
+					pAnimation.sound());
 		}
 	}
 }

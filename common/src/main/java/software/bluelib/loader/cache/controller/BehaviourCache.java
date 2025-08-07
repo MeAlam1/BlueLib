@@ -11,23 +11,25 @@ import java.util.List;
 import java.util.Map;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import software.bluelib.api.utils.logging.BaseLogLevel;
+import software.bluelib.api.utils.logging.BaseLogger;
 
 public record BehaviourCache(
 		@NotNull List<String> conditions,
 		@Nullable Integer priority,
-		@NotNull Map<String, List<StateCache>> states) {
-
-	@NotNull
-	public List<StateCache> getStates(@NotNull String pName) {
-		return states.get(pName);
-	}
+		@NotNull Map<String, StateCache> states) {
 
 	@Nullable
-	public StateCache getMainState(@NotNull String pName) {
-		List<StateCache> stateList = states.get(pName);
-		if (stateList == null || stateList.isEmpty()) {
-			return null;
+	public StateCache getState(@NotNull String pName) {
+		StateCache state = states.get(pName);
+		if (state == null) {
+			BaseLogger.log(BaseLogLevel.WARNING, "State not found: " + pName);
 		}
-		return stateList.getFirst();
+		return state;
+	}
+
+	@NotNull
+	public StateCache getMainState() {
+		return states.values().iterator().next();
 	}
 }

@@ -13,23 +13,30 @@ import com.google.gson.JsonParseException;
 import java.util.List;
 import net.minecraft.util.GsonHelper;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.utils.JsonUtils;
 
-public record State(
-		boolean isOverlay,
-		@NotNull List<Animation> animations) {
+public record Animation(
+		@NotNull List<String> conditions,
+		@NotNull String animation,
+		@Nullable Integer priority,
+		@Nullable String sound) {
 
 	@NotNull
-	public static JsonDeserializer<State> deserializer() throws JsonParseException {
+	public static JsonDeserializer<Animation> deserializer() throws JsonParseException {
 		return (json, type, context) -> {
 			JsonObject obj = json.getAsJsonObject();
 
-			boolean isOverlay = Boolean.TRUE.equals(JsonUtils.getOptionalBoolean(obj, "is_overlay"));
-			List<Animation> animations = JsonUtils.jsonArrayToObjectList(GsonHelper.getAsJsonArray(obj, "animations"), context, Animation.class);
+			List<String> conditions = JsonUtils.jsonArrayToStringList(GsonHelper.getAsJsonArray(obj, "conditions"));
+			String animation = GsonHelper.getAsString(obj, "animation");
+			Integer priority = JsonUtils.getOptionalInteger(obj, "priority");
+			String sound = JsonUtils.getOptionalString(obj, "sound");
 
-			return new State(
-					isOverlay,
-					animations);
+			return new Animation(
+					conditions,
+					animation,
+					priority,
+					sound);
 		};
 	}
 }
