@@ -7,7 +7,6 @@
  */
 package software.bluelib.api.molang.registry;
 
-import java.util.function.Supplier;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.Bee;
@@ -24,7 +23,6 @@ import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.raid.Raider;
 import net.minecraft.world.entity.vehicle.VehicleEntity;
-import software.bluelib.api.molang.context.BaseMoLangContext;
 import software.bluelib.api.molang.context.entity.*;
 
 public class MoLangEntityRegistry extends MoLangContextRegistry {
@@ -158,17 +156,9 @@ public class MoLangEntityRegistry extends MoLangContextRegistry {
 			return null;
 		});
 
-		MoLangContextRegistry.register(input -> {
-			Supplier<?> supplier = input.get("bluelib_entity", Supplier.class);
-			if (supplier != null) {
-				Object obj = supplier.get();
-				if (obj instanceof Entity entity) {
-					for (var factory : ENTITY_CONTEXT_FACTORIES) {
-						BaseMoLangContext ctx = factory.apply(entity);
-						if (ctx != null) return ctx;
-					}
-					return new EntityMoLang(() -> entity);
-				}
+		MoLangEntityRegistry.registerEntityContext(entity -> {
+			if (entity instanceof Entity pEntity) {
+				return new EntityMoLang(() -> pEntity);
 			}
 			return null;
 		});

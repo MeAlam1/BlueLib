@@ -12,12 +12,10 @@ import java.util.List;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.molang.MoLangRuntime;
 
-public class MoLangExpression {
+public record MoLangExpression(String raw) {
 
-	private final String raw;
-
-	private MoLangExpression(String pRaw) {
-		this.raw = pRaw.trim();
+	public MoLangExpression(String raw) {
+		this.raw = raw.trim();
 	}
 
 	public static MoLangExpression parse(String pRaw) {

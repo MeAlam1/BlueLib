@@ -15,10 +15,8 @@ import net.minecraft.world.entity.Entity;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.molang.MoLangRuntimeBuilder;
-import software.bluelib.api.molang.context.AnimatableMoLang;
-import software.bluelib.api.molang.context.BaseMoLangContext;
-import software.bluelib.api.molang.context.GeneralMoLang;
-import software.bluelib.api.molang.context.OperatorMoLang;
+import software.bluelib.api.molang.context.*;
+import software.bluelib.api.molang.context.entity.EntityMoLang;
 import software.bluelib.api.molang.context.math.AdvancedMathMoLang;
 import software.bluelib.api.molang.context.math.BasicMathMoLang;
 import software.bluelib.api.molang.context.math.RandomMoLang;
@@ -47,6 +45,25 @@ public class MoLangContextRegistry {
 		});
 
 		MoLangEntityRegistry.init();
+
+		MoLangContextRegistry.register(input -> {
+			Supplier<?> supplier = input.get("bluelib_entity", Supplier.class);
+			if (supplier != null) {
+				Object obj = supplier.get();
+				if (obj instanceof Entity entity) {
+					List<BaseMoLangContext> contexts = new ArrayList<>();
+					for (var factory : ENTITY_CONTEXT_FACTORIES) {
+						BaseMoLangContext ctx = factory.apply(entity);
+						if (ctx != null) contexts.add(ctx);
+					}
+					if (contexts.isEmpty()) {
+						contexts.add(new EntityMoLang(() -> entity));
+					}
+					return new MultiMoLangContext(contexts);
+				}
+			}
+			return null;
+		});
 	}
 
 	protected static final List<Function<MoLangRuntimeBuilder.Input, BaseMoLangContext>> CONTEXT_SUPPLIERS = new ArrayList<>();
@@ -65,7 +82,15 @@ public class MoLangContextRegistry {
 		List<BaseMoLangContext> result = new ArrayList<>();
 		for (var fn : CONTEXT_SUPPLIERS) {
 			BaseMoLangContext ctx = fn.apply(pInput);
-			if (ctx != null) result.add(ctx);
+			if (ctx != null) {
+				if (ctx instanceof List<?> ctxList) {
+					for (Object o : ctxList) {
+						if (o instanceof BaseMoLangContext c) result.add(c);
+					}
+				} else {
+					result.add(ctx);
+				}
+			}
 		}
 		return result;
 	}
