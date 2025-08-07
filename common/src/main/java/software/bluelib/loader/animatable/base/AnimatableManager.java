@@ -19,7 +19,7 @@ import org.jetbrains.annotations.Nullable;
 import software.bluelib.loader.cache.controller.ControllerCache;
 import software.bluelib.loader.controller.ControllerManager;
 import software.bluelib.loader.geckolib.constant.dataticket.DataTicket;
-import software.bluelib.oldLoader.animation.AnimationController;
+import software.bluelib.loader.animation.AnimationController;
 import software.bluelib.oldLoader.animation.state.BoneSnapshot;
 
 public class AnimatableManager<T extends BlueAnimatable> {

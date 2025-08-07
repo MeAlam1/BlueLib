@@ -8,7 +8,7 @@
 package software.bluelib.oldLoader.animation.keyframe.event;
 
 import software.bluelib.loader.animatable.base.BlueAnimatable;
-import software.bluelib.oldLoader.animation.AnimationController;
+import software.bluelib.loader.animation.AnimationController;
 import software.bluelib.oldLoader.animation.keyframe.event.data.ParticleKeyframeData;
 
 public class ParticleKeyframeEvent<T extends BlueAnimatable> extends KeyFrameEvent<T, ParticleKeyframeData> {

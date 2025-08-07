@@ -25,7 +25,7 @@ import software.bluelib.loader.animatable.cache.AnimatableInstanceCache;
 import software.bluelib.loader.animatable.cache.SingletonAnimatableInstanceCache;
 import software.bluelib.loader.cache.item.IdCache;
 import software.bluelib.loader.geckolib.constant.DataTickets;
-import software.bluelib.oldLoader.animation.ContextAwareAnimatableManager;
+import software.bluelib.loader.animatable.base.ContextAwareAnimatableManager;
 
 public interface BlueItem extends SingletonBlueAnimatable {
 

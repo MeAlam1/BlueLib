@@ -29,7 +29,7 @@ import software.bluelib.client.utils.PlayerUtils;
 import software.bluelib.loader.animatable.base.BlueAnimatable;
 import software.bluelib.loader.geckolib.constant.DataTickets;
 import software.bluelib.loader.geckolib.math.value.Variable;
-import software.bluelib.oldLoader.animation.AnimationState;
+import software.bluelib.loader.animation.AnimationState;
 
 @WillBeDeprecated(since = "2.3.1", reason = "MoLangQueries will be made redundant with the new MoLang System.")
 public final class MoLangQueries {

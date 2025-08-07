@@ -8,7 +8,7 @@
 package software.bluelib.oldLoader.animation.keyframe.event;
 
 import software.bluelib.loader.animatable.base.BlueAnimatable;
-import software.bluelib.oldLoader.animation.AnimationController;
+import software.bluelib.loader.animation.AnimationController;
 import software.bluelib.oldLoader.animation.keyframe.event.data.KeyFrameData;
 
 public abstract class KeyFrameEvent<T extends BlueAnimatable, E extends KeyFrameData> {

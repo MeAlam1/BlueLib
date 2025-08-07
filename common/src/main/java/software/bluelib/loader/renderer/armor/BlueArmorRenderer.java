@@ -43,7 +43,7 @@ import software.bluelib.loader.renderer.base.BlueRenderer;
 import software.bluelib.loader.renderer.context.BaseRenderContext;
 import software.bluelib.loader.renderer.context.FullRenderContext;
 import software.bluelib.loader.renderer.context.IRenderContext;
-import software.bluelib.oldLoader.animation.AnimationState;
+import software.bluelib.loader.animation.AnimationState;
 
 public class BlueArmorRenderer<T extends Item & BlueItem> extends HumanoidModel implements BlueRenderer<T> {
 

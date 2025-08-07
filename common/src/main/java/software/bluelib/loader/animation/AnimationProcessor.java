@@ -5,7 +5,7 @@
  * If a copy of the MIT License was not distributed with this file,
  * You can obtain one at https://opensource.org/licenses/MIT.
  */
-package software.bluelib.oldLoader.animation;
+package software.bluelib.loader.animation;
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import java.util.Collection;
@@ -13,6 +13,8 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
 import net.minecraft.util.Mth;
+import software.bluelib.api.utils.logging.BaseLogLevel;
+import software.bluelib.api.utils.logging.BaseLogger;
 import software.bluelib.loader.animatable.base.AnimatableManager;
 import software.bluelib.loader.animatable.base.BlueAnimatable;
 import software.bluelib.loader.cache.animations.AnimationCache;
@@ -21,6 +23,8 @@ import software.bluelib.loader.cache.model.ModelCache;
 import software.bluelib.loader.geckolib.math.MathParser;
 import software.bluelib.loader.geckolib.math.MoLangQueries;
 import software.bluelib.loader.model.BlueModel;
+import software.bluelib.oldLoader.animation.EasingType;
+import software.bluelib.oldLoader.animation.RawAnimation;
 import software.bluelib.oldLoader.animation.keyframe.AnimationPoint;
 import software.bluelib.oldLoader.animation.keyframe.BoneAnimationQueue;
 import software.bluelib.oldLoader.animation.state.BoneSnapshot;
@@ -32,27 +36,25 @@ public class AnimationProcessor<T extends BlueAnimatable> {
 
 	public boolean reloadAnimations = false;
 
-	public AnimationProcessor(BlueModel<T> model) {
-		this.model = model;
+	public AnimationProcessor(BlueModel<T> pModel) {
+		this.model = pModel;
 	}
 
-	public Queue<QueuedAnimation> buildAnimationQueue(T animatable, RawAnimation rawAnimation) {
+	public Queue<QueuedAnimation> buildAnimationQueue(T pAnimatable, RawAnimation pAnimation) {
 		LinkedList<QueuedAnimation> animations = new LinkedList<>();
 		boolean error = false;
 
-		for (RawAnimation.Stage stage : rawAnimation.getAnimationStages()) {
+		for (RawAnimation.Stage stage : pAnimation.getAnimationStages()) {
 			AnimationCache animationCache = null;
 
 			if (stage.animationName() == RawAnimation.Stage.WAIT) { // This is intentional. Do not change this or Tslat will be unhappy
 				animationCache = AnimationCache.generateWaitAnimation(stage.additionalTicks());
 			} else {
 				try {
-					animationCache = this.model.getAnimation(animatable, stage.animationName());
+					animationCache = this.model.getAnimation(pAnimatable, stage.animationName());
 				} catch (RuntimeException ex) {
-					//BlueLibConstants.LOGGER.log(Level.ERROR, "Unable to find animation: " + stage.animationName() + " for " + animatable.getClass().getSimpleName());
-
+					BaseLogger.log(BaseLogLevel.ERROR, "Unable to find animation: " + stage.animationName() + " for " + pAnimatable.getClass().getSimpleName(), ex);
 					error = true;
-					ex.printStackTrace();
 				}
 			}
 
@@ -63,21 +65,21 @@ public class AnimationProcessor<T extends BlueAnimatable> {
 		return error ? null : animations;
 	}
 
-	public void tickAnimation(T animatable, BlueModel<T> model, AnimatableManager<T> animatableManager, double animTime, AnimationState<T> state, boolean crashWhenCantFindBone) {
-		Map<String, BoneSnapshot> boneSnapshots = updateBoneSnapshots(animatableManager.getBoneSnapshotCollection());
+	public void tickAnimation(T pAnimatable, BlueModel<T> pModel, AnimatableManager<T> pAnimatableManager, double pAnimTime, AnimationState<T> pState, boolean pCrashWhenCantFindBone) {
+		Map<String, BoneSnapshot> boneSnapshots = updateBoneSnapshots(pAnimatableManager.getBoneSnapshotCollection());
 
-		for (AnimationController<T> controller : animatableManager.getAnimationControllers().values()) {
+		for (AnimationController<T> controller : pAnimatableManager.getAnimationControllers().values()) {
 			if (this.reloadAnimations) {
 				controller.forceAnimationReset();
 				controller.getBoneAnimationQueues().clear();
 			}
 
-			controller.isJustStarting = animatableManager.isFirstTick();
+			controller.isJustStarting = pAnimatableManager.isFirstTick();
 
-			state.withController(controller);
+			pState.withController(controller);
 			// TODO: REMOVE!!!!
-			MathParser.setVariable(MoLangQueries.ANIM_TIME, () -> state.getController() != null ? state.getController().getAnimTime() : 0d);
-			controller.process(model, state, this.bones, boneSnapshots, animTime, crashWhenCantFindBone);
+			MathParser.setVariable(MoLangQueries.ANIM_TIME, () -> pState.getController() != null ? pState.getController().getAnimTime() : 0d);
+			controller.process(pModel, pState, this.bones, boneSnapshots, pAnimTime, pCrashWhenCantFindBone);
 
 			for (BoneAnimationQueue boneAnimation : controller.getBoneAnimationQueues().values()) {
 				BoneCache bone = boneAnimation.bone();
@@ -93,7 +95,7 @@ public class AnimationProcessor<T extends BlueAnimatable> {
 				AnimationPoint scaleXPoint = boneAnimation.scaleXQueue().poll();
 				AnimationPoint scaleYPoint = boneAnimation.scaleYQueue().poll();
 				AnimationPoint scaleZPoint = boneAnimation.scaleZQueue().poll();
-				EasingType easingType = controller.overrideEasingTypeFunction.apply(animatable);
+				EasingType easingType = controller.overrideEasingTypeFunction.apply(pAnimatable);
 
 				if (rotXPoint != null && rotYPoint != null && rotZPoint != null) {
 					bone.setRotX((float) EasingType.lerpWithOverride(rotXPoint, easingType) + initialSnapshot.getRotX());
@@ -125,7 +127,7 @@ public class AnimationProcessor<T extends BlueAnimatable> {
 		}
 
 		this.reloadAnimations = false;
-		double resetTickLength = animatable.boneResetTime();
+		double resetTickLength = pAnimatable.boneResetTime();
 
 		for (BoneCache bone : getRegisteredBones()) {
 			if (!bone.hasRotationChanged()) {
@@ -133,9 +135,9 @@ public class AnimationProcessor<T extends BlueAnimatable> {
 				BoneSnapshot saveSnapshot = boneSnapshots.get(bone.getName());
 
 				if (saveSnapshot.isRotAnimInProgress())
-					saveSnapshot.stopRotAnim(animTime);
+					saveSnapshot.stopRotAnim(pAnimTime);
 
-				double percentageReset = resetTickLength == 0 ? 1 : Math.min((animTime - saveSnapshot.getLastResetRotationTick()) / resetTickLength, 1);
+				double percentageReset = resetTickLength == 0 ? 1 : Math.min((pAnimTime - saveSnapshot.getLastResetRotationTick()) / resetTickLength, 1);
 				float initialRotX = initialSnapshot.getRotX();
 				float initialRotY = initialSnapshot.getRotY();
 				float initialRotZ = initialSnapshot.getRotZ();
@@ -175,9 +177,9 @@ public class AnimationProcessor<T extends BlueAnimatable> {
 				BoneSnapshot saveSnapshot = boneSnapshots.get(bone.getName());
 
 				if (saveSnapshot.isPosAnimInProgress())
-					saveSnapshot.stopPosAnim(animTime);
+					saveSnapshot.stopPosAnim(pAnimTime);
 
-				double percentageReset = resetTickLength == 0 ? 1 : Math.min((animTime - saveSnapshot.getLastResetPositionTick()) / resetTickLength, 1);
+				double percentageReset = resetTickLength == 0 ? 1 : Math.min((pAnimTime - saveSnapshot.getLastResetPositionTick()) / resetTickLength, 1);
 
 				bone.setPosX((float) Mth.lerp(percentageReset, saveSnapshot.getOffsetX(), initialSnapshot.getOffsetX()));
 				bone.setPosY((float) Mth.lerp(percentageReset, saveSnapshot.getOffsetY(), initialSnapshot.getOffsetY()));
@@ -192,9 +194,9 @@ public class AnimationProcessor<T extends BlueAnimatable> {
 				BoneSnapshot saveSnapshot = boneSnapshots.get(bone.getName());
 
 				if (saveSnapshot.isScaleAnimInProgress())
-					saveSnapshot.stopScaleAnim(animTime);
+					saveSnapshot.stopScaleAnim(pAnimTime);
 
-				double percentageReset = resetTickLength == 0 ? 1 : Math.min((animTime - saveSnapshot.getLastResetScaleTick()) / resetTickLength, 1);
+				double percentageReset = resetTickLength == 0 ? 1 : Math.min((pAnimTime - saveSnapshot.getLastResetScaleTick()) / resetTickLength, 1);
 
 				bone.setScaleX((float) Mth.lerp(percentageReset, saveSnapshot.getScaleX(), initialSnapshot.getScaleX()));
 				bone.setScaleY((float) Mth.lerp(percentageReset, saveSnapshot.getScaleY(), initialSnapshot.getScaleY()));
@@ -206,7 +208,7 @@ public class AnimationProcessor<T extends BlueAnimatable> {
 		}
 
 		resetBoneTransformationMarkers();
-		animatableManager.finishFirstTick();
+		pAnimatableManager.finishFirstTick();
 	}
 
 	private boolean isSuspectedCompletedRotation(float pLastRotation) {

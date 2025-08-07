@@ -23,8 +23,8 @@ import software.bluelib.loader.cache.controller.BehaviourCache;
 import software.bluelib.loader.cache.controller.ControllerCache;
 import software.bluelib.loader.cache.controller.GroupCache;
 import software.bluelib.loader.cache.controller.StateCache;
-import software.bluelib.oldLoader.animation.AnimationController;
-import software.bluelib.oldLoader.animation.AnimationState;
+import software.bluelib.loader.animation.AnimationController;
+import software.bluelib.loader.animation.AnimationState;
 import software.bluelib.oldLoader.animation.PlayState;
 import software.bluelib.oldLoader.animation.RawAnimation;
 
