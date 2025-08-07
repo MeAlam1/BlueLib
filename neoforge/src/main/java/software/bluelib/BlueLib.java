@@ -15,15 +15,8 @@ import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.InterModProcessEvent;
-import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
-import net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent;
-import net.neoforged.neoforge.data.event.GatherDataEvent;
 import net.neoforged.fml.loading.FMLEnvironment;
 import org.jetbrains.annotations.NotNull;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.spongepowered.asm.launch.MixinBootstrap;
-import software.bluelib.api.registry.AbstractRegistryBuilder;
 import software.bluelib.client.BlueLibClient;
 import software.bluelib.config.ConfigHolder;
 import software.bluelib.event.NeoForgeReloadHandler;
@@ -36,8 +29,8 @@ public class BlueLib {
 
 	public BlueLib(@NotNull IEventBus pModEventBus, @NotNull ModContainer pModContainer) {
 		BlueLibCommon.doRegistration();
-        NeoRegistries.register(pModEventBus);
-        NeoForgeRegistryHelper.register(pModEventBus);
+		NeoRegistries.register(pModEventBus);
+		NeoForgeRegistryHelper.register(pModEventBus);
 
 		if (FMLEnvironment.dist == Dist.CLIENT)
 			BlueLibClient.init(pModContainer);
@@ -56,17 +49,10 @@ public class BlueLib {
 	private void setupEventListeners(@NotNull IEventBus pModEventBus) {
 		pModEventBus.register(this);
 		pModEventBus.addListener(NeoForgeNetworkManager::registerMessages);
-        pModEventBus.addListener(GatherDataEvent.class, this::onGatherData);
 	}
 
 	@SubscribeEvent(priority = EventPriority.LOWEST)
 	public void onLoadComplete(@NotNull InterModProcessEvent pEvent) {
 		BlueLibCommon.init();
 	}
-
-    private void onGatherData(GatherDataEvent event) {
-        //LOGGER.info("Starting data generation for mod {}", BlueLibConstants.MOD_ID);
-        AbstractRegistryBuilder.doDatagen();
-        //LOGGER.info("Data providers registered");
-    }
 }

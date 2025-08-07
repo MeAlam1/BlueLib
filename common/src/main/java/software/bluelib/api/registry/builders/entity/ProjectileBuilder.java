@@ -1,53 +1,39 @@
+/*
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
+ */
 package software.bluelib.api.registry.builders.entity;
 
-import java.util.function.Supplier;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
-import software.bluelib.BlueLibConstants;
-import software.bluelib.api.registry.helpers.entity.RenderHelper;
 
-public class ProjectileBuilder<T extends Entity> {
+public class ProjectileBuilder<T extends Entity> extends EntityBuilder<T, ProjectileBuilder<T>> {
 
-	private final String name;
-	private final EntityType.EntityFactory<T> factory;
-	private final MobCategory category;
 	private final Class<T> entityClass;
-	private float width;
-	private float height;
-	private EntityRendererProvider<T> rendererProvider = null;
 
-	public ProjectileBuilder(String name, EntityType.EntityFactory<T> factory, MobCategory category, Class<T> entityClass) {
-		this.name = name;
-		this.factory = factory;
-		this.category = category;
-		this.entityClass = entityClass;
+	public ProjectileBuilder(String pName, EntityType.EntityFactory<T> pFactory, MobCategory pCategory, Class<T> pEntityClass, String pModId) {
+		super(pName, pFactory, pCategory, pModId);
+		this.entityClass = pEntityClass;
 	}
 
-	public ProjectileBuilder<T> sized(float width, float height) {
-		this.width = width;
-		this.height = height;
+	public ProjectileBuilder<T> sized(float pWidth, float pHeight) {
+		this.width = pWidth;
+		this.height = pHeight;
 		return this;
 	}
 
-	public ProjectileBuilder<T> renderer(EntityRendererProvider<T> rendererProvider) {
-		this.rendererProvider = rendererProvider;
+	public ProjectileBuilder<T> renderer(EntityRendererProvider<T> pRendererProvider) {
+		this.rendererProvider = pRendererProvider;
 		return this;
 	}
 
-	public Supplier<EntityType<T>> register() {
-		Supplier<EntityType<T>> entityTypeSupplier = BlueLibConstants.PlatformHelper.REGISTRY.registerEntity(name,
-				() -> EntityType.Builder.of(factory, category)
-						.sized(width, height)
-						.build(name));
-
-		if (rendererProvider != null) {
-			RenderHelper.queueRenderer((entityConsumer, blockConsumer) -> {
-				entityConsumer.accept(entityTypeSupplier.get(), rendererProvider);
-			});
-		}
-
-		return entityTypeSupplier;
+	@Override
+	protected ProjectileBuilder<T> self() {
+		return this;
 	}
 }

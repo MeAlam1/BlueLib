@@ -1,3 +1,10 @@
+/*
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
+ */
 package software.bluelib.api.registry.builders.blocks;
 
 import java.util.ArrayList;
@@ -10,7 +17,6 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import software.bluelib.BlueLibConstants;
-import software.bluelib.api.registry.AbstractRegistryBuilder;
 import software.bluelib.api.registry.builders.items.ItemBuilder;
 import software.bluelib.api.registry.datagen.blocks.BlockModelGenerator;
 import software.bluelib.api.registry.datagen.blocks.BlockModelTemplates;
@@ -23,7 +29,7 @@ import software.bluelib.api.registry.datagen.recipe.RecipeGenerator;
 public class BlockBuilder<T extends Block> {
 
 	public static final List<BlockBuilder<?>> REGISTERED_BUILDERS = new ArrayList<>();
-	private static final String modId = AbstractRegistryBuilder.getModID();
+	private final String modId;
 	public final String blockName;
 	public final Function<Block.Properties, T> blockConstructor;
 	public Block.Properties properties;
@@ -52,9 +58,10 @@ public class BlockBuilder<T extends Block> {
 	//private boolean hasSign = false;
 	//private boolean hasHangingSign = false;
 
-	public BlockBuilder(String name, Function<Block.Properties, T> blockConstructor) {
+	public BlockBuilder(String name, Function<Block.Properties, T> blockConstructor, String pModId) {
 		this.blockName = name;
 		this.blockConstructor = blockConstructor;
+		this.modId = pModId;
 	}
 
 	public BlockBuilder<T> properties(Block.Properties properties) {

@@ -1,103 +1,53 @@
+/*
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
+ */
 package software.bluelib.api.registry.builders.entity;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.function.Supplier;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobCategory;
-import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.Item;
 import software.bluelib.BlueLibConstants;
-import software.bluelib.api.registry.datagen.items.ItemModelGenerator;
-import software.bluelib.api.registry.datagen.items.ItemModelTemplates;
-import software.bluelib.api.registry.helpers.entity.AttributeHelper;
 import software.bluelib.api.registry.helpers.entity.RenderHelper;
-import software.bluelib.api.registry.helpers.items.BlueSpawnEggItem;
 
-public class EntityBuilder<T extends LivingEntity> {
+public abstract class EntityBuilder<T extends Entity, SELF extends EntityBuilder<T, SELF>> {
 
-	public static String name;
-	public final EntityType.EntityFactory<T> factory;
-	public final MobCategory category;
-	public float width = 0.6f;
-	public float height = 1.8f;
-	public static boolean hasSpawnEgg = false;
-	public int primaryEggColor;
-	public int secondaryEggColor;
-	public Supplier<AttributeSupplier.Builder> attributeBuilder = null;
-	public EntityRendererProvider<T> rendererProvider = null;
-	public boolean hasVariants = false;
-	public static final List<String> DRAGON_NAMES = new ArrayList<>();
-	public Supplier<CreativeModeTab> tabSupplier = null;
-	public static final Map<Supplier<CreativeModeTab>, List<Supplier<Item>>> SPAWN_EGGS_BY_TAB = new HashMap<>();
+	protected final String modId;
+	protected final String name;
+	protected final EntityType.EntityFactory<T> factory;
+	protected final MobCategory category;
+	protected float width;
+	protected float height;
+	protected EntityRendererProvider<T> rendererProvider = null;
 
-	public EntityBuilder(String name, EntityType.EntityFactory<T> factory, MobCategory category) {
-		EntityBuilder.name = name;
-		this.factory = factory;
-		this.category = category;
+	public EntityBuilder(String pName, EntityType.EntityFactory<T> pFactory, MobCategory pCategory, String pModId) {
+		this.modId = pModId;
+		this.name = pName;
+		this.factory = pFactory;
+		this.category = pCategory;
 	}
 
-	public EntityBuilder<T> sized(float width, float height) {
-		this.width = width;
-		this.height = height;
-		return this;
+	public SELF sized(float pWidth, float pHeight) {
+		this.width = pWidth;
+		this.height = pHeight;
+		return self();
 	}
 
-	public EntityBuilder<T> spawnEgg(int primaryColor, int secondaryColor) {
-		hasSpawnEgg = true;
-		this.primaryEggColor = primaryColor;
-		this.secondaryEggColor = secondaryColor;
-		return this;
-	}
-
-	public EntityBuilder<T> attributes(Supplier<AttributeSupplier.Builder> attributes) {
-		this.attributeBuilder = attributes;
-		return this;
-	}
-
-	public EntityBuilder<T> renderer(EntityRendererProvider<T> rendererProvider) {
-		this.rendererProvider = rendererProvider;
-		return this;
-	}
-
-	public EntityBuilder<T> loadVariants() {
-		this.hasVariants = true;
-		return this;
-	}
-
-	public EntityBuilder<T> tab(Supplier<CreativeModeTab> tabSupplier) {
-		this.tabSupplier = tabSupplier;
-		return this;
-	}
-
-	public static List<Supplier<Item>> getSpawnEggsForTab(CreativeModeTab tab) {
-		List<Supplier<Item>> spawnEggs = new ArrayList<>();
-		for (Map.Entry<Supplier<CreativeModeTab>, List<Supplier<Item>>> entry : SPAWN_EGGS_BY_TAB.entrySet()) {
-			if (entry.getKey().get() == tab) {
-				spawnEggs.addAll(entry.getValue());
-			}
-		}
-		return spawnEggs;
+	public SELF renderer(EntityRendererProvider<T> pRendererProvider) {
+		this.rendererProvider = pRendererProvider;
+		return self();
 	}
 
 	public Supplier<EntityType<T>> register() {
-		Supplier<EntityType<T>> entityTypeSupplier = BlueLibConstants.PlatformHelper.REGISTRY.registerEntity(name, () -> EntityType.Builder.of(factory, category)
-				.sized(width, height)
-				.build(name));
-
-		if (hasSpawnEgg && Mob.class.isAssignableFrom(factory.getClass())) {
-			registerSpawnEgg(name, (Supplier<EntityType<? extends Mob>>) (Supplier<?>) entityTypeSupplier, primaryEggColor, secondaryEggColor, tabSupplier);
-		}
-
-		if (attributeBuilder != null) {
-			AttributeHelper.queueAttributes(entityTypeSupplier, attributeBuilder);
-		}
+		Supplier<EntityType<T>> entityTypeSupplier = BlueLibConstants.PlatformHelper.REGISTRY.registerEntity(name,
+				() -> EntityType.Builder.of(factory, category)
+						.sized(width, height)
+						.build(name));
 
 		if (rendererProvider != null) {
 			RenderHelper.queueRenderer((entityConsumer, blockConsumer) -> {
@@ -105,41 +55,8 @@ public class EntityBuilder<T extends LivingEntity> {
 			});
 		}
 
-		if (hasVariants) {
-			DRAGON_NAMES.add(name);
-		}
-
 		return entityTypeSupplier;
 	}
 
-	public static void doSpawnEggDatagen(String modId) {
-		if (hasSpawnEgg) {
-			String spawnEggName = name + "_spawn_egg";
-			ItemModelGenerator.generateItemModel(modId, spawnEggName, ItemModelTemplates.SPAWN_EGG);
-		}
-	}
-
-	public static List<String> getDragonNames() {
-		return List.copyOf(DRAGON_NAMES);
-	}
-
-	public <U extends Mob> Supplier<Item> registerSpawnEgg(
-			String name,
-			Supplier<EntityType<? extends Mob>> entityType,
-			int primaryColor,
-			int secondaryColor,
-			Supplier<CreativeModeTab> tabSupplier) {
-		hasSpawnEgg = true;
-		Supplier<Item> spawnEggSupplier = BlueLibConstants.PlatformHelper.REGISTRY.registerItem(
-				name + "_spawn_egg",
-				() -> new BlueSpawnEggItem(
-						entityType.get(),
-						primaryColor,
-						secondaryColor,
-						new Item.Properties()));
-		if (tabSupplier != null) {
-			SPAWN_EGGS_BY_TAB.computeIfAbsent(tabSupplier, k -> new ArrayList<>()).add(spawnEggSupplier);
-		}
-		return spawnEggSupplier;
-	}
+	protected abstract SELF self();
 }

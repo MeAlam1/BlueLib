@@ -1,3 +1,10 @@
+/*
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
+ */
 package software.bluelib.api.registry.builders.blocks;
 
 import java.util.ArrayList;
@@ -13,22 +20,24 @@ import software.bluelib.api.registry.helpers.entity.RenderHelper;
 
 public class BlockEntityBuilder<T extends BlockEntity> {
 
-	public static final List<BlockEntityBuilder<?>> REGISTERED_BUILDERS = new ArrayList<>();
+	protected static final List<BlockEntityBuilder<?>> REGISTERED_BUILDERS = new ArrayList<>();
 
-	private final String name;
-	private final BlockEntityType.BlockEntitySupplier<T> blockEntityFactory;
-	private Supplier<BlockEntityRendererProvider<T>> rendererProvider;
-	private Supplier<BlockEntityType<T>> blockEntityType;
-	private List<Supplier<Block>> validBlockSuppliers;
+	protected final String modID;
+	protected final String name;
+	protected final BlockEntityType.BlockEntitySupplier<T> blockEntityFactory;
+	protected Supplier<BlockEntityRendererProvider<T>> rendererProvider;
+	protected Supplier<BlockEntityType<T>> blockEntityType;
+	protected List<Supplier<Block>> validBlockSuppliers;
 
-	public BlockEntityBuilder(String name, BlockEntityType.BlockEntitySupplier<T> blockEntityFactory) {
+	public BlockEntityBuilder(String name, BlockEntityType.BlockEntitySupplier<T> blockEntityFactory, String pModID) {
+		this.modID = pModID;
 		this.name = name;
 		this.blockEntityFactory = blockEntityFactory;
 		this.validBlockSuppliers = new ArrayList<>();
 	}
 
-	public static <T extends BlockEntity> BlockEntityBuilder<T> blockEntity(String name, BlockEntityType.BlockEntitySupplier<T> factory) {
-		return new BlockEntityBuilder<>(name, factory);
+	public static <T extends BlockEntity> BlockEntityBuilder<T> blockEntity(String name, BlockEntityType.BlockEntitySupplier<T> factory, String pModID) {
+		return new BlockEntityBuilder<>(name, factory, pModID);
 	}
 
 	public BlockEntityBuilder<T> validBlocks(Supplier<Block>... blockSuppliers) {

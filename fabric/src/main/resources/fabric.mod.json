@@ -24,9 +24,6 @@
         ],
         "jei_mod_plugin": [
             "software.bluelib.compat.jei.BlueJeiPlugin"
-        ],
-        "fabric-datagen": [
-            "software.bluelib.BlueLib"
         ]
     },
     "mixins": [

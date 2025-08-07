@@ -17,11 +17,9 @@ import org.jetbrains.annotations.ApiStatus;
 @ApiStatus.Internal
 public class NeoRegistries {
 
-	public static final DeferredRegister<RecipeType<?>> RECIPE_TYPES =
-			DeferredRegister.create(Registries.RECIPE_TYPE, BlueLibConstants.MOD_ID);
+	public static final DeferredRegister<RecipeType<?>> RECIPE_TYPES = DeferredRegister.create(Registries.RECIPE_TYPE, BlueLibConstants.MOD_ID);
 
-	public static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS =
-			DeferredRegister.create(Registries.RECIPE_SERIALIZER, BlueLibConstants.MOD_ID);
+	public static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(Registries.RECIPE_SERIALIZER, BlueLibConstants.MOD_ID);
 
 	public static void register(IEventBus pModEventBus) {
 		RECIPE_TYPES.register(pModEventBus);

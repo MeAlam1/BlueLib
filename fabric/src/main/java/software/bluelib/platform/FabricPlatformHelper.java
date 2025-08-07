@@ -7,6 +7,7 @@
  */
 package software.bluelib.platform;
 
+import com.google.gson.JsonElement;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,8 +16,6 @@ import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
-
-import com.google.gson.JsonElement;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
 import net.minecraft.client.Minecraft;
@@ -29,8 +28,6 @@ import software.bluelib.api.Environment;
 import software.bluelib.api.ModAPI;
 import software.bluelib.api.event.mod.ModMeta;
 import software.bluelib.api.registry.FabricRecipeGenerator;
-
-import static software.bluelib.api.registry.AbstractRegistryBuilder.getModID;
 
 public class FabricPlatformHelper implements IPlatformHelper {
 
@@ -88,24 +85,24 @@ public class FabricPlatformHelper implements IPlatformHelper {
 		return this.getEnvironment() == Environment.CLIENT ? Minecraft.getInstance().getSingleplayerServer() : BlueLibConstants.server;
 	}
 
-    @Override
-    public JsonElement generateRecipeJson(String modId, String name, BiConsumer<RecipeOutput, Supplier<JsonElement>> recipeConsumer) {
-        return FabricRecipeGenerator.generateRecipeJson(recipeConsumer);
-    }
+	@Override
+	public JsonElement generateRecipeJson(String modId, String name, BiConsumer<RecipeOutput, Supplier<JsonElement>> recipeConsumer) {
+		return FabricRecipeGenerator.generateRecipeJson(recipeConsumer);
+	}
 
-    @Override
-    public Path getAssetsDir(boolean isCommon) {
-        if(isCommon) {
-            return FabricLoader.getInstance().getGameDir().getParent().getParent().resolve("common/src/main/resources/assets/"+ getModID());
-        }
-        return FabricLoader.getInstance().getGameDir().getParent().getParent().resolve("src/main/resources/assets/"+ getModID());
-    }
+	@Override
+	public Path getAssetsDir(boolean isCommon) {
+		if (isCommon) {
+			return FabricLoader.getInstance().getGameDir().getParent().getParent().resolve("common/src/main/resources/assets/" + getModID());
+		}
+		return FabricLoader.getInstance().getGameDir().getParent().getParent().resolve("src/main/resources/assets/" + getModID());
+	}
 
-    @Override
-    public Path getDataDir(boolean isCommon) {
-        if(isCommon) {
-            return FabricLoader.getInstance().getGameDir().getParent().getParent().resolve("common/src/main/resources/data/"+ getModID());
-        }
-        return FabricLoader.getInstance().getGameDir().getParent().getParent().resolve("src/main/resources/data/"+ getModID());
-    }
+	@Override
+	public Path getDataDir(boolean isCommon) {
+		if (isCommon) {
+			return FabricLoader.getInstance().getGameDir().getParent().getParent().resolve("common/src/main/resources/data/" + getModID());
+		}
+		return FabricLoader.getInstance().getGameDir().getParent().getParent().resolve("src/main/resources/data/" + getModID());
+	}
 }

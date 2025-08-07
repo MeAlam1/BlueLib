@@ -1,3 +1,10 @@
+/*
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
+ */
 package software.bluelib.api.registry.builders.items;
 
 import java.util.ArrayList;
@@ -15,7 +22,6 @@ import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.*;
 import software.bluelib.BlueLibConstants;
-import software.bluelib.api.registry.AbstractRegistryBuilder;
 import software.bluelib.api.registry.datagen.items.ItemModelGenerator;
 import software.bluelib.api.registry.datagen.items.ItemModelTemplates;
 import software.bluelib.api.registry.datagen.recipe.RecipeGenerator;
@@ -33,17 +39,18 @@ public class ItemBuilder<T extends Item> {
 	public Consumer<Item.Properties> propertiesConsumer = props -> {};
 	public static final Map<String, List<Supplier<Item>>> TOOLSETS = new HashMap<>();
 	public static final Map<String, List<Supplier<Item>>> ARMORSETS = new HashMap<>();
-	private static final String modId = AbstractRegistryBuilder.getModID();
+	private final String modId;
 	private BiConsumer<RecipeContext, RecipeOutput> recipeConsumer;
 	private T registeredItem;
 
-	public ItemBuilder(String name, Function<Item.Properties, T> itemConstructor) {
+	public ItemBuilder(String name, Function<Item.Properties, T> itemConstructor, String pModId) {
+		this.modId = pModId;
 		this.itemName = name;
 		this.itemConstructor = itemConstructor;
 	}
 
-	public static <T extends Item> ItemBuilder<T> item(String name, Function<Item.Properties, T> itemConstructor) {
-		return new ItemBuilder<>(name, itemConstructor);
+	public static <T extends Item> ItemBuilder<T> item(String name, Function<Item.Properties, T> itemConstructor, String pModId) {
+		return new ItemBuilder<>(name, itemConstructor, pModId);
 	}
 
 	public static void doItemModelGen(String modId) {

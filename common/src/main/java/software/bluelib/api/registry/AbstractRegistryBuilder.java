@@ -1,71 +1,66 @@
+/*
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
+ */
 package software.bluelib.api.registry;
 
 import java.util.function.Function;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import software.bluelib.api.registry.builders.blocks.BlockBuilder;
 import software.bluelib.api.registry.builders.blocks.BlockEntityBuilder;
-import software.bluelib.api.registry.builders.entity.EntityBuilder;
+import software.bluelib.api.registry.builders.entity.LivingEntityBuilder;
 import software.bluelib.api.registry.builders.entity.ProjectileBuilder;
 import software.bluelib.api.registry.builders.items.ItemBuilder;
 import software.bluelib.api.registry.builders.keybinds.KeybindBuilder;
 import software.bluelib.api.registry.builders.tabs.CreativeTabBuilder;
-import software.bluelib.api.registry.datagen.entity.EntityTagBuilder;
 
 public abstract class AbstractRegistryBuilder {
 
-	private static String modID;
+	private final String modID;
 
-	public AbstractRegistryBuilder(String modId) {
-		modID = modId;
+	public AbstractRegistryBuilder(final String pModId) {
+		modID = pModId;
 	}
 
-	public static void setModID(String modId) {
-		modID = modId;
-	}
-
-	public static String getModID() {
+	public String getModID() {
 		return modID;
 	}
 
-	public <T extends LivingEntity> EntityBuilder<T> livingEntity(String name, EntityType.EntityFactory<T> factory, MobCategory category) {
-		return new EntityBuilder<>(name, factory, category);
+	public <T extends LivingEntity> LivingEntityBuilder<T> livingEntity(String pName, EntityType.EntityFactory<T> pFactory, MobCategory pCategory) {
+		return new LivingEntityBuilder<>(pName, pFactory, pCategory, modID);
 	}
 
-	public <T extends Entity> ProjectileBuilder<T> projectile(String name, EntityType.EntityFactory<T> factory, MobCategory category, Class<T> entityClass) {
-		return new ProjectileBuilder<>(name, factory, category, entityClass);
+	public <T extends Entity> ProjectileBuilder<T> projectile(String pName, EntityType.EntityFactory<T> pFactory, MobCategory pCategory, Class<T> pEntityClass) {
+		return new ProjectileBuilder<>(pName, pFactory, pCategory, pEntityClass, modID);
 	}
 
-	public <T extends Block> BlockBuilder<T> block(String name, Function<Block.Properties, T> blockFactory) {
-		return new BlockBuilder<>(name, blockFactory);
+	public <T extends Block> BlockBuilder<T> block(String pName, Function<Block.Properties, T> pFactory) {
+		return new BlockBuilder<>(pName, pFactory, modID);
 	}
 
-	public static <T extends BlockEntity> BlockEntityBuilder<T> blockEntity(String name, BlockEntityType.BlockEntitySupplier<T> factory) {
-		return new BlockEntityBuilder<>(name, factory);
+	public <T extends BlockEntity> BlockEntityBuilder<T> blockEntity(String pName, BlockEntityType.BlockEntitySupplier<T> pFactory) {
+		return new BlockEntityBuilder<>(pName, pFactory, modID);
 	}
 
-	public <T extends Item> ItemBuilder<T> item(String name, Function<Item.Properties, T> constructor) {
-		return new ItemBuilder<>(name, constructor);
+	public <T extends Item> ItemBuilder<T> item(String pName, Function<Item.Properties, T> pConstructor) {
+		return new ItemBuilder<>(pName, pConstructor, modID);
 	}
 
-	public CreativeTabBuilder tab(String id) {
-		return new CreativeTabBuilder(id);
+	public CreativeTabBuilder tab(String pId) {
+		return new CreativeTabBuilder(pId, modID);
 	}
 
-	public static KeybindBuilder keybind(String name, int keyCode) {
-		return KeybindBuilder.keybind(name, keyCode);
-	}
-
-	public static void doDatagen() {
-		ItemBuilder.doItemModelGen(getModID());
-		BlockBuilder.doBlockModelGen(getModID());
-		EntityBuilder.doSpawnEggDatagen(getModID());
-		EntityTagBuilder.doTagJsonGen(getModID());
-
-		ItemBuilder.doRecipeGen(getModID());
-		BlockBuilder.doRecipeGen(getModID());
+	public KeybindBuilder keybind(String pName, int pKeyCode) {
+		return KeybindBuilder.keybind(pName, pKeyCode, modID);
 	}
 }

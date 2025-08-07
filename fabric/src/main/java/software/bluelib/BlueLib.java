@@ -10,29 +10,13 @@ package software.bluelib;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
-import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
-import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
-import net.fabricmc.fabric.api.message.v1.ServerMessageEvents;
-import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.fabricmc.loader.api.FabricLoader;
 import org.jetbrains.annotations.NotNull;
 import software.bluelib.event.FabricReloadHandler;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
-import software.bluelib.api.registry.BlueRegistryBuilder;
-import software.bluelib.api.registry.AbstractRegistryBuilder;
-import software.bluelib.api.registry.helpers.entity.AttributeHelper;
-import software.bluelib.api.registry.helpers.entity.RenderHelper;
-import software.bluelib.config.ConfigLoader;
-import software.bluelib.event.ChatHandler;
-import software.bluelib.event.CommandHandler;
-import software.bluelib.event.ReloadHandler;
 import software.bluelib.example.event.VariantProvider;
 import software.bluelib.net.FabricNetworkManager;
 
-public class BlueLib implements ModInitializer, DataGeneratorEntrypoint {
+public class BlueLib implements ModInitializer {
 
 	private boolean hasInitialized = false;
 
@@ -69,27 +53,22 @@ public class BlueLib implements ModInitializer, DataGeneratorEntrypoint {
 			});
 		}
 	}
-    /*@Override
-    public void onInitialize() {
-        ReloadHandler.registerProvider(new VariantProvider());
-        BlueLibCommon.doRegistration();
-        FabricNetworkManager.registerMessages();
-        FabricNetworkManager.registerServerHandlers();
-        AttributeHelper.registerAttributes(FabricDefaultAttributeRegistry::register);
-        RenderHelper.registerRenderers(EntityRendererRegistry::register, BlockEntityRenderers::register);
-        registerModEventListeners();
-        if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
-            ClientTickEvents.END_CLIENT_TICK.register(client -> {
-                if (!hasInitialized) {
-                    hasInitialized = true;
-                    BlueLibCommon.init();
-                }
-            });
-        }
-    }*/
-
-    @Override
-    public void onInitializeDataGenerator(FabricDataGenerator fabricDataGenerator) {
-        AbstractRegistryBuilder.doDatagen();
-    }
+	/*@Override
+	public void onInitialize() {
+		ReloadHandler.registerProvider(new VariantProvider());
+		BlueLibCommon.doRegistration();
+		FabricNetworkManager.registerMessages();
+		FabricNetworkManager.registerServerHandlers();
+		AttributeHelper.registerAttributes(FabricDefaultAttributeRegistry::register);
+		RenderHelper.registerRenderers(EntityRendererRegistry::register, BlockEntityRenderers::register);
+		registerModEventListeners();
+		if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
+			ClientTickEvents.END_CLIENT_TICK.register(client -> {
+				if (!hasInitialized) {
+					hasInitialized = true;
+					BlueLibCommon.init();
+				}
+			});
+		}
+	}*/
 }

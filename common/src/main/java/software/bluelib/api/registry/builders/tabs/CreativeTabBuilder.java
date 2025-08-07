@@ -1,3 +1,10 @@
+/*
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
+ */
 package software.bluelib.api.registry.builders.tabs;
 
 import java.util.*;
@@ -11,8 +18,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import software.bluelib.BlueLibConstants;
-import software.bluelib.api.registry.AbstractRegistryBuilder;
-import software.bluelib.api.registry.builders.entity.EntityBuilder;
+import software.bluelib.api.registry.builders.entity.LivingEntityBuilder;
 import software.bluelib.api.registry.builders.items.ItemBuilder;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
@@ -20,14 +26,15 @@ import software.bluelib.api.utils.logging.BaseLogger;
 public class CreativeTabBuilder {
 
 	private final String id;
-	private static String modId = AbstractRegistryBuilder.getModID();
+	private final String modId;
 	private Supplier<Item> iconSupplier;
 	private CreativeModeTab.DisplayItemsGenerator displayItemsGenerator;
 	private String backgroundSuffix;
 	private static final Map<Supplier<CreativeModeTab>, CreativeTabBuilder> TAB_BUILDERS = new HashMap<>();
 
-	public CreativeTabBuilder(String id) {
+	public CreativeTabBuilder(String id, String modId) {
 		this.id = id;
+		this.modId = modId;
 	}
 
 	public CreativeTabBuilder icon(Supplier<Item> iconSupplier) {
@@ -40,7 +47,7 @@ public class CreativeTabBuilder {
 		return this;
 	}
 
-	public static Supplier<Item> useSpawnEgg(Supplier<? extends EntityType<?>> entityTypeSupplier) {
+	public Supplier<Item> useSpawnEgg(Supplier<? extends EntityType<?>> entityTypeSupplier) {
 		return () -> {
 			EntityType<?> entityType = entityTypeSupplier.get();
 			if (entityType != null) {
@@ -179,7 +186,7 @@ public class CreativeTabBuilder {
 	}
 
 	public static void addAllSpawnEggs(CreativeModeTab.Output populator) {
-		List<String> names = EntityBuilder.getDragonNames();
+		List<String> names = LivingEntityBuilder.getEntityNames();
 		for (String name : names) {
 			String spawnEggId = name + "_spawn_egg";
 			try {

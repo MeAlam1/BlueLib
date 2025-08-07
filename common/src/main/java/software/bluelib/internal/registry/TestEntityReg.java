@@ -1,7 +1,13 @@
+/*
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
+ */
 package software.bluelib.internal.registry;
 
 import static software.bluelib.BlueLibCommon.REGISTRIES;
-import static software.bluelib.api.registry.AbstractRegistryBuilder.getModID;
 
 import java.util.function.Supplier;
 import net.minecraft.client.renderer.entity.PigRenderer;
@@ -65,6 +71,6 @@ public class TestEntityReg {
 			.recipe((ctx, prov) -> SmithingTransformRecipeBuilder.smithing(Ingredient.of(Items.COOKIE), Ingredient.of(Items.COOKIE),
 					Ingredient.of(Items.COOKIE), RecipeCategory.MISC, ctx.getEntry())
 					.unlocks("has_diamond", RecipeProvider.has(Items.DIAMOND))
-					.save(prov, ResourceLocation.fromNamespaceAndPath(getModID(), "taste_test_item")))
+					.save(prov, ResourceLocation.fromNamespaceAndPath(REGISTRIES.getModID(), "taste_test_item")))
 			.register();
 }

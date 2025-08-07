@@ -8,8 +8,6 @@
 package software.bluelib.platform;
 
 import java.util.function.Supplier;
-import java.util.function.Supplier;
-
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.core.Holder;
@@ -21,16 +19,12 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.core.Holder;
-import net.minecraft.core.Registry;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.RecipeType;
 import org.jetbrains.annotations.NotNull;
 import software.bluelib.BlueLibConstants;
 import software.bluelib.api.net.NetworkManager;
@@ -39,47 +33,47 @@ import software.bluelib.net.FabricNetworkManager;
 @SuppressWarnings({ "unchecked", "unused" })
 public class FabricRegistryHelper implements IRegistryHelper {
 
-    @Override
-    public <T extends Entity> Supplier<EntityType<T>> registerEntity(String pId, Supplier<EntityType<T>> pEntity) {
-        return registerSupplier(BuiltInRegistries.ENTITY_TYPE, pId, pEntity);
-    }
+	@Override
+	public <T extends Entity> Supplier<EntityType<T>> registerEntity(String pId, Supplier<EntityType<T>> pEntity) {
+		return registerSupplier(BuiltInRegistries.ENTITY_TYPE, pId, pEntity);
+	}
 
-    @Override
-    public <T extends CreativeModeTab> Supplier<T> registerTab(String pId, Supplier<T> pTab) {
-        return registerSupplier(BuiltInRegistries.CREATIVE_MODE_TAB, pId, pTab);
-    }
+	@Override
+	public <T extends CreativeModeTab> Supplier<T> registerTab(String pId, Supplier<T> pTab) {
+		return registerSupplier(BuiltInRegistries.CREATIVE_MODE_TAB, pId, pTab);
+	}
 
-    @Override
-    public <T extends Item> Supplier<T> registerItem(String id, Supplier<T> item) {
-        return registerSupplier(BuiltInRegistries.ITEM, id, item);
-    }
+	@Override
+	public <T extends Item> Supplier<T> registerItem(String id, Supplier<T> item) {
+		return registerSupplier(BuiltInRegistries.ITEM, id, item);
+	}
 
-    @Override
-    public <T extends Block> Supplier<T> registerBlock(String pId, Supplier<T> pBlock) {
-        return registerSupplier(BuiltInRegistries.BLOCK, pId, pBlock);
-    }
+	@Override
+	public <T extends Block> Supplier<T> registerBlock(String pId, Supplier<T> pBlock) {
+		return registerSupplier(BuiltInRegistries.BLOCK, pId, pBlock);
+	}
 
-    @Override
-    public <T extends BlockEntity> Supplier<BlockEntityType<T>> registerBlockEntity(String pId, Supplier<BlockEntityType<T>> pBlockEntity) {
-        return registerSupplier(BuiltInRegistries.BLOCK_ENTITY_TYPE, pId, pBlockEntity);
-    }
+	@Override
+	public <T extends BlockEntity> Supplier<BlockEntityType<T>> registerBlockEntity(String pId, Supplier<BlockEntityType<T>> pBlockEntity) {
+		return registerSupplier(BuiltInRegistries.BLOCK_ENTITY_TYPE, pId, pBlockEntity);
+	}
 
-    @Override
-    public <T extends MenuType<?>> Supplier<T> registerMenu(String pId, Supplier<T> pMenu) {
-        return registerSupplier(BuiltInRegistries.MENU, pId, pMenu);
-    }
+	@Override
+	public <T extends MenuType<?>> Supplier<T> registerMenu(String pId, Supplier<T> pMenu) {
+		return registerSupplier(BuiltInRegistries.MENU, pId, pMenu);
+	}
 
-    @Override
-    public <T extends Biome> Supplier<T> registerBiome(String pId, Supplier<T> pMenu) {
-        return pMenu/*registerSupplier(BuiltInRegistries.BIOME, pId, pMenu)*/;
-    }
+	@Override
+	public <T extends Biome> Supplier<T> registerBiome(String pId, Supplier<T> pMenu) {
+		return pMenu/*registerSupplier(BuiltInRegistries.BIOME, pId, pMenu)*/;
+	}
 
-    @Override
-    public Supplier<KeyMapping> registerKeybind(String pId, Supplier<KeyMapping> pKeybind) {
-        KeyMapping keyMapping = pKeybind.get();
-        KeyBindingHelper.registerKeyBinding(keyMapping);
-        return () -> keyMapping;
-    }
+	@Override
+	public Supplier<KeyMapping> registerKeybind(String pId, Supplier<KeyMapping> pKeybind) {
+		KeyMapping keyMapping = pKeybind.get();
+		KeyBindingHelper.registerKeyBinding(keyMapping);
+		return () -> keyMapping;
+	}
 
 	@Override
 	public @NotNull NetworkManager getNetwork() {

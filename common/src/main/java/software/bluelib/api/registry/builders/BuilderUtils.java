@@ -1,36 +1,13 @@
+/*
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
+ */
 package software.bluelib.api.registry.builders;
-
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import software.bluelib.api.registry.AbstractRegistryBuilder;
 
 public class BuilderUtils {
 
-	public static final String modId = AbstractRegistryBuilder.getModID();
-
 	private BuilderUtils() {}
-
-	public static String getBaseId(String fullId, String[] suffixes) {
-		for (String suffix : suffixes) {
-			if (fullId.endsWith(suffix)) {
-				return fullId.substring(0, fullId.length() - suffix.length());
-			}
-		}
-		return fullId;
-	}
-
-	public static <T> boolean addIfAbsent(Set<T> set, T value) {
-		return set.add(value);
-	}
-
-	public static <T> void addAllIfAbsent(Set<T> set, List<T> values) {
-		for (T value : values) {
-			set.add(value);
-		}
-	}
-
-	public static <T> Set<T> newDedupSet() {
-		return new HashSet<>();
-	}
 }
