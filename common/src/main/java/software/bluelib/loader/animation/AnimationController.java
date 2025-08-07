@@ -12,6 +12,7 @@ import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import java.util.*;
 import java.util.function.Function;
 import net.minecraft.core.Direction.Axis;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
@@ -41,11 +42,17 @@ import software.bluelib.loader.model.BlueModel;
 
 public class AnimationController<T extends BlueAnimatable> {
 
+	@NotNull
 	protected final T animatable;
+	@NotNull
 	protected final String name;
+	@NotNull
 	protected final AnimationStateHandler<T> stateHandler;
+	@NotNull
 	protected final Map<String, BoneAnimationFrame> boneAnimationQueues = new Object2ObjectOpenHashMap<>();
+	@NotNull
 	protected final Map<String, BoneSnapshot> boneSnapshots = new Object2ObjectOpenHashMap<>();
+	@NotNull
 	protected Queue<AnimationProcessor.QueuedAnimation> animationQueue = new LinkedList<>();
 
 	protected boolean isJustStarting = false;
@@ -54,96 +61,118 @@ public class AnimationController<T extends BlueAnimatable> {
 	private boolean justStopped = true;
 	protected boolean justStartedTransition = false;
 
+	@Nullable
 	protected SoundKeyframeHandler<T> soundKeyframeHandler = null;
+	@Nullable
 	protected ParticleKeyframeHandler<T> particleKeyframeHandler = null;
+	@Nullable
 	protected CustomKeyframeHandler<T> customKeyframeHandler = null;
 
+	@NotNull
 	public final Map<String, Animation> triggerableAnimations = new Object2ObjectOpenHashMap<>(0);
+	@Nullable
 	protected Animation triggeredAnimation = null;
 	protected boolean handlingTriggeredAnimations = false;
 
 	protected double transitionLength;
+	@Nullable
 	protected Animation currentRawAnimation;
+	@Nullable
 	protected AnimationProcessor.QueuedAnimation currentAnimation;
+	@NotNull
 	public State animationState = State.STOPPED;
 	protected double tickOffset;
 	protected double lastPollTime = -1;
+	@NotNull
 	protected Function<T, Double> animationSpeedModifier = animatable -> 1d;
+	@NotNull
 	protected Function<T, Easing> overrideEasingTypeFunction = animatable -> null;
+	@NotNull
 	private final Set<KeyFrameData> executedKeyFrames = new ObjectOpenHashSet<>();
+	@Nullable
 	protected BlueModel<T> lastModel;
 
 	private double lastAdjustedTick = 0;
 
-	public AnimationController(T pAnimatable, AnimationStateHandler<T> pAnimationHandler) {
+	public AnimationController(@NotNull T pAnimatable, @NotNull AnimationStateHandler<T> pAnimationHandler) {
 		this(pAnimatable, "base_controller", 0, pAnimationHandler);
 	}
 
-	public AnimationController(T pAnimatable, String pName, AnimationStateHandler<T> pAnimationHandler) {
+	public AnimationController(@NotNull T pAnimatable, @NotNull String pName, @NotNull AnimationStateHandler<T> pAnimationHandler) {
 		this(pAnimatable, pName, 0, pAnimationHandler);
 	}
 
-	public AnimationController(T pAnimatable, int pTransitionTickTime, AnimationStateHandler<T> pAnimationHandler) {
+	public AnimationController(@NotNull T pAnimatable, int pTransitionTickTime, @NotNull AnimationStateHandler<T> pAnimationHandler) {
 		this(pAnimatable, "base_controller", pTransitionTickTime, pAnimationHandler);
 	}
 
-	public AnimationController(T pAnimatable, String pName, int pTransitionTickTime, AnimationStateHandler<T> pAnimationHandler) {
+	public AnimationController(@NotNull T pAnimatable, @NotNull String pName, int pTransitionTickTime, @NotNull AnimationStateHandler<T> pAnimationHandler) {
 		this.animatable = pAnimatable;
 		this.name = pName;
 		this.transitionLength = pTransitionTickTime;
 		this.stateHandler = pAnimationHandler;
 	}
 
-	public AnimationController<T> setSoundKeyframeHandler(SoundKeyframeHandler<T> pSoundHandler) {
+	@NotNull
+	public AnimationController<T> setSoundKeyframeHandler(@NotNull SoundKeyframeHandler<T> pSoundHandler) {
 		this.soundKeyframeHandler = pSoundHandler;
 
 		return this;
 	}
 
-	public AnimationController<T> setParticleKeyframeHandler(ParticleKeyframeHandler<T> pParticleHandler) {
+	@NotNull
+	public AnimationController<T> setParticleKeyframeHandler(@NotNull ParticleKeyframeHandler<T> pParticleHandler) {
 		this.particleKeyframeHandler = pParticleHandler;
 
 		return this;
 	}
 
-	public AnimationController<T> setCustomInstructionKeyframeHandler(CustomKeyframeHandler<T> pCustomInstructionHandler) {
+	@NotNull
+	public AnimationController<T> setCustomInstructionKeyframeHandler(@NotNull CustomKeyframeHandler<T> pCustomInstructionHandler) {
 		this.customKeyframeHandler = pCustomInstructionHandler;
 
 		return this;
 	}
 
-	public AnimationController<T> setAnimationSpeedHandler(Function<T, Double> pSpeedModFunction) {
+	@NotNull
+	public AnimationController<T> setAnimationSpeedHandler(@NotNull Function<T, Double> pSpeedModFunction) {
 		this.animationSpeedModifier = pSpeedModFunction;
 
 		return this;
 	}
 
-	public AnimationController<T> setAnimationSpeed(Double pSpeed) {
+	@NotNull
+	public AnimationController<T> setAnimationSpeed(@NotNull Double pSpeed) {
 		return setAnimationSpeedHandler(animatable -> pSpeed);
 	}
 
-	public AnimationController<T> setOverrideEasingType(Easing pEasingFunction) {
+	@NotNull
+	public AnimationController<T> setOverrideEasingType(@NotNull Easing pEasingFunction) {
 		return setOverrideEasingTypeFunction(animatable -> pEasingFunction);
 	}
 
-	public AnimationController<T> setOverrideEasingTypeFunction(Function<T, Easing> pEasingType) {
+	@NotNull
+	public AnimationController<T> setOverrideEasingTypeFunction(@NotNull Function<T, Easing> pEasingType) {
 		this.overrideEasingTypeFunction = pEasingType;
 
 		return this;
 	}
 
-	public AnimationController<T> triggerableAnim(String pName, Animation pAnimation) {
+	@NotNull
+	public AnimationController<T> triggerableAnim(@NotNull String pName, @NotNull Animation pAnimation) {
 		this.triggerableAnimations.put(pName, pAnimation);
 
 		return this;
 	}
 
+	@NotNull
 	public AnimationController<T> receiveTriggeredAnimations() {
 		this.handlingTriggeredAnimations = true;
 
 		return this;
 	}
 
+	@NotNull
 	public String getName() {
 		return this.name;
 	}
@@ -158,10 +187,12 @@ public class AnimationController<T extends BlueAnimatable> {
 		return this.triggeredAnimation;
 	}
 
+	@NotNull
 	public State getAnimationState() {
 		return this.animationState;
 	}
 
+	@NotNull
 	public Map<String, BoneAnimationFrame> getBoneAnimationQueues() {
 		return this.boneAnimationQueues;
 	}
@@ -178,6 +209,7 @@ public class AnimationController<T extends BlueAnimatable> {
 		this.animationState = State.STOPPED;
 	}
 
+	@NotNull
 	public AnimationController<T> transitionLength(int pTicks) {
 		this.transitionLength = pTicks;
 
@@ -188,6 +220,7 @@ public class AnimationController<T extends BlueAnimatable> {
 		return this.currentRawAnimation != null && this.animationState == State.STOPPED;
 	}
 
+	@NotNull
 	public Animation getCurrentRawAnimation() {
 		return this.currentRawAnimation;
 	}
@@ -196,8 +229,8 @@ public class AnimationController<T extends BlueAnimatable> {
 		return this.triggeredAnimation != null && !hasAnimationFinished();
 	}
 
-	public void setAnimation(Animation pAnimation) {
-		if (pAnimation == null || pAnimation.getAnimationStages().isEmpty()) {
+	public void setAnimation(@NotNull Animation pAnimation) {
+		if (pAnimation.getAnimationStages().isEmpty()) {
 			stop();
 
 			return;
@@ -223,7 +256,7 @@ public class AnimationController<T extends BlueAnimatable> {
 		}
 	}
 
-	public boolean tryTriggerAnimation(String pAnimName) {
+	public boolean tryTriggerAnimation(@NotNull String pAnimName) {
 		Animation anim = this.triggerableAnimations.get(pAnimName);
 
 		if (anim == null)
@@ -255,7 +288,8 @@ public class AnimationController<T extends BlueAnimatable> {
 		return true;
 	}
 
-	protected PlayState handleAnimationState(AnimationState<T> pState) {
+	@NotNull
+	protected PlayState handleAnimationState(@NotNull AnimationState<T> pState) {
 		if (this.triggeredAnimation != null) {
 			if (this.currentRawAnimation != this.triggeredAnimation)
 				this.currentAnimation = null;
@@ -272,7 +306,7 @@ public class AnimationController<T extends BlueAnimatable> {
 		return this.stateHandler.handle(pState);
 	}
 
-	public void process(BlueModel<T> pModel, AnimationState<T> pState, Map<String, BoneCache> pBones, Map<String, BoneSnapshot> pSnapshots, final double pSeekTime, boolean pCrashWhenCantFindBone) {
+	public void process(@NotNull BlueModel<T> pModel, @NotNull AnimationState<T> pState, @NotNull Map<String, BoneCache> pBones, @NotNull Map<String, BoneSnapshot> pSnapshots, final double pSeekTime, boolean pCrashWhenCantFindBone) {
 		double adjustedTick = adjustTick(pSeekTime);
 		this.lastModel = pModel;
 
@@ -484,7 +518,7 @@ public class AnimationController<T extends BlueAnimatable> {
 		return lastAdjustedTick / 20d;
 	}
 
-	private void createInitialQueues(Collection<BoneCache> pModelRendererList) {
+	private void createInitialQueues(@NotNull Collection<BoneCache> pModelRendererList) {
 		this.boneAnimationQueues.clear();
 
 		for (BoneCache modelRenderer : pModelRendererList) {
@@ -492,7 +526,7 @@ public class AnimationController<T extends BlueAnimatable> {
 		}
 	}
 
-	private void saveSnapshotsForAnimation(AnimationProcessor.QueuedAnimation pAnimation, Map<String, BoneSnapshot> pSnapshots) {
+	private void saveSnapshotsForAnimation(@NotNull AnimationProcessor.QueuedAnimation pAnimation, @NotNull Map<String, BoneSnapshot> pSnapshots) {
 		for (BoneSnapshot snapshot : pSnapshots.values()) {
 			if (pAnimation.animationCache().boneAnimationCaches() != null) {
 				for (BoneAnimationCache boneAnimationCache : pAnimation.animationCache().boneAnimationCaches()) {
@@ -518,8 +552,9 @@ public class AnimationController<T extends BlueAnimatable> {
 		return 0;
 	}
 
-	private AnimationPoint getAnimationPointAtTick(List<KeyframeCache<MathValue>> pFrames, double pTick, boolean pIsRotation,
-			Axis pAxis) {
+	@NotNull
+	private AnimationPoint getAnimationPointAtTick(@NotNull List<KeyframeCache<MathValue>> pFrames, double pTick, boolean pIsRotation,
+			@NotNull Axis pAxis) {
 		KeyframeLocation<KeyframeCache<MathValue>> location = getCurrentKeyFrameLocation(pFrames, pTick);
 		KeyframeCache<MathValue> currentFrame = location.keyframe();
 		double startValue = currentFrame.startValue().get();
@@ -544,7 +579,8 @@ public class AnimationController<T extends BlueAnimatable> {
 		return new AnimationPoint(currentFrame, location.startTick(), currentFrame.length(), startValue, endValue);
 	}
 
-	private KeyframeLocation<KeyframeCache<MathValue>> getCurrentKeyFrameLocation(List<KeyframeCache<MathValue>> pFrames,
+	@NotNull
+	private KeyframeLocation<KeyframeCache<MathValue>> getCurrentKeyFrameLocation(@NotNull List<KeyframeCache<MathValue>> pFrames,
 			double pAgeInTicks) {
 		double totalFrameTime = 0;
 
@@ -565,25 +601,26 @@ public class AnimationController<T extends BlueAnimatable> {
 	@FunctionalInterface
 	public interface AnimationStateHandler<A extends BlueAnimatable> {
 
-		PlayState handle(AnimationState<A> pState);
+		@NotNull
+		PlayState handle(@NotNull AnimationState<A> pState);
 	}
 
 	@FunctionalInterface
 	public interface SoundKeyframeHandler<A extends BlueAnimatable> {
 
-		void handle(SoundKeyframeEvent<A> pEvent);
+		void handle(@NotNull SoundKeyframeEvent<A> pEvent);
 	}
 
 	@FunctionalInterface
 	public interface ParticleKeyframeHandler<A extends BlueAnimatable> {
 
-		void handle(ParticleKeyframeEvent<A> pEvent);
+		void handle(@NotNull ParticleKeyframeEvent<A> pEvent);
 	}
 
 	@FunctionalInterface
 	public interface CustomKeyframeHandler<A extends BlueAnimatable> {
 
-		void handle(CustomInstructionKeyframeEvent<A> pEvent);
+		void handle(@NotNull CustomInstructionKeyframeEvent<A> pEvent);
 	}
 
 	public enum State {

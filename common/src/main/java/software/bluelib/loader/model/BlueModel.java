@@ -14,8 +14,9 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import software.bluelib.api.utils.LoaderUtils;
+import software.bluelib.api.utils.loader.LoaderUtils;
 import software.bluelib.client.utils.RenderUtils;
 import software.bluelib.loader.animatable.base.AnimatableManager;
 import software.bluelib.loader.animatable.base.BlueAnimatable;
@@ -33,8 +34,10 @@ import software.bluelib.loader.renderer.base.BlueRenderer;
 
 public abstract class BlueModel<T extends BlueAnimatable> {
 
+	@NotNull
 	private final AnimationProcessor<T> processor = new AnimationProcessor<>(this);
 
+	@Nullable
 	private ModelCache currentModel = null;
 	private double animTime;
 	private double lastGameTickTime;
@@ -55,7 +58,8 @@ public abstract class BlueModel<T extends BlueAnimatable> {
 		return null;
 	}
 
-	public ResourceLocation getModelResource(T pAnimatable, @Nullable BlueRenderer<T> pRenderer) {
+	@NotNull
+	public ResourceLocation getModelResource(@NotNull T pAnimatable, @Nullable BlueRenderer<T> pRenderer) {
 		if (basePath == null) {
 			throw new IllegalStateException("No basePath specified for model resource.");
 		}
@@ -64,7 +68,8 @@ public abstract class BlueModel<T extends BlueAnimatable> {
 		return basePath.withPath("geo/" + type + "/" + basePath.getPath() + ".geo.json");
 	}
 
-	public ResourceLocation getTextureResource(T pAnimatable, @Nullable BlueRenderer<T> pRenderer) {
+	@NotNull
+	public ResourceLocation getTextureResource(@NotNull T pAnimatable, @Nullable BlueRenderer<T> pRenderer) {
 		if (basePath == null) {
 			throw new IllegalStateException("No basePath specified for texture resource.");
 		}
@@ -73,7 +78,8 @@ public abstract class BlueModel<T extends BlueAnimatable> {
 		return basePath.withPath("textures/" + type + "/" + basePath.getPath() + ".png");
 	}
 
-	public ResourceLocation getAnimationResource(T pAnimatable) {
+	@NotNull
+	public ResourceLocation getAnimationResource(@NotNull T pAnimatable) {
 		if (basePath == null) {
 			throw new IllegalStateException("No basePath specified for animation resource.");
 		}
@@ -82,7 +88,8 @@ public abstract class BlueModel<T extends BlueAnimatable> {
 		return basePath.withPath("animations/" + type + "/" + basePath.getPath() + ".animation.json");
 	}
 
-	public ResourceLocation[] getAnimationResourceFallbacks(T pAnimatable) {
+	@NotNull
+	public ResourceLocation[] getAnimationResourceFallbacks(@NotNull T pAnimatable) {
 		return new ResourceLocation[0];
 	}
 
@@ -91,11 +98,12 @@ public abstract class BlueModel<T extends BlueAnimatable> {
 	}
 
 	@Nullable
-	public RenderType getRenderType(T pAnimatable, ResourceLocation pTexture) {
+	public RenderType getRenderType(@NotNull T pAnimatable, @NotNull ResourceLocation pTexture) {
 		return RenderType.entityCutoutNoCull(pTexture);
 	}
 
-	public ModelCache getBakedModel(ResourceLocation pLocation) {
+	@NotNull
+	public ModelCache getBakedModel(@NotNull ResourceLocation pLocation) {
 		ResourceLocation[] attempts = new ResourceLocation[] {
 				pLocation,
 				LoaderUtils.stripSuffix(".json", pLocation),
@@ -119,12 +127,13 @@ public abstract class BlueModel<T extends BlueAnimatable> {
 		throw new RuntimeException("Unable to find model file: " + pLocation);
 	}
 
-	public Optional<BoneCache> getBone(String pName) {
-		return Optional.ofNullable(getAnimationProcessor().getBone(pName));
+	@NotNull
+	public Optional<BoneCache> getBone(@NotNull String pName) {
+		return Optional.of(getAnimationProcessor().getBone(pName));
 	}
 
 	@Nullable
-	public AnimationCache getAnimation(T pAnimatable, String pName) {
+	public AnimationCache getAnimation(@NotNull T pAnimatable, @NotNull String pName) {
 		ResourceLocation location = getAnimationResource(pAnimatable);
 		ResourceLocation[] attempts = new ResourceLocation[] {
 				location,
@@ -152,14 +161,15 @@ public abstract class BlueModel<T extends BlueAnimatable> {
 		throw new RuntimeException("Unable to find animation file: " + location);
 	}
 
+	@NotNull
 	public AnimationProcessor<T> getAnimationProcessor() {
 		return this.processor;
 	}
 
-	public void addAdditionalStateData(T pAnimatable, long pInstanceId, BiConsumer<DataTicket<T>, T> pDataConsumer) {}
+	public void addAdditionalStateData(@NotNull T pAnimatable, long pInstanceId, @NotNull BiConsumer<DataTicket<T>, T> pDataConsumer) {}
 
 	@ApiStatus.Internal
-	public void handleAnimations(T pAnimatable, long pInstanceId, AnimationState<T> pAnimationState, float pPartialTick) {
+	public void handleAnimations(@NotNull T pAnimatable, long pInstanceId, @NotNull AnimationState<T> pAnimationState, float pPartialTick) {
 		Minecraft mc = Minecraft.getInstance();
 		AnimatableManager<T> animatableManager = pAnimatable.getAnimatableInstanceCache().getManagerForId(pInstanceId);
 		Double currentTick = pAnimationState.getData(DataTickets.TICK);
@@ -196,9 +206,9 @@ public abstract class BlueModel<T extends BlueAnimatable> {
 		setCustomAnimations(pAnimatable, pInstanceId, pAnimationState);
 	}
 
-	public void setCustomAnimations(T pAnimatable, long pInstanceId, AnimationState<T> pAnimationState) {}
+	public void setCustomAnimations(@NotNull T pAnimatable, long pInstanceId, @NotNull AnimationState<T> pAnimationState) {}
 
-	public void applyMolangQueries(AnimationState<T> pAnimationState, double pAnimTime) {
+	public void applyMolangQueries(@NotNull AnimationState<T> pAnimationState, double pAnimTime) {
 		this.animTime = pAnimTime;
 	}
 }

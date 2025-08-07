@@ -19,13 +19,14 @@ public class MoLangRuntimeBuilder {
 
 	public static class Input {
 
+		@NotNull
 		private final Map<String, Object> references = new HashMap<>();
 
-		public @Nullable Object get(String pKey) {
+		public @Nullable Object get(@NotNull String pKey) {
 			return references.get(pKey);
 		}
 
-		public <T> @Nullable T get(String pKey, Class<T> pClazz) {
+		public <T> @Nullable T get(@NotNull String pKey, @NotNull Class<T> pClazz) {
 			Object obj = references.get(pKey);
 			return pClazz.isInstance(obj) ? pClazz.cast(obj) : null;
 		}
@@ -35,8 +36,10 @@ public class MoLangRuntimeBuilder {
 		}
 	}
 
+	@NotNull
 	private final Input input = new Input();
 
+	@NotNull
 	public MoLangRuntimeBuilder with(@NotNull String pKey, @NotNull Object pValue) {
 		input.references.put(pKey, pValue);
 		return this;

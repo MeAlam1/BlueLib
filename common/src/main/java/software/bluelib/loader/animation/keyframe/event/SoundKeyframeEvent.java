@@ -7,17 +7,19 @@
  */
 package software.bluelib.loader.animation.keyframe.event;
 
+import org.jetbrains.annotations.NotNull;
 import software.bluelib.loader.animatable.base.BlueAnimatable;
 import software.bluelib.loader.animation.AnimationController;
 import software.bluelib.loader.animation.keyframe.data.SoundKeyframeData;
 
 public class SoundKeyframeEvent<T extends BlueAnimatable> extends KeyFrameEvent<T, SoundKeyframeData> {
 
-	public SoundKeyframeEvent(T pAnimatable, double pAnimationTick, AnimationController<T> pController, SoundKeyframeData pKeyFrameData) {
+	public SoundKeyframeEvent(@NotNull T pAnimatable, double pAnimationTick, @NotNull AnimationController<T> pController, @NotNull SoundKeyframeData pKeyFrameData) {
 		super(pAnimatable, pAnimationTick, pController, pKeyFrameData);
 	}
 
 	@Override
+	@NotNull
 	public SoundKeyframeData getKeyframeData() {
 		return super.getKeyframeData();
 	}

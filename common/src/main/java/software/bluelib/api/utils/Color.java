@@ -42,7 +42,7 @@ public record Color(int argbInt) {
 	@NotNull
 	public static final Color BLUE = new Color(0xFF0000FF);
 
-	public static @NotNull Color ofOpaque(int pColor) {
+	public static @NotNull Color ofOpaque(@NotNull Integer pColor) {
 		return new Color(0xFF000000 | pColor);
 	}
 

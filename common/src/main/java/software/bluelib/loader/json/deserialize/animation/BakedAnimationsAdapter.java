@@ -17,8 +17,10 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentMap;
 import net.minecraft.util.GsonHelper;
 import org.apache.commons.lang3.math.NumberUtils;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.exception.CompoundException;
-import software.bluelib.api.utils.JsonUtils;
+import software.bluelib.api.utils.loader.JsonUtils;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
 import software.bluelib.loader.animation.math.Easing;
@@ -34,10 +36,12 @@ import software.bluelib.loader.geckolib.math.value.Constant;
 
 public class BakedAnimationsAdapter implements JsonDeserializer<AnimationLibraryCache> {
 
+	@Nullable
 	public static ConcurrentMap<Double, Constant> COMPRESSION_CACHE = null;
 
 	@Override
-	public AnimationLibraryCache deserialize(JsonElement pJson, Type pType, JsonDeserializationContext pContext) throws RuntimeException {
+	@NotNull
+	public AnimationLibraryCache deserialize(@NotNull JsonElement pJson, @NotNull Type pType, @NotNull JsonDeserializationContext pContext) throws RuntimeException {
 		JsonObject obj = pJson.getAsJsonObject();
 		Map<String, AnimationCache> animations = new Object2ObjectOpenHashMap<>(obj.size());
 
@@ -55,7 +59,8 @@ public class BakedAnimationsAdapter implements JsonDeserializer<AnimationLibrary
 		return new AnimationLibraryCache(animations);
 	}
 
-	private AnimationCache bakeAnimation(String pName, JsonObject pAnimationObj, JsonDeserializationContext pContext) throws CompoundException {
+	@NotNull
+	private AnimationCache bakeAnimation(@NotNull String pName, @NotNull JsonObject pAnimationObj, @NotNull JsonDeserializationContext pContext) throws CompoundException {
 		double length = pAnimationObj.has("animation_length") ? GsonHelper.getAsDouble(pAnimationObj, "animation_length") * 20d : -1;
 		AnimationCache.LoopType loopType = AnimationCache.LoopType.fromJson(pAnimationObj.get("loop"));
 		BoneAnimationCache[] boneAnimationCaches = bakeBoneAnimations(GsonHelper.getAsJsonObject(pAnimationObj, "bones", new JsonObject()));
@@ -67,7 +72,8 @@ public class BakedAnimationsAdapter implements JsonDeserializer<AnimationLibrary
 		return new AnimationCache(pName, length, loopType, boneAnimationCaches, keyframes);
 	}
 
-	private BoneAnimationCache[] bakeBoneAnimations(JsonObject pBonesObj) throws CompoundException {
+	@NotNull
+	private BoneAnimationCache[] bakeBoneAnimations(@NotNull JsonObject pBonesObj) throws CompoundException {
 		BoneAnimationCache[] animations = new BoneAnimationCache[pBonesObj.size()];
 		int index = 0;
 
@@ -84,7 +90,8 @@ public class BakedAnimationsAdapter implements JsonDeserializer<AnimationLibrary
 		return animations;
 	}
 
-	private static List<DoubleObjectPair<JsonElement>> getKeyframes(JsonElement pElement) {
+	@NotNull
+	private static List<DoubleObjectPair<JsonElement>> getKeyframes(@Nullable JsonElement pElement) {
 		if (pElement == null)
 			return List.of();
 
@@ -128,7 +135,7 @@ public class BakedAnimationsAdapter implements JsonDeserializer<AnimationLibrary
 		throw new JsonParseException("Invalid object type provided to getTripletObj, got: " + pElement);
 	}
 
-	private static void addBedrockKeyframes(double pTimestamp, JsonObject pKeyframe, List<DoubleObjectPair<JsonElement>> pKeyframes) {
+	private static void addBedrockKeyframes(double pTimestamp, @NotNull JsonObject pKeyframe, @NotNull List<DoubleObjectPair<JsonElement>> pKeyframes) {
 		boolean addedFrame = false;
 
 		if (pKeyframe.has("pre")) {
@@ -160,7 +167,8 @@ public class BakedAnimationsAdapter implements JsonDeserializer<AnimationLibrary
 			throw new JsonParseException("Invalid keyframe data - expected array, found " + pKeyframe);
 	}
 
-	private KeyframeStackCache<KeyframeCache<MathValue>> buildKeyframeStack(List<DoubleObjectPair<JsonElement>> pEntries, boolean pIsForRotation) throws CompoundException {
+	@NotNull
+	private KeyframeStackCache<KeyframeCache<MathValue>> buildKeyframeStack(@NotNull List<DoubleObjectPair<JsonElement>> pEntries, boolean pIsForRotation) throws CompoundException {
 		if (pEntries.isEmpty())
 			return new KeyframeStackCache<>();
 
@@ -206,7 +214,8 @@ public class BakedAnimationsAdapter implements JsonDeserializer<AnimationLibrary
 		return new KeyframeStackCache<>(addSplineArgs(xFrames), addSplineArgs(yFrames), addSplineArgs(zFrames));
 	}
 
-	private List<KeyframeCache<MathValue>> addSplineArgs(List<KeyframeCache<MathValue>> pFrames) {
+	@NotNull
+	private List<KeyframeCache<MathValue>> addSplineArgs(@NotNull List<KeyframeCache<MathValue>> pFrames) {
 		if (pFrames.size() == 1) {
 			KeyframeCache<MathValue> frame = pFrames.getFirst();
 
@@ -230,14 +239,15 @@ public class BakedAnimationsAdapter implements JsonDeserializer<AnimationLibrary
 		return pFrames;
 	}
 
-	private MathValue compressMathValue(MathValue pInput) {
+	@NotNull
+	private MathValue compressMathValue(@NotNull MathValue pInput) {
 		if (COMPRESSION_CACHE == null || pInput.isMutable())
 			return pInput;
 
 		return COMPRESSION_CACHE.computeIfAbsent(pInput.get(), Constant::new);
 	}
 
-	private static double calculateAnimationLength(BoneAnimationCache[] pBoneAnimationCaches) {
+	private static double calculateAnimationLength(@NotNull BoneAnimationCache[] pBoneAnimationCaches) {
 		double length = 0;
 
 		for (BoneAnimationCache animation : pBoneAnimationCaches) {
@@ -249,7 +259,7 @@ public class BakedAnimationsAdapter implements JsonDeserializer<AnimationLibrary
 		return length == 0 ? Double.MAX_VALUE : length;
 	}
 
-	private static double readTimestamp(String pTimestamp) {
+	private static double readTimestamp(@NotNull String pTimestamp) {
 		return NumberUtils.isCreatable(pTimestamp) ? Double.parseDouble(pTimestamp) : 0;
 	}
 }

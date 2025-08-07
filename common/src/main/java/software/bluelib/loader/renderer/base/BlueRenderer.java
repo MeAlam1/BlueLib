@@ -14,6 +14,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
@@ -35,43 +36,48 @@ import software.bluelib.loader.renderer.context.IRenderContext;
 
 public interface BlueRenderer<T extends BlueAnimatable> {
 
+	@NotNull
 	BlueModel<T> getBlueModel();
 
+	@Nullable
 	T getAnimatable();
 
-	default ResourceLocation getTextureLocation(T pAnimatable) {
+	@NotNull
+	default ResourceLocation getTextureLocation(@NotNull T pAnimatable) {
 		return getBlueModel().getTextureResource(pAnimatable, this);
 	}
 
+	@NotNull
 	default List<BlueRenderLayer<T>> getRenderLayers() {
 		return List.of();
 	}
 
 	@Nullable
-	default RenderType getRenderType(ResourceLocation pTexture, IRenderContext<T> pContext) {
+	default RenderType getRenderType(@NotNull ResourceLocation pTexture, @NotNull IRenderContext<T> pContext) {
 		return getBlueModel().getRenderType(pContext.animatable(), pTexture);
 	}
 
-	default Color getRenderColor(T pAnimatable, float pPartialTick, int pPackedLight) {
+	@NotNull
+	default Color getRenderColor(@NotNull T pAnimatable, float pPartialTick, int pPackedLight) {
 		return Color.WHITE;
 	}
 
-	default int getPackedOverlay(T pAnimatable, float pU, float pPartialTick) {
+	default int getPackedOverlay(@NotNull T pAnimatable, float pU, float pPartialTick) {
 		return OverlayTexture.NO_OVERLAY;
 	}
 
-	default long getInstanceId(IRenderContext<T> pContext) {
+	default long getInstanceId(@NotNull IRenderContext<T> pContext) {
 		return pContext.animatable().hashCode();
 	}
 
-	default float getMotionAnimThreshold(IRenderContext<T> pContext) {
+	default float getMotionAnimThreshold(@NotNull IRenderContext<T> pContext) {
 		return 0.015f;
 	}
 
-	private static <M extends BlueAnimatable> void handleBaseRenderContextInternal(
-			BaseRenderContext<M> pContext,
-			BlueRenderer<M> pRenderer,
-			BiConsumer<BlueRenderer<M>, FullRenderContext<M>> pRenderMethod) {
+	static <M extends BlueAnimatable> void handleBaseRenderContext(
+			@NotNull BaseRenderContext<M> pContext,
+			@NotNull BlueRenderer<M> pRenderer,
+			@NotNull BiConsumer<BlueRenderer<M>, FullRenderContext<M>> pRenderMethod) {
 		RenderType type = pRenderer.getRenderType(
 				pRenderer.getTextureLocation(pContext.animatable()),
 				pContext);
@@ -96,7 +102,7 @@ public interface BlueRenderer<T extends BlueAnimatable> {
 		pContext.poseStack().popPose();
 	}
 
-	default void defaultRender(IRenderContext<T> pContext) {
+	default void defaultRender(@NotNull IRenderContext<T> pContext) {
 		pContext.poseStack().pushPose();
 
 		if (pContext instanceof FullRenderContext<T> full) {
@@ -121,11 +127,11 @@ public interface BlueRenderer<T extends BlueAnimatable> {
 	}
 
 	@ApiStatus.NonExtendable
-	default <M extends BlueAnimatable> void handleBaseDefaultRenderContext(BaseRenderContext<M> pContext, BlueRenderer<M> pRenderer) {
-		handleBaseRenderContextInternal(pContext, pRenderer, BlueRenderer::defaultRender);
+	default <M extends BlueAnimatable> void handleBaseDefaultRenderContext(@NotNull BaseRenderContext<M> pContext, @NotNull BlueRenderer<M> pRenderer) {
+		handleBaseRenderContext(pContext, pRenderer, BlueRenderer::defaultRender);
 	}
 
-	default void reRender(IRenderContext<T> pContext) {
+	default void reRender(@NotNull IRenderContext<T> pContext) {
 		pContext.poseStack().pushPose();
 
 		if (pContext instanceof FullRenderContext<T> full) {
@@ -139,11 +145,11 @@ public interface BlueRenderer<T extends BlueAnimatable> {
 	}
 
 	@ApiStatus.NonExtendable
-	default <M extends BlueAnimatable> void handleBaseReRenderContext(BaseRenderContext<M> pContext, BlueRenderer<M> pRenderer) {
-		handleBaseRenderContextInternal(pContext, pRenderer, BlueRenderer::reRender);
+	default <M extends BlueAnimatable> void handleBaseReRenderContext(@NotNull BaseRenderContext<M> pContext, @NotNull BlueRenderer<M> pRenderer) {
+		handleBaseRenderContext(pContext, pRenderer, BlueRenderer::reRender);
 	}
 
-	default void actuallyRender(IRenderContext<T> pContext) {
+	default void actuallyRender(@NotNull IRenderContext<T> pContext) {
 		if (pContext instanceof FullRenderContext<T> full) {
 			if (full.buffer() == null) {
 				if (full.renderType() == null)
@@ -176,37 +182,37 @@ public interface BlueRenderer<T extends BlueAnimatable> {
 	}
 
 	@ApiStatus.NonExtendable
-	default <M extends BlueAnimatable> void handleBaseActuallyRenderContext(BaseRenderContext<M> pContext, BlueRenderer<M> pRenderer) {
-		handleBaseRenderContextInternal(pContext, pRenderer, BlueRenderer::actuallyRender);
+	default <M extends BlueAnimatable> void handleBaseActuallyRenderContext(@NotNull BaseRenderContext<M> pContext, @NotNull BlueRenderer<M> pRenderer) {
+		handleBaseRenderContext(pContext, pRenderer, BlueRenderer::actuallyRender);
 	}
 
-	default void preApplyRenderLayers(IRenderContext<T> pContext) {
+	default void preApplyRenderLayers(@NotNull IRenderContext<T> pContext) {
 		for (BlueRenderLayer<T> renderLayer : getRenderLayers()) {
 			renderLayer.preRender(pContext);
 		}
 	}
 
-	default void applyRenderLayersForBone(BoneCache pBone, IRenderContext<T> pContext) {
+	default void applyRenderLayersForBone(@NotNull BoneCache pBone, @NotNull IRenderContext<T> pContext) {
 		for (BlueRenderLayer<T> renderLayer : getRenderLayers()) {
 			renderLayer.renderForBone(pBone, pContext);
 		}
 	}
 
-	default void applyRenderLayers(IRenderContext<T> pContext) {
+	default void applyRenderLayers(@NotNull IRenderContext<T> pContext) {
 		for (BlueRenderLayer<T> renderLayer : getRenderLayers()) {
 			renderLayer.render(pContext);
 		}
 	}
 
-	default void preRender(IRenderContext<T> pContext) {}
+	default void preRender(@NotNull IRenderContext<T> pContext) {}
 
-	default void postRender(IRenderContext<T> pContext) {}
+	default void postRender(@NotNull IRenderContext<T> pContext) {}
 
-	default void renderFinal(IRenderContext<T> pContext) {}
+	default void renderFinal(@NotNull IRenderContext<T> pContext) {}
 
-	default void doPostRenderCleanup(IRenderContext<T> pContext) {}
+	default void doPostRenderCleanup(@NotNull IRenderContext<T> pContext) {}
 
-	default void renderRecursively(BoneCache pBone, FullRenderContext<T> pContext) {
+	default void renderRecursively(@NotNull BoneCache pBone, @NotNull FullRenderContext<T> pContext) {
 		pContext.poseStack().pushPose();
 		RenderUtils.prepMatrixForBone(pContext.poseStack(), pBone);
 
@@ -221,7 +227,7 @@ public interface BlueRenderer<T extends BlueAnimatable> {
 		pContext.poseStack().popPose();
 	}
 
-	default void renderCubesOfBone(BoneCache pBone, FullRenderContext<T> pContext) {
+	default void renderCubesOfBone(@NotNull BoneCache pBone, @NotNull FullRenderContext<T> pContext) {
 		if (pBone.isHidden())
 			return;
 
@@ -232,7 +238,7 @@ public interface BlueRenderer<T extends BlueAnimatable> {
 		}
 	}
 
-	default void renderChildBones(BoneCache pBone, FullRenderContext<T> pContext) {
+	default void renderChildBones(@NotNull BoneCache pBone, @NotNull FullRenderContext<T> pContext) {
 		if (pBone.isHidingChildren())
 			return;
 
@@ -241,7 +247,7 @@ public interface BlueRenderer<T extends BlueAnimatable> {
 		}
 	}
 
-	default void renderCube(CubeCache pCube, FullRenderContext<T> pContext) {
+	default void renderCube(@NotNull CubeCache pCube, @NotNull FullRenderContext<T> pContext) {
 		RenderUtils.translateToPivotPoint(pContext.poseStack(), pCube);
 		RenderUtils.rotateMatrixAroundCube(pContext.poseStack(), pCube);
 		RenderUtils.translateAwayFromPivotPoint(pContext.poseStack(), pCube);
@@ -260,7 +266,7 @@ public interface BlueRenderer<T extends BlueAnimatable> {
 		}
 	}
 
-	default void createVerticesOfQuad(QuadData pQuad, Matrix4f pPoseState, Vector3f pNormal, FullRenderContext<T> pContext) {
+	default void createVerticesOfQuad(@NotNull QuadData pQuad, @NotNull Matrix4f pPoseState, @NotNull Vector3f pNormal, @NotNull FullRenderContext<T> pContext) {
 		for (VertexData vertex : pQuad.vertices()) {
 			Vector3f position = vertex.position();
 			Vector4f vector4f = pPoseState.transform(new Vector4f(position.x(), position.y(), position.z(), 1.0f));
@@ -272,11 +278,11 @@ public interface BlueRenderer<T extends BlueAnimatable> {
 
 	void fireCompileRenderLayersEvent();
 
-	boolean firePreRenderEvent(IRenderContext<T> pContext);
+	boolean firePreRenderEvent(@NotNull IRenderContext<T> pContext);
 
-	void firePostRenderEvent(IRenderContext<T> pContext);
+	void firePostRenderEvent(@NotNull IRenderContext<T> pContext);
 
-	default void scaleModelForRender(float pWidthScale, float pHeightScale, IRenderContext<T> pContext) {
+	default void scaleModelForRender(float pWidthScale, float pHeightScale, @NotNull IRenderContext<T> pContext) {
 		if (!pContext.isReRender() && (pWidthScale != 1 || pHeightScale != 1))
 			pContext.poseStack().scale(pWidthScale, pHeightScale, pWidthScale);
 	}

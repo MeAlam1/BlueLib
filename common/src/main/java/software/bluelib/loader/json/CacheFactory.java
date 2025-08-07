@@ -10,13 +10,14 @@ package software.bluelib.loader.json;
 import java.util.Map;
 import java.util.function.Function;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public interface CacheFactory<T, S> {
 
-	@NotNull
+	@Nullable
 	T construct(@NotNull S pSource);
 
-	@NotNull
+	@Nullable
 	static <T, S, F extends CacheFactory<T, S>> T constructWithFactory(
 			@NotNull Function<String, F> pFactoryGetter,
 			@NotNull String pNamespace,

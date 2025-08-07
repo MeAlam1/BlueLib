@@ -14,6 +14,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.client.utils.RenderUtils;
 import software.bluelib.loader.animatable.base.BlueAnimatable;
@@ -24,14 +25,16 @@ import software.bluelib.loader.renderer.context.IRenderContext;
 
 public class BlockAndItemBlueLayer<T extends BlueAnimatable> extends BlueRenderLayer<T> {
 
+	@NotNull
 	protected final BiFunction<BoneCache, T, ItemStack> stackForBone;
+	@NotNull
 	protected final BiFunction<BoneCache, T, BlockState> blockForBone;
 
-	public BlockAndItemBlueLayer(BlueRenderer<T> pRenderer) {
+	public BlockAndItemBlueLayer(@NotNull BlueRenderer<T> pRenderer) {
 		this(pRenderer, (bone, animatable) -> null, (bone, animatable) -> null);
 	}
 
-	public BlockAndItemBlueLayer(BlueRenderer<T> pRenderer, BiFunction<BoneCache, T, ItemStack> pStackForBone, BiFunction<BoneCache, T, BlockState> pBlockForBone) {
+	public BlockAndItemBlueLayer(@NotNull BlueRenderer<T> pRenderer, @NotNull BiFunction<BoneCache, T, ItemStack> pStackForBone, @NotNull BiFunction<BoneCache, T, BlockState> pBlockForBone) {
 		super(pRenderer);
 
 		this.stackForBone = pStackForBone;
@@ -39,21 +42,22 @@ public class BlockAndItemBlueLayer<T extends BlueAnimatable> extends BlueRenderL
 	}
 
 	@Nullable
-	protected ItemStack getStackForBone(BoneCache pBone, T pAnimatable) {
+	protected ItemStack getStackForBone(@NotNull BoneCache pBone, @NotNull T pAnimatable) {
 		return this.stackForBone.apply(pBone, pAnimatable);
 	}
 
 	@Nullable
-	protected BlockState getBlockForBone(BoneCache pBone, T pAnimatable) {
+	protected BlockState getBlockForBone(@NotNull BoneCache pBone, @NotNull T pAnimatable) {
 		return this.blockForBone.apply(pBone, pAnimatable);
 	}
 
-	protected ItemDisplayContext getTransformTypeForStack(BoneCache pBone, ItemStack pStack, IRenderContext<T> pContext) {
+	@NotNull
+	protected ItemDisplayContext getTransformTypeForStack(@NotNull BoneCache pBone, @NotNull ItemStack pStack, @NotNull IRenderContext<T> pContext) {
 		return ItemDisplayContext.NONE;
 	}
 
 	@Override
-	public void renderForBone(BoneCache pBone, IRenderContext<T> pContext) {
+	public void renderForBone(@NotNull BoneCache pBone, @NotNull IRenderContext<T> pContext) {
 		ItemStack stack = getStackForBone(pBone, pContext.animatable());
 		BlockState blockState = getBlockForBone(pBone, pContext.animatable());
 
@@ -72,7 +76,7 @@ public class BlockAndItemBlueLayer<T extends BlueAnimatable> extends BlueRenderL
 		pContext.poseStack().popPose();
 	}
 
-	protected void renderStackForBone(BoneCache pBone, ItemStack pStack, IRenderContext<T> pContext) {
+	protected void renderStackForBone(@NotNull BoneCache pBone, @NotNull ItemStack pStack, @NotNull IRenderContext<T> pContext) {
 		if (pContext.animatable() instanceof LivingEntity livingEntity) {
 			Minecraft.getInstance().getItemRenderer().renderStatic(livingEntity, pStack,
 					getTransformTypeForStack(pBone, pStack, pContext), false, pContext.poseStack(), pContext.bufferSource(), livingEntity.level(),
@@ -83,7 +87,7 @@ public class BlockAndItemBlueLayer<T extends BlueAnimatable> extends BlueRenderL
 		}
 	}
 
-	protected void renderBlockForBone(BoneCache pBone, BlockState pState, IRenderContext<T> pContext) {
+	protected void renderBlockForBone(@NotNull BoneCache pBone, @NotNull BlockState pState, @NotNull IRenderContext<T> pContext) {
 		pContext.poseStack().pushPose();
 		pContext.poseStack().translate(-0.25f, -0.25f, -0.25f);
 		pContext.poseStack().scale(0.5f, 0.5f, 0.5f);

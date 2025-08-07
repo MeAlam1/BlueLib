@@ -21,6 +21,9 @@ public class StopTriggeredEntityAnimPacketHandler implements ClientNetworkPacket
 
 	@Override
 	public void handle(@NotNull StopTriggeredEntityAnimPacket pPacket, @NotNull Minecraft pClient) {
+		if (LevelUtils.getLevel() == null) {
+			return;
+		}
 		Entity entity = LevelUtils.getLevel().getEntity(pPacket.entityId());
 
 		if (entity == null)

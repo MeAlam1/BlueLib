@@ -9,20 +9,23 @@ package software.bluelib.api.molang.expression;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.molang.MoLangRuntime;
 
-public record MoLangExpression(String raw) {
+public record MoLangExpression(@NotNull String raw) {
 
-	public MoLangExpression(String raw) {
+	public MoLangExpression(@NotNull String raw) {
 		this.raw = raw.trim();
 	}
 
-	public static MoLangExpression parse(String pRaw) {
+	@NotNull
+	public static MoLangExpression parse(@NotNull String pRaw) {
 		return new MoLangExpression(pRaw);
 	}
 
-	public Object evaluate(MoLangRuntime pRuntime) {
+	@Nullable
+	public Object evaluate(@NotNull MoLangRuntime pRuntime) {
 		if (raw.startsWith("query.")) {
 			String remapped = "q." + raw.substring("query.".length());
 			return new MoLangExpression(remapped).evaluate(pRuntime);
@@ -55,7 +58,7 @@ public record MoLangExpression(String raw) {
 	}
 
 	@Nullable
-	private Object getObject(MoLangRuntime pRuntime, String pRaw) {
+	private Object getObject(@NotNull MoLangRuntime pRuntime, @NotNull String pRaw) {
 		if (pRaw.endsWith(")")) {
 			String name = pRaw.substring(0, pRaw.indexOf('('));
 			String argsRaw = pRaw.substring(pRaw.indexOf('(') + 1, pRaw.length() - 1);
@@ -66,7 +69,8 @@ public record MoLangExpression(String raw) {
 		}
 	}
 
-	private List<Object> parseArguments(String pArgsRaw, MoLangRuntime pRuntime) {
+	@NotNull
+	private List<Object> parseArguments(@NotNull String pArgsRaw, @NotNull MoLangRuntime pRuntime) {
 		List<Object> args = new ArrayList<>();
 		int depth = 0;
 		int start = 0;

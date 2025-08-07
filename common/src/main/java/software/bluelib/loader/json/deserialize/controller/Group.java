@@ -12,7 +12,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import java.util.Map;
 import org.jetbrains.annotations.NotNull;
-import software.bluelib.api.utils.JsonUtils;
+import software.bluelib.api.utils.loader.JsonUtils;
 
 public record Group(
 		@NotNull Map<String, Behaviour> behaviours) {

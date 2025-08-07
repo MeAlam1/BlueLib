@@ -15,6 +15,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
@@ -31,30 +32,32 @@ import software.bluelib.loader.renderer.context.IRenderContext;
 
 public abstract class DynamicBlueEntityRenderer<T extends Entity & BlueAnimatable> extends BlueEntityRenderer<T> {
 
+	@NotNull
 	protected static Map<ResourceLocation, IntIntPair> TEXTURE_DIMENSIONS_CACHE = new Object2ObjectOpenHashMap<>();
 
+	@Nullable
 	protected ResourceLocation textureOverride = null;
 
-	public DynamicBlueEntityRenderer(EntityRendererProvider.Context pRenderManager, BlueModel<T> pModel) {
+	public DynamicBlueEntityRenderer(@NotNull EntityRendererProvider.Context pRenderManager, @NotNull BlueModel<T> pModel) {
 		super(pRenderManager, pModel);
 	}
 
 	@Nullable
-	protected ResourceLocation getTextureOverrideForBone(BoneCache pBone, T pAnimatable, float pPartialTick) {
+	protected ResourceLocation getTextureOverrideForBone(@NotNull BoneCache pBone, @NotNull T pAnimatable, float pPartialTick) {
 		return null;
 	}
 
 	@Nullable
-	protected RenderType getRenderTypeOverrideForBone(BoneCache pBone, T pAnimatable, ResourceLocation pTexturePath, MultiBufferSource pBufferSource, float pPartialTick) {
+	protected RenderType getRenderTypeOverrideForBone(@NotNull BoneCache pBone, @NotNull T pAnimatable, @NotNull ResourceLocation pTexturePath, @NotNull MultiBufferSource pBufferSource, float pPartialTick) {
 		return null;
 	}
 
-	protected boolean boneRenderOverride(BoneCache pBone, FullRenderContext<T> pContext) {
+	protected boolean boneRenderOverride(@NotNull BoneCache pBone, @NotNull FullRenderContext<T> pContext) {
 		return false;
 	}
 
 	@Override
-	public void renderRecursively(BoneCache pBone, FullRenderContext<T> pContext) {
+	public void renderRecursively(@NotNull BoneCache pBone, @NotNull FullRenderContext<T> pContext) {
 		pContext.poseStack().pushPose();
 		RenderUtils.translateMatrixToBone(pContext.poseStack(), pBone);
 		RenderUtils.translateToPivotPoint(pContext.poseStack(), pBone);
@@ -104,14 +107,14 @@ public abstract class DynamicBlueEntityRenderer<T extends Entity & BlueAnimatabl
 	}
 
 	@Override
-	public void postRender(IRenderContext<T> pContext) {
+	public void postRender(@NotNull IRenderContext<T> pContext) {
 		this.textureOverride = null;
 
 		super.postRender(pContext);
 	}
 
 	@Override
-	public void createVerticesOfQuad(QuadData pQuad, Matrix4f pPoseState, Vector3f pNormal, FullRenderContext<T> pContext) {
+	public void createVerticesOfQuad(@NotNull QuadData pQuad, @NotNull Matrix4f pPoseState, @NotNull Vector3f pNormal, @NotNull FullRenderContext<T> pContext) {
 		if (this.textureOverride == null) {
 			super.createVerticesOfQuad(pQuad, pPoseState, pNormal, pContext);
 
@@ -137,7 +140,8 @@ public abstract class DynamicBlueEntityRenderer<T extends Entity & BlueAnimatabl
 		}
 	}
 
-	protected IntIntPair computeTextureSize(ResourceLocation pTexture) {
+	@Nullable
+	protected IntIntPair computeTextureSize(@NotNull ResourceLocation pTexture) {
 		return TEXTURE_DIMENSIONS_CACHE.computeIfAbsent(pTexture, RenderUtils::getTextureDimensions);
 	}
 }

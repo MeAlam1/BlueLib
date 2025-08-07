@@ -13,9 +13,10 @@ import org.jetbrains.annotations.Nullable;
 
 public class MultiMoLangContext extends BaseMoLangContext {
 
+	@NotNull
 	private final List<BaseMoLangContext> contexts;
 
-	public MultiMoLangContext(List<BaseMoLangContext> pContexts) {
+	public MultiMoLangContext(@NotNull List<BaseMoLangContext> pContexts) {
 		this.contexts = pContexts;
 	}
 

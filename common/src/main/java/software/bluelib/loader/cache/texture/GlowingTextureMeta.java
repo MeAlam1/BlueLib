@@ -5,7 +5,7 @@
  * If a copy of the MIT License was not distributed with this file,
  * You can obtain one at https://opensource.org/licenses/MIT.
  */
-package software.bluelib.api.json.resource;
+package software.bluelib.loader.cache.texture;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -20,7 +20,7 @@ import net.minecraft.util.GsonHelper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class GlowingTextureMeta {
+public record GlowingTextureMeta(@NotNull List<Pixel> pixels) {
 
 	@NotNull
 	public static final MetadataSectionSerializer<GlowingTextureMeta> DESERIALIZER = new MetadataSectionSerializer<>() {
@@ -69,13 +69,6 @@ public class GlowingTextureMeta {
 			return pixels;
 		}
 	};
-
-	@NotNull
-	private final List<Pixel> pixels;
-
-	public GlowingTextureMeta(@NotNull List<Pixel> pPixels) {
-		this.pixels = pPixels;
-	}
 
 	public static @NotNull GlowingTextureMeta fromExistingImage(@NotNull NativeImage pGlowLayer) {
 		List<Pixel> pixels = new ObjectArrayList<>();

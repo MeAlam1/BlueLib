@@ -8,6 +8,7 @@
 package software.bluelib.loader.animation.keyframe.data;
 
 import java.util.Objects;
+import org.jetbrains.annotations.Nullable;
 
 public abstract class KeyFrameData {
 
@@ -22,7 +23,7 @@ public abstract class KeyFrameData {
 	}
 
 	@Override
-	public boolean equals(Object pObj) {
+	public boolean equals(@Nullable Object pObj) {
 		if (this == pObj)
 			return true;
 

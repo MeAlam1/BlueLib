@@ -12,6 +12,8 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import java.util.List;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import software.bluelib.BlueLibConstants;
 import software.bluelib.client.utils.RenderUtils;
@@ -29,50 +31,58 @@ import software.bluelib.loader.renderer.context.IRenderContext;
 
 public class BlueObjectRenderer<T extends BlueAnimatable> implements BlueRenderer<T> {
 
+	@NotNull
 	protected final BlueRenderLayersContainer<T> renderLayers = new BlueRenderLayersContainer<>(this);
+	@NotNull
 	protected final BlueModel<T> model;
 
+	@Nullable
 	protected T animatable;
 	protected float scaleWidth = 1;
 	protected float scaleHeight = 1;
 
+	@NotNull
 	protected Matrix4f objectRenderTranslations = new Matrix4f();
+	@NotNull
 	protected Matrix4f modelRenderTranslations = new Matrix4f();
 
-	public BlueObjectRenderer(BlueModel<T> pModel) {
+	public BlueObjectRenderer(@NotNull BlueModel<T> pModel) {
 		this.model = pModel;
 	}
 
 	@Override
-	public BlueModel<T> getBlueModel() {
+	public @NotNull BlueModel<T> getBlueModel() {
 		return this.model;
 	}
 
 	@Override
-	public T getAnimatable() {
+	public @Nullable T getAnimatable() {
 		return this.animatable;
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(T pAnimatable) {
+	public @NotNull ResourceLocation getTextureLocation(@NotNull T pAnimatable) {
 		return BlueRenderer.super.getTextureLocation(pAnimatable);
 	}
 
 	@Override
-	public List<BlueRenderLayer<T>> getRenderLayers() {
+	public @NotNull List<BlueRenderLayer<T>> getRenderLayers() {
 		return this.renderLayers.getRenderLayers();
 	}
 
-	public BlueObjectRenderer<T> addRenderLayer(BlueRenderLayer<T> pRenderLayer) {
+	@NotNull
+	public BlueObjectRenderer<T> addRenderLayer(@NotNull BlueRenderLayer<T> pRenderLayer) {
 		this.renderLayers.addLayer(pRenderLayer);
 
 		return this;
 	}
 
+	@NotNull
 	public BlueObjectRenderer<T> withScale(float pScale) {
 		return withScale(pScale, pScale);
 	}
 
+	@NotNull
 	public BlueObjectRenderer<T> withScale(float pScaleWidth, float pScaleHeight) {
 		this.scaleWidth = pScaleWidth;
 		this.scaleHeight = pScaleHeight;
@@ -81,13 +91,13 @@ public class BlueObjectRenderer<T extends BlueAnimatable> implements BlueRendere
 	}
 
 	@ApiStatus.Internal
-	public void render(IRenderContext<T> pContext) {
+	public void render(@NotNull IRenderContext<T> pContext) {
 		this.animatable = pContext.animatable();
 		defaultRender(pContext);
 	}
 
 	@Override
-	public void preRender(IRenderContext<T> pContext) {
+	public void preRender(@NotNull IRenderContext<T> pContext) {
 		this.objectRenderTranslations = new Matrix4f(pContext.poseStack().last().pose());
 
 		scaleModelForRender(this.scaleWidth, this.scaleHeight, pContext);
@@ -96,7 +106,7 @@ public class BlueObjectRenderer<T extends BlueAnimatable> implements BlueRendere
 	}
 
 	@Override
-	public void actuallyRender(IRenderContext<T> pContext) {
+	public void actuallyRender(@NotNull IRenderContext<T> pContext) {
 		if (pContext instanceof FullRenderContext<T> full) {
 			PoseStack pPoseStack = full.poseStack();
 			T pAnimatable = full.animatable();
@@ -127,12 +137,12 @@ public class BlueObjectRenderer<T extends BlueAnimatable> implements BlueRendere
 	}
 
 	@Override
-	public void doPostRenderCleanup(IRenderContext<T> pContext) {
+	public void doPostRenderCleanup(@NotNull IRenderContext<T> pContext) {
 		this.animatable = null;
 	}
 
 	@Override
-	public void renderRecursively(BoneCache pBone, FullRenderContext<T> pContext) {
+	public void renderRecursively(@NotNull BoneCache pBone, @NotNull FullRenderContext<T> pContext) {
 		if (pBone.isTrackingMatrices()) {
 			Matrix4f poseState = new Matrix4f(pContext.poseStack().last().pose());
 
@@ -144,7 +154,7 @@ public class BlueObjectRenderer<T extends BlueAnimatable> implements BlueRendere
 	}
 
 	@Override
-	public void updateAnimatedTextureFrame(T pAnimatable) {
+	public void updateAnimatedTextureFrame(@NotNull T pAnimatable) {
 		AnimatableTexture.setAndUpdate(getTextureLocation(pAnimatable));
 	}
 
@@ -154,12 +164,12 @@ public class BlueObjectRenderer<T extends BlueAnimatable> implements BlueRendere
 	}
 
 	@Override
-	public boolean firePreRenderEvent(IRenderContext<T> pContext) {
+	public boolean firePreRenderEvent(@NotNull IRenderContext<T> pContext) {
 		return BlueLibConstants.PlatformHelper.EVENT_PROXY.fireObjectPreRender(this, pContext);
 	}
 
 	@Override
-	public void firePostRenderEvent(IRenderContext<T> pContext) {
+	public void firePostRenderEvent(@NotNull IRenderContext<T> pContext) {
 		BlueLibConstants.PlatformHelper.EVENT_PROXY.fireObjectPostRender(this, pContext);
 	}
 }

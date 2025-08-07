@@ -18,6 +18,9 @@ public class BlockEntityAnimTriggerPacketHandler implements ClientNetworkPacketH
 
 	@Override
 	public void handle(@NotNull BlockEntityAnimTriggerPacket pPacket, @NotNull Minecraft pClient) {
+		if (LevelUtils.getLevel() == null) {
+			return;
+		}
 		if (LevelUtils.getLevel().getBlockEntity(pPacket.pos()) instanceof BlueBlockEntity blockEntity)
 			blockEntity.triggerAnim(pPacket.controllerName().isEmpty() ? null : pPacket.controllerName(), pPacket.animName());
 	}

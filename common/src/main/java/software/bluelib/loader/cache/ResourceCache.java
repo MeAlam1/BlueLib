@@ -119,7 +119,6 @@ public class ResourceCache extends BlueLoader {
 			CompletableFuture<Map<ResourceLocation, ControllerCache>> controllers = loadControllers(pBackgroundExecutor, pResourceManager);
 			CompletableFuture<Map<ResourceLocation, EntityCache>> variants = loadVariants(pBackgroundExecutor, pResourceManager, pProviders);
 
-			// Add controllers to check if they are loaded
 			return CompletableFuture.allOf(variants, controllers)
 					.thenRunAsync(() -> {
 						ResourceCache.Server.VARIANTS = variants.join();

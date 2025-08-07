@@ -14,13 +14,15 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.OutlineBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.NotNull;
 
 public final class BufferUtils {
 
 	private BufferUtils() {}
 
+	@NotNull
 	@ApiStatus.Internal
-	public static VertexConsumer checkAndRefreshBuffer(boolean pIsReRender, VertexConsumer pBuffer, MultiBufferSource pBufferSource, RenderType pRenderType) {
+	public static VertexConsumer checkAndRefreshBuffer(boolean pIsReRender, @NotNull VertexConsumer pBuffer, @NotNull MultiBufferSource pBufferSource, @NotNull RenderType pRenderType) {
 		if (pIsReRender)
 			return pBuffer;
 
@@ -33,7 +35,7 @@ public final class BufferUtils {
 	}
 
 	@ApiStatus.Internal
-	public static boolean bufferNeedsRefresh(VertexConsumer pBuffer) {
+	public static boolean bufferNeedsRefresh(@NotNull VertexConsumer pBuffer) {
 		return switch (pBuffer) {
 			case BufferBuilder builder -> !builder.building;
 			case OutlineBufferSource.EntityOutlineGenerator outlines -> bufferNeedsRefresh(outlines.delegate());

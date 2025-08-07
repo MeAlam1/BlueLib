@@ -27,6 +27,8 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import software.bluelib.api.utils.logging.BaseLogLevel;
+import software.bluelib.api.utils.logging.BaseLogger;
 import software.bluelib.client.utils.RenderUtils;
 import software.bluelib.client.utils.TextureUtils;
 
@@ -121,8 +123,7 @@ public class AnimatableTexture extends SimpleTexture {
 		@Nullable
 		private Texture generateAnimatedTexture(@NotNull NativeImage pImage, @NotNull AnimationMetadataSection pAnimMeta) {
 			if (!Mth.isMultipleOf(pImage.getWidth(), this.frameSize.width()) || !Mth.isMultipleOf(pImage.getHeight(), this.frameSize.height())) {
-				//BlueLibConstants.LOGGER.error("Image {} size {},{} is not multiple of frame size {},{}", AnimatableTexture.this.location, image.getWidth(), image.getHeight(), this.frameSize.width(), this.frameSize.height());
-
+				BaseLogger.log(BaseLogLevel.ERROR, "Image " + AnimatableTexture.this.location + " size " + pImage.getWidth() + "," + pImage.getHeight() + " is not multiple of frame size " + this.frameSize.width() + "," + this.frameSize.height());
 				return null;
 			}
 
@@ -143,10 +144,10 @@ public class AnimatableTexture extends SimpleTexture {
 
 				for (Frame frame : frames) {
 					if (frame.time <= 0) {
-						//BlueLibConstants.LOGGER.warn("Invalid frame duration on sprite {} frame {}: {}", AnimatableTexture.this.location, index, frame.time);
+						BaseLogger.log(BaseLogLevel.WARNING, "Invalid frame duration on sprite " + AnimatableTexture.this.location + " frame " + index + ": " + frame.time);
 						unusedFrames.add(frame.index);
 					} else if (frame.index < 0 || frame.index >= frameCount) {
-						//BlueLibConstants.LOGGER.warn("Invalid frame index on sprite {} frame {}: {}", AnimatableTexture.this.location, index, frame.index);
+						BaseLogger.log(BaseLogLevel.WARNING, "Invalid frame index on sprite " + AnimatableTexture.this.location + " frame " + index + ": " + frame.index);
 						unusedFrames.add(frame.index);
 					}
 

@@ -10,6 +10,7 @@ package software.bluelib.loader.json.animation;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import java.util.Map;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import software.bluelib.loader.cache.animations.AnimationLibraryCache;
 import software.bluelib.loader.json.CacheFactory;
 import software.bluelib.loader.json.deserialize.animation.AnimationLibrary;
@@ -36,17 +37,17 @@ public interface AnimationCacheFactory extends CacheFactory<AnimationLibraryCach
 	};
 
 	@Override
-	default @NotNull AnimationLibraryCache construct(@NotNull AnimationLibrary pSource) {
+	default @Nullable AnimationLibraryCache construct(@NotNull AnimationLibrary pSource) {
 		return constructBlueAnimator(pSource);
 	}
 
-	@NotNull
+	@Nullable
 	AnimationLibraryCache constructBlueAnimator(@NotNull AnimationLibrary pAnimations);
 
 	final class Builtin implements AnimationCacheFactory {
 
 		@Override
-		public @NotNull AnimationLibraryCache constructBlueAnimator(@NotNull AnimationLibrary pAnimations) {
+		public @Nullable AnimationLibraryCache constructBlueAnimator(@NotNull AnimationLibrary pAnimations) {
 			return pAnimations.animations();
 		}
 	}

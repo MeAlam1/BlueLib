@@ -15,7 +15,7 @@ import java.util.Map;
 import net.minecraft.util.GsonHelper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import software.bluelib.api.utils.JsonUtils;
+import software.bluelib.api.utils.loader.JsonUtils;
 
 public record Behaviour(
 		@NotNull List<String> conditions,

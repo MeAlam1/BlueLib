@@ -19,6 +19,7 @@ public record StopTriggeredEntityAnimPacket(
 		@NotNull String controllerName,
 		@NotNull String animName) implements NetworkPacket<StopTriggeredEntityAnimPacket> {
 
+	@NotNull
 	public static final ResourceLocation ID = BlueResource.resource("stop_triggered_entity_anim");
 
 	@Override

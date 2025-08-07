@@ -61,12 +61,12 @@ public class BlueLibEventProxy implements IEventProxy {
 	}
 
 	@Override
-	public @NotNull Boolean fireBlockPreRender(@NotNull BlueBlockRenderer<?> pRenderer, IRenderContext<?> pContext) {
+	public @NotNull Boolean fireBlockPreRender(@NotNull BlueBlockRenderer<?> pRenderer, @NotNull IRenderContext<?> pContext) {
 		return BlueRenderEvent.Block.Pre.EVENT.invoker().handle(new BlueRenderEvent.Block.Pre(pRenderer, pContext));
 	}
 
 	@Override
-	public void fireBlockPostRender(@NotNull BlueBlockRenderer<?> pRenderer, IRenderContext<?> pContext) {
+	public void fireBlockPostRender(@NotNull BlueBlockRenderer<?> pRenderer, @NotNull IRenderContext<?> pContext) {
 		BlueRenderEvent.Block.Post.EVENT.invoker().handle(new BlueRenderEvent.Block.Post(pRenderer, pContext));
 	}
 
@@ -76,12 +76,12 @@ public class BlueLibEventProxy implements IEventProxy {
 	}
 
 	@Override
-	public @NotNull Boolean fireArmorPreRender(@NotNull BlueArmorRenderer<?> pRenderer, IRenderContext<?> pContext) {
+	public @NotNull Boolean fireArmorPreRender(@NotNull BlueArmorRenderer<?> pRenderer, @NotNull IRenderContext<?> pContext) {
 		return BlueRenderEvent.Armor.Pre.EVENT.invoker().handle(new BlueRenderEvent.Armor.Pre(pRenderer, pContext));
 	}
 
 	@Override
-	public void fireArmorPostRender(@NotNull BlueArmorRenderer<?> pRenderer, IRenderContext<?> pContext) {
+	public void fireArmorPostRender(@NotNull BlueArmorRenderer<?> pRenderer, @NotNull IRenderContext<?> pContext) {
 		BlueRenderEvent.Armor.Post.EVENT.invoker().handle(new BlueRenderEvent.Armor.Post(pRenderer, pContext));
 	}
 
@@ -91,12 +91,12 @@ public class BlueLibEventProxy implements IEventProxy {
 	}
 
 	@Override
-	public @NotNull Boolean fireEntityPreRender(@NotNull BlueEntityRenderer<?> pRenderer, IRenderContext<?> pContext) {
+	public @NotNull Boolean fireEntityPreRender(@NotNull BlueEntityRenderer<?> pRenderer, @NotNull IRenderContext<?> pContext) {
 		return BlueRenderEvent.Entity.Pre.EVENT.invoker().handle(new BlueRenderEvent.Entity.Pre(pRenderer, pContext));
 	}
 
 	@Override
-	public void fireEntityPostRender(@NotNull BlueEntityRenderer<?> pRenderer, IRenderContext<?> pContext) {
+	public void fireEntityPostRender(@NotNull BlueEntityRenderer<?> pRenderer, @NotNull IRenderContext<?> pContext) {
 		BlueRenderEvent.Entity.Post.EVENT.invoker().handle(new BlueRenderEvent.Entity.Post(pRenderer, pContext));
 	}
 
@@ -106,12 +106,12 @@ public class BlueLibEventProxy implements IEventProxy {
 	}
 
 	@Override
-	public @NotNull Boolean fireReplacedEntityPreRender(@NotNull BlueReplacedEntityRenderer<?, ?> pRenderer, IRenderContext<?> pContext) {
+	public @NotNull Boolean fireReplacedEntityPreRender(@NotNull BlueReplacedEntityRenderer<?, ?> pRenderer, @NotNull IRenderContext<?> pContext) {
 		return BlueRenderEvent.ReplacedEntity.Pre.EVENT.invoker().handle(new BlueRenderEvent.ReplacedEntity.Pre(pRenderer, pContext));
 	}
 
 	@Override
-	public void fireReplacedEntityPostRender(@NotNull BlueReplacedEntityRenderer<?, ?> pRenderer, IRenderContext<?> pContext) {
+	public void fireReplacedEntityPostRender(@NotNull BlueReplacedEntityRenderer<?, ?> pRenderer, @NotNull IRenderContext<?> pContext) {
 		BlueRenderEvent.ReplacedEntity.Post.EVENT.invoker().handle(new BlueRenderEvent.ReplacedEntity.Post(pRenderer, pContext));
 	}
 
@@ -121,12 +121,12 @@ public class BlueLibEventProxy implements IEventProxy {
 	}
 
 	@Override
-	public @NotNull Boolean fireItemPreRender(@NotNull BlueItemRenderer<?> pRenderer, IRenderContext<?> pContext) {
+	public @NotNull Boolean fireItemPreRender(@NotNull BlueItemRenderer<?> pRenderer, @NotNull IRenderContext<?> pContext) {
 		return BlueRenderEvent.Item.Pre.EVENT.invoker().handle(new BlueRenderEvent.Item.Pre(pRenderer, pContext));
 	}
 
 	@Override
-	public void fireItemPostRender(@NotNull BlueItemRenderer<?> pRenderer, IRenderContext<?> pContext) {
+	public void fireItemPostRender(@NotNull BlueItemRenderer<?> pRenderer, @NotNull IRenderContext<?> pContext) {
 		BlueRenderEvent.Item.Post.EVENT.invoker().handle(new BlueRenderEvent.Item.Post(pRenderer, pContext));
 	}
 
@@ -136,12 +136,12 @@ public class BlueLibEventProxy implements IEventProxy {
 	}
 
 	@Override
-	public @NotNull Boolean fireObjectPreRender(@NotNull BlueObjectRenderer<?> pRenderer, IRenderContext<?> pContext) {
+	public @NotNull Boolean fireObjectPreRender(@NotNull BlueObjectRenderer<?> pRenderer, @NotNull IRenderContext<?> pContext) {
 		return BlueRenderEvent.Object.Pre.EVENT.invoker().handle(new BlueRenderEvent.Object.Pre(pRenderer, pContext));
 	}
 
 	@Override
-	public void fireObjectPostRender(@NotNull BlueObjectRenderer<?> pRenderer, IRenderContext<?> pContext) {
+	public void fireObjectPostRender(@NotNull BlueObjectRenderer<?> pRenderer, @NotNull IRenderContext<?> pContext) {
 		BlueRenderEvent.Object.Post.EVENT.invoker().handle(new BlueRenderEvent.Object.Post(pRenderer, pContext));
 	}
 }

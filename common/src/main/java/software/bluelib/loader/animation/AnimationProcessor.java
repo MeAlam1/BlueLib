@@ -13,6 +13,8 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
 import net.minecraft.util.Mth;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
 import software.bluelib.loader.animatable.base.AnimatableManager;
@@ -30,23 +32,26 @@ import software.bluelib.loader.model.BlueModel;
 
 public class AnimationProcessor<T extends BlueAnimatable> {
 
+	@NotNull
 	private final Map<String, BoneCache> bones = new Object2ObjectOpenHashMap<>();
+	@NotNull
 	private final BlueModel<T> model;
 
 	public boolean reloadAnimations = false;
 
-	public AnimationProcessor(BlueModel<T> pModel) {
+	public AnimationProcessor(@NotNull BlueModel<T> pModel) {
 		this.model = pModel;
 	}
 
-	public Queue<QueuedAnimation> buildAnimationQueue(T pAnimatable, Animation pAnimation) {
+	@Nullable
+	public Queue<QueuedAnimation> buildAnimationQueue(@NotNull T pAnimatable, @NotNull Animation pAnimation) {
 		LinkedList<QueuedAnimation> animations = new LinkedList<>();
 		boolean error = false;
 
 		for (Animation.Stage stage : pAnimation.getAnimationStages()) {
 			AnimationCache animationCache = null;
 
-			if (stage.animationName() == Animation.Stage.WAIT) { // This is intentional. Do not change this or Tslat will be unhappy
+			if (stage.animationName() == Animation.Stage.WAIT) {
 				animationCache = AnimationCache.generateWaitAnimation(stage.additionalTicks());
 			} else {
 				try {
@@ -64,7 +69,7 @@ public class AnimationProcessor<T extends BlueAnimatable> {
 		return error ? null : animations;
 	}
 
-	public void tickAnimation(T pAnimatable, BlueModel<T> pModel, AnimatableManager<T> pAnimatableManager, double pAnimTime, AnimationState<T> pState, boolean pCrashWhenCantFindBone) {
+	public void tickAnimation(@NotNull T pAnimatable, @NotNull BlueModel<T> pModel, @NotNull AnimatableManager<T> pAnimatableManager, double pAnimTime, @NotNull AnimationState<T> pState, boolean pCrashWhenCantFindBone) {
 		Map<String, BoneSnapshot> boneSnapshots = updateBoneSnapshots(pAnimatableManager.getBoneSnapshotCollection());
 
 		for (AnimationController<T> controller : pAnimatableManager.getAnimationControllers().values()) {
@@ -221,7 +226,8 @@ public class AnimationProcessor<T extends BlueAnimatable> {
 		getRegisteredBones().forEach(BoneCache::resetStateChanges);
 	}
 
-	private Map<String, BoneSnapshot> updateBoneSnapshots(Map<String, BoneSnapshot> pSnapshots) {
+	@NotNull
+	private Map<String, BoneSnapshot> updateBoneSnapshots(@NotNull Map<String, BoneSnapshot> pSnapshots) {
 		for (BoneCache bone : getRegisteredBones()) {
 			if (!pSnapshots.containsKey(bone.getName()))
 				pSnapshots.put(bone.getName(), BoneSnapshot.copy(bone.getInitialSnapshot()));
@@ -230,11 +236,12 @@ public class AnimationProcessor<T extends BlueAnimatable> {
 		return pSnapshots;
 	}
 
-	public BoneCache getBone(String pBoneName) {
+	@NotNull
+	public BoneCache getBone(@NotNull String pBoneName) {
 		return this.bones.get(pBoneName);
 	}
 
-	public void registerBlueBone(BoneCache pBone) {
+	public void registerBlueBone(@NotNull BoneCache pBone) {
 		pBone.saveInitialSnapshot();
 		this.bones.put(pBone.getName(), pBone);
 
@@ -243,7 +250,7 @@ public class AnimationProcessor<T extends BlueAnimatable> {
 		}
 	}
 
-	public void setActiveModel(ModelCache pModel) {
+	public void setActiveModel(@NotNull ModelCache pModel) {
 		this.bones.clear();
 
 		for (BoneCache bone : pModel.topLevelBones()) {
@@ -251,14 +258,15 @@ public class AnimationProcessor<T extends BlueAnimatable> {
 		}
 	}
 
+	@NotNull
 	public Collection<BoneCache> getRegisteredBones() {
 		return this.bones.values();
 	}
 
-	public void preAnimationSetup(AnimationState<T> pAnimationState, double pAnimTime) {
+	public void preAnimationSetup(@NotNull AnimationState<T> pAnimationState, double pAnimTime) {
 		MoLangQueries.updateActor(pAnimationState, pAnimTime);
 		this.model.applyMolangQueries(pAnimationState, pAnimTime);
 	}
 
-	public record QueuedAnimation(AnimationCache animationCache, AnimationCache.LoopType loopType) {}
+	public record QueuedAnimation(@NotNull AnimationCache animationCache, @NotNull AnimationCache.LoopType loopType) {}
 }

@@ -12,6 +12,7 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import java.lang.reflect.Type;
 import java.util.Map;
 import net.minecraft.util.GsonHelper;
+import org.jetbrains.annotations.NotNull;
 import software.bluelib.loader.BlueLoader;
 import software.bluelib.loader.animation.keyframe.data.CustomInstructionKeyframeData;
 import software.bluelib.loader.animation.keyframe.data.ParticleKeyframeData;
@@ -21,7 +22,8 @@ import software.bluelib.loader.cache.animations.keyframe.KeyframeLibraryCache;
 public class KeyFramesAdapter implements JsonDeserializer<KeyframeLibraryCache> {
 
 	@Override
-	public KeyframeLibraryCache deserialize(JsonElement pJson, Type pType, JsonDeserializationContext pContext) throws JsonParseException {
+	@NotNull
+	public KeyframeLibraryCache deserialize(@NotNull JsonElement pJson, @NotNull Type pType, @NotNull JsonDeserializationContext pContext) throws JsonParseException {
 		JsonObject obj = pJson.getAsJsonObject();
 		SoundKeyframeData[] sounds = buildSoundFrameData(obj);
 		ParticleKeyframeData[] particles = buildParticleFrameData(obj);
@@ -30,7 +32,8 @@ public class KeyFramesAdapter implements JsonDeserializer<KeyframeLibraryCache> 
 		return new KeyframeLibraryCache(sounds, particles, customInstructions);
 	}
 
-	private static SoundKeyframeData[] buildSoundFrameData(JsonObject pRootObj) {
+	@NotNull
+	private static SoundKeyframeData[] buildSoundFrameData(@NotNull JsonObject pRootObj) {
 		JsonObject soundsObj = GsonHelper.getAsJsonObject(pRootObj, "sound_effects", new JsonObject());
 		SoundKeyframeData[] sounds = new SoundKeyframeData[soundsObj.size()];
 		int index = 0;
@@ -43,7 +46,8 @@ public class KeyFramesAdapter implements JsonDeserializer<KeyframeLibraryCache> 
 		return sounds;
 	}
 
-	private static ParticleKeyframeData[] buildParticleFrameData(JsonObject pRootObj) {
+	@NotNull
+	private static ParticleKeyframeData[] buildParticleFrameData(@NotNull JsonObject pRootObj) {
 		JsonObject particlesObj = GsonHelper.getAsJsonObject(pRootObj, "particle_effects", new JsonObject());
 		ParticleKeyframeData[] particles = new ParticleKeyframeData[particlesObj.size()];
 		int index = 0;
@@ -61,7 +65,8 @@ public class KeyFramesAdapter implements JsonDeserializer<KeyframeLibraryCache> 
 		return particles;
 	}
 
-	private static CustomInstructionKeyframeData[] buildCustomFrameData(JsonObject pRootObj) {
+	@NotNull
+	private static CustomInstructionKeyframeData[] buildCustomFrameData(@NotNull JsonObject pRootObj) {
 		JsonObject customInstructionsObj = GsonHelper.getAsJsonObject(pRootObj, "timeline", new JsonObject());
 		CustomInstructionKeyframeData[] customInstructions = new CustomInstructionKeyframeData[customInstructionsObj.size()];
 		int index = 0;

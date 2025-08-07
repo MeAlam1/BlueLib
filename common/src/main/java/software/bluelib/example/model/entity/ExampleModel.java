@@ -9,6 +9,7 @@
 package software.bluelib.example.model.entity;
 
 import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.BlueLibConstants;
 import software.bluelib.example.entity.ExampleEntity;
@@ -21,17 +22,17 @@ public class ExampleModel extends BlueModel<ExampleEntity> {
 	private final ResourceLocation animations = ResourceLocation.fromNamespaceAndPath(BlueLibConstants.MOD_ID, "animation/test.animation.json");
 
 	@Override
-	public ResourceLocation getModelResource(ExampleEntity pExampleEntity, @Nullable BlueRenderer<ExampleEntity> pBlueRenderer) {
+	public @NotNull ResourceLocation getModelResource(@NotNull ExampleEntity pExampleEntity, @Nullable BlueRenderer<ExampleEntity> pBlueRenderer) {
 		return model;
 	}
 
 	@Override
-	public ResourceLocation getTextureResource(ExampleEntity pExampleEntity, @Nullable BlueRenderer<ExampleEntity> pBlueRenderer) {
+	public @NotNull ResourceLocation getTextureResource(@NotNull ExampleEntity pExampleEntity, @Nullable BlueRenderer<ExampleEntity> pBlueRenderer) {
 		return ResourceLocation.fromNamespaceAndPath(BlueLibConstants.MOD_ID, "textures/test.png");
 	}
 
 	@Override
-	public ResourceLocation getAnimationResource(ExampleEntity pExampleEntity) {
+	public @NotNull ResourceLocation getAnimationResource(@NotNull ExampleEntity pExampleEntity) {
 		return animations;
 	}
 }

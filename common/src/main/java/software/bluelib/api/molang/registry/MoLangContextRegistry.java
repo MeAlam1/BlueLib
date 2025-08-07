@@ -66,11 +66,13 @@ public class MoLangContextRegistry {
 		});
 	}
 
+	@NotNull
 	protected static final List<Function<MoLangRuntimeBuilder.Input, BaseMoLangContext>> CONTEXT_SUPPLIERS = new ArrayList<>();
 
+	@NotNull
 	protected static final List<Function<Entity, ? extends BaseMoLangContext>> ENTITY_CONTEXT_FACTORIES = new ArrayList<>();
 
-	public static void registerEntityContext(Function<Entity, ? extends BaseMoLangContext> pFactory) {
+	public static void registerEntityContext(@NotNull Function<Entity, ? extends BaseMoLangContext> pFactory) {
 		ENTITY_CONTEXT_FACTORIES.add(pFactory);
 	}
 
@@ -78,7 +80,7 @@ public class MoLangContextRegistry {
 		CONTEXT_SUPPLIERS.add(pFactory);
 	}
 
-	public static @NotNull List<BaseMoLangContext> createContexts(MoLangRuntimeBuilder.Input pInput) {
+	public static @NotNull List<BaseMoLangContext> createContexts(@NotNull MoLangRuntimeBuilder.Input pInput) {
 		List<BaseMoLangContext> result = new ArrayList<>();
 		for (var fn : CONTEXT_SUPPLIERS) {
 			BaseMoLangContext ctx = fn.apply(pInput);

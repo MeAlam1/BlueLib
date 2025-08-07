@@ -31,7 +31,8 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.BlueLibConstants;
-import software.bluelib.api.json.resource.GlowingTextureMeta;
+import software.bluelib.api.utils.logging.BaseLogLevel;
+import software.bluelib.api.utils.logging.BaseLogger;
 import software.bluelib.client.utils.TextureUtils;
 
 // TODO: Clean This Up
@@ -129,7 +130,7 @@ public class AutoGlowingTexture extends BlueAbstractTexture {
 				}
 			}
 		} catch (IOException e) {
-			//BlueLibConstants.LOGGER.warn("Resource failed to open for glowlayer meta: {}", this.glowLayer, e);
+			BaseLogger.log(BaseLogLevel.WARNING, "Resource failed to open for glowlayer meta: " + this.glowLayer, e);
 		}
 
 		NativeImage mask = glowImage;
@@ -139,8 +140,9 @@ public class AutoGlowingTexture extends BlueAbstractTexture {
 
 		boolean animated = originalTexture instanceof AnimatableTexture animatableTexture && animatableTexture.isAnimated();
 
-		if (animated)
+		if (animated) {
 			((AnimatableTexture) originalTexture).animationContents.animatedTexture.setGlowMaskTexture(this, baseImage, mask);
+		}
 
 		return () -> {
 			if (!animated)

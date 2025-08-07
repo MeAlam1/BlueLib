@@ -13,7 +13,7 @@ import com.google.gson.JsonParseException;
 import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import software.bluelib.api.utils.JsonUtils;
+import software.bluelib.api.utils.loader.JsonUtils;
 
 public record TextureMesh(
 		@NotNull List<Float> localPivot,

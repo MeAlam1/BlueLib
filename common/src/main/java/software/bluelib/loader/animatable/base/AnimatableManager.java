@@ -24,8 +24,11 @@ import software.bluelib.loader.geckolib.constant.dataticket.DataTicket;
 
 public class AnimatableManager<T extends BlueAnimatable> {
 
+	@NotNull
 	private final Map<String, BoneSnapshot> boneSnapshotCollection = new Object2ObjectOpenHashMap<>();
+	@NotNull
 	private final Map<String, AnimationController<T>> animationControllers;
+	@Nullable
 	private Map<DataTicket<?>, Object> extraData;
 
 	private double lastUpdateTime;
@@ -51,10 +54,12 @@ public class AnimatableManager<T extends BlueAnimatable> {
 		getAnimationControllers().remove(pName);
 	}
 
+	@NotNull
 	public Map<String, AnimationController<T>> getAnimationControllers() {
 		return this.animationControllers;
 	}
 
+	@NotNull
 	public Map<String, BoneSnapshot> getBoneSnapshotCollection() {
 		return this.boneSnapshotCollection;
 	}
@@ -63,7 +68,8 @@ public class AnimatableManager<T extends BlueAnimatable> {
 		getBoneSnapshotCollection().clear();
 	}
 
-	public double getLastUpdateTime() {
+	@NotNull
+	public Double getLastUpdateTime() {
 		return this.lastUpdateTime;
 	}
 
@@ -71,7 +77,8 @@ public class AnimatableManager<T extends BlueAnimatable> {
 		this.lastUpdateTime = pUpdateTime;
 	}
 
-	public double getFirstTickTime() {
+	@NotNull
+	public Double getFirstTickTime() {
 		return this.firstTickTime;
 	}
 
@@ -94,6 +101,7 @@ public class AnimatableManager<T extends BlueAnimatable> {
 		this.extraData.put(pDataTicket, pData);
 	}
 
+	@Nullable
 	public <D> D getData(@NotNull DataTicket<D> pDataTicket) {
 		return this.extraData != null ? pDataTicket.getData(this.extraData) : null;
 	}
@@ -119,28 +127,31 @@ public class AnimatableManager<T extends BlueAnimatable> {
 		}
 	}
 
-	public void stopTriggeredAnimation(@NotNull String pControllerName, @Nullable String pAnimName) {
+	public void stopTriggeredAnimation(@Nullable String pControllerName, @Nullable String pAnimName) {
 		AnimationController<?> controller = getAnimationControllers().get(pControllerName);
 
 		if (controller != null && (pAnimName == null || controller.triggerableAnimations.get(pAnimName) == controller.getTriggeredAnimation()))
 			controller.stopTriggeredAnimation();
 	}
 
-	public record ControllerRegistrar<T extends BlueAnimatable>(List<AnimationController<T>> controllers) {
+	public record ControllerRegistrar<T extends BlueAnimatable>(@NotNull List<AnimationController<T>> controllers) {
 
 		@SafeVarargs
+		@NotNull
 		public final ControllerRegistrar<T> add(@NotNull AnimationController<T>... pControllers) {
 			controllers().addAll(Arrays.asList(pControllers));
 
 			return this;
 		}
 
+		@NotNull
 		public ControllerRegistrar<T> add(@NotNull AnimationController<T> pController) {
 			controllers().add(pController);
 
 			return this;
 		}
 
+		@NotNull
 		public ControllerRegistrar<T> remove(@NotNull String pName) {
 			controllers().removeIf(controller -> controller.getName().equals(pName));
 
@@ -148,6 +159,7 @@ public class AnimatableManager<T extends BlueAnimatable> {
 		}
 
 		@ApiStatus.Internal
+		@NotNull
 		private Object2ObjectArrayMap<String, AnimationController<T>> build() {
 			Object2ObjectArrayMap<String, AnimationController<T>> map = new Object2ObjectArrayMap<>(controllers().size());
 

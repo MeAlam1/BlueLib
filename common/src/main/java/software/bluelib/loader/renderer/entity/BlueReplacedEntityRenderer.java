@@ -31,6 +31,7 @@ import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.scores.Team;
 import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import software.bluelib.BlueLibConstants;
@@ -54,18 +55,24 @@ import software.bluelib.loader.renderer.context.IRenderContext;
 
 public class BlueReplacedEntityRenderer<E extends Entity, T extends BlueAnimatable> extends EntityRenderer<E> implements BlueRenderer<T> {
 
+	@NotNull
 	protected final BlueRenderLayersContainer<T> renderLayers = new BlueRenderLayersContainer<>(this);
+	@NotNull
 	protected final BlueModel<T> model;
+	@NotNull
 	protected final T animatable;
 
+	@Nullable
 	protected E currentEntity;
 	protected float scaleWidth = 1;
 	protected float scaleHeight = 1;
 
+	@NotNull
 	protected Matrix4f entityRenderTranslations = new Matrix4f();
+	@NotNull
 	protected Matrix4f modelRenderTranslations = new Matrix4f();
 
-	public BlueReplacedEntityRenderer(EntityRendererProvider.Context pRenderManager, BlueModel<T> pModel, T pAnimatable) {
+	public BlueReplacedEntityRenderer(@NotNull EntityRendererProvider.Context pRenderManager, @NotNull BlueModel<T> pModel, @NotNull T pAnimatable) {
 		super(pRenderManager);
 
 		this.model = pModel;
@@ -73,44 +80,48 @@ public class BlueReplacedEntityRenderer<E extends Entity, T extends BlueAnimatab
 	}
 
 	@Override
-	public BlueModel<T> getBlueModel() {
+	public @NotNull BlueModel<T> getBlueModel() {
 		return this.model;
 	}
 
 	@Override
-	public T getAnimatable() {
+	public @NotNull T getAnimatable() {
 		return this.animatable;
 	}
 
-	public E getCurrentEntity() {
+	public @Nullable E getCurrentEntity() {
 		return this.currentEntity;
 	}
 
 	@Override
-	public long getInstanceId(IRenderContext<T> pContext) {
+	public long getInstanceId(@NotNull IRenderContext<T> pContext) {
 		return this.currentEntity.getId();
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(E pEntity) {
+	@NotNull
+	public ResourceLocation getTextureLocation(@NotNull E pEntity) {
 		return BlueRenderer.super.getTextureLocation(this.animatable);
 	}
 
 	@Override
-	public List<BlueRenderLayer<T>> getRenderLayers() {
+	public @NotNull List<BlueRenderLayer<T>> getRenderLayers() {
 		return this.renderLayers.getRenderLayers();
 	}
 
-	public BlueReplacedEntityRenderer<E, T> addRenderLayer(BlueRenderLayer<T> pRenderLayer) {
+	@NotNull
+	public BlueReplacedEntityRenderer<E, T> addRenderLayer(@NotNull BlueRenderLayer<T> pRenderLayer) {
 		this.renderLayers.addLayer(pRenderLayer);
 
 		return this;
 	}
 
+	@NotNull
 	public BlueReplacedEntityRenderer<E, T> withScale(float pScale) {
 		return withScale(pScale, pScale);
 	}
 
+	@NotNull
 	public BlueReplacedEntityRenderer<E, T> withScale(float pScaleWidth, float pScaleHeight) {
 		this.scaleWidth = pScaleWidth;
 		this.scaleHeight = pScaleHeight;
@@ -120,7 +131,7 @@ public class BlueReplacedEntityRenderer<E extends Entity, T extends BlueAnimatab
 
 	@Nullable
 	@Override
-	public RenderType getRenderType(ResourceLocation pTexture, IRenderContext<T> pContext) {
+	public RenderType getRenderType(@NotNull ResourceLocation pTexture, @NotNull IRenderContext<T> pContext) {
 		final boolean invisible = this.currentEntity != null && this.currentEntity.isInvisible();
 
 		if (invisible && !this.currentEntity.isInvisibleTo(PlayerUtils.getClientPlayer()))
@@ -133,7 +144,7 @@ public class BlueReplacedEntityRenderer<E extends Entity, T extends BlueAnimatab
 	}
 
 	@Override
-	public void preRender(IRenderContext<T> pContext) {
+	public void preRender(@NotNull IRenderContext<T> pContext) {
 		this.entityRenderTranslations = new Matrix4f(pContext.poseStack().last().pose());
 
 		scaleModelForRender(this.scaleWidth, this.scaleHeight, pContext);
@@ -141,7 +152,7 @@ public class BlueReplacedEntityRenderer<E extends Entity, T extends BlueAnimatab
 
 	@Override
 	@ApiStatus.Internal
-	public void render(E pEntity, float pEntityYaw, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBufferSource, int pPackedLight) {
+	public void render(@NotNull E pEntity, float pEntityYaw, float pPartialTick, @NotNull PoseStack pPoseStack, @NotNull MultiBufferSource pBufferSource, int pPackedLight) {
 		this.currentEntity = pEntity;
 
 		defaultRender(new BaseRenderContext<>(
@@ -149,7 +160,7 @@ public class BlueReplacedEntityRenderer<E extends Entity, T extends BlueAnimatab
 				this.animatable,
 				this.model.getBakedModel(getBlueModel().getModelResource(animatable, this)),
 				pBufferSource,
-				false, // isReRender
+				false,
 				pPartialTick,
 				pPackedLight,
 				getPackedOverlay(this.animatable, 0, pPartialTick),
@@ -157,7 +168,7 @@ public class BlueReplacedEntityRenderer<E extends Entity, T extends BlueAnimatab
 	}
 
 	@Override
-	public void actuallyRender(IRenderContext<T> pContext) {
+	public void actuallyRender(@NotNull IRenderContext<T> pContext) {
 		if (pContext instanceof FullRenderContext<T> full) {
 			PoseStack pPoseStack = full.poseStack();
 			T pAnimatable = full.animatable();
@@ -257,13 +268,13 @@ public class BlueReplacedEntityRenderer<E extends Entity, T extends BlueAnimatab
 	}
 
 	@Override
-	public void applyRenderLayers(IRenderContext<T> pContext) {
+	public void applyRenderLayers(@NotNull IRenderContext<T> pContext) {
 		if (!this.currentEntity.isSpectator())
 			BlueRenderer.super.applyRenderLayers(pContext);
 	}
 
 	@Override
-	public void renderFinal(IRenderContext<T> pContext) {
+	public void renderFinal(@NotNull IRenderContext<T> pContext) {
 		super.render(this.currentEntity, 0, pContext.partialTick(), pContext.poseStack(), pContext.bufferSource(), pContext.packedLight());
 
 		if (this.currentEntity instanceof Mob mob) {
@@ -275,18 +286,18 @@ public class BlueReplacedEntityRenderer<E extends Entity, T extends BlueAnimatab
 	}
 
 	@Override
-	public void postRender(IRenderContext<T> pContext) {
+	public void postRender(@NotNull IRenderContext<T> pContext) {
 		if (!pContext.isReRender())
 			super.render(this.currentEntity, 0, pContext.partialTick(), pContext.poseStack(), pContext.bufferSource(), pContext.packedLight());
 	}
 
 	@Override
-	public void doPostRenderCleanup(IRenderContext<T> pContext) {
+	public void doPostRenderCleanup(@NotNull IRenderContext<T> pContext) {
 		this.currentEntity = null;
 	}
 
 	@Override
-	public void renderRecursively(BoneCache pBone, FullRenderContext<T> pContext) {
+	public void renderRecursively(@NotNull BoneCache pBone, @NotNull FullRenderContext<T> pContext) {
 		pContext.poseStack().pushPose();
 		RenderUtils.translateMatrixToBone(pContext.poseStack(), pBone);
 		RenderUtils.translateToPivotPoint(pContext.poseStack(), pBone);
@@ -316,7 +327,7 @@ public class BlueReplacedEntityRenderer<E extends Entity, T extends BlueAnimatab
 		pContext.poseStack().popPose();
 	}
 
-	protected void applyRotations(T pAnimatable, PoseStack pPoseStack, float pAgeInTicks, float pRotationYaw,
+	protected void applyRotations(@NotNull T pAnimatable, @NotNull PoseStack pPoseStack, float pAgeInTicks, float pRotationYaw,
 			float pPartialTick, float pNativeScale) {
 		if (isShaking(pAnimatable))
 			pRotationYaw += (float) (Math.cos(this.currentEntity.tickCount * 3.25d) * Math.PI * 0.4d);
@@ -345,16 +356,16 @@ public class BlueReplacedEntityRenderer<E extends Entity, T extends BlueAnimatab
 		}
 	}
 
-	protected float getDeathMaxRotation(T pAnimatable) {
+	protected float getDeathMaxRotation(@NotNull T pAnimatable) {
 		return 90f;
 	}
 
-	public double getNameRenderCutoffDistance(E pEntity, T pAnimatable) {
+	public double getNameRenderCutoffDistance(@NotNull E pEntity, @NotNull T pAnimatable) {
 		return pEntity.isDiscrete() ? 32d : 64d;
 	}
 
 	@Override
-	public boolean shouldShowName(E pEntity) {
+	public boolean shouldShowName(@NotNull E pEntity) {
 		if (!(pEntity instanceof LivingEntity))
 			return super.shouldShowName(pEntity);
 
@@ -384,7 +395,7 @@ public class BlueReplacedEntityRenderer<E extends Entity, T extends BlueAnimatab
 	}
 
 	@Override
-	public int getPackedOverlay(T pAnimatable, float pU, float pPartialTick) {
+	public int getPackedOverlay(@NotNull T pAnimatable, float pU, float pPartialTick) {
 		if (!(this.currentEntity instanceof LivingEntity entity))
 			return OverlayTexture.NO_OVERLAY;
 
@@ -392,13 +403,13 @@ public class BlueReplacedEntityRenderer<E extends Entity, T extends BlueAnimatab
 				OverlayTexture.v(entity.hurtTime > 0 || entity.deathTime > 0));
 	}
 
-	public boolean isShaking(T pAnimatable) {
+	public boolean isShaking(@NotNull T pAnimatable) {
 		return this.currentEntity.isFullyFrozen();
 	}
 
 	// TODO: WHAT THE ACTUAL FUCK IS THIS? PLEASE CLEAN IT UP FUTURE ARAM.
-	public <H extends Entity, M extends Mob> void renderLeash(M pMob, float pPartialTick, PoseStack pPoseStack,
-			MultiBufferSource pBufferSource, H pLeashHolder) {
+	public <H extends Entity, M extends Mob> void renderLeash(@NotNull M pMob, float pPartialTick, @NotNull PoseStack pPoseStack,
+			@NotNull MultiBufferSource pBufferSource, @NotNull H pLeashHolder) {
 		double lerpBodyAngle = (Mth.lerp(pPartialTick, pMob.yBodyRotO, pMob.yBodyRot) * Mth.DEG_TO_RAD) + Mth.HALF_PI;
 		Vec3 leashOffset = pMob.getLeashOffset(pPartialTick);
 		double xAngleOffset = Math.cos(lerpBodyAngle) * leashOffset.z + Math.sin(lerpBodyAngle) * leashOffset.x;
@@ -439,7 +450,7 @@ public class BlueReplacedEntityRenderer<E extends Entity, T extends BlueAnimatab
 		pPoseStack.popPose();
 	}
 
-	private static void renderLeashPiece(VertexConsumer pBuffer, Matrix4f pPositionMatrix, float pXDif, float pYDif,
+	private static void renderLeashPiece(@NotNull VertexConsumer pBuffer, @NotNull Matrix4f pPositionMatrix, float pXDif, float pYDif,
 			float pZDif, int pEntityBlockLight, int pHolderBlockLight, int pEntitySkyLight,
 			int pHolderSkyLight, float pWidth, float pYOffset, float pXOffset, float pZOffset, int pSegment, boolean pIsLeashKnot) {
 		float piecePosPercent = pSegment / 24f;
@@ -459,7 +470,7 @@ public class BlueReplacedEntityRenderer<E extends Entity, T extends BlueAnimatab
 	}
 
 	@Override
-	public void updateAnimatedTextureFrame(T pAnimatable) {
+	public void updateAnimatedTextureFrame(@NotNull T pAnimatable) {
 		AnimatableTexture.setAndUpdate(getTextureLocation(pAnimatable));
 	}
 
@@ -469,12 +480,12 @@ public class BlueReplacedEntityRenderer<E extends Entity, T extends BlueAnimatab
 	}
 
 	@Override
-	public boolean firePreRenderEvent(IRenderContext<T> pContext) {
+	public boolean firePreRenderEvent(@NotNull IRenderContext<T> pContext) {
 		return BlueLibConstants.PlatformHelper.EVENT_PROXY.fireReplacedEntityPreRender(this, pContext);
 	}
 
 	@Override
-	public void firePostRenderEvent(IRenderContext<T> pContext) {
+	public void firePostRenderEvent(@NotNull IRenderContext<T> pContext) {
 		BlueLibConstants.PlatformHelper.EVENT_PROXY.fireReplacedEntityPostRender(this, pContext);
 	}
 }

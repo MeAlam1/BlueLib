@@ -8,25 +8,31 @@
 package software.bluelib.api.molang;
 
 import net.minecraft.world.entity.Entity;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.molang.expression.MoLangExpression;
 import software.bluelib.loader.animatable.base.BlueAnimatable;
 import software.bluelib.loader.animation.AnimationState;
 
 public class MoLangUtils {
 
-	public static Object state(String pExpression, AnimationState<? extends BlueAnimatable> pState) {
+	@Nullable
+	public static Object state(@NotNull String pExpression, @NotNull AnimationState<? extends BlueAnimatable> pState) {
 		return MoLang.evaluate(pExpression, builder -> builder.with("bluelib_state", (java.util.function.Supplier<?>) () -> pState));
 	}
 
-	public static Object state(MoLangExpression pExpression, AnimationState<? extends BlueAnimatable> pState) {
+	@Nullable
+	public static Object state(@NotNull MoLangExpression pExpression, @NotNull AnimationState<? extends BlueAnimatable> pState) {
 		return MoLang.evaluate(pExpression, builder -> builder.with("bluelib_state", (java.util.function.Supplier<?>) () -> pState));
 	}
 
-	public static Object entity(String pExpression, Entity pEntity) {
+	@Nullable
+	public static Object entity(@NotNull String pExpression, @NotNull Entity pEntity) {
 		return MoLang.evaluate(pExpression, builder -> builder.with("bluelib_entity", (java.util.function.Supplier<?>) () -> pEntity));
 	}
 
-	public static Object entity(MoLangExpression pExpression, Entity pEntity) {
+	@Nullable
+	public static Object entity(@NotNull MoLangExpression pExpression, @NotNull Entity pEntity) {
 		return MoLang.evaluate(pExpression, builder -> builder.with("bluelib_entity", (java.util.function.Supplier<?>) () -> pEntity));
 	}
 }

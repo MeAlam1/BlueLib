@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.client.utils.PlayerUtils;
 import software.bluelib.loader.animatable.base.BlueAnimatable;
@@ -23,12 +24,12 @@ import software.bluelib.loader.renderer.context.IRenderContext;
 
 public class AutoGlowingBlueLayer<T extends BlueAnimatable> extends BlueRenderLayer<T> {
 
-	public AutoGlowingBlueLayer(BlueRenderer<T> pRenderer) {
+	public AutoGlowingBlueLayer(@NotNull BlueRenderer<T> pRenderer) {
 		super(pRenderer);
 	}
 
 	@Nullable
-	protected RenderType getRenderType(T pAnimatable, @Nullable MultiBufferSource pBufferSource) {
+	protected RenderType getRenderType(@NotNull T pAnimatable, @Nullable MultiBufferSource pBufferSource) {
 		if (!(pAnimatable instanceof Entity entity))
 			return AutoGlowingTexture.getRenderType(getTextureResource(pAnimatable));
 
@@ -49,7 +50,7 @@ public class AutoGlowingBlueLayer<T extends BlueAnimatable> extends BlueRenderLa
 	}
 
 	@Override
-	public void render(IRenderContext<T> pContext) {
+	public void render(@NotNull IRenderContext<T> pContext) {
 		if (pContext instanceof FullRenderContext<T> full) {
 			if (full.renderType() != null) {
 				getRenderer().reRender(full);

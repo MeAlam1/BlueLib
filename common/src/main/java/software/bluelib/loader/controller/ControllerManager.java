@@ -13,9 +13,10 @@ import java.util.Map;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.molang.MoLang;
 import software.bluelib.api.molang.MoLangUtils;
-import software.bluelib.api.utils.LoaderUtils;
+import software.bluelib.api.utils.loader.LoaderUtils;
 import software.bluelib.loader.animatable.base.AnimatableManager;
 import software.bluelib.loader.animatable.base.BlueAnimatable;
 import software.bluelib.loader.animation.Animation;
@@ -28,7 +29,7 @@ import software.bluelib.loader.cache.controller.*;
 public class ControllerManager<T extends BlueAnimatable> {
 
 	@SuppressWarnings("unchecked")
-	public void registerControllers(BlueAnimatable pAnimatable, @NotNull ControllerCache pCache, @NotNull AnimatableManager.ControllerRegistrar<T> pControllers) {
+	public void registerControllers(@NotNull BlueAnimatable pAnimatable, @NotNull ControllerCache pCache, @NotNull AnimatableManager.ControllerRegistrar<T> pControllers) {
 		List<GroupCache> groups = pCache.groups();
 		for (GroupCache group : groups) {
 			Map<String, BehaviourCache> behaviours = group.behaviours();
@@ -73,7 +74,8 @@ public class ControllerManager<T extends BlueAnimatable> {
 		}
 	}
 
-	protected static <E extends BlueAnimatable> PlayState animationController(final AnimationState<E> pEvent, BehaviourCache pBehaviour, BlueAnimatable pAnimatable, boolean pOverlayOnly) {
+	@NotNull
+	protected static <E extends BlueAnimatable> PlayState animationController(@NotNull final AnimationState<E> pEvent, @NotNull BehaviourCache pBehaviour, @NotNull BlueAnimatable pAnimatable, boolean pOverlayOnly) {
 		for (Map.Entry<String, StateCache> entry : pBehaviour.states().entrySet()) {
 			StateCache state = entry.getValue();
 			if (pOverlayOnly && !state.isOverlay()) continue;
@@ -98,9 +100,9 @@ public class ControllerManager<T extends BlueAnimatable> {
 	}
 
 	private static int getEffectivePriority(
-			Integer pPriority,
-			List<String> pConditions,
-			BlueAnimatable pAnimatable) {
+			@Nullable Integer pPriority,
+			@NotNull List<String> pConditions,
+			@NotNull BlueAnimatable pAnimatable) {
 		int effectivePriority = pPriority == null ? Integer.MIN_VALUE : pPriority;
 		if (pAnimatable instanceof Entity entity) {
 			for (String condition : pConditions) {
@@ -116,15 +118,16 @@ public class ControllerManager<T extends BlueAnimatable> {
 		return effectivePriority;
 	}
 
-	private static int getEffectivePriority(AnimationCache pState, BlueAnimatable pAnimatable) {
+	private static int getEffectivePriority(@NotNull AnimationCache pState, @NotNull BlueAnimatable pAnimatable) {
 		return getEffectivePriority(pState.priority(), pState.conditions(), pAnimatable);
 	}
 
-	private static int getEffectiveBehaviourPriority(BehaviourCache pBehaviour, BlueAnimatable pAnimatable) {
+	private static int getEffectiveBehaviourPriority(@NotNull BehaviourCache pBehaviour, @NotNull BlueAnimatable pAnimatable) {
 		return getEffectivePriority(pBehaviour.priority(), pBehaviour.conditions(), pAnimatable);
 	}
 
-	public static ControllerCache getBakedController(ResourceLocation pLocation) {
+	@NotNull
+	public static ControllerCache getBakedController(@NotNull ResourceLocation pLocation) {
 		ResourceLocation[] attempts = new ResourceLocation[] {
 				pLocation,
 				LoaderUtils.stripSuffix(".json", pLocation),

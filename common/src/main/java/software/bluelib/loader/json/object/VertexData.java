@@ -16,6 +16,7 @@ public record VertexData(@NotNull Vector3f position, @NotNull Float texU, @NotNu
 		this(new Vector3f(pX.floatValue(), pY.floatValue(), pZ.floatValue()), 0F, 0F);
 	}
 
+	@NotNull
 	public VertexData withUVs(@NotNull Float pTexU, @NotNull Float pTexV) {
 		return new VertexData(this.position, pTexU, pTexV);
 	}

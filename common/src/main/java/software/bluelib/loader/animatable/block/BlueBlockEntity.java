@@ -25,12 +25,12 @@ public interface BlueBlockEntity extends BlueAnimatable {
 
 	@ApiStatus.NonExtendable
 	@Nullable
-	default <D> D getAnimData(SerializableDataTicket<D> pDataTicket) {
+	default <D> D getAnimData(@NotNull SerializableDataTicket<D> pDataTicket) {
 		return getAnimatableInstanceCache().getManagerForId(0).getData(pDataTicket);
 	}
 
 	@ApiStatus.NonExtendable
-	default <D> void setAnimData(SerializableDataTicket<D> pDataTicket, D pData) {
+	default <D> void setAnimData(@NotNull SerializableDataTicket<D> pDataTicket, @NotNull D pData) {
 		BlockEntity blockEntity = (BlockEntity) this;
 		Level level = blockEntity.getLevel();
 
@@ -47,7 +47,7 @@ public interface BlueBlockEntity extends BlueAnimatable {
 	}
 
 	@ApiStatus.NonExtendable
-	default void triggerAnim(@Nullable String pControllerName, String pAnimName) {
+	default void triggerAnim(@Nullable String pControllerName, @NotNull String pAnimName) {
 		BlockEntity blockEntity = (BlockEntity) this;
 		Level level = blockEntity.getLevel();
 

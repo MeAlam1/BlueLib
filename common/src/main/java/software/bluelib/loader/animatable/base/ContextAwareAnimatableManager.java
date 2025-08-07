@@ -16,6 +16,7 @@ import software.bluelib.loader.geckolib.constant.dataticket.DataTicket;
 
 public abstract class ContextAwareAnimatableManager<T extends BlueAnimatable, C> extends AnimatableManager<T> {
 
+	@NotNull
 	private final Map<C, AnimatableManager<T>> managers;
 
 	public ContextAwareAnimatableManager(@NotNull BlueAnimatable pAnimatable) {
@@ -24,10 +25,13 @@ public abstract class ContextAwareAnimatableManager<T extends BlueAnimatable, C>
 		this.managers = buildContextOptions(pAnimatable);
 	}
 
+	@NotNull
 	protected abstract Map<C, AnimatableManager<T>> buildContextOptions(@NotNull BlueAnimatable pAnimatable);
 
+	@NotNull
 	public abstract C getCurrentContext();
 
+	@NotNull
 	public AnimatableManager<T> getManagerForContext(@NotNull C pContext) {
 		return this.managers.get(pContext);
 	}
@@ -40,11 +44,11 @@ public abstract class ContextAwareAnimatableManager<T extends BlueAnimatable, C>
 		getManagerForContext(getCurrentContext()).removeController(pName);
 	}
 
-	public Map<String, AnimationController<T>> getAnimationControllers() {
+	public @NotNull Map<String, AnimationController<T>> getAnimationControllers() {
 		return getManagerForContext(getCurrentContext()).getAnimationControllers();
 	}
 
-	public Map<String, BoneSnapshot> getBoneSnapshotCollection() {
+	public @NotNull Map<String, BoneSnapshot> getBoneSnapshotCollection() {
 		return getManagerForContext(getCurrentContext()).getBoneSnapshotCollection();
 	}
 
@@ -52,7 +56,7 @@ public abstract class ContextAwareAnimatableManager<T extends BlueAnimatable, C>
 		getManagerForContext(getCurrentContext()).clearSnapshotCache();
 	}
 
-	public double getLastUpdateTime() {
+	public @NotNull Double getLastUpdateTime() {
 		return getManagerForContext(getCurrentContext()).getLastUpdateTime();
 	}
 
@@ -60,7 +64,7 @@ public abstract class ContextAwareAnimatableManager<T extends BlueAnimatable, C>
 		getManagerForContext(getCurrentContext()).updatedAt(pUpdateTime);
 	}
 
-	public double getFirstTickTime() {
+	public @NotNull Double getFirstTickTime() {
 		return getManagerForContext(getCurrentContext()).getFirstTickTime();
 	}
 
@@ -94,7 +98,7 @@ public abstract class ContextAwareAnimatableManager<T extends BlueAnimatable, C>
 		}
 	}
 
-	public void stopTriggeredAnimation(@NotNull String pControllerName, @Nullable String pAnimName) {
+	public void stopTriggeredAnimation(@Nullable String pControllerName, @Nullable String pAnimName) {
 		for (AnimatableManager<T> manager : this.managers.values()) {
 			manager.stopTriggeredAnimation(pControllerName, pAnimName);
 		}
@@ -104,6 +108,7 @@ public abstract class ContextAwareAnimatableManager<T extends BlueAnimatable, C>
 		super.setData(pDataTicket, pData);
 	}
 
+	@Nullable
 	public <D> D getData(@NotNull DataTicket<D> pDataTicket) {
 		return super.getData(pDataTicket);
 	}

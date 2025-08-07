@@ -16,6 +16,7 @@ import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 import javax.tools.Diagnostic;
+import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.annotations.WillBeDeprecated;
 
 @SupportedAnnotationTypes("software.bluelib.api.annotations.WillBeDeprecated")
@@ -23,7 +24,7 @@ import software.bluelib.api.annotations.WillBeDeprecated;
 public class WillBeDeprecatedProcessor extends AbstractProcessor {
 
 	@Override
-	public boolean process(Set<? extends TypeElement> pAnnotations, RoundEnvironment pRoundEnv) {
+	public boolean process(@NotNull Set<? extends TypeElement> pAnnotations, @NotNull RoundEnvironment pRoundEnv) {
 		for (Element e : pRoundEnv.getElementsAnnotatedWith(WillBeDeprecated.class)) {
 			WillBeDeprecated ann = e.getAnnotation(WillBeDeprecated.class);
 			if (ann.showWarning()) {

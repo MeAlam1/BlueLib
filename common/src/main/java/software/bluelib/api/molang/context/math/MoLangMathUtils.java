@@ -8,10 +8,12 @@
 package software.bluelib.api.molang.context.math;
 
 import java.util.List;
+import org.jetbrains.annotations.NotNull;
 
 public class MoLangMathUtils {
 
-	public static double toDouble(Object pObj) {
+	@NotNull
+	public static Double toDouble(@NotNull Object pObj) {
 		if (pObj instanceof Number) return ((Number) pObj).doubleValue();
 		try {
 			return Double.parseDouble(pObj.toString());
@@ -20,12 +22,14 @@ public class MoLangMathUtils {
 		}
 	}
 
-	public static double toDouble(List<Object> pArgs, int pIndex) {
+	@NotNull
+	public static Double toDouble(@NotNull List<Object> pArgs, @NotNull Integer pIndex) {
 		return toDouble(pArgs, pIndex, 0.0);
 	}
 
-	public static double toDouble(List<Object> pArgs, int pIndex, double pFallback) {
-		if (pArgs == null || pIndex >= pArgs.size()) return pFallback;
+	@NotNull
+	public static Double toDouble(@NotNull List<Object> pArgs, @NotNull Integer pIndex, @NotNull Double pFallback) {
+		if (pIndex >= pArgs.size()) return pFallback;
 		return toDouble(pArgs.get(pIndex));
 	}
 }

@@ -9,18 +9,23 @@ package software.bluelib.loader.renderer.context;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.MultiBufferSource;
+import org.jetbrains.annotations.NotNull;
 import software.bluelib.loader.animatable.base.BlueAnimatable;
 import software.bluelib.loader.cache.model.ModelCache;
 
 public sealed interface IRenderContext<T extends BlueAnimatable>
 		permits BaseRenderContext, FullRenderContext {
 
+	@NotNull
 	PoseStack poseStack();
 
+	@NotNull
 	T animatable();
 
+	@NotNull
 	ModelCache model();
 
+	@NotNull
 	MultiBufferSource bufferSource();
 
 	boolean isReRender();

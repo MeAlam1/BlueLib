@@ -25,6 +25,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.DyedItemColor;
 import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import software.bluelib.BlueLibConstants;
@@ -47,30 +48,49 @@ import software.bluelib.loader.renderer.context.IRenderContext;
 
 public class BlueArmorRenderer<T extends Item & BlueItem> extends HumanoidModel implements BlueRenderer<T> {
 
+	@NotNull
 	protected final BlueRenderLayersContainer<T> renderLayers = new BlueRenderLayersContainer<>(this);
+	@NotNull
 	protected final BlueModel<T> model;
 
+	@Nullable
 	protected T animatable;
+	@Nullable
 	protected HumanoidModel<?> baseModel;
 	protected float scaleWidth = 1;
 	protected float scaleHeight = 1;
 
+	@NotNull
 	protected Matrix4f entityRenderTranslations = new Matrix4f();
+	@NotNull
 	protected Matrix4f modelRenderTranslations = new Matrix4f();
 
+	@Nullable
 	protected ModelCache lastModel = null;
+	@Nullable
 	protected BoneCache head = null;
+	@Nullable
 	protected BoneCache body = null;
+	@Nullable
 	protected BoneCache rightArm = null;
+	@Nullable
 	protected BoneCache leftArm = null;
+	@Nullable
 	protected BoneCache rightLeg = null;
+	@Nullable
 	protected BoneCache leftLeg = null;
+	@Nullable
 	protected BoneCache rightBoot = null;
+	@Nullable
 	protected BoneCache leftBoot = null;
 
+	@Nullable
 	protected Entity currentEntity = null;
+	@Nullable
 	protected ItemStack currentStack = null;
+	@Nullable
 	protected EquipmentSlot currentSlot = null;
+	@Nullable
 	protected MultiBufferSource bufferSource = null;
 	protected float partialTick;
 	protected float limbSwing;
@@ -78,7 +98,7 @@ public class BlueArmorRenderer<T extends Item & BlueItem> extends HumanoidModel 
 	protected float netHeadYaw;
 	protected float headPitch;
 
-	public BlueArmorRenderer(BlueModel<T> pModel) {
+	public BlueArmorRenderer(@NotNull BlueModel<T> pModel) {
 		super(Minecraft.getInstance().getEntityModels().bakeLayer(ModelLayers.PLAYER_INNER_ARMOR));
 
 		this.model = pModel;
@@ -86,28 +106,32 @@ public class BlueArmorRenderer<T extends Item & BlueItem> extends HumanoidModel 
 	}
 
 	@Override
-	public BlueModel<T> getBlueModel() {
+	public @NotNull BlueModel<T> getBlueModel() {
 		return this.model;
 	}
 
-	public T getAnimatable() {
+	public @Nullable T getAnimatable() {
 		return this.animatable;
 	}
 
-	public Entity getCurrentEntity() {
+	public @Nullable Entity getCurrentEntity() {
 		return this.currentEntity;
 	}
 
-	public ItemStack getCurrentStack() {
+	public @Nullable ItemStack getCurrentStack() {
 		return this.currentStack;
 	}
 
-	public EquipmentSlot getCurrentSlot() {
+	public @Nullable EquipmentSlot getCurrentSlot() {
 		return this.currentSlot;
 	}
 
 	@Override
-	public long getInstanceId(IRenderContext<T> pContext) {
+	public long getInstanceId(@NotNull IRenderContext<T> pContext) {
+		if (this.currentStack == null) {
+			return (long) Math.pow(this.currentEntity.getId(), 7) * -(this.currentSlot.ordinal() + 1);
+		}
+
 		long stackId = BlueItem.getId(this.currentStack);
 
 		if (stackId == Long.MAX_VALUE)
@@ -117,25 +141,29 @@ public class BlueArmorRenderer<T extends Item & BlueItem> extends HumanoidModel 
 	}
 
 	@Override
-	public RenderType getRenderType(ResourceLocation pTexture, IRenderContext<T> pContext) {
+	@NotNull
+	public RenderType getRenderType(@NotNull ResourceLocation pTexture, @NotNull IRenderContext<T> pContext) {
 		return RenderType.armorCutoutNoCull(pTexture);
 	}
 
 	@Override
-	public List<BlueRenderLayer<T>> getRenderLayers() {
+	public @NotNull List<BlueRenderLayer<T>> getRenderLayers() {
 		return this.renderLayers.getRenderLayers();
 	}
 
-	public BlueArmorRenderer<T> addRenderLayer(BlueRenderLayer<T> pRenderLayer) {
+	@NotNull
+	public BlueArmorRenderer<T> addRenderLayer(@NotNull BlueRenderLayer<T> pRenderLayer) {
 		this.renderLayers.addLayer(pRenderLayer);
 
 		return this;
 	}
 
+	@NotNull
 	public BlueArmorRenderer<T> withScale(float pScale) {
 		return withScale(pScale, pScale);
 	}
 
+	@NotNull
 	public BlueArmorRenderer<T> withScale(float pScaleWidth, float pScaleHeight) {
 		this.scaleWidth = pScaleWidth;
 		this.scaleHeight = pScaleHeight;
@@ -144,52 +172,52 @@ public class BlueArmorRenderer<T extends Item & BlueItem> extends HumanoidModel 
 	}
 
 	@Nullable
-	public BoneCache getHeadBone(BlueModel<T> pModel) {
+	public BoneCache getHeadBone(@NotNull BlueModel<T> pModel) {
 		return pModel.getBone("armorHead").orElse(null);
 	}
 
 	@Nullable
-	public BoneCache getBodyBone(BlueModel<T> pModel) {
+	public BoneCache getBodyBone(@NotNull BlueModel<T> pModel) {
 		return pModel.getBone("armorBody").orElse(null);
 	}
 
 	@Nullable
-	public BoneCache getRightArmBone(BlueModel<T> pModel) {
+	public BoneCache getRightArmBone(@NotNull BlueModel<T> pModel) {
 		return pModel.getBone("armorRightArm").orElse(null);
 	}
 
 	@Nullable
-	public BoneCache getLeftArmBone(BlueModel<T> pModel) {
+	public BoneCache getLeftArmBone(@NotNull BlueModel<T> pModel) {
 		return pModel.getBone("armorLeftArm").orElse(null);
 	}
 
 	@Nullable
-	public BoneCache getRightLegBone(BlueModel<T> pModel) {
+	public BoneCache getRightLegBone(@NotNull BlueModel<T> pModel) {
 		return pModel.getBone("armorRightLeg").orElse(null);
 	}
 
 	@Nullable
-	public BoneCache getLeftLegBone(BlueModel<T> pModel) {
+	public BoneCache getLeftLegBone(@NotNull BlueModel<T> pModel) {
 		return pModel.getBone("armorLeftLeg").orElse(null);
 	}
 
 	@Nullable
-	public BoneCache getRightBootBone(BlueModel<T> pModel) {
+	public BoneCache getRightBootBone(@NotNull BlueModel<T> pModel) {
 		return pModel.getBone("armorRightBoot").orElse(null);
 	}
 
 	@Nullable
-	public BoneCache getLeftBootBone(BlueModel<T> pModel) {
+	public BoneCache getLeftBootBone(@NotNull BlueModel<T> pModel) {
 		return pModel.getBone("armorLeftBoot").orElse(null);
 	}
 
 	@Override
-	public Color getRenderColor(T pAnimatable, float pPartialTick, int pPackedLight) {
+	public @NotNull Color getRenderColor(@NotNull T pAnimatable, float pPartialTick, int pPackedLight) {
 		return this.currentStack.is(ItemTags.DYEABLE) ? Color.ofOpaque(DyedItemColor.getOrDefault(this.currentStack, -6265536)) : Color.WHITE;
 	}
 
 	@Override
-	public void preRender(IRenderContext<T> pContext) {
+	public void preRender(@NotNull IRenderContext<T> pContext) {
 		this.entityRenderTranslations = new Matrix4f(pContext.poseStack().last().pose());
 
 		applyBaseModel(this.baseModel);
@@ -204,7 +232,7 @@ public class BlueArmorRenderer<T extends Item & BlueItem> extends HumanoidModel 
 
 	@Override
 	@ApiStatus.Internal
-	public void renderToBuffer(PoseStack pPoseStack, @Nullable VertexConsumer pBuffer, int pPackedLight,
+	public void renderToBuffer(@NotNull PoseStack pPoseStack, @Nullable VertexConsumer pBuffer, int pPackedLight,
 			int pPackedOverlay, int pColor) {
 		Minecraft mc = Minecraft.getInstance();
 		MultiBufferSource pBufferSource = mc.levelRenderer.renderBuffers.bufferSource();
@@ -244,7 +272,7 @@ public class BlueArmorRenderer<T extends Item & BlueItem> extends HumanoidModel 
 	}
 
 	@Override
-	public void actuallyRender(IRenderContext<T> pContext) {
+	public void actuallyRender(@NotNull IRenderContext<T> pContext) {
 		if (pContext instanceof FullRenderContext<T> full) {
 			PoseStack pPoseStack = full.poseStack();
 			T pAnimatable = full.animatable();
@@ -281,7 +309,7 @@ public class BlueArmorRenderer<T extends Item & BlueItem> extends HumanoidModel 
 	}
 
 	@Override
-	public void doPostRenderCleanup(IRenderContext<T> pContext) {
+	public void doPostRenderCleanup(@NotNull IRenderContext<T> pContext) {
 		this.baseModel = null;
 		this.currentEntity = null;
 		this.currentStack = null;
@@ -296,7 +324,7 @@ public class BlueArmorRenderer<T extends Item & BlueItem> extends HumanoidModel 
 	}
 
 	@Override
-	public void renderRecursively(BoneCache pBone, FullRenderContext<T> pContext) {
+	public void renderRecursively(@NotNull BoneCache pBone, @NotNull FullRenderContext<T> pContext) {
 		if (pBone.isTrackingMatrices()) {
 			Matrix4f poseState = new Matrix4f(pContext.poseStack().last().pose());
 
@@ -307,7 +335,7 @@ public class BlueArmorRenderer<T extends Item & BlueItem> extends HumanoidModel 
 		BlueRenderer.super.renderRecursively(pBone, pContext);
 	}
 
-	protected void grabRelevantBones(ModelCache pBakedModel) {
+	protected void grabRelevantBones(@NotNull ModelCache pBakedModel) {
 		if (this.lastModel == pBakedModel)
 			return;
 
@@ -323,7 +351,7 @@ public class BlueArmorRenderer<T extends Item & BlueItem> extends HumanoidModel 
 		this.leftBoot = getLeftBootBone(pModel);
 	}
 
-	protected void applyBaseModel(HumanoidModel<?> pBaseModel) {
+	protected void applyBaseModel(@NotNull HumanoidModel<?> pBaseModel) {
 		HumanoidModel<?> self = (HumanoidModel<?>) this;
 
 		self.young = pBaseModel.young;
@@ -340,7 +368,7 @@ public class BlueArmorRenderer<T extends Item & BlueItem> extends HumanoidModel 
 		self.leftLeg.visible = pBaseModel.leftLeg.visible;
 	}
 
-	protected void applyBoneVisibilityBySlot(EquipmentSlot pCurrentSlot) {
+	protected void applyBoneVisibilityBySlot(@NotNull EquipmentSlot pCurrentSlot) {
 		setAllBonesVisible(false);
 		HumanoidModel<?> pModel = this;
 
@@ -363,7 +391,7 @@ public class BlueArmorRenderer<T extends Item & BlueItem> extends HumanoidModel 
 		}
 	}
 
-	public void applyBoneVisibilityByPart(EquipmentSlot pCurrentSlot, ModelPart pCurrentPart, HumanoidModel<?> pModel) {
+	public void applyBoneVisibilityByPart(@NotNull EquipmentSlot pCurrentSlot, @NotNull ModelPart pCurrentPart, @NotNull HumanoidModel<?> pModel) {
 		setAllVisible(false);
 
 		pCurrentPart.visible = true;
@@ -387,7 +415,7 @@ public class BlueArmorRenderer<T extends Item & BlueItem> extends HumanoidModel 
 			bone.setHidden(false);
 	}
 
-	protected void applyBaseTransformations(HumanoidModel<?> pBaseModel) {
+	protected void applyBaseTransformations(@NotNull HumanoidModel<?> pBaseModel) {
 		if (this.head != null) {
 			ModelPart headPart = pBaseModel.head;
 
@@ -458,7 +486,7 @@ public class BlueArmorRenderer<T extends Item & BlueItem> extends HumanoidModel 
 		setBoneVisible(this.leftBoot, pVisible);
 	}
 
-	public void scaleModelForBaby(PoseStack pPoseStack, T pAnimatable, float pPartialTick, boolean pIsReRender) {
+	public void scaleModelForBaby(@NotNull PoseStack pPoseStack, @NotNull T pAnimatable, float pPartialTick, boolean pIsReRender) {
 		if (!this.young || pIsReRender)
 			return;
 
@@ -486,7 +514,7 @@ public class BlueArmorRenderer<T extends Item & BlueItem> extends HumanoidModel 
 	}
 
 	@Override
-	public void updateAnimatedTextureFrame(T pAnimatable) {
+	public void updateAnimatedTextureFrame(@NotNull T pAnimatable) {
 		if (this.currentEntity != null)
 			AnimatableTexture.setAndUpdate(getTextureLocation(pAnimatable));
 	}
@@ -497,12 +525,12 @@ public class BlueArmorRenderer<T extends Item & BlueItem> extends HumanoidModel 
 	}
 
 	@Override
-	public boolean firePreRenderEvent(IRenderContext<T> pContext) {
+	public boolean firePreRenderEvent(@NotNull IRenderContext<T> pContext) {
 		return BlueLibConstants.PlatformHelper.EVENT_PROXY.fireArmorPreRender(this, pContext);
 	}
 
 	@Override
-	public void firePostRenderEvent(IRenderContext<T> pContext) {
+	public void firePostRenderEvent(@NotNull IRenderContext<T> pContext) {
 		BlueLibConstants.PlatformHelper.EVENT_PROXY.fireArmorPostRender(this, pContext);
 	}
 }

@@ -24,7 +24,7 @@ public class BoneCache {
 
 	@Nullable
 	private final BoneCache parent;
-	@NotNull
+	@Nullable
 	private final String name;
 
 	@NotNull
@@ -32,7 +32,7 @@ public class BoneCache {
 	@NotNull
 	private final List<CubeCache> cubes = new ObjectArrayList<>();
 
-	@NotNull
+	@Nullable
 	private final Boolean mirror;
 	@Nullable
 	private final Float inflate;
@@ -80,7 +80,7 @@ public class BoneCache {
 
 	private boolean trackingMatrices;
 
-	public BoneCache(@Nullable BoneCache pParent, @NotNull String pName, @NotNull Boolean pMirror, @Nullable Float pInflate, @Nullable Boolean pDontRender, @Nullable Boolean pReset) {
+	public BoneCache(@Nullable BoneCache pParent, @Nullable String pName, @Nullable Boolean pMirror, @Nullable Float pInflate, @Nullable Boolean pDontRender, @Nullable Boolean pReset) {
 		this.parent = pParent;
 		this.name = pName;
 		this.mirror = pMirror;
@@ -96,7 +96,7 @@ public class BoneCache {
 		this.modelSpaceMatrix.identity();
 	}
 
-	@NotNull
+	@Nullable
 	public String getName() {
 		return this.name;
 	}
@@ -310,7 +310,7 @@ public class BoneCache {
 			this.initialSnapshot = saveSnapshot();
 	}
 
-	@NotNull
+	@Nullable
 	public Boolean getMirror() {
 		return this.mirror;
 	}

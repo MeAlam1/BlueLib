@@ -44,50 +44,50 @@ public interface IEventProxy {
 	void fireCompileBlockRenderLayers(@NotNull BlueBlockRenderer<?> pRenderer);
 
 	@NotNull
-	Boolean fireBlockPreRender(@NotNull BlueBlockRenderer<?> pRenderer, IRenderContext<?> pContext);
+	Boolean fireBlockPreRender(@NotNull BlueBlockRenderer<?> pRenderer, @NotNull IRenderContext<?> pContext);
 
-	void fireBlockPostRender(@NotNull BlueBlockRenderer<?> pRenderer, IRenderContext<?> pContext);
+	void fireBlockPostRender(@NotNull BlueBlockRenderer<?> pRenderer, @NotNull IRenderContext<?> pContext);
 
 	// Armor
 
 	void fireCompileArmorRenderLayers(@NotNull BlueArmorRenderer<?> pRenderer);
 
 	@NotNull
-	Boolean fireArmorPreRender(@NotNull BlueArmorRenderer<?> pRenderer, IRenderContext<?> pContext);
+	Boolean fireArmorPreRender(@NotNull BlueArmorRenderer<?> pRenderer, @NotNull IRenderContext<?> pContext);
 
-	void fireArmorPostRender(@NotNull BlueArmorRenderer<?> pRenderer, IRenderContext<?> pContext);
+	void fireArmorPostRender(@NotNull BlueArmorRenderer<?> pRenderer, @NotNull IRenderContext<?> pContext);
 
 	// Entity
 
 	void fireCompileEntityRenderLayers(@NotNull BlueEntityRenderer<?> pRenderer);
 
 	@NotNull
-	Boolean fireEntityPreRender(@NotNull BlueEntityRenderer<?> pRenderer, IRenderContext<?> pContext);
+	Boolean fireEntityPreRender(@NotNull BlueEntityRenderer<?> pRenderer, @NotNull IRenderContext<?> pContext);
 
-	void fireEntityPostRender(@NotNull BlueEntityRenderer<?> pRenderer, IRenderContext<?> pContext);
+	void fireEntityPostRender(@NotNull BlueEntityRenderer<?> pRenderer, @NotNull IRenderContext<?> pContext);
 
 	void fireCompileReplacedEntityRenderLayers(@NotNull BlueReplacedEntityRenderer<?, ?> pRenderer);
 
 	@NotNull
-	Boolean fireReplacedEntityPreRender(@NotNull BlueReplacedEntityRenderer<?, ?> pRenderer, IRenderContext<?> pContext);
+	Boolean fireReplacedEntityPreRender(@NotNull BlueReplacedEntityRenderer<?, ?> pRenderer, @NotNull IRenderContext<?> pContext);
 
-	void fireReplacedEntityPostRender(@NotNull BlueReplacedEntityRenderer<?, ?> pRenderer, IRenderContext<?> pContext);
+	void fireReplacedEntityPostRender(@NotNull BlueReplacedEntityRenderer<?, ?> pRenderer, @NotNull IRenderContext<?> pContext);
 
 	// Item
 
 	void fireCompileItemRenderLayers(@NotNull BlueItemRenderer<?> pRenderer);
 
 	@NotNull
-	Boolean fireItemPreRender(@NotNull BlueItemRenderer<?> pRenderer, IRenderContext<?> pContext);
+	Boolean fireItemPreRender(@NotNull BlueItemRenderer<?> pRenderer, @NotNull IRenderContext<?> pContext);
 
-	void fireItemPostRender(@NotNull BlueItemRenderer<?> pRenderer, IRenderContext<?> pContext);
+	void fireItemPostRender(@NotNull BlueItemRenderer<?> pRenderer, @NotNull IRenderContext<?> pContext);
 
 	// Object
 
 	void fireCompileObjectRenderLayers(@NotNull BlueObjectRenderer<?> pRenderer);
 
 	@NotNull
-	Boolean fireObjectPreRender(@NotNull BlueObjectRenderer<?> pRenderer, IRenderContext<?> pContext);
+	Boolean fireObjectPreRender(@NotNull BlueObjectRenderer<?> pRenderer, @NotNull IRenderContext<?> pContext);
 
-	void fireObjectPostRender(@NotNull BlueObjectRenderer<?> pRenderer, IRenderContext<?> pContext);
+	void fireObjectPostRender(@NotNull BlueObjectRenderer<?> pRenderer, @NotNull IRenderContext<?> pContext);
 }

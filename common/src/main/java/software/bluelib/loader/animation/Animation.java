@@ -10,38 +10,47 @@ package software.bluelib.loader.animation;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import java.util.List;
 import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import software.bluelib.loader.cache.animations.AnimationCache;
 
 public final class Animation {
 
+	@NotNull
 	private final List<Stage> animationList = new ObjectArrayList<>();
 
 	// Private constructor to force usage of factory for logical operations
 	private Animation() {}
 
+	@NotNull
 	public static Animation begin() {
 		return new Animation();
 	}
 
-	public Animation thenPlay(String pAnimationName) {
+	@NotNull
+	public Animation thenPlay(@NotNull String pAnimationName) {
 		return then(pAnimationName, AnimationCache.LoopType.DEFAULT);
 	}
 
-	public Animation thenLoop(String pAnimationName) {
+	@NotNull
+	public Animation thenLoop(@NotNull String pAnimationName) {
 		return then(pAnimationName, AnimationCache.LoopType.LOOP);
 	}
 
+	@NotNull
 	public Animation thenWait(int pTicks) {
 		this.animationList.add(new Stage(Stage.WAIT, AnimationCache.LoopType.PLAY_ONCE, pTicks));
 
 		return this;
 	}
 
-	public Animation thenPlayAndHold(String pAnimation) {
+	@NotNull
+	public Animation thenPlayAndHold(@NotNull String pAnimation) {
 		return then(pAnimation, AnimationCache.LoopType.HOLD_ON_LAST_FRAME);
 	}
 
-	public Animation thenPlayXTimes(String pAnimationName, int pPlayCount) {
+	@NotNull
+	public Animation thenPlayXTimes(@NotNull String pAnimationName, int pPlayCount) {
 		for (int i = 0; i < pPlayCount; i++) {
 			then(pAnimationName, i == pPlayCount - 1 ? AnimationCache.LoopType.DEFAULT : AnimationCache.LoopType.PLAY_ONCE);
 		}
@@ -49,17 +58,20 @@ public final class Animation {
 		return this;
 	}
 
-	public Animation then(String pAnimationName, AnimationCache.LoopType pLoopType) {
+	@NotNull
+	public Animation then(@NotNull String pAnimationName, @NotNull AnimationCache.LoopType pLoopType) {
 		this.animationList.add(new Stage(pAnimationName, pLoopType));
 
 		return this;
 	}
 
+	@NotNull
 	public List<Stage> getAnimationStages() {
 		return this.animationList;
 	}
 
-	public static Animation copyOf(Animation pOther) {
+	@NotNull
+	public static Animation copyOf(@NotNull Animation pOther) {
 		Animation newInstance = Animation.begin();
 
 		newInstance.animationList.addAll(pOther.animationList);
@@ -68,7 +80,7 @@ public final class Animation {
 	}
 
 	@Override
-	public boolean equals(Object pObj) {
+	public boolean equals(@Nullable Object pObj) {
 		if (this == pObj)
 			return true;
 
@@ -83,16 +95,17 @@ public final class Animation {
 		return Objects.hash(this.animationList);
 	}
 
-	public record Stage(String animationName, AnimationCache.LoopType loopType, int additionalTicks) {
+	public record Stage(@NotNull String animationName, @NotNull AnimationCache.LoopType loopType, int additionalTicks) {
 
+		@NotNull
 		public static final String WAIT = "internal.wait";
 
-		public Stage(String pAnimationName, AnimationCache.LoopType pLoopType) {
+		public Stage(@NotNull String pAnimationName, @NotNull AnimationCache.LoopType pLoopType) {
 			this(pAnimationName, pLoopType, 0);
 		}
 
 		@Override
-		public boolean equals(Object pObj) {
+		public boolean equals(@Nullable Object pObj) {
 			if (this == pObj)
 				return true;
 

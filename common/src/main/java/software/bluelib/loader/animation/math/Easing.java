@@ -15,6 +15,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import net.minecraft.util.Mth;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.loader.animation.keyframe.AnimationPoint;
 import software.bluelib.loader.geckolib.math.MathValue;
@@ -23,45 +24,80 @@ import software.bluelib.loader.geckolib.math.MathValue;
 @FunctionalInterface
 public interface Easing {
 
-	final Map<String, Easing> EASING_TYPES = new ConcurrentHashMap<>(64);
+	@NotNull
+	Map<String, Easing> EASING_TYPES = new ConcurrentHashMap<>(64);
 
+	@NotNull
 	Easing LINEAR = register("linear", register("none", value -> easeIn(Easing::linear)));
+	@NotNull
 	Easing STEP = register("step", value -> easeIn(step(value)));
+	@NotNull
 	Easing EASE_IN_SINE = register("easeinsine", value -> easeIn(Easing::sine));
+	@NotNull
 	Easing EASE_OUT_SINE = register("easeoutsine", value -> easeOut(Easing::sine));
+	@NotNull
 	Easing EASE_IN_OUT_SINE = register("easeinoutsine", value -> easeInOut(Easing::sine));
+	@NotNull
 	Easing EASE_IN_QUAD = register("easeinquad", value -> easeIn(Easing::quadratic));
+	@NotNull
 	Easing EASE_OUT_QUAD = register("easeoutquad", value -> easeOut(Easing::quadratic));
+	@NotNull
 	Easing EASE_IN_OUT_QUAD = register("easeinoutquad", value -> easeInOut(Easing::quadratic));
+	@NotNull
 	Easing EASE_IN_CUBIC = register("easeincubic", value -> easeIn(Easing::cubic));
+	@NotNull
 	Easing EASE_OUT_CUBIC = register("easeoutcubic", value -> easeOut(Easing::cubic));
+	@NotNull
 	Easing EASE_IN_OUT_CUBIC = register("easeinoutcubic", value -> easeInOut(Easing::cubic));
+	@NotNull
 	Easing EASE_IN_QUART = register("easeinquart", value -> easeIn(pow(4.0)));
+	@NotNull
 	Easing EASE_OUT_QUART = register("easeoutquart", value -> easeOut(pow(4.0)));
+	@NotNull
 	Easing EASE_IN_OUT_QUART = register("easeinoutquart", value -> easeInOut(pow(4.0)));
+	@NotNull
 	Easing EASE_IN_QUINT = register("easeinquint", value -> easeIn(pow(4.0)));
+	@NotNull
 	Easing EASE_OUT_QUINT = register("easeoutquint", value -> easeOut(pow(5.0)));
+	@NotNull
 	Easing EASE_IN_OUT_QUINT = register("easeinoutquint", value -> easeInOut(pow(5.0)));
+	@NotNull
 	Easing EASE_IN_EXPO = register("easeinexpo", value -> easeIn(Easing::exp));
+	@NotNull
 	Easing EASE_OUT_EXPO = register("easeoutexpo", value -> easeOut(Easing::exp));
+	@NotNull
 	Easing EASE_IN_OUT_EXPO = register("easeinoutexpo", value -> easeInOut(Easing::exp));
+	@NotNull
 	Easing EASE_IN_CIRC = register("easeincirc", value -> easeIn(Easing::circle));
+	@NotNull
 	Easing EASE_OUT_CIRC = register("easeoutcirc", value -> easeOut(Easing::circle));
+	@NotNull
 	Easing EASE_IN_OUT_CIRC = register("easeinoutcirc", value -> easeInOut(Easing::circle));
+	@NotNull
 	Easing EASE_IN_BACK = register("easeinback", value -> easeIn(back(value)));
+	@NotNull
 	Easing EASE_OUT_BACK = register("easeoutback", value -> easeOut(back(value)));
+	@NotNull
 	Easing EASE_IN_OUT_BACK = register("easeinoutback", value -> easeInOut(back(value)));
+	@NotNull
 	Easing EASE_IN_ELASTIC = register("easeinelastic", value -> easeIn(elastic(value)));
+	@NotNull
 	Easing EASE_OUT_ELASTIC = register("easeoutelastic", value -> easeOut(elastic(value)));
+	@NotNull
 	Easing EASE_IN_OUT_ELASTIC = register("easeinoutelastic", value -> easeInOut(elastic(value)));
+	@NotNull
 	Easing EASE_IN_BOUNCE = register("easeinbounce", value -> easeIn(bounce(value)));
+	@NotNull
 	Easing EASE_OUT_BOUNCE = register("easeoutbounce", value -> easeOut(bounce(value)));
+	@NotNull
 	Easing EASE_IN_OUT_BOUNCE = register("easeinoutbounce", value -> easeInOut(bounce(value)));
+	@NotNull
 	Easing CATMULLROM = register("catmullrom", new CatmullRomEasing());
 
+	@NotNull
 	Double2DoubleFunction buildTransformer(@Nullable Double pValue);
 
-	static double lerpWithOverride(AnimationPoint pAnimationPoint, Easing pOverride) {
+	static double lerpWithOverride(@NotNull AnimationPoint pAnimationPoint, @Nullable Easing pOverride) {
 		Easing easing = pOverride;
 
 		if (pOverride == null)
@@ -70,7 +106,7 @@ public interface Easing {
 		return easing.apply(pAnimationPoint);
 	}
 
-	default double apply(AnimationPoint pAnimationPoint) {
+	default double apply(@NotNull AnimationPoint pAnimationPoint) {
 		Double easingVariable = null;
 
 		if (pAnimationPoint.keyFrame() != null && !pAnimationPoint.keyFrame().easingArgs().isEmpty())
@@ -79,51 +115,58 @@ public interface Easing {
 		return apply(pAnimationPoint, easingVariable, pAnimationPoint.currentTick() / pAnimationPoint.transitionLength());
 	}
 
-	default double apply(AnimationPoint pAnimationPoint, @Nullable Double pEasingValue, Double pLerpValue) {
+	default double apply(@NotNull AnimationPoint pAnimationPoint, @Nullable Double pEasingValue, Double pLerpValue) {
 		if (pAnimationPoint.currentTick() >= pAnimationPoint.transitionLength())
 			return (float) pAnimationPoint.animationEndValue();
 
 		return Mth.lerp(buildTransformer(pEasingValue).apply(pLerpValue), pAnimationPoint.animationStartValue(), pAnimationPoint.animationEndValue());
 	}
 
-	static Easing register(String pName, Easing pEasing) {
+	@NotNull
+	static Easing register(@NotNull String pName, @NotNull Easing pEasing) {
 		EASING_TYPES.putIfAbsent(pName, pEasing);
 
 		return pEasing;
 	}
 
-	static Easing fromJson(JsonElement pJson) {
+	@NotNull
+	static Easing fromJson(@NotNull JsonElement pJson) {
 		if (!(pJson instanceof JsonPrimitive primitive) || !primitive.isString())
 			return LINEAR;
 
 		return fromString(primitive.getAsString().toLowerCase(Locale.ROOT));
 	}
 
-	static Easing fromString(String pName) {
+	@NotNull
+	static Easing fromString(@NotNull String pName) {
 		return EASING_TYPES.getOrDefault(pName, Easing.LINEAR);
 	}
 
 	// ---> Easing Transition Type Functions <--- //
 
-	static Double2DoubleFunction linear(Double2DoubleFunction pFunction) {
+	@NotNull
+	static Double2DoubleFunction linear(@NotNull Double2DoubleFunction pFunction) {
 		return pFunction;
 	}
 
-	static double catmullRom(double n) {
-		return 0.5d * (2d * (n + 1d) + 2d
-				+ (2d * n - 5d * (n + 1d) + 4d * (n + 2d) - (n + 3d))
-				+ (3d * (n + 1d) - n - 3d * (n + 2d) + (n + 3d)));
+	static double catmullRom(double pNumber) {
+		return 0.5d * (2d * (pNumber + 1d) + 2d
+				+ (2d * pNumber - 5d * (pNumber + 1d) + 4d * (pNumber + 2d) - (pNumber + 3d))
+				+ (3d * (pNumber + 1d) - pNumber - 3d * (pNumber + 2d) + (pNumber + 3d)));
 	}
 
-	static Double2DoubleFunction easeIn(Double2DoubleFunction pFunction) {
+	@NotNull
+	static Double2DoubleFunction easeIn(@NotNull Double2DoubleFunction pFunction) {
 		return pFunction;
 	}
 
-	static Double2DoubleFunction easeOut(Double2DoubleFunction pFunction) {
+	@NotNull
+	static Double2DoubleFunction easeOut(@NotNull Double2DoubleFunction pFunction) {
 		return time -> 1 - pFunction.apply(1 - time);
 	}
 
-	static Double2DoubleFunction easeInOut(Double2DoubleFunction pFunction) {
+	@NotNull
+	static Double2DoubleFunction easeInOut(@NotNull Double2DoubleFunction pFunction) {
 		return time -> {
 			if (time < 0.5d)
 				return pFunction.apply(time * 2d) / 2d;
@@ -134,49 +177,53 @@ public interface Easing {
 
 	// ---> Stepping Functions <--- //
 
-	static Double2DoubleFunction stepPositive(Double2DoubleFunction pFunction) {
+	@NotNull
+	static Double2DoubleFunction stepPositive(@NotNull Double2DoubleFunction pFunction) {
 		return n -> n > 0 ? 1 : 0;
 	}
 
-	static Double2DoubleFunction stepNonNegative(Double2DoubleFunction pFunction) {
+	@NotNull
+	static Double2DoubleFunction stepNonNegative(@NotNull Double2DoubleFunction pFunction) {
 		return n -> n >= 0 ? 1 : 0;
 	}
 
 	// ---> Mathematical Functions <--- //
 
-	static double linear(double n) {
-		return n;
+	static double linear(double pNumber) {
+		return pNumber;
 	}
 
-	static double quadratic(double n) {
-		return n * n;
+	static double quadratic(double pNumber) {
+		return pNumber * pNumber;
 	}
 
-	static double cubic(double n) {
-		return n * n * n;
+	static double cubic(double pNumber) {
+		return pNumber * pNumber * pNumber;
 	}
 
-	static double sine(double n) {
-		return 1 - Math.cos(n * Math.PI / 2f);
+	static double sine(double pNumber) {
+		return 1 - Math.cos(pNumber * Math.PI / 2f);
 	}
 
-	static double circle(double n) {
-		return 1 - Math.sqrt(1 - n * n);
+	static double circle(double pNumber) {
+		return 1 - Math.sqrt(1 - pNumber * pNumber);
 	}
 
-	static double exp(double n) {
-		return Math.pow(2, 10 * (n - 1));
+	static double exp(double pNumber) {
+		return Math.pow(2, 10 * (pNumber - 1));
 	}
 
 	// ---> Easing Curve Functions <--- //
 
-	static Double2DoubleFunction elastic(Double pNumber) {
+	@NotNull
+	static Double2DoubleFunction elastic(@Nullable Double pNumber) {
 		double n2 = pNumber == null ? 1 : pNumber;
 
 		return t -> 1 - Math.pow(Math.cos(t * Math.PI / 2f), 3) * Math.cos(t * n2 * Math.PI);
 	}
 
-	static Double2DoubleFunction bounce(Double pNumber) {
+	@NotNull
+	static Double2DoubleFunction bounce(@Nullable Double pNumber) {
 		final double n2 = pNumber == null ? 0.5d : pNumber;
 
 		Double2DoubleFunction one = x -> 121f / 16f * x * x;
@@ -187,17 +234,20 @@ public interface Easing {
 		return t -> Math.min(Math.min(one.apply(t), two.apply(t)), Math.min(three.apply(t), four.apply(t)));
 	}
 
-	static Double2DoubleFunction back(Double pNumber) {
+	@NotNull
+	static Double2DoubleFunction back(@Nullable Double pNumber) {
 		final double n2 = pNumber == null ? 1.70158d : pNumber * 1.70158d;
 
 		return t -> t * t * ((n2 + 1) * t - n2);
 	}
 
-	static Double2DoubleFunction pow(Double pNumber) {
+	@NotNull
+	static Double2DoubleFunction pow(@NotNull Double pNumber) {
 		return t -> Math.pow(t, pNumber);
 	}
 
-	static Double2DoubleFunction step(Double pNumber) {
+	@NotNull
+	static Double2DoubleFunction step(@Nullable Double pNumber) {
 		double n2 = pNumber == null ? 2 : pNumber;
 
 		if (n2 < 2)
@@ -244,12 +294,12 @@ public interface Easing {
 		}
 
 		@Override
-		public Double2DoubleFunction buildTransformer(Double pValue) {
+		public @NotNull Double2DoubleFunction buildTransformer(@Nullable Double pValue) {
 			return easeInOut(Easing::catmullRom);
 		}
 
 		@Override
-		public double apply(AnimationPoint pAnimationPoint, Double pEasingValue, Double pLerpValue) {
+		public double apply(@NotNull AnimationPoint pAnimationPoint, @Nullable Double pEasingValue, @NotNull Double pLerpValue) {
 			if (pAnimationPoint.currentTick() >= pAnimationPoint.transitionLength())
 				return pAnimationPoint.animationEndValue();
 

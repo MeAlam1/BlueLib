@@ -13,6 +13,7 @@ import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Indicates that the annotated element is planned to be deprecated in a future version,
@@ -49,6 +50,7 @@ public @interface WillBeDeprecated {
 	 *
 	 * @return the version string
 	 */
+	@NotNull
 	String since() default "";
 
 	/**
@@ -57,6 +59,7 @@ public @interface WillBeDeprecated {
 	 *
 	 * @return the reason for planned removal
 	 */
+	@NotNull
 	String reason() default "";
 
 	/**
@@ -66,6 +69,7 @@ public @interface WillBeDeprecated {
 	 *
 	 * @return the planned removal version
 	 */
+	@NotNull
 	String plannedRemovalVersion() default "";
 
 	/**
@@ -78,6 +82,7 @@ public @interface WillBeDeprecated {
 	 *
 	 * @return Default is the empty string.
 	 */
+	@NotNull
 	String announcedDate() default "";
 
 	/**
@@ -87,6 +92,7 @@ public @interface WillBeDeprecated {
 	 *
 	 * @return an array of alternative element names or descriptions
 	 */
+	@NotNull
 	String[] alternatives() default {};
 
 	/**

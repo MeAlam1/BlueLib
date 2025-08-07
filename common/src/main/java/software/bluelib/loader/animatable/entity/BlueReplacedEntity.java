@@ -22,16 +22,17 @@ import software.bluelib.loader.renderer.client.BlueRenderProvider;
 
 public interface BlueReplacedEntity extends SingletonBlueAnimatable {
 
+	@NotNull
 	EntityType<?> getReplacingEntityType();
 
 	@ApiStatus.NonExtendable
 	@Nullable
-	default <D> D getAnimData(Entity pEntity, SerializableDataTicket<D> pDataTicket) {
+	default <D> D getAnimData(@NotNull Entity pEntity, @NotNull SerializableDataTicket<D> pDataTicket) {
 		return getAnimatableInstanceCache().getManagerForId(pEntity.getId()).getData(pDataTicket);
 	}
 
 	@ApiStatus.NonExtendable
-	default <D> void setAnimData(Entity pRelatedEntity, SerializableDataTicket<D> pDataTicket, D pData) {
+	default <D> void setAnimData(@NotNull Entity pRelatedEntity, @NotNull SerializableDataTicket<D> pDataTicket, @NotNull D pData) {
 		if (pRelatedEntity.level().isClientSide()) {
 			getAnimatableInstanceCache().getManagerForId(pRelatedEntity.getId()).setData(pDataTicket, pData);
 		} else {
@@ -40,7 +41,7 @@ public interface BlueReplacedEntity extends SingletonBlueAnimatable {
 	}
 
 	@ApiStatus.NonExtendable
-	default void triggerAnim(Entity pRelatedEntity, @Nullable String pControllerName, String pAnimName) {
+	default void triggerAnim(@NotNull Entity pRelatedEntity, @Nullable String pControllerName, @NotNull String pAnimName) {
 		if (pRelatedEntity.level().isClientSide()) {
 			if (pControllerName != null) {
 				getAnimatableInstanceCache().getManagerForId(pRelatedEntity.getId()).tryTriggerAnimation(pControllerName, pAnimName);
@@ -53,12 +54,9 @@ public interface BlueReplacedEntity extends SingletonBlueAnimatable {
 	}
 
 	@ApiStatus.NonExtendable
-	default void stopTriggeredAnim(Entity pRelatedEntity, @Nullable String pControllerName, @Nullable String pAnimName) {
+	default void stopTriggeredAnim(@NotNull Entity pRelatedEntity, @Nullable String pControllerName, @Nullable String pAnimName) {
 		if (pRelatedEntity.level().isClientSide()) {
 			AnimatableManager<BlueAnimatable> animatableManager = getAnimatableInstanceCache().getManagerForId(pRelatedEntity.getId());
-
-			if (animatableManager == null)
-				return;
 
 			if (pControllerName != null) {
 				animatableManager.stopTriggeredAnimation(pControllerName, pAnimName);
@@ -84,7 +82,7 @@ public interface BlueReplacedEntity extends SingletonBlueAnimatable {
 	 */
 	@ApiStatus.NonExtendable
 	@Override
-	default void createBlueRenderer(Consumer<BlueRenderProvider> pConsumer) {}
+	default void createBlueRenderer(@NotNull Consumer<BlueRenderProvider> pConsumer) {}
 
 	/**
 	 * This method returns {@code null} because {@code ReplacedEntity} does not require a custom render provider.
@@ -95,7 +93,7 @@ public interface BlueReplacedEntity extends SingletonBlueAnimatable {
 	 */
 	@ApiStatus.NonExtendable
 	@Override
-	default Object getRenderProvider() {
+	default @Nullable Object getRenderProvider() {
 		return null;
 	}
 }

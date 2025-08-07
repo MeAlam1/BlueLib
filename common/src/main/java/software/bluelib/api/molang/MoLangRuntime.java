@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.molang.context.BaseMoLangContext;
 
-public record MoLangRuntime(List<BaseMoLangContext> contexts) {
+public record MoLangRuntime(@NotNull List<BaseMoLangContext> contexts) {
 
 	public MoLangRuntime(@NotNull List<BaseMoLangContext> contexts) {
 		this.contexts = contexts;

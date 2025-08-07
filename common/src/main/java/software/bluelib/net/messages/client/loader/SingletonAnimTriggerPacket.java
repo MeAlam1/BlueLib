@@ -30,6 +30,7 @@ public record SingletonAnimTriggerPacket(
 		pBuffer.writeUtf(this.animName);
 	}
 
+	@NotNull
 	public static SingletonAnimTriggerPacket decode(@NotNull RegistryFriendlyByteBuf pBuffer) {
 		String syncableId = pBuffer.readUtf();
 		Long instanceId = pBuffer.readVarLong();

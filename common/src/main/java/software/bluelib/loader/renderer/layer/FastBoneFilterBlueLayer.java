@@ -10,6 +10,7 @@ package software.bluelib.loader.renderer.layer;
 import java.util.List;
 import java.util.function.Supplier;
 import org.apache.logging.log4j.util.TriConsumer;
+import org.jetbrains.annotations.NotNull;
 import software.bluelib.loader.animatable.base.BlueAnimatable;
 import software.bluelib.loader.cache.model.BoneCache;
 import software.bluelib.loader.renderer.base.BlueRenderer;
@@ -17,17 +18,18 @@ import software.bluelib.loader.renderer.context.IRenderContext;
 
 public class FastBoneFilterBlueLayer<T extends BlueAnimatable> extends BoneFilterBlueLayer<T> {
 
+	@NotNull
 	protected final Supplier<List<String>> boneSupplier;
 
-	public FastBoneFilterBlueLayer(BlueRenderer<T> pRenderer) {
+	public FastBoneFilterBlueLayer(@NotNull BlueRenderer<T> pRenderer) {
 		this(pRenderer, List::of);
 	}
 
-	public FastBoneFilterBlueLayer(BlueRenderer<T> pRenderer, Supplier<List<String>> pBoneSupplier) {
+	public FastBoneFilterBlueLayer(@NotNull BlueRenderer<T> pRenderer, @NotNull Supplier<List<String>> pBoneSupplier) {
 		this(pRenderer, pBoneSupplier, (bone, animatable, pPartialTick) -> {});
 	}
 
-	public FastBoneFilterBlueLayer(BlueRenderer<T> pRenderer, Supplier<List<String>> pBoneSupplier, TriConsumer<BoneCache, T, Float> pCheckAndApply) {
+	public FastBoneFilterBlueLayer(@NotNull BlueRenderer<T> pRenderer, @NotNull Supplier<List<String>> pBoneSupplier, @NotNull TriConsumer<BoneCache, T, Float> pCheckAndApply) {
 		super(pRenderer, pCheckAndApply);
 
 		this.boneSupplier = pBoneSupplier;
@@ -40,7 +42,7 @@ public class FastBoneFilterBlueLayer<T extends BlueAnimatable> extends BoneFilte
 	;
 
 	@Override
-	public void preRender(IRenderContext<T> pContext) {
+	public void preRender(@NotNull IRenderContext<T> pContext) {
 		for (String boneName : getAffectedBones()) {
 			this.renderer.getBlueModel().getBone(boneName).ifPresent(bone -> checkAndApply(bone, pContext.animatable(), pContext.partialTick()));
 		}

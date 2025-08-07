@@ -14,6 +14,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
@@ -30,30 +31,31 @@ import software.bluelib.loader.renderer.context.IRenderContext;
 
 public abstract class DynamicBlueBlockRenderer<T extends BlockEntity & BlueAnimatable> extends BlueBlockRenderer<T> {
 
+	@NotNull
 	protected static Map<ResourceLocation, IntIntPair> TEXTURE_DIMENSIONS_CACHE = new Object2ObjectOpenHashMap<>();
-
+	@Nullable
 	protected ResourceLocation textureOverride = null;
 
-	public DynamicBlueBlockRenderer(BlueModel<T> pModel) {
+	public DynamicBlueBlockRenderer(@NotNull BlueModel<T> pModel) {
 		super(pModel);
 	}
 
 	@Nullable
-	protected ResourceLocation getTextureOverrideForBone(BoneCache pBone, IRenderContext<T> pContext) {
+	protected ResourceLocation getTextureOverrideForBone(@NotNull BoneCache pBone, @NotNull IRenderContext<T> pContext) {
 		return null;
 	}
 
 	@Nullable
-	protected RenderType getRenderTypeOverrideForBone(BoneCache pBone, ResourceLocation pTexturePath, IRenderContext<T> pContext) {
+	protected RenderType getRenderTypeOverrideForBone(@NotNull BoneCache pBone, @NotNull ResourceLocation pTexturePath, @NotNull IRenderContext<T> pContext) {
 		return null;
 	}
 
-	protected boolean boneRenderOverride(BoneCache pBone, IRenderContext<T> pContext) {
+	protected boolean boneRenderOverride(@NotNull BoneCache pBone, @NotNull IRenderContext<T> pContext) {
 		return false;
 	}
 
 	@Override
-	public void renderRecursively(BoneCache pBone, FullRenderContext<T> pContext) {
+	public void renderRecursively(@NotNull BoneCache pBone, @NotNull FullRenderContext<T> pContext) {
 		pContext.poseStack().pushPose();
 		RenderUtils.translateMatrixToBone(pContext.poseStack(), pBone);
 		RenderUtils.translateToPivotPoint(pContext.poseStack(), pBone);
@@ -100,14 +102,14 @@ public abstract class DynamicBlueBlockRenderer<T extends BlockEntity & BlueAnima
 	}
 
 	@Override
-	public void postRender(IRenderContext<T> pContext) {
+	public void postRender(@NotNull IRenderContext<T> pContext) {
 		this.textureOverride = null;
 
 		super.postRender(pContext);
 	}
 
 	@Override
-	public void createVerticesOfQuad(QuadData pQuad, Matrix4f pPoseState, Vector3f pNormal, FullRenderContext<T> pContext) {
+	public void createVerticesOfQuad(@NotNull QuadData pQuad, @NotNull Matrix4f pPoseState, @NotNull Vector3f pNormal, @NotNull FullRenderContext<T> pContext) {
 		if (this.textureOverride == null) {
 			super.createVerticesOfQuad(pQuad, pPoseState, pNormal, pContext);
 
@@ -133,7 +135,8 @@ public abstract class DynamicBlueBlockRenderer<T extends BlockEntity & BlueAnima
 		}
 	}
 
-	protected IntIntPair computeTextureSize(ResourceLocation pTexture) {
+	@Nullable
+	protected IntIntPair computeTextureSize(@NotNull ResourceLocation pTexture) {
 		return TEXTURE_DIMENSIONS_CACHE.computeIfAbsent(pTexture, RenderUtils::getTextureDimensions);
 	}
 }

@@ -7,10 +7,13 @@
  */
 package software.bluelib.loader.animation.bone;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import software.bluelib.loader.cache.model.BoneCache;
 
 public class BoneSnapshot {
 
+	@NotNull
 	private final BoneCache bone;
 
 	private float scaleX;
@@ -33,7 +36,7 @@ public class BoneSnapshot {
 	private boolean posAnimInProgress = true;
 	private boolean scaleAnimInProgress = true;
 
-	public BoneSnapshot(BoneCache pBone) {
+	public BoneSnapshot(@NotNull BoneCache pBone) {
 		this.rotX = pBone.getRotX();
 		this.rotY = pBone.getRotY();
 		this.rotZ = pBone.getRotZ();
@@ -49,7 +52,8 @@ public class BoneSnapshot {
 		this.bone = pBone;
 	}
 
-	public static BoneSnapshot copy(BoneSnapshot pSnapshot) {
+	@NotNull
+	public static BoneSnapshot copy(@NotNull BoneSnapshot pSnapshot) {
 		BoneSnapshot newSnapshot = new BoneSnapshot(pSnapshot.bone);
 
 		newSnapshot.scaleX = pSnapshot.scaleX;
@@ -67,6 +71,7 @@ public class BoneSnapshot {
 		return newSnapshot;
 	}
 
+	@NotNull
 	public BoneCache getBone() {
 		return this.bone;
 	}
@@ -177,7 +182,7 @@ public class BoneSnapshot {
 	}
 
 	@Override
-	public boolean equals(Object pObj) {
+	public boolean equals(@Nullable Object pObj) {
 		if (this == pObj)
 			return true;
 

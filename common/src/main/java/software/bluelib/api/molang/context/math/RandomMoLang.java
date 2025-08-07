@@ -27,18 +27,18 @@ public class RandomMoLang extends BaseMoLangContext {
 		});
 
 		registerFunction(MoLangNamespaceUtils.withMathNamespace("random_integer"), (args, runtime) -> {
-			int min = (int) MoLangMathUtils.toDouble(args, 0);
-			int max = (int) MoLangMathUtils.toDouble(args, 1);
+			int min = MoLangMathUtils.toDouble(args, 0).intValue();
+			int max = MoLangMathUtils.toDouble(args, 1).intValue();
 			return ThreadLocalRandom.current().nextInt(min, max + 1);
 		});
 
 		registerFunction(MoLangNamespaceUtils.withMathNamespace("die_roll"), (args, runtime) -> {
-			int sides = (int) MoLangMathUtils.toDouble(args, 0);
+			int sides = MoLangMathUtils.toDouble(args, 0).intValue();
 			return 1 + ThreadLocalRandom.current().nextDouble() * sides;
 		});
 
 		registerFunction(MoLangNamespaceUtils.withMathNamespace("die_roll_integer"), (args, runtime) -> {
-			int sides = (int) MoLangMathUtils.toDouble(args, 0);
+			int sides = MoLangMathUtils.toDouble(args, 0).intValue();
 			return 1 + ThreadLocalRandom.current().nextInt(sides);
 		});
 	}

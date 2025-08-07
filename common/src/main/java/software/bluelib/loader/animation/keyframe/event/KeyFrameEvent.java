@@ -7,18 +7,22 @@
  */
 package software.bluelib.loader.animation.keyframe.event;
 
+import org.jetbrains.annotations.NotNull;
 import software.bluelib.loader.animatable.base.BlueAnimatable;
 import software.bluelib.loader.animation.AnimationController;
 import software.bluelib.loader.animation.keyframe.data.KeyFrameData;
 
 public abstract class KeyFrameEvent<T extends BlueAnimatable, E extends KeyFrameData> {
 
+	@NotNull
 	private final T animatable;
 	private final double animationTick;
+	@NotNull
 	private final AnimationController<T> controller;
+	@NotNull
 	private final E eventKeyFrame;
 
-	public KeyFrameEvent(T pAnimatable, double pAnimationTick, AnimationController<T> pController, E pEventKeyFrame) {
+	public KeyFrameEvent(@NotNull T pAnimatable, double pAnimationTick, @NotNull AnimationController<T> pController, @NotNull E pEventKeyFrame) {
 		this.animatable = pAnimatable;
 		this.animationTick = pAnimationTick;
 		this.controller = pController;
@@ -29,14 +33,17 @@ public abstract class KeyFrameEvent<T extends BlueAnimatable, E extends KeyFrame
 		return animationTick;
 	}
 
+	@NotNull
 	public T getAnimatable() {
 		return animatable;
 	}
 
+	@NotNull
 	public AnimationController<T> getController() {
 		return controller;
 	}
 
+	@NotNull
 	public E getKeyframeData() {
 		return this.eventKeyFrame;
 	}

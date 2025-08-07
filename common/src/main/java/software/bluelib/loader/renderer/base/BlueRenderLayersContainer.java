@@ -9,18 +9,22 @@ package software.bluelib.loader.renderer.base;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import java.util.List;
+import org.jetbrains.annotations.NotNull;
 import software.bluelib.loader.animatable.base.BlueAnimatable;
 
 public class BlueRenderLayersContainer<T extends BlueAnimatable> {
 
+	@NotNull
 	private final BlueRenderer<T> renderer;
+	@NotNull
 	private final List<BlueRenderLayer<T>> layers = new ObjectArrayList<>();
 	private boolean compiledLayers = false;
 
-	public BlueRenderLayersContainer(BlueRenderer<T> pRenderer) {
+	public BlueRenderLayersContainer(@NotNull BlueRenderer<T> pRenderer) {
 		this.renderer = pRenderer;
 	}
 
+	@NotNull
 	public List<BlueRenderLayer<T>> getRenderLayers() {
 		if (!this.compiledLayers)
 			fireCompileRenderLayersEvent();
@@ -28,7 +32,7 @@ public class BlueRenderLayersContainer<T extends BlueAnimatable> {
 		return this.layers;
 	}
 
-	public void addLayer(BlueRenderLayer<T> pLayer) {
+	public void addLayer(@NotNull BlueRenderLayer<T> pLayer) {
 		this.layers.add(pLayer);
 	}
 

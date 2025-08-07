@@ -20,8 +20,8 @@ import software.bluelib.internal.registry.BlueEntityRegistry;
 
 public class BlueLibCommonClient {
 
-	public static void registerRenderers(@NotNull BiConsumer<EntityType<? extends Entity>, EntityRendererProvider> pEntityRenderers,
-			BiConsumer<BlockEntityType<? extends BlockEntity>, BlockEntityRendererProvider> pBlockEntityRenderers) {
+	public static void registerRenderers(@NotNull BiConsumer<EntityType<? extends Entity>, @NotNull EntityRendererProvider> pEntityRenderers,
+			@NotNull BiConsumer<BlockEntityType<? extends BlockEntity>, BlockEntityRendererProvider> pBlockEntityRenderers) {
 		pEntityRenderers.accept(BlueEntityRegistry.EXAMPLE.get(), ExampleRender::new);
 	}
 }

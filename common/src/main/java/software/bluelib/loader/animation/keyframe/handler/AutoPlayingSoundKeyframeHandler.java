@@ -15,6 +15,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 import software.bluelib.client.utils.LevelUtils;
 import software.bluelib.loader.animatable.base.BlueAnimatable;
 import software.bluelib.loader.animation.AnimationController;
@@ -23,7 +24,7 @@ import software.bluelib.loader.animation.keyframe.event.SoundKeyframeEvent;
 public class AutoPlayingSoundKeyframeHandler<A extends BlueAnimatable> implements AnimationController.SoundKeyframeHandler<A> {
 
 	@Override
-	public void handle(SoundKeyframeEvent<A> pEvent) {
+	public void handle(@NotNull SoundKeyframeEvent<A> pEvent) {
 		String[] segments = pEvent.getKeyframeData().getSound().split("\\|");
 		SoundEvent sound = BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.read(segments[0]).getOrThrow());
 

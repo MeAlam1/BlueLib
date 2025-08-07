@@ -29,18 +29,18 @@ import software.bluelib.loader.geckolib.constant.DataTickets;
 
 public interface BlueItem extends SingletonBlueAnimatable {
 
-	static void registerSyncedAnimatable(BlueAnimatable pAnimatable) {
+	static void registerSyncedAnimatable(@NotNull BlueAnimatable pAnimatable) {
 		SingletonBlueAnimatable.registerSyncedAnimatable(pAnimatable);
 	}
 
-	static long getId(ItemStack pStack) {
+	static long getId(@NotNull ItemStack pStack) {
 		return Optional.ofNullable(pStack.getComponentsPatch().get(BlueLibConstants.STACK_ANIMATABLE_ID_COMPONENT.get()))
 				.filter(Optional::isPresent)
 				.<Long>map(Optional::get)
 				.orElse(Long.MAX_VALUE);
 	}
 
-	static long getOrAssignId(ItemStack pStack, ServerLevel pLevel) {
+	static long getOrAssignId(@NotNull ItemStack pStack, @NotNull ServerLevel pLevel) {
 		if (!(pStack.getComponents() instanceof PatchedDataComponentMap components))
 			return Long.MAX_VALUE;
 
@@ -71,18 +71,18 @@ public interface BlueItem extends SingletonBlueAnimatable {
 
 	class ContextBasedAnimatableInstanceCache<T extends SingletonBlueAnimatable> extends SingletonAnimatableInstanceCache<T> {
 
-		public ContextBasedAnimatableInstanceCache(BlueAnimatable pAnimatable) {
+		public ContextBasedAnimatableInstanceCache(@NotNull BlueAnimatable pAnimatable) {
 			super(pAnimatable);
 		}
 
 		@Override
 		@SuppressWarnings("unchecked")
-		public <M extends BlueAnimatable> AnimatableManager<M> getManagerForId(long pUniqueId) {
+		public <M extends BlueAnimatable> @NotNull AnimatableManager<M> getManagerForId(long pUniqueId) {
 			if (!this.managers.containsKey(pUniqueId))
 				this.managers.put(pUniqueId, new ContextAwareAnimatableManager<BlueItem, ItemDisplayContext>(this.animatable) {
 
 					@Override
-					protected Map<ItemDisplayContext, AnimatableManager<BlueItem>> buildContextOptions(@NotNull BlueAnimatable pAnimatable) {
+					protected @NotNull Map<ItemDisplayContext, AnimatableManager<BlueItem>> buildContextOptions(@NotNull BlueAnimatable pAnimatable) {
 						Map<ItemDisplayContext, AnimatableManager<BlueItem>> map = new EnumMap<>(ItemDisplayContext.class);
 
 						for (ItemDisplayContext context : ItemDisplayContext.values()) {
@@ -93,7 +93,7 @@ public interface BlueItem extends SingletonBlueAnimatable {
 					}
 
 					@Override
-					public ItemDisplayContext getCurrentContext() {
+					public @NotNull ItemDisplayContext getCurrentContext() {
 						ItemDisplayContext context = getData(DataTickets.ITEM_RENDER_PERSPECTIVE);
 
 						return context == null ? ItemDisplayContext.NONE : context;

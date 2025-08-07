@@ -8,17 +8,20 @@
 package software.bluelib.loader.animation.keyframe.data;
 
 import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
 
 public class SoundKeyframeData extends KeyFrameData {
 
+	@NotNull
 	private final String sound;
 
-	public SoundKeyframeData(Double pStartTick, String pSound) {
+	public SoundKeyframeData(@NotNull Double pStartTick, @NotNull String pSound) {
 		super(pStartTick);
 
 		this.sound = pSound;
 	}
 
+	@NotNull
 	public String getSound() {
 		return this.sound;
 	}

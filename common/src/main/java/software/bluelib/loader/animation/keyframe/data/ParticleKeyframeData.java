@@ -8,14 +8,18 @@
 package software.bluelib.loader.animation.keyframe.data;
 
 import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
 
 public class ParticleKeyframeData extends KeyFrameData {
 
+	@NotNull
 	private final String effect;
+	@NotNull
 	private final String locator;
+	@NotNull
 	private final String script;
 
-	public ParticleKeyframeData(double pStartTick, String pEffect, String pLocator, String pScript) {
+	public ParticleKeyframeData(double pStartTick, @NotNull String pEffect, @NotNull String pLocator, @NotNull String pScript) {
 		super(pStartTick);
 
 		this.script = pScript;
@@ -23,14 +27,17 @@ public class ParticleKeyframeData extends KeyFrameData {
 		this.effect = pEffect;
 	}
 
+	@NotNull
 	public String getEffect() {
 		return this.effect;
 	}
 
+	@NotNull
 	public String getLocator() {
 		return this.locator;
 	}
 
+	@NotNull
 	public String script() {
 		return this.script;
 	}

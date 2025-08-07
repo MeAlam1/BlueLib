@@ -13,18 +13,22 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.loader.animatable.item.BlueItem;
 
 public interface BlueRenderProvider {
 
+	@NotNull
 	BlueRenderProvider DEFAULT = new BlueRenderProvider() {};
 
-	static BlueRenderProvider of(ItemStack pItemStack) {
+	@NotNull
+	static BlueRenderProvider of(@NotNull ItemStack pItemStack) {
 		return of(pItemStack.getItem());
 	}
 
-	static BlueRenderProvider of(Item pItem) {
+	@NotNull
+	static BlueRenderProvider of(@NotNull Item pItem) {
 		if (pItem instanceof BlueItem BlueItem)
 			return (BlueRenderProvider) BlueItem.getRenderProvider();
 
@@ -37,7 +41,7 @@ public interface BlueRenderProvider {
 	}
 
 	@Nullable
-	default <T extends LivingEntity> HumanoidModel<?> getBlueArmorRenderer(@Nullable T pLivingEntity, ItemStack pItemStack, @Nullable EquipmentSlot pEquipmentSlot, @Nullable HumanoidModel<T> pOriginal) {
+	default <T extends LivingEntity> HumanoidModel<?> getBlueArmorRenderer(@Nullable T pLivingEntity, @NotNull ItemStack pItemStack, @Nullable EquipmentSlot pEquipmentSlot, @Nullable HumanoidModel<T> pOriginal) {
 		return null;
 	}
 }

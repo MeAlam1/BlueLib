@@ -5,7 +5,7 @@
  * If a copy of the MIT License was not distributed with this file,
  * You can obtain one at https://opensource.org/licenses/MIT.
  */
-package software.bluelib.api.utils;
+package software.bluelib.api.utils.loader;
 
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
@@ -69,7 +69,8 @@ public final class LoaderUtils {
 		});
 	}
 
-	public static ResourceLocation stripSuffix(String pSuffix, ResourceLocation pLocation) {
+	@NotNull
+	public static ResourceLocation stripSuffix(@NotNull String pSuffix, @NotNull ResourceLocation pLocation) {
 		String path = pLocation.getPath();
 		if (path.endsWith(pSuffix)) {
 			String newPath = path.substring(0, path.length() - pSuffix.length());

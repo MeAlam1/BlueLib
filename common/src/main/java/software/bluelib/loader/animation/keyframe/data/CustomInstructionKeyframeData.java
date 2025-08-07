@@ -8,17 +8,20 @@
 package software.bluelib.loader.animation.keyframe.data;
 
 import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
 
 public class CustomInstructionKeyframeData extends KeyFrameData {
 
+	@NotNull
 	private final String instructions;
 
-	public CustomInstructionKeyframeData(double pStartTick, String pInstructions) {
+	public CustomInstructionKeyframeData(double pStartTick, @NotNull String pInstructions) {
 		super(pStartTick);
 
 		this.instructions = pInstructions;
 	}
 
+	@NotNull
 	public String getInstructions() {
 		return this.instructions;
 	}

@@ -20,6 +20,8 @@ import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import software.bluelib.BlueLibConstants;
@@ -39,50 +41,58 @@ import software.bluelib.loader.renderer.context.IRenderContext;
 
 public class BlueBlockRenderer<T extends BlockEntity & BlueAnimatable> implements BlueRenderer<T>, BlockEntityRenderer<T> {
 
+	@NotNull
 	protected final BlueRenderLayersContainer<T> renderLayers = new BlueRenderLayersContainer<>(this);
+	@NotNull
 	protected final BlueModel<T> model;
 
+	@Nullable
 	protected T animatable;
 	protected float scaleWidth = 1;
 	protected float scaleHeight = 1;
 
+	@NotNull
 	protected Matrix4f blockRenderTranslations = new Matrix4f();
+	@NotNull
 	protected Matrix4f modelRenderTranslations = new Matrix4f();
 
-	public BlueBlockRenderer(BlueModel<T> pModel) {
+	public BlueBlockRenderer(@NotNull BlueModel<T> pModel) {
 		this.model = pModel;
 	}
 
 	@Override
-	public BlueModel<T> getBlueModel() {
+	public @NotNull BlueModel<T> getBlueModel() {
 		return this.model;
 	}
 
 	@Override
-	public T getAnimatable() {
+	public @Nullable T getAnimatable() {
 		return this.animatable;
 	}
 
 	@Override
-	public long getInstanceId(IRenderContext<T> pContext) {
+	public long getInstanceId(@NotNull IRenderContext<T> pContext) {
 		return pContext.animatable().getBlockPos().hashCode();
 	}
 
 	@Override
-	public List<BlueRenderLayer<T>> getRenderLayers() {
+	public @NotNull List<BlueRenderLayer<T>> getRenderLayers() {
 		return this.renderLayers.getRenderLayers();
 	}
 
-	public BlueBlockRenderer<T> addRenderLayer(BlueRenderLayer<T> pRenderLayer) {
+	@NotNull
+	public BlueBlockRenderer<T> addRenderLayer(@NotNull BlueRenderLayer<T> pRenderLayer) {
 		this.renderLayers.addLayer(pRenderLayer);
 
 		return this;
 	}
 
+	@NotNull
 	public BlueBlockRenderer<T> withScale(float pScale) {
 		return withScale(pScale, pScale);
 	}
 
+	@NotNull
 	public BlueBlockRenderer<T> withScale(float pScaleWidth, float pScaleHeight) {
 		this.scaleWidth = pScaleWidth;
 		this.scaleHeight = pScaleHeight;
@@ -91,7 +101,7 @@ public class BlueBlockRenderer<T extends BlockEntity & BlueAnimatable> implement
 	}
 
 	@Override
-	public void preRender(IRenderContext<T> pContext) {
+	public void preRender(@NotNull IRenderContext<T> pContext) {
 		this.blockRenderTranslations = new Matrix4f(pContext.poseStack().last().pose());
 
 		if (!pContext.isReRender())
@@ -102,7 +112,7 @@ public class BlueBlockRenderer<T extends BlockEntity & BlueAnimatable> implement
 
 	@Override
 	@ApiStatus.Internal
-	public void render(T pAnimatable, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBufferSource,
+	public void render(@NotNull T pAnimatable, float pPartialTick, @NotNull PoseStack pPoseStack, @NotNull MultiBufferSource pBufferSource,
 			int pPackedLight, int pPackedOverlay) {
 		this.animatable = pAnimatable;
 
@@ -111,7 +121,7 @@ public class BlueBlockRenderer<T extends BlockEntity & BlueAnimatable> implement
 				this.animatable,
 				this.model.getBakedModel(getBlueModel().getModelResource(pAnimatable, this)),
 				pBufferSource,
-				false, // isReRender
+				false,
 				pPartialTick,
 				pPackedLight,
 				getPackedOverlay(this.animatable, 0, pPartialTick),
@@ -119,7 +129,7 @@ public class BlueBlockRenderer<T extends BlockEntity & BlueAnimatable> implement
 	}
 
 	@Override
-	public void actuallyRender(IRenderContext<T> pContext) {
+	public void actuallyRender(@NotNull IRenderContext<T> pContext) {
 		if (pContext instanceof FullRenderContext<T> full) {
 			PoseStack pPoseStack = full.poseStack();
 			T animatable = full.animatable();
@@ -149,12 +159,12 @@ public class BlueBlockRenderer<T extends BlockEntity & BlueAnimatable> implement
 	}
 
 	@Override
-	public void doPostRenderCleanup(IRenderContext<T> pContext) {
+	public void doPostRenderCleanup(@NotNull IRenderContext<T> pContext) {
 		this.animatable = null;
 	}
 
 	@Override
-	public void renderRecursively(BoneCache pBone, FullRenderContext<T> pContext) {
+	public void renderRecursively(@NotNull BoneCache pBone, @NotNull FullRenderContext<T> pContext) {
 		if (pBone.isTrackingMatrices()) {
 			Matrix4f poseState = new Matrix4f(pContext.poseStack().last().pose());
 			Matrix4f localMatrix = RenderUtils.invertAndMultiplyMatrices(poseState, this.blockRenderTranslations);
@@ -169,7 +179,7 @@ public class BlueBlockRenderer<T extends BlockEntity & BlueAnimatable> implement
 		BlueRenderer.super.renderRecursively(pBone, pContext);
 	}
 
-	protected void rotateBlock(Direction pFacing, PoseStack pPoseStack) {
+	protected void rotateBlock(@NotNull Direction pFacing, @NotNull PoseStack pPoseStack) {
 		switch (pFacing) {
 			case SOUTH -> pPoseStack.mulPose(Axis.YP.rotationDegrees(180));
 			case WEST -> pPoseStack.mulPose(Axis.YP.rotationDegrees(90));
@@ -180,7 +190,8 @@ public class BlueBlockRenderer<T extends BlockEntity & BlueAnimatable> implement
 		}
 	}
 
-	protected Direction getFacing(T pBlock) {
+	@NotNull
+	protected Direction getFacing(@NotNull T pBlock) {
 		BlockState blockState = pBlock.getBlockState();
 
 		if (blockState.hasProperty(HorizontalDirectionalBlock.FACING))
@@ -193,7 +204,7 @@ public class BlueBlockRenderer<T extends BlockEntity & BlueAnimatable> implement
 	}
 
 	@Override
-	public void updateAnimatedTextureFrame(T pAnimatable) {
+	public void updateAnimatedTextureFrame(@NotNull T pAnimatable) {
 		AnimatableTexture.setAndUpdate(getTextureLocation(pAnimatable));
 	}
 
@@ -203,12 +214,12 @@ public class BlueBlockRenderer<T extends BlockEntity & BlueAnimatable> implement
 	}
 
 	@Override
-	public boolean firePreRenderEvent(IRenderContext<T> pContext) {
+	public boolean firePreRenderEvent(@NotNull IRenderContext<T> pContext) {
 		return BlueLibConstants.PlatformHelper.EVENT_PROXY.fireBlockPreRender(this, pContext);
 	}
 
 	@Override
-	public void firePostRenderEvent(IRenderContext<T> pContext) {
+	public void firePostRenderEvent(@NotNull IRenderContext<T> pContext) {
 		BlueLibConstants.PlatformHelper.EVENT_PROXY.fireBlockPostRender(this, pContext);
 	}
 }

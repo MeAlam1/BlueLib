@@ -43,6 +43,8 @@ import org.joml.Quaternionf;
 import org.joml.Vector3f;
 import software.bluelib.BlueLibConstants;
 import software.bluelib.api.utils.Color;
+import software.bluelib.api.utils.logging.BaseLogLevel;
+import software.bluelib.api.utils.logging.BaseLogger;
 import software.bluelib.loader.animatable.base.BlueAnimatable;
 import software.bluelib.loader.cache.model.BoneCache;
 import software.bluelib.loader.cache.model.CubeCache;
@@ -138,7 +140,7 @@ public final class RenderUtils {
 		try {
 			originalTexture = Minecraft.getInstance().submit(() -> TextureUtils.getTexture(pTexture)).get();
 		} catch (@NotNull Exception pException) {
-			pException.printStackTrace();
+			BaseLogger.log(BaseLogLevel.ERROR, "Failed to get texture dimensions for: " + pTexture, pException);
 		}
 
 		if (originalTexture == null)
@@ -150,7 +152,7 @@ public final class RenderUtils {
 			image = originalTexture instanceof DynamicTexture dynamicTexture ? dynamicTexture.getPixels()
 					: NativeImage.read(ResourceUtils.getResource(pTexture).get().open());
 		} catch (@NotNull Exception pException) {
-			pException.printStackTrace();
+			BaseLogger.log(BaseLogLevel.ERROR, "Failed to read texture image for: " + pTexture, pException);
 		}
 
 		return image == null ? null : IntIntImmutablePair.of(image.getWidth(), image.getHeight());
@@ -261,6 +263,7 @@ public final class RenderUtils {
 		pPartVisibilitySetter.accept(pBaseModel, pEquipmentSlot);
 
 		pBaseModel.copyPropertiesTo((A) model);
+		// TODO: Null in NotNull???
 		model.renderToBuffer(pPoseStack, null, pPackedLight, OverlayTexture.NO_OVERLAY, Color.WHITE.argbInt());
 
 		return true;

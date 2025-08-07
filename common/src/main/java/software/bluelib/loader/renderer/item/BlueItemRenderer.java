@@ -25,6 +25,7 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import software.bluelib.BlueLibConstants;
 import software.bluelib.client.utils.RenderUtils;
@@ -45,44 +46,52 @@ import software.bluelib.loader.renderer.context.IRenderContext;
 
 public class BlueItemRenderer<T extends Item & BlueAnimatable> extends BlockEntityWithoutLevelRenderer implements BlueRenderer<T> {
 
+	@NotNull
 	protected final BlueRenderLayersContainer<T> renderLayers = new BlueRenderLayersContainer<>(this);
+	@NotNull
 	protected final BlueModel<T> model;
 
+	@Nullable
 	protected ItemStack currentItemStack;
+	@Nullable
 	protected ItemDisplayContext renderPerspective;
+	@Nullable
 	protected T animatable;
 	protected float scaleWidth = 1;
 	protected float scaleHeight = 1;
 	protected boolean useEntityGuiLighting = false;
 
+	@NotNull
 	protected Matrix4f itemRenderTranslations = new Matrix4f();
+	@NotNull
 	protected Matrix4f modelRenderTranslations = new Matrix4f();
 
-	public BlueItemRenderer(BlueModel<T> pModel) {
+	public BlueItemRenderer(@NotNull BlueModel<T> pModel) {
 		this(Minecraft.getInstance().getBlockEntityRenderDispatcher(), Minecraft.getInstance().getEntityModels(),
 				pModel);
 	}
 
-	public BlueItemRenderer(BlockEntityRenderDispatcher pDispatcher, EntityModelSet pModelSet, BlueModel<T> pModel) {
+	public BlueItemRenderer(@NotNull BlockEntityRenderDispatcher pDispatcher, @NotNull EntityModelSet pModelSet, @NotNull BlueModel<T> pModel) {
 		super(pDispatcher, pModelSet);
 
 		this.model = pModel;
 	}
 
 	@Override
-	public BlueModel<T> getBlueModel() {
+	public @NotNull BlueModel<T> getBlueModel() {
 		return this.model;
 	}
 
 	@Override
-	public T getAnimatable() {
+	public @Nullable T getAnimatable() {
 		return this.animatable;
 	}
 
-	public ItemStack getCurrentItemStack() {
+	public @Nullable ItemStack getCurrentItemStack() {
 		return this.currentItemStack;
 	}
 
+	@NotNull
 	public BlueItemRenderer<T> useAlternateGuiLighting() {
 		this.useEntityGuiLighting = true;
 
@@ -90,30 +99,33 @@ public class BlueItemRenderer<T extends Item & BlueAnimatable> extends BlockEnti
 	}
 
 	@Override
-	public long getInstanceId(IRenderContext<T> pContext) {
+	public long getInstanceId(@NotNull IRenderContext<T> pContext) {
 		return BlueItem.getId(this.currentItemStack);
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(T pAnimatable) {
+	public @NotNull ResourceLocation getTextureLocation(@NotNull T pAnimatable) {
 		return BlueRenderer.super.getTextureLocation(pAnimatable);
 	}
 
 	@Override
-	public List<BlueRenderLayer<T>> getRenderLayers() {
+	public @NotNull List<BlueRenderLayer<T>> getRenderLayers() {
 		return this.renderLayers.getRenderLayers();
 	}
 
-	public BlueItemRenderer<T> addRenderLayer(BlueRenderLayer<T> pRenderLayer) {
+	@NotNull
+	public BlueItemRenderer<T> addRenderLayer(@NotNull BlueRenderLayer<T> pRenderLayer) {
 		this.renderLayers.addLayer(pRenderLayer);
 
 		return this;
 	}
 
+	@NotNull
 	public BlueItemRenderer<T> withScale(float pScale) {
 		return withScale(pScale, pScale);
 	}
 
+	@NotNull
 	public BlueItemRenderer<T> withScale(float pScaleWidth, float pScaleHeight) {
 		this.scaleWidth = pScaleWidth;
 		this.scaleHeight = pScaleHeight;
@@ -122,7 +134,7 @@ public class BlueItemRenderer<T extends Item & BlueAnimatable> extends BlockEnti
 	}
 
 	@Override
-	public void preRender(IRenderContext<T> pContext) {
+	public void preRender(@NotNull IRenderContext<T> pContext) {
 		this.itemRenderTranslations = new Matrix4f(pContext.poseStack().last().pose());
 
 		scaleModelForRender(this.scaleWidth, this.scaleHeight, pContext);
@@ -133,7 +145,7 @@ public class BlueItemRenderer<T extends Item & BlueAnimatable> extends BlockEnti
 
 	@Override
 	@ApiStatus.Internal
-	public void renderByItem(ItemStack pStack, @NotNull ItemDisplayContext pTransformType, @NotNull PoseStack pPoseStack,
+	public void renderByItem(@NotNull ItemStack pStack, @NotNull ItemDisplayContext pTransformType, @NotNull PoseStack pPoseStack,
 			@NotNull MultiBufferSource pBufferSource, int pPackedLight, int pPackedOverlay) {
 		this.animatable = (T) pStack.getItem();
 		this.currentItemStack = pStack;
@@ -174,8 +186,8 @@ public class BlueItemRenderer<T extends Item & BlueAnimatable> extends BlockEnti
 		this.animatable = null;
 	}
 
-	protected void renderInGui(ItemDisplayContext pTransformType, PoseStack pPoseStack,
-			MultiBufferSource pBufferSource, int pPackedLight, int pPackedOverlay, float pPartialTick) {
+	protected void renderInGui(@NotNull ItemDisplayContext pTransformType, @NotNull PoseStack pPoseStack,
+			@NotNull MultiBufferSource pBufferSource, int pPackedLight, int pPackedOverlay, float pPartialTick) {
 		setupLightingForGuiRender();
 
 		MultiBufferSource.BufferSource defaultBufferSource = pBufferSource instanceof MultiBufferSource.BufferSource bufferSource2 ? bufferSource2 : Minecraft.getInstance().levelRenderer.renderBuffers.bufferSource();
@@ -213,7 +225,7 @@ public class BlueItemRenderer<T extends Item & BlueAnimatable> extends BlockEnti
 	}
 
 	@Override
-	public void actuallyRender(IRenderContext<T> pContext) {
+	public void actuallyRender(@NotNull IRenderContext<T> pContext) {
 		if (pContext instanceof FullRenderContext<T> full) {
 			PoseStack pPoseStack = full.poseStack();
 			T pAnimatable = full.animatable();
@@ -244,14 +256,14 @@ public class BlueItemRenderer<T extends Item & BlueAnimatable> extends BlockEnti
 	}
 
 	@Override
-	public void doPostRenderCleanup(IRenderContext<T> pContext) {
+	public void doPostRenderCleanup(@NotNull IRenderContext<T> pContext) {
 		this.animatable = null;
 		this.currentItemStack = null;
 		this.renderPerspective = null;
 	}
 
 	@Override
-	public void renderRecursively(BoneCache pBone, FullRenderContext<T> pContext) {
+	public void renderRecursively(@NotNull BoneCache pBone, @NotNull FullRenderContext<T> pContext) {
 		if (pBone.isTrackingMatrices()) {
 			Matrix4f poseState = new Matrix4f(pContext.poseStack().last().pose());
 
@@ -271,7 +283,7 @@ public class BlueItemRenderer<T extends Item & BlueAnimatable> extends BlockEnti
 	}
 
 	@Override
-	public void updateAnimatedTextureFrame(T pAnimatable) {
+	public void updateAnimatedTextureFrame(@NotNull T pAnimatable) {
 		AnimatableTexture.setAndUpdate(getTextureLocation(pAnimatable));
 	}
 
@@ -281,12 +293,12 @@ public class BlueItemRenderer<T extends Item & BlueAnimatable> extends BlockEnti
 	}
 
 	@Override
-	public boolean firePreRenderEvent(IRenderContext<T> pContext) {
+	public boolean firePreRenderEvent(@NotNull IRenderContext<T> pContext) {
 		return BlueLibConstants.PlatformHelper.EVENT_PROXY.fireItemPreRender(this, pContext);
 	}
 
 	@Override
-	public void firePostRenderEvent(IRenderContext<T> pContext) {
+	public void firePostRenderEvent(@NotNull IRenderContext<T> pContext) {
 		BlueLibConstants.PlatformHelper.EVENT_PROXY.fireItemPostRender(this, pContext);
 	}
 }

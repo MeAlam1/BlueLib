@@ -18,6 +18,9 @@ public class BlockEntityDataSyncPacketHandler<D> implements ClientNetworkPacketH
 
 	@Override
 	public void handle(@NotNull BlockEntityDataSyncPacket<D> pPacket, @NotNull Minecraft pClient) {
+		if (LevelUtils.getLevel() == null) {
+			return;
+		}
 		if (LevelUtils.getLevel().getBlockEntity(pPacket.pos()) instanceof BlueBlockEntity blockEntity) {
 			blockEntity.setAnimData(pPacket.dataTicket(), pPacket.data());
 		}

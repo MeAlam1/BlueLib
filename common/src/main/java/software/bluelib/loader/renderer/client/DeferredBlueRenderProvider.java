@@ -13,10 +13,12 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import org.apache.commons.lang3.mutable.MutableObject;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public interface DeferredBlueRenderProvider extends BlueRenderProvider {
 
+	@NotNull
 	MutableObject<BlueRenderProvider> getRenderProvider();
 
 	@Override
@@ -27,7 +29,7 @@ public interface DeferredBlueRenderProvider extends BlueRenderProvider {
 
 	@Override
 	@Nullable
-	default <T extends LivingEntity> HumanoidModel<?> getBlueArmorRenderer(@Nullable T pLivingEntity, ItemStack pItemStack, @Nullable EquipmentSlot pEquipmentSlot, @Nullable HumanoidModel<T> pOriginal) {
+	default <T extends LivingEntity> HumanoidModel<?> getBlueArmorRenderer(@Nullable T pLivingEntity, @NotNull ItemStack pItemStack, @Nullable EquipmentSlot pEquipmentSlot, @Nullable HumanoidModel<T> pOriginal) {
 		return getRenderProvider().getValue().getBlueArmorRenderer(pLivingEntity, pItemStack, pEquipmentSlot, pOriginal);
 	}
 }

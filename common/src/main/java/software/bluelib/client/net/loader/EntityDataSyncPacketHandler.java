@@ -21,6 +21,9 @@ public class EntityDataSyncPacketHandler<D> implements ClientNetworkPacketHandle
 
 	@Override
 	public void handle(@NotNull EntityDataSyncPacket<D> pPacket, @NotNull Minecraft pClient) {
+		if (LevelUtils.getLevel() == null) {
+			return;
+		}
 		Entity entity = LevelUtils.getLevel().getEntity(pPacket.entityId());
 
 		if (entity == null)

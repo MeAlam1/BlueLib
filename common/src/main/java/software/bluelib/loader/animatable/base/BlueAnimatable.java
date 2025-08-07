@@ -29,7 +29,6 @@ public interface BlueAnimatable {
 			"Use the new Data Driven Controller System.",
 			"Refer to: data/MODID/controller/ENTITY.controller.json"
 	})
-
 	default <T extends BlueAnimatable> void registerControllers(@NotNull AnimatableManager.ControllerRegistrar<T> pRegistrar) {}
 
 	@NotNull

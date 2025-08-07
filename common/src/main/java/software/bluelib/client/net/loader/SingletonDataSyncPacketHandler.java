@@ -10,7 +10,7 @@ package software.bluelib.client.net.loader;
 import net.minecraft.client.Minecraft;
 import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.net.ClientNetworkPacketHandler;
-import software.bluelib.api.utils.LoaderUtils;
+import software.bluelib.api.utils.loader.LoaderUtils;
 import software.bluelib.client.utils.PlayerUtils;
 import software.bluelib.loader.animatable.base.BlueAnimatable;
 import software.bluelib.loader.animatable.base.SingletonBlueAnimatable;
@@ -20,9 +20,13 @@ public class SingletonDataSyncPacketHandler<D> implements ClientNetworkPacketHan
 
 	@Override
 	public void handle(@NotNull SingletonDataSyncPacket<D> pPacket, @NotNull Minecraft pClient) {
+		if (PlayerUtils.getClientPlayer() == null) {
+			return;
+		}
 		BlueAnimatable animatable = LoaderUtils.getSyncedAnimatable(pPacket.syncableId());
 
-		if (animatable instanceof SingletonBlueAnimatable singleton)
+		if (animatable instanceof SingletonBlueAnimatable singleton) {
 			singleton.setAnimData(PlayerUtils.getClientPlayer(), pPacket.instanceId(), pPacket.dataTicket(), pPacket.data());
+		}
 	}
 }

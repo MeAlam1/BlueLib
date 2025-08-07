@@ -9,15 +9,20 @@ package software.bluelib.loader.renderer.context;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.MultiBufferSource;
+import org.jetbrains.annotations.NotNull;
 import software.bluelib.loader.animatable.base.BlueAnimatable;
 import software.bluelib.loader.cache.model.ModelCache;
 
 @SuppressWarnings("unused")
 public final class BaseRenderContext<T extends BlueAnimatable> implements IRenderContext<T> {
 
+	@NotNull
 	private PoseStack poseStack;
+	@NotNull
 	private T animatable;
+	@NotNull
 	private ModelCache model;
+	@NotNull
 	private MultiBufferSource bufferSource;
 	private boolean isReRender;
 	private float partialTick;
@@ -25,8 +30,8 @@ public final class BaseRenderContext<T extends BlueAnimatable> implements IRende
 	private int packedOverlay;
 	private int color;
 
-	public BaseRenderContext(PoseStack pPoseStack, T pAnimatable, ModelCache pModel,
-			MultiBufferSource pBufferSource, boolean pIsReRender, float pPartialTick,
+	public BaseRenderContext(@NotNull PoseStack pPoseStack, @NotNull T pAnimatable, @NotNull ModelCache pModel,
+			@NotNull MultiBufferSource pBufferSource, boolean pIsReRender, float pPartialTick,
 			int pPackedLight, int pPackedOverlay, int pColor) {
 		this.poseStack = pPoseStack;
 		this.animatable = pAnimatable;
@@ -39,18 +44,22 @@ public final class BaseRenderContext<T extends BlueAnimatable> implements IRende
 		this.color = pColor;
 	}
 
+	@NotNull
 	public PoseStack poseStack() {
 		return poseStack;
 	}
 
+	@NotNull
 	public T animatable() {
 		return animatable;
 	}
 
+	@NotNull
 	public ModelCache model() {
 		return model;
 	}
 
+	@NotNull
 	public MultiBufferSource bufferSource() {
 		return bufferSource;
 	}
@@ -75,19 +84,19 @@ public final class BaseRenderContext<T extends BlueAnimatable> implements IRende
 		return color;
 	}
 
-	public void setPoseStack(PoseStack pPoseStack) {
+	public void setPoseStack(@NotNull PoseStack pPoseStack) {
 		this.poseStack = pPoseStack;
 	}
 
-	public void setAnimatable(T pAnimatable) {
+	public void setAnimatable(@NotNull T pAnimatable) {
 		this.animatable = pAnimatable;
 	}
 
-	public void setModel(ModelCache pModel) {
+	public void setModel(@NotNull ModelCache pModel) {
 		this.model = pModel;
 	}
 
-	public void setBufferSource(MultiBufferSource pBufferSource) {
+	public void setBufferSource(@NotNull MultiBufferSource pBufferSource) {
 		this.bufferSource = pBufferSource;
 	}
 

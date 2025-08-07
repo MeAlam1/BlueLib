@@ -7,9 +7,12 @@
  */
 package software.bluelib.api.molang;
 
+import org.jetbrains.annotations.NotNull;
+
 public class MoLangNamespaceUtils {
 
-	public static String withMathNamespace(String pName) {
+	@NotNull
+	public static String withMathNamespace(@NotNull String pName) {
 		return "math." + pName;
 	}
 }

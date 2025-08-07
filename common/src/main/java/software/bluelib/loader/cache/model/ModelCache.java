@@ -13,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.loader.json.deserialize.model.ModelDescription;
 
-public record ModelCache(@NotNull List<BoneCache> topLevelBones, @NotNull ModelDescription modelDescription) {
+public record ModelCache(@NotNull List<BoneCache> topLevelBones, @Nullable ModelDescription modelDescription) {
 
 	@NotNull
 	public Optional<BoneCache> getBone(@NotNull String pName) {

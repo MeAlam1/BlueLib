@@ -14,7 +14,7 @@ import com.google.gson.JsonParseException;
 import java.util.List;
 import net.minecraft.util.GsonHelper;
 import org.jetbrains.annotations.NotNull;
-import software.bluelib.api.utils.JsonUtils;
+import software.bluelib.api.utils.loader.JsonUtils;
 
 public record Controller(
 		@NotNull String formatVersion,

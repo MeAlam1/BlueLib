@@ -20,12 +20,12 @@ public interface BlueEntity extends BlueAnimatable {
 
 	@ApiStatus.NonExtendable
 	@Nullable
-	default <D> D getAnimData(SerializableDataTicket<D> pDataTicket) {
+	default <D> D getAnimData(@NotNull SerializableDataTicket<D> pDataTicket) {
 		return getAnimatableInstanceCache().getManagerForId(((Entity) this).getId()).getData(pDataTicket);
 	}
 
 	@ApiStatus.NonExtendable
-	default <D> void setAnimData(SerializableDataTicket<D> pDataTicket, D pData) {
+	default <D> void setAnimData(@NotNull SerializableDataTicket<D> pDataTicket, @NotNull D pData) {
 		Entity entity = (Entity) this;
 
 		if (entity.level().isClientSide()) {
@@ -36,7 +36,7 @@ public interface BlueEntity extends BlueAnimatable {
 	}
 
 	@ApiStatus.NonExtendable
-	default void triggerAnim(@Nullable String pControllerName, String pAnimName) {
+	default void triggerAnim(@Nullable String pControllerName, @NotNull String pAnimName) {
 		Entity entity = (Entity) this;
 
 		if (entity.level().isClientSide()) {
@@ -56,9 +56,6 @@ public interface BlueEntity extends BlueAnimatable {
 
 		if (entity.level().isClientSide()) {
 			AnimatableManager<BlueAnimatable> animatableManager = getAnimatableInstanceCache().getManagerForId(entity.getId());
-
-			if (animatableManager == null)
-				return;
 
 			if (pControllerName != null) {
 				animatableManager.stopTriggeredAnimation(pControllerName, pAnimName);

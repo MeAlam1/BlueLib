@@ -66,12 +66,12 @@ public class BlueLibEventProxy implements IEventProxy {
 	}
 
 	@Override
-	public @NotNull Boolean fireBlockPreRender(@NotNull BlueBlockRenderer<?> pRenderer, IRenderContext<?> pContext) {
+	public @NotNull Boolean fireBlockPreRender(@NotNull BlueBlockRenderer<?> pRenderer, @NotNull IRenderContext<?> pContext) {
 		return !NeoForge.EVENT_BUS.post(new BlueRenderEvent.Block.Pre(pRenderer, pContext)).isCanceled();
 	}
 
 	@Override
-	public void fireBlockPostRender(@NotNull BlueBlockRenderer<?> pRenderer, IRenderContext<?> pContext) {
+	public void fireBlockPostRender(@NotNull BlueBlockRenderer<?> pRenderer, @NotNull IRenderContext<?> pContext) {
 		NeoForge.EVENT_BUS.post(new BlueRenderEvent.Block.Post(pRenderer, pContext));
 	}
 
@@ -81,12 +81,12 @@ public class BlueLibEventProxy implements IEventProxy {
 	}
 
 	@Override
-	public @NotNull Boolean fireArmorPreRender(@NotNull BlueArmorRenderer<?> pRenderer, IRenderContext<?> pContext) {
+	public @NotNull Boolean fireArmorPreRender(@NotNull BlueArmorRenderer<?> pRenderer, @NotNull IRenderContext<?> pContext) {
 		return !NeoForge.EVENT_BUS.post(new BlueRenderEvent.Armor.Pre(pRenderer, pContext)).isCanceled();
 	}
 
 	@Override
-	public void fireArmorPostRender(@NotNull BlueArmorRenderer<?> pRenderer, IRenderContext<?> pContext) {
+	public void fireArmorPostRender(@NotNull BlueArmorRenderer<?> pRenderer, @NotNull IRenderContext<?> pContext) {
 		NeoForge.EVENT_BUS.post(new BlueRenderEvent.Armor.Post(pRenderer, pContext));
 	}
 
@@ -96,12 +96,12 @@ public class BlueLibEventProxy implements IEventProxy {
 	}
 
 	@Override
-	public @NotNull Boolean fireEntityPreRender(@NotNull BlueEntityRenderer<?> pRenderer, IRenderContext<?> pContext) {
+	public @NotNull Boolean fireEntityPreRender(@NotNull BlueEntityRenderer<?> pRenderer, @NotNull IRenderContext<?> pContext) {
 		return !NeoForge.EVENT_BUS.post(new BlueRenderEvent.Entity.Pre(pRenderer, pContext)).isCanceled();
 	}
 
 	@Override
-	public void fireEntityPostRender(@NotNull BlueEntityRenderer<?> pRenderer, IRenderContext<?> pContext) {
+	public void fireEntityPostRender(@NotNull BlueEntityRenderer<?> pRenderer, @NotNull IRenderContext<?> pContext) {
 		NeoForge.EVENT_BUS.post(new BlueRenderEvent.Entity.Post(pRenderer, pContext));
 	}
 
@@ -111,12 +111,12 @@ public class BlueLibEventProxy implements IEventProxy {
 	}
 
 	@Override
-	public @NotNull Boolean fireReplacedEntityPreRender(@NotNull BlueReplacedEntityRenderer<?, ?> pRenderer, IRenderContext<?> pContext) {
+	public @NotNull Boolean fireReplacedEntityPreRender(@NotNull BlueReplacedEntityRenderer<?, ?> pRenderer, @NotNull IRenderContext<?> pContext) {
 		return !NeoForge.EVENT_BUS.post(new BlueRenderEvent.ReplacedEntity.Pre(pRenderer, pContext)).isCanceled();
 	}
 
 	@Override
-	public void fireReplacedEntityPostRender(@NotNull BlueReplacedEntityRenderer<?, ?> pRenderer, IRenderContext<?> pContext) {
+	public void fireReplacedEntityPostRender(@NotNull BlueReplacedEntityRenderer<?, ?> pRenderer, @NotNull IRenderContext<?> pContext) {
 		NeoForge.EVENT_BUS.post(new BlueRenderEvent.ReplacedEntity.Post(pRenderer, pContext));
 	}
 
@@ -126,12 +126,12 @@ public class BlueLibEventProxy implements IEventProxy {
 	}
 
 	@Override
-	public @NotNull Boolean fireItemPreRender(@NotNull BlueItemRenderer<?> pRenderer, IRenderContext<?> pContext) {
+	public @NotNull Boolean fireItemPreRender(@NotNull BlueItemRenderer<?> pRenderer, @NotNull IRenderContext<?> pContext) {
 		return !NeoForge.EVENT_BUS.post(new BlueRenderEvent.Item.Pre(pRenderer, pContext)).isCanceled();
 	}
 
 	@Override
-	public void fireItemPostRender(@NotNull BlueItemRenderer<?> pRenderer, IRenderContext<?> pContext) {
+	public void fireItemPostRender(@NotNull BlueItemRenderer<?> pRenderer, @NotNull IRenderContext<?> pContext) {
 		NeoForge.EVENT_BUS.post(new BlueRenderEvent.Item.Post(pRenderer, pContext));
 	}
 
@@ -141,12 +141,12 @@ public class BlueLibEventProxy implements IEventProxy {
 	}
 
 	@Override
-	public @NotNull Boolean fireObjectPreRender(@NotNull BlueObjectRenderer<?> pRenderer, IRenderContext<?> pContext) {
+	public @NotNull Boolean fireObjectPreRender(@NotNull BlueObjectRenderer<?> pRenderer, @NotNull IRenderContext<?> pContext) {
 		return !NeoForge.EVENT_BUS.post(new BlueRenderEvent.Object.Pre(pRenderer, pContext)).isCanceled();
 	}
 
 	@Override
-	public void fireObjectPostRender(@NotNull BlueObjectRenderer<?> pRenderer, IRenderContext<?> pContext) {
+	public void fireObjectPostRender(@NotNull BlueObjectRenderer<?> pRenderer, @NotNull IRenderContext<?> pContext) {
 		NeoForge.EVENT_BUS.post(new BlueRenderEvent.Object.Post(pRenderer, pContext));
 	}
 }

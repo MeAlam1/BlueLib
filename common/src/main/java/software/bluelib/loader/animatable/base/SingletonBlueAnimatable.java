@@ -10,9 +10,10 @@ package software.bluelib.loader.animatable.base;
 import java.util.function.Consumer;
 import net.minecraft.world.entity.Entity;
 import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.net.loader.LoaderNetwork;
-import software.bluelib.api.utils.LoaderUtils;
+import software.bluelib.api.utils.loader.LoaderUtils;
 import software.bluelib.loader.animatable.cache.AnimatableInstanceCache;
 import software.bluelib.loader.animatable.cache.SingletonAnimatableInstanceCache;
 import software.bluelib.loader.geckolib.constant.dataticket.SerializableDataTicket;
@@ -20,18 +21,18 @@ import software.bluelib.loader.renderer.client.BlueRenderProvider;
 
 public interface SingletonBlueAnimatable extends BlueAnimatable {
 
-	static void registerSyncedAnimatable(BlueAnimatable pAnimatable) {
+	static void registerSyncedAnimatable(@NotNull BlueAnimatable pAnimatable) {
 		LoaderUtils.registerSyncedAnimatable(pAnimatable);
 	}
 
 	@ApiStatus.NonExtendable
 	@Nullable
-	default <D> D getAnimData(long pInstanceId, SerializableDataTicket<D> pDataTicket) {
+	default <D> D getAnimData(long pInstanceId, @NotNull SerializableDataTicket<D> pDataTicket) {
 		return getAnimatableInstanceCache().getManagerForId(pInstanceId).getData(pDataTicket);
 	}
 
 	@ApiStatus.NonExtendable
-	default <D> void setAnimData(Entity pRelatedEntity, long pInstanceId, SerializableDataTicket<D> pDataTicket, D pData) {
+	default <D> void setAnimData(@NotNull Entity pRelatedEntity, long pInstanceId, @NotNull SerializableDataTicket<D> pDataTicket, D pData) {
 		if (pRelatedEntity.level().isClientSide()) {
 			getAnimatableInstanceCache().getManagerForId(pInstanceId).setData(pDataTicket, pData);
 		} else {
@@ -40,12 +41,12 @@ public interface SingletonBlueAnimatable extends BlueAnimatable {
 	}
 
 	@ApiStatus.NonExtendable
-	default <D> void syncAnimData(long pInstanceId, SerializableDataTicket<D> pDataTicket, D pData, Entity pEntityToTrack) {
+	default <D> void syncAnimData(long pInstanceId, @NotNull SerializableDataTicket<D> pDataTicket, @NotNull D pData, @NotNull Entity pEntityToTrack) {
 		LoaderNetwork.syncSingletonAnimData(this, pInstanceId, pDataTicket, pData, pEntityToTrack);
 	}
 
 	@ApiStatus.NonExtendable
-	default <D> void triggerAnim(Entity pRelatedEntity, long pInstanceId, @Nullable String pControllerName, String pAnimName) {
+	default <D> void triggerAnim(@NotNull Entity pRelatedEntity, long pInstanceId, @Nullable String pControllerName, @NotNull String pAnimName) {
 		if (pRelatedEntity.level().isClientSide()) {
 			if (pControllerName != null) {
 				getAnimatableInstanceCache().getManagerForId(pInstanceId).tryTriggerAnimation(pControllerName, pAnimName);
@@ -58,12 +59,9 @@ public interface SingletonBlueAnimatable extends BlueAnimatable {
 	}
 
 	@ApiStatus.NonExtendable
-	default void stopTriggeredAnim(Entity pRelatedEntity, long pInstanceId, @Nullable String pControllerName, @Nullable String pAnimName) {
+	default void stopTriggeredAnim(@NotNull Entity pRelatedEntity, long pInstanceId, @Nullable String pControllerName, @Nullable String pAnimName) {
 		if (pRelatedEntity.level().isClientSide()) {
 			AnimatableManager<BlueAnimatable> animatableManager = getAnimatableInstanceCache().getManagerForId(pInstanceId);
-
-			if (animatableManager == null)
-				return;
 
 			if (pControllerName != null) {
 				animatableManager.stopTriggeredAnimation(pControllerName, pAnimName);
@@ -76,12 +74,12 @@ public interface SingletonBlueAnimatable extends BlueAnimatable {
 	}
 
 	@ApiStatus.NonExtendable
-	default void triggerArmorAnim(Entity pRelatedEntity, long pInstanceId, @Nullable String pControllerName, String pAnimName) {
+	default void triggerArmorAnim(@NotNull Entity pRelatedEntity, long pInstanceId, @Nullable String pControllerName, @NotNull String pAnimName) {
 		triggerAnim(pRelatedEntity, -pInstanceId, pControllerName, pAnimName);
 	}
 
 	@ApiStatus.NonExtendable
-	default void stopTriggeredArmorAnim(Entity pRelatedEntity, long pInstanceId, @Nullable String pControllerName, @Nullable String pAnimName) {
+	default void stopTriggeredArmorAnim(@NotNull Entity pRelatedEntity, long pInstanceId, @Nullable String pControllerName, @Nullable String pAnimName) {
 		stopTriggeredAnim(pRelatedEntity, -pInstanceId, pControllerName, pAnimName);
 	}
 
@@ -90,8 +88,9 @@ public interface SingletonBlueAnimatable extends BlueAnimatable {
 		return new SingletonAnimatableInstanceCache<>(this);
 	}
 
-	default void createBlueRenderer(Consumer<BlueRenderProvider> pConsumer) {}
+	default void createBlueRenderer(@NotNull Consumer<BlueRenderProvider> pConsumer) {}
 
+	@Nullable
 	default Object getRenderProvider() {
 		return getAnimatableInstanceCache().getRenderProvider();
 	}
