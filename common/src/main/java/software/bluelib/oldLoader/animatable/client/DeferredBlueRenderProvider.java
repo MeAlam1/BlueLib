@@ -27,7 +27,7 @@ public interface DeferredBlueRenderProvider extends BlueRenderProvider {
 
 	@Override
 	@Nullable
-	default <T extends LivingEntity> HumanoidModel<?> getBlueArmorRenderer(@Nullable T livingEntity, ItemStack itemStack, @Nullable EquipmentSlot equipmentSlot, @Nullable HumanoidModel<T> original) {
-		return getRenderProvider().getValue().getBlueArmorRenderer(livingEntity, itemStack, equipmentSlot, original);
+	default <T extends LivingEntity> HumanoidModel<?> getBlueArmorRenderer(@Nullable T pLivingEntity, ItemStack pItemStack, @Nullable EquipmentSlot pEquipmentSlot, @Nullable HumanoidModel<T> pOriginal) {
+		return getRenderProvider().getValue().getBlueArmorRenderer(pLivingEntity, pItemStack, pEquipmentSlot, pOriginal);
 	}
 }

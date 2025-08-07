@@ -15,6 +15,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import software.bluelib.BlueLibConstants;
 import software.bluelib.client.utils.RenderUtils;
 import software.bluelib.loader.animatable.AnimatableManager;
@@ -60,21 +61,22 @@ public interface BlueItem extends SingletonBlueAnimatable {
 	}
 
 	@Override
-	default @NotNull AnimatableInstanceCache useCustomCache() {
+	default @Nullable AnimatableInstanceCache<SingletonBlueAnimatable> useCustomCache() {
 		if (isPerspectiveAware())
-			return new ContextBasedAnimatableInstanceCache(this);
+			return new ContextBasedAnimatableInstanceCache<>(this);
 
 		return SingletonBlueAnimatable.super.useCustomCache();
 	}
 
-	class ContextBasedAnimatableInstanceCache extends SingletonAnimatableInstanceCache {
+	class ContextBasedAnimatableInstanceCache<T extends SingletonBlueAnimatable> extends SingletonAnimatableInstanceCache<T> {
 
 		public ContextBasedAnimatableInstanceCache(BlueAnimatable pAnimatable) {
 			super(pAnimatable);
 		}
 
 		@Override
-		public AnimatableManager<?> getManagerForId(long pUniqueId) {
+		@SuppressWarnings("unchecked")
+		public <M extends BlueAnimatable> AnimatableManager<M> getManagerForId(long pUniqueId) {
 			if (!this.managers.containsKey(pUniqueId))
 				this.managers.put(pUniqueId, new ContextAwareAnimatableManager<BlueItem, ItemDisplayContext>(this.animatable) {
 
@@ -97,7 +99,7 @@ public interface BlueItem extends SingletonBlueAnimatable {
 					}
 				});
 
-			return this.managers.get(pUniqueId);
+			return (AnimatableManager<M>) this.managers.get(pUniqueId);
 		}
 	}
 }

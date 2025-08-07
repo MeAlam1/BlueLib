@@ -10,19 +10,20 @@ package software.bluelib.oldLoader.animatable.instance;
 import software.bluelib.loader.animatable.AnimatableManager;
 import software.bluelib.loader.animatable.BlueAnimatable;
 
-public class InstancedAnimatableInstanceCache extends AnimatableInstanceCache {
+public class InstancedAnimatableInstanceCache<T extends BlueAnimatable> extends AnimatableInstanceCache<T> {
 
-	protected AnimatableManager<?> manager;
+	protected AnimatableManager<T> manager;
 
 	public InstancedAnimatableInstanceCache(BlueAnimatable pAnimatable) {
 		super(pAnimatable);
 	}
 
 	@Override
-	public AnimatableManager<?> getManagerForId(long pUniqueId) {
+	@SuppressWarnings("unchecked")
+	public <M extends BlueAnimatable> AnimatableManager<M> getManagerForId(long pUniqueId) {
 		if (this.manager == null)
 			this.manager = new AnimatableManager<>(this.animatable);
 
-		return this.manager;
+		return (AnimatableManager<M>) this.manager;
 	}
 }

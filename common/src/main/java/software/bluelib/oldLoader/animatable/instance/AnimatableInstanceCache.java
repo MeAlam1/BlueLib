@@ -17,7 +17,7 @@ import software.bluelib.loader.geckolib.constant.dataticket.DataTicket;
 import software.bluelib.oldLoader.animatable.SingletonBlueAnimatable;
 import software.bluelib.oldLoader.animatable.client.BlueRenderProvider;
 
-public abstract class AnimatableInstanceCache {
+public abstract class AnimatableInstanceCache<T extends BlueAnimatable> {
 
 	protected final BlueAnimatable animatable;
 	protected final Supplier<BlueRenderProvider> renderProvider;
@@ -36,7 +36,7 @@ public abstract class AnimatableInstanceCache {
 		});
 	}
 
-	public abstract <T extends BlueAnimatable> AnimatableManager<T> getManagerForId(long pUniqueId);
+	public abstract <M extends BlueAnimatable> AnimatableManager<M> getManagerForId(long pUniqueId);
 
 	public <D> void addDataPoint(long pUniqueId, DataTicket<D> pDataTicket, D pData) {
 		getManagerForId(pUniqueId).setData(pDataTicket, pData);

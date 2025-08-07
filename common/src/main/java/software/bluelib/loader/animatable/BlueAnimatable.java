@@ -20,31 +20,26 @@ import software.bluelib.oldLoader.animatable.instance.SingletonAnimatableInstanc
 public interface BlueAnimatable {
 
 	@NotNull
-	Map<BlueAnimatable, AnimatableInstanceCache> CACHE = new WeakHashMap<>();
+	Map<BlueAnimatable, AnimatableInstanceCache<BlueAnimatable>> CACHE = new WeakHashMap<>();
 
 	@NotNull
 	ResourceLocation getControllerResource();
 
-	@WillBeDeprecated(
-			since = "2.5.0",
-			reason = "This method will be revised due to the new Data Driven Controller System. Please migrate to the recommended alternatives.",
-			alternatives = {
-					"Use the new Data Driven Controller System.",
-					"Refer to: data/MODID/controller/ENTITY.controller.json"
-			}
-	)
-	default void registerControllers(@NotNull AnimatableManager.ControllerRegistrar pRegistrar) {
-	}
+	@WillBeDeprecated(since = "2.5.0", reason = "This method will be revised due to the new Data Driven Controller System. Please migrate to the recommended alternatives.", alternatives = {
+			"Use the new Data Driven Controller System.",
+			"Refer to: data/MODID/controller/ENTITY.controller.json"
+	})
+	default void registerControllers(@NotNull AnimatableManager.ControllerRegistrar pRegistrar) {}
 
 	@NotNull
-	default AnimatableInstanceCache getAnimatableInstanceCache() {
-		AnimatableInstanceCache customCache = useCustomCache();
+	default AnimatableInstanceCache<? extends BlueAnimatable> getAnimatableInstanceCache() {
+		AnimatableInstanceCache<? extends BlueAnimatable> customCache = useCustomCache();
 		if (customCache != null) {
 			return customCache;
 		}
 		return CACHE.computeIfAbsent(this, k -> useSingletonCache()
-				? new SingletonAnimatableInstanceCache(k)
-				: new InstancedAnimatableInstanceCache(k));
+				? new SingletonAnimatableInstanceCache<>(k)
+				: new InstancedAnimatableInstanceCache<>(k));
 	}
 
 	default boolean useSingletonCache() {
@@ -64,7 +59,7 @@ public interface BlueAnimatable {
 	Double getTick(@NotNull Object pObject);
 
 	@Nullable
-	default AnimatableInstanceCache useCustomCache() {
+	default AnimatableInstanceCache<? extends BlueAnimatable> useCustomCache() {
 		return null;
 	}
 }

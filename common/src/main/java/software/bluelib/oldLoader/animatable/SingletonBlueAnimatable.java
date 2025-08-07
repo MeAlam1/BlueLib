@@ -10,7 +10,6 @@ package software.bluelib.oldLoader.animatable;
 import java.util.function.Consumer;
 import net.minecraft.world.entity.Entity;
 import org.jetbrains.annotations.ApiStatus;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.net.loader.LoaderNetwork;
 import software.bluelib.api.utils.LoaderUtils;
@@ -89,8 +88,8 @@ public interface SingletonBlueAnimatable extends BlueAnimatable {
 	}
 
 	@Override
-	default @NotNull AnimatableInstanceCache useCustomCache() {
-		return new SingletonAnimatableInstanceCache(this);
+	default @Nullable AnimatableInstanceCache<SingletonBlueAnimatable> useCustomCache() {
+		return new SingletonAnimatableInstanceCache<>(this);
 	}
 
 	default void createBlueRenderer(Consumer<BlueRenderProvider> pConsumer) {}

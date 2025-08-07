@@ -20,12 +20,12 @@ public interface BlueRenderProvider {
 
 	BlueRenderProvider DEFAULT = new BlueRenderProvider() {};
 
-	static BlueRenderProvider of(ItemStack itemStack) {
-		return of(itemStack.getItem());
+	static BlueRenderProvider of(ItemStack pItemStack) {
+		return of(pItemStack.getItem());
 	}
 
-	static BlueRenderProvider of(Item item) {
-		if (item instanceof BlueItem BlueItem)
+	static BlueRenderProvider of(Item pItem) {
+		if (pItem instanceof BlueItem BlueItem)
 			return (BlueRenderProvider) BlueItem.getRenderProvider();
 
 		return DEFAULT;
@@ -37,7 +37,7 @@ public interface BlueRenderProvider {
 	}
 
 	@Nullable
-	default <T extends LivingEntity> HumanoidModel<?> getBlueArmorRenderer(@Nullable T livingEntity, ItemStack itemStack, @Nullable EquipmentSlot equipmentSlot, @Nullable HumanoidModel<T> original) {
+	default <T extends LivingEntity> HumanoidModel<?> getBlueArmorRenderer(@Nullable T pLivingEntity, ItemStack pItemStack, @Nullable EquipmentSlot pEquipmentSlot, @Nullable HumanoidModel<T> pOriginal) {
 		return null;
 	}
 }
