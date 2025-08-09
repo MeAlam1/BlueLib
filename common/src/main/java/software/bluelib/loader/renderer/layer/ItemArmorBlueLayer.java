@@ -118,7 +118,7 @@ public class ItemArmorBlueLayer<T extends LivingEntity & BlueAnimatable> extends
 				pContext.poseStack().pushPose();
 				pContext.poseStack().scale(-1, -1, 1);
 
-				if (model instanceof BlueArmorRenderer<?> BlueArmorRenderer) {
+				if (model instanceof BlueArmorRenderer<?, ?> BlueArmorRenderer) {
 					prepModelPartForRender(pContext.poseStack(), pBone, modelPart);
 					BlueArmorRenderer.applyBoneVisibilityByPart(slot, modelPart, model);
 					BlueArmorRenderer.renderToBuffer(pContext.poseStack(), null, pContext.packedLight(), pContext.packedOverlay(), Color.WHITE.argbInt());

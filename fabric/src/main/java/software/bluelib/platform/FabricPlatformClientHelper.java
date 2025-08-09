@@ -21,10 +21,18 @@ import software.bluelib.loader.renderer.client.BlueRenderProvider;
 
 public class FabricPlatformClientHelper implements IPlatformClient {
 
-	@NotNull
 	@Override
-	public <T extends LivingEntity & BlueAnimatable> HumanoidModel<?> getArmorModelForItem(@NotNull T pAnimatable, @NotNull ItemStack pStack, @NotNull EquipmentSlot pSlot, @NotNull HumanoidModel<LivingEntity> pDefaultModel) {
-		return BlueRenderProvider.of(pStack).getBlueArmorRenderer(pAnimatable, pStack, pSlot, pDefaultModel) instanceof BlueArmorRenderer<?> BlueArmorRenderer ? BlueArmorRenderer : pDefaultModel;
+	@SuppressWarnings("unchecked")
+	public <T extends LivingEntity & BlueAnimatable> @NotNull HumanoidModel<T> getArmorModelForItem(
+			@NotNull T pAnimatable,
+			@NotNull ItemStack pStack,
+			@NotNull EquipmentSlot pSlot,
+			@NotNull HumanoidModel<LivingEntity> pDefaultModel) {
+		Object renderer = BlueRenderProvider.of(pStack).getBlueArmorRenderer(pAnimatable, pStack, pSlot, pDefaultModel);
+		if (renderer instanceof HumanoidModel<?> model) {
+			return (HumanoidModel<T>) model;
+		}
+		return (HumanoidModel<T>) (HumanoidModel) pDefaultModel;
 	}
 
 	@Nullable
@@ -39,7 +47,7 @@ public class FabricPlatformClientHelper implements IPlatformClient {
 	@Nullable
 	@Override
 	public BlueModel<?> getBlueModelForArmor(@NotNull ItemStack pArmour) {
-		if (BlueRenderProvider.of(pArmour).getBlueArmorRenderer(null, pArmour, null, null) instanceof BlueArmorRenderer<?> armorRenderer)
+		if (BlueRenderProvider.of(pArmour).getBlueArmorRenderer(null, pArmour, null, null) instanceof BlueArmorRenderer<?, ?> armorRenderer)
 			return armorRenderer.getBlueModel();
 
 		return null;

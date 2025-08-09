@@ -10,6 +10,7 @@ package software.bluelib.loader.renderer.entity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
+import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -52,9 +53,7 @@ import software.bluelib.loader.renderer.context.BaseRenderContext;
 import software.bluelib.loader.renderer.context.FullRenderContext;
 import software.bluelib.loader.renderer.context.IRenderContext;
 
-import java.util.List;
-
-@SuppressWarnings({"UnusedReturnValue", "unused"})
+@SuppressWarnings({ "UnusedReturnValue", "unused" })
 public class BlueReplacedEntityRenderer<E extends Entity, T extends BlueAnimatable> extends EntityRenderer<E> implements BlueRenderer<T> {
 
 	@NotNull
@@ -341,7 +340,7 @@ public class BlueReplacedEntityRenderer<E extends Entity, T extends BlueAnimatab
 	}
 
 	protected void applyRotations(@NotNull T pAnimatable, @NotNull PoseStack pPoseStack, float pAgeInTicks, float pRotationYaw,
-	                              float pPartialTick, float pNativeScale) {
+			float pPartialTick, float pNativeScale) {
 		if (isShaking(pAnimatable))
 			pRotationYaw += (float) (Math.cos(getCurrentEntity().tickCount * 3.25d) * Math.PI * 0.4d);
 
@@ -402,10 +401,8 @@ public class BlueReplacedEntityRenderer<E extends Entity, T extends BlueAnimatab
 		return switch (entityTeam.getNameTagVisibility()) {
 			case ALWAYS -> visibleToClient;
 			case NEVER -> false;
-			case HIDE_FOR_OTHER_TEAMS ->
-					playerTeam == null ? visibleToClient : entityTeam.isAlliedTo(playerTeam) && (entityTeam.canSeeFriendlyInvisibles() || visibleToClient);
-			case HIDE_FOR_OWN_TEAM ->
-					playerTeam == null ? visibleToClient : !entityTeam.isAlliedTo(playerTeam) && visibleToClient;
+			case HIDE_FOR_OTHER_TEAMS -> playerTeam == null ? visibleToClient : entityTeam.isAlliedTo(playerTeam) && (entityTeam.canSeeFriendlyInvisibles() || visibleToClient);
+			case HIDE_FOR_OWN_TEAM -> playerTeam == null ? visibleToClient : !entityTeam.isAlliedTo(playerTeam) && visibleToClient;
 		};
 	}
 
@@ -424,7 +421,7 @@ public class BlueReplacedEntityRenderer<E extends Entity, T extends BlueAnimatab
 
 	@SuppressWarnings("unchecked")
 	public <H extends Entity, M extends Mob> void renderLeash(@NotNull M pMob, float pPartialTick, @NotNull PoseStack pPoseStack,
-	                                                          @NotNull MultiBufferSource pBufferSource, @NotNull H pLeashHolder) {
+			@NotNull MultiBufferSource pBufferSource, @NotNull H pLeashHolder) {
 		double lerpBodyAngle = (Mth.lerp(pPartialTick, pMob.yBodyRotO, pMob.yBodyRot) * Mth.DEG_TO_RAD) + Mth.HALF_PI;
 		Vec3 leashOffset = pMob.getLeashOffset(pPartialTick);
 		double xAngleOffset = Math.cos(lerpBodyAngle) * leashOffset.z + Math.sin(lerpBodyAngle) * leashOffset.x;
@@ -467,8 +464,8 @@ public class BlueReplacedEntityRenderer<E extends Entity, T extends BlueAnimatab
 
 	@SuppressWarnings("SameParameterValue")
 	private static void renderLeashPiece(@NotNull VertexConsumer pBuffer, @NotNull Matrix4f pPositionMatrix, float pXDif, float pYDif,
-	                                     float pZDif, int pEntityBlockLight, int pHolderBlockLight, int pEntitySkyLight,
-	                                     int pHolderSkyLight, float pWidth, float pYOffset, float pXOffset, float pZOffset, int pSegment, boolean pIsLeashKnot) {
+			float pZDif, int pEntityBlockLight, int pHolderBlockLight, int pEntitySkyLight,
+			int pHolderSkyLight, float pWidth, float pYOffset, float pXOffset, float pZOffset, int pSegment, boolean pIsLeashKnot) {
 		float piecePosPercent = pSegment / 24f;
 		int lerpBlockLight = (int) Mth.lerp(piecePosPercent, pEntityBlockLight, pHolderBlockLight);
 		int lerpSkyLight = (int) Mth.lerp(piecePosPercent, pEntitySkyLight, pHolderSkyLight);

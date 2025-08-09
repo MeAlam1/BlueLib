@@ -10,6 +10,7 @@ package software.bluelib.loader.renderer.entity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
+import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -52,9 +53,7 @@ import software.bluelib.loader.renderer.context.BaseRenderContext;
 import software.bluelib.loader.renderer.context.FullRenderContext;
 import software.bluelib.loader.renderer.context.IRenderContext;
 
-import java.util.List;
-
-@SuppressWarnings({"UnusedReturnValue", "unused"})
+@SuppressWarnings({ "UnusedReturnValue", "unused" })
 public class BlueEntityRenderer<T extends Entity & BlueAnimatable> extends EntityRenderer<T> implements BlueRenderer<T> {
 
 	@NotNull
@@ -375,10 +374,8 @@ public class BlueEntityRenderer<T extends Entity & BlueAnimatable> extends Entit
 		return switch (entityTeam.getNameTagVisibility()) {
 			case ALWAYS -> visibleToClient;
 			case NEVER -> false;
-			case HIDE_FOR_OTHER_TEAMS ->
-					playerTeam == null ? visibleToClient : entityTeam.isAlliedTo(playerTeam) && (entityTeam.canSeeFriendlyInvisibles() || visibleToClient);
-			case HIDE_FOR_OWN_TEAM ->
-					playerTeam == null ? visibleToClient : !entityTeam.isAlliedTo(playerTeam) && visibleToClient;
+			case HIDE_FOR_OTHER_TEAMS -> playerTeam == null ? visibleToClient : entityTeam.isAlliedTo(playerTeam) && (entityTeam.canSeeFriendlyInvisibles() || visibleToClient);
+			case HIDE_FOR_OWN_TEAM -> playerTeam == null ? visibleToClient : !entityTeam.isAlliedTo(playerTeam) && visibleToClient;
 		};
 	}
 
@@ -446,10 +443,10 @@ public class BlueEntityRenderer<T extends Entity & BlueAnimatable> extends Entit
 	}
 
 	private static void addLeashVertices(@NotNull VertexConsumer pBuffer, @NotNull Matrix4f pMatrix4f,
-	                                     float pXDif, float pYDif, float pZDif,
-	                                     int pMobBlockLight, int pHolderBlockLight,
-	                                     int pMobSkyLight, int pHolderSkyLight,
-	                                     float pXOffset, float pZOffset, float pSegment, boolean pIsKnot) {
+			float pXDif, float pYDif, float pZDif,
+			int pMobBlockLight, int pHolderBlockLight,
+			int pMobSkyLight, int pHolderSkyLight,
+			float pXOffset, float pZOffset, float pSegment, boolean pIsKnot) {
 		int packedLight = LightTexture.pack(
 				(int) Mth.lerp(pSegment, pMobBlockLight, pHolderBlockLight),
 				(int) Mth.lerp(pSegment, pMobSkyLight, pHolderSkyLight));

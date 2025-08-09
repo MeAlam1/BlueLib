@@ -50,12 +50,12 @@ public interface IEventProxy {
 
 	// Armor
 
-	void fireCompileArmorRenderLayers(@NotNull BlueArmorRenderer<?> pRenderer);
+	void fireCompileArmorRenderLayers(@NotNull BlueArmorRenderer<?, ?> pRenderer);
 
 	@NotNull
-	Boolean fireArmorPreRender(@NotNull BlueArmorRenderer<?> pRenderer, @NotNull IRenderContext<?> pContext);
+	Boolean fireArmorPreRender(@NotNull BlueArmorRenderer<?, ?> pRenderer, @NotNull IRenderContext<?> pContext);
 
-	void fireArmorPostRender(@NotNull BlueArmorRenderer<?> pRenderer, @NotNull IRenderContext<?> pContext);
+	void fireArmorPostRender(@NotNull BlueArmorRenderer<?, ?> pRenderer, @NotNull IRenderContext<?> pContext);
 
 	// Entity
 

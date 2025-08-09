@@ -76,17 +76,17 @@ public class BlueLibEventProxy implements IEventProxy {
 	}
 
 	@Override
-	public void fireCompileArmorRenderLayers(@NotNull BlueArmorRenderer<?> pRenderer) {
+	public void fireCompileArmorRenderLayers(@NotNull BlueArmorRenderer<?, ?> pRenderer) {
 		NeoForge.EVENT_BUS.post(new BlueRenderEvent.Armor.CompileRenderLayers(pRenderer));
 	}
 
 	@Override
-	public @NotNull Boolean fireArmorPreRender(@NotNull BlueArmorRenderer<?> pRenderer, @NotNull IRenderContext<?> pContext) {
+	public @NotNull Boolean fireArmorPreRender(@NotNull BlueArmorRenderer<?, ?> pRenderer, @NotNull IRenderContext<?> pContext) {
 		return !NeoForge.EVENT_BUS.post(new BlueRenderEvent.Armor.Pre(pRenderer, pContext)).isCanceled();
 	}
 
 	@Override
-	public void fireArmorPostRender(@NotNull BlueArmorRenderer<?> pRenderer, @NotNull IRenderContext<?> pContext) {
+	public void fireArmorPostRender(@NotNull BlueArmorRenderer<?, ?> pRenderer, @NotNull IRenderContext<?> pContext) {
 		NeoForge.EVENT_BUS.post(new BlueRenderEvent.Armor.Post(pRenderer, pContext));
 	}
 

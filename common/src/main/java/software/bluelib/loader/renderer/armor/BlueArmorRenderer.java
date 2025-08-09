@@ -21,6 +21,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.DyedItemColor;
@@ -46,8 +47,8 @@ import software.bluelib.loader.renderer.context.BaseRenderContext;
 import software.bluelib.loader.renderer.context.FullRenderContext;
 import software.bluelib.loader.renderer.context.IRenderContext;
 
-@SuppressWarnings({"UnusedReturnValue", "unused"})
-public class BlueArmorRenderer<T extends Item & BlueItem> extends HumanoidModel implements BlueRenderer<T> {
+@SuppressWarnings({ "UnusedReturnValue", "unused" })
+public class BlueArmorRenderer<T extends Item & BlueItem, L extends LivingEntity & BlueAnimatable> extends HumanoidModel<L> implements BlueRenderer<T> {
 
 	@NotNull
 	protected final BlueRenderLayersContainer<T> renderLayers = new BlueRenderLayersContainer<>(this);
@@ -153,19 +154,19 @@ public class BlueArmorRenderer<T extends Item & BlueItem> extends HumanoidModel 
 	}
 
 	@NotNull
-	public BlueArmorRenderer<T> addRenderLayer(@NotNull BlueRenderLayer<T> pRenderLayer) {
+	public BlueArmorRenderer<T, L> addRenderLayer(@NotNull BlueRenderLayer<T> pRenderLayer) {
 		this.renderLayers.addLayer(pRenderLayer);
 
 		return this;
 	}
 
 	@NotNull
-	public BlueArmorRenderer<T> withScale(float pScale) {
+	public BlueArmorRenderer<T, L> withScale(float pScale) {
 		return withScale(pScale, pScale);
 	}
 
 	@NotNull
-	public BlueArmorRenderer<T> withScale(float pScaleWidth, float pScaleHeight) {
+	public BlueArmorRenderer<T, L> withScale(float pScaleWidth, float pScaleHeight) {
 		this.scaleWidth = pScaleWidth;
 		this.scaleHeight = pScaleHeight;
 

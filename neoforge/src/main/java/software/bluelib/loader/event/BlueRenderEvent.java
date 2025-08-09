@@ -33,14 +33,14 @@ public interface BlueRenderEvent {
 	abstract class Armor extends Event implements BlueRenderEvent {
 
 		@NotNull
-		private final BlueArmorRenderer<?> renderer;
+		private final BlueArmorRenderer<?, ?> renderer;
 
-		public Armor(@NotNull BlueArmorRenderer<?> pRenderer) {
+		public Armor(@NotNull BlueArmorRenderer<?, ?> pRenderer) {
 			this.renderer = pRenderer;
 		}
 
 		@Override
-		public @NotNull BlueArmorRenderer<?> getRenderer() {
+		public @NotNull BlueArmorRenderer<?, ?> getRenderer() {
 			return this.renderer;
 		}
 
@@ -64,7 +64,7 @@ public interface BlueRenderEvent {
 			@NotNull
 			private final IRenderContext<?> context;
 
-			public Pre(@NotNull BlueArmorRenderer<?> pRenderer, IRenderContext<?> pContext) {
+			public Pre(@NotNull BlueArmorRenderer<?, ?> pRenderer, IRenderContext<?> pContext) {
 				super(pRenderer);
 
 				this.context = pContext;
@@ -80,7 +80,7 @@ public interface BlueRenderEvent {
 			@NotNull
 			private final IRenderContext<?> context;
 
-			public Post(@NotNull BlueArmorRenderer<?> pRenderer, IRenderContext<?> pContext) {
+			public Post(@NotNull BlueArmorRenderer<?, ?> pRenderer, IRenderContext<?> pContext) {
 				super(pRenderer);
 
 				this.context = pContext;
@@ -93,7 +93,7 @@ public interface BlueRenderEvent {
 
 		public static class CompileRenderLayers extends Armor {
 
-			public CompileRenderLayers(@NotNull BlueArmorRenderer<?> pRenderer) {
+			public CompileRenderLayers(@NotNull BlueArmorRenderer<?, ?> pRenderer) {
 				super(pRenderer);
 			}
 

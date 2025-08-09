@@ -25,14 +25,21 @@ public class NeoForgePlatformClientHelper implements IPlatformClient {
 
 	@NotNull
 	@Override
-	public <T extends LivingEntity & BlueAnimatable> HumanoidModel<?> getArmorModelForItem(@NotNull T pAnimatable, @NotNull ItemStack pStack, @NotNull EquipmentSlot pSlot, @NotNull HumanoidModel<LivingEntity> pDefaultModel) {
+	@SuppressWarnings("unchecked")
+	public <T extends LivingEntity & BlueAnimatable> HumanoidModel<T> getArmorModelForItem(
+			@NotNull T pAnimatable,
+			@NotNull ItemStack pStack,
+			@NotNull EquipmentSlot pSlot,
+			@NotNull HumanoidModel<LivingEntity> pDefaultModel) {
 		Item item = pStack.getItem();
 		HumanoidModel<?> model = IClientItemExtensions.of(item).getHumanoidArmorModel(pAnimatable, pStack, pSlot, pDefaultModel);
 
-		if (model == pDefaultModel && BlueRenderProvider.of(item).getBlueArmorRenderer(pAnimatable, pStack, pSlot, pDefaultModel) instanceof BlueArmorRenderer<?> BlueArmorRenderer)
-			return BlueArmorRenderer;
+		if (model == pDefaultModel &&
+				BlueRenderProvider.of(item).getBlueArmorRenderer(pAnimatable, pStack, pSlot, pDefaultModel) instanceof BlueArmorRenderer<?, ?> blueArmorRenderer) {
+			return (HumanoidModel<T>) blueArmorRenderer;
+		}
 
-		return model;
+		return (HumanoidModel<T>) model;
 	}
 
 	@Nullable
@@ -50,10 +57,10 @@ public class NeoForgePlatformClientHelper implements IPlatformClient {
 	@Nullable
 	@Override
 	public BlueModel<?> getBlueModelForArmor(@NotNull ItemStack pArmour) {
-		if (IClientItemExtensions.of(pArmour).getHumanoidArmorModel(null, pArmour, null, null) instanceof BlueArmorRenderer<?> armorRenderer)
+		if (IClientItemExtensions.of(pArmour).getHumanoidArmorModel(null, pArmour, null, null) instanceof BlueArmorRenderer<?, ?> armorRenderer)
 			return armorRenderer.getBlueModel();
 
-		if (BlueRenderProvider.of(pArmour).getBlueArmorRenderer(null, pArmour, null, null) instanceof BlueArmorRenderer<?> armorRenderer)
+		if (BlueRenderProvider.of(pArmour).getBlueArmorRenderer(null, pArmour, null, null) instanceof BlueArmorRenderer<?, ?> armorRenderer)
 			return armorRenderer.getBlueModel();
 
 		return null;
