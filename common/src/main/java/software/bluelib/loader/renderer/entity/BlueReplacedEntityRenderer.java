@@ -10,7 +10,6 @@ package software.bluelib.loader.renderer.entity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
-import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -53,6 +52,9 @@ import software.bluelib.loader.renderer.context.BaseRenderContext;
 import software.bluelib.loader.renderer.context.FullRenderContext;
 import software.bluelib.loader.renderer.context.IRenderContext;
 
+import java.util.List;
+
+@SuppressWarnings({"UnusedReturnValue", "unused"})
 public class BlueReplacedEntityRenderer<E extends Entity, T extends BlueAnimatable> extends EntityRenderer<E> implements BlueRenderer<T> {
 
 	@NotNull
@@ -93,13 +95,20 @@ public class BlueReplacedEntityRenderer<E extends Entity, T extends BlueAnimatab
 		return this.animatable;
 	}
 
-	public @Nullable E getCurrentEntity() {
+	public @Nullable E getOptionalCurrentEntity() {
 		return this.currentEntity;
+	}
+
+	public @NotNull E getCurrentEntity() {
+		E currentEntity = getOptionalCurrentEntity();
+		if (currentEntity == null)
+			throw new NullPointerException("currentEntity cannot be null when rendering!");
+		return currentEntity;
 	}
 
 	@Override
 	public long getInstanceId(@NotNull IRenderContext<T> pContext) {
-		return this.currentEntity.getId();
+		return getCurrentEntity().getId();
 	}
 
 	@Override
@@ -196,12 +205,12 @@ public class BlueReplacedEntityRenderer<E extends Entity, T extends BlueAnimatab
 					renderLeash(mob, pPartialTick, pPoseStack, pBufferSource, leashHolder);
 			}
 
-			boolean shouldSit = this.currentEntity.isPassenger() && (this.currentEntity.getVehicle() != null);
+			boolean shouldSit = getCurrentEntity().isPassenger() && (getCurrentEntity().getVehicle() != null);
 			float lerpBodyRot = livingEntity == null ? 0 : Mth.rotLerp(pPartialTick, livingEntity.yBodyRotO, livingEntity.yBodyRot);
 			float lerpHeadRot = livingEntity == null ? 0 : Mth.rotLerp(pPartialTick, livingEntity.yHeadRotO, livingEntity.yHeadRot);
 			float netHeadYaw = lerpHeadRot - lerpBodyRot;
 
-			if (shouldSit && this.currentEntity.getVehicle() instanceof LivingEntity livingentity) {
+			if (shouldSit && getCurrentEntity().getVehicle() instanceof LivingEntity livingentity) {
 				lerpBodyRot = Mth.rotLerp(pPartialTick, livingentity.yBodyRotO, livingentity.yBodyRot);
 				netHeadYaw = lerpHeadRot - lerpBodyRot;
 				float clampedHeadYaw = Mth.clamp(Mth.wrapDegrees(netHeadYaw), -85, 85);
@@ -211,7 +220,7 @@ public class BlueReplacedEntityRenderer<E extends Entity, T extends BlueAnimatab
 				netHeadYaw = lerpHeadRot - lerpBodyRot;
 			}
 
-			if (this.currentEntity.getPose() == Pose.SLEEPING && livingEntity != null) {
+			if (getCurrentEntity().getPose() == Pose.SLEEPING && livingEntity != null) {
 				Direction bedDirection = livingEntity.getBedOrientation();
 				if (bedDirection != null) {
 					float eyePosOffset = livingEntity.getEyeHeight(Pose.STANDING) - 0.1F;
@@ -220,14 +229,14 @@ public class BlueReplacedEntityRenderer<E extends Entity, T extends BlueAnimatab
 			}
 
 			float nativeScale = livingEntity != null ? livingEntity.getScale() : 1;
-			float ageInTicks = this.currentEntity.tickCount + pPartialTick;
+			float ageInTicks = getCurrentEntity().tickCount + pPartialTick;
 			float limbSwingAmount = 0;
 			float limbSwing = 0;
 
 			pPoseStack.scale(nativeScale, nativeScale, nativeScale);
 			applyRotations(pAnimatable, pPoseStack, ageInTicks, lerpBodyRot, pPartialTick, nativeScale);
 
-			if (!shouldSit && this.currentEntity.isAlive() && livingEntity != null) {
+			if (!shouldSit && getCurrentEntity().isAlive() && livingEntity != null) {
 				limbSwingAmount = livingEntity.walkAnimation.speed(pPartialTick);
 				limbSwing = livingEntity.walkAnimation.position(pPartialTick);
 				if (livingEntity.isBaby())
@@ -236,7 +245,7 @@ public class BlueReplacedEntityRenderer<E extends Entity, T extends BlueAnimatab
 					limbSwingAmount = 1f;
 			}
 
-			float headPitch = Mth.lerp(pPartialTick, this.currentEntity.xRotO, this.currentEntity.getXRot());
+			float headPitch = Mth.lerp(pPartialTick, getCurrentEntity().xRotO, getCurrentEntity().getXRot());
 			float motionThreshold = getMotionAnimThreshold(pContext);
 			boolean isMoving;
 			if (livingEntity != null) {
@@ -248,11 +257,11 @@ public class BlueReplacedEntityRenderer<E extends Entity, T extends BlueAnimatab
 			}
 
 			if (!pIsReRender) {
-				AnimationState<T> animationState = new AnimationState<T>(pAnimatable, limbSwing, limbSwingAmount, pPartialTick, isMoving);
+				AnimationState<T> animationState = new AnimationState<>(pAnimatable, limbSwing, limbSwingAmount, pPartialTick, isMoving);
 				long instanceId = getInstanceId(pContext);
 				BlueModel<T> currentModel = getBlueModel();
-				animationState.setData(DataTickets.TICK, pAnimatable.getTick(this.currentEntity));
-				animationState.setData(DataTickets.ENTITY, this.currentEntity);
+				animationState.setData(DataTickets.TICK, pAnimatable.getTick(getCurrentEntity()));
+				animationState.setData(DataTickets.ENTITY, getCurrentEntity());
 				animationState.setData(DataTickets.ENTITY_MODEL_DATA, new EntityModelData(shouldSit, livingEntity != null && livingEntity.isBaby(), -netHeadYaw, -headPitch));
 				currentModel.addAdditionalStateData(pAnimatable, instanceId, animationState::setData);
 				currentModel.handleAnimations(pAnimatable, instanceId, animationState, pPartialTick);
@@ -273,13 +282,13 @@ public class BlueReplacedEntityRenderer<E extends Entity, T extends BlueAnimatab
 
 	@Override
 	public void applyRenderLayers(@NotNull IRenderContext<T> pContext) {
-		if (!this.currentEntity.isSpectator())
+		if (!getCurrentEntity().isSpectator())
 			BlueRenderer.super.applyRenderLayers(pContext);
 	}
 
 	@Override
 	public void renderFinal(@NotNull IRenderContext<T> pContext) {
-		super.render(this.currentEntity, 0, pContext.partialTick(), pContext.poseStack(), pContext.bufferSource(), pContext.packedLight());
+		super.render(getCurrentEntity(), 0, pContext.partialTick(), pContext.poseStack(), pContext.bufferSource(), pContext.packedLight());
 
 		if (this.currentEntity instanceof Mob mob) {
 			Entity leashHolder = mob.getLeashHolder();
@@ -292,7 +301,7 @@ public class BlueReplacedEntityRenderer<E extends Entity, T extends BlueAnimatab
 	@Override
 	public void postRender(@NotNull IRenderContext<T> pContext) {
 		if (!pContext.isReRender())
-			super.render(this.currentEntity, 0, pContext.partialTick(), pContext.poseStack(), pContext.bufferSource(), pContext.packedLight());
+			super.render(getCurrentEntity(), 0, pContext.partialTick(), pContext.poseStack(), pContext.bufferSource(), pContext.packedLight());
 	}
 
 	@Override
@@ -313,8 +322,8 @@ public class BlueReplacedEntityRenderer<E extends Entity, T extends BlueAnimatab
 			Matrix4f localMatrix = RenderUtils.invertAndMultiplyMatrices(poseState, this.entityRenderTranslations);
 
 			pBone.setModelSpaceMatrix(RenderUtils.invertAndMultiplyMatrices(poseState, this.modelRenderTranslations));
-			pBone.setLocalSpaceMatrix(RenderUtils.translateMatrix(localMatrix, getRenderOffset(this.currentEntity, 1).toVector3f()));
-			pBone.setWorldSpaceMatrix(RenderUtils.translateMatrix(new Matrix4f(localMatrix), this.currentEntity.position().toVector3f()));
+			pBone.setLocalSpaceMatrix(RenderUtils.translateMatrix(localMatrix, getRenderOffset(getCurrentEntity(), 1).toVector3f()));
+			pBone.setWorldSpaceMatrix(RenderUtils.translateMatrix(new Matrix4f(localMatrix), getCurrentEntity().position().toVector3f()));
 		}
 
 		RenderUtils.translateAwayFromPivotPoint(pContext.poseStack(), pBone);
@@ -332,14 +341,14 @@ public class BlueReplacedEntityRenderer<E extends Entity, T extends BlueAnimatab
 	}
 
 	protected void applyRotations(@NotNull T pAnimatable, @NotNull PoseStack pPoseStack, float pAgeInTicks, float pRotationYaw,
-			float pPartialTick, float pNativeScale) {
+	                              float pPartialTick, float pNativeScale) {
 		if (isShaking(pAnimatable))
-			pRotationYaw += (float) (Math.cos(this.currentEntity.tickCount * 3.25d) * Math.PI * 0.4d);
+			pRotationYaw += (float) (Math.cos(getCurrentEntity().tickCount * 3.25d) * Math.PI * 0.4d);
 
-		if (!this.currentEntity.hasPose(Pose.SLEEPING))
+		if (!getCurrentEntity().hasPose(Pose.SLEEPING))
 			pPoseStack.mulPose(Axis.YP.rotationDegrees(180f - pRotationYaw));
 
-		if (this.currentEntity instanceof LivingEntity livingEntity) {
+		if (getCurrentEntity() instanceof LivingEntity livingEntity) {
 			if (livingEntity.deathTime > 0) {
 				float deathRotation = (livingEntity.deathTime + pPartialTick - 1f) / 20f * 1.6f;
 
@@ -382,19 +391,21 @@ public class BlueReplacedEntityRenderer<E extends Entity, T extends BlueAnimatab
 			return false;
 
 		final Minecraft minecraft = Minecraft.getInstance();
-		boolean visibleToClient = !pEntity.isInvisibleTo(minecraft.player);
+		boolean visibleToClient = !pEntity.isInvisibleTo(PlayerUtils.getClientPlayer());
 		Team entityTeam = pEntity.getTeam();
 
 		if (entityTeam == null)
 			return Minecraft.renderNames() && pEntity != minecraft.getCameraEntity() && visibleToClient && !pEntity.isVehicle();
 
-		Team playerTeam = minecraft.player.getTeam();
+		Team playerTeam = PlayerUtils.getClientPlayer().getTeam();
 
 		return switch (entityTeam.getNameTagVisibility()) {
 			case ALWAYS -> visibleToClient;
 			case NEVER -> false;
-			case HIDE_FOR_OTHER_TEAMS -> playerTeam == null ? visibleToClient : entityTeam.isAlliedTo(playerTeam) && (entityTeam.canSeeFriendlyInvisibles() || visibleToClient);
-			case HIDE_FOR_OWN_TEAM -> playerTeam == null ? visibleToClient : !entityTeam.isAlliedTo(playerTeam) && visibleToClient;
+			case HIDE_FOR_OTHER_TEAMS ->
+					playerTeam == null ? visibleToClient : entityTeam.isAlliedTo(playerTeam) && (entityTeam.canSeeFriendlyInvisibles() || visibleToClient);
+			case HIDE_FOR_OWN_TEAM ->
+					playerTeam == null ? visibleToClient : !entityTeam.isAlliedTo(playerTeam) && visibleToClient;
 		};
 	}
 
@@ -408,12 +419,12 @@ public class BlueReplacedEntityRenderer<E extends Entity, T extends BlueAnimatab
 	}
 
 	public boolean isShaking(@NotNull T pAnimatable) {
-		return this.currentEntity.isFullyFrozen();
+		return getCurrentEntity().isFullyFrozen();
 	}
 
-	// TODO: WHAT THE ACTUAL FUCK IS THIS? PLEASE CLEAN IT UP FUTURE ARAM.
+	@SuppressWarnings("unchecked")
 	public <H extends Entity, M extends Mob> void renderLeash(@NotNull M pMob, float pPartialTick, @NotNull PoseStack pPoseStack,
-			@NotNull MultiBufferSource pBufferSource, @NotNull H pLeashHolder) {
+	                                                          @NotNull MultiBufferSource pBufferSource, @NotNull H pLeashHolder) {
 		double lerpBodyAngle = (Mth.lerp(pPartialTick, pMob.yBodyRotO, pMob.yBodyRot) * Mth.DEG_TO_RAD) + Mth.HALF_PI;
 		Vec3 leashOffset = pMob.getLeashOffset(pPartialTick);
 		double xAngleOffset = Math.cos(lerpBodyAngle) * leashOffset.z + Math.sin(lerpBodyAngle) * leashOffset.x;
@@ -454,9 +465,10 @@ public class BlueReplacedEntityRenderer<E extends Entity, T extends BlueAnimatab
 		pPoseStack.popPose();
 	}
 
+	@SuppressWarnings("SameParameterValue")
 	private static void renderLeashPiece(@NotNull VertexConsumer pBuffer, @NotNull Matrix4f pPositionMatrix, float pXDif, float pYDif,
-			float pZDif, int pEntityBlockLight, int pHolderBlockLight, int pEntitySkyLight,
-			int pHolderSkyLight, float pWidth, float pYOffset, float pXOffset, float pZOffset, int pSegment, boolean pIsLeashKnot) {
+	                                     float pZDif, int pEntityBlockLight, int pHolderBlockLight, int pEntitySkyLight,
+	                                     int pHolderSkyLight, float pWidth, float pYOffset, float pXOffset, float pZOffset, int pSegment, boolean pIsLeashKnot) {
 		float piecePosPercent = pSegment / 24f;
 		int lerpBlockLight = (int) Mth.lerp(piecePosPercent, pEntityBlockLight, pHolderBlockLight);
 		int lerpSkyLight = (int) Mth.lerp(piecePosPercent, pEntitySkyLight, pHolderSkyLight);

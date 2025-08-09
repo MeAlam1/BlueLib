@@ -10,7 +10,6 @@ package software.bluelib.loader.renderer.entity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
-import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -53,6 +52,9 @@ import software.bluelib.loader.renderer.context.BaseRenderContext;
 import software.bluelib.loader.renderer.context.FullRenderContext;
 import software.bluelib.loader.renderer.context.IRenderContext;
 
+import java.util.List;
+
+@SuppressWarnings({"UnusedReturnValue", "unused"})
 public class BlueEntityRenderer<T extends Entity & BlueAnimatable> extends EntityRenderer<T> implements BlueRenderer<T> {
 
 	@NotNull
@@ -233,7 +235,7 @@ public class BlueEntityRenderer<T extends Entity & BlueAnimatable> extends Entit
 				float motionThreshold = getMotionAnimThreshold(pContext);
 				Vec3 velocity = animatable.getDeltaMovement();
 				float avgVelocity = (float) ((Math.abs(velocity.x) + Math.abs(velocity.z)) / 2f);
-				AnimationState<T> animationState = new AnimationState<T>(animatable, limbSwing, limbSwingAmount, pPartialTick, avgVelocity >= motionThreshold && limbSwingAmount != 0);
+				AnimationState<T> animationState = new AnimationState<>(animatable, limbSwing, limbSwingAmount, pPartialTick, avgVelocity >= motionThreshold && limbSwingAmount != 0);
 				long instanceId = getInstanceId(pContext);
 				BlueModel<T> currentModel = getBlueModel();
 
@@ -362,19 +364,21 @@ public class BlueEntityRenderer<T extends Entity & BlueAnimatable> extends Entit
 			return false;
 
 		final Minecraft minecraft = Minecraft.getInstance();
-		boolean visibleToClient = !pAnimatable.isInvisibleTo(minecraft.player);
+		boolean visibleToClient = !pAnimatable.isInvisibleTo(PlayerUtils.getClientPlayer());
 		Team entityTeam = pAnimatable.getTeam();
 
 		if (entityTeam == null)
 			return Minecraft.renderNames() && pAnimatable != minecraft.getCameraEntity() && visibleToClient && !pAnimatable.isVehicle();
 
-		Team playerTeam = minecraft.player.getTeam();
+		Team playerTeam = PlayerUtils.getClientPlayer().getTeam();
 
 		return switch (entityTeam.getNameTagVisibility()) {
 			case ALWAYS -> visibleToClient;
 			case NEVER -> false;
-			case HIDE_FOR_OTHER_TEAMS -> playerTeam == null ? visibleToClient : entityTeam.isAlliedTo(playerTeam) && (entityTeam.canSeeFriendlyInvisibles() || visibleToClient);
-			case HIDE_FOR_OWN_TEAM -> playerTeam == null ? visibleToClient : !entityTeam.isAlliedTo(playerTeam) && visibleToClient;
+			case HIDE_FOR_OTHER_TEAMS ->
+					playerTeam == null ? visibleToClient : entityTeam.isAlliedTo(playerTeam) && (entityTeam.canSeeFriendlyInvisibles() || visibleToClient);
+			case HIDE_FOR_OWN_TEAM ->
+					playerTeam == null ? visibleToClient : !entityTeam.isAlliedTo(playerTeam) && visibleToClient;
 		};
 	}
 
@@ -391,6 +395,7 @@ public class BlueEntityRenderer<T extends Entity & BlueAnimatable> extends Entit
 		return animatable.isFullyFrozen();
 	}
 
+	@SuppressWarnings("unchecked")
 	public <E extends Entity, M extends Mob> void renderLeash(
 			@NotNull M pMob, float pPartialTick, @NotNull PoseStack pPoseStack,
 			@NotNull MultiBufferSource pBufferSource, @NotNull E pLeashHolder) {
@@ -441,10 +446,10 @@ public class BlueEntityRenderer<T extends Entity & BlueAnimatable> extends Entit
 	}
 
 	private static void addLeashVertices(@NotNull VertexConsumer pBuffer, @NotNull Matrix4f pMatrix4f,
-			float pXDif, float pYDif, float pZDif,
-			int pMobBlockLight, int pHolderBlockLight,
-			int pMobSkyLight, int pHolderSkyLight,
-			float pXOffset, float pZOffset, float pSegment, boolean pIsKnot) {
+	                                     float pXDif, float pYDif, float pZDif,
+	                                     int pMobBlockLight, int pHolderBlockLight,
+	                                     int pMobSkyLight, int pHolderSkyLight,
+	                                     float pXOffset, float pZOffset, float pSegment, boolean pIsKnot) {
 		int packedLight = LightTexture.pack(
 				(int) Mth.lerp(pSegment, pMobBlockLight, pHolderBlockLight),
 				(int) Mth.lerp(pSegment, pMobSkyLight, pHolderSkyLight));
