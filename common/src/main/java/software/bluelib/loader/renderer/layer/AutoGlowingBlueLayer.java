@@ -52,9 +52,7 @@ public class AutoGlowingBlueLayer<T extends BlueAnimatable> extends BlueRenderLa
 	@Override
 	public void render(@NotNull IRenderContext<T> pContext) {
 		if (pContext instanceof FullRenderContext<T> full) {
-			if (full.renderType() != null) {
-				getRenderer().reRender(full);
-			}
+			getRenderer().reRender(full);
 		} else if (pContext instanceof IRenderContext<T> base) {
 			RenderType renderType = getRenderType(base.animatable(), base.bufferSource());
 			FullRenderContext<T> full = new FullRenderContext<>(

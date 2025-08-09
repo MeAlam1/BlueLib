@@ -8,8 +8,6 @@
 package software.bluelib.loader.renderer.base;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import java.util.List;
-import java.util.function.BiConsumer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
@@ -33,6 +31,9 @@ import software.bluelib.loader.model.BlueModel;
 import software.bluelib.loader.renderer.context.BaseRenderContext;
 import software.bluelib.loader.renderer.context.FullRenderContext;
 import software.bluelib.loader.renderer.context.IRenderContext;
+
+import java.util.List;
+import java.util.function.BiConsumer;
 
 public interface BlueRenderer<T extends BlueAnimatable> {
 
@@ -133,20 +134,10 @@ public interface BlueRenderer<T extends BlueAnimatable> {
 
 	default void reRender(@NotNull IRenderContext<T> pContext) {
 		pContext.poseStack().pushPose();
-
-		if (pContext instanceof FullRenderContext<T> full) {
-			preRender(full);
-			actuallyRender(full);
-			postRender(full);
-			full.poseStack().popPose();
-		} else if (pContext instanceof BaseRenderContext<T> base) {
-			handleBaseReRenderContext(base, this);
-		}
-	}
-
-	@ApiStatus.NonExtendable
-	default <M extends BlueAnimatable> void handleBaseReRenderContext(@NotNull BaseRenderContext<M> pContext, @NotNull BlueRenderer<M> pRenderer) {
-		handleBaseRenderContext(pContext, pRenderer, BlueRenderer::reRender);
+		preRender(pContext);
+		actuallyRender(pContext);
+		postRender(pContext);
+		pContext.poseStack().popPose();
 	}
 
 	default void actuallyRender(@NotNull IRenderContext<T> pContext) {
@@ -204,13 +195,17 @@ public interface BlueRenderer<T extends BlueAnimatable> {
 		}
 	}
 
-	default void preRender(@NotNull IRenderContext<T> pContext) {}
+	default void preRender(@NotNull IRenderContext<T> pContext) {
+	}
 
-	default void postRender(@NotNull IRenderContext<T> pContext) {}
+	default void postRender(@NotNull IRenderContext<T> pContext) {
+	}
 
-	default void renderFinal(@NotNull IRenderContext<T> pContext) {}
+	default void renderFinal(@NotNull IRenderContext<T> pContext) {
+	}
 
-	default void doPostRenderCleanup(@NotNull IRenderContext<T> pContext) {}
+	default void doPostRenderCleanup(@NotNull IRenderContext<T> pContext) {
+	}
 
 	default void renderRecursively(@NotNull BoneCache pBone, @NotNull FullRenderContext<T> pContext) {
 		pContext.poseStack().pushPose();
