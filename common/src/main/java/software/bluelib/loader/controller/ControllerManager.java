@@ -92,7 +92,9 @@ public class ControllerManager<T extends BlueAnimatable> {
 			AnimationCache selected = sortedAnimations.getFirst();
 
 			int selectedPriority = getEffectivePriority(selected, pAnimatable);
-			if (selectedPriority == Integer.MIN_VALUE) continue;
+			if (selectedPriority == Integer.MIN_VALUE) {
+				return PlayState.STOP;
+			}
 
 			return pEvent.setAndContinue(Animation.begin().thenLoop(selected.animation()));
 		}
