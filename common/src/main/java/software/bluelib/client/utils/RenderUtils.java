@@ -219,7 +219,7 @@ public final class RenderUtils {
 	public static BlueAnimatable getReplacedAnimatable(@NotNull EntityType<?> pEntityType) {
 		EntityRenderer<?> renderer = Minecraft.getInstance().getEntityRenderDispatcher().renderers.get(pEntityType);
 
-		return renderer instanceof BlueReplacedEntityRenderer<?, ?> replacedEntityRenderer ? replacedEntityRenderer.getAnimatable() : null;
+		return renderer instanceof BlueReplacedEntityRenderer<?, ?> replacedEntityRenderer ? replacedEntityRenderer.getOptionalAnimatable() : null;
 	}
 
 	@Nullable

@@ -15,6 +15,7 @@ import net.minecraft.client.renderer.OutlineBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public final class BufferUtils {
 
@@ -22,7 +23,13 @@ public final class BufferUtils {
 
 	@NotNull
 	@ApiStatus.Internal
-	public static VertexConsumer checkAndRefreshBuffer(boolean pIsReRender, @NotNull VertexConsumer pBuffer, @NotNull MultiBufferSource pBufferSource, @NotNull RenderType pRenderType) {
+	public static VertexConsumer checkAndRefreshBuffer(boolean pIsReRender, @Nullable VertexConsumer pBuffer, @NotNull MultiBufferSource pBufferSource, @Nullable RenderType pRenderType) {
+		if (pRenderType == null)
+			return pBufferSource.getBuffer(RenderType.translucent()); // TODO: Find a better solution
+
+		if (pBuffer == null)
+			return pBufferSource.getBuffer(pRenderType);
+
 		if (pIsReRender)
 			return pBuffer;
 

@@ -74,7 +74,6 @@ public class BlueReplacedEntityRenderer<E extends Entity, T extends BlueAnimatab
 
 	public BlueReplacedEntityRenderer(@NotNull EntityRendererProvider.Context pRenderManager, @NotNull BlueModel<T> pModel, @NotNull T pAnimatable) {
 		super(pRenderManager);
-
 		this.model = pModel;
 		this.animatable = pAnimatable;
 	}
@@ -82,6 +81,11 @@ public class BlueReplacedEntityRenderer<E extends Entity, T extends BlueAnimatab
 	@Override
 	public @NotNull BlueModel<T> getBlueModel() {
 		return this.model;
+	}
+
+	@Override
+	public @NotNull T getOptionalAnimatable() {
+		return getAnimatable();
 	}
 
 	@Override
@@ -101,7 +105,7 @@ public class BlueReplacedEntityRenderer<E extends Entity, T extends BlueAnimatab
 	@Override
 	@NotNull
 	public ResourceLocation getTextureLocation(@NotNull E pEntity) {
-		return BlueRenderer.super.getTextureLocation(this.animatable);
+		return BlueRenderer.super.getTextureLocation(getAnimatable());
 	}
 
 	@Override
@@ -157,14 +161,14 @@ public class BlueReplacedEntityRenderer<E extends Entity, T extends BlueAnimatab
 
 		defaultRender(new BaseRenderContext<>(
 				pPoseStack,
-				this.animatable,
+				getAnimatable(),
 				this.model.getBakedModel(getBlueModel().getModelResource(animatable, this)),
 				pBufferSource,
 				false,
 				pPartialTick,
 				pPackedLight,
-				getPackedOverlay(this.animatable, 0, pPartialTick),
-				getRenderColor(this.animatable, pPartialTick, pPackedLight).argbInt()));
+				getPackedOverlay(getAnimatable(), 0, pPartialTick),
+				getRenderColor(getAnimatable(), pPartialTick, pPackedLight).argbInt()));
 	}
 
 	@Override
@@ -369,7 +373,7 @@ public class BlueReplacedEntityRenderer<E extends Entity, T extends BlueAnimatab
 		if (!(pEntity instanceof LivingEntity))
 			return super.shouldShowName(pEntity);
 
-		double nameRenderCutoff = getNameRenderCutoffDistance(pEntity, this.animatable);
+		double nameRenderCutoff = getNameRenderCutoffDistance(pEntity, getAnimatable());
 
 		if (this.entityRenderDispatcher.distanceToSqr(pEntity) >= nameRenderCutoff * nameRenderCutoff)
 			return false;
@@ -470,8 +474,8 @@ public class BlueReplacedEntityRenderer<E extends Entity, T extends BlueAnimatab
 	}
 
 	@Override
-	public void updateAnimatedTextureFrame(@NotNull T pAnimatable) {
-		AnimatableTexture.setAndUpdate(getTextureLocation(pAnimatable));
+	public void updateAnimatedTextureFrame(@NotNull IRenderContext<T> pContext) {
+		AnimatableTexture.setAndUpdate(getTextureLocation(pContext.animatable()));
 	}
 
 	@Override

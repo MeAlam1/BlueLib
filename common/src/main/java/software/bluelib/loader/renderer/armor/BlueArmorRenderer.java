@@ -110,7 +110,7 @@ public class BlueArmorRenderer<T extends Item & BlueItem> extends HumanoidModel 
 		return this.model;
 	}
 
-	public @Nullable T getAnimatable() {
+	public @Nullable T getOptionalAnimatable() {
 		return this.animatable;
 	}
 
@@ -241,10 +241,10 @@ public class BlueArmorRenderer<T extends Item & BlueItem> extends HumanoidModel 
 			pBufferSource = mc.levelRenderer.renderBuffers.outlineBufferSource();
 
 		float pPartialTick = mc.getTimer().getGameTimeDeltaPartialTick(true);
-		RenderType pRenderType = getRenderType(getTextureLocation(this.animatable), new BaseRenderContext<>(
+		RenderType pRenderType = getRenderType(getTextureLocation(getAnimatable()), new BaseRenderContext<>(
 				pPoseStack,
-				this.animatable,
-				this.model.getBakedModel(getBlueModel().getModelResource(this.animatable, this)),
+				getAnimatable(),
+				this.model.getBakedModel(getBlueModel().getModelResource(getAnimatable(), this)),
 				bufferSource,
 				false,
 				pPartialTick,
@@ -257,16 +257,16 @@ public class BlueArmorRenderer<T extends Item & BlueItem> extends HumanoidModel 
 
 		defaultRender(new FullRenderContext<>(
 				pPoseStack,
-				this.animatable,
-				this.model.getBakedModel(getBlueModel().getModelResource(animatable, this)),
+				getAnimatable(),
+				this.model.getBakedModel(getBlueModel().getModelResource(getAnimatable(), this)),
 				pRenderType,
 				pBufferSource,
 				pBuffer,
 				false, // isReRender
 				pPartialTick,
 				pPackedLight,
-				getPackedOverlay(this.animatable, 0, pPartialTick),
-				getRenderColor(this.animatable, pPartialTick, pPackedLight).argbInt()));
+				getPackedOverlay(getAnimatable(), 0, pPartialTick),
+				getRenderColor(getAnimatable(), pPartialTick, pPackedLight).argbInt()));
 
 		this.animatable = null;
 	}
@@ -514,9 +514,9 @@ public class BlueArmorRenderer<T extends Item & BlueItem> extends HumanoidModel 
 	}
 
 	@Override
-	public void updateAnimatedTextureFrame(@NotNull T pAnimatable) {
+	public void updateAnimatedTextureFrame(@NotNull IRenderContext<T> pContext) {
 		if (this.currentEntity != null)
-			AnimatableTexture.setAndUpdate(getTextureLocation(pAnimatable));
+			AnimatableTexture.setAndUpdate(getTextureLocation(pContext.animatable()));
 	}
 
 	@Override

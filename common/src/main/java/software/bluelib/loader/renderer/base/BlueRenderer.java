@@ -20,6 +20,7 @@ import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
+import software.bluelib.api.exception.AnimatableException;
 import software.bluelib.api.utils.Color;
 import software.bluelib.api.utils.loader.BufferUtils;
 import software.bluelib.client.utils.RenderUtils;
@@ -40,7 +41,15 @@ public interface BlueRenderer<T extends BlueAnimatable> {
 	BlueModel<T> getBlueModel();
 
 	@Nullable
-	T getAnimatable();
+	T getOptionalAnimatable();
+
+	@NotNull
+	default T getAnimatable() {
+		T animatable = getOptionalAnimatable();
+		if (animatable == null)
+			throw new AnimatableException("Animatable cannot be null when rendering!");
+		return animatable;
+	}
 
 	@NotNull
 	default ResourceLocation getTextureLocation(@NotNull T pAnimatable) {
@@ -159,7 +168,7 @@ public interface BlueRenderer<T extends BlueAnimatable> {
 						full.color());
 			}
 
-			updateAnimatedTextureFrame(full.animatable());
+			updateAnimatedTextureFrame(full);
 
 			for (BoneCache group : full.model().topLevelBones()) {
 				renderRecursively(
@@ -277,5 +286,5 @@ public interface BlueRenderer<T extends BlueAnimatable> {
 			pContext.poseStack().scale(pWidthScale, pHeightScale, pWidthScale);
 	}
 
-	void updateAnimatedTextureFrame(T pAnimatable);
+	void updateAnimatedTextureFrame(@NotNull IRenderContext<T> pContext);
 }

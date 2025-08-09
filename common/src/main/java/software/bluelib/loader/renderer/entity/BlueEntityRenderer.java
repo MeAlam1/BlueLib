@@ -82,7 +82,7 @@ public class BlueEntityRenderer<T extends Entity & BlueAnimatable> extends Entit
 	}
 
 	@Override
-	public @Nullable T getAnimatable() {
+	public @Nullable T getOptionalAnimatable() {
 		return this.animatable;
 	}
 
@@ -266,7 +266,7 @@ public class BlueEntityRenderer<T extends Entity & BlueAnimatable> extends Entit
 
 	@Override
 	public void renderFinal(@NotNull IRenderContext<T> pContext) {
-		super.render(animatable, 0, pContext.partialTick(), pContext.poseStack(), pContext.bufferSource(), pContext.packedLight());
+		super.render(pContext.animatable(), 0, pContext.partialTick(), pContext.poseStack(), pContext.bufferSource(), pContext.packedLight());
 
 		if (animatable instanceof Mob mob) {
 			Entity leashHolder = mob.getLeashHolder();
@@ -294,8 +294,8 @@ public class BlueEntityRenderer<T extends Entity & BlueAnimatable> extends Entit
 			Matrix4f localMatrix = RenderUtils.invertAndMultiplyMatrices(poseState, this.entityRenderTranslations);
 
 			pBone.setModelSpaceMatrix(RenderUtils.invertAndMultiplyMatrices(poseState, this.modelRenderTranslations));
-			pBone.setLocalSpaceMatrix(RenderUtils.translateMatrix(localMatrix, getRenderOffset(this.animatable, 1).toVector3f()));
-			pBone.setWorldSpaceMatrix(RenderUtils.translateMatrix(new Matrix4f(localMatrix), this.animatable.position().toVector3f()));
+			pBone.setLocalSpaceMatrix(RenderUtils.translateMatrix(localMatrix, getRenderOffset(getAnimatable(), 1).toVector3f()));
+			pBone.setWorldSpaceMatrix(RenderUtils.translateMatrix(new Matrix4f(localMatrix), getAnimatable().position().toVector3f()));
 		}
 
 		RenderUtils.translateAwayFromPivotPoint(pContext.poseStack(), pBone);
@@ -462,8 +462,8 @@ public class BlueEntityRenderer<T extends Entity & BlueAnimatable> extends Entit
 	}
 
 	@Override
-	public void updateAnimatedTextureFrame(@NotNull T pAnimatable) {
-		AnimatableTexture.setAndUpdate(getTextureLocation(pAnimatable));
+	public void updateAnimatedTextureFrame(@NotNull IRenderContext<T> pContext) {
+		AnimatableTexture.setAndUpdate(getTextureLocation(pContext.animatable()));
 	}
 
 	@Override

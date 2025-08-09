@@ -66,7 +66,7 @@ public class BlueBlockRenderer<T extends BlockEntity & BlueAnimatable> implement
 	}
 
 	@Override
-	public @Nullable T getAnimatable() {
+	public @Nullable T getOptionalAnimatable() {
 		return this.animatable;
 	}
 
@@ -118,14 +118,14 @@ public class BlueBlockRenderer<T extends BlockEntity & BlueAnimatable> implement
 
 		defaultRender(new BaseRenderContext<>(
 				pPoseStack,
-				this.animatable,
+				getAnimatable(),
 				this.model.getBakedModel(getBlueModel().getModelResource(pAnimatable, this)),
 				pBufferSource,
 				false,
 				pPartialTick,
 				pPackedLight,
-				getPackedOverlay(this.animatable, 0, pPartialTick),
-				getRenderColor(this.animatable, pPartialTick, pPackedLight).argbInt()));
+				getPackedOverlay(getAnimatable(), 0, pPartialTick),
+				getRenderColor(getAnimatable(), pPartialTick, pPackedLight).argbInt()));
 	}
 
 	@Override
@@ -169,7 +169,7 @@ public class BlueBlockRenderer<T extends BlockEntity & BlueAnimatable> implement
 			Matrix4f poseState = new Matrix4f(pContext.poseStack().last().pose());
 			Matrix4f localMatrix = RenderUtils.invertAndMultiplyMatrices(poseState, this.blockRenderTranslations);
 			Matrix4f worldState = new Matrix4f(localMatrix);
-			BlockPos pos = this.animatable.getBlockPos();
+			BlockPos pos = getAnimatable().getBlockPos();
 
 			pBone.setModelSpaceMatrix(RenderUtils.invertAndMultiplyMatrices(poseState, this.modelRenderTranslations));
 			pBone.setLocalSpaceMatrix(localMatrix);
@@ -204,8 +204,8 @@ public class BlueBlockRenderer<T extends BlockEntity & BlueAnimatable> implement
 	}
 
 	@Override
-	public void updateAnimatedTextureFrame(@NotNull T pAnimatable) {
-		AnimatableTexture.setAndUpdate(getTextureLocation(pAnimatable));
+	public void updateAnimatedTextureFrame(@NotNull IRenderContext<T> pContext) {
+		AnimatableTexture.setAndUpdate(getTextureLocation(pContext.animatable()));
 	}
 
 	@Override

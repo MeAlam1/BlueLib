@@ -160,7 +160,7 @@ public interface BlueRenderEvent {
 		}
 
 		public @NotNull BlockEntity getBlockEntity() {
-			return getRenderer().getAnimatable();
+			return getRenderer().getOptionalAnimatable();
 		}
 
 		public static class Pre extends Block {
@@ -264,7 +264,7 @@ public interface BlueRenderEvent {
 		}
 
 		public @NotNull net.minecraft.world.entity.Entity getEntity() {
-			return this.renderer.getAnimatable();
+			return this.renderer.getOptionalAnimatable();
 		}
 
 		public static class Pre extends Entity {

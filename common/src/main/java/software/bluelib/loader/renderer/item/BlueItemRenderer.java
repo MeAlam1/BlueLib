@@ -83,7 +83,7 @@ public class BlueItemRenderer<T extends Item & BlueAnimatable> extends BlockEnti
 	}
 
 	@Override
-	public @Nullable T getAnimatable() {
+	public @Nullable T getOptionalAnimatable() {
 		return this.animatable;
 	}
 
@@ -155,11 +155,11 @@ public class BlueItemRenderer<T extends Item & BlueAnimatable> extends BlockEnti
 		if (pTransformType == ItemDisplayContext.GUI) {
 			renderInGui(pTransformType, pPoseStack, pBufferSource, pPackedLight, pPackedOverlay, pPartialTick);
 		} else {
-			int color = getRenderColor(this.animatable, pPartialTick, pPackedLight).argbInt();
+			int color = getRenderColor(getAnimatable(), pPartialTick, pPackedLight).argbInt();
 			ModelCache modelCache = this.model.getBakedModel(getBlueModel().getModelResource(animatable, this));
-			RenderType pRenderType = getRenderType(getTextureLocation(this.animatable), new BaseRenderContext<>(
+			RenderType pRenderType = getRenderType(getTextureLocation(getAnimatable()), new BaseRenderContext<>(
 					pPoseStack,
-					this.animatable,
+					getAnimatable(),
 					modelCache,
 					pBufferSource,
 					false,
@@ -171,7 +171,7 @@ public class BlueItemRenderer<T extends Item & BlueAnimatable> extends BlockEnti
 
 			defaultRender(new FullRenderContext<>(
 					pPoseStack,
-					this.animatable,
+					getAnimatable(),
 					this.model.getBakedModel(getBlueModel().getModelResource(animatable, this)),
 					pRenderType,
 					pBufferSource,
@@ -179,7 +179,7 @@ public class BlueItemRenderer<T extends Item & BlueAnimatable> extends BlockEnti
 					false,
 					pPartialTick,
 					pPackedLight,
-					getPackedOverlay(this.animatable, 0, pPartialTick),
+					getPackedOverlay(getAnimatable(), 0, pPartialTick),
 					color));
 		}
 
@@ -191,11 +191,11 @@ public class BlueItemRenderer<T extends Item & BlueAnimatable> extends BlockEnti
 		setupLightingForGuiRender();
 
 		MultiBufferSource.BufferSource defaultBufferSource = pBufferSource instanceof MultiBufferSource.BufferSource bufferSource2 ? bufferSource2 : Minecraft.getInstance().levelRenderer.renderBuffers.bufferSource();
-		int color = getRenderColor(this.animatable, pPartialTick, pPackedLight).argbInt();
+		int color = getRenderColor(getAnimatable(), pPartialTick, pPackedLight).argbInt();
 		ModelCache modelCache = this.model.getBakedModel(getBlueModel().getModelResource(animatable, this));
-		RenderType pRenderType = getRenderType(getTextureLocation(this.animatable), new BaseRenderContext<>(
+		RenderType pRenderType = getRenderType(getTextureLocation(getAnimatable()), new BaseRenderContext<>(
 				pPoseStack,
-				this.animatable,
+				getAnimatable(),
 				modelCache,
 				defaultBufferSource,
 				false,
@@ -208,7 +208,7 @@ public class BlueItemRenderer<T extends Item & BlueAnimatable> extends BlockEnti
 		pPoseStack.pushPose();
 		defaultRender(new FullRenderContext<>(
 				pPoseStack,
-				this.animatable,
+				getAnimatable(),
 				modelCache,
 				pRenderType,
 				pBufferSource,
@@ -283,8 +283,8 @@ public class BlueItemRenderer<T extends Item & BlueAnimatable> extends BlockEnti
 	}
 
 	@Override
-	public void updateAnimatedTextureFrame(@NotNull T pAnimatable) {
-		AnimatableTexture.setAndUpdate(getTextureLocation(pAnimatable));
+	public void updateAnimatedTextureFrame(@NotNull IRenderContext<T> pContext) {
+		AnimatableTexture.setAndUpdate(getTextureLocation(pContext.animatable()));
 	}
 
 	@Override

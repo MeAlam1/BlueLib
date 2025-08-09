@@ -56,7 +56,7 @@ public class BlueObjectRenderer<T extends BlueAnimatable> implements BlueRendere
 	}
 
 	@Override
-	public @Nullable T getAnimatable() {
+	public @Nullable T getOptionalAnimatable() {
 		return this.animatable;
 	}
 
@@ -154,8 +154,8 @@ public class BlueObjectRenderer<T extends BlueAnimatable> implements BlueRendere
 	}
 
 	@Override
-	public void updateAnimatedTextureFrame(@NotNull T pAnimatable) {
-		AnimatableTexture.setAndUpdate(getTextureLocation(pAnimatable));
+	public void updateAnimatedTextureFrame(@NotNull IRenderContext<T> pContext) {
+		AnimatableTexture.setAndUpdate(getTextureLocation(pContext.animatable()));
 	}
 
 	@Override
