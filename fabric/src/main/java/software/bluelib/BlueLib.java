@@ -13,6 +13,7 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.fabricmc.loader.api.FabricLoader;
 import org.jetbrains.annotations.NotNull;
+import software.bluelib.config.LoggerConfig;
 import software.bluelib.event.FabricReloadHandler;
 import software.bluelib.example.entity.ExampleEntity;
 import software.bluelib.example.event.VariantProvider;
@@ -31,9 +32,11 @@ public class BlueLib implements ModInitializer {
 		clientEndTick();
 		registerNetwork();
 
-		FabricDefaultAttributeRegistry.register(
-				BlueEntityRegistry.EXAMPLE.get(),
-				ExampleEntity.createAttributes());
+		if (LoggerConfig.isExampleEnabled) {
+			FabricDefaultAttributeRegistry.register(
+					BlueEntityRegistry.EXAMPLE.get(),
+					ExampleEntity.createAttributes());
+		}
 
 		FabricReloadHandler.registerProvider(new VariantProvider());
 	}

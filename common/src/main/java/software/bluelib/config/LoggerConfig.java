@@ -7,9 +7,13 @@
  */
 package software.bluelib.config;
 
+import org.jetbrains.annotations.ApiStatus;
+
 public class LoggerConfig {
 
 	// TODO: BlueLib Logging should remain false by default
 	public static boolean isBlueLibLoggingEnabled = true;
 	public static boolean isLoggingEnabled = true;
+	@ApiStatus.Internal
+	public static final boolean isExampleEnabled = false;
 }
