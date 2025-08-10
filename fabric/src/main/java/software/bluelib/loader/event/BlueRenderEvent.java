@@ -13,7 +13,6 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import software.bluelib.loader.renderer.BlueObjectRenderer;
 import software.bluelib.loader.renderer.armor.BlueArmorRenderer;
 import software.bluelib.loader.renderer.base.BlueRenderLayer;
@@ -44,17 +43,17 @@ public interface BlueRenderEvent {
 			return this.renderer;
 		}
 
-		@Nullable
-		public net.minecraft.world.entity.Entity getEntity() {
+		@NotNull
+		public net.minecraft.world.entity.@NotNull Entity getEntity() {
 			return getRenderer().getCurrentEntity();
 		}
 
-		@Nullable
+		@NotNull
 		public ItemStack getItemStack() {
 			return getRenderer().getCurrentStack();
 		}
 
-		@Nullable
+		@NotNull
 		public EquipmentSlot getEquipmentSlot() {
 			return getRenderer().getCurrentSlot();
 		}
@@ -74,7 +73,7 @@ public interface BlueRenderEvent {
 			@NotNull
 			private final IRenderContext<?> context;
 
-			public Pre(@NotNull BlueArmorRenderer<?, ?> pRenderer, IRenderContext<?> pContext) {
+			public Pre(@NotNull BlueArmorRenderer<?, ?> pRenderer, @NotNull IRenderContext<?> pContext) {
 				super(pRenderer);
 
 				this.context = pContext;
@@ -103,7 +102,7 @@ public interface BlueRenderEvent {
 			@NotNull
 			private final IRenderContext<?> context;
 
-			public Post(@NotNull BlueArmorRenderer<?, ?> pRenderer, IRenderContext<?> pContext) {
+			public Post(@NotNull BlueArmorRenderer<?, ?> pRenderer, @NotNull IRenderContext<?> pContext) {
 				super(pRenderer);
 
 				this.context = pContext;
@@ -160,7 +159,7 @@ public interface BlueRenderEvent {
 		}
 
 		public @NotNull BlockEntity getBlockEntity() {
-			return getRenderer().getOptionalAnimatable();
+			return getRenderer().getAnimatable();
 		}
 
 		public static class Pre extends Block {
@@ -178,7 +177,7 @@ public interface BlueRenderEvent {
 			@NotNull
 			private final IRenderContext<?> context;
 
-			public Pre(@NotNull BlueBlockRenderer<?> pRenderer, IRenderContext<?> pContext) {
+			public Pre(@NotNull BlueBlockRenderer<?> pRenderer, @NotNull IRenderContext<?> pContext) {
 				super(pRenderer);
 
 				this.context = pContext;
@@ -207,7 +206,7 @@ public interface BlueRenderEvent {
 			@NotNull
 			private final IRenderContext<?> context;
 
-			public Post(@NotNull BlueBlockRenderer<?> pRenderer, IRenderContext<?> pContext) {
+			public Post(@NotNull BlueBlockRenderer<?> pRenderer, @NotNull IRenderContext<?> pContext) {
 				super(pRenderer);
 
 				this.context = pContext;
@@ -264,7 +263,7 @@ public interface BlueRenderEvent {
 		}
 
 		public @NotNull net.minecraft.world.entity.Entity getEntity() {
-			return this.renderer.getOptionalAnimatable();
+			return this.renderer.getAnimatable();
 		}
 
 		public static class Pre extends Entity {
@@ -282,7 +281,7 @@ public interface BlueRenderEvent {
 			@NotNull
 			private final IRenderContext<?> context;
 
-			public Pre(@NotNull BlueEntityRenderer<?> pRenderer, IRenderContext<?> pContext) {
+			public Pre(@NotNull BlueEntityRenderer<?> pRenderer, @NotNull IRenderContext<?> pContext) {
 				super(pRenderer);
 
 				this.context = pContext;
@@ -311,7 +310,7 @@ public interface BlueRenderEvent {
 			@NotNull
 			private final IRenderContext<?> context;
 
-			public Post(@NotNull BlueEntityRenderer<?> pRenderer, IRenderContext<?> pContext) {
+			public Post(@NotNull BlueEntityRenderer<?> pRenderer, @NotNull IRenderContext<?> pContext) {
 				super(pRenderer);
 
 				this.context = pContext;
@@ -386,7 +385,7 @@ public interface BlueRenderEvent {
 			@NotNull
 			private final IRenderContext<?> context;
 
-			public Pre(@NotNull BlueItemRenderer<?> pRenderer, IRenderContext<?> pContext) {
+			public Pre(@NotNull BlueItemRenderer<?> pRenderer, @NotNull IRenderContext<?> pContext) {
 				super(pRenderer);
 
 				this.context = pContext;
@@ -415,7 +414,7 @@ public interface BlueRenderEvent {
 			@NotNull
 			private final IRenderContext<?> context;
 
-			public Post(@NotNull BlueItemRenderer<?> pRenderer, IRenderContext<?> pContext) {
+			public Post(@NotNull BlueItemRenderer<?> pRenderer, @NotNull IRenderContext<?> pContext) {
 				super(pRenderer);
 
 				this.context = pContext;
@@ -486,7 +485,7 @@ public interface BlueRenderEvent {
 			@NotNull
 			private final IRenderContext<?> context;
 
-			public Pre(@NotNull BlueObjectRenderer<?> pRenderer, IRenderContext<?> pContext) {
+			public Pre(@NotNull BlueObjectRenderer<?> pRenderer, @NotNull IRenderContext<?> pContext) {
 				super(pRenderer);
 
 				this.context = pContext;
@@ -515,7 +514,7 @@ public interface BlueRenderEvent {
 			@NotNull
 			private final IRenderContext<?> context;
 
-			public Post(@NotNull BlueObjectRenderer<?> pRenderer, IRenderContext<?> pContext) {
+			public Post(@NotNull BlueObjectRenderer<?> pRenderer, @NotNull IRenderContext<?> pContext) {
 				super(pRenderer);
 
 				this.context = pContext;
@@ -590,7 +589,7 @@ public interface BlueRenderEvent {
 			@NotNull
 			private final IRenderContext<?> context;
 
-			public Pre(@NotNull BlueReplacedEntityRenderer<?, ?> pRenderer, IRenderContext<?> pContext) {
+			public Pre(@NotNull BlueReplacedEntityRenderer<?, ?> pRenderer, @NotNull IRenderContext<?> pContext) {
 				super(pRenderer);
 
 				this.context = pContext;
@@ -619,7 +618,7 @@ public interface BlueRenderEvent {
 			@NotNull
 			private final IRenderContext<?> context;
 
-			public Post(@NotNull BlueReplacedEntityRenderer<?, ?> pRenderer, IRenderContext<?> pContext) {
+			public Post(@NotNull BlueReplacedEntityRenderer<?, ?> pRenderer, @NotNull IRenderContext<?> pContext) {
 				super(pRenderer);
 
 				this.context = pContext;

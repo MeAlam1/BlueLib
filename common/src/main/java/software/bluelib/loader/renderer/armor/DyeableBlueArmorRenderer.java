@@ -24,6 +24,7 @@ import software.bluelib.loader.model.BlueModel;
 import software.bluelib.loader.renderer.context.FullRenderContext;
 import software.bluelib.loader.renderer.context.IRenderContext;
 
+@SuppressWarnings({ "unused" })
 public abstract class DyeableBlueArmorRenderer<T extends Item & BlueItem, L extends LivingEntity & BlueAnimatable> extends BlueArmorRenderer<T, L> {
 
 	@NotNull

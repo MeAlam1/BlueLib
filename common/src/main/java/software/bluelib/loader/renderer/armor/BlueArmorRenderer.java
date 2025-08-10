@@ -116,28 +116,60 @@ public class BlueArmorRenderer<T extends Item & BlueItem, L extends LivingEntity
 		return this.animatable;
 	}
 
-	public @Nullable Entity getCurrentEntity() {
+	public @Nullable HumanoidModel<?> getOptionalBaseModel() {
+		return this.baseModel;
+	}
+
+	public @NotNull HumanoidModel<?> getBaseModel() {
+		HumanoidModel<?> baseModel = getOptionalBaseModel();
+		if (baseModel == null)
+			throw new NullPointerException("baseModel cannot be null when rendering!");
+		return baseModel;
+	}
+
+	public @Nullable Entity getOptionalCurrentEntity() {
 		return this.currentEntity;
 	}
 
-	public @Nullable ItemStack getCurrentStack() {
+	public @NotNull Entity getCurrentEntity() {
+		Entity currentEntity = getOptionalCurrentEntity();
+		if (currentEntity == null)
+			throw new NullPointerException("currentEntity cannot be null when rendering!");
+		return currentEntity;
+	}
+
+	public @Nullable ItemStack getOptionalCurrentStack() {
 		return this.currentStack;
 	}
 
-	public @Nullable EquipmentSlot getCurrentSlot() {
+	public @NotNull ItemStack getCurrentStack() {
+		ItemStack currentStack = getOptionalCurrentStack();
+		if (currentStack == null)
+			throw new NullPointerException("currentStack cannot be null when rendering!");
+		return currentStack;
+	}
+
+	public @Nullable EquipmentSlot getOptionalCurrentSlot() {
 		return this.currentSlot;
+	}
+
+	public @NotNull EquipmentSlot getCurrentSlot() {
+		EquipmentSlot currentSlot = getOptionalCurrentSlot();
+		if (currentSlot == null)
+			throw new NullPointerException("currentSlot cannot be null when rendering!");
+		return currentSlot;
 	}
 
 	@Override
 	public long getInstanceId(@NotNull IRenderContext<T> pContext) {
 		if (this.currentStack == null) {
-			return (long) Math.pow(this.currentEntity.getId(), 7) * -(this.currentSlot.ordinal() + 1);
+			return (long) Math.pow(getCurrentEntity().getId(), 7) * -(getCurrentSlot().ordinal() + 1);
 		}
 
 		long stackId = BlueItem.getId(this.currentStack);
 
 		if (stackId == Long.MAX_VALUE)
-			return (long) Math.pow(this.currentEntity.getId(), 7) * -(this.currentSlot.ordinal() + 1);
+			return (long) Math.pow(getCurrentEntity().getId(), 7) * -(getCurrentSlot().ordinal() + 1);
 
 		return -stackId;
 	}
@@ -215,21 +247,21 @@ public class BlueArmorRenderer<T extends Item & BlueItem, L extends LivingEntity
 
 	@Override
 	public @NotNull Color getRenderColor(@NotNull T pAnimatable, float pPartialTick, int pPackedLight) {
-		return this.currentStack.is(ItemTags.DYEABLE) ? Color.ofOpaque(DyedItemColor.getOrDefault(this.currentStack, -6265536)) : Color.WHITE;
+		return getCurrentStack().is(ItemTags.DYEABLE) ? Color.ofOpaque(DyedItemColor.getOrDefault(getCurrentStack(), -6265536)) : Color.WHITE;
 	}
 
 	@Override
 	public void preRender(@NotNull IRenderContext<T> pContext) {
 		this.entityRenderTranslations = new Matrix4f(pContext.poseStack().last().pose());
 
-		applyBaseModel(this.baseModel);
+		applyBaseModel(getBaseModel());
 		grabRelevantBones(pContext.model());
-		applyBaseTransformations(this.baseModel);
-		scaleModelForBaby(pContext.poseStack(), pContext.animatable(), pContext.partialTick(), pContext.isReRender());
+		applyBaseTransformations(getBaseModel());
+		scaleModelForBaby(pContext);
 		scaleModelForRender(this.scaleWidth, this.scaleHeight, pContext);
 
-		if (!(this.currentEntity instanceof BlueAnimatable))
-			applyBoneVisibilityBySlot(this.currentSlot);
+		if (!(getCurrentEntity() instanceof BlueAnimatable))
+			applyBoneVisibilityBySlot(getCurrentSlot());
 	}
 
 	@Override
@@ -239,7 +271,7 @@ public class BlueArmorRenderer<T extends Item & BlueItem, L extends LivingEntity
 		Minecraft mc = Minecraft.getInstance();
 		MultiBufferSource pBufferSource = mc.levelRenderer.renderBuffers.bufferSource();
 
-		if (mc.levelRenderer.shouldShowEntityOutlines() && mc.shouldEntityAppearGlowing(this.currentEntity))
+		if (mc.levelRenderer.shouldShowEntityOutlines() && mc.shouldEntityAppearGlowing(getCurrentEntity()))
 			pBufferSource = mc.levelRenderer.renderBuffers.outlineBufferSource();
 
 		float pPartialTick = mc.getTimer().getGameTimeDeltaPartialTick(true);
@@ -247,7 +279,7 @@ public class BlueArmorRenderer<T extends Item & BlueItem, L extends LivingEntity
 				pPoseStack,
 				getAnimatable(),
 				this.model.getBakedModel(getBlueModel().getModelResource(getAnimatable(), this)),
-				bufferSource,
+				pBufferSource,
 				false,
 				pPartialTick,
 				pPackedLight,
@@ -255,7 +287,7 @@ public class BlueArmorRenderer<T extends Item & BlueItem, L extends LivingEntity
 				pColor
 
 		));
-		pBuffer = ItemRenderer.getArmorFoilBuffer(pBufferSource, pRenderType, this.currentStack.hasFoil());
+		pBuffer = ItemRenderer.getArmorFoilBuffer(pBufferSource, pRenderType, getCurrentStack().hasFoil());
 
 		defaultRender(new FullRenderContext<>(
 				pPoseStack,
@@ -291,9 +323,9 @@ public class BlueArmorRenderer<T extends Item & BlueItem, L extends LivingEntity
 				long instanceId = getInstanceId(pContext);
 				BlueModel<T> currentModel = getBlueModel();
 
-				animationState.setData(DataTickets.TICK, pAnimatable.getTick(this.currentEntity));
+				animationState.setData(DataTickets.TICK, pAnimatable.getTick(getCurrentEntity()));
 				animationState.setData(DataTickets.ITEMSTACK, this.currentStack);
-				animationState.setData(DataTickets.ENTITY, this.currentEntity);
+				animationState.setData(DataTickets.ENTITY, getCurrentEntity());
 				animationState.setData(DataTickets.EQUIPMENT_SLOT, this.currentSlot);
 				currentModel.addAdditionalStateData(pAnimatable, instanceId, animationState::setData);
 				currentModel.handleAnimations(pAnimatable, instanceId, animationState, pPartialTick);
@@ -354,7 +386,7 @@ public class BlueArmorRenderer<T extends Item & BlueItem, L extends LivingEntity
 	}
 
 	protected void applyBaseModel(@NotNull HumanoidModel<?> pBaseModel) {
-		HumanoidModel<?> self = (HumanoidModel<?>) this;
+		HumanoidModel<?> self = this;
 
 		self.young = pBaseModel.young;
 		self.crouching = pBaseModel.crouching;
@@ -488,23 +520,23 @@ public class BlueArmorRenderer<T extends Item & BlueItem, L extends LivingEntity
 		setBoneVisible(this.leftBoot, pVisible);
 	}
 
-	public void scaleModelForBaby(@NotNull PoseStack pPoseStack, @NotNull T pAnimatable, float pPartialTick, boolean pIsReRender) {
-		if (!this.young || pIsReRender)
+	public void scaleModelForBaby(@NotNull IRenderContext<T> pContext) {
+		if (!this.young || pContext.isReRender())
 			return;
 
 		if (this.currentSlot == EquipmentSlot.HEAD) {
-			if (this.baseModel.scaleHead) {
-				float headScale = 1.5f / this.baseModel.babyHeadScale;
+			if (getBaseModel().scaleHead) {
+				float headScale = 1.5f / getBaseModel().babyHeadScale;
 
-				pPoseStack.scale(headScale, headScale, headScale);
+				pContext.poseStack().scale(headScale, headScale, headScale);
 			}
 
-			pPoseStack.translate(0, this.baseModel.babyYHeadOffset / 16f, this.baseModel.babyZHeadOffset / 16f);
+			pContext.poseStack().translate(0, getBaseModel().babyYHeadOffset / 16f, getBaseModel().babyZHeadOffset / 16f);
 		} else {
-			float bodyScale = 1 / this.baseModel.babyBodyScale;
+			float bodyScale = 1 / getBaseModel().babyBodyScale;
 
-			pPoseStack.scale(bodyScale, bodyScale, bodyScale);
-			pPoseStack.translate(0, this.baseModel.bodyYOffset / 16f, 0);
+			pContext.poseStack().scale(bodyScale, bodyScale, bodyScale);
+			pContext.poseStack().translate(0, getBaseModel().bodyYOffset / 16f, 0);
 		}
 	}
 
@@ -517,7 +549,7 @@ public class BlueArmorRenderer<T extends Item & BlueItem, L extends LivingEntity
 
 	@Override
 	public void updateAnimatedTextureFrame(@NotNull IRenderContext<T> pContext) {
-		if (this.currentEntity != null)
+		if (getOptionalCurrentEntity() != null)
 			AnimatableTexture.setAndUpdate(getTextureLocation(pContext.animatable()));
 	}
 
