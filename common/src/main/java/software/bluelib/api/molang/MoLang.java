@@ -13,6 +13,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.molang.expression.MoLangExpression;
 
+@SuppressWarnings({ "unused" })
 public class MoLang {
 
 	public static @Nullable Object evaluate(@NotNull String pExpression) {

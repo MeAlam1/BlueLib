@@ -19,6 +19,7 @@ import software.bluelib.config.LoggerConfig;
 import software.bluelib.example.render.entity.ExampleRender;
 import software.bluelib.internal.registry.BlueEntityRegistry;
 
+@SuppressWarnings("unused")
 public class BlueLibCommonClient {
 
 	public static void registerRenderers(@NotNull BiConsumer<EntityType<? extends Entity>, @NotNull EntityRendererProvider> pEntityRenderers,

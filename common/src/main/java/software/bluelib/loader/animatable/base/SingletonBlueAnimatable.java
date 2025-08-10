@@ -12,7 +12,7 @@ import net.minecraft.world.entity.Entity;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import software.bluelib.api.net.loader.LoaderNetwork;
+import software.bluelib.api.net.registry.LoaderNetwork;
 import software.bluelib.api.utils.loader.LoaderUtils;
 import software.bluelib.loader.animatable.cache.AnimatableInstanceCache;
 import software.bluelib.loader.animatable.cache.SingletonAnimatableInstanceCache;

@@ -5,7 +5,7 @@
  * If a copy of the MIT License was not distributed with this file,
  * You can obtain one at https://opensource.org/licenses/MIT.
  */
-package software.bluelib.loader.event;
+package software.bluelib.api.event;
 
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
@@ -23,7 +23,7 @@ import software.bluelib.loader.renderer.entity.BlueEntityRenderer;
 import software.bluelib.loader.renderer.entity.BlueReplacedEntityRenderer;
 import software.bluelib.loader.renderer.item.BlueItemRenderer;
 
-@SuppressWarnings("unused")
+@SuppressWarnings({ "unused", "RawUseOfParameterized", "unchecked" })
 public interface BlueRenderEvent {
 
 	@NotNull

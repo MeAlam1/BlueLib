@@ -20,6 +20,7 @@ import software.bluelib.config.LoggerConfig;
 import software.bluelib.example.entity.ExampleEntity;
 
 @ApiStatus.Internal
+@SuppressWarnings({ "unused" })
 public class BlueEntityRegistry {
 
 	public static void init() {}
@@ -37,6 +38,7 @@ public class BlueEntityRegistry {
 		}
 	}
 
+	@SuppressWarnings("SameParameterValue")
 	private static <T extends Mob> @Nullable Supplier<EntityType<T>> registerEntity(@NotNull String pName, @NotNull EntityType.EntityFactory<T> pEntity, @NotNull Float pWidth, @NotNull Float pHeight, @NotNull Integer pPrimaryEggColor, @NotNull Integer pSecondaryEggColor) {
 		if (LoggerConfig.isExampleEnabled) {
 			return BlueLibConstants.PlatformHelper.REGISTRY.registerEntity(pName, () -> EntityType.Builder.of(pEntity, MobCategory.CREATURE).sized(pWidth, pHeight).build(pName));

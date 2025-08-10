@@ -5,7 +5,7 @@
  * If a copy of the MIT License was not distributed with this file,
  * You can obtain one at https://opensource.org/licenses/MIT.
  */
-package software.bluelib.loader.client;
+package software.bluelib.mixin.client;
 
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -24,9 +24,11 @@ import software.bluelib.client.utils.RenderUtils;
 public abstract class HumanoidArmorLayerMixin<T extends LivingEntity, M extends HumanoidModel<T>, A extends HumanoidModel<T>> {
 
 	@Shadow
-	protected abstract void setPartVisibility(@NotNull A pBaseModel, @NotNull EquipmentSlot pEquipmentSlot);
+	protected abstract void setPartVisibility(
+			@NotNull A pBaseModel,
+			@NotNull EquipmentSlot pEquipmentSlot);
 
-	@WrapWithCondition(method = "render(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;ILnet/minecraft/world/entity/LivingEntity;FFFFFF)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/entity/layers/HumanoidArmorLayer;renderArmorPiece(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/entity/EquipmentSlot;ILnet/minecraft/client/model/HumanoidModel;FFFFFF)V"))
+	@WrapWithCondition(method = "render(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;ILnet/minecraft/world/entity/LivingEntity;FFFFFF)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/entity/layers/HumanoidArmorLayer;renderArmorPiece(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/entity/EquipmentSlot;ILnet/minecraft/client/model/HumanoidModel;)V"))
 	public boolean BlueLib$wrapArmorPieceRender(
 			@NotNull HumanoidArmorLayer<T, M, A> pRenderLayer,
 			@NotNull PoseStack pPoseStack,
@@ -35,6 +37,10 @@ public abstract class HumanoidArmorLayerMixin<T extends LivingEntity, M extends 
 			@NotNull EquipmentSlot pEquipmentSlot,
 			int pPackedLight,
 			@NotNull A pBaseModel,
+			@NotNull PoseStack pPoseStack2,
+			@NotNull MultiBufferSource pBufferSource2,
+			int packedLight2,
+			@NotNull T pEntity2,
 			float pLimbSwing,
 			float pLimbSwingAmount,
 			float pPartialTick,

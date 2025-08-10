@@ -23,6 +23,7 @@ public class BlueRecipeSerializerRegistry {
 	public static final Supplier<RecipeSerializer<?>> BREWING = registerRecipeSerializer("brewing", BrewingRecipe.Serializer::new);
 
 	@NotNull
+	@SuppressWarnings("SameParameterValue")
 	private static <T extends RecipeSerializer<?>> Supplier<T> registerRecipeSerializer(@NotNull String pId, @NotNull Supplier<T> pRecipeSerializer) {
 		return BlueLibConstants.PlatformHelper.REGISTRY.registerRecipeSerializer(pId, pRecipeSerializer);
 	}

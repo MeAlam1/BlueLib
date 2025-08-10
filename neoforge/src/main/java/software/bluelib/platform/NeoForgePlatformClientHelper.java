@@ -57,6 +57,7 @@ public class NeoForgePlatformClientHelper implements IPlatformClient {
 	@Nullable
 	@Override
 	public BlueModel<?> getBlueModelForArmor(@NotNull ItemStack pArmour) {
+		// TODO: Null in NotNull.......
 		if (IClientItemExtensions.of(pArmour).getHumanoidArmorModel(null, pArmour, null, null) instanceof BlueArmorRenderer<?, ?> armorRenderer)
 			return armorRenderer.getBlueModel();
 

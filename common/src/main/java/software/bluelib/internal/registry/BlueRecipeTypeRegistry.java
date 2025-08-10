@@ -23,6 +23,7 @@ public class BlueRecipeTypeRegistry {
 	public static final Supplier<RecipeType<BrewingRecipe>> BREWING = registerRecipeType("brewing", () -> new RecipeType<>() {});
 
 	@NotNull
+	@SuppressWarnings("SameParameterValue")
 	private static <T extends RecipeType<?>> Supplier<T> registerRecipeType(@NotNull String pId, @NotNull Supplier<T> pRecipeType) {
 		return BlueLibConstants.PlatformHelper.REGISTRY.registerRecipeType(pId, pRecipeType);
 	}

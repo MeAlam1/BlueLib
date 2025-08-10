@@ -41,6 +41,7 @@ import org.jetbrains.annotations.NotNull;
 @Documented
 @Retention(RetentionPolicy.SOURCE)
 @Target(value = { CONSTRUCTOR, FIELD, LOCAL_VARIABLE, METHOD, PACKAGE, MODULE, PARAMETER, TYPE })
+@SuppressWarnings({ "unused" })
 public @interface WillBeDeprecated {
 
 	/**

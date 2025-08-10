@@ -22,6 +22,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import software.bluelib.entity.variant.IVariantAccessor;
 
 @Mixin(LivingEntity.class)
+@SuppressWarnings({ "unused" })
 public class LivingEntityMixin implements IVariantAccessor {
 
 	@Unique

@@ -5,7 +5,7 @@
  * If a copy of the MIT License was not distributed with this file,
  * You can obtain one at https://opensource.org/licenses/MIT.
  */
-package software.bluelib.api.net.loader;
+package software.bluelib.api.net.registry;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;

@@ -43,7 +43,7 @@ public class BrewingStandBlockEntityMixin {
 		}
 		ItemStack itemStack = pSlots.get(3);
 		for (int i = 0; i < 3; ++i) {
-			pSlots.set(i, recipe.getResult().copy());
+			pSlots.set(i, recipe.result().copy());
 		}
 
 		itemStack.shrink(1);

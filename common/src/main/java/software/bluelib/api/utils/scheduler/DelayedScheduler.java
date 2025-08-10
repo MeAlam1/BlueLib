@@ -14,6 +14,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 import org.jetbrains.annotations.NotNull;
 
+@SuppressWarnings({ "unused" })
 public class DelayedScheduler {
 
 	@NotNull

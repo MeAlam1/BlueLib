@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.StringJoiner;
 import org.jetbrains.annotations.NotNull;
 
+@SuppressWarnings({ "unused" })
 public class AnimatableException extends NullPointerException {
 
 	private final List<String> messages;

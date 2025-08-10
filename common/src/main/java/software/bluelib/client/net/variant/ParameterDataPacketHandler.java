@@ -13,12 +13,12 @@ import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.net.ClientNetworkPacketHandler;
 import software.bluelib.net.messages.client.variant.ParameterDataPacket;
 
-public class ParameterDataPacketHandler implements ClientNetworkPacketHandler<ParameterDataPacket> {
+@SuppressWarnings({ "unused" })
+public record ParameterDataPacketHandler(
+		Consumer<ParameterDataPacket> handlerFunction) implements ClientNetworkPacketHandler<ParameterDataPacket> {
 
-	private final Consumer<ParameterDataPacket> handlerFunction;
-
-	public ParameterDataPacketHandler(@NotNull Consumer<ParameterDataPacket> pHandlerFunction) {
-		this.handlerFunction = pHandlerFunction;
+	public ParameterDataPacketHandler(@NotNull Consumer<ParameterDataPacket> handlerFunction) {
+		this.handlerFunction = handlerFunction;
 	}
 
 	@Override

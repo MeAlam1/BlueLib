@@ -12,6 +12,7 @@ import java.util.Collections;
 import java.util.List;
 import org.jetbrains.annotations.NotNull;
 
+@SuppressWarnings({ "unused" })
 public class LogCache {
 
 	@NotNull

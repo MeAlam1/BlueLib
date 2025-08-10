@@ -15,6 +15,7 @@ import java.nio.file.Path;
 import org.jetbrains.annotations.NotNull;
 import software.bluelib.config.BlueLibConfig;
 
+@SuppressWarnings({ "unused" })
 public class ConfigBuilder<T extends BlueLibConfig> {
 
 	@NotNull
@@ -47,15 +48,11 @@ public class ConfigBuilder<T extends BlueLibConfig> {
 			String json = Files.readString(configPath);
 			T loadedConfig = gson.fromJson(json, configClass);
 
-			if (config == null) {
-				config = loadedConfig;
-			} else {
-				for (var field : configClass.getDeclaredFields()) {
-					field.setAccessible(true);
-					Object loadedValue = field.get(loadedConfig);
-					if (loadedValue != null) {
-						field.set(config, loadedValue);
-					}
+			for (var field : configClass.getDeclaredFields()) {
+				field.setAccessible(true);
+				Object loadedValue = field.get(loadedConfig);
+				if (loadedValue != null) {
+					field.set(config, loadedValue);
 				}
 			}
 		} catch (IOException | IllegalAccessException pException) {

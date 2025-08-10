@@ -20,7 +20,7 @@ public class SingletonDataSyncPacketHandler<D> implements ClientNetworkPacketHan
 
 	@Override
 	public void handle(@NotNull SingletonDataSyncPacket<D> pPacket, @NotNull Minecraft pClient) {
-		if (PlayerUtils.getClientPlayer() == null) {
+		if (PlayerUtils.getOptionalClientPlayer() == null) {
 			return;
 		}
 		BlueAnimatable animatable = LoaderUtils.getSyncedAnimatable(pPacket.syncableId());

@@ -24,8 +24,7 @@ public class StopTriggeredSingletonAnimPacketHandler implements ClientNetworkPac
 		if (animatable != null) {
 			AnimatableManager<BlueAnimatable> animatableManager = animatable.getAnimatableInstanceCache().getManagerForId(pPacket.instanceId());
 
-			if (animatableManager != null)
-				animatableManager.stopTriggeredAnimation(pPacket.controllerName().isEmpty() ? null : pPacket.controllerName(), pPacket.animName().isEmpty() ? null : pPacket.animName());
+			animatableManager.stopTriggeredAnimation(pPacket.controllerName().isEmpty() ? null : pPacket.controllerName(), pPacket.animName().isEmpty() ? null : pPacket.animName());
 		}
 	}
 }

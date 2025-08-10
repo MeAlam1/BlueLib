@@ -18,6 +18,7 @@ import software.bluelib.api.config.ConfigBuilder;
 import software.bluelib.config.bluelib.LoggerConfig;
 import software.bluelib.config.bluelib.MarkdownConfig;
 
+@SuppressWarnings({ "unused" })
 public class ConfigLoader {
 
 	@Nullable
@@ -49,6 +50,10 @@ public class ConfigLoader {
 	}
 
 	public static void reloadConfigs(@NotNull MinecraftServer pServer, @NotNull CloseableResourceManager pCloseableResourceManager, @NotNull Boolean pBoolean) {
+		if (markdownConfigBuilder == null || loggerConfigBuilder == null) {
+			createConfigs(pServer);
+			return;
+		}
 		markdownConfigBuilder.load();
 		BlueLibConfig.bakeMarkdown(markdownConfigBuilder.getConfig());
 		BlueLibConfig.bakeLogger(loggerConfigBuilder.getConfig());

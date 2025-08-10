@@ -11,6 +11,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import org.jetbrains.annotations.Nullable;
 
+@SuppressWarnings({ "unused" })
 public class ScreenUtils {
 
 	public static boolean isScreenOpen() {

@@ -54,6 +54,7 @@ import software.bluelib.loader.renderer.client.BlueRenderProvider;
 import software.bluelib.loader.renderer.entity.BlueReplacedEntityRenderer;
 
 @SuppressWarnings("unused")
+// TODO: Make Logging Translatable
 public final class RenderUtils {
 
 	public static void translateMatrixToBone(@NotNull PoseStack pPoseStack, @NotNull BoneCache pBone) {
@@ -149,8 +150,19 @@ public final class RenderUtils {
 		NativeImage image = null;
 
 		try {
-			image = originalTexture instanceof DynamicTexture dynamicTexture ? dynamicTexture.getPixels()
-					: NativeImage.read(ResourceUtils.getResource(pTexture).get().open());
+
+			image = originalTexture instanceof DynamicTexture dynamicTexture
+					? dynamicTexture.getPixels()
+					: ResourceUtils.getResource(pTexture)
+							.map(resource -> {
+								try {
+									return NativeImage.read(resource.open());
+								} catch (Exception e) {
+									BaseLogger.log(BaseLogLevel.ERROR, "Failed to read texture image for: " + pTexture, e);
+									return null;
+								}
+							})
+							.orElse(null);
 		} catch (@NotNull Exception pException) {
 			BaseLogger.log(BaseLogLevel.ERROR, "Failed to read texture image for: " + pTexture, pException);
 		}

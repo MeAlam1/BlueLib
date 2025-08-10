@@ -15,9 +15,9 @@ import org.jetbrains.annotations.NotNull;
 
 public interface NetworkManager {
 
-	void sendPacketToPlayer(@NotNull ServerPlayer player, @NotNull NetworkPacket<?> packet);
+	void sendPacketToPlayer(@NotNull ServerPlayer pPlayer, @NotNull NetworkPacket<?> pPacket);
 
-	void sendToServer(@NotNull NetworkPacket<?> packet);
+	void sendToServer(@NotNull NetworkPacket<?> pPacket);
 
 	void sendToAllPlayersTrackingEntity(@NotNull Entity pTrackingEntity, @NotNull NetworkPacket<?> pPacket);
 

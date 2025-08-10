@@ -20,7 +20,7 @@ import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.annotations.WillBeDeprecated;
 
 @SupportedAnnotationTypes("software.bluelib.api.annotations.WillBeDeprecated")
-@SupportedSourceVersion(SourceVersion.RELEASE_17)
+@SupportedSourceVersion(SourceVersion.RELEASE_21)
 public class WillBeDeprecatedProcessor extends AbstractProcessor {
 
 	@Override

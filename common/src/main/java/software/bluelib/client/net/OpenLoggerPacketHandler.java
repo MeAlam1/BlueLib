@@ -17,8 +17,6 @@ public class OpenLoggerPacketHandler implements ClientNetworkPacketHandler<OpenL
 
 	@Override
 	public void handle(@NotNull OpenLoggerPacket pPacket, @NotNull Minecraft pClient) {
-		pClient.execute(() -> {
-			pClient.setScreen(new LoggerScreen());
-		});
+		pClient.execute(() -> pClient.setScreen(new LoggerScreen()));
 	}
 }

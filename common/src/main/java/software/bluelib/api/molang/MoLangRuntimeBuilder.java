@@ -15,6 +15,7 @@ import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.molang.context.BaseMoLangContext;
 import software.bluelib.api.molang.registry.MoLangContextRegistry;
 
+@SuppressWarnings({ "unused" })
 public class MoLangRuntimeBuilder {
 
 	public static class Input {

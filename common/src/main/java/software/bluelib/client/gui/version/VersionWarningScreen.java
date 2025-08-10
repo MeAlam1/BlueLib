@@ -17,6 +17,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 
+@SuppressWarnings({ "unused" })
 public class VersionWarningScreen extends Screen {
 
 	public interface Consumer {
@@ -60,13 +61,9 @@ public class VersionWarningScreen extends Screen {
 
 		helper.addChild(dontShowAgainCheckbox, 2, settings);
 
-		helper.addChild(Button.builder(CommonComponents.GUI_YES, btn -> {
-			this.consumer.accept(Acknowledgement.YES, dontShowAgainCheckbox.selected());
-		}).build());
+		helper.addChild(Button.builder(CommonComponents.GUI_YES, btn -> this.consumer.accept(Acknowledgement.YES, dontShowAgainCheckbox.selected())).build());
 
-		helper.addChild(Button.builder(CommonComponents.GUI_NO, btn -> {
-			this.consumer.accept(Acknowledgement.NO, false);
-		}).build());
+		helper.addChild(Button.builder(CommonComponents.GUI_NO, btn -> this.consumer.accept(Acknowledgement.NO, false)).build());
 
 		this.layout.visitWidgets(this::addRenderableWidget);
 		this.layout.arrangeElements();

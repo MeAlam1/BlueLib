@@ -2,7 +2,7 @@
   "required": true,
   "minVersion": "0.8",
   "package": "software.bluelib.mixin",
-  "refmap": "${mod_id}.refmap.json",
+  "compatibilityLevel": "JAVA_21",
   "mixins": [],
   "client": [
     "client.HumanoidArmorLayerMixin"
@@ -12,4 +12,3 @@
     "defaultRequire": 1
   }
 }
-  

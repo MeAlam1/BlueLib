@@ -10,6 +10,7 @@ package software.bluelib.api.config;
 import net.neoforged.neoforge.common.ModConfigSpec;
 import org.jetbrains.annotations.NotNull;
 
+@SuppressWarnings({ "unused" })
 public class ConfigBuilder {
 
 	@NotNull
