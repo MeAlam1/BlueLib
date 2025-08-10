@@ -26,7 +26,7 @@ public class RandomMoLang extends BaseMoLangContext {
 			return ThreadLocalRandom.current().nextDouble(min, max);
 		});
 
-		registerFunction(MoLangNamespaceUtils.withMathNamespace("random_integer"), (args, runtime) -> {
+		registerFunction(MoLangNamespaceUtils.withMathNamespace("random_int"), (args, runtime) -> {
 			int min = MoLangMathUtils.toDouble(args, 0).intValue();
 			int max = MoLangMathUtils.toDouble(args, 1).intValue();
 			return ThreadLocalRandom.current().nextInt(min, max + 1);

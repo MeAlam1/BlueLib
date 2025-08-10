@@ -38,9 +38,9 @@ public class ExampleEntity extends PathfinderMob implements BlueEntity {
 	protected InteractionResult mobInteract(Player player, InteractionHand hand) {
 		MoLang.evaluate("q.print(q.add(1, 2, 3))");
 		System.out.println("Add: " + MoLang.evaluate("q.add(1, 2, 3)"));
+		System.out.println("Random: " + MoLang.evaluate("q.math.random_int(0,1)"));
+		System.out.println("Equals Random: " + MoLang.evaluate("q.equals(q.math.random_int(0,1), 1)"));
 		System.out.println("Equals: " + MoLangUtils.entity("q.equals(q.get_health, 1)", this));
-		System.out.println("Molang: + " + MoLangUtils.entity("q.get_pos", this));
-		System.out.println("Game: + " + position());
 		return super.mobInteract(player, hand);
 	}
 
