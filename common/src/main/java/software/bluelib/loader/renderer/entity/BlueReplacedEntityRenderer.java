@@ -187,7 +187,7 @@ public class BlueReplacedEntityRenderer<E extends Entity, T extends BlueAnimatab
 			ModelCache pModel = full.model();
 			RenderType pRenderType = full.renderType();
 			MultiBufferSource pBufferSource = full.bufferSource();
-			VertexConsumer pBuffer = full.buffer();
+			VertexConsumer pBuffer = full.optionalBuffer();
 			boolean pIsReRender = full.isReRender();
 			float pPartialTick = full.partialTick();
 			int pPackedLight = full.packedLight();

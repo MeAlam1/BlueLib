@@ -16,6 +16,7 @@ import software.bluelib.loader.cache.model.BoneCache;
 import software.bluelib.loader.renderer.base.BlueRenderer;
 import software.bluelib.loader.renderer.context.IRenderContext;
 
+@SuppressWarnings({ "UnusedReturnValue", "unused" })
 public class FastBoneFilterBlueLayer<T extends BlueAnimatable> extends BoneFilterBlueLayer<T> {
 
 	@NotNull
@@ -38,8 +39,6 @@ public class FastBoneFilterBlueLayer<T extends BlueAnimatable> extends BoneFilte
 	protected List<String> getAffectedBones() {
 		return boneSupplier.get();
 	}
-
-	;
 
 	@Override
 	public void preRender(@NotNull IRenderContext<T> pContext) {

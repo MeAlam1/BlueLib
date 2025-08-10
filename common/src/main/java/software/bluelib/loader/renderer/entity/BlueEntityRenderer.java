@@ -177,7 +177,7 @@ public class BlueEntityRenderer<T extends Entity & BlueAnimatable> extends Entit
 		if (pContext instanceof FullRenderContext<T> full) {
 			PoseStack pPoseStack = full.poseStack();
 			T animatable = full.animatable();
-			VertexConsumer buffer = full.buffer();
+			VertexConsumer buffer = full.optionalBuffer();
 			boolean pIsReRender = full.isReRender();
 			float pPartialTick = full.partialTick();
 

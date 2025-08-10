@@ -15,6 +15,7 @@ import software.bluelib.loader.renderer.base.BlueRenderLayer;
 import software.bluelib.loader.renderer.base.BlueRenderer;
 import software.bluelib.loader.renderer.context.IRenderContext;
 
+@SuppressWarnings({ "UnusedReturnValue", "unused" })
 public class BoneFilterBlueLayer<T extends BlueAnimatable> extends BlueRenderLayer<T> {
 
 	@NotNull

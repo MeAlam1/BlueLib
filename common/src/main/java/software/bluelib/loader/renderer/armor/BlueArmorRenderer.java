@@ -310,7 +310,7 @@ public class BlueArmorRenderer<T extends Item & BlueItem, L extends LivingEntity
 		if (pContext instanceof FullRenderContext<T> full) {
 			PoseStack pPoseStack = full.poseStack();
 			T pAnimatable = full.animatable();
-			VertexConsumer pBuffer = full.buffer();
+			VertexConsumer pBuffer = full.optionalBuffer();
 			boolean pIsReRender = full.isReRender();
 			float pPartialTick = full.partialTick();
 

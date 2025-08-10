@@ -28,6 +28,7 @@ import software.bluelib.loader.model.BlueModel;
 import software.bluelib.loader.renderer.context.FullRenderContext;
 import software.bluelib.loader.renderer.context.IRenderContext;
 
+@SuppressWarnings({ "UnusedReturnValue", "unused" })
 public abstract class DynamicBlueItemRenderer<T extends Item & BlueAnimatable> extends BlueItemRenderer<T> {
 
 	@NotNull
@@ -72,10 +73,10 @@ public abstract class DynamicBlueItemRenderer<T extends Item & BlueAnimatable> e
 		RenderUtils.translateAwayFromPivotPoint(pContext.poseStack(), pBone);
 
 		this.textureOverride = getTextureOverrideForBone(pBone, pContext);
-		ResourceLocation texture = this.textureOverride == null ? getTextureLocation(this.animatable) : this.textureOverride;
+		ResourceLocation texture = this.textureOverride == null ? getTextureLocation(getAnimatable()) : this.textureOverride;
 		RenderType renderTypeOverride = getRenderTypeOverrideForBone(pBone, texture, pContext);
 
-		if (texture != null && renderTypeOverride == null)
+		if (renderTypeOverride == null)
 			renderTypeOverride = getRenderType(texture, pContext);
 
 		if (renderTypeOverride != null)
@@ -113,7 +114,7 @@ public abstract class DynamicBlueItemRenderer<T extends Item & BlueAnimatable> e
 		}
 
 		IntIntPair boneTextureSize = computeTextureSize(this.textureOverride);
-		IntIntPair itemTextureSize = computeTextureSize(getTextureLocation(this.animatable));
+		IntIntPair itemTextureSize = computeTextureSize(getTextureLocation(getAnimatable()));
 
 		if (boneTextureSize == null || itemTextureSize == null) {
 			super.createVerticesOfQuad(pQuad, pPoseState, pNormal, pContext);

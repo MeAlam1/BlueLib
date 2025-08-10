@@ -30,6 +30,7 @@ import software.bluelib.loader.model.BlueModel;
 import software.bluelib.loader.renderer.context.FullRenderContext;
 import software.bluelib.loader.renderer.context.IRenderContext;
 
+@SuppressWarnings({ "UnusedReturnValue", "unused" })
 public abstract class DynamicBlueEntityRenderer<T extends Entity & BlueAnimatable> extends BlueEntityRenderer<T> {
 
 	@NotNull
@@ -69,22 +70,22 @@ public abstract class DynamicBlueEntityRenderer<T extends Entity & BlueAnimatabl
 			Matrix4f localMatrix = RenderUtils.invertAndMultiplyMatrices(poseState, this.entityRenderTranslations);
 
 			pBone.setModelSpaceMatrix(RenderUtils.invertAndMultiplyMatrices(poseState, this.modelRenderTranslations));
-			localMatrix.translate(new Vector3f(getRenderOffset(this.animatable, 1).toVector3f()));
+			localMatrix.translate(new Vector3f(getRenderOffset(getAnimatable(), 1).toVector3f()));
 			pBone.setLocalSpaceMatrix(localMatrix);
 
 			Matrix4f worldState = new Matrix4f(localMatrix);
 
-			worldState.translate(new Vector3f(this.animatable.position().toVector3f()));
+			worldState.translate(new Vector3f(getAnimatable().position().toVector3f()));
 			pBone.setWorldSpaceMatrix(worldState);
 		}
 
 		RenderUtils.translateAwayFromPivotPoint(pContext.poseStack(), pBone);
 
-		this.textureOverride = getTextureOverrideForBone(pBone, this.animatable, pContext.partialTick());
-		ResourceLocation texture = this.textureOverride == null ? getTextureLocation(this.animatable) : this.textureOverride;
-		RenderType renderTypeOverride = getRenderTypeOverrideForBone(pBone, this.animatable, texture, pContext.bufferSource(), pContext.partialTick());
+		this.textureOverride = getTextureOverrideForBone(pBone, getAnimatable(), pContext.partialTick());
+		ResourceLocation texture = this.textureOverride == null ? getTextureLocation(getAnimatable()) : this.textureOverride;
+		RenderType renderTypeOverride = getRenderTypeOverrideForBone(pBone, getAnimatable(), texture, pContext.bufferSource(), pContext.partialTick());
 
-		if (texture != null && renderTypeOverride == null)
+		if (renderTypeOverride == null)
 			renderTypeOverride = getRenderType(texture, pContext);
 
 		if (renderTypeOverride != null)
@@ -122,7 +123,7 @@ public abstract class DynamicBlueEntityRenderer<T extends Entity & BlueAnimatabl
 		}
 
 		IntIntPair boneTextureSize = computeTextureSize(this.textureOverride);
-		IntIntPair entityTextureSize = computeTextureSize(getTextureLocation(this.animatable));
+		IntIntPair entityTextureSize = computeTextureSize(getTextureLocation(getAnimatable()));
 
 		if (boneTextureSize == null || entityTextureSize == null) {
 			super.createVerticesOfQuad(pQuad, pPoseState, pNormal, pContext);

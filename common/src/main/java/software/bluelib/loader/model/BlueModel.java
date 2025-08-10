@@ -97,7 +97,7 @@ public abstract class BlueModel<T extends BlueAnimatable> {
 		return false;
 	}
 
-	@Nullable
+	@NotNull
 	public RenderType getRenderType(@NotNull T pAnimatable, @NotNull ResourceLocation pTexture) {
 		return RenderType.entityCutoutNoCull(pTexture);
 	}

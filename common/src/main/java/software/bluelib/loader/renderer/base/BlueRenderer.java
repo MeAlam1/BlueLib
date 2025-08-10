@@ -35,6 +35,7 @@ import software.bluelib.loader.renderer.context.BaseRenderContext;
 import software.bluelib.loader.renderer.context.FullRenderContext;
 import software.bluelib.loader.renderer.context.IRenderContext;
 
+@SuppressWarnings({ "UnusedReturnValue", "unused" })
 public interface BlueRenderer<T extends BlueAnimatable> {
 
 	@NotNull
@@ -150,8 +151,8 @@ public interface BlueRenderer<T extends BlueAnimatable> {
 
 	default void actuallyRender(@NotNull IRenderContext<T> pContext) {
 		if (pContext instanceof FullRenderContext<T> full) {
-			if (full.buffer() == null) {
-				if (full.renderType() == null)
+			if (full.optionalBuffer() == null) {
+				if (full.optionalRenderType() == null)
 					return;
 				VertexConsumer buffer = full.bufferSource().getBuffer(full.renderType());
 				full = new FullRenderContext<>(

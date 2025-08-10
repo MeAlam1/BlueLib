@@ -44,6 +44,7 @@ import software.bluelib.loader.renderer.base.BlueRenderLayer;
 import software.bluelib.loader.renderer.base.BlueRenderer;
 import software.bluelib.loader.renderer.context.IRenderContext;
 
+@SuppressWarnings({ "UnusedReturnValue", "unused" })
 public class ItemArmorBlueLayer<T extends LivingEntity & BlueAnimatable> extends BlueRenderLayer<T> {
 
 	@NotNull
@@ -160,6 +161,7 @@ public class ItemArmorBlueLayer<T extends LivingEntity & BlueAnimatable> extends
 		if (pForGlint)
 			return pBufferSource.getBuffer(RenderType.armorEntityGlint());
 
+		// TODO: Find Solution for this
 		return pBufferSource.getBuffer(RenderType.armorCutoutNoCull(pLayer.texture(pSlot == EquipmentSlot.LEGS)));
 	}
 

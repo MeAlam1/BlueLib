@@ -29,6 +29,7 @@ import software.bluelib.loader.renderer.context.BaseRenderContext;
 import software.bluelib.loader.renderer.context.FullRenderContext;
 import software.bluelib.loader.renderer.context.IRenderContext;
 
+@SuppressWarnings({ "UnusedReturnValue", "unused" })
 public class BlueObjectRenderer<T extends BlueAnimatable> implements BlueRenderer<T> {
 
 	@NotNull
@@ -110,7 +111,7 @@ public class BlueObjectRenderer<T extends BlueAnimatable> implements BlueRendere
 		if (pContext instanceof FullRenderContext<T> full) {
 			PoseStack pPoseStack = full.poseStack();
 			T pAnimatable = full.animatable();
-			VertexConsumer pBuffer = full.buffer();
+			VertexConsumer pBuffer = full.optionalBuffer();
 			boolean pIsReRender = full.isReRender();
 			float pPartialTick = full.partialTick();
 

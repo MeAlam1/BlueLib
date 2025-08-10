@@ -70,7 +70,15 @@ public final class FullRenderContext<T extends BlueAnimatable> implements IRende
 	}
 
 	@Nullable
+	public RenderType optionalRenderType() {
+		return renderType;
+	}
+
+	@NotNull
 	public RenderType renderType() {
+		RenderType renderType = optionalRenderType();
+		if (renderType == null)
+			throw new NullPointerException("RenderType cannot be null when rendering!");
 		return renderType;
 	}
 
@@ -80,7 +88,15 @@ public final class FullRenderContext<T extends BlueAnimatable> implements IRende
 	}
 
 	@Nullable
+	public VertexConsumer optionalBuffer() {
+		return buffer;
+	}
+
+	@NotNull
 	public VertexConsumer buffer() {
+		VertexConsumer buffer = optionalBuffer();
+		if (buffer == null)
+			throw new NullPointerException("buffer cannot be null when rendering!");
 		return buffer;
 	}
 

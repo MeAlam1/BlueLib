@@ -29,6 +29,7 @@ import software.bluelib.loader.model.BlueModel;
 import software.bluelib.loader.renderer.context.FullRenderContext;
 import software.bluelib.loader.renderer.context.IRenderContext;
 
+@SuppressWarnings({ "UnusedReturnValue", "unused" })
 public abstract class DynamicBlueBlockRenderer<T extends BlockEntity & BlueAnimatable> extends BlueBlockRenderer<T> {
 
 	@NotNull
@@ -66,7 +67,7 @@ public abstract class DynamicBlueBlockRenderer<T extends BlockEntity & BlueAnima
 			Matrix4f poseState = new Matrix4f(pContext.poseStack().last().pose());
 			Matrix4f localMatrix = RenderUtils.invertAndMultiplyMatrices(poseState, this.blockRenderTranslations);
 			Matrix4f worldState = new Matrix4f(localMatrix);
-			BlockPos pos = this.animatable.getBlockPos();
+			BlockPos pos = getAnimatable().getBlockPos();
 
 			pBone.setModelSpaceMatrix(RenderUtils.invertAndMultiplyMatrices(poseState, this.modelRenderTranslations));
 			pBone.setLocalSpaceMatrix(localMatrix);
@@ -76,10 +77,10 @@ public abstract class DynamicBlueBlockRenderer<T extends BlockEntity & BlueAnima
 		RenderUtils.translateAwayFromPivotPoint(pContext.poseStack(), pBone);
 
 		this.textureOverride = getTextureOverrideForBone(pBone, pContext);
-		ResourceLocation texture = this.textureOverride == null ? getTextureLocation(this.animatable) : this.textureOverride;
+		ResourceLocation texture = this.textureOverride == null ? getTextureLocation(getAnimatable()) : this.textureOverride;
 		RenderType renderTypeOverride = getRenderTypeOverrideForBone(pBone, texture, pContext);
 
-		if (texture != null && renderTypeOverride == null)
+		if (renderTypeOverride == null)
 			renderTypeOverride = getRenderType(texture, pContext);
 
 		if (renderTypeOverride != null)
@@ -117,7 +118,7 @@ public abstract class DynamicBlueBlockRenderer<T extends BlockEntity & BlueAnima
 		}
 
 		IntIntPair boneTextureSize = computeTextureSize(this.textureOverride);
-		IntIntPair blockTextureSize = computeTextureSize(getTextureLocation(this.animatable));
+		IntIntPair blockTextureSize = computeTextureSize(getTextureLocation(getAnimatable()));
 
 		if (boneTextureSize == null || blockTextureSize == null) {
 			super.createVerticesOfQuad(pQuad, pPoseState, pNormal, pContext);

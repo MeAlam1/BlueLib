@@ -16,6 +16,7 @@ import org.apache.commons.lang3.mutable.MutableObject;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+@SuppressWarnings({ "unused" })
 public interface DeferredBlueRenderProvider extends BlueRenderProvider {
 
 	@NotNull

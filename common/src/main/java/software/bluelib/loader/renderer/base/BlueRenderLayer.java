@@ -15,6 +15,7 @@ import software.bluelib.loader.cache.model.ModelCache;
 import software.bluelib.loader.model.BlueModel;
 import software.bluelib.loader.renderer.context.IRenderContext;
 
+@SuppressWarnings({ "unused" })
 public abstract class BlueRenderLayer<T extends BlueAnimatable> {
 
 	@NotNull

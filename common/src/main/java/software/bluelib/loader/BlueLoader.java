@@ -213,7 +213,6 @@ public class BlueLoader {
 							}, pBackgroundExecutor)
 									.exceptionally(ex -> {
 										BaseLogger.log(true, BaseLogLevel.ERROR, String.format("Exceptionally handling: %1$s - %2$s", pair.left().toString(), ex.getMessage()));
-										ex.printStackTrace();
 										return Pair.of(pair.left(), pExceptionalFactory.apply(ex));
 									})));
 
@@ -223,6 +222,7 @@ public class BlueLoader {
 	}
 
 	@NotNull
+	@SuppressWarnings("SameParameterValue")
 	protected static <UNBAKED> CompletableFuture<List<Pair<ResourceLocation, UNBAKED>>> loadResources(
 			@NotNull Executor pExecutor,
 			@NotNull ResourceManager pResourceManager,

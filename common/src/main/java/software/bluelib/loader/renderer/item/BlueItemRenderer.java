@@ -44,6 +44,7 @@ import software.bluelib.loader.renderer.context.BaseRenderContext;
 import software.bluelib.loader.renderer.context.FullRenderContext;
 import software.bluelib.loader.renderer.context.IRenderContext;
 
+@SuppressWarnings({ "UnusedReturnValue", "unused" })
 public class BlueItemRenderer<T extends Item & BlueAnimatable> extends BlockEntityWithoutLevelRenderer implements BlueRenderer<T> {
 
 	@NotNull
@@ -87,8 +88,26 @@ public class BlueItemRenderer<T extends Item & BlueAnimatable> extends BlockEnti
 		return this.animatable;
 	}
 
-	public @Nullable ItemStack getCurrentItemStack() {
+	public @Nullable ItemStack getOptionalCurrentItemStack() {
 		return this.currentItemStack;
+	}
+
+	public @NotNull ItemStack getCurrentItemStack() {
+		ItemStack currentItemStack = getOptionalCurrentItemStack();
+		if (currentItemStack == null)
+			throw new NullPointerException("CurrentItemStack cannot be null when rendering!");
+		return currentItemStack;
+	}
+
+	public @Nullable ItemDisplayContext getOptionalRenderPerspective() {
+		return this.renderPerspective;
+	}
+
+	public @NotNull ItemDisplayContext getRenderPerspective() {
+		ItemDisplayContext renderPerspective = getOptionalRenderPerspective();
+		if (renderPerspective == null)
+			throw new NullPointerException("RenderPerspective cannot be null when rendering!");
+		return renderPerspective;
 	}
 
 	@NotNull
@@ -100,7 +119,7 @@ public class BlueItemRenderer<T extends Item & BlueAnimatable> extends BlockEnti
 
 	@Override
 	public long getInstanceId(@NotNull IRenderContext<T> pContext) {
-		return BlueItem.getId(this.currentItemStack);
+		return BlueItem.getId(getCurrentItemStack());
 	}
 
 	@Override
@@ -145,41 +164,45 @@ public class BlueItemRenderer<T extends Item & BlueAnimatable> extends BlockEnti
 
 	@Override
 	@ApiStatus.Internal
+	@SuppressWarnings("unchecked")
 	public void renderByItem(@NotNull ItemStack pStack, @NotNull ItemDisplayContext pTransformType, @NotNull PoseStack pPoseStack,
 			@NotNull MultiBufferSource pBufferSource, int pPackedLight, int pPackedOverlay) {
 		this.animatable = (T) pStack.getItem();
 		this.currentItemStack = pStack;
 		this.renderPerspective = pTransformType;
-		float pPartialTick = Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(true);
+		float partialTick = Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(true);
 
 		if (pTransformType == ItemDisplayContext.GUI) {
-			renderInGui(pTransformType, pPoseStack, pBufferSource, pPackedLight, pPackedOverlay, pPartialTick);
+			renderInGui(pTransformType, pPoseStack, pBufferSource, pPackedLight, pPackedOverlay, partialTick);
 		} else {
-			int color = getRenderColor(getAnimatable(), pPartialTick, pPackedLight).argbInt();
+			int color = getRenderColor(getAnimatable(), partialTick, pPackedLight).argbInt();
 			ModelCache modelCache = this.model.getBakedModel(getBlueModel().getModelResource(animatable, this));
-			RenderType pRenderType = getRenderType(getTextureLocation(getAnimatable()), new BaseRenderContext<>(
+			RenderType renderType = getRenderType(getTextureLocation(getAnimatable()), new BaseRenderContext<>(
 					pPoseStack,
 					getAnimatable(),
 					modelCache,
 					pBufferSource,
 					false,
-					pPartialTick,
+					partialTick,
 					pPackedLight,
 					pPackedOverlay,
 					color));
-			VertexConsumer buffer = ItemRenderer.getFoilBufferDirect(pBufferSource, pRenderType, false, this.currentItemStack != null && this.currentItemStack.hasFoil());
+			if (renderType == null) {
+				renderType = RenderType.translucent();
+			}
+			VertexConsumer buffer = ItemRenderer.getFoilBufferDirect(pBufferSource, renderType, false, this.currentItemStack != null && this.currentItemStack.hasFoil());
 
 			defaultRender(new FullRenderContext<>(
 					pPoseStack,
 					getAnimatable(),
 					this.model.getBakedModel(getBlueModel().getModelResource(animatable, this)),
-					pRenderType,
+					renderType,
 					pBufferSource,
 					buffer,
 					false,
-					pPartialTick,
+					partialTick,
 					pPackedLight,
-					getPackedOverlay(getAnimatable(), 0, pPartialTick),
+					getPackedOverlay(getAnimatable(), 0, partialTick),
 					color));
 		}
 
@@ -192,8 +215,8 @@ public class BlueItemRenderer<T extends Item & BlueAnimatable> extends BlockEnti
 
 		MultiBufferSource.BufferSource defaultBufferSource = pBufferSource instanceof MultiBufferSource.BufferSource bufferSource2 ? bufferSource2 : Minecraft.getInstance().levelRenderer.renderBuffers.bufferSource();
 		int color = getRenderColor(getAnimatable(), pPartialTick, pPackedLight).argbInt();
-		ModelCache modelCache = this.model.getBakedModel(getBlueModel().getModelResource(animatable, this));
-		RenderType pRenderType = getRenderType(getTextureLocation(getAnimatable()), new BaseRenderContext<>(
+		ModelCache modelCache = this.model.getBakedModel(getBlueModel().getModelResource(getAnimatable(), this));
+		RenderType renderType = getRenderType(getTextureLocation(getAnimatable()), new BaseRenderContext<>(
 				pPoseStack,
 				getAnimatable(),
 				modelCache,
@@ -203,14 +226,17 @@ public class BlueItemRenderer<T extends Item & BlueAnimatable> extends BlockEnti
 				pPackedLight,
 				pPackedOverlay,
 				color));
-		VertexConsumer buffer = ItemRenderer.getFoilBufferDirect(pBufferSource, pRenderType, true, this.currentItemStack != null && this.currentItemStack.hasFoil());
+		if (renderType == null) {
+			renderType = RenderType.translucent();
+		}
+		VertexConsumer buffer = ItemRenderer.getFoilBufferDirect(pBufferSource, renderType, true, this.currentItemStack != null && this.currentItemStack.hasFoil());
 
 		pPoseStack.pushPose();
 		defaultRender(new FullRenderContext<>(
 				pPoseStack,
 				getAnimatable(),
 				modelCache,
-				pRenderType,
+				renderType,
 				pBufferSource,
 				buffer,
 				false,
@@ -229,7 +255,7 @@ public class BlueItemRenderer<T extends Item & BlueAnimatable> extends BlockEnti
 		if (pContext instanceof FullRenderContext<T> full) {
 			PoseStack pPoseStack = full.poseStack();
 			T pAnimatable = full.animatable();
-			VertexConsumer pBuffer = full.buffer();
+			VertexConsumer pBuffer = full.optionalBuffer();
 			boolean pIsReRender = full.isReRender();
 			float pPartialTick = full.partialTick();
 
@@ -238,10 +264,10 @@ public class BlueItemRenderer<T extends Item & BlueAnimatable> extends BlockEnti
 				long instanceId = getInstanceId(pContext);
 				BlueModel<T> currentModel = getBlueModel();
 
-				animationState.setData(DataTickets.TICK, pAnimatable.getTick(this.currentItemStack));
+				animationState.setData(DataTickets.TICK, pAnimatable.getTick(getCurrentItemStack()));
 				animationState.setData(DataTickets.ITEM_RENDER_PERSPECTIVE, this.renderPerspective);
 				animationState.setData(DataTickets.ITEMSTACK, this.currentItemStack);
-				pAnimatable.getAnimatableInstanceCache().getManagerForId(instanceId).setData(DataTickets.ITEM_RENDER_PERSPECTIVE, this.renderPerspective);
+				pAnimatable.getAnimatableInstanceCache().getManagerForId(instanceId).setData(DataTickets.ITEM_RENDER_PERSPECTIVE, getRenderPerspective());
 				currentModel.addAdditionalStateData(pAnimatable, instanceId, animationState::setData);
 				currentModel.handleAnimations(pAnimatable, instanceId, animationState, pPartialTick);
 			}

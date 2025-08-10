@@ -7,12 +7,13 @@
  */
 package software.bluelib.api.exception;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.StringJoiner;
 import org.jetbrains.annotations.NotNull;
 
-public class AnimatableException extends RuntimeException {
+public class AnimatableException extends NullPointerException {
 
 	private final List<String> messages;
 
@@ -28,7 +29,7 @@ public class AnimatableException extends RuntimeException {
 
 	@NotNull
 	public AnimatableException withMessage(String pMessage) {
-		List<String> newMessages = new java.util.ArrayList<>(this.messages);
+		List<String> newMessages = new ArrayList<>(this.messages);
 		newMessages.add(pMessage);
 		return new AnimatableException(newMessages);
 	}

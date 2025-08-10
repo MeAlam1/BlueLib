@@ -22,6 +22,7 @@ import software.bluelib.loader.renderer.base.BlueRenderer;
 import software.bluelib.loader.renderer.context.FullRenderContext;
 import software.bluelib.loader.renderer.context.IRenderContext;
 
+@SuppressWarnings({ "UnusedReturnValue", "unused" })
 public class AutoGlowingBlueLayer<T extends BlueAnimatable> extends BlueRenderLayer<T> {
 
 	public AutoGlowingBlueLayer(@NotNull BlueRenderer<T> pRenderer) {
