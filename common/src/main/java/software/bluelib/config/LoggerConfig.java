@@ -12,8 +12,8 @@ import org.jetbrains.annotations.ApiStatus;
 public class LoggerConfig {
 
 	// TODO: BlueLib Logging should remain false by default
-	public static boolean isBlueLibLoggingEnabled = true;
-	public static boolean isLoggingEnabled = true;
+	public static boolean isBlueLibLoggingEnabled = false;
+	public static boolean isLoggingEnabled = false;
 	@ApiStatus.Internal
-	public static final boolean isExampleEnabled = true;
+	public static final boolean isExampleEnabled = false;
 }

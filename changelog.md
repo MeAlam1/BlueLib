@@ -1,5 +1,9 @@
 # 2.3.1
 
+## Warning:  
+* **This is a major update with extensive changes. While everything has been tested privately, the sheer size means bugs may still occur. Please report any issues on GitHub or message `@me_alam` on Discord.**
+* **The version will remain minor until stability and feature completeness are confirmed.**
+
 ## Added
 
 * Added more Annotations!
