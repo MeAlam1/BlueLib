@@ -10,6 +10,7 @@ package software.bluelib.api.config;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import org.jetbrains.annotations.NotNull;
@@ -48,7 +49,7 @@ public class ConfigBuilder<T extends BlueLibConfig> {
 			String json = Files.readString(configPath);
 			T loadedConfig = gson.fromJson(json, configClass);
 
-			for (var field : configClass.getDeclaredFields()) {
+			for (Field field : configClass.getDeclaredFields()) {
 				field.setAccessible(true);
 				Object loadedValue = field.get(loadedConfig);
 				if (loadedValue != null) {
