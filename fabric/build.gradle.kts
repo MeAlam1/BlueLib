@@ -15,8 +15,13 @@ val modId: String by project
 val mcVersion = libs.versions.minecraft.asProvider().get()
 val parchmentMcVersion = libs.versions.parchment.minecraft.get()
 val parchmentVersion = libs.versions.parchment.asProvider().get()
+val bluelibVersion = libs.versions.bluelib.get()
 
-version = libs.versions.bluelib.get()
+if (bluelibVersion.isBlank()) {
+    throw GradleException("libs.versions.bluelib is blank. Please set a valid version in your version catalog.")
+}
+
+version = bluelibVersion
 
 base {
     archivesName = "${version}-fabric-${mcVersion}-${modId}"
