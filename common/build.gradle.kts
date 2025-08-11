@@ -1,5 +1,9 @@
+import net.darkhax.curseforgegradle.TaskPublishCurseForge
+import org.gradle.kotlin.dsl.register
+
 plugins {
     id("bluelib-convention")
+    alias(libs.plugins.minotaur)
     alias(libs.plugins.curseforgegradle)
     alias(libs.plugins.moddevgradle)
     alias(libs.plugins.com.diffplug.spotless)
@@ -40,16 +44,53 @@ dependencies {
     compileOnlyApi(libs.jei.api)
 }
 
+modrinth {
+    token = System.getenv("MODRINTH") ?: "Invalid/No API Token Found"
+    projectId = "ZrEU4mLQ"
+    versionNumber.set(version.toString())
+    versionName = "${version}-common-${mcVersion}-${modId}"
+    uploadFile.set(tasks.named<Jar>("jar"))
+    changelog = rootProject.file("changelog.md").readText(Charsets.UTF_8)
+    gameVersions.set(listOf(mcVersion, "1.21.2", "1.21.3"))
+    loaders.set(listOf("neoforge", "fabric", "forge"))
+    dependencies {
+        required.project("bluelib")
+        optional.project("jei")
+    }
+
+    //debugMode = true
+    //https://github.com/modrinth/minotaur#available-properties
+}
+
+tasks.register<TaskPublishCurseForge>("publishToCurseForge") {
+    group = "publishing"
+    apiToken = System.getenv("CURSEFORGE") ?: "Invalid/No API Token Found"
+
+    val mainFile = upload(1132979, tasks.jar)
+    mainFile.releaseType = "release"
+    mainFile.addModLoader("NeoForge", "Fabric", "Forge")
+    mainFile.addGameVersion(mcVersion, "1.21.2", "1.21.3")
+    mainFile.addJavaVersion("Java 21")
+    mainFile.changelog = rootProject.file("changelog.md").readText(Charsets.UTF_8)
+
+    //debugMode = true
+    //https://github.com/Darkhax/CurseForgeGradle#available-properties
+}
+
 publishing {
-    publishing {
-        publications {
-            create<MavenPublication>("bluelib") {
-                from(components["java"])
-                artifactId = base.archivesName.get()
-            }
+    publications {
+        create<MavenPublication>("bluelib") {
+            from(components["java"])
+            artifactId = base.archivesName.get()
         }
     }
 }
+
+tasks.named<DefaultTask>("publish").configure {
+    finalizedBy("modrinth")
+    finalizedBy("publishToCurseForge")
+}
+
 
 spotless {
     java {
