@@ -122,7 +122,7 @@ public abstract class BlueModel<T extends BlueAnimatable> {
 		}
 
 		if (!pLocation.getPath().contains("model/"))
-			throw new RuntimeException("Invalid model resource path provided - BlueLib models must be placed in assets/<modid>/models/");
+			throw new RuntimeException("Invalid model resource path provided - BlueLib models must be placed in assets/<modid>/model/");
 
 		throw new RuntimeException("Unable to find model file: " + pLocation);
 	}

@@ -6,15 +6,18 @@ plugins {
     alias(libs.plugins.com.github.hierynomus.license)
 }
 
+val modId: String by project
+val mcVersion = libs.versions.minecraft.asProvider().get()
+
+version = libs.versions.bluelib.get()
+
+base {
+    archivesName = "${version}-common-${mcVersion}-${modId}"
+}
+
 repositories {
     maven(url = "${rootProject.projectDir}/deps")
     maven("https://maven.blamejared.com/")
-}
-
-version = ""
-
-base {
-    archivesName = "${libs.versions.bluelib.get()}-common-${libs.versions.minecraft.asProvider().get()}-bluelib"
 }
 
 neoForge {
@@ -30,10 +33,6 @@ dependencies {
     compileOnly(libs.mixin)
     compileOnly(libs.mixinextras.common)
     compileOnlyApi(libs.jei.api)
-
-    // Only enable for testing as needed
-    // Disable before publishing
-    //implementation(libs.examplemod.common)
 }
 
 publishing {

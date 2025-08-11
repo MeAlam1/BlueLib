@@ -16,10 +16,10 @@ val parchmentMcVersion = libs.versions.parchment.minecraft.get()
 val parchmentVersion = libs.versions.parchment.asProvider().get()
 val neoforgeVersion = libs.versions.neoforge.asProvider().get()
 
-version = ""
+version = libs.versions.bluelib.get()
 
 base {
-    archivesName = "${libs.versions.bluelib.get()}-neoforge-${mcVersion}-bluelib"
+    archivesName = "${version}-neoforge-${mcVersion}-${modId}"
 }
 
 neoForge {
@@ -78,14 +78,17 @@ tasks.withType<ProcessResources>().configureEach {
 }
 
 modrinth {
-    token = System.getenv("modrinthKey") ?: "Invalid/No API Token Found"
-    projectId = "8BmcQJ2H"
-    versionNumber.set(project.version.toString())
-    versionName = "NeoForge ${mcVersion}"
+    token = System.getenv("MODRINTH") ?: "Invalid/No API Token Found"
+    projectId = "e4dMhzcL"
+    versionNumber.set("neoforge-${version}")
+    versionName = "${version}-neoforge-${mcVersion}-${modId}"
     uploadFile.set(tasks.named<Jar>("jar"))
-    changelog = rootProject.file("changelog.txt").readText(Charsets.UTF_8)
-    gameVersions.set(listOf(mcVersion))
+    changelog = rootProject.file("changelog.md").readText(Charsets.UTF_8)
+    gameVersions.set(listOf(mcVersion, "1.21.2", "1.21.3"))
     loaders.set(listOf("neoforge"))
+    dependencies {
+        optional.project("jei")
+    }
 
     //debugMode = true
     //https://github.com/modrinth/minotaur#available-properties
@@ -93,15 +96,15 @@ modrinth {
 
 tasks.register<TaskPublishCurseForge>("publishToCurseForge") {
     group = "publishing"
-    apiToken = System.getenv("curseforge.apitoken") ?: "Invalid/No API Token Found"
+    apiToken = System.getenv("CURSEFORGE") ?: "Invalid/No API Token Found"
 
-    val mainFile = upload(388172, tasks.jar)
+    val mainFile = upload(1083303, tasks.jar)
     mainFile.releaseType = "release"
     mainFile.addModLoader("NeoForge")
-    mainFile.addGameVersion(mcVersion)
+    mainFile.addGameVersion(mcVersion, "1.21.2", "1.21.3")
     mainFile.addJavaVersion("Java 21")
-    mainFile.changelog = rootProject.file("changelog.txt").readText(Charsets.UTF_8)
-
+    mainFile.changelog = rootProject.file("changelog.md").readText(Charsets.UTF_8)
+    
     //debugMode = true
     //https://github.com/Darkhax/CurseForgeGradle#available-properties
 }

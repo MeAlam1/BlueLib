@@ -60,3 +60,4 @@ common/src/main/resources/assets/bluelib/animation/*
 common/src/main/resources/assets/bluelib/model/*
 common/src/main/resources/data/bluelib/controller/*
 common/src/main/resources/assets/bluelib/textures/*
+/.env
