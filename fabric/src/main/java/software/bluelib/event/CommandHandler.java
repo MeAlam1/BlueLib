@@ -14,6 +14,7 @@ import net.minecraft.commands.Commands;
 import org.jetbrains.annotations.NotNull;
 import software.bluelib.internal.registry.BlueCommandRegistry;
 
+@SuppressWarnings({ "unused" })
 public class CommandHandler {
 
 	public static void registerCommands(@NotNull CommandDispatcher<CommandSourceStack> pCommandSourceStackCommandDispatcher, @NotNull CommandBuildContext pCommandBuildContext, @NotNull Commands.CommandSelection pCommandSelection) {

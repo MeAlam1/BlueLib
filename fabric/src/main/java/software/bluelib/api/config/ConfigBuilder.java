@@ -10,11 +10,13 @@ package software.bluelib.api.config;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import org.jetbrains.annotations.NotNull;
 import software.bluelib.config.BlueLibConfig;
 
+@SuppressWarnings({ "unused" })
 public class ConfigBuilder<T extends BlueLibConfig> {
 
 	@NotNull
@@ -47,15 +49,11 @@ public class ConfigBuilder<T extends BlueLibConfig> {
 			String json = Files.readString(configPath);
 			T loadedConfig = gson.fromJson(json, configClass);
 
-			if (config == null) {
-				config = loadedConfig;
-			} else {
-				for (var field : configClass.getDeclaredFields()) {
-					field.setAccessible(true);
-					Object loadedValue = field.get(loadedConfig);
-					if (loadedValue != null) {
-						field.set(config, loadedValue);
-					}
+			for (Field field : configClass.getDeclaredFields()) {
+				field.setAccessible(true);
+				Object loadedValue = field.get(loadedConfig);
+				if (loadedValue != null) {
+					field.set(config, loadedValue);
 				}
 			}
 		} catch (IOException | IllegalAccessException pException) {

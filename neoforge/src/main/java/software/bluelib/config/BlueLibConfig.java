@@ -13,6 +13,7 @@ import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
 import software.bluelib.internal.BlueTranslation;
 
+@SuppressWarnings({ "unused" })
 public class BlueLibConfig {
 
 	public static void bakeMarkdown(@NotNull final ModConfig pConfig) {

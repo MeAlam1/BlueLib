@@ -13,6 +13,7 @@ import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.net.NetworkPacket;
 import software.bluelib.internal.BlueResource;
 
+@SuppressWarnings({ "unused" })
 public record OpenLoggerPacket() implements NetworkPacket<OpenLoggerPacket> {
 
 	@NotNull

@@ -1,0 +1,97 @@
+/*
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
+ */
+package software.bluelib.loader.animatable.base;
+
+import java.util.function.Consumer;
+import net.minecraft.world.entity.Entity;
+import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import software.bluelib.api.net.registry.LoaderNetwork;
+import software.bluelib.api.utils.loader.LoaderUtils;
+import software.bluelib.loader.animatable.cache.AnimatableInstanceCache;
+import software.bluelib.loader.animatable.cache.SingletonAnimatableInstanceCache;
+import software.bluelib.loader.geckolib.constant.dataticket.SerializableDataTicket;
+import software.bluelib.loader.renderer.client.BlueRenderProvider;
+
+public interface SingletonBlueAnimatable extends BlueAnimatable {
+
+	static void registerSyncedAnimatable(@NotNull BlueAnimatable pAnimatable) {
+		LoaderUtils.registerSyncedAnimatable(pAnimatable);
+	}
+
+	@ApiStatus.NonExtendable
+	@Nullable
+	default <D> D getAnimData(long pInstanceId, @NotNull SerializableDataTicket<D> pDataTicket) {
+		return getAnimatableInstanceCache().getManagerForId(pInstanceId).getData(pDataTicket);
+	}
+
+	@ApiStatus.NonExtendable
+	default <D> void setAnimData(@NotNull Entity pRelatedEntity, long pInstanceId, @NotNull SerializableDataTicket<D> pDataTicket, D pData) {
+		if (pRelatedEntity.level().isClientSide()) {
+			getAnimatableInstanceCache().getManagerForId(pInstanceId).setData(pDataTicket, pData);
+		} else {
+			syncAnimData(pInstanceId, pDataTicket, pData, pRelatedEntity);
+		}
+	}
+
+	@ApiStatus.NonExtendable
+	default <D> void syncAnimData(long pInstanceId, @NotNull SerializableDataTicket<D> pDataTicket, @NotNull D pData, @NotNull Entity pEntityToTrack) {
+		LoaderNetwork.syncSingletonAnimData(this, pInstanceId, pDataTicket, pData, pEntityToTrack);
+	}
+
+	@ApiStatus.NonExtendable
+	default <D> void triggerAnim(@NotNull Entity pRelatedEntity, long pInstanceId, @Nullable String pControllerName, @NotNull String pAnimName) {
+		if (pRelatedEntity.level().isClientSide()) {
+			if (pControllerName != null) {
+				getAnimatableInstanceCache().getManagerForId(pInstanceId).tryTriggerAnimation(pControllerName, pAnimName);
+			} else {
+				getAnimatableInstanceCache().getManagerForId(pInstanceId).tryTriggerAnimation(pAnimName);
+			}
+		} else {
+			LoaderNetwork.triggerSingletonAnim(this, pRelatedEntity, pInstanceId, pControllerName, pAnimName);
+		}
+	}
+
+	@ApiStatus.NonExtendable
+	default void stopTriggeredAnim(@NotNull Entity pRelatedEntity, long pInstanceId, @Nullable String pControllerName, @Nullable String pAnimName) {
+		if (pRelatedEntity.level().isClientSide()) {
+			AnimatableManager<BlueAnimatable> animatableManager = getAnimatableInstanceCache().getManagerForId(pInstanceId);
+
+			if (pControllerName != null) {
+				animatableManager.stopTriggeredAnimation(pControllerName, pAnimName);
+			} else {
+				animatableManager.stopTriggeredAnimation(pAnimName);
+			}
+		} else {
+			LoaderNetwork.stopTriggeredSingletonAnim(this, pRelatedEntity, pInstanceId, pControllerName, pAnimName);
+		}
+	}
+
+	@ApiStatus.NonExtendable
+	default void triggerArmorAnim(@NotNull Entity pRelatedEntity, long pInstanceId, @Nullable String pControllerName, @NotNull String pAnimName) {
+		triggerAnim(pRelatedEntity, -pInstanceId, pControllerName, pAnimName);
+	}
+
+	@ApiStatus.NonExtendable
+	default void stopTriggeredArmorAnim(@NotNull Entity pRelatedEntity, long pInstanceId, @Nullable String pControllerName, @Nullable String pAnimName) {
+		stopTriggeredAnim(pRelatedEntity, -pInstanceId, pControllerName, pAnimName);
+	}
+
+	@Override
+	default @Nullable AnimatableInstanceCache<SingletonBlueAnimatable> useCustomCache() {
+		return new SingletonAnimatableInstanceCache<>(this);
+	}
+
+	default void createBlueRenderer(@NotNull Consumer<BlueRenderProvider> pConsumer) {}
+
+	@Nullable
+	default Object getRenderProvider() {
+		return getAnimatableInstanceCache().getRenderProvider();
+	}
+}

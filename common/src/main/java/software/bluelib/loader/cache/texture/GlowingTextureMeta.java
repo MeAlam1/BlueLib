@@ -1,0 +1,104 @@
+/*
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
+ */
+package software.bluelib.loader.cache.texture;
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import com.mojang.blaze3d.platform.NativeImage;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import java.util.List;
+import net.minecraft.server.packs.metadata.MetadataSectionSerializer;
+import net.minecraft.util.FastColor;
+import net.minecraft.util.GsonHelper;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+public record GlowingTextureMeta(@NotNull List<Pixel> pixels) {
+
+	@NotNull
+	public static final MetadataSectionSerializer<GlowingTextureMeta> DESERIALIZER = new MetadataSectionSerializer<>() {
+
+		@Override
+		public @NotNull String getMetadataSectionName() {
+			return "glowsections";
+		}
+
+		@Override
+		public @NotNull GlowingTextureMeta fromJson(@NotNull JsonObject pJson) {
+			List<Pixel> pixels = fromSections(GsonHelper.getAsJsonArray(pJson, "sections", null));
+
+			if (pixels.isEmpty())
+				throw new JsonParseException("Empty glowlayer sections file. Must have at least one glow section!");
+
+			return new GlowingTextureMeta(pixels);
+		}
+
+		private @NotNull List<Pixel> fromSections(@Nullable JsonArray pSectionsArray) {
+			if (pSectionsArray == null)
+				return List.of();
+
+			List<Pixel> pixels = new ObjectArrayList<>();
+
+			for (JsonElement pElement : pSectionsArray) {
+				if (!(pElement instanceof JsonObject obj))
+					throw new JsonParseException("Invalid glowsections json format, expected a JsonObject, found: " + pElement.getClass());
+
+				int x1 = GsonHelper.getAsInt(obj, "x1", GsonHelper.getAsInt(obj, "x", 0));
+				int y1 = GsonHelper.getAsInt(obj, "y1", GsonHelper.getAsInt(obj, "y", 0));
+				int x2 = GsonHelper.getAsInt(obj, "x2", GsonHelper.getAsInt(obj, "w", 0) + x1);
+				int y2 = GsonHelper.getAsInt(obj, "y2", GsonHelper.getAsInt(obj, "h", 0) + y1);
+				int alpha = GsonHelper.getAsInt(obj, "alpha", GsonHelper.getAsInt(obj, "a", 0));
+
+				if (x1 + y1 + x2 + y2 == 0)
+					throw new IllegalArgumentException("Invalid glowsections section object, section must be at least one pixel in size");
+
+				for (int x = x1; x <= x2; x++) {
+					for (int y = y1; y <= y2; y++) {
+						pixels.add(new Pixel(x, y, alpha));
+					}
+				}
+			}
+
+			return pixels;
+		}
+	};
+
+	public static @NotNull GlowingTextureMeta fromExistingImage(@NotNull NativeImage pGlowLayer) {
+		List<Pixel> pixels = new ObjectArrayList<>();
+
+		for (int x = 0; x < pGlowLayer.getWidth(); x++) {
+			for (int y = 0; y < pGlowLayer.getHeight(); y++) {
+				int color = pGlowLayer.getPixelRGBA(x, y); // Actually ABGR. Blame Mojang.
+
+				if (color != 0)
+					pixels.add(new Pixel(x, y, FastColor.ABGR32.alpha(color)));
+			}
+		}
+
+		if (pixels.isEmpty())
+			throw new IllegalStateException("Invalid glow layer texture provided, must have at least one pixel!");
+
+		return new GlowingTextureMeta(pixels);
+	}
+
+	public void createImageMask(@NotNull NativeImage pOriginalImage, @NotNull NativeImage pNewImage) {
+		for (Pixel pixel : this.pixels) {
+			int color = pOriginalImage.getPixelRGBA(pixel.x, pixel.y); // Actually ABGR. Blame Mojang.
+
+			if (pixel.alpha > 0)
+				color = FastColor.ABGR32.color(pixel.alpha, FastColor.ABGR32.blue(color), FastColor.ABGR32.green(color), FastColor.ABGR32.red(color));
+
+			pNewImage.setPixelRGBA(pixel.x, pixel.y, color);
+			pOriginalImage.setPixelRGBA(pixel.x, pixel.y, 0);
+		}
+	}
+
+	public record Pixel(@NotNull Integer x, @NotNull Integer y, @NotNull Integer alpha) {}
+}

@@ -3,3 +3,36 @@ accessWidener v2 named
 transitive-accessible class net/minecraft/world/inventory/BrewingStandMenu$IngredientsSlot
 transitive-accessible class net/minecraft/world/inventory/BrewingStandMenu$FuelSlot
 transitive-accessible class net/minecraft/world/inventory/BrewingStandMenu$PotionSlot
+
+transitive-accessible method net/minecraft/client/renderer/RenderType create (Ljava/lang/String;Lcom/mojang/blaze3d/vertex/VertexFormat;Lcom/mojang/blaze3d/vertex/VertexFormat$Mode;IZZLnet/minecraft/client/renderer/RenderType$CompositeState;)Lnet/minecraft/client/renderer/RenderType$CompositeRenderType;
+transitive-accessible method net/minecraft/client/renderer/RenderType create (Ljava/lang/String;Lcom/mojang/blaze3d/vertex/VertexFormat;Lcom/mojang/blaze3d/vertex/VertexFormat$Mode;ILnet/minecraft/client/renderer/RenderType$CompositeState;)Lnet/minecraft/client/renderer/RenderType$CompositeRenderType;
+transitive-accessible field net/minecraft/client/renderer/entity/EntityRenderDispatcher renderers Ljava/util/Map;
+transitive-accessible class net/minecraft/client/renderer/RenderStateShard$ShaderStateShard
+transitive-accessible class net/minecraft/client/renderer/RenderStateShard$TextureStateShard
+transitive-accessible class net/minecraft/client/renderer/RenderStateShard$TransparencyStateShard
+transitive-accessible class net/minecraft/client/renderer/RenderStateShard$WriteMaskStateShard
+transitive-accessible class net/minecraft/client/renderer/RenderStateShard$OverlayStateShard
+transitive-accessible class net/minecraft/client/renderer/RenderType$CompositeState
+
+transitive-accessible field net/minecraft/client/model/geom/ModelPart cubes Ljava/util/List;
+transitive-accessible field net/minecraft/client/model/AgeableListModel scaleHead Z
+transitive-accessible field net/minecraft/client/model/AgeableListModel babyYHeadOffset F
+transitive-accessible field net/minecraft/client/model/AgeableListModel babyZHeadOffset F
+transitive-accessible field net/minecraft/client/model/AgeableListModel babyHeadScale F
+transitive-accessible field net/minecraft/client/model/AgeableListModel babyBodyScale F
+transitive-accessible field net/minecraft/client/model/AgeableListModel bodyYOffset F
+
+transitive-accessible field net/minecraft/client/renderer/LevelRenderer renderBuffers Lnet/minecraft/client/renderer/RenderBuffers;
+transitive-accessible field com/mojang/blaze3d/vertex/BufferBuilder building Z
+
+transitive-accessible method net/minecraft/client/renderer/LevelRenderer shouldShowEntityOutlines ()Z
+transitive-accessible field net/minecraft/client/renderer/entity/ItemRenderer blockEntityRenderer Lnet/minecraft/client/renderer/BlockEntityWithoutLevelRenderer;
+
+accessible field net/minecraft/core/component/PatchedDataComponentMap copyOnWrite Z
+
+# TEMP FOR BUFFERBUILDER
+accessible class net/minecraft/client/renderer/OutlineBufferSource$EntityOutlineGenerator
+accessible class com/mojang/blaze3d/vertex/VertexMultiConsumer$Double
+accessible method net/minecraft/client/renderer/OutlineBufferSource$EntityOutlineGenerator <init> (Lcom/mojang/blaze3d/vertex/VertexConsumer;I)V
+accessible field com/mojang/blaze3d/vertex/VertexMultiConsumer$Double first Lcom/mojang/blaze3d/vertex/VertexConsumer;
+accessible field com/mojang/blaze3d/vertex/VertexMultiConsumer$Double second Lcom/mojang/blaze3d/vertex/VertexConsumer;

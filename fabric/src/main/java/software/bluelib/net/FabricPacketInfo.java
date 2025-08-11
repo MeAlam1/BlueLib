@@ -20,19 +20,12 @@ import software.bluelib.api.net.ClientNetworkPacketHandler;
 import software.bluelib.api.net.NetworkPacket;
 import software.bluelib.api.net.ServerNetworkPacketHandler;
 
-public class FabricPacketInfo<T extends NetworkPacket<T>> {
-
-	@NotNull
-	private final PacketRegisterInfo<T> info;
+public record FabricPacketInfo<T extends NetworkPacket<T>>(@NotNull PacketRegisterInfo<T> info) {
 
 	@NotNull
 	private static final Set<ResourceLocation> REGISTERED_CLIENT_PAYLOADS = new HashSet<>();
 	@NotNull
 	private static final Set<ResourceLocation> REGISTERED_SERVER_PAYLOADS = new HashSet<>();
-
-	public FabricPacketInfo(@NotNull PacketRegisterInfo<T> pInfo) {
-		this.info = pInfo;
-	}
 
 	public static <T extends NetworkPacket<T>> void registerPacket(@NotNull PacketRegisterInfo<T> pInfo, @NotNull Boolean pClient) {
 		PayloadTypeRegistry<RegistryFriendlyByteBuf> registry = pClient ? PayloadTypeRegistry.playS2C() : PayloadTypeRegistry.playC2S();

@@ -19,6 +19,7 @@ import java.util.Set;
 import java.util.function.Function;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
+import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -32,8 +33,10 @@ import software.bluelib.client.gui.version.VersionWarningScreen;
 public final class VersionWarningMixin {
 
 	@Unique
+	@NotNull
 	private static final Set<String> blueLib$dontShowAgain = new HashSet<>();
 	@Unique
+	@NotNull
 	private static final String FILE_NAME = "versionWarning.txt";
 	@Unique
 	private static boolean blueLib$loaded = false;
@@ -65,7 +68,7 @@ public final class VersionWarningMixin {
 	}
 
 	@Inject(method = "addInitialScreens", at = @At("TAIL"))
-	public void cobblemon$addSnapshotWarningScreen(List<Function<Runnable, Screen>> pOutput, CallbackInfo pCi) {
+	public void cobblemon$addSnapshotWarningScreen(@NotNull List<Function<Runnable, Screen>> pOutput, @NotNull CallbackInfo pCi) {
 		blueLib$loadDontShowAgain();
 		ServiceLoader<BuildDetails> loader = BlueLibConstants.loadAll(BuildDetails.class);
 		for (BuildDetails details : loader) {

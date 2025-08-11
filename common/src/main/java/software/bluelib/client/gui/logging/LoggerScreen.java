@@ -9,13 +9,13 @@ package software.bluelib.client.gui.logging;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.utils.logging.LogCache;
 import software.bluelib.internal.BlueTranslation;
 
+@SuppressWarnings({ "unused" })
 public class LoggerScreen extends Screen {
 
 	private int scrollOffset = 0;
@@ -134,7 +134,7 @@ public class LoggerScreen extends Screen {
 
 		int maxVisibleLines = (boxHeight - 10) / LINE_HEIGHT;
 		List<LogCache.LogEntry> logEntries = LogCache.getLogs();
-		List<RenderedLine> renderedLines = logEntries.stream().map(entry -> new RenderedLine(entry.message(), entry.color())).collect(Collectors.toList());
+		List<RenderedLine> renderedLines = logEntries.stream().map(entry -> new RenderedLine(entry.message(), entry.color())).toList();
 
 		if (renderedLines.size() <= maxVisibleLines) {
 			return super.mouseClicked(pMouseX, pMouseY, pButton);

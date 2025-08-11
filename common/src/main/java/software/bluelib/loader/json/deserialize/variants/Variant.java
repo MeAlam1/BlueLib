@@ -10,11 +10,13 @@ package software.bluelib.loader.json.deserialize.variants;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonParseException;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public record Variant(
 		@Nullable JsonArray parameters) {
 
+	@NotNull
 	public static JsonDeserializer<Variant> deserializer() throws JsonParseException {
 		return (json, type, context) -> {
 

@@ -28,7 +28,6 @@ public class OpenLoggerScreenCommand {
 	private static int openLogScreen(@NotNull CommandContext<CommandSourceStack> pContext) {
 		ServerPlayer player = pContext.getSource().getPlayer();
 		if (player == null) {
-			//TODO: Check en_us.json
 			pContext.getSource().sendFailure(BlueTranslation.translate("command.logger.no_player"));
 			return 0;
 		}

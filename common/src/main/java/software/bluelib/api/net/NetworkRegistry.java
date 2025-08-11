@@ -9,15 +9,20 @@ package software.bluelib.api.net;
 
 import java.util.ArrayList;
 import java.util.List;
+import net.minecraft.core.BlockPos;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import software.bluelib.BlueLibConstants;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
 import software.bluelib.internal.BlueTranslation;
 import software.bluelib.net.PacketRegisterInfo;
 
+@SuppressWarnings({ "unused" })
 public class NetworkRegistry {
 
 	public static void sendPacket(@NotNull ServerPlayer pPlayer, @NotNull NetworkPacket<?> pPacket) {
@@ -47,17 +52,31 @@ public class NetworkRegistry {
 		}
 	}
 
+	public static void sendToAllPlayersTrackingEntity(@NotNull Entity pTrackingEntity, @NotNull NetworkPacket<?> pPacket) {
+		BlueLibConstants.PlatformHelper.REGISTRY.getNetwork().sendToAllPlayersTrackingEntity(pTrackingEntity, pPacket);
+	}
+
+	public static void sendToAllPlayersTrackingBlock(@NotNull ServerLevel pLevel, @NotNull BlockPos pBlockPos, @NotNull NetworkPacket<?> pPacket) {
+		BlueLibConstants.PlatformHelper.REGISTRY.getNetwork().sendToAllPlayersTrackingBlock(pLevel, pBlockPos, pPacket);
+	}
+
+	@NotNull
 	private static final List<PacketProvider.C2SPacketProvider> c2sProviders = new ArrayList<>();
+	@NotNull
 	private static final List<PacketProvider.S2CPacketProvider> s2cProviders = new ArrayList<>();
 
+	@Nullable
 	private static List<PacketRegisterInfo<?>> c2sPayloads = null;
+	@Nullable
 	private static List<PacketRegisterInfo<?>> s2cPayloads = null;
 
+	@NotNull
 	public static List<PacketRegisterInfo<?>> getC2SPayloads() {
 		if (c2sPayloads == null) c2sPayloads = generateC2SPacketInfoList();
 		return c2sPayloads;
 	}
 
+	@NotNull
 	public static List<PacketRegisterInfo<?>> getS2CPayloads() {
 		if (s2cPayloads == null) s2cPayloads = generateS2CPacketInfoList();
 		return s2cPayloads;

@@ -34,14 +34,14 @@ public class ReloadHandler {
 
 		if (providers.isEmpty()) return;
 
-		ResourceCache.registerServerReloadListener(pServer, providers);
+		ResourceCache.Server.registerReloadListener(pServer, providers);
 		BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("variants.loaded"));
 	}
 
 	public static void onReload(@NotNull MinecraftServer pServer) {
 		if (providers.isEmpty()) return;
 
-		ResourceCache.registerServerReloadListener(pServer, providers);
+		ResourceCache.Server.registerReloadListener(pServer, providers);
 		BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("variants.reloaded"));
 	}
 }

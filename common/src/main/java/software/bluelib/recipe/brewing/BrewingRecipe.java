@@ -21,28 +21,13 @@ import org.jetbrains.annotations.NotNull;
 import software.bluelib.internal.registry.BlueRecipeSerializerRegistry;
 import software.bluelib.internal.registry.BlueRecipeTypeRegistry;
 
-public class BrewingRecipe implements Recipe<BrewingInput> {
-
-	@NotNull
-	private final String groupName;
-	@NotNull
-	private final Ingredient input;
-	@NotNull
-	private final Ingredient bottle;
-	@NotNull
-	private final ItemStack result;
-
-	public BrewingRecipe(@NotNull String pGroupName, @NotNull Ingredient pInput, @NotNull Ingredient pBottle, @NotNull ItemStack pResult) {
-		this.groupName = pGroupName;
-		this.input = pInput;
-		this.bottle = pBottle;
-		this.result = pResult;
-	}
+public record BrewingRecipe(@NotNull String groupName, @NotNull Ingredient input, @NotNull Ingredient bottle,
+		@NotNull ItemStack result) implements Recipe<BrewingInput> {
 
 	@Override
 	public boolean matches(@NotNull BrewingInput pInputData, @NotNull Level pLevel) {
-		boolean ingredientMatches = this.input.test(pInputData.getIngredient());
-		List<ItemStack> bottles = pInputData.getBottles();
+		boolean ingredientMatches = this.input.test(pInputData.ingredient());
+		List<ItemStack> bottles = pInputData.bottles();
 		boolean validBottles = bottles.stream()
 				.filter(stack -> !stack.isEmpty())
 				.allMatch(this.bottle);
@@ -76,11 +61,6 @@ public class BrewingRecipe implements Recipe<BrewingInput> {
 	}
 
 	@NotNull
-	public String getGroupName() {
-		return groupName;
-	}
-
-	@NotNull
 	public Ingredient getInputIngredient() {
 		return input;
 	}
@@ -88,11 +68,6 @@ public class BrewingRecipe implements Recipe<BrewingInput> {
 	@NotNull
 	public Ingredient getBottleIngredient() {
 		return bottle;
-	}
-
-	@NotNull
-	public ItemStack getResult() {
-		return result;
 	}
 
 	public static boolean isBottle(@NotNull ItemStack pItemStack, @NotNull RecipeManager pRecipeManager) {
@@ -109,10 +84,10 @@ public class BrewingRecipe implements Recipe<BrewingInput> {
 
 		@NotNull
 		public static final MapCodec<BrewingRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-				Codec.STRING.optionalFieldOf("group", "").forGetter(BrewingRecipe::getGroupName),
+				Codec.STRING.optionalFieldOf("group", "").forGetter(BrewingRecipe::groupName),
 				Ingredient.CODEC.fieldOf("input").forGetter(BrewingRecipe::getInputIngredient),
 				Ingredient.CODEC.fieldOf("bottle").forGetter(BrewingRecipe::getBottleIngredient),
-				ItemStack.STRICT_CODEC.fieldOf("result").forGetter(BrewingRecipe::getResult)).apply(instance, BrewingRecipe::new));
+				ItemStack.STRICT_CODEC.fieldOf("result").forGetter(BrewingRecipe::result)).apply(instance, BrewingRecipe::new));
 
 		@NotNull
 		public static final StreamCodec<RegistryFriendlyByteBuf, BrewingRecipe> STREAM_CODEC = StreamCodec.of(
@@ -129,10 +104,10 @@ public class BrewingRecipe implements Recipe<BrewingInput> {
 		}
 
 		private static void toNetwork(@NotNull RegistryFriendlyByteBuf pBuffer, @NotNull BrewingRecipe pRecipe) {
-			pBuffer.writeUtf(pRecipe.getGroupName());
+			pBuffer.writeUtf(pRecipe.groupName());
 			Ingredient.CONTENTS_STREAM_CODEC.encode(pBuffer, pRecipe.getInputIngredient());
 			Ingredient.CONTENTS_STREAM_CODEC.encode(pBuffer, pRecipe.getBottleIngredient());
-			ItemStack.STREAM_CODEC.encode(pBuffer, pRecipe.getResult());
+			ItemStack.STREAM_CODEC.encode(pBuffer, pRecipe.result());
 		}
 
 		@Override

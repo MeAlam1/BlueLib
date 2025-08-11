@@ -1,0 +1,106 @@
+/*
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
+ */
+package software.bluelib.loader.animatable.item;
+
+import java.util.EnumMap;
+import java.util.Map;
+import java.util.Optional;
+import net.minecraft.core.component.PatchedDataComponentMap;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.item.ItemDisplayContext;
+import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import software.bluelib.BlueLibConstants;
+import software.bluelib.client.utils.RenderUtils;
+import software.bluelib.loader.animatable.base.AnimatableManager;
+import software.bluelib.loader.animatable.base.BlueAnimatable;
+import software.bluelib.loader.animatable.base.ContextAwareAnimatableManager;
+import software.bluelib.loader.animatable.base.SingletonBlueAnimatable;
+import software.bluelib.loader.animatable.cache.AnimatableInstanceCache;
+import software.bluelib.loader.animatable.cache.SingletonAnimatableInstanceCache;
+import software.bluelib.loader.cache.item.IdCache;
+import software.bluelib.loader.geckolib.constant.DataTickets;
+
+public interface BlueItem extends SingletonBlueAnimatable {
+
+	static void registerSyncedAnimatable(@NotNull BlueAnimatable pAnimatable) {
+		SingletonBlueAnimatable.registerSyncedAnimatable(pAnimatable);
+	}
+
+	static long getId(@NotNull ItemStack pStack) {
+		return Optional.ofNullable(pStack.getComponentsPatch().get(BlueLibConstants.STACK_ANIMATABLE_ID_COMPONENT.get()))
+				.filter(Optional::isPresent)
+				.<Long>map(Optional::get)
+				.orElse(Long.MAX_VALUE);
+	}
+
+	static long getOrAssignId(@NotNull ItemStack pStack, @NotNull ServerLevel pLevel) {
+		if (!(pStack.getComponents() instanceof PatchedDataComponentMap components))
+			return Long.MAX_VALUE;
+
+		Long id = components.get(BlueLibConstants.STACK_ANIMATABLE_ID_COMPONENT.get());
+
+		if (id == null)
+			components.set(BlueLibConstants.STACK_ANIMATABLE_ID_COMPONENT.get(), id = IdCache.getFreeId(pLevel));
+
+		return id;
+	}
+
+	@Override
+	default @NotNull Double getTick(@NotNull Object pItemStack) {
+		return RenderUtils.getCurrentTick();
+	}
+
+	default boolean isPerspectiveAware() {
+		return false;
+	}
+
+	@Override
+	default @Nullable AnimatableInstanceCache<SingletonBlueAnimatable> useCustomCache() {
+		if (isPerspectiveAware())
+			return new ContextBasedAnimatableInstanceCache<>(this);
+
+		return SingletonBlueAnimatable.super.useCustomCache();
+	}
+
+	class ContextBasedAnimatableInstanceCache<T extends SingletonBlueAnimatable> extends SingletonAnimatableInstanceCache<T> {
+
+		public ContextBasedAnimatableInstanceCache(@NotNull BlueAnimatable pAnimatable) {
+			super(pAnimatable);
+		}
+
+		@Override
+		@SuppressWarnings("unchecked")
+		public <M extends BlueAnimatable> @NotNull AnimatableManager<M> getManagerForId(long pUniqueId) {
+			if (!this.managers.containsKey(pUniqueId))
+				this.managers.put(pUniqueId, new ContextAwareAnimatableManager<BlueItem, ItemDisplayContext>(this.animatable) {
+
+					@Override
+					protected @NotNull Map<ItemDisplayContext, AnimatableManager<BlueItem>> buildContextOptions(@NotNull BlueAnimatable pAnimatable) {
+						Map<ItemDisplayContext, AnimatableManager<BlueItem>> map = new EnumMap<>(ItemDisplayContext.class);
+
+						for (ItemDisplayContext context : ItemDisplayContext.values()) {
+							map.put(context, new AnimatableManager<>(pAnimatable));
+						}
+
+						return map;
+					}
+
+					@Override
+					public @NotNull ItemDisplayContext getCurrentContext() {
+						ItemDisplayContext context = getData(DataTickets.ITEM_RENDER_PERSPECTIVE);
+
+						return context == null ? ItemDisplayContext.NONE : context;
+					}
+				});
+
+			return (AnimatableManager<M>) this.managers.get(pUniqueId);
+		}
+	}
+}

@@ -18,6 +18,7 @@ public record Entity(
 		@NotNull String formatVersion,
 		@NotNull Map<String, Variant> variants) {
 
+	@NotNull
 	public static JsonDeserializer<Entity> deserializer() throws JsonParseException {
 		return (json, type, context) -> {
 			JsonObject obj = json.getAsJsonObject();

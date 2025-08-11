@@ -14,14 +14,11 @@ import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import software.bluelib.recipe.brewing.BrewingRecipe;
 
-public class BrewingJeiRecipe implements IJeiBrewingRecipe {
+public record BrewingJeiRecipe(BrewingRecipe recipe, ResourceLocation id) implements IJeiBrewingRecipe {
 
-	private final BrewingRecipe recipe;
-	private final ResourceLocation id;
-
-	public BrewingJeiRecipe(@NotNull BrewingRecipe pRecipe, @NotNull ResourceLocation pId) {
-		this.recipe = pRecipe;
-		this.id = pId;
+	public BrewingJeiRecipe(@NotNull BrewingRecipe recipe, @NotNull ResourceLocation id) {
+		this.recipe = recipe;
+		this.id = id;
 	}
 
 	@Override
@@ -36,7 +33,7 @@ public class BrewingJeiRecipe implements IJeiBrewingRecipe {
 
 	@Override
 	public @NotNull ItemStack getPotionOutput() {
-		return recipe.getResult().copy();
+		return recipe.result().copy();
 	}
 
 	@Override

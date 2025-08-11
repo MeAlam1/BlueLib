@@ -1,14 +1,15 @@
 {
   "required": true,
   "minVersion": "0.8",
+  "package": "software.bluelib.mixin",
   "refmap": "${mod_id}.refmap.json",
   "mixins": [],
   "client": [
+    "client.HumanoidArmorLayerMixin"
   ],
   "server": [],
   "injectors": {
     "defaultRequire": 1
-  },
-  "package": ""
+  }
 }
   

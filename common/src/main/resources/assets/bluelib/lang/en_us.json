@@ -30,6 +30,7 @@
     "bluelib.log.markdown.disabled": "Global markdown is disabled, returning original message",
     "bluelib.log.markdown.message": "Completed message: %1$s",
     "bluelib.log.markdown.feature.disabled": "%1$s is disabled, returning original message",
+    "bluelib.log.markdown.feature.prefix_suffix_not_set": "%1$s prefix and/or suffix are not set, returning original message",
     "bluelib.log.markdown.hyperlink.disabled": "Hyperlink is disabled, returning original message",
     "bluelib.log.markdown.copyToClipboard.disabled": "Copy to Clipboard is disabled, returning original message",
     "bluelib.log.markdown.color.disabled": "Color is disabled, returning original message",
@@ -73,6 +74,7 @@
     "bluelib.version.warning.dont_show_again": "Don't Show Again",
     "bluelib.version.warning.dont_show_again_tip": "This setting may be ignored on newer %s versions.",
     
+
     "bluelib.server.null": "Server is null.",
     "bluelib.null": "Input is null",
     "bluelib.notfound": "Input not found or recognized",
@@ -81,7 +83,8 @@
     "bluelib.config.markdown.failed": "The Markdown Config of BlueLib has failed to load. %1$s",
     "bluelib.config.logger.loaded": "The Logger Config of BlueLib has been loaded.",
     "bluelib.config.logger.failed": "The Logger Config of BlueLib has failed to load. %1$s",
-  
+
+    "bluelib.command.logger.no_player": "You must be a player to use this command.",
     "bluelib.command.logger.no_permission": "You do not have permission to use this command.",
     "bluelib.ui.logger.title": "Logger Screen!",
   

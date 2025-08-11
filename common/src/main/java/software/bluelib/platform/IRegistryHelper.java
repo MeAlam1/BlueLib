@@ -8,6 +8,10 @@
 package software.bluelib.platform;
 
 import java.util.function.Supplier;
+import java.util.function.UnaryOperator;
+import net.minecraft.core.component.DataComponentType;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import org.jetbrains.annotations.NotNull;
@@ -23,4 +27,10 @@ public interface IRegistryHelper {
 
 	@NotNull
 	<T extends RecipeSerializer<?>> Supplier<T> registerRecipeSerializer(@NotNull String pId, @NotNull Supplier<T> pRecipeSerializer);
+
+	@NotNull
+	<T extends Entity> Supplier<EntityType<T>> registerEntity(@NotNull String pId, @NotNull Supplier<EntityType<T>> pEntity);
+
+	@NotNull
+	<T> Supplier<DataComponentType<T>> registerDataComponent(@NotNull String pId, @NotNull UnaryOperator<DataComponentType.Builder<T>> pBuilder);
 }

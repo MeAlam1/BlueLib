@@ -15,10 +15,12 @@ import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.launch.MixinBootstrap;
 import software.bluelib.api.event.mod.ModIntegration;
+import software.bluelib.api.molang.registry.MoLangContextRegistry;
 import software.bluelib.api.net.NetworkRegistry;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
 import software.bluelib.internal.BlueTranslation;
+import software.bluelib.internal.registry.BlueEntityRegistry;
 import software.bluelib.internal.registry.BlueNetworkRegistry;
 import software.bluelib.internal.registry.BlueRecipeSerializerRegistry;
 import software.bluelib.internal.registry.BlueRecipeTypeRegistry;
@@ -47,8 +49,10 @@ public class BlueLibCommon {
 		BlueLibConstants.init();
 		MixinBootstrap.init();
 		InternalNetworkRegistry.networkServer();
+		BlueEntityRegistry.init();
 		BlueRecipeTypeRegistry.init();
 		BlueRecipeSerializerRegistry.init();
+		MoLangContextRegistry.init();
 	}
 
 	public static void doClientRegistration() {

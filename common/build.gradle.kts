@@ -6,15 +6,23 @@ plugins {
     alias(libs.plugins.com.github.hierynomus.license)
 }
 
+val modId: String by project
+val mcVersion = libs.versions.minecraft.asProvider().get()
+val bluelibVersion = libs.versions.bluelib.get()
+
+if (bluelibVersion.isEmpty()) {
+    throw GradleException("libs.versions.bluelib is empty. Please set a valid version in your version catalog.")
+}
+
+version = bluelibVersion
+
+base {
+    archivesName = "${version}-common-${mcVersion}-${modId}"
+}
+
 repositories {
     maven(url = "${rootProject.projectDir}/deps")
     maven("https://maven.blamejared.com/")
-}
-
-version = ""
-
-base {
-    archivesName = "${libs.versions.bluelib.get()}-common-${libs.versions.minecraft.asProvider().get()}-bluelib"
 }
 
 neoForge {
@@ -30,10 +38,6 @@ dependencies {
     compileOnly(libs.mixin)
     compileOnly(libs.mixinextras.common)
     compileOnlyApi(libs.jei.api)
-
-    // Only enable for testing as needed
-    // Disable before publishing
-    //implementation(libs.examplemod.common)
 }
 
 publishing {

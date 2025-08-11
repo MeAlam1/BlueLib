@@ -7,6 +7,7 @@
  */
 package software.bluelib.platform;
 
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Set;
 import net.minecraft.server.MinecraftServer;
@@ -31,6 +32,11 @@ public interface IPlatformHelper {
 	List<ModMeta> getLoadedModMetadata();
 
 	boolean isDevelopmentEnvironment();
+
+	boolean isPhysicalClient();
+
+	@NotNull
+	Path getGameDir();
 
 	@NotNull
 	default String getEnvironmentName() {

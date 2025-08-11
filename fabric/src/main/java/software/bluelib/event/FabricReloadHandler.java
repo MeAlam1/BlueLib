@@ -12,6 +12,7 @@ import net.minecraft.server.packs.resources.CloseableResourceManager;
 import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.entity.variant.IVariantProvider;
 
+@SuppressWarnings({ "unused" })
 public class FabricReloadHandler {
 
 	public static void registerProvider(@NotNull IVariantProvider pProvider) {

@@ -7,6 +7,7 @@
  */
 package software.bluelib.platform;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -16,6 +17,7 @@ import net.minecraft.server.MinecraftServer;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.fml.loading.FMLLoader;
+import net.neoforged.fml.loading.FMLPaths;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import net.neoforged.neoforgespi.language.IModInfo;
 import org.jetbrains.annotations.NotNull;
@@ -60,6 +62,16 @@ public class NeoForgePlatformHelper implements IPlatformHelper {
 	@Override
 	public boolean isDevelopmentEnvironment() {
 		return !FMLLoader.isProduction();
+	}
+
+	@Override
+	public @NotNull Path getGameDir() {
+		return FMLPaths.GAMEDIR.get();
+	}
+
+	@Override
+	public boolean isPhysicalClient() {
+		return FMLEnvironment.dist.isClient();
 	}
 
 	@Override

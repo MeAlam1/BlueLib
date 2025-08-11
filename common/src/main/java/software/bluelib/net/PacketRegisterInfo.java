@@ -18,6 +18,7 @@ import software.bluelib.api.net.Encodable;
 import software.bluelib.api.net.NetworkPacket;
 import software.bluelib.api.net.PacketHandler;
 
+@SuppressWarnings({ "unused" })
 public class PacketRegisterInfo<T extends NetworkPacket<T> & Encodable> {
 
 	@NotNull

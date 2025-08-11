@@ -7,17 +7,35 @@
  */
 package software.bluelib.client;
 
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
+import net.neoforged.neoforge.event.AddReloadListenerEvent;
 import org.jetbrains.annotations.NotNull;
 import software.bluelib.BlueLibCommon;
+import software.bluelib.BlueLibConstants;
+import software.bluelib.loader.cache.ResourceCache;
 
-// @EventBusSubscriber(value = Dist.CLIENT, modid = BlueLibConstants.MOD_ID)
+@EventBusSubscriber(modid = BlueLibConstants.MOD_ID, value = Dist.CLIENT)
 public class BlueLibClient {
 
 	public static void init(@NotNull ModContainer pModContainer) {
 		pModContainer.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
 		BlueLibCommon.doClientRegistration();
+		ResourceCache.Client.registerReloadListener();
+	}
+
+	@SubscribeEvent
+	public static void registerRenderers(@NotNull final EntityRenderersEvent.RegisterRenderers pEvent) {
+		BlueLibCommonClient.registerRenderers(pEvent::registerEntityRenderer, pEvent::registerBlockEntityRenderer);
+	}
+
+	@SubscribeEvent
+	public static void reloadClient(@NotNull AddReloadListenerEvent pEvent) {
+		ResourceCache.Client.registerReloadListener();
 	}
 }

@@ -8,15 +8,20 @@
 package software.bluelib.platform;
 
 import java.util.function.Supplier;
+import java.util.function.UnaryOperator;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
+import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import org.jetbrains.annotations.NotNull;
 import software.bluelib.BlueLibConstants;
 import software.bluelib.api.net.NetworkManager;
+import software.bluelib.internal.BlueResource;
 import software.bluelib.net.FabricNetworkManager;
 
 @SuppressWarnings({ "unchecked", "unused" })
@@ -35,6 +40,18 @@ public class FabricRegistryHelper implements IRegistryHelper {
 	@Override
 	public <T extends RecipeSerializer<?>> @NotNull Supplier<T> registerRecipeSerializer(@NotNull String pId, @NotNull Supplier<T> pRecipeSerializer) {
 		return registerSupplier(BuiltInRegistries.RECIPE_SERIALIZER, pId, pRecipeSerializer);
+	}
+
+	@Override
+	public <T extends Entity> @NotNull Supplier<EntityType<T>> registerEntity(@NotNull String pId, @NotNull Supplier<EntityType<T>> pEntity) {
+		return registerSupplier(BuiltInRegistries.ENTITY_TYPE, pId, pEntity);
+	}
+
+	@Override
+	public <T> @NotNull Supplier<DataComponentType<T>> registerDataComponent(@NotNull String pId, @NotNull UnaryOperator<DataComponentType.Builder<T>> pBuilder) {
+		final DataComponentType<T> componentType = Registry.register(BuiltInRegistries.DATA_COMPONENT_TYPE, BlueResource.resource(pId).toString(), pBuilder.apply(DataComponentType.builder()).build());
+
+		return () -> componentType;
 	}
 
 	@NotNull

@@ -11,51 +11,127 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executor;
 import net.minecraft.Util;
+import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.packs.resources.PreparableReloadListener;
+import net.minecraft.server.packs.resources.ReloadableResourceManager;
 import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.util.profiling.ProfilerFiller;
 import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.entity.variant.IVariantProvider;
-import software.bluelib.api.utils.logging.BaseLogLevel;
-import software.bluelib.api.utils.logging.BaseLogger;
-import software.bluelib.internal.BlueTranslation;
 import software.bluelib.loader.BlueLoader;
+import software.bluelib.loader.cache.animations.AnimationLibraryCache;
+import software.bluelib.loader.cache.controller.ControllerCache;
+import software.bluelib.loader.cache.model.ModelCache;
 import software.bluelib.loader.cache.variants.EntityCache;
+import software.bluelib.loader.json.deserialize.animation.BakedAnimationsAdapter;
 
 public class ResourceCache extends BlueLoader {
 
-	@NotNull
-	public static Map<ResourceLocation, EntityCache> VARIANTS = Collections.emptyMap();
+	public static class Client {
 
-	@NotNull
-	public static Map<ResourceLocation, EntityCache> getVariants() {
-		return VARIANTS;
+		@NotNull
+		private static Map<ResourceLocation, AnimationLibraryCache> ANIMATIONS = Collections.emptyMap();
+		@NotNull
+		private static Map<ResourceLocation, ModelCache> MODELS = Collections.emptyMap();
+
+		@NotNull
+		public static Map<ResourceLocation, AnimationLibraryCache> getBakedAnimations() {
+			return ANIMATIONS;
+		}
+
+		@NotNull
+		public static Map<ResourceLocation, ModelCache> getBakedModels() {
+			return MODELS;
+		}
+
+		public static void registerReloadListener() {
+			Minecraft mc = Minecraft.getInstance();
+
+			if (mc.getResourceManager() instanceof ReloadableResourceManager pResourceManager)
+				pResourceManager.registerReloadListener(ResourceCache.Client::reload);
+		}
+
+		@NotNull
+		public static CompletableFuture<Void> reload(
+				@NotNull PreparableReloadListener.PreparationBarrier pStage,
+				@NotNull ResourceManager pResourceManager,
+				@NotNull ProfilerFiller pProfilerFiller,
+				@NotNull ProfilerFiller pProfilerFiller1,
+				@NotNull Executor pBackgroundExecutor,
+				@NotNull Executor pGameExecutor) {
+			clearCaches();
+
+			CompletableFuture<Map<ResourceLocation, AnimationLibraryCache>> animations = loadAnimations(pBackgroundExecutor, pResourceManager);
+			CompletableFuture<Map<ResourceLocation, ModelCache>> models = loadModels(pBackgroundExecutor, pResourceManager);
+
+			return CompletableFuture.runAsync(() -> BakedAnimationsAdapter.COMPRESSION_CACHE = new ConcurrentHashMap<>(), pBackgroundExecutor)
+					.thenCompose(ignored -> CompletableFuture.allOf(animations, models)
+							.thenCompose(pStage::wait)
+							.thenRunAsync(() -> {
+								ResourceCache.Client.ANIMATIONS = animations.join();
+								ResourceCache.Client.MODELS = models.join();
+								BakedAnimationsAdapter.COMPRESSION_CACHE = null;
+
+								System.out.println("Model Cache: " + ResourceCache.Client.MODELS);
+								System.out.println("Animations Cache: " + ResourceCache.Client.ANIMATIONS);
+							}, pGameExecutor));
+		}
+
+		private static void clearCaches() {
+			ResourceCache.Client.ANIMATIONS = Collections.emptyMap();
+			ResourceCache.Client.MODELS = Collections.emptyMap();
+		}
 	}
 
-	public static void registerServerReloadListener(@NotNull MinecraftServer pServer, @NotNull List<IVariantProvider> pProviders) {
-		ResourceCache.reloadServer(pProviders, pServer.getResourceManager(), Util.backgroundExecutor(), pServer);
-	}
+	public static class Server {
 
-	public static CompletableFuture<Void> reloadServer(
-			@NotNull List<IVariantProvider> pProviders,
-			@NotNull ResourceManager pResourceManager,
-			@NotNull Executor pBackgroundExecutor,
-			@NotNull Executor pGameExecutor) {
-		clearServerCaches();
+		@NotNull
+		public static Map<ResourceLocation, EntityCache> VARIANTS = Collections.emptyMap();
+		@NotNull
+		private static Map<ResourceLocation, ControllerCache> CONTROLLERS = Collections.emptyMap();
 
-		CompletableFuture<Map<ResourceLocation, EntityCache>> variants = loadVariants(pBackgroundExecutor, pResourceManager, pProviders);
+		@NotNull
+		public static Map<ResourceLocation, EntityCache> getVariants() {
+			return VARIANTS;
+		}
 
-		return CompletableFuture.allOf(variants)
-				.thenRunAsync(() -> {
-					ResourceCache.VARIANTS = variants.join();
+		@NotNull
+		public static Map<ResourceLocation, ControllerCache> getControllers() {
+			return CONTROLLERS;
+		}
 
-					BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("loader.variants.loaded"));
-				}, pGameExecutor);
-	}
+		public static void registerReloadListener(@NotNull MinecraftServer pServer, @NotNull List<IVariantProvider> pProviders) {
+			ResourceCache.Server.reload(pProviders, pServer.getResourceManager(), Util.backgroundExecutor(), pServer);
+		}
 
-	public static void clearServerCaches() {
-		ResourceCache.VARIANTS = Collections.emptyMap();
+		public static CompletableFuture<Void> reload(
+				@NotNull List<IVariantProvider> pProviders,
+				@NotNull ResourceManager pResourceManager,
+				@NotNull Executor pBackgroundExecutor,
+				@NotNull Executor pGameExecutor) {
+			clearCaches();
+
+			CompletableFuture<Map<ResourceLocation, ControllerCache>> controllers = loadControllers(pBackgroundExecutor, pResourceManager);
+			CompletableFuture<Map<ResourceLocation, EntityCache>> variants = loadVariants(pBackgroundExecutor, pResourceManager, pProviders);
+
+			return CompletableFuture.allOf(variants, controllers)
+					.thenRunAsync(() -> {
+						ResourceCache.Server.VARIANTS = variants.join();
+						ResourceCache.Server.CONTROLLERS = controllers.join();
+
+						System.out.println("Variants Cache: " + ResourceCache.Server.VARIANTS);
+						System.out.println("Controllers Cache: " + ResourceCache.Server.CONTROLLERS);
+					}, pGameExecutor);
+		}
+
+		public static void clearCaches() {
+			ResourceCache.Server.VARIANTS = Collections.emptyMap();
+			ResourceCache.Server.CONTROLLERS = Collections.emptyMap();
+		}
 	}
 }

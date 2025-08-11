@@ -12,17 +12,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeInput;
 import org.jetbrains.annotations.NotNull;
 
-public class BrewingInput implements RecipeInput {
-
-	@NotNull
-	private final ItemStack ingredient;
-	@NotNull
-	private final List<ItemStack> bottles;
-
-	public BrewingInput(@NotNull ItemStack pIngredient, @NotNull List<ItemStack> pBottles) {
-		this.ingredient = pIngredient;
-		this.bottles = pBottles;
-	}
+public record BrewingInput(@NotNull ItemStack ingredient, @NotNull List<ItemStack> bottles) implements RecipeInput {
 
 	@Override
 	public @NotNull ItemStack getItem(int pIndex) {
@@ -37,15 +27,5 @@ public class BrewingInput implements RecipeInput {
 	@Override
 	public int size() {
 		return 1 + bottles.size();
-	}
-
-	@NotNull
-	public ItemStack getIngredient() {
-		return ingredient;
-	}
-
-	@NotNull
-	public List<ItemStack> getBottles() {
-		return bottles;
 	}
 }

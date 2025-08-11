@@ -155,14 +155,4 @@ public class Color extends MarkdownFeature {
 	protected @NotNull String getFeatureName() {
 		return "Color";
 	}
-
-	/**
-	 * @return true if the color feature is enabled, false otherwise.
-	 * @deprecated Use {@link Color#isFeatureEnabled} instead.
-	 */
-	@NotNull
-	@Deprecated(forRemoval = true, since = "2.2.0")
-	public static Boolean isColorEnabled() {
-		return MarkdownConfig.isColorEnabled;
-	}
 }

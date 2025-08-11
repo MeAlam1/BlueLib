@@ -19,13 +19,14 @@ import software.bluelib.loader.cache.variants.EntityCache;
 import software.bluelib.loader.cache.variants.VariantCache;
 
 // TODO: Make Translatable Utils
+@SuppressWarnings({ "unused" })
 public class ParameterUtils {
 
 	private ParameterUtils() {}
 
 	@NotNull
 	public static Set<ResourceLocation> getAllEntities() {
-		return ResourceCache.getVariants().keySet();
+		return ResourceCache.Server.getVariants().keySet();
 	}
 
 	@Nullable
@@ -71,7 +72,7 @@ public class ParameterUtils {
 	}
 
 	public static @Nullable EntityCache getOptionalEntityCache(@NotNull ResourceLocation pEntity) {
-		EntityCache entityCache = ResourceCache.getVariants().get(pEntity);
+		EntityCache entityCache = ResourceCache.Server.getVariants().get(pEntity);
 		if (entityCache == null) {
 			BaseLogger.log(true, BaseLogLevel.WARNING, "Entity not found: " + pEntity);
 			return null;

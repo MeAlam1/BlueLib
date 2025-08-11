@@ -7,11 +7,13 @@
  */
 package software.bluelib.platform;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+import net.fabricmc.api.EnvType;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
 import net.minecraft.client.Minecraft;
@@ -59,6 +61,16 @@ public class FabricPlatformHelper implements IPlatformHelper {
 	@Override
 	public boolean isDevelopmentEnvironment() {
 		return FabricLoader.getInstance().isDevelopmentEnvironment();
+	}
+
+	@Override
+	public @NotNull Path getGameDir() {
+		return FabricLoader.getInstance().getGameDir();
+	}
+
+	@Override
+	public boolean isPhysicalClient() {
+		return FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT;
 	}
 
 	@Override

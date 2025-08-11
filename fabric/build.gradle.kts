@@ -15,11 +15,16 @@ val modId: String by project
 val mcVersion = libs.versions.minecraft.asProvider().get()
 val parchmentMcVersion = libs.versions.parchment.minecraft.get()
 val parchmentVersion = libs.versions.parchment.asProvider().get()
+val bluelibVersion = libs.versions.bluelib.get()
 
-version = ""
+if (bluelibVersion.isEmpty()) {
+    throw GradleException("libs.versions.bluelib is empty. Please set a valid version in your version catalog.")
+}
+
+version = bluelibVersion
 
 base {
-    archivesName = "${libs.versions.bluelib.get()}-fabric-${mcVersion}-bluelib"
+    archivesName = "${version}-fabric-${mcVersion}-${modId}"
 }
 
 repositories {
@@ -45,13 +50,10 @@ dependencies {
     compileOnly(project(":common"))
     modCompileOnlyApi(libs.jei.api)
     modRuntimeOnly(libs.jei.fabric)
-
-    // ExampleMod
-    //modLocalRuntime(libs.examplemod.fabric)
 }
 
 loom {
-    accessWidenerPath = file("src/main/resources/bluelib.accesswidener")
+    accessWidenerPath = file("src/main/resources/${modId}.accesswidener")
 
     mixin.defaultRefmapName.set("${modId}.refmap.json")
 
@@ -93,17 +95,18 @@ tasks.withType<ProcessResources>().configureEach {
 }
 
 modrinth {
-    token = System.getenv("modrinthKey") ?: "Invalid/No API Token Found"
-    projectId = "8BmcQJ2H"
-    versionNumber.set(project.version.toString())
-    versionName = "Fabric ${mcVersion}"
+    token = System.getenv("MODRINTH") ?: "Invalid/No API Token Found"
+    projectId = "e4dMhzcL"
+    versionNumber.set("fabric-${version}")
+    versionName = "${version}-fabric-${mcVersion}-${modId}"
     uploadFile.set(tasks.named<RemapJarTask>("remapJar"))
-    changelog.set(rootProject.file("changelog.txt").readText(Charsets.UTF_8))
-    gameVersions.set(listOf(mcVersion))
+    changelog.set(rootProject.file("changelog.md").readText(Charsets.UTF_8))
+    gameVersions.set(listOf(mcVersion, "1.21.2", "1.21.3"))
     versionType = "release"
     loaders.set(listOf("fabric"))
     dependencies {
         required.project("fabric-api")
+        optional.project("jei")
     }
 
     //debugMode = true
@@ -112,14 +115,14 @@ modrinth {
 
 tasks.register<TaskPublishCurseForge>("publishToCurseForge") {
     group = "publishing"
-    apiToken = System.getenv("curseforge.apitoken") ?: "Invalid/No API Token Found"
+    apiToken = System.getenv("CURSEFORGE") ?: "Invalid/No API Token Found"
 
-    val mainFile = upload(388172, tasks.remapJar)
+    val mainFile = upload(1083303, tasks.remapJar)
     mainFile.releaseType = "release"
     mainFile.addModLoader("Fabric")
-    mainFile.addGameVersion(mcVersion)
+    mainFile.addGameVersion(mcVersion, "1.21.2", "1.21.3")
     mainFile.addJavaVersion("Java 21")
-    mainFile.changelog = rootProject.file("changelog.txt").readText(Charsets.UTF_8)
+    mainFile.changelog = rootProject.file("changelog.md").readText(Charsets.UTF_8)
 
     //debugMode = true
     //https://github.com/Darkhax/CurseForgeGradle#available-properties
@@ -150,7 +153,7 @@ spotless {
         eclipse("4.31").configFile(rootProject.file("codeformat/formatter-config.xml"))
 
         importOrder()
-        
+
         bumpThisNumberIfACustomStepChanges(3)
     }
 }
