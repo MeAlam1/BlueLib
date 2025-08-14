@@ -7,6 +7,8 @@
  */
 package software.bluelib.platform;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -19,6 +21,7 @@ import software.bluelib.loader.renderer.armor.BlueArmorRenderer;
 import software.bluelib.loader.renderer.base.BlueRenderer;
 import software.bluelib.loader.renderer.client.BlueRenderProvider;
 
+@Environment(EnvType.CLIENT)
 public class FabricPlatformClientHelper implements IPlatformClient {
 
 	@Override

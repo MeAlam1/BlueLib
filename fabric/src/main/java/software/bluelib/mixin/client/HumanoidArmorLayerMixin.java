@@ -9,6 +9,8 @@ package software.bluelib.mixin.client;
 
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
@@ -21,6 +23,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import software.bluelib.client.utils.RenderUtils;
 
 @Mixin(HumanoidArmorLayer.class)
+@Environment(EnvType.CLIENT)
 public abstract class HumanoidArmorLayerMixin<T extends LivingEntity, M extends HumanoidModel<T>, A extends HumanoidModel<T>> {
 
 	@Shadow
