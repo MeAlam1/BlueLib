@@ -35,6 +35,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import software.bluelib.BlueLibConstants;
+import software.bluelib.api.exception.nulls.EntityNullException;
 import software.bluelib.api.utils.loader.BufferUtils;
 import software.bluelib.client.utils.PlayerUtils;
 import software.bluelib.client.utils.RenderUtils;
@@ -101,7 +102,7 @@ public class BlueReplacedEntityRenderer<E extends Entity, T extends BlueAnimatab
 	public @NotNull E getCurrentEntity() {
 		E currentEntity = getOptionalCurrentEntity();
 		if (currentEntity == null)
-			throw new NullPointerException("currentEntity cannot be null when rendering!");
+			throw new EntityNullException("currentEntity cannot be null when rendering!");
 		return currentEntity;
 	}
 

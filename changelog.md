@@ -1,4 +1,4 @@
-# 2.3.2 Hotfix
+# 2.3.3 Hotfix
 
 ## Warning:
 
@@ -6,10 +6,13 @@
   may still occur. Please report any issues on GitHub or message `@me_alam` on Discord.**
 * **The version will remain minor until stability and feature completeness are confirmed.**
 
+## Changed
+
+* All the Rendering NullPointerExceptions are now Custom Exceptions for better debugging.
+
 ## Fixed
 
-* Annotated Model(Layers) and Renderers to only be called on the Client on the Fabric and NeoForge Side. This should
-  prevent any issues with the server trying to call the rendering methods.
+* If a Mod has a broken Controller JSON, it will now be ignored instead of causing the game to crash.
 
 ## Epilogue
 

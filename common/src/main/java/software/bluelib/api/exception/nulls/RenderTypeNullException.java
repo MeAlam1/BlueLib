@@ -5,7 +5,7 @@
  * If a copy of the MIT License was not distributed with this file,
  * You can obtain one at https://opensource.org/licenses/MIT.
  */
-package software.bluelib.api.exception;
+package software.bluelib.api.exception.nulls;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,25 +14,25 @@ import java.util.StringJoiner;
 import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings({ "unused" })
-public class AnimatableException extends NullPointerException {
+public class RenderTypeNullException extends NullPointerException {
 
 	private final List<String> messages;
 
-	public AnimatableException(String pMessage) {
+	public RenderTypeNullException(String pMessage) {
 		super(pMessage);
 		this.messages = Collections.singletonList(pMessage);
 	}
 
-	public AnimatableException(List<String> pMessages) {
+	public RenderTypeNullException(List<String> pMessages) {
 		super(pMessages != null && !pMessages.isEmpty() ? pMessages.getFirst() : null);
 		this.messages = pMessages == null ? Collections.emptyList() : Collections.unmodifiableList(pMessages);
 	}
 
 	@NotNull
-	public AnimatableException withMessage(String pMessage) {
+	public RenderTypeNullException withMessage(String pMessage) {
 		List<String> newMessages = new ArrayList<>(this.messages);
 		newMessages.add(pMessage);
-		return new AnimatableException(newMessages);
+		return new RenderTypeNullException(newMessages);
 	}
 
 	@Override
@@ -46,6 +46,6 @@ public class AnimatableException extends NullPointerException {
 
 	@Override
 	public String toString() {
-		return "AnimatableException: " + getLocalizedMessage();
+		return "RenderTypeNullException: " + getLocalizedMessage();
 	}
 }

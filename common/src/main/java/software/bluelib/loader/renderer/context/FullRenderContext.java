@@ -13,6 +13,8 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import software.bluelib.api.exception.nulls.RenderTypeNullException;
+import software.bluelib.api.exception.nulls.VertexConsumerNullException;
 import software.bluelib.loader.animatable.base.BlueAnimatable;
 import software.bluelib.loader.cache.model.ModelCache;
 
@@ -78,7 +80,7 @@ public final class FullRenderContext<T extends BlueAnimatable> implements IRende
 	public RenderType renderType() {
 		RenderType renderType = optionalRenderType();
 		if (renderType == null)
-			throw new NullPointerException("RenderType cannot be null when rendering!");
+			throw new RenderTypeNullException("RenderType cannot be null when rendering!");
 		return renderType;
 	}
 
@@ -96,7 +98,7 @@ public final class FullRenderContext<T extends BlueAnimatable> implements IRende
 	public VertexConsumer buffer() {
 		VertexConsumer buffer = optionalBuffer();
 		if (buffer == null)
-			throw new NullPointerException("buffer cannot be null when rendering!");
+			throw new VertexConsumerNullException("buffer cannot be null when rendering!");
 		return buffer;
 	}
 

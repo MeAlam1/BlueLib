@@ -118,8 +118,14 @@ public class BlueLoader {
 	}
 
 	@NotNull
-	protected static CompletableFuture<Map<ResourceLocation, ControllerCache>> loadControllers(@NotNull Executor pBackgroundExecutor, @NotNull ResourceManager pResourceManager) {
-		return bakeJsonResources(pBackgroundExecutor, pResourceManager, BlueLibConstants.BlueLoader.CONTROLLERS_PATH.getPath(), ResourceCache::bakeController,
+	protected static CompletableFuture<Map<ResourceLocation, ControllerCache>> loadControllers(
+			@NotNull Executor pBackgroundExecutor,
+			@NotNull ResourceManager pResourceManager) {
+		return bakeJsonResources(
+				pBackgroundExecutor,
+				pResourceManager,
+				BlueLibConstants.BlueLoader.CONTROLLERS_PATH.getPath(),
+				ResourceCache::bakeController,
 				ex -> null);
 	}
 
@@ -176,7 +182,7 @@ public class BlueLoader {
 			}
 		}
 		return CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]))
-				.thenApply(ignored -> {
+				.thenApply(pIgnored -> {
 					Map<ResourceLocation, EntityCache> combined = new java.util.HashMap<>();
 					for (CompletableFuture<Map.Entry<ResourceLocation, EntityCache>> future : futures) {
 						Map.Entry<ResourceLocation, EntityCache> entry = future.join();
@@ -196,28 +202,34 @@ public class BlueLoader {
 			@NotNull BiFunction<ResourceLocation, JsonObject, BAKED> pElementFactory,
 			@NotNull Function<Throwable, BAKED> pExceptionalFactory) {
 		return loadResources(pBackgroundExecutor, pResourceManager, pAssetPath, "json", ResourceCache::readJsonFile)
-				.thenCompose(resources -> {
-					List<CompletableFuture<Pair<ResourceLocation, BAKED>>> tasks = new ObjectArrayList<>(resources.size());
-					BaseLogger.log(true, BaseLogLevel.INFO, String.format("Resources to bake: %1$s", Arrays.toString(resources.stream().map(Pair::left).toList().toArray())));
+				.thenCompose(pResources -> {
+					List<CompletableFuture<Pair<ResourceLocation, BAKED>>> tasks = new ObjectArrayList<>(pResources.size());
+					BaseLogger.log(true, BaseLogLevel.INFO, String.format("Resources to bake: %1$s", Arrays.toString(pResources.stream().map(Pair::left).toList().toArray())));
 
-					resources.forEach(pair -> tasks.add(
+					pResources.forEach(pPair -> tasks.add(
 							CompletableFuture.supplyAsync(() -> {
 								try {
-									Pair<ResourceLocation, BAKED> baked = Pair.of(stripPrefixAndSuffix(pair.left()), pElementFactory.apply(pair.left(), pair.right()));
-									BaseLogger.log(true, BaseLogLevel.INFO, String.format("Baked resource: %1$s", pair.left().toString()));
-									return baked;
-								} catch (Exception ex) {
-									BaseLogger.log(true, BaseLogLevel.ERROR, String.format("Error deserializing file: %1$s - %2$s", pair.left().toString(), ex.getMessage()));
-									throw ex;
+									ResourceLocation key = stripPrefixAndSuffix(pPair.left());
+									BAKED baked = pElementFactory.apply(pPair.left(), pPair.right());
+									return baked == null ? null : Pair.of(key, baked);
+								} catch (Exception e) {
+									BaseLogger.log(true, BaseLogLevel.ERROR,
+											String.format("Error baking %s: %s", pPair.left(), e.getMessage()));
+									BAKED fallback = pExceptionalFactory.apply(e);
+									return (fallback == null) ? null : Pair.of(pPair.left(), fallback);
 								}
-							}, pBackgroundExecutor)
-									.exceptionally(ex -> {
-										BaseLogger.log(true, BaseLogLevel.ERROR, String.format("Exceptionally handling: %1$s - %2$s", pair.left().toString(), ex.getMessage()));
-										return Pair.of(pair.left(), pExceptionalFactory.apply(ex));
-									})));
+							}, pBackgroundExecutor)));
 
 					return CompletableFuture.allOf(tasks.toArray(new CompletableFuture[0]))
-							.thenApply(ignored -> tasks.stream().map(CompletableFuture::join).filter(Objects::nonNull).collect(Collectors.toMap(Pair::left, Pair::right)));
+							.thenApply(pIgnored -> tasks.stream()
+									.map(CompletableFuture::join)
+									.filter(Objects::nonNull)
+									.filter(pair -> pair.right() != null)
+									.collect(Collectors.toMap(Pair::left, Pair::right)));
+				})
+				.exceptionally(ex -> {
+					BaseLogger.log(true, BaseLogLevel.ERROR, "bakeJsonResources failed: " + ex.getMessage());
+					return java.util.Collections.emptyMap();
 				});
 	}
 
@@ -240,15 +252,30 @@ public class BlueLoader {
 
 			BaseLogger.log(true, BaseLogLevel.INFO, String.format("Resource keys found after filtering: %1$s", Arrays.toString(listed.keySet().toArray())));
 			return listed;
-		}, pExecutor).thenCompose(filteredResources -> {
-			List<CompletableFuture<Pair<ResourceLocation, UNBAKED>>> tasks = new ObjectArrayList<>(filteredResources.size());
+		}, pExecutor).thenCompose(pFilteredResources -> {
+			List<CompletableFuture<Pair<ResourceLocation, UNBAKED>>> tasks = new ObjectArrayList<>(pFilteredResources.size());
 
-			filteredResources.forEach((path, resource) -> {
-				BaseLogger.log(true, BaseLogLevel.INFO, String.format("Loading path: %1$s with resource: %2$s", path.toString(), resource.toString()));
-				tasks.add(CompletableFuture.supplyAsync(() -> Pair.of(path, pElementFactory.apply(path, resource)), pExecutor));
+			pFilteredResources.forEach((pPath, pResource) -> {
+				BaseLogger.log(true, BaseLogLevel.INFO, String.format("Loading path: %1$s with resource: %2$s", pPath.toString(), pResource.toString()));
+				tasks.add(CompletableFuture.supplyAsync(() -> {
+					try {
+						return Pair.of(pPath, pElementFactory.apply(pPath, pResource)); // may parse JSON here
+					} catch (Exception e) {
+						BaseLogger.log(true, BaseLogLevel.ERROR,
+								String.format("Failed to read/parse resource %s: %s", pPath, e.getMessage()));
+						return null; // swallow this file
+					}
+				}, pExecutor));
 			});
+
 			return CompletableFuture.allOf(tasks.toArray(new CompletableFuture[0]))
-					.thenApply(ignored -> tasks.stream().map(CompletableFuture::join).filter(Objects::nonNull).toList());
+					.thenApply(pIgnored -> tasks.stream()
+							.map(CompletableFuture::join)
+							.filter(Objects::nonNull)
+							.toList());
+		}).exceptionally(ex -> {
+			BaseLogger.log(true, BaseLogLevel.ERROR, "loadResources failed: " + ex.getMessage());
+			return List.of();
 		});
 	}
 

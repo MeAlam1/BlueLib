@@ -20,7 +20,7 @@ import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
-import software.bluelib.api.exception.AnimatableException;
+import software.bluelib.api.exception.nulls.AnimatableNullException;
 import software.bluelib.api.utils.Color;
 import software.bluelib.api.utils.loader.BufferUtils;
 import software.bluelib.client.utils.RenderUtils;
@@ -48,7 +48,7 @@ public interface BlueRenderer<T extends BlueAnimatable> {
 	default T getAnimatable() {
 		T animatable = getOptionalAnimatable();
 		if (animatable == null)
-			throw new AnimatableException("Animatable cannot be null when rendering!");
+			throw new AnimatableNullException("Animatable cannot be null when rendering!");
 		return animatable;
 	}
 

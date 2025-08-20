@@ -30,6 +30,10 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import software.bluelib.BlueLibConstants;
+import software.bluelib.api.exception.nulls.EntityNullException;
+import software.bluelib.api.exception.nulls.EquipmentSlotNullException;
+import software.bluelib.api.exception.nulls.ItemStackNullException;
+import software.bluelib.api.exception.nulls.ModelNullException;
 import software.bluelib.api.utils.Color;
 import software.bluelib.client.utils.RenderUtils;
 import software.bluelib.loader.animatable.base.BlueAnimatable;
@@ -123,7 +127,7 @@ public class BlueArmorRenderer<T extends Item & BlueItem, L extends LivingEntity
 	public @NotNull HumanoidModel<?> getBaseModel() {
 		HumanoidModel<?> baseModel = getOptionalBaseModel();
 		if (baseModel == null)
-			throw new NullPointerException("baseModel cannot be null when rendering!");
+			throw new ModelNullException("baseModel cannot be null when rendering!");
 		return baseModel;
 	}
 
@@ -134,7 +138,7 @@ public class BlueArmorRenderer<T extends Item & BlueItem, L extends LivingEntity
 	public @NotNull Entity getCurrentEntity() {
 		Entity currentEntity = getOptionalCurrentEntity();
 		if (currentEntity == null)
-			throw new NullPointerException("currentEntity cannot be null when rendering!");
+			throw new EntityNullException("currentEntity cannot be null when rendering!");
 		return currentEntity;
 	}
 
@@ -145,7 +149,7 @@ public class BlueArmorRenderer<T extends Item & BlueItem, L extends LivingEntity
 	public @NotNull ItemStack getCurrentStack() {
 		ItemStack currentStack = getOptionalCurrentStack();
 		if (currentStack == null)
-			throw new NullPointerException("currentStack cannot be null when rendering!");
+			throw new ItemStackNullException("currentStack cannot be null when rendering!");
 		return currentStack;
 	}
 
@@ -156,7 +160,7 @@ public class BlueArmorRenderer<T extends Item & BlueItem, L extends LivingEntity
 	public @NotNull EquipmentSlot getCurrentSlot() {
 		EquipmentSlot currentSlot = getOptionalCurrentSlot();
 		if (currentSlot == null)
-			throw new NullPointerException("currentSlot cannot be null when rendering!");
+			throw new EquipmentSlotNullException("currentSlot cannot be null when rendering!");
 		return currentSlot;
 	}
 

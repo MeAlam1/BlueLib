@@ -28,6 +28,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import software.bluelib.BlueLibConstants;
+import software.bluelib.api.exception.nulls.ItemDisplayContextNullException;
+import software.bluelib.api.exception.nulls.ItemStackNullException;
 import software.bluelib.client.utils.RenderUtils;
 import software.bluelib.loader.animatable.base.BlueAnimatable;
 import software.bluelib.loader.animatable.item.BlueItem;
@@ -95,7 +97,7 @@ public class BlueItemRenderer<T extends Item & BlueAnimatable> extends BlockEnti
 	public @NotNull ItemStack getCurrentItemStack() {
 		ItemStack currentItemStack = getOptionalCurrentItemStack();
 		if (currentItemStack == null)
-			throw new NullPointerException("CurrentItemStack cannot be null when rendering!");
+			throw new ItemStackNullException("CurrentItemStack cannot be null when rendering!");
 		return currentItemStack;
 	}
 
@@ -106,7 +108,7 @@ public class BlueItemRenderer<T extends Item & BlueAnimatable> extends BlockEnti
 	public @NotNull ItemDisplayContext getRenderPerspective() {
 		ItemDisplayContext renderPerspective = getOptionalRenderPerspective();
 		if (renderPerspective == null)
-			throw new NullPointerException("RenderPerspective cannot be null when rendering!");
+			throw new ItemDisplayContextNullException("RenderPerspective cannot be null when rendering!");
 		return renderPerspective;
 	}
 

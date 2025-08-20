@@ -23,6 +23,8 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.profiling.ProfilerFiller;
 import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.entity.variant.IVariantProvider;
+import software.bluelib.api.utils.logging.BaseLogLevel;
+import software.bluelib.api.utils.logging.BaseLogger;
 import software.bluelib.loader.BlueLoader;
 import software.bluelib.loader.cache.animations.AnimationLibraryCache;
 import software.bluelib.loader.cache.controller.ControllerCache;
@@ -116,17 +118,25 @@ public class ResourceCache extends BlueLoader {
 				@NotNull Executor pGameExecutor) {
 			clearCaches();
 
-			CompletableFuture<Map<ResourceLocation, ControllerCache>> controllers = loadControllers(pBackgroundExecutor, pResourceManager);
-			CompletableFuture<Map<ResourceLocation, EntityCache>> variants = loadVariants(pBackgroundExecutor, pResourceManager, pProviders);
+			CompletableFuture<Map<ResourceLocation, ControllerCache>> controllers = loadControllers(pBackgroundExecutor, pResourceManager)
+					.exceptionally(ex -> {
+						BaseLogger.log(true, BaseLogLevel.ERROR, "controllers failed: " + ex.getMessage());
+						return java.util.Collections.emptyMap();
+					});
 
-			return CompletableFuture.allOf(variants, controllers)
-					.thenRunAsync(() -> {
-						ResourceCache.Server.VARIANTS = variants.join();
-						ResourceCache.Server.CONTROLLERS = controllers.join();
+			CompletableFuture<Map<ResourceLocation, EntityCache>> variants = loadVariants(pBackgroundExecutor, pResourceManager, pProviders)
+					.exceptionally(ex -> {
+						BaseLogger.log(true, BaseLogLevel.ERROR, "variants failed: " + ex.getMessage());
+						return java.util.Collections.emptyMap();
+					});
 
-						System.out.println("Variants Cache: " + ResourceCache.Server.VARIANTS);
-						System.out.println("Controllers Cache: " + ResourceCache.Server.CONTROLLERS);
-					}, pGameExecutor);
+			return controllers.thenCombineAsync(variants, (c, v) -> {
+				ResourceCache.Server.CONTROLLERS = c;
+				ResourceCache.Server.VARIANTS = v;
+				System.out.println("Variants Cache: " + ResourceCache.Server.VARIANTS);
+				System.out.println("Controllers Cache: " + ResourceCache.Server.CONTROLLERS);
+				return null;
+			}, pGameExecutor);
 		}
 
 		public static void clearCaches() {
