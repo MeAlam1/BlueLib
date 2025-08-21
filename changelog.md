@@ -1,4 +1,7 @@
-# 2.3.3 Hotfix
+# 2.3.3.1 MoLang Additions
+
+### We will be gradually releasing Minor versions with a ton of MoLang additions, Today was the AbstractHorse, We will be adding about 1 or 2 MoLangs per day.
+**Feel Free to Suggest MoLangs that you would like to see added in the future.**
 
 ## Warning:
 
@@ -6,13 +9,9 @@
   may still occur. Please report any issues on GitHub or message `@me_alam` on Discord.**
 * **The version will remain minor until stability and feature completeness are confirmed.**
 
-## Changed
+## Added
 
-* All the Rendering NullPointerExceptions are now Custom Exceptions for better debugging.
-
-## Fixed
-
-* If a Mod has a broken Controller JSON, it will now be ignored instead of causing the game to crash.
+* Added all the MoLang that we could think of for the AbstractHorse.
 
 ## Epilogue
 
