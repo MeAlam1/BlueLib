@@ -1,6 +1,6 @@
-# 2.3.3.1 MoLang Additions
+# 2.3.3.2 MoLang Additions
 
-### We will be gradually releasing Minor versions with a ton of MoLang additions, Today was the AbstractHorse, We will be adding about 1 or 2 MoLangs per day.
+### We will be gradually releasing Minor versions with a ton of MoLang additions.
 **Feel Free to Suggest MoLangs that you would like to see added in the future.**
 
 ## Warning:
@@ -11,7 +11,10 @@
 
 ## Added
 
-* Added all the MoLang that we could think of for the AbstractHorse.
+* Added all the MoLang for:
+   * AbstractIllager
+   * AbstractVillager
+   * AgeableMob
 
 ## Epilogue
 

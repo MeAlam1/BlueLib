@@ -14,5 +14,26 @@ import software.bluelib.api.molang.context.BaseMoLangContext;
 
 public class AbstractVillagerMoLang extends BaseMoLangContext {
 
-	public AbstractVillagerMoLang(@NotNull Supplier<AbstractVillager> pAbstractVillager) {}
+	public AbstractVillagerMoLang(@NotNull Supplier<AbstractVillager> pAbstractVillagerSup) {
+		AbstractVillager abstractVillager = pAbstractVillagerSup.get();
+
+		setVariable("villager_slot_offset", AbstractVillager.VILLAGER_SLOT_OFFSET);
+		setVariable("get_unhappy_counter", abstractVillager.getUnhappyCounter());
+		setVariable("is_trading", abstractVillager.isTrading());
+
+		registerFunction("set_unhappy_counter", (args, runtime) -> {
+			if (args.size() != 1 || !(args.getFirst() instanceof Number)) {
+				return abstractVillager.getUnhappyCounter();
+			}
+			int unhappy = ((Number) args.getFirst()).intValue();
+			abstractVillager.setUnhappyCounter(unhappy);
+			return abstractVillager.getUnhappyCounter();
+		});
+
+		registerFunction("play_celebrate_sound", (args, runtime) -> {
+			abstractVillager.playCelebrateSound();
+			return abstractVillager;
+		});
+		
+	}
 }

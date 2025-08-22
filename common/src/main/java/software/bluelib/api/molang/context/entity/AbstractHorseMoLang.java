@@ -7,14 +7,15 @@
  */
 package software.bluelib.api.molang.context.entity;
 
-import java.util.UUID;
-import java.util.function.Supplier;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.molang.context.BaseMoLangContext;
+
+import java.util.UUID;
+import java.util.function.Supplier;
 
 public class AbstractHorseMoLang extends BaseMoLangContext {
 
@@ -44,26 +45,26 @@ public class AbstractHorseMoLang extends BaseMoLangContext {
 		setVariable("equipment_slot_offset", AbstractHorse.EQUIPMENT_SLOT_OFFSET);
 
 		registerFunction("get_eat_anim", (args, runtime) -> {
-			if (args.size() != 1 || !(args.getFirst() instanceof Number)) {
+			if (args.size() != 1 || !(args.getFirst() instanceof Number partial)) {
 				return 0.0;
 			}
-			float partialTick = (float) args.getFirst();
+			float partialTick = partial.floatValue();
 			return abstractHorse.getEatAnim(partialTick);
 		});
 
 		registerFunction("get_stand_anim", (args, runtime) -> {
-			if (args.size() != 1 || !(args.getFirst() instanceof Number)) {
+			if (args.size() != 1 || !(args.getFirst() instanceof Number partial)) {
 				return 0.0;
 			}
-			float partialTick = (float) args.getFirst();
+			float partialTick = partial.floatValue();
 			return abstractHorse.getEatAnim(partialTick);
 		});
 
 		registerFunction("get_mouth_anim", (args, runtime) -> {
-			if (args.size() != 1 || !(args.getFirst() instanceof Number)) {
+			if (args.size() != 1 || !(args.getFirst() instanceof Number partial)) {
 				return 0.0;
 			}
-			float partialTick = (float) args.getFirst();
+			float partialTick = partial.floatValue();
 			return abstractHorse.getEatAnim(partialTick);
 		});
 

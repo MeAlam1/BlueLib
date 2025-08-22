@@ -14,5 +14,8 @@ import software.bluelib.api.molang.context.BaseMoLangContext;
 
 public class AbstractIllagerMoLang extends BaseMoLangContext {
 
-	public AbstractIllagerMoLang(@NotNull Supplier<AbstractIllager> pAbstractIllager) {}
+	public AbstractIllagerMoLang(@NotNull Supplier<AbstractIllager> pAbstractIllagerSup) {
+		AbstractIllager abstractIllager = pAbstractIllagerSup.get();
+		setVariable("get_arm_pose", abstractIllager.getArmPose());
+	}
 }
