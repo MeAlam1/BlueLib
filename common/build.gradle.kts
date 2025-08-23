@@ -52,6 +52,7 @@ modrinth {
     uploadFile.set(tasks.named<Jar>("jar"))
     changelog = rootProject.file("changelog.md").readText(Charsets.UTF_8)
     gameVersions.set(listOf(mcVersion, "1.21.2", "1.21.3"))
+    versionType = "beta"
     loaders.set(listOf("neoforge", "forge"))
     dependencies {
         required.project("bluelib")
@@ -68,7 +69,7 @@ tasks.register<TaskPublishCurseForge>("publishToCurseForge") {
 
     val mainFile = upload(1132979, tasks.jar)
     mainFile.displayName = "${version}-common-${mcVersion}-${modId}"
-    mainFile.releaseType = "release"
+    mainFile.releaseType = "beta"
     mainFile.addModLoader("NeoForge", "Fabric", "Forge")
     mainFile.addGameVersion(mcVersion, "1.21.2", "1.21.3")
     mainFile.addJavaVersion("Java 21")

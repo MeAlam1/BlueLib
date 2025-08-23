@@ -5,14 +5,13 @@
  * If a copy of the MIT License was not distributed with this file,
  * You can obtain one at https://opensource.org/licenses/MIT.
  */
-package software.bluelib.api.molang.context.entity;
+package software.bluelib.api.molang.context.entity.mob;
 
+import java.util.function.Supplier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.AgeableMob;
 import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.molang.context.BaseMoLangContext;
-
-import java.util.function.Supplier;
 
 public class AgeableMobMoLang extends BaseMoLangContext {
 
@@ -25,7 +24,7 @@ public class AgeableMobMoLang extends BaseMoLangContext {
 
 		registerFunction("get_breed_offspring", (args, runtime) -> {
 			if (args.size() != 2 || (!(args.getFirst() instanceof ServerLevel)) && (!(args.get(1) instanceof AgeableMob))) {
-				return ageableMob;
+				return false;
 			}
 			ServerLevel level = (ServerLevel) args.getFirst();
 			AgeableMob mate = (AgeableMob) args.get(1);

@@ -5,17 +5,16 @@
  * If a copy of the MIT License was not distributed with this file,
  * You can obtain one at https://opensource.org/licenses/MIT.
  */
-package software.bluelib.api.molang.context.entity;
+package software.bluelib.api.molang.context.entity.animal;
 
+import java.util.UUID;
+import java.util.function.Supplier;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.molang.context.BaseMoLangContext;
-
-import java.util.UUID;
-import java.util.function.Supplier;
 
 public class AbstractHorseMoLang extends BaseMoLangContext {
 
@@ -96,7 +95,7 @@ public class AbstractHorseMoLang extends BaseMoLangContext {
 
 		registerFunction("make_mad", (args, runtime) -> {
 			abstractHorse.makeMad();
-			return abstractHorse;
+			return true;
 		});
 
 		registerFunction("stand_if_possible", (args, runtime) -> {

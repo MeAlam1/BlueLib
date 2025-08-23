@@ -18,7 +18,7 @@ import software.bluelib.internal.BlueTranslation;
 
 public class JSONMerger {
 
-	public void mergeJsonObjects(@NotNull JsonObject pTarget, @NotNull JsonObject pSource) {
+	public static void mergeJsonObjects(@NotNull JsonObject pTarget, @NotNull JsonObject pSource) {
 		for (Map.Entry<String, JsonElement> entry : pSource.entrySet()) {
 			String key = entry.getKey();
 			JsonElement sourceElement = entry.getValue();

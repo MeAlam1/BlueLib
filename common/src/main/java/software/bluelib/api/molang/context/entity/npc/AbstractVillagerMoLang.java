@@ -5,7 +5,7 @@
  * If a copy of the MIT License was not distributed with this file,
  * You can obtain one at https://opensource.org/licenses/MIT.
  */
-package software.bluelib.api.molang.context.entity;
+package software.bluelib.api.molang.context.entity.npc;
 
 import java.util.function.Supplier;
 import net.minecraft.world.entity.npc.AbstractVillager;
@@ -32,8 +32,7 @@ public class AbstractVillagerMoLang extends BaseMoLangContext {
 
 		registerFunction("play_celebrate_sound", (args, runtime) -> {
 			abstractVillager.playCelebrateSound();
-			return abstractVillager;
+			return true;
 		});
-		
 	}
 }

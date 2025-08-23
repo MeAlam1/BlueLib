@@ -163,7 +163,7 @@ public class BlueLoader {
 				JsonObject merged = new JsonObject();
 				for (Map.Entry<ResourceLocation, Resource> entry : resources.entrySet()) {
 					JsonObject obj = readJsonFile(entry.getKey(), entry.getValue());
-					new JSONMerger().mergeJsonObjects(merged, obj);
+					JSONMerger.mergeJsonObjects(merged, obj);
 				}
 
 				String namespace = resources.isEmpty() ? "minecraft" : resources.keySet().iterator().next().getNamespace();
