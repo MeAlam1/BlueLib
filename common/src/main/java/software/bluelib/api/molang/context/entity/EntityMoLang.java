@@ -14,47 +14,48 @@ import software.bluelib.api.molang.context.BaseMoLangContext;
 
 public class EntityMoLang extends BaseMoLangContext {
 
-	public EntityMoLang(@NotNull Supplier<Entity> pEntity) {
-		setVariable("level", pEntity.get().level());
-		setVariable("get_id", pEntity.get().getId());
-		setVariable("get_uuid", pEntity.get().getUUID());
-		setVariable("get_type", pEntity.get().getType().toString());
-		setVariable("is_custom_name_visible", pEntity.get().isCustomNameVisible());
+	public EntityMoLang(@NotNull Supplier<Entity> pEntitySup) {
+		Entity entity = pEntitySup.get();
+		setVariable("level", entity.level());
+		setVariable("get_id", entity.getId());
+		setVariable("get_uuid", entity.getUUID());
+		setVariable("get_type", entity.getType().toString());
+		setVariable("is_custom_name_visible", entity.isCustomNameVisible());
 
-		setVariable("get_x", pEntity.get().getX());
-		setVariable("get_y", pEntity.get().getY());
-		setVariable("get_z", pEntity.get().getZ());
-		setVariable("get_pos", pEntity.get().position());
-		setVariable("get_yaw", pEntity.get().getYRot());
-		setVariable("get_pitch", pEntity.get().getXRot());
+		setVariable("get_x", entity.getX());
+		setVariable("get_y", entity.getY());
+		setVariable("get_z", entity.getZ());
+		setVariable("get_pos", entity.position());
+		setVariable("get_yaw", entity.getYRot());
+		setVariable("get_pitch", entity.getXRot());
 
-		setVariable("get_eye_height", pEntity.get().getEyeHeight());
-		setVariable("get_eye_y", pEntity.get().getEyeY());
-		setVariable("get_eye_pos", pEntity.get().getEyePosition());
+		setVariable("get_eye_height", entity.getEyeHeight());
+		setVariable("get_eye_y", entity.getEyeY());
+		setVariable("get_eye_pos", entity.getEyePosition());
 
-		setVariable("get_movement", pEntity.get().getDeltaMovement());
-		setVariable("get_bounding_box", pEntity.get().getBoundingBox());
-		setVariable("get_block_pos", pEntity.get().blockPosition());
-		setVariable("get_chunk_pos", pEntity.get().chunkPosition());
+		setVariable("get_movement", entity.getDeltaMovement());
+		setVariable("get_bounding_box", entity.getBoundingBox());
+		setVariable("get_block_pos", entity.blockPosition());
+		setVariable("get_chunk_pos", entity.chunkPosition());
 
-		setVariable("get_vehicle", pEntity.get().getVehicle());
-		setVariable("get_passengers", pEntity.get().getPassengers());
+		setVariable("get_vehicle", entity.getVehicle());
+		setVariable("get_passengers", entity.getPassengers());
 
-		setVariable("on_ground", pEntity.get().onGround());
-		setVariable("is_in_water", pEntity.get().isInWater());
-		setVariable("is_in_lava", pEntity.get().isInLava());
-		setVariable("is_on_fire", pEntity.get().isOnFire());
-		setVariable("is_invisible", pEntity.get().isInvisible());
-		setVariable("is_sprinting", pEntity.get().isSprinting());
+		setVariable("on_ground", entity.onGround());
+		setVariable("is_in_water", entity.isInWater());
+		setVariable("is_in_lava", entity.isInLava());
+		setVariable("is_on_fire", entity.isOnFire());
+		setVariable("is_invisible", entity.isInvisible());
+		setVariable("is_sprinting", entity.isSprinting());
 
-		setVariable("get_width", pEntity.get().getBbWidth());
-		setVariable("get_height", pEntity.get().getBbHeight());
+		setVariable("get_width", entity.getBbWidth());
+		setVariable("get_height", entity.getBbHeight());
 
-		setVariable("is_removed", pEntity.get().isRemoved());
-		setVariable("is_pushable", pEntity.get().isPushable());
-		setVariable("is_no_gravity", pEntity.get().isNoGravity());
-		setVariable("has_glowing_tag", pEntity.get().hasGlowingTag());
+		setVariable("is_removed", entity.isRemoved());
+		setVariable("is_pushable", entity.isPushable());
+		setVariable("is_no_gravity", entity.isNoGravity());
+		setVariable("has_glowing_tag", entity.hasGlowingTag());
 
-		setVariable("get_ticks_frozen", pEntity.get().getTicksFrozen());
+		setVariable("get_ticks_frozen", entity.getTicksFrozen());
 	}
 }

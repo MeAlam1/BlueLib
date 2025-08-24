@@ -51,10 +51,7 @@ import software.bluelib.loader.json.controller.ControllerFormatVersion;
 import software.bluelib.loader.json.deserialize.animation.AnimationLibrary;
 import software.bluelib.loader.json.deserialize.animation.BakedAnimationsAdapter;
 import software.bluelib.loader.json.deserialize.animation.KeyFramesAdapter;
-import software.bluelib.loader.json.deserialize.controller.Behaviour;
-import software.bluelib.loader.json.deserialize.controller.Controller;
-import software.bluelib.loader.json.deserialize.controller.Group;
-import software.bluelib.loader.json.deserialize.controller.State;
+import software.bluelib.loader.json.deserialize.controller.*;
 import software.bluelib.loader.json.deserialize.model.*;
 import software.bluelib.loader.json.deserialize.variants.Entity;
 import software.bluelib.loader.json.deserialize.variants.Variant;
@@ -94,6 +91,7 @@ public class BlueLoader {
 			.registerTypeAdapter(Group.class, Group.deserializer())
 			.registerTypeAdapter(Behaviour.class, Behaviour.deserializer())
 			.registerTypeAdapter(State.class, State.deserializer())
+			.registerTypeAdapter(Animation.class, Animation.deserializer())
 			.create();
 
 	@NotNull
