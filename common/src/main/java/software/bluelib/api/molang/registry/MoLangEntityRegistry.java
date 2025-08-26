@@ -35,6 +35,7 @@ import software.bluelib.api.molang.context.entity.mob.AgeableMobMoLang;
 import software.bluelib.api.molang.context.entity.mob.PathfinderMobMoLang;
 import software.bluelib.api.molang.context.entity.monster.AbstractIllagerMoLang;
 import software.bluelib.api.molang.context.entity.monster.MonsterMoLang;
+import software.bluelib.api.molang.context.entity.monster.PatrollingMonsterMoLang;
 import software.bluelib.api.molang.context.entity.npc.AbstractVillagerMoLang;
 
 public class MoLangEntityRegistry extends MoLangContextRegistry {
