@@ -102,7 +102,7 @@ modrinth {
     uploadFile.set(tasks.named<RemapJarTask>("remapJar"))
     changelog.set(rootProject.file("changelog.md").readText(Charsets.UTF_8))
     gameVersions.set(listOf(mcVersion, "1.21.2", "1.21.3"))
-    versionType = "beta"
+    versionType = "release"
     loaders.set(listOf("fabric"))
     dependencies {
         required.project("fabric-api")
@@ -119,7 +119,7 @@ tasks.register<TaskPublishCurseForge>("publishToCurseForge") {
 
     val mainFile = upload(1083303, tasks.remapJar)
     mainFile.displayName = "${version}-fabric-${mcVersion}-${modId}"
-    mainFile.releaseType = "beta"
+    mainFile.releaseType = "release"
     mainFile.addModLoader("Fabric")
     mainFile.addGameVersion(mcVersion, "1.21.2", "1.21.3")
     mainFile.addJavaVersion("Java 21")

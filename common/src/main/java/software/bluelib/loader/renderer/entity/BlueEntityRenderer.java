@@ -175,84 +175,65 @@ public class BlueEntityRenderer<T extends Entity & BlueAnimatable> extends Entit
 	@Override
 	public void actuallyRender(@NotNull IRenderContext<T> pContext) {
 		if (pContext instanceof FullRenderContext<T> full) {
-			PoseStack pPoseStack = full.poseStack();
+			PoseStack poseStack = full.poseStack();
 			T animatable = full.animatable();
 			VertexConsumer buffer = full.optionalBuffer();
-			boolean pIsReRender = full.isReRender();
-			float pPartialTick = full.partialTick();
+			boolean isReRender = full.isReRender();
+			float partialTick = full.partialTick();
 
-			pPoseStack.pushPose();
+			poseStack.pushPose();
 
-			LivingEntity livingEntity = animatable instanceof LivingEntity entity ? entity : null;
-			boolean shouldSit = animatable.isPassenger() && (animatable.getVehicle() != null);
-			float lerpBodyRot = livingEntity == null ? 0 : Mth.rotLerp(pPartialTick, livingEntity.yBodyRotO, livingEntity.yBodyRot);
-			float lerpHeadRot = livingEntity == null ? 0 : Mth.rotLerp(pPartialTick, livingEntity.yHeadRotO, livingEntity.yHeadRot);
-			float netHeadYaw = lerpHeadRot - lerpBodyRot;
+			LivingEntity livingEntity = animatable instanceof LivingEntity e ? e : null;
+			boolean shouldSit = animatable.isPassenger() && animatable.getVehicle() != null;
 
-			if (shouldSit && animatable.getVehicle() instanceof LivingEntity livingentity) {
-				lerpBodyRot = Mth.rotLerp(pPartialTick, livingentity.yBodyRotO, livingentity.yBodyRot);
-				netHeadYaw = lerpHeadRot - lerpBodyRot;
-				float clampedHeadYaw = Mth.clamp(Mth.wrapDegrees(netHeadYaw), -85, 85);
-				lerpBodyRot = lerpHeadRot - clampedHeadYaw;
+			float lerpBodyRot = EntityRenderUtils.getLerpBodyRot(livingEntity, partialTick);
+			float lerpHeadRot = EntityRenderUtils.getLerpHeadRot(livingEntity, partialTick);
+			float[] adjusted = EntityRenderUtils.adjustSittingRotations(shouldSit, animatable, lerpHeadRot, lerpBodyRot, partialTick);
+			lerpBodyRot = adjusted[0];
+			float netHeadYaw = adjusted[1];
 
-				if (clampedHeadYaw * clampedHeadYaw > 2500f)
-					lerpBodyRot += clampedHeadYaw * 0.2f;
-
-				netHeadYaw = lerpHeadRot - lerpBodyRot;
-			}
-
-			if (animatable.getPose() == Pose.SLEEPING && livingEntity != null) {
-				Direction bedDirection = livingEntity.getBedOrientation();
-
-				if (bedDirection != null) {
-					float eyePosOffset = livingEntity.getEyeHeight(Pose.STANDING) - 0.1F;
-					pPoseStack.translate(-bedDirection.getStepX() * eyePosOffset, 0, -bedDirection.getStepZ() * eyePosOffset);
-				}
-			}
+			if (livingEntity != null)
+				EntityRenderUtils.applySleepingTranslation(poseStack, livingEntity);
 
 			float nativeScale = livingEntity != null ? livingEntity.getScale() : 1;
-			float ageInTicks = animatable.tickCount + pPartialTick;
-			float limbSwingAmount = 0;
-			float limbSwing = 0;
+			float ageInTicks = animatable.tickCount + partialTick;
 
-			pPoseStack.scale(nativeScale, nativeScale, nativeScale);
-			applyRotations(animatable, pPoseStack, ageInTicks, lerpBodyRot, pPartialTick, nativeScale);
+			poseStack.scale(nativeScale, nativeScale, nativeScale);
+			applyRotations(animatable, poseStack, ageInTicks, lerpBodyRot, partialTick, nativeScale);
 
-			if (!shouldSit && animatable.isAlive() && livingEntity != null) {
-				limbSwingAmount = livingEntity.walkAnimation.speed(pPartialTick);
-				limbSwing = livingEntity.walkAnimation.position(pPartialTick);
+			float[] limbSwingData = livingEntity != null
+					? EntityRenderUtils.computeLimbSwing(livingEntity, shouldSit, partialTick)
+					: new float[] { 0, 0 };
+			float limbSwing = limbSwingData[0];
+			float limbSwingAmount = limbSwingData[1];
 
-				if (livingEntity.isBaby())
-					limbSwing *= 3f;
-
-				if (limbSwingAmount > 1f)
-					limbSwingAmount = 1f;
-			}
-
-			if (!pIsReRender) {
-				float headPitch = Mth.lerp(pPartialTick, animatable.xRotO, animatable.getXRot());
+			if (!isReRender) {
+				float headPitch = Mth.lerp(partialTick, animatable.xRotO, animatable.getXRot());
 				float motionThreshold = getMotionAnimThreshold(pContext);
-				Vec3 velocity = animatable.getDeltaMovement();
-				float avgVelocity = (float) ((Math.abs(velocity.x) + Math.abs(velocity.z)) / 2f);
-				AnimationState<T> animationState = new AnimationState<>(animatable, limbSwing, limbSwingAmount, pPartialTick, avgVelocity >= motionThreshold && limbSwingAmount != 0);
-				long instanceId = getInstanceId(pContext);
-				BlueModel<T> currentModel = getBlueModel();
 
-				animationState.setData(DataTickets.TICK, animatable.getTick(animatable));
-				animationState.setData(DataTickets.ENTITY, animatable);
-				animationState.setData(DataTickets.ENTITY_MODEL_DATA, new EntityModelData(shouldSit, livingEntity != null && livingEntity.isBaby(), -netHeadYaw, -headPitch));
-				currentModel.addAdditionalStateData(animatable, instanceId, animationState::setData);
-				currentModel.handleAnimations(animatable, instanceId, animationState, pPartialTick);
+				boolean moving = livingEntity != null
+						? EntityRenderUtils.isEntityMoving(livingEntity, motionThreshold, limbSwingAmount)
+						: (Math.abs(limbSwingAmount) >= motionThreshold);
+
+				AnimationState<T> state = new AnimationState<>(animatable, limbSwing, limbSwingAmount, partialTick, moving);
+				long instanceId = getInstanceId(pContext);
+				BlueModel<T> model = getBlueModel();
+
+				state.setData(DataTickets.TICK, animatable.getTick(animatable));
+				state.setData(DataTickets.ENTITY, animatable);
+				state.setData(DataTickets.ENTITY_MODEL_DATA,
+						new EntityModelData(shouldSit, livingEntity != null && livingEntity.isBaby(), -netHeadYaw, -headPitch));
+				model.addAdditionalStateData(animatable, instanceId, state::setData);
+				model.handleAnimations(animatable, instanceId, state, partialTick);
 			}
 
-			pPoseStack.translate(0, 0.01f, 0);
-
-			this.modelRenderTranslations = new Matrix4f(pPoseStack.last().pose());
+			poseStack.translate(0, 0.01f, 0);
+			this.modelRenderTranslations = new Matrix4f(poseStack.last().pose());
 
 			if (buffer != null)
 				BlueRenderer.super.actuallyRender(full);
 
-			pPoseStack.popPose();
+			poseStack.popPose();
 		} else if (pContext instanceof BaseRenderContext<T> base) {
 			handleBaseActuallyRenderContext(base, this);
 		}
