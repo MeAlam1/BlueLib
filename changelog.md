@@ -1,4 +1,4 @@
-# 2.3.3.4 MoLang Additions
+# 2.3.3.6 MoLang Additions
 
 ### We will be gradually releasing Minor versions with a ton of MoLang additions.
 
@@ -13,11 +13,7 @@
 ## Added
 
 * Added all the MoLang for:
-    * Bee
-    * BlockAttachedEntity
-    * HangingEntity
-    * TameableAnimal
-* Added a TypeAdapter for the Animation Controllers.
+    * PatrollingMonster
 
 ## Epilogue
 
