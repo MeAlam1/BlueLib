@@ -64,6 +64,9 @@ public class MoLangEntityRegistry extends MoLangContextRegistry {
 
 		registerEntityContext(saddleableEntity -> saddleableEntity instanceof Saddleable ? new SaddleableMoLang(() -> (Saddleable) saddleableEntity) : null);
 		registerEntityContext(ownableEntity -> ownableEntity instanceof OwnableEntity ? new OwnableMoLang(() -> (OwnableEntity) ownableEntity) : null);
+		registerEntityContext(attackableEntity -> attackableEntity instanceof Attackable ? new AttackableMoLang(() -> (Attackable) attackableEntity) : null);
+		registerEntityContext(targetingEntity -> targetingEntity instanceof Targeting ? new TargetingMoLang(() -> (Targeting) targetingEntity) : null);
+		registerEntityContext(leashableEntity -> leashableEntity instanceof Leashable ? new LeashableMoLang(() -> (Leashable) leashableEntity) : null);
 
 		registerEntityContext(entity -> entity instanceof Entity ? new EntityMoLang(() -> entity) : null);
 	}

@@ -210,43 +210,48 @@ public class BlueArmorRenderer<T extends Item & BlueItem, L extends LivingEntity
 	}
 
 	@Nullable
+	public BoneCache getBoneByName(@NotNull BlueModel<T> pModel, @NotNull String pBoneName) {
+		return pModel.getBone(pBoneName).orElse(null);
+	}
+
+	@Nullable
 	public BoneCache getHeadBone(@NotNull BlueModel<T> pModel) {
-		return pModel.getBone("armorHead").orElse(null);
+		return getBoneByName(pModel, "armorHead");
 	}
 
 	@Nullable
 	public BoneCache getBodyBone(@NotNull BlueModel<T> pModel) {
-		return pModel.getBone("armorBody").orElse(null);
+		return getBoneByName(pModel, "armorBody");
 	}
 
 	@Nullable
 	public BoneCache getRightArmBone(@NotNull BlueModel<T> pModel) {
-		return pModel.getBone("armorRightArm").orElse(null);
+		return getBoneByName(pModel, "armorRightArm");
 	}
 
 	@Nullable
 	public BoneCache getLeftArmBone(@NotNull BlueModel<T> pModel) {
-		return pModel.getBone("armorLeftArm").orElse(null);
+		return getBoneByName(pModel, "armorLeftArm");
 	}
 
 	@Nullable
 	public BoneCache getRightLegBone(@NotNull BlueModel<T> pModel) {
-		return pModel.getBone("armorRightLeg").orElse(null);
+		return getBoneByName(pModel, "armorRightLeg");
 	}
 
 	@Nullable
 	public BoneCache getLeftLegBone(@NotNull BlueModel<T> pModel) {
-		return pModel.getBone("armorLeftLeg").orElse(null);
+		return getBoneByName(pModel, "armorLeftLeg");
 	}
 
 	@Nullable
 	public BoneCache getRightBootBone(@NotNull BlueModel<T> pModel) {
-		return pModel.getBone("armorRightBoot").orElse(null);
+		return getBoneByName(pModel, "armorRightBoot");
 	}
 
 	@Nullable
 	public BoneCache getLeftBootBone(@NotNull BlueModel<T> pModel) {
-		return pModel.getBone("armorLeftBoot").orElse(null);
+		return getBoneByName(pModel, "armorLeftBoot");
 	}
 
 	@Override
@@ -300,7 +305,7 @@ public class BlueArmorRenderer<T extends Item & BlueItem, L extends LivingEntity
 				pRenderType,
 				pBufferSource,
 				pBuffer,
-				false, // isReRender
+				false,
 				pPartialTick,
 				pPackedLight,
 				getPackedOverlay(getAnimatable(), 0, pPartialTick),
@@ -397,35 +402,46 @@ public class BlueArmorRenderer<T extends Item & BlueItem, L extends LivingEntity
 		self.riding = pBaseModel.riding;
 		self.rightArmPose = pBaseModel.rightArmPose;
 		self.leftArmPose = pBaseModel.leftArmPose;
-		self.head.visible = pBaseModel.head.visible;
-		self.hat.visible = pBaseModel.hat.visible;
-		self.body.visible = pBaseModel.body.visible;
-		self.rightArm.visible = pBaseModel.rightArm.visible;
-		self.leftArm.visible = pBaseModel.leftArm.visible;
-		self.rightLeg.visible = pBaseModel.rightLeg.visible;
-		self.leftLeg.visible = pBaseModel.leftLeg.visible;
+
+		copyVisibility(self, pBaseModel);
+	}
+
+	protected void copyVisibility(@NotNull HumanoidModel<?> pTarget, @NotNull HumanoidModel<?> pSource) {
+		pTarget.head.visible = pSource.head.visible;
+		pTarget.hat.visible = pSource.hat.visible;
+		pTarget.body.visible = pSource.body.visible;
+		pTarget.rightArm.visible = pSource.rightArm.visible;
+		pTarget.leftArm.visible = pSource.leftArm.visible;
+		pTarget.rightLeg.visible = pSource.rightLeg.visible;
+		pTarget.leftLeg.visible = pSource.leftLeg.visible;
 	}
 
 	protected void applyBoneVisibilityBySlot(@NotNull EquipmentSlot pCurrentSlot) {
 		setAllBonesVisible(false);
 		HumanoidModel<?> pModel = this;
 
-		switch (pCurrentSlot) {
-			case HEAD -> setBoneVisible(this.head, pModel.head.visible);
-			case CHEST -> {
-				setBoneVisible(this.body, pModel.body.visible);
-				setBoneVisible(this.rightArm, pModel.rightArm.visible);
-				setBoneVisible(this.leftArm, pModel.leftArm.visible);
-			}
-			case LEGS -> {
-				setBoneVisible(this.rightLeg, pModel.rightLeg.visible);
-				setBoneVisible(this.leftLeg, pModel.leftLeg.visible);
-			}
-			case FEET -> {
-				setBoneVisible(this.rightBoot, pModel.rightLeg.visible);
-				setBoneVisible(this.leftBoot, pModel.leftLeg.visible);
-			}
-			default -> {}
+		record BoneVisibility(@Nullable BoneCache bone, boolean visible) {}
+
+		BoneVisibility[] visibilities = switch (pCurrentSlot) {
+			case HEAD -> new BoneVisibility[] { new BoneVisibility(this.head, pModel.head.visible) };
+			case CHEST -> new BoneVisibility[] {
+					new BoneVisibility(this.body, pModel.body.visible),
+					new BoneVisibility(this.rightArm, pModel.rightArm.visible),
+					new BoneVisibility(this.leftArm, pModel.leftArm.visible)
+			};
+			case LEGS -> new BoneVisibility[] {
+					new BoneVisibility(this.rightLeg, pModel.rightLeg.visible),
+					new BoneVisibility(this.leftLeg, pModel.leftLeg.visible)
+			};
+			case FEET -> new BoneVisibility[] {
+					new BoneVisibility(this.rightBoot, pModel.rightLeg.visible),
+					new BoneVisibility(this.leftBoot, pModel.leftLeg.visible)
+			};
+			default -> new BoneVisibility[0];
+		};
+
+		for (BoneVisibility visibility : visibilities) {
+			setBoneVisible(visibility.bone(), visibility.visible());
 		}
 	}
 
@@ -454,56 +470,36 @@ public class BlueArmorRenderer<T extends Item & BlueItem, L extends LivingEntity
 	}
 
 	protected void applyBaseTransformations(@NotNull HumanoidModel<?> pBaseModel) {
-		if (this.head != null) {
-			ModelPart headPart = pBaseModel.head;
+		record TransformData(@Nullable BoneCache bone, ModelPart part, float xOffset, float yOffset, float zOffset) {}
 
-			RenderUtils.matchModelPartRot(headPart, this.head);
-			this.head.updatePosition(headPart.x, -headPart.y, headPart.z);
+		TransformData[] transforms = {
+				new TransformData(this.head, pBaseModel.head, 0f, 0f, 0f),
+				new TransformData(this.body, pBaseModel.body, 0f, 0f, 0f),
+				new TransformData(this.rightArm, pBaseModel.rightArm, 5f, 2f, 0f),
+				new TransformData(this.leftArm, pBaseModel.leftArm, -5f, 2f, 0f),
+				new TransformData(this.rightLeg, pBaseModel.rightLeg, 2f, 12f, 0f),
+				new TransformData(this.leftLeg, pBaseModel.leftLeg, -2f, 12f, 0f)
+		};
+
+		for (TransformData t : transforms) {
+			if (t.bone() != null) {
+				RenderUtils.matchModelPartRot(t.part(), t.bone());
+				t.bone().updatePosition(
+						t.part().x + t.xOffset,
+						t.yOffset - t.part().y,
+						t.part().z + t.zOffset);
+			}
 		}
 
-		if (this.body != null) {
-			ModelPart bodyPart = pBaseModel.body;
-
-			RenderUtils.matchModelPartRot(bodyPart, this.body);
-			this.body.updatePosition(bodyPart.x, -bodyPart.y, bodyPart.z);
-		}
-
-		if (this.rightArm != null) {
-			ModelPart rightArmPart = pBaseModel.rightArm;
-
-			RenderUtils.matchModelPartRot(rightArmPart, this.rightArm);
-			this.rightArm.updatePosition(rightArmPart.x + 5, 2 - rightArmPart.y, rightArmPart.z);
-		}
-
-		if (this.leftArm != null) {
-			ModelPart leftArmPart = pBaseModel.leftArm;
-
-			RenderUtils.matchModelPartRot(leftArmPart, this.leftArm);
-			this.leftArm.updatePosition(leftArmPart.x - 5f, 2f - leftArmPart.y, leftArmPart.z);
-		}
-
-		if (this.rightLeg != null) {
+		if (this.rightBoot != null && this.rightLeg != null) {
 			ModelPart rightLegPart = pBaseModel.rightLeg;
-
-			RenderUtils.matchModelPartRot(rightLegPart, this.rightLeg);
-			this.rightLeg.updatePosition(rightLegPart.x + 2, 12 - rightLegPart.y, rightLegPart.z);
-
-			if (this.rightBoot != null) {
-				RenderUtils.matchModelPartRot(rightLegPart, this.rightBoot);
-				this.rightBoot.updatePosition(rightLegPart.x + 2, 12 - rightLegPart.y, rightLegPart.z);
-			}
+			RenderUtils.matchModelPartRot(rightLegPart, this.rightBoot);
+			this.rightBoot.updatePosition(rightLegPart.x + 2, 12 - rightLegPart.y, rightLegPart.z);
 		}
-
-		if (this.leftLeg != null) {
+		if (this.leftBoot != null && this.leftLeg != null) {
 			ModelPart leftLegPart = pBaseModel.leftLeg;
-
-			RenderUtils.matchModelPartRot(leftLegPart, this.leftLeg);
-			this.leftLeg.updatePosition(leftLegPart.x - 2, 12 - leftLegPart.y, leftLegPart.z);
-
-			if (this.leftBoot != null) {
-				RenderUtils.matchModelPartRot(leftLegPart, this.leftBoot);
-				this.leftBoot.updatePosition(leftLegPart.x - 2, 12 - leftLegPart.y, leftLegPart.z);
-			}
+			RenderUtils.matchModelPartRot(leftLegPart, this.leftBoot);
+			this.leftBoot.updatePosition(leftLegPart.x - 2, 12 - leftLegPart.y, leftLegPart.z);
 		}
 	}
 

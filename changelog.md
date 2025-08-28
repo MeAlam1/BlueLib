@@ -1,4 +1,4 @@
-# 2.3.4 MoLang Additions
+# 2.3.5 MoLang Additions
 
 ## Warning:
 
@@ -10,19 +10,12 @@
 ## Added
 
 * Added all the MoLang for:
-    * Saddleable
-    * Ownable
+    * Attackable
+    * Targeting
+    * Leashable
 
 ## Changed
-
-* Refactored some shared Entity Rendering code to reduce duplication.
-
-### From Previous Beta's
-
-* Added a TypeAdapter for the Animation Controllers.
-* Made the JSONMerger Static, so it can be used without instantiation.
-* Minor Cleanup in the EntityMoLang Registration.
-* And a lot of MoLang!!!!
+* Added a lot of readability improvements to the ArmorRenderer.
 
 ## Epilogue
 
