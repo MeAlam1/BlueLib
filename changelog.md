@@ -1,4 +1,4 @@
-# 2.3.5 MoLang Additions
+# 2.3.6
 
 ## Warning:
 
@@ -10,12 +10,13 @@
 ## Added
 
 * Added all the MoLang for:
-    * Attackable
-    * Targeting
-    * Leashable
+    * VehicleEntity
+    * FlyingAnimal
 
 ## Changed
-* Added a lot of readability improvements to the ArmorRenderer.
+
+* Updated the ModAPI Enum to support more niche modding APIs.
+* Major Gradle cleanup, removing deprecated features and improving build speed.
 
 ## Epilogue
 

@@ -10,5 +10,8 @@ package software.bluelib.api;
 public enum ModAPI {
 	FABRIC,
 	FORGE,
-	NEOFORGE
+	NEOFORGE,
+	QUILT,
+	BABRIC,
+	RIFT
 }

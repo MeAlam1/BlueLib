@@ -1,10 +1,33 @@
 plugins {
     alias(libs.plugins.minotaur) apply false
     alias(libs.plugins.curseforgegradle) apply false
+    alias(libs.plugins.github.release) apply true
 
     // Required for NeoGradle
     alias(libs.plugins.ideaext)
 }
+
+val modId: String by project
+val mcVersion = libs.versions.minecraft.asProvider().get()
+
+githubRelease {
+    token(System.getenv("GITHUB") ?: "Invalid/No API Token Found")
+    owner.set("MeAlam1")
+    repo.set("BlueLib")
+    tagName.set("$version")
+    targetCommitish.set("1.21-1.21.3")
+    releaseName.set("BlueLib $version")
+    body.set(rootProject.file("changelog.md").readText())
+    draft.set(false)
+    prerelease.set(false)
+    overwrite.set(true)
+    releaseAssets.setFrom(
+        rootProject.file("common/build/libs/${version}-common-${mcVersion}-${modId}-${version}.jar"),
+        rootProject.file("fabric/build/libs/${version}-fabric-${mcVersion}-${modId}-${version}.jar"),
+        rootProject.file("neoforge/build/libs/${version}-neoforge-${mcVersion}-${modId}-${version}.jar")
+    )
+}
+
 
 tasks.register("publishAll") {
     group = "publishing"
@@ -12,6 +35,7 @@ tasks.register("publishAll") {
     dependsOn(
         ":common:publish",
         ":fabric:publish",
-        ":neoforge:publish"
+        ":neoforge:publish",
+        "githubRelease"
     )
 }

@@ -24,16 +24,13 @@ if (bluelibVersion.isEmpty()) {
 version = bluelibVersion
 
 base {
-    archivesName = "${version}-fabric-${mcVersion}-${modId}"
+    archivesName.set("${version}-fabric-${mcVersion}-${modId}")
 }
 
 repositories {
     maven {
         name = "ParchmentMC"
         url = uri("https://maven.parchmentmc.org")
-        content {
-            includeGroupAndSubgroups("org.parchmentmc")
-        }
     }
     maven(url = "${rootProject.projectDir}/deps")
     maven("https://maven.blamejared.com/")
@@ -41,7 +38,7 @@ repositories {
 
 dependencies {
     minecraft(libs.minecraft)
-    mappings(loom.layered() {
+    mappings(loom.layered {
         officialMojangMappings()
         parchment("org.parchmentmc.data:parchment-${parchmentMcVersion}:${parchmentVersion}@zip")
     })
@@ -53,7 +50,7 @@ dependencies {
 }
 
 loom {
-    accessWidenerPath = file("src/main/resources/${modId}.accesswidener")
+    accessWidenerPath.set(file("src/main/resources/${modId}.accesswidener"))
 
     mixin.defaultRefmapName.set("${modId}.refmap.json")
 
@@ -63,7 +60,7 @@ loom {
 
             client()
             ideConfigGenerated(true)
-            runDir("runs/" + name)
+            runDir("runs/$name")
             programArg("--username=Dev")
         }
 
@@ -72,7 +69,7 @@ loom {
 
             server()
             ideConfigGenerated(true)
-            runDir("runs/" + name)
+            runDir("runs/$name")
         }
     }
 }
@@ -95,14 +92,14 @@ tasks.withType<ProcessResources>().configureEach {
 }
 
 modrinth {
-    token = System.getenv("MODRINTH") ?: "Invalid/No API Token Found"
-    projectId = "e4dMhzcL"
+    token.set(System.getenv("MODRINTH") ?: "Invalid/No API Token Found")
+    projectId.set("e4dMhzcL")
     versionNumber.set("fabric-${version}")
-    versionName = "${version}-fabric-${mcVersion}-${modId}"
+    versionName.set("${version}-fabric-${mcVersion}-${modId}")
     uploadFile.set(tasks.named<RemapJarTask>("remapJar"))
     changelog.set(rootProject.file("changelog.md").readText(Charsets.UTF_8))
     gameVersions.set(listOf(mcVersion, "1.21.2", "1.21.3"))
-    versionType = "release"
+    versionType.set("release")
     loaders.set(listOf("fabric"))
     dependencies {
         required.project("fabric-api")

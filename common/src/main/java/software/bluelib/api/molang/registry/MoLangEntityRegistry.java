@@ -10,6 +10,7 @@ package software.bluelib.api.molang.registry;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.Bee;
+import net.minecraft.world.entity.animal.FlyingAnimal;
 import net.minecraft.world.entity.animal.Wolf;
 import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraft.world.entity.decoration.ArmorStand;
@@ -24,10 +25,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.raid.Raider;
 import net.minecraft.world.entity.vehicle.VehicleEntity;
 import software.bluelib.api.molang.context.entity.*;
-import software.bluelib.api.molang.context.entity.animal.AbstractHorseMoLang;
-import software.bluelib.api.molang.context.entity.animal.AnimalMoLang;
-import software.bluelib.api.molang.context.entity.animal.BeeMoLang;
-import software.bluelib.api.molang.context.entity.animal.TamableAnimalMoLang;
+import software.bluelib.api.molang.context.entity.animal.*;
 import software.bluelib.api.molang.context.entity.decoration.ArmorStandMoLang;
 import software.bluelib.api.molang.context.entity.decoration.BlockAttachedEntityMoLang;
 import software.bluelib.api.molang.context.entity.decoration.HangingEntityMoLang;
@@ -37,6 +35,7 @@ import software.bluelib.api.molang.context.entity.monster.AbstractIllagerMoLang;
 import software.bluelib.api.molang.context.entity.monster.MonsterMoLang;
 import software.bluelib.api.molang.context.entity.monster.PatrollingMonsterMoLang;
 import software.bluelib.api.molang.context.entity.npc.AbstractVillagerMoLang;
+import software.bluelib.api.molang.context.entity.vehicle.VehicleEntityMoLang;
 
 public class MoLangEntityRegistry extends MoLangContextRegistry {
 
@@ -67,6 +66,7 @@ public class MoLangEntityRegistry extends MoLangContextRegistry {
 		registerEntityContext(attackableEntity -> attackableEntity instanceof Attackable ? new AttackableMoLang(() -> (Attackable) attackableEntity) : null);
 		registerEntityContext(targetingEntity -> targetingEntity instanceof Targeting ? new TargetingMoLang(() -> (Targeting) targetingEntity) : null);
 		registerEntityContext(leashableEntity -> leashableEntity instanceof Leashable ? new LeashableMoLang(() -> (Leashable) leashableEntity) : null);
+		registerEntityContext(flyingAnimal -> flyingAnimal instanceof FlyingAnimal ? new FlyingAnimalMoLang(() -> (FlyingAnimal) flyingAnimal) : null);
 
 		registerEntityContext(entity -> entity instanceof Entity ? new EntityMoLang(() -> entity) : null);
 	}

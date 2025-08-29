@@ -1,5 +1,4 @@
 import net.darkhax.curseforgegradle.TaskPublishCurseForge
-import org.gradle.kotlin.dsl.register
 
 plugins {
     id("bluelib-convention")
@@ -21,7 +20,7 @@ if (bluelibVersion.isEmpty()) {
 version = bluelibVersion
 
 base {
-    archivesName = "${version}-common-${mcVersion}-${modId}"
+    archivesName.set("${version}-common-${mcVersion}-${modId}")
 }
 
 repositories {
@@ -31,7 +30,7 @@ repositories {
 
 neoForge {
     neoFormVersion = libs.versions.neoform.get()
-    validateAccessTransformers = true
+    validateAccessTransformers.set(true)
     accessTransformers.files.setFrom("src/main/resources/META-INF/accesstransformer-nf.cfg")
 
     parchment.minecraftVersion.set(libs.versions.parchment.minecraft.get())
@@ -45,14 +44,14 @@ dependencies {
 }
 
 modrinth {
-    token = System.getenv("MODRINTH") ?: "Invalid/No API Token Found"
-    projectId = "ZrEU4mLQ"
+    token.set(System.getenv("MODRINTH") ?: "Invalid/No API Token Found")
+    projectId.set("ZrEU4mLQ")
     versionNumber.set(version.toString())
-    versionName = "${version}-common-${mcVersion}-${modId}"
+    versionName.set("${version}-common-${mcVersion}-${modId}")
     uploadFile.set(tasks.named<Jar>("jar"))
-    changelog = rootProject.file("changelog.md").readText(Charsets.UTF_8)
+    changelog.set(rootProject.file("changelog.md").readText(Charsets.UTF_8))
     gameVersions.set(listOf(mcVersion, "1.21.2", "1.21.3"))
-    versionType = "release"
+    versionType.set("release")
     loaders.set(listOf("neoforge", "forge"))
     dependencies {
         required.project("bluelib")

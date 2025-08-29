@@ -1,4 +1,5 @@
 import net.darkhax.curseforgegradle.TaskPublishCurseForge
+import org.slf4j.event.Level
 
 plugins {
     id("bluelib-convention")
@@ -25,7 +26,7 @@ version = bluelibVersion
 
 
 base {
-    archivesName = "${version}-neoforge-${mcVersion}-${modId}"
+    archivesName.set("${version}-neoforge-${mcVersion}-${modId}")
 }
 
 neoForge {
@@ -37,7 +38,7 @@ neoForge {
 
     runs {
         configureEach {
-            logLevel = org.slf4j.event.Level.DEBUG
+            logLevel.set(Level.DEBUG)
         }
 
         mods.create(modId).sourceSet(project.sourceSets.getByName("main"))
@@ -64,7 +65,7 @@ dependencies {
 }
 
 tasks.withType<Test>().configureEach {
-    enabled = false;
+    enabled = false
 }
 
 tasks.named<JavaCompile>("compileJava").configure {
@@ -84,14 +85,14 @@ tasks.withType<ProcessResources>().configureEach {
 }
 
 modrinth {
-    token = System.getenv("MODRINTH") ?: "Invalid/No API Token Found"
-    projectId = "e4dMhzcL"
+    token.set(System.getenv("MODRINTH") ?: "Invalid/No API Token Found")
+    projectId.set("e4dMhzcL")
     versionNumber.set("neoforge-${version}")
-    versionName = "${version}-neoforge-${mcVersion}-${modId}"
+    versionName.set("${version}-neoforge-${mcVersion}-${modId}")
     uploadFile.set(tasks.named<Jar>("jar"))
-    changelog = rootProject.file("changelog.md").readText(Charsets.UTF_8)
+    changelog.set(rootProject.file("changelog.md").readText(Charsets.UTF_8))
     gameVersions.set(listOf(mcVersion, "1.21.2", "1.21.3"))
-    versionType = "release"
+    versionType.set("release")
     loaders.set(listOf("neoforge"))
     dependencies {
         optional.project("jei")
