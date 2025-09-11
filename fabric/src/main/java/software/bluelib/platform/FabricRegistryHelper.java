@@ -8,7 +8,6 @@
 package software.bluelib.platform;
 
 import java.util.function.Supplier;
-import java.util.function.UnaryOperator;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponentType;
@@ -21,7 +20,6 @@ import net.minecraft.world.item.crafting.RecipeType;
 import org.jetbrains.annotations.NotNull;
 import software.bluelib.BlueLibConstants;
 import software.bluelib.api.net.NetworkManager;
-import software.bluelib.internal.BlueResource;
 import software.bluelib.net.FabricNetworkManager;
 
 @SuppressWarnings({ "unchecked", "unused" })
@@ -48,10 +46,8 @@ public class FabricRegistryHelper implements IRegistryHelper {
 	}
 
 	@Override
-	public <T> @NotNull Supplier<DataComponentType<T>> registerDataComponent(@NotNull String pId, @NotNull UnaryOperator<DataComponentType.Builder<T>> pBuilder) {
-		final DataComponentType<T> componentType = Registry.register(BuiltInRegistries.DATA_COMPONENT_TYPE, BlueResource.resource(pId).toString(), pBuilder.apply(DataComponentType.builder()).build());
-
-		return () -> componentType;
+	public <T extends DataComponentType<?>> @NotNull Supplier<T> registerDataComponent(@NotNull String pId, @NotNull Supplier<T> pDataComponentType) {
+		return registerSupplier(BuiltInRegistries.DATA_COMPONENT_TYPE, pId, pDataComponentType);
 	}
 
 	@NotNull

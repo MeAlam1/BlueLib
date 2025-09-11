@@ -14,8 +14,8 @@ import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import software.bluelib.BlueLibConstants;
 import software.bluelib.api.utils.DataUtils;
+import software.bluelib.internal.registry.BlueDataComponentRegistry;
 
 @Mixin(ItemStack.class)
 public class ItemStackMixin {
@@ -24,8 +24,8 @@ public class ItemStackMixin {
 	public @NotNull ItemStack BlueLib$removeBlueLibIdOnCopy(@NotNull ItemStack pInstance, int pCount, @NotNull Operation<ItemStack> pOriginal) {
 		ItemStack copy = pOriginal.call(pInstance, pCount);
 
-		if (pCount < pInstance.getCount() && copy.has(BlueLibConstants.STACK_ANIMATABLE_ID_COMPONENT.get()))
-			copy.remove(BlueLibConstants.STACK_ANIMATABLE_ID_COMPONENT.get());
+		if (pCount < pInstance.getCount() && copy.has(BlueDataComponentRegistry.STACK_ANIMATABLE_ID.get()))
+			copy.remove(BlueDataComponentRegistry.STACK_ANIMATABLE_ID.get());
 
 		return copy;
 	}

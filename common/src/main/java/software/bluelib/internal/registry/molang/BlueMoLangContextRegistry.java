@@ -5,13 +5,14 @@
  * If a copy of the MIT License was not distributed with this file,
  * You can obtain one at https://opensource.org/licenses/MIT.
  */
-package software.bluelib.api.molang.registry;
+package software.bluelib.internal.registry.molang;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import net.minecraft.world.entity.Entity;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.molang.MoLangRuntimeBuilder;
@@ -23,17 +24,18 @@ import software.bluelib.api.molang.context.math.RandomMoLang;
 import software.bluelib.api.molang.context.math.TrigMoLang;
 import software.bluelib.loader.animation.AnimationState;
 
-public class MoLangContextRegistry {
+@ApiStatus.Internal
+public class BlueMoLangContextRegistry {
 
 	public static void init() {
-		MoLangContextRegistry.register(input -> new GeneralMoLang());
-		MoLangContextRegistry.register(input -> new BasicMathMoLang());
-		MoLangContextRegistry.register(input -> new AdvancedMathMoLang());
-		MoLangContextRegistry.register(input -> new RandomMoLang());
-		MoLangContextRegistry.register(input -> new TrigMoLang());
-		MoLangContextRegistry.register(input -> new OperatorMoLang());
+		BlueMoLangContextRegistry.register(input -> new GeneralMoLang());
+		BlueMoLangContextRegistry.register(input -> new BasicMathMoLang());
+		BlueMoLangContextRegistry.register(input -> new AdvancedMathMoLang());
+		BlueMoLangContextRegistry.register(input -> new RandomMoLang());
+		BlueMoLangContextRegistry.register(input -> new TrigMoLang());
+		BlueMoLangContextRegistry.register(input -> new OperatorMoLang());
 
-		MoLangContextRegistry.register(input -> {
+		BlueMoLangContextRegistry.register(input -> {
 			Supplier<?> supplier = input.get("bluelib_state", Supplier.class);
 			if (supplier != null) {
 				Object value = supplier.get();
@@ -44,9 +46,9 @@ public class MoLangContextRegistry {
 			return null;
 		});
 
-		MoLangEntityRegistry.init();
+		BlueMoLangEntityRegistry.init();
 
-		MoLangContextRegistry.register(input -> {
+		BlueMoLangContextRegistry.register(input -> {
 			Supplier<?> supplier = input.get("bluelib_entity", Supplier.class);
 			if (supplier != null) {
 				Object obj = supplier.get();

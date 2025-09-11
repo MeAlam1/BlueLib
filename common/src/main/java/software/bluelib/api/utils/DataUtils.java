@@ -11,13 +11,13 @@ import java.util.Objects;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.PatchedDataComponentMap;
 import org.jetbrains.annotations.NotNull;
-import software.bluelib.BlueLibConstants;
+import software.bluelib.internal.registry.BlueDataComponentRegistry;
 
 @SuppressWarnings("unused")
 public class DataUtils {
 
 	public static boolean areComponentsMatchingIgnoringBlueId(@NotNull PatchedDataComponentMap pComponentMap, @NotNull PatchedDataComponentMap pComponentMapTwo) {
-		final DataComponentType<Long> stackId = BlueLibConstants.STACK_ANIMATABLE_ID_COMPONENT.get();
+		final DataComponentType<Long> stackId = BlueDataComponentRegistry.STACK_ANIMATABLE_ID.get();
 		boolean patched = false;
 
 		if (pComponentMap.has(stackId)) {

@@ -7,16 +7,12 @@
  */
 package software.bluelib;
 
-import com.mojang.serialization.Codec;
 import java.util.List;
 import java.util.ServiceLoader;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.function.Supplier;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
-import net.minecraft.core.component.DataComponentType;
-import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import org.jetbrains.annotations.NotNull;
@@ -51,9 +47,6 @@ public class BlueLibConstants implements BuildDetails {
 
 	@NotNull
 	public static final String MOD_ID = "bluelib";
-
-	@NotNull
-	public static final Supplier<DataComponentType<Long>> STACK_ANIMATABLE_ID_COMPONENT = PlatformHelper.REGISTRY.registerDataComponent("stack_animatable_id", builder -> builder.persistent(Codec.LONG).networkSynchronized(ByteBufCodecs.VAR_LONG));
 
 	@NotNull
 	public static final String MOD_NAME = "BlueLib";
