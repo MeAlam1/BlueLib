@@ -5,7 +5,7 @@
  * If a copy of the MIT License was not distributed with this file,
  * You can obtain one at https://opensource.org/licenses/MIT.
  */
-package software.bluelib.api.json.cache;
+package software.bluelib.api.json.cache.range;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
@@ -14,16 +14,16 @@ import net.minecraft.core.component.DataComponentType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import org.jetbrains.annotations.NotNull;
-import software.bluelib.api.json.deserializer.IntRange;
+import software.bluelib.api.json.deserializer.range.FloatRange;
 
-public record IntRangeCache(
-		@NotNull Integer min,
-		@NotNull Integer max) {
+public record FloatRangeCache(
+		@NotNull Float min,
+		@NotNull Float max) {
 
-	public static final Codec<IntRangeCache> CODEC = Codec.PASSTHROUGH.comapFlatMap(
+	public static final Codec<FloatRangeCache> CODEC = Codec.PASSTHROUGH.comapFlatMap(
 			dynamic -> {
 				CompoundTag tag = (CompoundTag) dynamic.convert(NbtOps.INSTANCE).getValue();
-				return DataResult.success(IntRangeCache.readFromNBT(tag));
+				return DataResult.success(FloatRangeCache.readFromNBT(tag));
 			},
 			boneCache -> {
 				CompoundTag tag = new CompoundTag();
@@ -31,22 +31,22 @@ public record IntRangeCache(
 				return new Dynamic<>(NbtOps.INSTANCE, tag);
 			});
 
-	public static final DataComponentType<IntRangeCache> INT_RANGE_DATA = DataComponentType.<IntRangeCache>builder()
+	public static final DataComponentType<FloatRangeCache> FLOAT_RANGE_DATA = DataComponentType.<FloatRangeCache>builder()
 			.persistent(CODEC)
 			.build();
 
 	public void writeToNBT(@NotNull CompoundTag pTag) {
-		pTag.putInt("Min", min);
-		pTag.putInt("Max", max);
+		pTag.putFloat("Min", min);
+		pTag.putFloat("Max", max);
 	}
 
 	@NotNull
-	public static IntRangeCache readFromNBT(@NotNull CompoundTag pTag) {
-		return new IntRangeCache(pTag.getInt("Min"), pTag.getInt("Max"));
+	public static FloatRangeCache readFromNBT(@NotNull CompoundTag pTag) {
+		return new FloatRangeCache(pTag.getFloat("Min"), pTag.getFloat("Max"));
 	}
 
 	@NotNull
-	public static IntRangeCache construct(@NotNull IntRange pIntRange) {
-		return new IntRangeCache(pIntRange.min(), pIntRange.max());
+	public static FloatRangeCache construct(@NotNull FloatRange pFloatRange) {
+		return new FloatRangeCache(pFloatRange.min(), pFloatRange.max());
 	}
 }
