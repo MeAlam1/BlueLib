@@ -1,4 +1,4 @@
-# 2.3.6
+# 2.3.7
 
 ## Warning:
 
@@ -9,14 +9,18 @@
 
 ## Added
 
-* Added all the MoLang for:
-    * VehicleEntity
-    * FlyingAnimal
-
-## Changed
-
-* Updated the ModAPI Enum to support more niche modding APIs.
-* Major Gradle cleanup, removing deprecated features and improving build speed.
+* Added Preset Caches with Json Deserializers, Codecs, DataComponentType and CompoundTags for easy saving/loading of
+  presets.
+    * IntRange
+    * FloatRange
+    * DoubleRange
+    * LongRange
+    * ShortRange
+    * ByteRange
+    * BlockPos
+    * Vector2 (as Float)
+    * Vector3 (as Float)
+* Added `DataComponentType` for easy registration of custom data components.
 
 ## Epilogue
 
