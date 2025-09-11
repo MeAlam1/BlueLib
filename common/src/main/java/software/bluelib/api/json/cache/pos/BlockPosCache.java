@@ -51,4 +51,12 @@ public record BlockPosCache(
 	public static BlockPosCache construct(@NotNull BlockPos pBlockPos) {
 		return new BlockPosCache(pBlockPos.x(), pBlockPos.y(), pBlockPos.z());
 	}
+
+	public static net.minecraft.core.BlockPos convert(@NotNull BlockPos pPos) {
+		return new net.minecraft.core.BlockPos(pPos.x(), pPos.y(), pPos.z());
+	}
+
+	public static net.minecraft.core.BlockPos convert(@NotNull BlockPosCache pPos) {
+		return new net.minecraft.core.BlockPos(pPos.x(), pPos.y(), pPos.z());
+	}
 }

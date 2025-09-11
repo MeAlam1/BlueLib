@@ -14,6 +14,7 @@ import net.minecraft.core.component.DataComponentType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import org.jetbrains.annotations.NotNull;
+import org.joml.Vector3f;
 import software.bluelib.api.json.deserializer.pos.Vector3;
 
 public record Vector3Cache(
@@ -50,5 +51,13 @@ public record Vector3Cache(
 	@NotNull
 	public static Vector3Cache construct(@NotNull Vector3 pVectorRange) {
 		return new Vector3Cache(pVectorRange.x(), pVectorRange.y(), pVectorRange.z());
+	}
+
+	public static Vector3f convert(@NotNull Vector3 pVector) {
+		return new Vector3f(pVector.x(), pVector.y(), pVector.z());
+	}
+
+	public static Vector3f convert(@NotNull Vector3Cache pVector) {
+		return new Vector3f(pVector.x(), pVector.y(), pVector.z());
 	}
 }

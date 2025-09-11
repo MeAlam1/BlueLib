@@ -14,6 +14,8 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import software.bluelib.BlueLibConstants;
+import software.bluelib.api.json.cache.color.RGBAColorCache;
+import software.bluelib.api.json.cache.color.RGBColorCache;
 import software.bluelib.api.json.cache.pos.BlockPosCache;
 import software.bluelib.api.json.cache.pos.Vector2Cache;
 import software.bluelib.api.json.cache.pos.Vector3Cache;
@@ -47,6 +49,11 @@ public class BlueDataComponentRegistry {
 	public static final Supplier<DataComponentType<Vector3Cache>> VECTOR_3 = registerData("vector_three", () -> Vector3Cache.VECTOR3_DATA);
 	@NotNull
 	public static final Supplier<DataComponentType<BlockPosCache>> BLOCK_POS = registerData("block_pos", () -> BlockPosCache.BLOCK_POS_DATA);
+
+	@NotNull
+	public static final Supplier<DataComponentType<RGBAColorCache>> RGBA_COLOR = registerData("rgba_color", () -> RGBAColorCache.RGBA_COLOR_DATA);
+	@NotNull
+	public static final Supplier<DataComponentType<RGBColorCache>> RGB_COLOR = registerData("rgb_color", () -> RGBColorCache.RGB_COLOR_DATA);
 
 	@NotNull
 	private static <T> Supplier<DataComponentType<T>> registerData(@NotNull String pId, @NotNull Supplier<DataComponentType<T>> pBuilder) {

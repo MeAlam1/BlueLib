@@ -14,6 +14,7 @@ import net.minecraft.core.component.DataComponentType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import org.jetbrains.annotations.NotNull;
+import org.joml.Vector2f;
 import software.bluelib.api.json.deserializer.pos.Vector2;
 
 public record Vector2Cache(
@@ -48,5 +49,13 @@ public record Vector2Cache(
 	@NotNull
 	public static Vector2Cache construct(@NotNull Vector2 pVectorRange) {
 		return new Vector2Cache(pVectorRange.x(), pVectorRange.y());
+	}
+
+	public static Vector2f convert(@NotNull Vector2 pVector) {
+		return new Vector2f(pVector.x(), pVector.y());
+	}
+
+	public static Vector2f convert(@NotNull Vector2Cache pVector) {
+		return new Vector2f(pVector.x(), pVector.y());
 	}
 }

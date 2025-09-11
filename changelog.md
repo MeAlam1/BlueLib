@@ -17,9 +17,11 @@
     * LongRange
     * ShortRange
     * ByteRange
-    * BlockPos
-    * Vector2 (as Float)
-    * Vector3 (as Float)
+    * BlockPos (With conversion from BlockPosCache to BlockPos)
+    * Vector2 (as Float) (With conversion from Vector2Cache to Vector2f)
+    * Vector3 (as Float) (With conversion from Vector3Cache to Vector3f)
+    * RGBAColor (With conversion from RGBAColorCache to Color)
+    * RGBColor (With conversion from RGBColorCache to Color)
 * Added `DataComponentType` for easy registration of custom data components.
 
 ## Epilogue
