@@ -13,7 +13,7 @@ import java.util.Map;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.molang.context.BaseMoLangContext;
-import software.bluelib.api.molang.registry.MoLangContextRegistry;
+import software.bluelib.internal.registry.molang.BlueMoLangContextRegistry;
 
 @SuppressWarnings({ "unused" })
 public class MoLangRuntimeBuilder {
@@ -47,7 +47,7 @@ public class MoLangRuntimeBuilder {
 	}
 
 	public @NotNull MoLangRuntime build() {
-		List<BaseMoLangContext> contexts = MoLangContextRegistry.createContexts(input);
+		List<BaseMoLangContext> contexts = BlueMoLangContextRegistry.createContexts(input);
 		return new MoLangRuntime(contexts);
 	}
 }

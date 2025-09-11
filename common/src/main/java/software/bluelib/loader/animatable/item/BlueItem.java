@@ -16,8 +16,8 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import software.bluelib.BlueLibConstants;
 import software.bluelib.client.utils.RenderUtils;
+import software.bluelib.internal.registry.BlueDataComponentRegistry;
 import software.bluelib.loader.animatable.base.AnimatableManager;
 import software.bluelib.loader.animatable.base.BlueAnimatable;
 import software.bluelib.loader.animatable.base.ContextAwareAnimatableManager;
@@ -34,7 +34,7 @@ public interface BlueItem extends SingletonBlueAnimatable {
 	}
 
 	static long getId(@NotNull ItemStack pStack) {
-		return Optional.ofNullable(pStack.getComponentsPatch().get(BlueLibConstants.STACK_ANIMATABLE_ID_COMPONENT.get()))
+		return Optional.ofNullable(pStack.getComponentsPatch().get(BlueDataComponentRegistry.STACK_ANIMATABLE_ID.get()))
 				.filter(Optional::isPresent)
 				.<Long>map(Optional::get)
 				.orElse(Long.MAX_VALUE);
@@ -44,10 +44,10 @@ public interface BlueItem extends SingletonBlueAnimatable {
 		if (!(pStack.getComponents() instanceof PatchedDataComponentMap components))
 			return Long.MAX_VALUE;
 
-		Long id = components.get(BlueLibConstants.STACK_ANIMATABLE_ID_COMPONENT.get());
+		Long id = components.get(BlueDataComponentRegistry.STACK_ANIMATABLE_ID.get());
 
 		if (id == null)
-			components.set(BlueLibConstants.STACK_ANIMATABLE_ID_COMPONENT.get(), id = IdCache.getFreeId(pLevel));
+			components.set(BlueDataComponentRegistry.STACK_ANIMATABLE_ID.get(), id = IdCache.getFreeId(pLevel));
 
 		return id;
 	}

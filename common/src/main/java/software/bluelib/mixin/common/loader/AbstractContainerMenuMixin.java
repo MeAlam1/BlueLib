@@ -14,7 +14,7 @@ import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import software.bluelib.BlueLibConstants;
+import software.bluelib.internal.registry.BlueDataComponentRegistry;
 
 @Mixin(AbstractContainerMenu.class)
 public class AbstractContainerMenuMixin {
@@ -23,19 +23,19 @@ public class AbstractContainerMenuMixin {
 	public ItemStack BlueLib$removeBlueLibIdOnCopy(@NotNull ItemStack pInstance, int pCount, @NotNull Operation<ItemStack> pOriginal) {
 		ItemStack copy = pOriginal.call(pInstance, pCount);
 
-		if (copy.has(BlueLibConstants.STACK_ANIMATABLE_ID_COMPONENT.get()))
-			copy.remove(BlueLibConstants.STACK_ANIMATABLE_ID_COMPONENT.get());
+		if (copy.has(BlueDataComponentRegistry.STACK_ANIMATABLE_ID.get()))
+			copy.remove(BlueDataComponentRegistry.STACK_ANIMATABLE_ID.get());
 
 		return copy;
 	}
 
 	@WrapOperation(method = "synchronizeSlotToRemote", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;matches(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/item/ItemStack;)Z"))
 	public boolean BlueLib$forceBlueLibIdSync(@NotNull ItemStack pStack, @NotNull ItemStack pOther, @NotNull Operation<Boolean> pOriginal) {
-		return pOriginal.call(pStack, pOther) && pStack.getOrDefault(BlueLibConstants.STACK_ANIMATABLE_ID_COMPONENT.get(), -1).equals(pOther.getOrDefault(BlueLibConstants.STACK_ANIMATABLE_ID_COMPONENT.get(), -1));
+		return pOriginal.call(pStack, pOther) && pStack.getOrDefault(BlueDataComponentRegistry.STACK_ANIMATABLE_ID.get(), -1).equals(pOther.getOrDefault(BlueDataComponentRegistry.STACK_ANIMATABLE_ID.get(), -1));
 	}
 
 	@WrapOperation(method = "triggerSlotListeners", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;matches(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/item/ItemStack;)Z"))
 	public boolean BlueLib$forceBlueLibSlotChange(@NotNull ItemStack pStack, @NotNull ItemStack pOther, @NotNull Operation<Boolean> pOriginal) {
-		return pOriginal.call(pStack, pOther) && pStack.getOrDefault(BlueLibConstants.STACK_ANIMATABLE_ID_COMPONENT.get(), -1).equals(pOther.getOrDefault(BlueLibConstants.STACK_ANIMATABLE_ID_COMPONENT.get(), -1));
+		return pOriginal.call(pStack, pOther) && pStack.getOrDefault(BlueDataComponentRegistry.STACK_ANIMATABLE_ID.get(), -1).equals(pOther.getOrDefault(BlueDataComponentRegistry.STACK_ANIMATABLE_ID.get(), -1));
 	}
 }

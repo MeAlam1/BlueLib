@@ -8,7 +8,6 @@
 package software.bluelib.platform;
 
 import java.util.function.Supplier;
-import java.util.function.UnaryOperator;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.Entity;
@@ -27,7 +26,7 @@ import software.bluelib.net.NeoForgeNetworkManager;
 public class NeoForgeRegistryHelper implements IRegistryHelper {
 
 	@NotNull
-	public static final DeferredRegister.DataComponents DATA_COMPONENTS_REGISTER = DeferredRegister.createDataComponents(Registries.DATA_COMPONENT_TYPE, BlueLibConstants.MOD_ID);
+	public static final DeferredRegister.DataComponents DATA_COMPONENT_TYPE = DeferredRegister.createDataComponents(Registries.DATA_COMPONENT_TYPE, BlueLibConstants.MOD_ID);
 	@NotNull
 	public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(Registries.ENTITY_TYPE, BlueLibConstants.MOD_ID);
 	@NotNull
@@ -51,8 +50,8 @@ public class NeoForgeRegistryHelper implements IRegistryHelper {
 	}
 
 	@Override
-	public <T> @NotNull Supplier<DataComponentType<T>> registerDataComponent(@NotNull String pId, @NotNull UnaryOperator<DataComponentType.Builder<T>> pBuilder) {
-		return DATA_COMPONENTS_REGISTER.registerComponentType(pId, pBuilder);
+	public <T extends DataComponentType<?>> @NotNull Supplier<T> registerDataComponent(@NotNull String pId, @NotNull Supplier<T> pDataComponentType) {
+		return DATA_COMPONENT_TYPE.register(pId, pDataComponentType);
 	}
 
 	@Override
@@ -63,7 +62,7 @@ public class NeoForgeRegistryHelper implements IRegistryHelper {
 	public static void register(@NotNull IEventBus pModEventBus) {
 		RECIPE_TYPES.register(pModEventBus);
 		RECIPE_SERIALIZERS.register(pModEventBus);
-		DATA_COMPONENTS_REGISTER.register(pModEventBus);
+		DATA_COMPONENT_TYPE.register(pModEventBus);
 		ENTITIES.register(pModEventBus);
 
 		pModEventBus.<EntityAttributeCreationEvent>addListener(event -> BlueEntityRegistry.registerEntityAttributes(event::put));

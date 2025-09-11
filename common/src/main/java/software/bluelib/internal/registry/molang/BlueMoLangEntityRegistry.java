@@ -5,7 +5,7 @@
  * If a copy of the MIT License was not distributed with this file,
  * You can obtain one at https://opensource.org/licenses/MIT.
  */
-package software.bluelib.api.molang.registry;
+package software.bluelib.internal.registry.molang;
 
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.animal.Animal;
@@ -24,6 +24,7 @@ import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.raid.Raider;
 import net.minecraft.world.entity.vehicle.VehicleEntity;
+import org.jetbrains.annotations.ApiStatus;
 import software.bluelib.api.molang.context.entity.*;
 import software.bluelib.api.molang.context.entity.animal.*;
 import software.bluelib.api.molang.context.entity.decoration.ArmorStandMoLang;
@@ -37,7 +38,8 @@ import software.bluelib.api.molang.context.entity.monster.PatrollingMonsterMoLan
 import software.bluelib.api.molang.context.entity.npc.AbstractVillagerMoLang;
 import software.bluelib.api.molang.context.entity.vehicle.VehicleEntityMoLang;
 
-public class MoLangEntityRegistry extends MoLangContextRegistry {
+@ApiStatus.Internal
+public class BlueMoLangEntityRegistry extends BlueMoLangContextRegistry {
 
 	public static void init() {
 		registerEntityContext(wolf -> wolf instanceof Wolf ? new WolfMoLang(() -> (Wolf) wolf) : null);

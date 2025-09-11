@@ -8,7 +8,6 @@
 package software.bluelib.platform;
 
 import java.util.function.Supplier;
-import java.util.function.UnaryOperator;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -32,5 +31,5 @@ public interface IRegistryHelper {
 	<T extends Entity> Supplier<EntityType<T>> registerEntity(@NotNull String pId, @NotNull Supplier<EntityType<T>> pEntity);
 
 	@NotNull
-	<T> Supplier<DataComponentType<T>> registerDataComponent(@NotNull String pId, @NotNull UnaryOperator<DataComponentType.Builder<T>> pBuilder);
+	<T extends DataComponentType<?>> Supplier<T> registerDataComponent(@NotNull String pId, @NotNull Supplier<T> pDataComponentType);
 }
