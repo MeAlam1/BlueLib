@@ -25,9 +25,9 @@ public record FloatRangeCache(
 				CompoundTag tag = (CompoundTag) dynamic.convert(NbtOps.INSTANCE).getValue();
 				return DataResult.success(FloatRangeCache.readFromNBT(tag));
 			},
-			boneCache -> {
+			floatRangeCache -> {
 				CompoundTag tag = new CompoundTag();
-				boneCache.writeToNBT(tag);
+				floatRangeCache.writeToNBT(tag);
 				return new Dynamic<>(NbtOps.INSTANCE, tag);
 			});
 

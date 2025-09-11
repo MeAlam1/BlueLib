@@ -25,9 +25,9 @@ public record DoubleRangeCache(
 				CompoundTag tag = (CompoundTag) dynamic.convert(NbtOps.INSTANCE).getValue();
 				return DataResult.success(DoubleRangeCache.readFromNBT(tag));
 			},
-			boneCache -> {
+			doubleRangeCache -> {
 				CompoundTag tag = new CompoundTag();
-				boneCache.writeToNBT(tag);
+				doubleRangeCache.writeToNBT(tag);
 				return new Dynamic<>(NbtOps.INSTANCE, tag);
 			});
 

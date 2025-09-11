@@ -25,9 +25,9 @@ public record LongRangeCache(
 				CompoundTag tag = (CompoundTag) dynamic.convert(NbtOps.INSTANCE).getValue();
 				return DataResult.success(LongRangeCache.readFromNBT(tag));
 			},
-			boneCache -> {
+			longRangeCache -> {
 				CompoundTag tag = new CompoundTag();
-				boneCache.writeToNBT(tag);
+				longRangeCache.writeToNBT(tag);
 				return new Dynamic<>(NbtOps.INSTANCE, tag);
 			});
 

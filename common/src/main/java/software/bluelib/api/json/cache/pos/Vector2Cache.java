@@ -5,7 +5,7 @@
  * If a copy of the MIT License was not distributed with this file,
  * You can obtain one at https://opensource.org/licenses/MIT.
  */
-package software.bluelib.api.json.cache.range;
+package software.bluelib.api.json.cache.pos;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
@@ -14,39 +14,39 @@ import net.minecraft.core.component.DataComponentType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import org.jetbrains.annotations.NotNull;
-import software.bluelib.api.json.deserializer.range.ShortRange;
+import software.bluelib.api.json.deserializer.pos.Vector2;
 
-public record ShortRangeCache(
-		@NotNull Short min,
-		@NotNull Short max) {
+public record Vector2Cache(
+		@NotNull Float x,
+		@NotNull Float y) {
 
-	public static final Codec<ShortRangeCache> CODEC = Codec.PASSTHROUGH.comapFlatMap(
+	public static final Codec<Vector2Cache> CODEC = Codec.PASSTHROUGH.comapFlatMap(
 			dynamic -> {
 				CompoundTag tag = (CompoundTag) dynamic.convert(NbtOps.INSTANCE).getValue();
-				return DataResult.success(ShortRangeCache.readFromNBT(tag));
+				return DataResult.success(Vector2Cache.readFromNBT(tag));
 			},
-			shortRangeCache -> {
+			vector2Cache -> {
 				CompoundTag tag = new CompoundTag();
-				shortRangeCache.writeToNBT(tag);
+				vector2Cache.writeToNBT(tag);
 				return new Dynamic<>(NbtOps.INSTANCE, tag);
 			});
 
-	public static final DataComponentType<ShortRangeCache> SHORT_RANGE_DATA = DataComponentType.<ShortRangeCache>builder()
+	public static final DataComponentType<Vector2Cache> VECTOR2_DATA = DataComponentType.<Vector2Cache>builder()
 			.persistent(CODEC)
 			.build();
 
 	public void writeToNBT(@NotNull CompoundTag pTag) {
-		pTag.putShort("Min", min);
-		pTag.putShort("Max", max);
+		pTag.putFloat("x", x);
+		pTag.putFloat("y", y);
 	}
 
 	@NotNull
-	public static ShortRangeCache readFromNBT(@NotNull CompoundTag pTag) {
-		return new ShortRangeCache(pTag.getShort("Min"), pTag.getShort("Max"));
+	public static Vector2Cache readFromNBT(@NotNull CompoundTag pTag) {
+		return new Vector2Cache(pTag.getFloat("x"), pTag.getFloat("y"));
 	}
 
 	@NotNull
-	public static ShortRangeCache construct(@NotNull ShortRange pShortRange) {
-		return new ShortRangeCache(pShortRange.min(), pShortRange.max());
+	public static Vector2Cache construct(@NotNull Vector2 pVectorRange) {
+		return new Vector2Cache(pVectorRange.x(), pVectorRange.y());
 	}
 }
