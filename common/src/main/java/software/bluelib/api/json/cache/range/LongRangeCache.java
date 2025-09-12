@@ -10,6 +10,7 @@ package software.bluelib.api.json.cache.range;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.Dynamic;
+import java.util.concurrent.ThreadLocalRandom;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
@@ -43,6 +44,10 @@ public record LongRangeCache(
 	@NotNull
 	public static LongRangeCache readFromNBT(@NotNull CompoundTag pTag) {
 		return new LongRangeCache(pTag.getLong("Min"), pTag.getLong("Max"));
+	}
+
+	public long getRandomValue() {
+		return ThreadLocalRandom.current().nextLong() * (max - min) + min;
 	}
 
 	@NotNull

@@ -31,8 +31,8 @@ public interface IVariantEntity<T extends Entity> {
 	T getEntity();
 
 	@NotNull
-	default String getRandomVariant(@NotNull List<String> pVariantNamesList, @NotNull String pDefaultVariant) {
-		if (pVariantNamesList.isEmpty()) {
+	default String getRandomVariant(@Nullable List<String> pVariantNamesList, @NotNull String pDefaultVariant) {
+		if (pVariantNamesList == null || pVariantNamesList.isEmpty()) {
 			BaseLogger.log(true, BaseLogLevel.INFO, BlueTranslation.log("variant.list.empty", pDefaultVariant));
 			return pDefaultVariant;
 		}
