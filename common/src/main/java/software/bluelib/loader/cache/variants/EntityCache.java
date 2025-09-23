@@ -9,12 +9,67 @@ package software.bluelib.loader.cache.variants;
 
 import java.util.Map;
 import java.util.Set;
+
+import com.mojang.datafixers.kinds.K1;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.DataResult;
+import com.mojang.serialization.Dynamic;
+import net.minecraft.core.component.DataComponentType;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtOps;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import software.bluelib.api.json.cache.range.FloatRangeCache;
+import software.bluelib.api.utils.minecraft.CompoundTagUtils;
 
 public record EntityCache(
 		@NotNull String formatVersion,
 		@NotNull Map<String, VariantCache> variants) {
+
+
+	@NotNull
+	public static final Codec<EntityCache> CODEC = Codec.PASSTHROUGH.comapFlatMap(
+			dynamic -> {
+				CompoundTag tag = (CompoundTag) dynamic.convert(NbtOps.INSTANCE).getValue();
+				return DataResult.success(EntityCache.readFromNBT(tag));
+			},
+			entityCache -> {
+				CompoundTag tag = new CompoundTag();
+				entityCache.writeToNBT(tag);
+				return new Dynamic<>(NbtOps.INSTANCE, tag);
+			});
+
+	@NotNull
+	public static final DataComponentType<EntityCache> ENTITY_CACHE_DATA = DataComponentType.<EntityCache>builder()
+			.persistent(CODEC)
+			.build();
+
+	public void writeToNBT(@NotNull CompoundTag pTag) {
+		pTag.putString("formatVersion", formatVersion);
+		CompoundTagUtils.writeMap(
+				pTag,
+				"variants",
+				variants,
+				(tag, key) -> tag.putString("name", key),
+				(tag, value) -> value.writeToNBT(tag),
+				"name",
+				"data"
+		);
+	}
+
+	@NotNull
+	public static EntityCache readFromNBT(@NotNull CompoundTag pTag) {
+		String formatVersion = pTag.getString("formatVersion");
+		Map<String, VariantCache> variants = CompoundTagUtils.readMap(
+				pTag,
+				"variants",
+				tag -> tag.getString("name"),
+				VariantCache::readFromNBT,
+				"name",
+				"data"
+		);
+		return new EntityCache(formatVersion, variants);
+	}
 
 	@NotNull
 	public Set<String> getVariantNames() {

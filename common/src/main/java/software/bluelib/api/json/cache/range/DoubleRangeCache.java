@@ -21,6 +21,7 @@ public record DoubleRangeCache(
 		@NotNull Double min,
 		@NotNull Double max) {
 
+	@NotNull
 	public static final Codec<DoubleRangeCache> CODEC = Codec.PASSTHROUGH.comapFlatMap(
 			dynamic -> {
 				CompoundTag tag = (CompoundTag) dynamic.convert(NbtOps.INSTANCE).getValue();
@@ -32,6 +33,7 @@ public record DoubleRangeCache(
 				return new Dynamic<>(NbtOps.INSTANCE, tag);
 			});
 
+	@NotNull
 	public static final DataComponentType<DoubleRangeCache> DOUBLE_RANGE_DATA = DataComponentType.<DoubleRangeCache>builder()
 			.persistent(CODEC)
 			.build();

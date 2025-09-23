@@ -21,6 +21,7 @@ public record BlockPosCache(
 		@NotNull Integer y,
 		@NotNull Integer z) {
 
+	@NotNull
 	public static final Codec<BlockPosCache> CODEC = Codec.PASSTHROUGH.comapFlatMap(
 			dynamic -> {
 				CompoundTag tag = (CompoundTag) dynamic.convert(NbtOps.INSTANCE).getValue();
@@ -32,6 +33,7 @@ public record BlockPosCache(
 				return new Dynamic<>(NbtOps.INSTANCE, tag);
 			});
 
+	@NotNull
 	public static final DataComponentType<BlockPosCache> BLOCK_POS_DATA = DataComponentType.<BlockPosCache>builder()
 			.persistent(CODEC)
 			.build();

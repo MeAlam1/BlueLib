@@ -21,6 +21,7 @@ public record ByteRangeCache(
 		@NotNull Byte min,
 		@NotNull Byte max) {
 
+	@NotNull
 	public static final Codec<ByteRangeCache> CODEC = Codec.PASSTHROUGH.comapFlatMap(
 			dynamic -> {
 				CompoundTag tag = (CompoundTag) dynamic.convert(NbtOps.INSTANCE).getValue();
@@ -32,6 +33,7 @@ public record ByteRangeCache(
 				return new Dynamic<>(NbtOps.INSTANCE, tag);
 			});
 
+	@NotNull
 	public static final DataComponentType<ByteRangeCache> BYTE_RANGE_DATA = DataComponentType.<ByteRangeCache>builder()
 			.persistent(CODEC)
 			.build();

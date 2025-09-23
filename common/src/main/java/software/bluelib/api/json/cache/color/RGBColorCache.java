@@ -22,6 +22,7 @@ public record RGBColorCache(
 		@NotNull Integer green,
 		@NotNull Integer blue) {
 
+	@NotNull
 	public static final Codec<RGBColorCache> CODEC = Codec.PASSTHROUGH.comapFlatMap(
 			dynamic -> {
 				CompoundTag tag = (CompoundTag) dynamic.convert(NbtOps.INSTANCE).getValue();
@@ -33,6 +34,7 @@ public record RGBColorCache(
 				return new Dynamic<>(NbtOps.INSTANCE, tag);
 			});
 
+	@NotNull
 	public static final DataComponentType<RGBColorCache> RGB_COLOR_DATA = DataComponentType.<RGBColorCache>builder()
 			.persistent(CODEC)
 			.build();

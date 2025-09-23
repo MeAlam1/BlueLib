@@ -21,6 +21,7 @@ public record Vector2Cache(
 		@NotNull Float x,
 		@NotNull Float y) {
 
+	@NotNull
 	public static final Codec<Vector2Cache> CODEC = Codec.PASSTHROUGH.comapFlatMap(
 			dynamic -> {
 				CompoundTag tag = (CompoundTag) dynamic.convert(NbtOps.INSTANCE).getValue();
@@ -32,6 +33,7 @@ public record Vector2Cache(
 				return new Dynamic<>(NbtOps.INSTANCE, tag);
 			});
 
+	@NotNull
 	public static final DataComponentType<Vector2Cache> VECTOR2_DATA = DataComponentType.<Vector2Cache>builder()
 			.persistent(CODEC)
 			.build();

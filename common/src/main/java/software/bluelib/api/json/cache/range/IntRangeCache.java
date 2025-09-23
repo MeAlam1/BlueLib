@@ -21,6 +21,7 @@ public record IntRangeCache(
 		@NotNull Integer min,
 		@NotNull Integer max) {
 
+	@NotNull
 	public static final Codec<IntRangeCache> CODEC = Codec.PASSTHROUGH.comapFlatMap(
 			dynamic -> {
 				CompoundTag tag = (CompoundTag) dynamic.convert(NbtOps.INSTANCE).getValue();
@@ -32,6 +33,7 @@ public record IntRangeCache(
 				return new Dynamic<>(NbtOps.INSTANCE, tag);
 			});
 
+	@NotNull
 	public static final DataComponentType<IntRangeCache> INT_RANGE_DATA = DataComponentType.<IntRangeCache>builder()
 			.persistent(CODEC)
 			.build();

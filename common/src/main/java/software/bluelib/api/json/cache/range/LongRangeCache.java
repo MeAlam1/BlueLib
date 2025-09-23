@@ -21,6 +21,7 @@ public record LongRangeCache(
 		@NotNull Long min,
 		@NotNull Long max) {
 
+	@NotNull
 	public static final Codec<LongRangeCache> CODEC = Codec.PASSTHROUGH.comapFlatMap(
 			dynamic -> {
 				CompoundTag tag = (CompoundTag) dynamic.convert(NbtOps.INSTANCE).getValue();
@@ -32,6 +33,7 @@ public record LongRangeCache(
 				return new Dynamic<>(NbtOps.INSTANCE, tag);
 			});
 
+	@NotNull
 	public static final DataComponentType<LongRangeCache> LONG_RANGE_DATA = DataComponentType.<LongRangeCache>builder()
 			.persistent(CODEC)
 			.build();

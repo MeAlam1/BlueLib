@@ -21,6 +21,7 @@ public record ShortRangeCache(
 		@NotNull Short min,
 		@NotNull Short max) {
 
+	@NotNull
 	public static final Codec<ShortRangeCache> CODEC = Codec.PASSTHROUGH.comapFlatMap(
 			dynamic -> {
 				CompoundTag tag = (CompoundTag) dynamic.convert(NbtOps.INSTANCE).getValue();
@@ -32,6 +33,7 @@ public record ShortRangeCache(
 				return new Dynamic<>(NbtOps.INSTANCE, tag);
 			});
 
+	@NotNull
 	public static final DataComponentType<ShortRangeCache> SHORT_RANGE_DATA = DataComponentType.<ShortRangeCache>builder()
 			.persistent(CODEC)
 			.build();

@@ -8,7 +8,9 @@
 package software.bluelib.internal.registry;
 
 import com.mojang.serialization.Codec;
+
 import java.util.function.Supplier;
+
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.network.codec.ByteBufCodecs;
 import org.jetbrains.annotations.ApiStatus;
@@ -20,12 +22,15 @@ import software.bluelib.api.json.cache.pos.BlockPosCache;
 import software.bluelib.api.json.cache.pos.Vector2Cache;
 import software.bluelib.api.json.cache.pos.Vector3Cache;
 import software.bluelib.api.json.cache.range.*;
+import software.bluelib.loader.cache.variants.EntityCache;
+import software.bluelib.loader.cache.variants.VariantCache;
 
 @ApiStatus.Internal
-@SuppressWarnings({ "unused" })
+@SuppressWarnings({"unused"})
 public class BlueDataComponentRegistry {
 
-	public static void init() {}
+	public static void init() {
+	}
 
 	@NotNull
 	public static final Supplier<DataComponentType<Long>> STACK_ANIMATABLE_ID = registerData("stack_animatable_id", () -> DataComponentType.<Long>builder().persistent(Codec.LONG).networkSynchronized(ByteBufCodecs.VAR_LONG).build());
@@ -54,6 +59,12 @@ public class BlueDataComponentRegistry {
 	public static final Supplier<DataComponentType<RGBAColorCache>> RGBA_COLOR = registerData("rgba_color", () -> RGBAColorCache.RGBA_COLOR_DATA);
 	@NotNull
 	public static final Supplier<DataComponentType<RGBColorCache>> RGB_COLOR = registerData("rgb_color", () -> RGBColorCache.RGB_COLOR_DATA);
+
+	@NotNull
+	public static final Supplier<DataComponentType<EntityCache>> ENTITY_CACHE = registerData("entity_cache", () -> EntityCache.ENTITY_CACHE_DATA);
+	@NotNull
+	public static final Supplier<DataComponentType<VariantCache>> VARIANT_CACHE = registerData("variant_cache", () -> VariantCache.VARIANT_CACHE_DATA);
+
 
 	@NotNull
 	private static <T> Supplier<DataComponentType<T>> registerData(@NotNull String pId, @NotNull Supplier<DataComponentType<T>> pBuilder) {
