@@ -7,7 +7,6 @@ plugins {
 
 java {
     toolchain.languageVersion = JavaLanguageVersion.of(21)
-
     withSourcesJar()
     withJavadocJar()
 }
@@ -41,7 +40,6 @@ tasks.withType<Jar>().configureEach {
     from(rootProject.file("LICENSE")) {
         rename { "${it}_${modDisplayName}" }
     }
-
     manifest {
         attributes(
             mapOf(
@@ -59,8 +57,8 @@ tasks.withType<Jar>().configureEach {
 }
 
 tasks.withType<JavaCompile>().configureEach {
-    this.options.encoding = "UTF-8"
-    this.options.getRelease().set(21)
+    options.encoding = "UTF-8"
+    options.release.set(21)
 }
 
 tasks.withType<ProcessResources>().configureEach {
@@ -82,11 +80,9 @@ tasks.withType<ProcessResources>().configureEach {
         "neoforge_loader_range" to neoforgeLoaderVersionRange,
         "jei_api_version" to jeiApiVersion
     )
-
     filesMatching(listOf("pack.mcmeta", "fabric.mod.json", "META-INF/neoforge.mods.toml", "*.mixins.json")) {
         expand(expandProps)
     }
-
     inputs.properties(expandProps)
 }
 
@@ -99,7 +95,7 @@ publishing {
     }
 }
 
-tasks.withType<Javadoc> {
+tasks.withType<Javadoc>().configureEach {
     exclude("**/*.kt")
     (options as StandardJavadocDocletOptions).addStringOption("Xdoclint:none", "-quiet")
     isFailOnError = false

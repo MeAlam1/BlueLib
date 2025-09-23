@@ -24,7 +24,6 @@ if (bluelibVersion.isEmpty()) {
 
 version = bluelibVersion
 
-
 base {
     archivesName.set("${version}-neoforge-${mcVersion}-${modId}")
 }

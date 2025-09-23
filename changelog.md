@@ -22,6 +22,9 @@
 ## Changed
 * Modified some Annotations to improve usability and clarity.
 
+## Bug Fixes
+* Minor Gradle Cleanup
+
 ## Epilogue
 
 * Thank you for your continued support and patience.

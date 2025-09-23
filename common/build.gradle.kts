@@ -92,7 +92,6 @@ tasks.named<DefaultTask>("publish").configure {
     finalizedBy("publishToCurseForge")
 }
 
-
 spotless {
     java {
         leadingSpacesToTabs()
@@ -118,5 +117,3 @@ license {
 
     skipExistingHeaders = false
 }
-
-
