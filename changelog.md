@@ -9,9 +9,21 @@
 
 ## Added
 * Added the `getRandomValue` in the Range Caches for easy random value retrieval.
+* Added `CompoundTagUtils` to simplify NBT operations.
+* Added the Data Pipeline to:
+   * VariantCache
+   * EntityCache
+   * AnimationCache
+   * StateCache
+   * GroupCache
+   * BehaviorCache
+   * ControllerCache
 
 ## Changed
 * Modified some Annotations to improve usability and clarity.
+
+## Bug Fixes
+* Minor Gradle Cleanup
 
 ## Epilogue
 

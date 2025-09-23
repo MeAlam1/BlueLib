@@ -20,6 +20,9 @@ import software.bluelib.api.json.cache.pos.BlockPosCache;
 import software.bluelib.api.json.cache.pos.Vector2Cache;
 import software.bluelib.api.json.cache.pos.Vector3Cache;
 import software.bluelib.api.json.cache.range.*;
+import software.bluelib.loader.cache.controller.*;
+import software.bluelib.loader.cache.variants.EntityCache;
+import software.bluelib.loader.cache.variants.VariantCache;
 
 @ApiStatus.Internal
 @SuppressWarnings({ "unused" })
@@ -54,6 +57,22 @@ public class BlueDataComponentRegistry {
 	public static final Supplier<DataComponentType<RGBAColorCache>> RGBA_COLOR = registerData("rgba_color", () -> RGBAColorCache.RGBA_COLOR_DATA);
 	@NotNull
 	public static final Supplier<DataComponentType<RGBColorCache>> RGB_COLOR = registerData("rgb_color", () -> RGBColorCache.RGB_COLOR_DATA);
+
+	@NotNull
+	public static final Supplier<DataComponentType<EntityCache>> ENTITY_CACHE = registerData("entity_cache", () -> EntityCache.ENTITY_CACHE_DATA);
+	@NotNull
+	public static final Supplier<DataComponentType<VariantCache>> VARIANT_CACHE = registerData("variant_cache", () -> VariantCache.VARIANT_CACHE_DATA);
+
+	@NotNull
+	public static final Supplier<DataComponentType<AnimationCache>> CONTROLLER_ANIMATION_CACHE = registerData("controller_animation_cache", () -> AnimationCache.ANIMATION_CACHE_DATA);
+	@NotNull
+	public static final Supplier<DataComponentType<StateCache>> STATE_CACHE = registerData("state_cache", () -> StateCache.STATE_CACHE_DATA);
+	@NotNull
+	public static final Supplier<DataComponentType<BehaviourCache>> BEHAVIOUR_CACHE = registerData("behaviour_cache", () -> BehaviourCache.BEHAVIOUR_CACHE_DATA);
+	@NotNull
+	public static final Supplier<DataComponentType<GroupCache>> GROUP_CACHE = registerData("group_cache", () -> GroupCache.GROUP_CACHE_DATA);
+	@NotNull
+	public static final Supplier<DataComponentType<ControllerCache>> CONTROLLER_CACHE = registerData("controller_cache", () -> ControllerCache.CONTROLLER_CACHE_DATA);
 
 	@NotNull
 	private static <T> Supplier<DataComponentType<T>> registerData(@NotNull String pId, @NotNull Supplier<DataComponentType<T>> pBuilder) {

@@ -21,6 +21,7 @@ public record FloatRangeCache(
 		@NotNull Float min,
 		@NotNull Float max) {
 
+	@NotNull
 	public static final Codec<FloatRangeCache> CODEC = Codec.PASSTHROUGH.comapFlatMap(
 			dynamic -> {
 				CompoundTag tag = (CompoundTag) dynamic.convert(NbtOps.INSTANCE).getValue();
@@ -32,6 +33,7 @@ public record FloatRangeCache(
 				return new Dynamic<>(NbtOps.INSTANCE, tag);
 			});
 
+	@NotNull
 	public static final DataComponentType<FloatRangeCache> FLOAT_RANGE_DATA = DataComponentType.<FloatRangeCache>builder()
 			.persistent(CODEC)
 			.build();
