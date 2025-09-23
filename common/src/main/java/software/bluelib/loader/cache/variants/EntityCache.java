@@ -7,25 +7,21 @@
  */
 package software.bluelib.loader.cache.variants;
 
-import java.util.Map;
-import java.util.Set;
-
-import com.mojang.datafixers.kinds.K1;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.Dynamic;
+import java.util.Map;
+import java.util.Set;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import software.bluelib.api.json.cache.range.FloatRangeCache;
 import software.bluelib.api.utils.minecraft.CompoundTagUtils;
 
 public record EntityCache(
 		@NotNull String formatVersion,
 		@NotNull Map<String, VariantCache> variants) {
-
 
 	@NotNull
 	public static final Codec<EntityCache> CODEC = Codec.PASSTHROUGH.comapFlatMap(
@@ -53,8 +49,7 @@ public record EntityCache(
 				(tag, key) -> tag.putString("name", key),
 				(tag, value) -> value.writeToNBT(tag),
 				"name",
-				"data"
-		);
+				"data");
 	}
 
 	@NotNull
@@ -66,8 +61,7 @@ public record EntityCache(
 				tag -> tag.getString("name"),
 				VariantCache::readFromNBT,
 				"name",
-				"data"
-		);
+				"data");
 		return new EntityCache(formatVersion, variants);
 	}
 

@@ -13,6 +13,11 @@
 * Added the Data Pipeline to:
    * VariantCache
    * EntityCache
+   * AnimationCache
+   * StateCache
+   * GroupCache
+   * BehaviorCache
+   * ControllerCache
 
 ## Changed
 * Modified some Annotations to improve usability and clarity.

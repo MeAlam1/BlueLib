@@ -17,7 +17,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import software.bluelib.api.json.cache.range.ByteRangeCache;
 import software.bluelib.api.utils.minecraft.CompoundTagUtils;
 
 public record VariantCache(
@@ -48,7 +47,7 @@ public record VariantCache(
 	public static VariantCache readFromNBT(@NotNull CompoundTag pTag) {
 		return new VariantCache(CompoundTagUtils.readJsonArray(pTag, "parameters"));
 	}
-	
+
 	@Nullable
 	public JsonElement getParameter(@NotNull String pParameterName) {
 		if (parameters == null) return null;
