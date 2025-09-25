@@ -11,15 +11,15 @@ import java.util.List;
 import net.minecraft.core.Direction;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
-import software.bluelib.loader.json.deserialize.model.FaceUV;
+import software.bluelib.loader.json.deserialize.model.FaceUVDeserializer;
 
 public record QuadData(@NotNull List<VertexData> vertices, @NotNull Vector3f normal, @NotNull Direction direction) {
 
-	public static @NotNull QuadData build(@NotNull List<VertexData> pVertices, @NotNull List<Float> pUvCoords, @NotNull List<Float> pUvSize, @NotNull FaceUV.Rotation pUvRotation, @NotNull Float pTextureWidth, @NotNull Float pTextureHeight, boolean pMirror, @NotNull Direction pDirection) {
+	public static @NotNull QuadData build(@NotNull List<VertexData> pVertices, @NotNull List<Float> pUvCoords, @NotNull List<Float> pUvSize, @NotNull FaceUVDeserializer.Rotation pUvRotation, @NotNull Float pTextureWidth, @NotNull Float pTextureHeight, boolean pMirror, @NotNull Direction pDirection) {
 		return build(pVertices, pUvCoords.get(0), pUvCoords.get(1), pUvSize.get(0), pUvSize.get(1), pUvRotation, pTextureWidth, pTextureHeight, pMirror, pDirection);
 	}
 
-	public static @NotNull QuadData build(@NotNull List<VertexData> pVertices, @NotNull Float pU, @NotNull Float pV, @NotNull Float pUSize, @NotNull Float pVSize, @NotNull FaceUV.Rotation pUvRotation, @NotNull Float pTextureWidth, @NotNull Float pTextureHeight, boolean pMirror, @NotNull Direction pDirection) {
+	public static @NotNull QuadData build(@NotNull List<VertexData> pVertices, @NotNull Float pU, @NotNull Float pV, @NotNull Float pUSize, @NotNull Float pVSize, @NotNull FaceUVDeserializer.Rotation pUvRotation, @NotNull Float pTextureWidth, @NotNull Float pTextureHeight, boolean pMirror, @NotNull Direction pDirection) {
 		float uWidth = (pU + pUSize) / pTextureWidth;
 		float vHeight = (pV + pVSize) / pTextureHeight;
 		pU /= pTextureWidth;

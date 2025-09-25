@@ -24,8 +24,8 @@ import software.bluelib.loader.animatable.entity.BlueReplacedEntity;
 import software.bluelib.loader.animation.AnimationProcessor;
 import software.bluelib.loader.animation.AnimationState;
 import software.bluelib.loader.cache.ResourceCache;
-import software.bluelib.loader.cache.animations.AnimationCache;
-import software.bluelib.loader.cache.animations.AnimationLibraryCache;
+import software.bluelib.loader.cache.animation.AnimationCache;
+import software.bluelib.loader.cache.animation.AnimationsCache;
 import software.bluelib.loader.cache.model.BoneCache;
 import software.bluelib.loader.cache.model.ModelCache;
 import software.bluelib.loader.geckolib.constant.DataTickets;
@@ -142,15 +142,15 @@ public abstract class BlueModel<T extends BlueAnimatable> {
 		};
 
 		for (ResourceLocation loc : attempts) {
-			AnimationLibraryCache animationLibraryCache = ResourceCache.Client.getBakedAnimations().get(loc);
-			AnimationCache animationCache = animationLibraryCache != null ? animationLibraryCache.getAnimation(pName) : null;
+			AnimationsCache animationsCache = ResourceCache.Client.getBakedAnimations().get(loc);
+			AnimationCache animationCache = animationsCache != null ? animationsCache.getAnimation(pName) : null;
 			if (animationCache != null)
 				return animationCache;
 		}
 
 		for (ResourceLocation fallbackLocation : getAnimationResourceFallbacks(pAnimatable)) {
-			AnimationLibraryCache animationLibraryCache = ResourceCache.Client.getBakedAnimations().get(fallbackLocation);
-			AnimationCache animationCache = animationLibraryCache != null ? animationLibraryCache.getAnimation(pName) : null;
+			AnimationsCache animationsCache = ResourceCache.Client.getBakedAnimations().get(fallbackLocation);
+			AnimationCache animationCache = animationsCache != null ? animationsCache.getAnimation(pName) : null;
 			if (animationCache != null)
 				return animationCache;
 		}

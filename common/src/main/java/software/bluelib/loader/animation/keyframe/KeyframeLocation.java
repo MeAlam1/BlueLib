@@ -8,6 +8,6 @@
 package software.bluelib.loader.animation.keyframe;
 
 import org.jetbrains.annotations.NotNull;
-import software.bluelib.loader.cache.animations.keyframe.KeyframeCache;
+import software.bluelib.loader.cache.animation.keyframe.KeyframeCache;
 
 public record KeyframeLocation<T extends KeyframeCache<?>>(@NotNull T keyframe, double startTick) {}

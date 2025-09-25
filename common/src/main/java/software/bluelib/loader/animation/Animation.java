@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Objects;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import software.bluelib.loader.cache.animations.AnimationCache;
 
 public final class Animation {
 
@@ -29,37 +28,37 @@ public final class Animation {
 
 	@NotNull
 	public Animation thenPlay(@NotNull String pAnimationName) {
-		return then(pAnimationName, AnimationCache.LoopType.DEFAULT);
+		return then(pAnimationName, LoopType.DEFAULT);
 	}
 
 	@NotNull
 	public Animation thenLoop(@NotNull String pAnimationName) {
-		return then(pAnimationName, AnimationCache.LoopType.LOOP);
+		return then(pAnimationName, LoopType.LOOP);
 	}
 
 	@NotNull
 	public Animation thenWait(int pTicks) {
-		this.animationList.add(new Stage(Stage.WAIT, AnimationCache.LoopType.PLAY_ONCE, pTicks));
+		this.animationList.add(new Stage(Stage.WAIT, LoopType.PLAY_ONCE, pTicks));
 
 		return this;
 	}
 
 	@NotNull
 	public Animation thenPlayAndHold(@NotNull String pAnimation) {
-		return then(pAnimation, AnimationCache.LoopType.HOLD_ON_LAST_FRAME);
+		return then(pAnimation, LoopType.HOLD_ON_LAST_FRAME);
 	}
 
 	@NotNull
 	public Animation thenPlayXTimes(@NotNull String pAnimationName, int pPlayCount) {
 		for (int i = 0; i < pPlayCount; i++) {
-			then(pAnimationName, i == pPlayCount - 1 ? AnimationCache.LoopType.DEFAULT : AnimationCache.LoopType.PLAY_ONCE);
+			then(pAnimationName, i == pPlayCount - 1 ? LoopType.DEFAULT : LoopType.PLAY_ONCE);
 		}
 
 		return this;
 	}
 
 	@NotNull
-	public Animation then(@NotNull String pAnimationName, @NotNull AnimationCache.LoopType pLoopType) {
+	public Animation then(@NotNull String pAnimationName, @NotNull LoopType pLoopType) {
 		this.animationList.add(new Stage(pAnimationName, pLoopType));
 
 		return this;
@@ -95,12 +94,12 @@ public final class Animation {
 		return Objects.hash(this.animationList);
 	}
 
-	public record Stage(@NotNull String animationName, @NotNull AnimationCache.LoopType loopType, int additionalTicks) {
+	public record Stage(@NotNull String animationName, @NotNull LoopType loopType, int additionalTicks) {
 
 		@NotNull
 		public static final String WAIT = "internal.wait";
 
-		public Stage(@NotNull String pAnimationName, @NotNull AnimationCache.LoopType pLoopType) {
+		public Stage(@NotNull String pAnimationName, @NotNull LoopType pLoopType) {
 			this(pAnimationName, pLoopType, 0);
 		}
 

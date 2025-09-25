@@ -13,10 +13,10 @@ import org.jetbrains.annotations.NotNull;
 import software.bluelib.loader.cache.variants.EntityCache;
 import software.bluelib.loader.cache.variants.VariantCache;
 import software.bluelib.loader.json.CacheFactory;
-import software.bluelib.loader.json.deserialize.variants.Entity;
-import software.bluelib.loader.json.deserialize.variants.Variant;
+import software.bluelib.loader.json.deserialize.variants.EntityDeserializer;
+import software.bluelib.loader.json.deserialize.variants.VariantDeserializer;
 
-public interface VariantsCacheFactory extends CacheFactory<EntityCache, Entity> {
+public interface VariantsCacheFactory extends CacheFactory<EntityCache, EntityDeserializer> {
 
 	@NotNull
 	Map<String, VariantsCacheFactory> FACTORIES = new Object2ObjectOpenHashMap<>(1);
@@ -24,7 +24,7 @@ public interface VariantsCacheFactory extends CacheFactory<EntityCache, Entity> 
 	VariantsCacheFactory DEFAULT_FACTORY = new Builtin();
 
 	@NotNull
-	CacheFactory.Registry<EntityCache, Entity, VariantsCacheFactory> REGISTRY = new CacheFactory.Registry<>() {
+	CacheFactory.Registry<EntityCache, EntityDeserializer, VariantsCacheFactory> REGISTRY = new CacheFactory.Registry<>() {
 
 		@NotNull
 		@Override
@@ -41,19 +41,19 @@ public interface VariantsCacheFactory extends CacheFactory<EntityCache, Entity> 
 
 	@NotNull
 	@Override
-	default EntityCache construct(@NotNull Entity pSource) {
+	default EntityCache construct(@NotNull EntityDeserializer pSource) {
 		return constructVariants(pSource);
 	}
 
 	@NotNull
-	EntityCache constructVariants(@NotNull Entity pVariants);
+	EntityCache constructVariants(@NotNull EntityDeserializer pVariants);
 
 	final class Builtin implements VariantsCacheFactory {
 
 		@Override
-		public @NotNull EntityCache constructVariants(@NotNull Entity pVariants) {
+		public @NotNull EntityCache constructVariants(@NotNull EntityDeserializer pVariants) {
 			Map<String, VariantCache> variantCaches = new Object2ObjectOpenHashMap<>();
-			for (Map.Entry<String, Variant> entry : pVariants.variants().entrySet()) {
+			for (Map.Entry<String, VariantDeserializer> entry : pVariants.variants().entrySet()) {
 				variantCaches.put(entry.getKey(), constructVariantCache(entry.getValue()));
 			}
 			return new EntityCache(
@@ -62,9 +62,9 @@ public interface VariantsCacheFactory extends CacheFactory<EntityCache, Entity> 
 		}
 
 		@NotNull
-		private VariantCache constructVariantCache(@NotNull Variant pVariant) {
+		private VariantCache constructVariantCache(@NotNull VariantDeserializer pVariantDeserializer) {
 			return new VariantCache(
-					pVariant.parameters());
+					pVariantDeserializer.parameters());
 		}
 	}
 }

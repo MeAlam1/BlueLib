@@ -15,7 +15,7 @@ import software.bluelib.loader.cache.controller.*;
 import software.bluelib.loader.json.CacheFactory;
 import software.bluelib.loader.json.deserialize.controller.*;
 
-public interface ControllerCacheFactory extends CacheFactory<ControllerCache, Controller> {
+public interface ControllerCacheFactory extends CacheFactory<ControllerCache, ControllerDeserializer> {
 
 	@NotNull
 	Map<String, ControllerCacheFactory> FACTORIES = new Object2ObjectOpenHashMap<>(1);
@@ -23,7 +23,7 @@ public interface ControllerCacheFactory extends CacheFactory<ControllerCache, Co
 	ControllerCacheFactory DEFAULT_FACTORY = new Builtin();
 
 	@NotNull
-	CacheFactory.Registry<ControllerCache, Controller, ControllerCacheFactory> REGISTRY = new CacheFactory.Registry<>() {
+	CacheFactory.Registry<ControllerCache, ControllerDeserializer, ControllerCacheFactory> REGISTRY = new CacheFactory.Registry<>() {
 
 		@Override
 		public @NotNull Map<String, ControllerCacheFactory> factories() {
@@ -37,46 +37,46 @@ public interface ControllerCacheFactory extends CacheFactory<ControllerCache, Co
 	};
 
 	@Override
-	default @NotNull ControllerCache construct(@NotNull Controller pSource) {
+	default @NotNull ControllerCache construct(@NotNull ControllerDeserializer pSource) {
 		return constructBlueController(pSource);
 	}
 
 	@NotNull
-	ControllerCache constructBlueController(@NotNull Controller pController);
+	ControllerCache constructBlueController(@NotNull ControllerDeserializer pControllerDeserializer);
 
 	final class Builtin implements ControllerCacheFactory {
 
 		@Override
-		public @NotNull ControllerCache constructBlueController(@NotNull Controller pController) {
-			List<GroupCache> groupCaches = constructGroupCaches(pController.groups());
-			return new ControllerCache(pController.formatVersion(), groupCaches);
+		public @NotNull ControllerCache constructBlueController(@NotNull ControllerDeserializer pControllerDeserializer) {
+			List<GroupCache> groupCaches = constructGroupCaches(pControllerDeserializer.groupDeserializers());
+			return new ControllerCache(pControllerDeserializer.formatVersion(), groupCaches);
 		}
 
 		@NotNull
-		private List<GroupCache> constructGroupCaches(@NotNull List<Group> pGroups) {
-			return pGroups.stream()
+		private List<GroupCache> constructGroupCaches(@NotNull List<GroupDeserializer> pGroupDeserializers) {
+			return pGroupDeserializers.stream()
 					.map(this::constructGroupCache)
 					.toList();
 		}
 
 		@NotNull
-		private GroupCache constructGroupCache(@NotNull Group pGroup) {
-			Map<String, BehaviourCache> behaviourCaches = constructBehaviourCaches(pGroup.behaviours());
+		private GroupCache constructGroupCache(@NotNull GroupDeserializer pGroupDeserializer) {
+			Map<String, BehaviourCache> behaviourCaches = constructBehaviourCaches(pGroupDeserializer.behaviours());
 			return new GroupCache(
 					behaviourCaches);
 		}
 
 		@NotNull
-		private Map<String, BehaviourCache> constructBehaviourCaches(@NotNull Map<String, Behaviour> pBehaviours) {
+		private Map<String, BehaviourCache> constructBehaviourCaches(@NotNull Map<String, BehaviourDeserializer> pBehaviours) {
 			Map<String, BehaviourCache> behaviourCaches = new Object2ObjectOpenHashMap<>(pBehaviours.size());
 
-			for (Map.Entry<String, Behaviour> entry : pBehaviours.entrySet()) {
+			for (Map.Entry<String, BehaviourDeserializer> entry : pBehaviours.entrySet()) {
 				String name = entry.getKey();
-				Behaviour behaviour = entry.getValue();
-				Map<String, StateCache> stateCache = constructStateCaches(behaviour.states());
+				BehaviourDeserializer behaviourDeserializer = entry.getValue();
+				Map<String, StateCache> stateCache = constructStateCaches(behaviourDeserializer.states());
 				BehaviourCache behaviourCache = new BehaviourCache(
-						behaviour.conditions(),
-						behaviour.priority(),
+						behaviourDeserializer.conditions(),
+						behaviourDeserializer.priority(),
 						stateCache);
 				behaviourCaches.put(name, behaviourCache);
 			}
@@ -85,13 +85,13 @@ public interface ControllerCacheFactory extends CacheFactory<ControllerCache, Co
 		}
 
 		@NotNull
-		private Map<String, StateCache> constructStateCaches(@NotNull Map<String, State> pStates) {
+		private Map<String, StateCache> constructStateCaches(@NotNull Map<String, StateDeserializer> pStates) {
 			Map<String, StateCache> stateCaches = new Object2ObjectOpenHashMap<>(pStates.size());
 
-			for (Map.Entry<String, State> entry : pStates.entrySet()) {
+			for (Map.Entry<String, StateDeserializer> entry : pStates.entrySet()) {
 				String name = entry.getKey();
-				State state = entry.getValue();
-				StateCache stateCache = constructStateCache(state);
+				StateDeserializer stateDeserializer = entry.getValue();
+				StateCache stateCache = constructStateCache(stateDeserializer);
 				stateCaches.put(name, stateCache);
 			}
 
@@ -99,27 +99,27 @@ public interface ControllerCacheFactory extends CacheFactory<ControllerCache, Co
 		}
 
 		@NotNull
-		private StateCache constructStateCache(@NotNull State pState) {
-			List<AnimationCache> animationCaches = constructAnimationsCaches(pState.animations());
+		private StateCache constructStateCache(@NotNull StateDeserializer pStateDeserializer) {
+			List<AnimationCache> animationCaches = constructAnimationsCaches(pStateDeserializer.animationDeserializers());
 			return new StateCache(
-					pState.isOverlay(),
+					pStateDeserializer.isOverlay(),
 					animationCaches);
 		}
 
 		@NotNull
-		private List<AnimationCache> constructAnimationsCaches(@NotNull List<Animation> pAnimations) {
-			return pAnimations.stream()
+		private List<AnimationCache> constructAnimationsCaches(@NotNull List<AnimationDeserializer> pAnimationDeserializers) {
+			return pAnimationDeserializers.stream()
 					.map(this::constructAnimationCache)
 					.toList();
 		}
 
 		@NotNull
-		private AnimationCache constructAnimationCache(@NotNull Animation pAnimation) {
+		private AnimationCache constructAnimationCache(@NotNull AnimationDeserializer pAnimationDeserializer) {
 			return new AnimationCache(
-					pAnimation.conditions(),
-					pAnimation.animation(),
-					pAnimation.priority(),
-					pAnimation.sound());
+					pAnimationDeserializer.conditions(),
+					pAnimationDeserializer.animation(),
+					pAnimationDeserializer.priority(),
+					pAnimationDeserializer.sound());
 		}
 	}
 }

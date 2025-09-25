@@ -11,9 +11,9 @@ import java.util.List;
 import java.util.Optional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import software.bluelib.loader.json.deserialize.model.ModelDescription;
+import software.bluelib.loader.json.deserialize.model.ModelDescriptionDeserializer;
 
-public record ModelCache(@NotNull List<BoneCache> topLevelBones, @Nullable ModelDescription modelDescription) {
+public record ModelCache(@NotNull List<BoneCache> topLevelBones, @Nullable ModelDescriptionDeserializer modelDescriptionDeserializer) {
 
 	@NotNull
 	public Optional<BoneCache> getBone(@NotNull String pName) {

@@ -11,7 +11,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import it.unimi.dsi.fastutil.Pair;
-import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import java.io.IOException;
 import java.io.Reader;
@@ -38,8 +37,8 @@ import software.bluelib.api.json.JSONMerger;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
 import software.bluelib.loader.cache.ResourceCache;
-import software.bluelib.loader.cache.animations.AnimationLibraryCache;
-import software.bluelib.loader.cache.animations.keyframe.KeyframeLibraryCache;
+import software.bluelib.loader.cache.animation.AnimationsCache;
+import software.bluelib.loader.cache.animation.keyframe.KeyframeLibraryCache;
 import software.bluelib.loader.cache.controller.ControllerCache;
 import software.bluelib.loader.cache.model.ModelCache;
 import software.bluelib.loader.cache.variants.EntityCache;
@@ -48,13 +47,13 @@ import software.bluelib.loader.json.animation.AnimationCacheFactory;
 import software.bluelib.loader.json.animation.AnimationFormatVersion;
 import software.bluelib.loader.json.controller.ControllerCacheFactory;
 import software.bluelib.loader.json.controller.ControllerFormatVersion;
-import software.bluelib.loader.json.deserialize.animation.AnimationLibrary;
-import software.bluelib.loader.json.deserialize.animation.BakedAnimationsAdapter;
-import software.bluelib.loader.json.deserialize.animation.KeyFramesAdapter;
+import software.bluelib.loader.json.deserialize.animation.AnimationsDeserializer;
+import software.bluelib.loader.geckolib.animations.BakedAnimationsAdapter;
+import software.bluelib.loader.geckolib.animations.KeyFramesAdapter;
 import software.bluelib.loader.json.deserialize.controller.*;
 import software.bluelib.loader.json.deserialize.model.*;
-import software.bluelib.loader.json.deserialize.variants.Entity;
-import software.bluelib.loader.json.deserialize.variants.Variant;
+import software.bluelib.loader.json.deserialize.variants.EntityDeserializer;
+import software.bluelib.loader.json.deserialize.variants.VariantDeserializer;
 import software.bluelib.loader.json.model.ModelCacheFactory;
 import software.bluelib.loader.json.model.ModelFormatVersion;
 import software.bluelib.loader.json.variants.VariantsCacheFactory;
@@ -64,40 +63,41 @@ public class BlueLoader {
 
 	@NotNull
 	public static final Gson MODEL_GSON = new GsonBuilder().setLenient()
-			.registerTypeAdapter(Bone.class, Bone.deserializer())
-			.registerTypeAdapter(Cube.class, Cube.deserializer())
-			.registerTypeAdapter(FaceUV.class, FaceUV.deserializer())
-			.registerTypeAdapter(LocatorClass.class, LocatorClass.deserializer())
-			.registerTypeAdapter(LocatorValue.class, LocatorValue.deserializer())
-			.registerTypeAdapter(ModelGeometry.class, ModelGeometry.deserializer())
-			.registerTypeAdapter(Model.class, Model.deserializer())
-			.registerTypeAdapter(ModelDescription.class, ModelDescription.deserializer())
-			.registerTypeAdapter(PolyMesh.class, PolyMesh.deserializer())
-			.registerTypeAdapter(PolysUnion.class, PolysUnion.deserializer())
-			.registerTypeAdapter(TextureMesh.class, TextureMesh.deserializer())
-			.registerTypeAdapter(UVFaces.class, UVFaces.deserializer())
-			.registerTypeAdapter(UVUnion.class, UVUnion.deserializer())
+			.registerTypeAdapter(BoneDeserializer.class, BoneDeserializer.deserializer())
+			.registerTypeAdapter(CubeDeserializer.class, CubeDeserializer.deserializer())
+			.registerTypeAdapter(FaceUVDeserializer.class, FaceUVDeserializer.deserializer())
+			.registerTypeAdapter(LocatorClassDeserializer.class, LocatorClassDeserializer.deserializer())
+			.registerTypeAdapter(LocatorValueDeserializer.class, LocatorValueDeserializer.deserializer())
+			.registerTypeAdapter(ModelGeometryDeserializer.class, ModelGeometryDeserializer.deserializer())
+			.registerTypeAdapter(ModelDeserializer.class, ModelDeserializer.deserializer())
+			.registerTypeAdapter(ModelDescriptionDeserializer.class, ModelDescriptionDeserializer.deserializer())
+			.registerTypeAdapter(PolyMeshDeserializer.class, PolyMeshDeserializer.deserializer())
+			.registerTypeAdapter(PolysUnionDeserializer.class, PolysUnionDeserializer.deserializer())
+			.registerTypeAdapter(TextureMeshDeserializer.class, TextureMeshDeserializer.deserializer())
+			.registerTypeAdapter(UVFacesDeserializer.class, UVFacesDeserializer.deserializer())
+			.registerTypeAdapter(UVUnionDeserializer.class, UVUnionDeserializer.deserializer())
 			.create();
 
 	@NotNull
 	public static final Gson ANIMATION_GSON = new GsonBuilder().setLenient()
+			.registerTypeAdapter(AnimationsDeserializer.class, AnimationsDeserializer.deserializer())
 			.registerTypeAdapter(KeyframeLibraryCache.class, new KeyFramesAdapter())
-			.registerTypeAdapter(AnimationLibraryCache.class, new BakedAnimationsAdapter())
+			.registerTypeAdapter(AnimationsCache.class, new BakedAnimationsAdapter())
 			.create();
 
 	@NotNull
 	public static final Gson CONTROLLER_GSON = new GsonBuilder().setLenient()
-			.registerTypeAdapter(Controller.class, Controller.deserializer())
-			.registerTypeAdapter(Group.class, Group.deserializer())
-			.registerTypeAdapter(Behaviour.class, Behaviour.deserializer())
-			.registerTypeAdapter(State.class, State.deserializer())
-			.registerTypeAdapter(Animation.class, Animation.deserializer())
+			.registerTypeAdapter(ControllerDeserializer.class, ControllerDeserializer.deserializer())
+			.registerTypeAdapter(GroupDeserializer.class, GroupDeserializer.deserializer())
+			.registerTypeAdapter(BehaviourDeserializer.class, BehaviourDeserializer.deserializer())
+			.registerTypeAdapter(StateDeserializer.class, StateDeserializer.deserializer())
+			.registerTypeAdapter(AnimationDeserializer.class, AnimationDeserializer.deserializer())
 			.create();
 
 	@NotNull
 	public static final Gson VARIANTS_GSON = new GsonBuilder()
-			.registerTypeAdapter(Entity.class, Entity.deserializer())
-			.registerTypeAdapter(Variant.class, Variant.deserializer())
+			.registerTypeAdapter(EntityDeserializer.class, EntityDeserializer.deserializer())
+			.registerTypeAdapter(VariantDeserializer.class, VariantDeserializer.deserializer())
 			.setPrettyPrinting()
 			.create();
 
@@ -128,9 +128,9 @@ public class BlueLoader {
 	}
 
 	@NotNull
-	protected static CompletableFuture<Map<ResourceLocation, AnimationLibraryCache>> loadAnimations(@NotNull Executor pBackgroundExecutor, @NotNull ResourceManager pResourceManager) {
+	protected static CompletableFuture<Map<ResourceLocation, AnimationsCache>> loadAnimations(@NotNull Executor pBackgroundExecutor, @NotNull ResourceManager pResourceManager) {
 		return bakeJsonResources(pBackgroundExecutor, pResourceManager, BlueLibConstants.BlueLoader.ANIMATIONS_PATH.getPath(), ResourceCache::bakeAnimations,
-				ex -> new AnimationLibraryCache(new Object2ObjectOpenHashMap<>()));
+				ex -> null);
 	}
 
 	@NotNull
@@ -283,29 +283,29 @@ public class BlueLoader {
 				pResourceLocation,
 				pJsonObject,
 				MODEL_GSON,
-				Model.class,
-				Model::formatVersion,
+				ModelDeserializer.class,
+				ModelDeserializer::formatVersion,
 				ModelFormatVersion.REGISTRY::match,
 				ModelFormatVersion::isSupported,
 				ModelFormatVersion::getErrorMessage,
-				(namespace, model) -> CacheFactory.constructWithFactory(ModelCacheFactory.REGISTRY::getForNamespace, namespace, model),
+				(namespace, modelDeserializer) -> CacheFactory.constructWithFactory(ModelCacheFactory.REGISTRY::getForNamespace, namespace, modelDeserializer),
 				List.of(
 						Pair.of(loc -> loc.getPath().endsWith(".animation.json"), ".animation.json"),
 						Pair.of(loc -> loc.getPath().endsWith(".controller.json"), ".controller.json")));
 	}
 
 	@NotNull
-	protected static AnimationLibraryCache bakeAnimations(@NotNull ResourceLocation pResourceLocation, @NotNull JsonObject pJsonObject) {
+	protected static AnimationsCache bakeAnimations(@NotNull ResourceLocation pResourceLocation, @NotNull JsonObject pJsonObject) {
 		return bakeGeneric(
 				pResourceLocation,
 				pJsonObject,
 				ANIMATION_GSON,
-				AnimationLibrary.class,
-				AnimationLibrary::formatVersion,
+				AnimationsDeserializer.class,
+				AnimationsDeserializer::formatVersion,
 				AnimationFormatVersion.REGISTRY::match,
 				AnimationFormatVersion::isSupported,
 				AnimationFormatVersion::getErrorMessage,
-				(namespace, animations) -> CacheFactory.constructWithFactory(AnimationCacheFactory.REGISTRY::getForNamespace, namespace, animations),
+				(namespace, animationsDeserializer) -> CacheFactory.constructWithFactory(AnimationCacheFactory.REGISTRY::getForNamespace, namespace, animationsDeserializer),
 				List.of(
 						Pair.of(loc -> loc.getPath().endsWith(".geo.json"), ".geo.json"),
 						Pair.of(loc -> loc.getPath().endsWith(".controller.json"), ".controller.json")));
@@ -317,12 +317,12 @@ public class BlueLoader {
 				pResourceLocation,
 				pJsonObject,
 				CONTROLLER_GSON,
-				Controller.class,
-				Controller::formatVersion,
+				ControllerDeserializer.class,
+				ControllerDeserializer::formatVersion,
 				ControllerFormatVersion.REGISTRY::match,
 				ControllerFormatVersion::isSupported,
 				ControllerFormatVersion::getErrorMessage,
-				(namespace, controller) -> CacheFactory.constructWithFactory(ControllerCacheFactory.REGISTRY::getForNamespace, namespace, controller),
+				(namespace, controllerDeserializer) -> CacheFactory.constructWithFactory(ControllerCacheFactory.REGISTRY::getForNamespace, namespace, controllerDeserializer),
 				List.of(
 						Pair.of(loc -> loc.getPath().endsWith(".geo.json"), ".geo.json"),
 						Pair.of(loc -> loc.getPath().endsWith(".animation.json"), ".animation.json")));
@@ -334,8 +334,8 @@ public class BlueLoader {
 				pResourceLocation,
 				pJsonObject,
 				VARIANTS_GSON,
-				Entity.class,
-				Entity::formatVersion,
+				EntityDeserializer.class,
+				EntityDeserializer::formatVersion,
 				VariantsFormatVersion.REGISTRY::match,
 				VariantsFormatVersion::isSupported,
 				VariantsFormatVersion::getErrorMessage,

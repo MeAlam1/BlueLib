@@ -57,7 +57,7 @@ build/tmp/spotless-register-dependencies
 /build
 /fabric/remappedSrc
 common/src/main/resources/assets/bluelib/animation/*
-common/src/main/resources/assets/bluelib/model/*
-common/src/main/resources/data/bluelib/controller/*
+common/src/main/resources/assets/bluelib/modelDeserializer/*
+common/src/main/resources/data/bluelib/controllerDeserializer/*
 common/src/main/resources/assets/bluelib/textures/*
 /.env

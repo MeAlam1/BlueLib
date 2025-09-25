@@ -27,7 +27,7 @@ import software.bluelib.loader.json.model.object.BoneTree;
 import software.bluelib.loader.json.object.QuadData;
 import software.bluelib.loader.json.object.VertexData;
 
-public interface ModelCacheFactory extends CacheFactory<ModelCache, Model> {
+public interface ModelCacheFactory extends CacheFactory<ModelCache, ModelDeserializer> {
 
 	@NotNull
 	Map<String, ModelCacheFactory> FACTORIES = new Object2ObjectOpenHashMap<>(1);
@@ -35,7 +35,7 @@ public interface ModelCacheFactory extends CacheFactory<ModelCache, Model> {
 	ModelCacheFactory DEFAULT_FACTORY = new Builtin();
 
 	@NotNull
-	CacheFactory.Registry<ModelCache, Model, ModelCacheFactory> REGISTRY = new CacheFactory.Registry<>() {
+	CacheFactory.Registry<ModelCache, ModelDeserializer, ModelCacheFactory> REGISTRY = new CacheFactory.Registry<>() {
 
 		@Override
 		public @NotNull Map<String, ModelCacheFactory> factories() {
@@ -49,42 +49,42 @@ public interface ModelCacheFactory extends CacheFactory<ModelCache, Model> {
 	};
 
 	@Override
-	default @NotNull ModelCache construct(@NotNull Model pSource) {
+	default @NotNull ModelCache construct(@NotNull ModelDeserializer pSource) {
 		return constructBlueModel(pSource);
 	}
 
 	@NotNull
-	ModelCache constructBlueModel(@NotNull Model pModel);
+	ModelCache constructBlueModel(@NotNull ModelDeserializer pModelDeserializer);
 
 	@NotNull
-	BoneCache constructBone(@NotNull BoneStructure pBoneStructure, @Nullable ModelDescription pModelDescription, @Nullable BoneCache pParent);
+	BoneCache constructBone(@NotNull BoneStructure pBoneStructure, @Nullable ModelDescriptionDeserializer pModelDescriptionDeserializer, @Nullable BoneCache pParent);
 
 	@NotNull
-	CubeCache constructCube(@NotNull Cube pCube, @Nullable ModelDescription pModelDescription, @NotNull BoneCache pBone);
+	CubeCache constructCube(@NotNull CubeDeserializer pCubeDeserializer, @Nullable ModelDescriptionDeserializer pModelDescriptionDeserializer, @NotNull BoneCache pBone);
 
-	default @NotNull List<QuadData> buildQuads(@NotNull UVUnion pUvUnion, @NotNull VertexSet pVertices, @NotNull Cube pCube, @NotNull Float pTextureWidth, @NotNull Float pTextureHeight, boolean pMirror) {
+	default @NotNull List<QuadData> buildQuads(@NotNull UVUnionDeserializer pUvUnionDeserializer, @NotNull VertexSet pVertices, @NotNull CubeDeserializer pCubeDeserializer, @NotNull Float pTextureWidth, @NotNull Float pTextureHeight, boolean pMirror) {
 		List<QuadData> quads = new ArrayList<>(6);
 
-		quads.add(buildQuad(pVertices, pCube, pUvUnion, pTextureWidth, pTextureHeight, pMirror, Direction.WEST));
-		quads.add(buildQuad(pVertices, pCube, pUvUnion, pTextureWidth, pTextureHeight, pMirror, Direction.EAST));
-		quads.add(buildQuad(pVertices, pCube, pUvUnion, pTextureWidth, pTextureHeight, pMirror, Direction.NORTH));
-		quads.add(buildQuad(pVertices, pCube, pUvUnion, pTextureWidth, pTextureHeight, pMirror, Direction.SOUTH));
-		quads.add(buildQuad(pVertices, pCube, pUvUnion, pTextureWidth, pTextureHeight, pMirror, Direction.UP));
-		quads.add(buildQuad(pVertices, pCube, pUvUnion, pTextureWidth, pTextureHeight, pMirror, Direction.DOWN));
+		quads.add(buildQuad(pVertices, pCubeDeserializer, pUvUnionDeserializer, pTextureWidth, pTextureHeight, pMirror, Direction.WEST));
+		quads.add(buildQuad(pVertices, pCubeDeserializer, pUvUnionDeserializer, pTextureWidth, pTextureHeight, pMirror, Direction.EAST));
+		quads.add(buildQuad(pVertices, pCubeDeserializer, pUvUnionDeserializer, pTextureWidth, pTextureHeight, pMirror, Direction.NORTH));
+		quads.add(buildQuad(pVertices, pCubeDeserializer, pUvUnionDeserializer, pTextureWidth, pTextureHeight, pMirror, Direction.SOUTH));
+		quads.add(buildQuad(pVertices, pCubeDeserializer, pUvUnionDeserializer, pTextureWidth, pTextureHeight, pMirror, Direction.UP));
+		quads.add(buildQuad(pVertices, pCubeDeserializer, pUvUnionDeserializer, pTextureWidth, pTextureHeight, pMirror, Direction.DOWN));
 
 		return quads;
 	}
 
-	default @NotNull QuadData buildQuad(@NotNull VertexSet pVertices, @NotNull Cube pCube, @NotNull UVUnion pUvUnion, @NotNull Float pTextureWidth, @NotNull Float pTextureHeight, boolean pMirror, @NotNull Direction pDirection) {
-		if (!pUvUnion.isBoxUV()) {
-			FaceUV faceUV = pUvUnion.faceUV().fromDirection(pDirection);
+	default @NotNull QuadData buildQuad(@NotNull VertexSet pVertices, @NotNull CubeDeserializer pCubeDeserializer, @NotNull UVUnionDeserializer pUvUnionDeserializer, @NotNull Float pTextureWidth, @NotNull Float pTextureHeight, boolean pMirror, @NotNull Direction pDirection) {
+		if (!pUvUnionDeserializer.isBoxUV()) {
+			FaceUVDeserializer faceUVDeserializer = pUvUnionDeserializer.faceUV().fromDirection(pDirection);
 
-			return QuadData.build(pVertices.verticesForQuad(pDirection, false, pMirror || pCube.mirror() == Boolean.TRUE), faceUV.uv(), faceUV.uvSize(),
-					faceUV.uvRotation(), pTextureWidth, pTextureHeight, pMirror, pDirection);
+			return QuadData.build(pVertices.verticesForQuad(pDirection, false, pMirror || pCubeDeserializer.mirror() == Boolean.TRUE), faceUVDeserializer.uv(), faceUVDeserializer.uvSize(),
+					faceUVDeserializer.uvRotation(), pTextureWidth, pTextureHeight, pMirror, pDirection);
 		}
 
-		List<Float> uv = pCube.uvUnion().boxUVCoords();
-		List<Float> uvSize = pCube.size();
+		List<Float> uv = pCubeDeserializer.uvUnionDeserializer().boxUVCoords();
+		List<Float> uvSize = pCubeDeserializer.size();
 		Vec3 uvSizeVec = new Vec3(
 				(float) Math.floor(uvSize.get(0)),
 				(float) Math.floor(uvSize.get(1)),
@@ -135,14 +135,14 @@ public interface ModelCacheFactory extends CacheFactory<ModelCache, Model> {
 							-(float) uvSizeVec.z));
 		};
 
-		return QuadData.build(pVertices.verticesForQuad(pDirection, true, pMirror || pCube.mirror() == Boolean.TRUE), uvData.get(0), uvData.get(1), FaceUV.Rotation.NONE, pTextureWidth, pTextureHeight, pMirror, pDirection);
+		return QuadData.build(pVertices.verticesForQuad(pDirection, true, pMirror || pCubeDeserializer.mirror() == Boolean.TRUE), uvData.get(0), uvData.get(1), FaceUVDeserializer.Rotation.NONE, pTextureWidth, pTextureHeight, pMirror, pDirection);
 	}
 
 	final class Builtin implements ModelCacheFactory {
 
 		@Override
-		public @NotNull ModelCache constructBlueModel(@NotNull Model pModel) {
-			BoneTree boneTree = BoneTree.fromModel(pModel);
+		public @NotNull ModelCache constructBlueModel(@NotNull ModelDeserializer pModelDeserializer) {
+			BoneTree boneTree = BoneTree.fromModel(pModelDeserializer);
 
 			List<BoneCache> bones = new ObjectArrayList<>();
 
@@ -154,40 +154,40 @@ public interface ModelCacheFactory extends CacheFactory<ModelCache, Model> {
 		}
 
 		@Override
-		public @NotNull BoneCache constructBone(@NotNull BoneStructure pBoneStructure, @Nullable ModelDescription pModelDescription, @Nullable BoneCache pParent) {
-			Bone bone = pBoneStructure.self();
-			BoneCache newBone = new BoneCache(pParent, bone.name(), bone.mirror(), bone.inflate(), bone.neverRender(), bone.reset());
-			Vec3 rotation = RenderUtils.listToVec(bone.rotation());
-			Vec3 pivot = RenderUtils.listToVec(bone.pivot());
+		public @NotNull BoneCache constructBone(@NotNull BoneStructure pBoneStructure, @Nullable ModelDescriptionDeserializer pModelDescriptionDeserializer, @Nullable BoneCache pParent) {
+			BoneDeserializer boneDeserializer = pBoneStructure.self();
+			BoneCache newBone = new BoneCache(pParent, boneDeserializer.name(), boneDeserializer.mirror(), boneDeserializer.inflate(), boneDeserializer.neverRender(), boneDeserializer.reset());
+			Vec3 rotation = RenderUtils.listToVec(boneDeserializer.rotation());
+			Vec3 pivot = RenderUtils.listToVec(boneDeserializer.pivot());
 
 			newBone.updateRotation((float) Math.toRadians(-rotation.x), (float) Math.toRadians(-rotation.y), (float) Math.toRadians(rotation.z));
 			newBone.updatePivot((float) -pivot.x, (float) pivot.y, (float) pivot.z);
 
-			for (Cube cube : bone.cubes()) {
-				newBone.getCubes().add(constructCube(cube, pModelDescription, newBone));
+			for (CubeDeserializer cubeDeserializer : boneDeserializer.cubeDeserializers()) {
+				newBone.getCubes().add(constructCube(cubeDeserializer, pModelDescriptionDeserializer, newBone));
 			}
 
 			for (BoneStructure child : pBoneStructure.children().values()) {
-				newBone.getChildBones().add(constructBone(child, pModelDescription, newBone));
+				newBone.getChildBones().add(constructBone(child, pModelDescriptionDeserializer, newBone));
 			}
 
 			return newBone;
 		}
 
 		@Override
-		public @NotNull CubeCache constructCube(@NotNull Cube pCube, @Nullable ModelDescription pModelDescription, @NotNull BoneCache pBone) {
-			boolean mirror = pCube.mirror() == Boolean.TRUE;
-			double inflate = pCube.inflate() != null ? pCube.inflate() / 16f : (pBone.getInflate() == null ? 0 : pBone.getInflate() / 16f);
-			Vec3 size = RenderUtils.listToVec(pCube.size());
-			Vec3 origin = RenderUtils.listToVec(pCube.origin());
-			Vec3 rotation = RenderUtils.listToVec(pCube.rotation());
-			Vec3 pivot = RenderUtils.listToVec(pCube.pivot());
+		public @NotNull CubeCache constructCube(@NotNull CubeDeserializer pCubeDeserializer, @Nullable ModelDescriptionDeserializer pModelDescriptionDeserializer, @NotNull BoneCache pBone) {
+			boolean mirror = pCubeDeserializer.mirror() == Boolean.TRUE;
+			double inflate = pCubeDeserializer.inflate() != null ? pCubeDeserializer.inflate() / 16f : (pBone.getInflate() == null ? 0 : pBone.getInflate() / 16f);
+			Vec3 size = RenderUtils.listToVec(pCubeDeserializer.size());
+			Vec3 origin = RenderUtils.listToVec(pCubeDeserializer.origin());
+			Vec3 rotation = RenderUtils.listToVec(pCubeDeserializer.rotation());
+			Vec3 pivot = RenderUtils.listToVec(pCubeDeserializer.pivot());
 			origin = new Vec3(-(origin.x + size.x) / 16d, origin.y / 16d, origin.z / 16d);
 			Vec3 vertexSize = size.multiply(1 / 16d, 1 / 16d, 1 / 16d);
 
 			pivot = pivot.multiply(-1, 1, 1);
 			rotation = new Vec3(Math.toRadians(-rotation.x), Math.toRadians(-rotation.y), Math.toRadians(rotation.z));
-			List<QuadData> quads = buildQuads(pCube.uvUnion(), new VertexSet(origin, vertexSize, inflate), pCube, pModelDescription.textureWidth(), pModelDescription.textureHeight(), mirror);
+			List<QuadData> quads = buildQuads(pCubeDeserializer.uvUnionDeserializer(), new VertexSet(origin, vertexSize, inflate), pCubeDeserializer, pModelDescriptionDeserializer.textureWidth(), pModelDescriptionDeserializer.textureHeight(), mirror);
 
 			return new CubeCache(quads, pivot, rotation, size, inflate, mirror);
 		}

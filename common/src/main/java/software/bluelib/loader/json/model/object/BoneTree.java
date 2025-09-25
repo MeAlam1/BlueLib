@@ -12,35 +12,35 @@ import java.util.List;
 import java.util.Map;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import software.bluelib.loader.json.deserialize.model.Bone;
-import software.bluelib.loader.json.deserialize.model.Model;
-import software.bluelib.loader.json.deserialize.model.ModelDescription;
-import software.bluelib.loader.json.deserialize.model.ModelGeometry;
+import software.bluelib.loader.json.deserialize.model.BoneDeserializer;
+import software.bluelib.loader.json.deserialize.model.ModelDeserializer;
+import software.bluelib.loader.json.deserialize.model.ModelDescriptionDeserializer;
+import software.bluelib.loader.json.deserialize.model.ModelGeometryDeserializer;
 
 public record BoneTree(
 		@NotNull Map<String, BoneStructure> topLevelBones,
-		@Nullable ModelDescription description) {
+		@Nullable ModelDescriptionDeserializer description) {
 
-	public static @NotNull BoneTree fromModel(@NotNull Model pModel) {
+	public static @NotNull BoneTree fromModel(@NotNull ModelDeserializer pModelDeserializer) {
 		final Map<String, BoneStructure> topLevelBones = new Object2ObjectOpenHashMap<>();
-		final ModelGeometry geometry = pModel.ModelGeometry().getFirst();
-		final List<Bone> bones = geometry.bones();
-		final Map<String, BoneStructure> lookup = new Object2ObjectOpenHashMap<>(bones.size());
+		final ModelGeometryDeserializer geometry = pModelDeserializer.ModelGeometryDeserializer().getFirst();
+		final List<BoneDeserializer> boneDeserializers = geometry.boneDeserializers();
+		final Map<String, BoneStructure> lookup = new Object2ObjectOpenHashMap<>(boneDeserializers.size());
 
-		for (Bone bone : bones) {
-			final BoneStructure boneStructure = new BoneStructure(bone);
+		for (BoneDeserializer boneDeserializer : boneDeserializers) {
+			final BoneStructure boneStructure = new BoneStructure(boneDeserializer);
 
-			lookup.put(bone.name(), boneStructure);
+			lookup.put(boneDeserializer.name(), boneStructure);
 
-			if (bone.parent() == null)
-				topLevelBones.put(bone.name(), boneStructure);
+			if (boneDeserializer.parent() == null)
+				topLevelBones.put(boneDeserializer.name(), boneStructure);
 		}
 
-		for (Bone bone : bones) {
-			final String parentName = bone.parent();
+		for (BoneDeserializer boneDeserializer : boneDeserializers) {
+			final String parentName = boneDeserializer.parent();
 
 			if (parentName != null) {
-				final String boneName = bone.name();
+				final String boneName = boneDeserializer.name();
 
 				if (parentName.equals(boneName))
 					throw new IllegalArgumentException("Invalid model definition. Bone has defined itself as its own parent: " + boneName);
@@ -54,6 +54,6 @@ public record BoneTree(
 			}
 		}
 
-		return new BoneTree(topLevelBones, geometry.modelDescription());
+		return new BoneTree(topLevelBones, geometry.modelDescriptionDeserializer());
 	}
 }

@@ -11,11 +11,11 @@ import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import java.util.Map;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import software.bluelib.loader.cache.animations.AnimationLibraryCache;
+import software.bluelib.loader.cache.animation.AnimationsCache;
 import software.bluelib.loader.json.CacheFactory;
-import software.bluelib.loader.json.deserialize.animation.AnimationLibrary;
+import software.bluelib.loader.json.deserialize.animation.AnimationsDeserializer;
 
-public interface AnimationCacheFactory extends CacheFactory<AnimationLibraryCache, AnimationLibrary> {
+public interface AnimationCacheFactory extends CacheFactory<AnimationsCache, AnimationsDeserializer> {
 
 	@NotNull
 	Map<String, AnimationCacheFactory> FACTORIES = new Object2ObjectOpenHashMap<>(1);
@@ -23,7 +23,7 @@ public interface AnimationCacheFactory extends CacheFactory<AnimationLibraryCach
 	AnimationCacheFactory DEFAULT_FACTORY = new Builtin();
 
 	@NotNull
-	CacheFactory.Registry<AnimationLibraryCache, AnimationLibrary, AnimationCacheFactory> REGISTRY = new CacheFactory.Registry<>() {
+	CacheFactory.Registry<AnimationsCache, AnimationsDeserializer, AnimationCacheFactory> REGISTRY = new CacheFactory.Registry<>() {
 
 		@Override
 		public @NotNull Map<String, AnimationCacheFactory> factories() {
@@ -37,18 +37,18 @@ public interface AnimationCacheFactory extends CacheFactory<AnimationLibraryCach
 	};
 
 	@Override
-	default @Nullable AnimationLibraryCache construct(@NotNull AnimationLibrary pSource) {
+	default @Nullable AnimationsCache construct(@NotNull AnimationsDeserializer pSource) {
 		return constructBlueAnimator(pSource);
 	}
 
 	@Nullable
-	AnimationLibraryCache constructBlueAnimator(@NotNull AnimationLibrary pAnimations);
+	AnimationsCache constructBlueAnimator(@NotNull AnimationsDeserializer pAnimationsDeserializer);
 
 	final class Builtin implements AnimationCacheFactory {
 
 		@Override
-		public @Nullable AnimationLibraryCache constructBlueAnimator(@NotNull AnimationLibrary pAnimations) {
-			return pAnimations.animations();
+		public @Nullable AnimationsCache constructBlueAnimator(@NotNull AnimationsDeserializer pAnimationsDeserializer) {
+			return pAnimationsDeserializer.animations();
 		}
 	}
 }

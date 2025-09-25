@@ -17,7 +17,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.loader.animatable.base.BlueAnimatable;
 import software.bluelib.loader.animation.math.Easing;
-import software.bluelib.loader.cache.animations.AnimationCache;
+import software.bluelib.loader.animation.LoopType;
 import software.bluelib.loader.geckolib.constant.DataTickets;
 import software.bluelib.loader.geckolib.constant.dataticket.SerializableDataTicket;
 
@@ -35,8 +35,8 @@ public final class LoaderUtils {
 		}
 	}
 
-	synchronized public static @NotNull AnimationCache.LoopType addCustomLoopType(@NotNull String pName, @NotNull AnimationCache.LoopType pLoopType) {
-		return AnimationCache.LoopType.register(pName, pLoopType);
+	synchronized public static @NotNull LoopType addCustomLoopType(@NotNull String pName, @NotNull LoopType pLoopType) {
+		return LoopType.register(pName, pLoopType);
 	}
 
 	synchronized public static @NotNull Easing addCustomEasingType(@NotNull String pName, @NotNull Easing pEasing) {

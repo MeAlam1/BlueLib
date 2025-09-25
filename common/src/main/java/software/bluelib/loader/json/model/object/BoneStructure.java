@@ -10,13 +10,13 @@ package software.bluelib.loader.json.model.object;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import java.util.Map;
 import org.jetbrains.annotations.NotNull;
-import software.bluelib.loader.json.deserialize.model.Bone;
+import software.bluelib.loader.json.deserialize.model.BoneDeserializer;
 
 public record BoneStructure(
-		@NotNull Bone self,
+		@NotNull BoneDeserializer self,
 		@NotNull Map<String, BoneStructure> children) {
 
-	public BoneStructure(@NotNull Bone pSelf) {
+	public BoneStructure(@NotNull BoneDeserializer pSelf) {
 		this(pSelf, new Object2ObjectOpenHashMap<>());
 	}
 }

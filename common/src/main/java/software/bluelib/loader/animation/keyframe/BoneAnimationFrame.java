@@ -10,7 +10,7 @@ package software.bluelib.loader.animation.keyframe;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.loader.animation.bone.BoneSnapshot;
-import software.bluelib.loader.cache.animations.keyframe.KeyframeCache;
+import software.bluelib.loader.cache.animation.keyframe.KeyframeCache;
 import software.bluelib.loader.cache.model.BoneCache;
 
 public record BoneAnimationFrame(@NotNull BoneCache bone, @NotNull AnimationPointFrame rotationXQueue,
