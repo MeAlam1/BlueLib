@@ -10,7 +10,7 @@ package software.bluelib.loader.animation.keyframe.event;
 import org.jetbrains.annotations.NotNull;
 import software.bluelib.loader.animatable.base.BlueAnimatable;
 import software.bluelib.loader.animation.AnimationController;
-import software.bluelib.loader.animation.keyframe.data.ParticleKeyframeData;
+import software.bluelib.loader.geckolib.animations.ParticleKeyframeData;
 
 public class ParticleKeyframeEvent<T extends BlueAnimatable> extends KeyFrameEvent<T, ParticleKeyframeData> {
 

@@ -12,13 +12,15 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import net.minecraft.util.GsonHelper;
 import org.jetbrains.annotations.NotNull;
-import org.joml.Vector3f;
+import software.bluelib.api.molang.value.MoLangValue;
+import software.bluelib.loader.json.deserialize.animation.keyframe.KeyframeDeserializer;
+import software.bluelib.loader.json.deserialize.animation.keyframe.KeyframeStackDeserializer;
 
 public record BoneAnimationDeserializer(
 		@NotNull String boneName,
-		@NotNull KeyframeStackDeserializer<KeyframeDeserializer<Vector3f>> rotationKeyFrames,
-		@NotNull KeyframeStackDeserializer<KeyframeDeserializer<Vector3f>> positionKeyFrames,
-		@NotNull KeyframeStackDeserializer<KeyframeDeserializer<Vector3f>> scaleKeyFrames) {
+		@NotNull KeyframeStackDeserializer<KeyframeDeserializer<MoLangValue>> rotationKeyFrames,
+		@NotNull KeyframeStackDeserializer<KeyframeDeserializer<MoLangValue>> positionKeyFrames,
+		@NotNull KeyframeStackDeserializer<KeyframeDeserializer<MoLangValue>> scaleKeyFrames) {
 
 	@NotNull
 	public static JsonDeserializer<BoneAnimationDeserializer> deserializer() throws JsonParseException {

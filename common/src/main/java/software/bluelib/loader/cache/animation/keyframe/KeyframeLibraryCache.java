@@ -8,9 +8,9 @@
 package software.bluelib.loader.cache.animation.keyframe;
 
 import org.jetbrains.annotations.NotNull;
-import software.bluelib.loader.animation.keyframe.data.CustomInstructionKeyframeData;
-import software.bluelib.loader.animation.keyframe.data.ParticleKeyframeData;
-import software.bluelib.loader.animation.keyframe.data.SoundKeyframeData;
+import software.bluelib.loader.geckolib.animations.CustomInstructionKeyframeData;
+import software.bluelib.loader.geckolib.animations.ParticleKeyframeData;
+import software.bluelib.loader.geckolib.animations.SoundKeyframeData;
 
 public record KeyframeLibraryCache(
 		@NotNull SoundKeyframeData[] sounds,

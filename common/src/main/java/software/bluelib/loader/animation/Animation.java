@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Objects;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import software.bluelib.loader.geckolib.animations.LoopType;
 
 public final class Animation {
 

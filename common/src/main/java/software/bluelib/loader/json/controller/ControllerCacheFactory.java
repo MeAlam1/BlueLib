@@ -100,26 +100,26 @@ public interface ControllerCacheFactory extends CacheFactory<ControllerCache, Co
 
 		@NotNull
 		private StateCache constructStateCache(@NotNull StateDeserializer pStateDeserializer) {
-			List<AnimationCache> animationCaches = constructAnimationsCaches(pStateDeserializer.animationDeserializers());
+			List<AnimationCache> animationCaches = constructAnimationsCaches(pStateDeserializer.controllerAnimationDeserializers());
 			return new StateCache(
 					pStateDeserializer.isOverlay(),
 					animationCaches);
 		}
 
 		@NotNull
-		private List<AnimationCache> constructAnimationsCaches(@NotNull List<AnimationDeserializer> pAnimationDeserializers) {
-			return pAnimationDeserializers.stream()
+		private List<AnimationCache> constructAnimationsCaches(@NotNull List<ControllerAnimationDeserializer> pControllerAnimationDeserializers) {
+			return pControllerAnimationDeserializers.stream()
 					.map(this::constructAnimationCache)
 					.toList();
 		}
 
 		@NotNull
-		private AnimationCache constructAnimationCache(@NotNull AnimationDeserializer pAnimationDeserializer) {
+		private AnimationCache constructAnimationCache(@NotNull ControllerAnimationDeserializer pControllerAnimationDeserializer) {
 			return new AnimationCache(
-					pAnimationDeserializer.conditions(),
-					pAnimationDeserializer.animation(),
-					pAnimationDeserializer.priority(),
-					pAnimationDeserializer.sound());
+					pControllerAnimationDeserializer.conditions(),
+					pControllerAnimationDeserializer.animation(),
+					pControllerAnimationDeserializer.priority(),
+					pControllerAnimationDeserializer.sound());
 		}
 	}
 }

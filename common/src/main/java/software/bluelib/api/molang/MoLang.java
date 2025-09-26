@@ -11,7 +11,7 @@ import java.util.function.Consumer;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import software.bluelib.api.molang.expression.MoLangExpression;
+import software.bluelib.api.molang.value.MoLangExpression;
 
 @SuppressWarnings({ "unused" })
 public class MoLang {

@@ -38,7 +38,7 @@ import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
 import software.bluelib.loader.cache.ResourceCache;
 import software.bluelib.loader.cache.animation.AnimationsCache;
-import software.bluelib.loader.cache.animation.keyframe.KeyframeLibraryCache;
+import software.bluelib.loader.json.deserialize.animation.LoopTypeDeserializer;
 import software.bluelib.loader.cache.controller.ControllerCache;
 import software.bluelib.loader.cache.model.ModelCache;
 import software.bluelib.loader.cache.variants.EntityCache;
@@ -47,10 +47,10 @@ import software.bluelib.loader.json.animation.AnimationCacheFactory;
 import software.bluelib.loader.json.animation.AnimationFormatVersion;
 import software.bluelib.loader.json.controller.ControllerCacheFactory;
 import software.bluelib.loader.json.controller.ControllerFormatVersion;
-import software.bluelib.loader.json.deserialize.animation.AnimationsDeserializer;
-import software.bluelib.loader.geckolib.animations.BakedAnimationsAdapter;
-import software.bluelib.loader.geckolib.animations.KeyFramesAdapter;
+import software.bluelib.loader.json.deserialize.animation.*;
+import software.bluelib.loader.json.deserialize.animation.keyframe.*;
 import software.bluelib.loader.json.deserialize.controller.*;
+import software.bluelib.loader.json.deserialize.controller.ControllerAnimationDeserializer;
 import software.bluelib.loader.json.deserialize.model.*;
 import software.bluelib.loader.json.deserialize.variants.EntityDeserializer;
 import software.bluelib.loader.json.deserialize.variants.VariantDeserializer;
@@ -81,8 +81,14 @@ public class BlueLoader {
 	@NotNull
 	public static final Gson ANIMATION_GSON = new GsonBuilder().setLenient()
 			.registerTypeAdapter(AnimationsDeserializer.class, AnimationsDeserializer.deserializer())
-			.registerTypeAdapter(KeyframeLibraryCache.class, new KeyFramesAdapter())
-			.registerTypeAdapter(AnimationsCache.class, new BakedAnimationsAdapter())
+			.registerTypeAdapter(AnimationDeserializer.class, AnimationDeserializer.deserializer())
+			.registerTypeAdapter(BoneAnimationDeserializer.class, BoneAnimationDeserializer.deserializer())
+			.registerTypeAdapter(KeyframeStackDeserializer.class, KeyframeStackDeserializer.deserializer())
+			.registerTypeAdapter(KeyframeDeserializer.class, KeyframeDeserializer.deserializer())
+			.registerTypeAdapter(LoopTypeDeserializer.class, LoopTypeDeserializer.deserializer())
+			.registerTypeAdapter(SoundKeyframeDeserializer.class, SoundKeyframeDeserializer.deserializer())
+			.registerTypeAdapter(ParticleKeyframeDeserializer.class, ParticleKeyframeDeserializer.deserializer())
+			.registerTypeAdapter(CustomInstructionKeyframeDeserializer.class, CustomInstructionKeyframeDeserializer.deserializer())
 			.create();
 
 	@NotNull
@@ -91,7 +97,7 @@ public class BlueLoader {
 			.registerTypeAdapter(GroupDeserializer.class, GroupDeserializer.deserializer())
 			.registerTypeAdapter(BehaviourDeserializer.class, BehaviourDeserializer.deserializer())
 			.registerTypeAdapter(StateDeserializer.class, StateDeserializer.deserializer())
-			.registerTypeAdapter(AnimationDeserializer.class, AnimationDeserializer.deserializer())
+			.registerTypeAdapter(ControllerAnimationDeserializer.class, ControllerAnimationDeserializer.deserializer())
 			.create();
 
 	@NotNull

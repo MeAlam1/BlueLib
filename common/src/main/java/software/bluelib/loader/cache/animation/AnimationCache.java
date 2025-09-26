@@ -9,24 +9,31 @@ package software.bluelib.loader.cache.animation;
 
 import org.jetbrains.annotations.NotNull;
 import software.bluelib.loader.animation.Animation;
-import software.bluelib.loader.animation.LoopType;
-import software.bluelib.loader.animation.keyframe.data.CustomInstructionKeyframeData;
-import software.bluelib.loader.animation.keyframe.data.ParticleKeyframeData;
-import software.bluelib.loader.animation.keyframe.data.SoundKeyframeData;
-import software.bluelib.loader.cache.animation.keyframe.BoneAnimationCache;
+import software.bluelib.loader.animation.LoopTypeCache;
+import software.bluelib.loader.cache.animation.keyframe.CustomInstructionKeyframeCache;
+import software.bluelib.loader.cache.animation.keyframe.ParticleKeyframeCache;
+import software.bluelib.loader.cache.animation.keyframe.SoundKeyframeCache;
+import software.bluelib.loader.geckolib.animations.CustomInstructionKeyframeData;
+import software.bluelib.loader.geckolib.animations.ParticleKeyframeData;
+import software.bluelib.loader.geckolib.animations.SoundKeyframeData;
 import software.bluelib.loader.cache.animation.keyframe.KeyframeLibraryCache;
+import software.bluelib.loader.json.deserialize.animation.keyframe.CustomInstructionKeyframeDeserializer;
+import software.bluelib.loader.json.deserialize.animation.keyframe.ParticleKeyframeDeserializer;
+import software.bluelib.loader.json.deserialize.animation.keyframe.SoundKeyframeDeserializer;
 
 public record AnimationCache(
 		@NotNull String name,
 		double length,
-		@NotNull LoopType loopType,
+		@NotNull LoopTypeCache loopType,
 		@NotNull BoneAnimationCache[] boneAnimationCaches,
-		@NotNull KeyframeLibraryCache keyFrames) {
+		@NotNull SoundKeyframeCache[] sounds,
+		@NotNull ParticleKeyframeCache[] particles,
+		@NotNull CustomInstructionKeyframeCache[] customInstructions) {
 
 	@NotNull
 	public static AnimationCache generateWaitAnimation(double pLength) {
-		return new AnimationCache(Animation.Stage.WAIT, pLength, LoopType.PLAY_ONCE, new BoneAnimationCache[0],
-				new KeyframeLibraryCache(new SoundKeyframeData[0], new ParticleKeyframeData[0], new CustomInstructionKeyframeData[0]));
+		return new AnimationCache(Animation.Stage.WAIT, pLength, LoopTypeCache.PLAY_ONCE, new BoneAnimationCache[0],
+				new SoundKeyframeCache[0], new ParticleKeyframeCache[0], new CustomInstructionKeyframeCache[0]);
 	}
 
 }

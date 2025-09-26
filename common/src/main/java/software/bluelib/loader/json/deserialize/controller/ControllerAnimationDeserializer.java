@@ -16,14 +16,14 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.utils.loader.JsonUtils;
 
-public record AnimationDeserializer(
+public record ControllerAnimationDeserializer(
 		@NotNull List<String> conditions,
 		@NotNull String animation,
 		@Nullable Integer priority,
 		@Nullable String sound) {
 
 	@NotNull
-	public static JsonDeserializer<AnimationDeserializer> deserializer() throws JsonParseException {
+	public static JsonDeserializer<ControllerAnimationDeserializer> deserializer() throws JsonParseException {
 		return (json, type, context) -> {
 			JsonObject obj = json.getAsJsonObject();
 
@@ -32,7 +32,7 @@ public record AnimationDeserializer(
 			Integer priority = JsonUtils.getOptionalInteger(obj, "priority");
 			String sound = JsonUtils.getOptionalString(obj, "sound");
 
-			return new AnimationDeserializer(
+			return new ControllerAnimationDeserializer(
 					conditions,
 					animation,
 					priority,

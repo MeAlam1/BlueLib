@@ -10,7 +10,7 @@ package software.bluelib.api.molang;
 import net.minecraft.world.entity.Entity;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import software.bluelib.api.molang.expression.MoLangExpression;
+import software.bluelib.api.molang.value.MoLangExpression;
 import software.bluelib.loader.animatable.base.BlueAnimatable;
 import software.bluelib.loader.animation.AnimationState;
 

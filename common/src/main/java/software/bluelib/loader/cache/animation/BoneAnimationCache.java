@@ -5,9 +5,11 @@
  * If a copy of the MIT License was not distributed with this file,
  * You can obtain one at https://opensource.org/licenses/MIT.
  */
-package software.bluelib.loader.cache.animation.keyframe;
+package software.bluelib.loader.cache.animation;
 
 import org.jetbrains.annotations.NotNull;
+import software.bluelib.loader.cache.animation.keyframe.KeyframeCache;
+import software.bluelib.loader.cache.animation.keyframe.KeyframeStackCache;
 import software.bluelib.loader.geckolib.math.MathValue;
 
 public record BoneAnimationCache(@NotNull String boneName,

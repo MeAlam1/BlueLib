@@ -5,15 +5,16 @@
  * If a copy of the MIT License was not distributed with this file,
  * You can obtain one at https://opensource.org/licenses/MIT.
  */
-package software.bluelib.api.molang.expression;
+package software.bluelib.api.molang.value;
 
-import java.util.ArrayList;
-import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.molang.MoLangRuntime;
 
-public record MoLangExpression(@NotNull String raw) {
+import java.util.ArrayList;
+import java.util.List;
+
+public record MoLangExpression(@NotNull String raw) implements MoLangValue {
 
 	public MoLangExpression(@NotNull String raw) {
 		this.raw = raw.trim();
@@ -25,6 +26,7 @@ public record MoLangExpression(@NotNull String raw) {
 	}
 
 	@Nullable
+	@Override
 	public Object evaluate(@NotNull MoLangRuntime pRuntime) {
 		if (raw.startsWith("query.")) {
 			String remapped = "q." + raw.substring("query.".length());

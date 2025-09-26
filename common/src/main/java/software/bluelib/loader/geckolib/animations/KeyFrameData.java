@@ -5,7 +5,7 @@
  * If a copy of the MIT License was not distributed with this file,
  * You can obtain one at https://opensource.org/licenses/MIT.
  */
-package software.bluelib.loader.animation.keyframe.data;
+package software.bluelib.loader.geckolib.animations;
 
 import java.util.Objects;
 import org.jetbrains.annotations.Nullable;

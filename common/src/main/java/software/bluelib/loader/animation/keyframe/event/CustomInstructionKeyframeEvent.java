@@ -10,7 +10,7 @@ package software.bluelib.loader.animation.keyframe.event;
 import org.jetbrains.annotations.NotNull;
 import software.bluelib.loader.animatable.base.BlueAnimatable;
 import software.bluelib.loader.animation.AnimationController;
-import software.bluelib.loader.animation.keyframe.data.CustomInstructionKeyframeData;
+import software.bluelib.loader.geckolib.animations.CustomInstructionKeyframeData;
 
 public class CustomInstructionKeyframeEvent<T extends BlueAnimatable> extends KeyFrameEvent<T, CustomInstructionKeyframeData> {
 

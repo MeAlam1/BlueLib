@@ -1,10 +1,8 @@
-package software.bluelib.loader.animation;
+package software.bluelib.loader.geckolib.animations;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonPrimitive;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import software.bluelib.loader.animatable.base.BlueAnimatable;
+import software.bluelib.loader.animation.AnimationController;
 import software.bluelib.loader.cache.animation.AnimationCache;
 
 import java.util.Map;
@@ -31,27 +29,6 @@ public interface LoopType {
 	LoopType LOOP = register("loop", register("true", (animatable, controller, currentAnimation) -> true));
 
 	boolean shouldPlayAgain(@NotNull BlueAnimatable pAnimatable, @NotNull AnimationController<? extends BlueAnimatable> pController, @NotNull AnimationCache pCurrentAnimationCache);
-
-	@NotNull
-	static LoopType fromJson(@Nullable JsonElement pJson) {
-		if (pJson == null || !pJson.isJsonPrimitive())
-			return PLAY_ONCE;
-
-		JsonPrimitive primitive = pJson.getAsJsonPrimitive();
-
-		if (primitive.isBoolean())
-			return primitive.getAsBoolean() ? LOOP : PLAY_ONCE;
-
-		if (primitive.isString())
-			return fromString(primitive.getAsString());
-
-		return PLAY_ONCE;
-	}
-
-	@NotNull
-	static LoopType fromString(@NotNull String pName) {
-		return LOOP_TYPES.getOrDefault(pName, PLAY_ONCE);
-	}
 
 	@NotNull
 	static LoopType register(@NotNull String pName, @NotNull LoopType pLoopType) {

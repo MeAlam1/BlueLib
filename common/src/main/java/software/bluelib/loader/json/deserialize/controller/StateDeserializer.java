@@ -17,7 +17,7 @@ import software.bluelib.api.utils.loader.JsonUtils;
 
 public record StateDeserializer(
 		boolean isOverlay,
-		@NotNull List<AnimationDeserializer> animationDeserializers) {
+		@NotNull List<ControllerAnimationDeserializer> controllerAnimationDeserializers) {
 
 	@NotNull
 	public static JsonDeserializer<StateDeserializer> deserializer() throws JsonParseException {
@@ -25,11 +25,11 @@ public record StateDeserializer(
 			JsonObject obj = json.getAsJsonObject();
 
 			boolean isOverlay = Boolean.TRUE.equals(JsonUtils.getOptionalBoolean(obj, "is_overlay"));
-			List<AnimationDeserializer> animationDeserializers = JsonUtils.jsonArrayToObjectList(GsonHelper.getAsJsonArray(obj, "animations"), context, AnimationDeserializer.class);
+			List<ControllerAnimationDeserializer> controllerAnimationDeserializers = JsonUtils.jsonArrayToObjectList(GsonHelper.getAsJsonArray(obj, "animations"), context, ControllerAnimationDeserializer.class);
 
 			return new StateDeserializer(
 					isOverlay,
-					animationDeserializers);
+					controllerAnimationDeserializers);
 		};
 	}
 }

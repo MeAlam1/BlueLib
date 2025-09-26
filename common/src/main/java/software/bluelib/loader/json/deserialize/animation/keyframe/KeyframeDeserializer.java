@@ -5,22 +5,20 @@
  * If a copy of the MIT License was not distributed with this file,
  * You can obtain one at https://opensource.org/licenses/MIT.
  */
-package software.bluelib.loader.json.deserialize.animation;
+package software.bluelib.loader.json.deserialize.animation.keyframe;
 
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import net.minecraft.util.GsonHelper;
 import org.jetbrains.annotations.NotNull;
-import org.joml.Vector3f;
-import software.bluelib.api.json.deserializer.pos.Vector3;
 import software.bluelib.api.math.Vector3s;
+import software.bluelib.api.molang.value.MoLangValue;
 import software.bluelib.loader.animation.math.Easing;
-import software.bluelib.loader.geckolib.math.MathValue;
 
 import java.util.List;
 
-public record KeyframeDeserializer<T extends Vector3s>(
+public record KeyframeDeserializer<T extends MoLangValue>(
 		double length,
 		@NotNull T startValue,
 		@NotNull T endValue,
