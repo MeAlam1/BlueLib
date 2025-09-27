@@ -21,6 +21,7 @@ import software.bluelib.loader.animation.keyframe.AnimationPoint;
 import software.bluelib.loader.geckolib.math.MathValue;
 
 @SuppressWarnings("unused")
+// TODO: Completely Rewrite Easing System
 @FunctionalInterface
 public interface Easing {
 

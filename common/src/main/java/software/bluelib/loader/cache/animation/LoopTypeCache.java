@@ -1,8 +1,8 @@
-package software.bluelib.loader.animation;
+package software.bluelib.loader.cache.animation;
 
 import org.jetbrains.annotations.NotNull;
 import software.bluelib.loader.animatable.base.BlueAnimatable;
-import software.bluelib.loader.cache.animation.AnimationCache;
+import software.bluelib.loader.animation.AnimationController;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

@@ -14,7 +14,6 @@ import java.util.Map;
 import net.minecraft.util.GsonHelper;
 import org.jetbrains.annotations.NotNull;
 import software.bluelib.loader.BlueLoader;
-import software.bluelib.loader.cache.animation.keyframe.KeyframeLibraryCache;
 
 public class KeyFramesAdapter implements JsonDeserializer<KeyframeLibraryCache> {
 

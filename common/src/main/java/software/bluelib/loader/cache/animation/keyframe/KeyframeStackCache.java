@@ -8,10 +8,13 @@
 package software.bluelib.loader.cache.animation.keyframe;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import java.util.List;
 import org.jetbrains.annotations.NotNull;
 
-public record KeyframeStackCache<T extends KeyframeCache<?>>(@NotNull List<T> xKeyframes, @NotNull List<T> yKeyframes,
+import java.util.List;
+
+public record KeyframeStackCache<T extends KeyframeCache<?>>(
+		@NotNull List<T> xKeyframes,
+		@NotNull List<T> yKeyframes,
 		@NotNull List<T> zKeyframes) {
 
 	public KeyframeStackCache() {

@@ -13,13 +13,6 @@ import software.bluelib.loader.animation.LoopTypeCache;
 import software.bluelib.loader.cache.animation.keyframe.CustomInstructionKeyframeCache;
 import software.bluelib.loader.cache.animation.keyframe.ParticleKeyframeCache;
 import software.bluelib.loader.cache.animation.keyframe.SoundKeyframeCache;
-import software.bluelib.loader.geckolib.animations.CustomInstructionKeyframeData;
-import software.bluelib.loader.geckolib.animations.ParticleKeyframeData;
-import software.bluelib.loader.geckolib.animations.SoundKeyframeData;
-import software.bluelib.loader.cache.animation.keyframe.KeyframeLibraryCache;
-import software.bluelib.loader.json.deserialize.animation.keyframe.CustomInstructionKeyframeDeserializer;
-import software.bluelib.loader.json.deserialize.animation.keyframe.ParticleKeyframeDeserializer;
-import software.bluelib.loader.json.deserialize.animation.keyframe.SoundKeyframeDeserializer;
 
 public record AnimationCache(
 		@NotNull String name,

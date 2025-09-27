@@ -28,7 +28,6 @@ import software.bluelib.loader.cache.animation.AnimationCache;
 import software.bluelib.loader.cache.animation.AnimationsCache;
 import software.bluelib.loader.cache.animation.BoneAnimationCache;
 import software.bluelib.loader.cache.animation.keyframe.KeyframeCache;
-import software.bluelib.loader.cache.animation.keyframe.KeyframeLibraryCache;
 import software.bluelib.loader.cache.animation.keyframe.KeyframeStackCache;
 import software.bluelib.loader.geckolib.math.MathParser;
 import software.bluelib.loader.geckolib.math.MathValue;

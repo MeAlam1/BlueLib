@@ -12,11 +12,16 @@ import java.util.List;
 import java.util.Objects;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import software.bluelib.api.molang.value.MoLangValue;
 import software.bluelib.loader.animation.math.Easing;
 import software.bluelib.loader.geckolib.math.MathValue;
 
-public record KeyframeCache<T extends MathValue>(double length, @NotNull T startValue, @NotNull T endValue,
-		@NotNull Easing easing, @NotNull List<T> easingArgs) {
+public record KeyframeCache<T extends MoLangValue>(
+		double length, 
+		@NotNull T startValue, 
+		@NotNull T endValue,
+		@NotNull Easing easing, 
+		@NotNull List<T> easingArgs) {
 
 	public KeyframeCache(double pLength, @NotNull T pStartValue, @NotNull T pEndValue) {
 		this(pLength, pStartValue, pEndValue, Easing.LINEAR);
