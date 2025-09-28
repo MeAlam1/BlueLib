@@ -26,23 +26,25 @@ import software.bluelib.api.entity.variant.IVariantProvider;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
 import software.bluelib.loader.BlueLoader;
+import software.bluelib.loader.cache.animation.AnimationFileCache;
 import software.bluelib.loader.cache.animation.AnimationsCache;
 import software.bluelib.loader.cache.controller.ControllerCache;
 import software.bluelib.loader.cache.model.ModelCache;
 import software.bluelib.loader.cache.variants.EntityCache;
 import software.bluelib.loader.geckolib.animations.BakedAnimationsAdapter;
+import software.bluelib.loader.json.deserialize.animation.AnimationFileDeserializer;
 
 public class ResourceCache extends BlueLoader {
 
 	public static class Client {
 
 		@NotNull
-		private static Map<ResourceLocation, AnimationsCache> ANIMATIONS = Collections.emptyMap();
+		private static Map<ResourceLocation, AnimationFileCache> ANIMATIONS = Collections.emptyMap();
 		@NotNull
 		private static Map<ResourceLocation, ModelCache> MODELS = Collections.emptyMap();
 
 		@NotNull
-		public static Map<ResourceLocation, AnimationsCache> getBakedAnimations() {
+		public static Map<ResourceLocation, AnimationFileCache> getBakedAnimations() {
 			return ANIMATIONS;
 		}
 
@@ -68,7 +70,7 @@ public class ResourceCache extends BlueLoader {
 				@NotNull Executor pGameExecutor) {
 			clearCaches();
 
-			CompletableFuture<Map<ResourceLocation, AnimationsCache>> animations = loadAnimations(pBackgroundExecutor, pResourceManager);
+			CompletableFuture<Map<ResourceLocation, AnimationFileCache>> animations = loadAnimations(pBackgroundExecutor, pResourceManager);
 			CompletableFuture<Map<ResourceLocation, ModelCache>> models = loadModels(pBackgroundExecutor, pResourceManager);
 
 			return CompletableFuture.runAsync(() -> BakedAnimationsAdapter.COMPRESSION_CACHE = new ConcurrentHashMap<>(), pBackgroundExecutor)

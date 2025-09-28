@@ -12,26 +12,25 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import net.minecraft.util.GsonHelper;
 import org.jetbrains.annotations.NotNull;
-import software.bluelib.loader.json.deserialize.variants.VariantDeserializer;
 
 import java.util.Map;
 
-public record AnimationsDeserializer(
-		@NotNull Map<String, AnimationDeserializer> animations) {
+public record AnimationFileDeserializer(
+		@NotNull String formatVersion,
+		@NotNull AnimationsDeserializer animations) {
 
 	@NotNull
-	public static JsonDeserializer<AnimationsDeserializer> deserializer() throws JsonParseException {
+	public static JsonDeserializer<AnimationFileDeserializer> deserializer() throws JsonParseException {
 		return (json, type, context) -> {
 			JsonObject obj = json.getAsJsonObject();
 
-			Map<String, AnimationDeserializer> animations = new java.util.HashMap<>();
-			for (String animationName : obj.keySet()) {
-				animations.put(animationName, context.deserialize(obj.get(animationName), AnimationDeserializer.class));
-			}
+			String formatVersion = GsonHelper.getAsString(obj, "format_version");
+			AnimationsDeserializer animations = GsonHelper.getAsObject(obj,"animations", context, AnimationsDeserializer.class);
 
-			return new AnimationsDeserializer(
-					animations
-			);
+			return new AnimationFileDeserializer(
+					formatVersion,
+					animations);
+
 		};
 	}
 }

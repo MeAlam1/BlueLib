@@ -3,13 +3,14 @@ package software.bluelib.loader.json.deserialize.animation;
 import com.google.gson.*;
 import net.minecraft.util.GsonHelper;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import software.bluelib.api.utils.loader.JsonUtils;
 import software.bluelib.loader.json.deserialize.animation.keyframe.CustomInstructionKeyframeDeserializer;
 import software.bluelib.loader.json.deserialize.animation.keyframe.ParticleKeyframeDeserializer;
 import software.bluelib.loader.json.deserialize.animation.keyframe.SoundKeyframeDeserializer;
 
 public record AnimationDeserializer(
-		@NotNull String name,
-		double length,
+		@Nullable Double length,
 		@NotNull String loopType,
 		@NotNull BoneAnimationDeserializer[] boneAnimation,
 		@NotNull SoundKeyframeDeserializer[] sounds,
@@ -21,9 +22,8 @@ public record AnimationDeserializer(
 		return (json, type, context) -> {
 			JsonObject obj = json.getAsJsonObject();
 
-			String name = GsonHelper.getAsString(obj, "name", "unknown");
-			double length = GsonHelper.getAsDouble(obj, "length", 1.0);
-			String loopType = parseLoopType(obj.get("loop_type"));
+			Double length = JsonUtils.getOptionalDouble(obj, "animation_length");
+			String loopType = parseLoopType(obj.get("loop")); // TODO: Im here with Fixing Code, have already done AnimationFileDeserializer, Still need to do Cache
 			BoneAnimationDeserializer[] boneAnimations = context.deserialize(
 					GsonHelper.getAsJsonArray(obj, "bones", new JsonArray()),
 					BoneAnimationDeserializer[].class);
@@ -38,7 +38,6 @@ public record AnimationDeserializer(
 					CustomInstructionKeyframeDeserializer[].class);
 
 			return new AnimationDeserializer(
-					name,
 					length,
 					loopType,
 					boneAnimations,

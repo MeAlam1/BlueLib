@@ -12,6 +12,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import it.unimi.dsi.fastutil.Pair;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+
 import java.io.IOException;
 import java.io.Reader;
 import java.util.Arrays;
@@ -25,6 +26,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.stream.Collectors;
+
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -37,6 +39,7 @@ import software.bluelib.api.json.JSONMerger;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
 import software.bluelib.loader.cache.ResourceCache;
+import software.bluelib.loader.cache.animation.AnimationFileCache;
 import software.bluelib.loader.cache.animation.AnimationsCache;
 import software.bluelib.loader.cache.controller.ControllerCache;
 import software.bluelib.loader.cache.model.ModelCache;
@@ -79,6 +82,7 @@ public class BlueLoader {
 
 	@NotNull
 	public static final Gson ANIMATION_GSON = new GsonBuilder().setLenient()
+			.registerTypeAdapter(AnimationFileDeserializer.class, AnimationFileDeserializer.deserializer())
 			.registerTypeAdapter(AnimationsDeserializer.class, AnimationsDeserializer.deserializer())
 			.registerTypeAdapter(AnimationDeserializer.class, AnimationDeserializer.deserializer())
 			.registerTypeAdapter(BoneAnimationDeserializer.class, BoneAnimationDeserializer.deserializer())
@@ -132,7 +136,7 @@ public class BlueLoader {
 	}
 
 	@NotNull
-	protected static CompletableFuture<Map<ResourceLocation, AnimationsCache>> loadAnimations(@NotNull Executor pBackgroundExecutor, @NotNull ResourceManager pResourceManager) {
+	protected static CompletableFuture<Map<ResourceLocation, AnimationFileCache>> loadAnimations(@NotNull Executor pBackgroundExecutor, @NotNull ResourceManager pResourceManager) {
 		return bakeJsonResources(pBackgroundExecutor, pResourceManager, BlueLibConstants.BlueLoader.ANIMATIONS_PATH.getPath(), ResourceCache::bakeAnimations,
 				ex -> null);
 	}
@@ -261,11 +265,11 @@ public class BlueLoader {
 				BaseLogger.log(true, BaseLogLevel.INFO, String.format("Loading path: %1$s with resource: %2$s", pPath.toString(), pResource.toString()));
 				tasks.add(CompletableFuture.supplyAsync(() -> {
 					try {
-						return Pair.of(pPath, pElementFactory.apply(pPath, pResource)); // may parse JSON here
+						return Pair.of(pPath, pElementFactory.apply(pPath, pResource));
 					} catch (Exception e) {
 						BaseLogger.log(true, BaseLogLevel.ERROR,
 								String.format("Failed to read/parse resource %s: %s", pPath, e.getMessage()));
-						return null; // swallow this file
+						return null;
 					}
 				}, pExecutor));
 			});
@@ -299,20 +303,21 @@ public class BlueLoader {
 	}
 
 	@NotNull
-	protected static AnimationsCache bakeAnimations(@NotNull ResourceLocation pResourceLocation, @NotNull JsonObject pJsonObject) {
+	protected static AnimationFileCache bakeAnimations(@NotNull ResourceLocation pResourceLocation, @NotNull JsonObject pJsonObject) {
 		return bakeGeneric(
 				pResourceLocation,
 				pJsonObject,
 				ANIMATION_GSON,
-				AnimationsDeserializer.class,
-				AnimationsDeserializer::formatVersion,
+				AnimationFileDeserializer.class,
+				AnimationFileDeserializer::formatVersion,
 				AnimationFormatVersion.REGISTRY::match,
 				AnimationFormatVersion::isSupported,
 				AnimationFormatVersion::getErrorMessage,
 				(namespace, animationsDeserializer) -> CacheFactory.constructWithFactory(AnimationCacheFactory.REGISTRY::getForNamespace, namespace, animationsDeserializer),
 				List.of(
 						Pair.of(loc -> loc.getPath().endsWith(".geo.json"), ".geo.json"),
-						Pair.of(loc -> loc.getPath().endsWith(".controller.json"), ".controller.json")));
+						Pair.of(loc -> loc.getPath().endsWith(".controller.json"), ".controller.json")
+				));
 	}
 
 	@NotNull
