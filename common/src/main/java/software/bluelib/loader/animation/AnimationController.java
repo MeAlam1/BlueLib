@@ -14,6 +14,7 @@ import java.util.function.Function;
 import net.minecraft.core.Direction.Axis;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import software.bluelib.api.molang.value.MoLangValue;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
 import software.bluelib.loader.animatable.base.BlueAnimatable;
@@ -28,14 +29,13 @@ import software.bluelib.loader.geckolib.animations.SoundKeyframeData;
 import software.bluelib.loader.animation.keyframe.event.CustomInstructionKeyframeEvent;
 import software.bluelib.loader.animation.keyframe.event.ParticleKeyframeEvent;
 import software.bluelib.loader.animation.keyframe.event.SoundKeyframeEvent;
-import software.bluelib.loader.animation.math.Easing;
+import software.bluelib.loader.geckolib.animations.Easing;
 import software.bluelib.loader.animation.state.PlayState;
 import software.bluelib.loader.cache.animation.BoneAnimationCache;
 import software.bluelib.loader.cache.animation.keyframe.KeyframeCache;
 import software.bluelib.loader.cache.animation.keyframe.KeyframeStackCache;
 import software.bluelib.loader.cache.model.BoneCache;
 import software.bluelib.loader.geckolib.math.MathParser;
-import software.bluelib.loader.geckolib.math.MathValue;
 import software.bluelib.loader.geckolib.math.MoLangQueries;
 import software.bluelib.loader.geckolib.math.value.Constant;
 import software.bluelib.loader.model.BlueModel;
@@ -378,9 +378,9 @@ public class AnimationController<T extends BlueAnimatable> {
 						continue;
 					}
 
-					KeyframeStackCache<KeyframeCache<MathValue>> rotationKeyFrames = boneAnimationCache.rotationKeyFrames();
-					KeyframeStackCache<KeyframeCache<MathValue>> positionKeyFrames = boneAnimationCache.positionKeyFrames();
-					KeyframeStackCache<KeyframeCache<MathValue>> scaleKeyFrames = boneAnimationCache.scaleKeyFrames();
+					KeyframeStackCache<KeyframeCache<MoLangValue>> rotationKeyFrames = boneAnimationCache.rotationKeyFrames();
+					KeyframeStackCache<KeyframeCache<MoLangValue>> positionKeyFrames = boneAnimationCache.positionKeyFrames();
+					KeyframeStackCache<KeyframeCache<MoLangValue>> scaleKeyFrames = boneAnimationCache.scaleKeyFrames();
 
 					if (!rotationKeyFrames.xKeyframes().isEmpty()) {
 						boneAnimationFrame.addNextRotation(null, adjustedTick, this.transitionLength, boneSnapshot, bone.getInitialSnapshot(),
@@ -449,9 +449,9 @@ public class AnimationController<T extends BlueAnimatable> {
 				continue;
 			}
 
-			KeyframeStackCache<KeyframeCache<MathValue>> rotationKeyFrames = boneAnimationCache.rotationKeyFrames();
-			KeyframeStackCache<KeyframeCache<MathValue>> positionKeyFrames = boneAnimationCache.positionKeyFrames();
-			KeyframeStackCache<KeyframeCache<MathValue>> scaleKeyFrames = boneAnimationCache.scaleKeyFrames();
+			KeyframeStackCache<KeyframeCache<MoLangValue>> rotationKeyFrames = boneAnimationCache.rotationKeyFrames();
+			KeyframeStackCache<KeyframeCache<MoLangValue>> positionKeyFrames = boneAnimationCache.positionKeyFrames();
+			KeyframeStackCache<KeyframeCache<MoLangValue>> scaleKeyFrames = boneAnimationCache.scaleKeyFrames();
 
 			if (!rotationKeyFrames.xKeyframes().isEmpty()) {
 				boneAnimationFrame.addRotations(
@@ -477,7 +477,7 @@ public class AnimationController<T extends BlueAnimatable> {
 
 		pAdjustedTick += this.transitionLength;
 
-		for (SoundKeyframeData keyframeData : this.currentAnimation.animationCache().keyFrames().sounds()) {
+		/*for (SoundKeyframeData keyframeData : this.currentAnimation.animationCache().keyFrames().sounds()) {
 			if (pAdjustedTick >= keyframeData.getStartTick() && this.executedKeyFrames.add(keyframeData)) {
 				if (this.soundKeyframeHandler == null) {
 					BaseLogger.log(BaseLogLevel.WARNING, "Sound Keyframe found for " + this.animatable.getClass().getSimpleName() + " -> " + getName() + ", but no keyframe handler registered");
@@ -508,7 +508,7 @@ public class AnimationController<T extends BlueAnimatable> {
 
 				this.customKeyframeHandler.handle(new CustomInstructionKeyframeEvent<>(this.animatable, pAdjustedTick, this, keyframeData));
 			}
-		}
+		}*/
 
 		if (this.transitionLength == 0 && this.shouldResetTick && this.animationState == State.TRANSITIONING)
 			this.currentAnimation = this.animationQueue.poll();
@@ -553,14 +553,14 @@ public class AnimationController<T extends BlueAnimatable> {
 	}
 
 	@NotNull
-	private AnimationPoint getAnimationPointAtTick(@NotNull List<KeyframeCache<MathValue>> pFrames, double pTick, boolean pIsRotation,
+	private AnimationPoint getAnimationPointAtTick(@NotNull List<KeyframeCache<MoLangValue>> pFrames, double pTick, boolean pIsRotation,
 			@NotNull Axis pAxis) {
-		KeyframeLocation<KeyframeCache<MathValue>> location = getCurrentKeyFrameLocation(pFrames, pTick);
-		KeyframeCache<MathValue> currentFrame = location.keyframe();
-		double startValue = currentFrame.startValue().get();
-		double endValue = currentFrame.endValue().get();
+		KeyframeLocation<KeyframeCache<MoLangValue>> location = getCurrentKeyFrameLocation(pFrames, pTick);
+		KeyframeCache<MoLangValue> currentFrame = location.keyframe();
+		double startValue = 1;
+		double endValue = 1;
 
-		if (pIsRotation) {
+		/*if (pIsRotation) {
 			if (!(currentFrame.startValue() instanceof Constant)) {
 				startValue = Math.toRadians(startValue);
 
@@ -574,17 +574,17 @@ public class AnimationController<T extends BlueAnimatable> {
 				if (pAxis == Axis.X || pAxis == Axis.Y)
 					endValue *= -1;
 			}
-		}
+		}*/
 
 		return new AnimationPoint(currentFrame, location.startTick(), currentFrame.length(), startValue, endValue);
 	}
 
 	@NotNull
-	private KeyframeLocation<KeyframeCache<MathValue>> getCurrentKeyFrameLocation(@NotNull List<KeyframeCache<MathValue>> pFrames,
+	private KeyframeLocation<KeyframeCache<MoLangValue>> getCurrentKeyFrameLocation(@NotNull List<KeyframeCache<MoLangValue>> pFrames,
 			double pAgeInTicks) {
 		double totalFrameTime = 0;
 
-		for (KeyframeCache<MathValue> frame : pFrames) {
+		for (KeyframeCache<MoLangValue> frame : pFrames) {
 			totalFrameTime += frame.length();
 
 			if (totalFrameTime > pAgeInTicks)

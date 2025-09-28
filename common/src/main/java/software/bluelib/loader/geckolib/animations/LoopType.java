@@ -16,7 +16,7 @@ public interface LoopType {
 	Map<String, LoopType> LOOP_TYPES = new ConcurrentHashMap<>(4);
 
 	@NotNull
-	LoopType DEFAULT = (animatable, controller, currentAnimation) -> currentAnimation.loopType().shouldPlayAgain(animatable, controller, currentAnimation);
+	LoopType DEFAULT = (animatable, controller, currentAnimation) -> currentAnimation.loopType().behavior().shouldPlayAgain(animatable, controller, currentAnimation);
 	@NotNull
 	LoopType PLAY_ONCE = register("play_once", register("false", (animatable, controller, currentAnimation) -> false));
 	@NotNull

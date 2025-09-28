@@ -16,7 +16,7 @@ import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.loader.animatable.base.BlueAnimatable;
-import software.bluelib.loader.animation.math.Easing;
+import software.bluelib.loader.geckolib.animations.Easing;
 import software.bluelib.loader.geckolib.animations.LoopType;
 import software.bluelib.loader.geckolib.constant.DataTickets;
 import software.bluelib.loader.geckolib.constant.dataticket.SerializableDataTicket;

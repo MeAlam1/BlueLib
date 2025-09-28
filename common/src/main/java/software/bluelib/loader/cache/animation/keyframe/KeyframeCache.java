@@ -8,26 +8,28 @@
 package software.bluelib.loader.cache.animation.keyframe;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+
 import java.util.List;
 import java.util.Objects;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.molang.value.MoLangValue;
-import software.bluelib.loader.animation.math.Easing;
-import software.bluelib.loader.geckolib.math.MathValue;
+import software.bluelib.loader.cache.animation.EasingCache;
+import software.bluelib.loader.geckolib.animations.Easing;
 
 public record KeyframeCache<T extends MoLangValue>(
-		double length, 
-		@NotNull T startValue, 
+		double length,
+		@NotNull T startValue,
 		@NotNull T endValue,
-		@NotNull Easing easing, 
+		@NotNull EasingCache easing,
 		@NotNull List<T> easingArgs) {
 
 	public KeyframeCache(double pLength, @NotNull T pStartValue, @NotNull T pEndValue) {
-		this(pLength, pStartValue, pEndValue, Easing.LINEAR);
+		this(pLength, pStartValue, pEndValue, EasingCache.LINEAR);
 	}
 
-	public KeyframeCache(double pLength, @NotNull T pStartValue, @NotNull T pEndValue, @NotNull Easing pEasing) {
+	public KeyframeCache(double pLength, @NotNull T pStartValue, @NotNull T pEndValue, @NotNull EasingCache pEasing) {
 		this(pLength, pStartValue, pEndValue, pEasing, new ObjectArrayList<>(0));
 	}
 

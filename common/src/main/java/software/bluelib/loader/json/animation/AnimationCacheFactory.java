@@ -48,7 +48,7 @@ public interface AnimationCacheFactory extends CacheFactory<AnimationsCache, Ani
 
 		@Override
 		public @Nullable AnimationsCache constructBlueAnimator(@NotNull AnimationsDeserializer pAnimationsDeserializer) {
-			return pAnimationsDeserializer.animations();
+			return null;
 		}
 	}
 }

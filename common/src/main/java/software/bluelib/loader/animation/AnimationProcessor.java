@@ -22,7 +22,7 @@ import software.bluelib.loader.animatable.base.BlueAnimatable;
 import software.bluelib.loader.animation.bone.BoneSnapshot;
 import software.bluelib.loader.animation.keyframe.AnimationPoint;
 import software.bluelib.loader.animation.keyframe.BoneAnimationFrame;
-import software.bluelib.loader.animation.math.Easing;
+import software.bluelib.loader.geckolib.animations.Easing;
 import software.bluelib.loader.cache.animation.AnimationCache;
 import software.bluelib.loader.cache.model.BoneCache;
 import software.bluelib.loader.cache.model.ModelCache;

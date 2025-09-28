@@ -5,7 +5,7 @@
  * If a copy of the MIT License was not distributed with this file,
  * You can obtain one at https://opensource.org/licenses/MIT.
  */
-package software.bluelib.loader.animation.math;
+package software.bluelib.loader.geckolib.animations;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
@@ -101,8 +101,8 @@ public interface Easing {
 	static double lerpWithOverride(@NotNull AnimationPoint pAnimationPoint, @Nullable Easing pOverride) {
 		Easing easing = pOverride;
 
-		if (pOverride == null)
-			easing = pAnimationPoint.keyFrame() == null ? LINEAR : pAnimationPoint.keyFrame().easing();
+		/*if (pOverride == null)
+			easing = pAnimationPoint.keyFrame() == null ? LINEAR : pAnimationPoint.keyFrame().easing();*/
 
 		return easing.apply(pAnimationPoint);
 	}
@@ -110,8 +110,8 @@ public interface Easing {
 	default double apply(@NotNull AnimationPoint pAnimationPoint) {
 		Double easingVariable = null;
 
-		if (pAnimationPoint.keyFrame() != null && !pAnimationPoint.keyFrame().easingArgs().isEmpty())
-			easingVariable = pAnimationPoint.keyFrame().easingArgs().getFirst().get();
+		/*if (pAnimationPoint.keyFrame() != null && !pAnimationPoint.keyFrame().easingArgs().isEmpty())
+			easingVariable = pAnimationPoint.keyFrame().easingArgs().getFirst().get();*/
 
 		return apply(pAnimationPoint, easingVariable, pAnimationPoint.currentTick() / pAnimationPoint.transitionLength());
 	}
@@ -301,7 +301,7 @@ public interface Easing {
 
 		@Override
 		public double apply(@NotNull AnimationPoint pAnimationPoint, @Nullable Double pEasingValue, @NotNull Double pLerpValue) {
-			if (pAnimationPoint.currentTick() >= pAnimationPoint.transitionLength())
+			/*if (pAnimationPoint.currentTick() >= pAnimationPoint.transitionLength())
 				return pAnimationPoint.animationEndValue();
 
 			List<? extends MathValue> easingArgs = pAnimationPoint.keyFrame().easingArgs();
@@ -309,7 +309,8 @@ public interface Easing {
 			if (easingArgs.size() < 2)
 				return Mth.lerp(buildTransformer(pEasingValue).apply(pLerpValue), pAnimationPoint.animationStartValue(), pAnimationPoint.animationEndValue());
 
-			return getPointOnSpline(pLerpValue, easingArgs.get(0).get(), pAnimationPoint.animationStartValue(), pAnimationPoint.animationEndValue(), easingArgs.get(1).get());
+			return getPointOnSpline(pLerpValue, easingArgs.get(0).get(), pAnimationPoint.animationStartValue(), pAnimationPoint.animationEndValue(), easingArgs.get(1).get());*/
+			return 1;
 		}
 	}
 }

@@ -38,7 +38,6 @@ import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
 import software.bluelib.loader.cache.ResourceCache;
 import software.bluelib.loader.cache.animation.AnimationsCache;
-import software.bluelib.loader.json.deserialize.animation.LoopTypeDeserializer;
 import software.bluelib.loader.cache.controller.ControllerCache;
 import software.bluelib.loader.cache.model.ModelCache;
 import software.bluelib.loader.cache.variants.EntityCache;
@@ -85,7 +84,6 @@ public class BlueLoader {
 			.registerTypeAdapter(BoneAnimationDeserializer.class, BoneAnimationDeserializer.deserializer())
 			.registerTypeAdapter(KeyframeStackDeserializer.class, KeyframeStackDeserializer.deserializer())
 			.registerTypeAdapter(KeyframeDeserializer.class, KeyframeDeserializer.deserializer())
-			.registerTypeAdapter(LoopTypeDeserializer.class, LoopTypeDeserializer.deserializer())
 			.registerTypeAdapter(SoundKeyframeDeserializer.class, SoundKeyframeDeserializer.deserializer())
 			.registerTypeAdapter(ParticleKeyframeDeserializer.class, ParticleKeyframeDeserializer.deserializer())
 			.registerTypeAdapter(CustomInstructionKeyframeDeserializer.class, CustomInstructionKeyframeDeserializer.deserializer())

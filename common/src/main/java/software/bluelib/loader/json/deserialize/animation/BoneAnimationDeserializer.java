@@ -13,6 +13,7 @@ import com.google.gson.JsonParseException;
 import net.minecraft.util.GsonHelper;
 import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.molang.value.MoLangValue;
+import software.bluelib.api.utils.loader.JsonUtils;
 import software.bluelib.loader.json.deserialize.animation.keyframe.KeyframeDeserializer;
 import software.bluelib.loader.json.deserialize.animation.keyframe.KeyframeStackDeserializer;
 
@@ -28,9 +29,15 @@ public record BoneAnimationDeserializer(
 			JsonObject obj = json.getAsJsonObject();
 
 			String boneName = GsonHelper.getAsString(obj, "boneName");
+			KeyframeStackDeserializer<KeyframeDeserializer<MoLangValue>> rotationKeyFrames = GsonHelper.getAsObject(obj, "rotation", context, KeyframeStackDeserializer.class);
+			KeyframeStackDeserializer<KeyframeDeserializer<MoLangValue>> positionKeyFrames = GsonHelper.getAsObject(obj, "position", context, KeyframeStackDeserializer.class);
+			KeyframeStackDeserializer<KeyframeDeserializer<MoLangValue>> scaleKeyFrames = GsonHelper.getAsObject(obj, "scale", context, KeyframeStackDeserializer.class);
 
 			return new BoneAnimationDeserializer(
-					boneName
+					boneName,
+					rotationKeyFrames,
+					positionKeyFrames,
+					scaleKeyFrames
 			);
 		};
 	}

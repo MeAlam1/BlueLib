@@ -9,7 +9,6 @@ package software.bluelib.loader.cache.animation;
 
 import org.jetbrains.annotations.NotNull;
 import software.bluelib.loader.animation.Animation;
-import software.bluelib.loader.animation.LoopTypeCache;
 import software.bluelib.loader.cache.animation.keyframe.CustomInstructionKeyframeCache;
 import software.bluelib.loader.cache.animation.keyframe.ParticleKeyframeCache;
 import software.bluelib.loader.cache.animation.keyframe.SoundKeyframeCache;

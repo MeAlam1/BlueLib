@@ -23,7 +23,6 @@ import software.bluelib.api.exception.CompoundException;
 import software.bluelib.api.utils.loader.JsonUtils;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
-import software.bluelib.loader.animation.math.Easing;
 import software.bluelib.loader.cache.animation.AnimationCache;
 import software.bluelib.loader.cache.animation.AnimationsCache;
 import software.bluelib.loader.cache.animation.BoneAnimationCache;
@@ -46,7 +45,7 @@ public class BakedAnimationsAdapter implements JsonDeserializer<AnimationsCache>
 
 		for (Map.Entry<String, JsonElement> entry : obj.entrySet()) {
 			try {
-				animations.put(entry.getKey(), bakeAnimation(entry.getKey(), entry.getValue().getAsJsonObject(), pContext));
+				//animations.put(entry.getKey(), bakeAnimation(entry.getKey(), entry.getValue().getAsJsonObject(), pContext));
 			} catch (Exception pException) {
 				if (pException instanceof CompoundException compoundEx) {
 					BaseLogger.log(BaseLogLevel.ERROR, compoundEx.withMessage("Unable to parse animation: " + entry.getKey()).getLocalizedMessage(), compoundEx);
@@ -55,10 +54,10 @@ public class BakedAnimationsAdapter implements JsonDeserializer<AnimationsCache>
 			}
 		}
 
-		return new AnimationsCache(animations);
+		return null;
 	}
 
-	@NotNull
+	/*@NotNull
 	private AnimationCache bakeAnimation(@NotNull String pName, @NotNull JsonObject pAnimationObj, @NotNull JsonDeserializationContext pContext) throws CompoundException {
 		double length = pAnimationObj.has("animation_length") ? GsonHelper.getAsDouble(pAnimationObj, "animation_length") * 20d : -1;
 		LoopType loopType = LoopType.fromJson(pAnimationObj.get("loop"));
@@ -260,5 +259,5 @@ public class BakedAnimationsAdapter implements JsonDeserializer<AnimationsCache>
 
 	private static double readTimestamp(@NotNull String pTimestamp) {
 		return NumberUtils.isCreatable(pTimestamp) ? Double.parseDouble(pTimestamp) : 0;
-	}
+	}*/
 }
