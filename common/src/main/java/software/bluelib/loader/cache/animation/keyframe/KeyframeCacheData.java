@@ -5,6 +5,6 @@
  * If a copy of the MIT License was not distributed with this file,
  * You can obtain one at https://opensource.org/licenses/MIT.
  */
-package software.bluelib.loader.cache.animation;
+package software.bluelib.loader.cache.animation.keyframe;
 
-public sealed interface BoneAnimationCache permits BoneArrayCache, BoneObjectCache {}
+public sealed interface KeyframeCacheData permits KeyframeObjectCache, KeyframeArrayCache {}

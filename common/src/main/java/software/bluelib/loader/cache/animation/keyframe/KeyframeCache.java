@@ -7,42 +7,8 @@
  */
 package software.bluelib.loader.cache.animation.keyframe;
 
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.Map;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import software.bluelib.api.molang.value.MoLangValue;
-import software.bluelib.loader.cache.animation.EasingCache;
 
-public record KeyframeCache<T extends MoLangValue>(
-		double length,
-		@NotNull T startValue,
-		@NotNull T endValue,
-		@NotNull EasingCache easing,
-		@NotNull List<T> easingArgs) {
-
-	public KeyframeCache(double pLength, @NotNull T pStartValue, @NotNull T pEndValue) {
-		this(pLength, pStartValue, pEndValue, EasingCache.LINEAR);
-	}
-
-	public KeyframeCache(double pLength, @NotNull T pStartValue, @NotNull T pEndValue, @NotNull EasingCache pEasing) {
-		this(pLength, pStartValue, pEndValue, pEasing, new ObjectArrayList<>(0));
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(this.length, this.startValue, this.endValue, this.easing, this.easingArgs);
-	}
-
-	@Override
-	public boolean equals(@Nullable Object pObj) {
-		if (this == pObj)
-			return true;
-
-		if (pObj == null || getClass() != pObj.getClass())
-			return false;
-
-		return hashCode() == pObj.hashCode();
-	}
-}
+public record KeyframeCache(
+		@NotNull Map<String, KeyframeCacheData> keyframeData) {}

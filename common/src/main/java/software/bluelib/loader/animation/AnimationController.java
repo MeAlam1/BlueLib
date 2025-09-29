@@ -24,11 +24,11 @@ import software.bluelib.loader.animation.keyframe.event.CustomInstructionKeyfram
 import software.bluelib.loader.animation.keyframe.event.ParticleKeyframeEvent;
 import software.bluelib.loader.animation.keyframe.event.SoundKeyframeEvent;
 import software.bluelib.loader.animation.state.PlayState;
-import software.bluelib.loader.cache.animation.BoneAnimationCache;
-import software.bluelib.loader.cache.animation.keyframe.KeyframeCache;
 import software.bluelib.loader.cache.model.BoneCache;
+import software.bluelib.loader.geckolib.animations.BoneAnimationCache;
 import software.bluelib.loader.geckolib.animations.Easing;
 import software.bluelib.loader.geckolib.animations.KeyFrameData;
+import software.bluelib.loader.geckolib.animations.KeyframeCache;
 import software.bluelib.loader.geckolib.animations.KeyframeStackCache;
 import software.bluelib.loader.geckolib.math.MathParser;
 import software.bluelib.loader.geckolib.math.MoLangQueries;
