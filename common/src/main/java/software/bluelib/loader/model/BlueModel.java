@@ -25,6 +25,7 @@ import software.bluelib.loader.animation.AnimationProcessor;
 import software.bluelib.loader.animation.AnimationState;
 import software.bluelib.loader.cache.ResourceCache;
 import software.bluelib.loader.cache.animation.AnimationCache;
+import software.bluelib.loader.cache.animation.AnimationFileCache;
 import software.bluelib.loader.cache.animation.AnimationsCache;
 import software.bluelib.loader.cache.model.BoneCache;
 import software.bluelib.loader.cache.model.ModelCache;
@@ -142,14 +143,14 @@ public abstract class BlueModel<T extends BlueAnimatable> {
 		};
 
 		for (ResourceLocation loc : attempts) {
-			AnimationsCache animationsCache = ResourceCache.Client.getBakedAnimations().get(loc);
+			AnimationFileCache animationsCache = ResourceCache.Client.getBakedAnimations().get(loc);
 			AnimationCache animationCache = animationsCache != null ? animationsCache.getAnimation(pName) : null;
 			if (animationCache != null)
 				return animationCache;
 		}
 
 		for (ResourceLocation fallbackLocation : getAnimationResourceFallbacks(pAnimatable)) {
-			AnimationsCache animationsCache = ResourceCache.Client.getBakedAnimations().get(fallbackLocation);
+			AnimationFileCache animationsCache = ResourceCache.Client.getBakedAnimations().get(fallbackLocation);
 			AnimationCache animationCache = animationsCache != null ? animationsCache.getAnimation(pName) : null;
 			if (animationCache != null)
 				return animationCache;

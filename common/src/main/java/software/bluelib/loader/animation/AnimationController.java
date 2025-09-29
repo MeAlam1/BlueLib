@@ -354,7 +354,7 @@ public class AnimationController<T extends BlueAnimatable> {
 			}
 
 			if (this.currentAnimation != null) {
-				// TODO: REMOVE!!!!! 
+				/* TODO: REMOVE!!!!! 
 				MathParser.setVariable(MoLangQueries.ANIM_TIME, () -> 0);
 
 				for (BoneAnimationCache boneAnimationCache : this.currentAnimation.animationCache().boneAnimationCaches()) {
@@ -396,7 +396,7 @@ public class AnimationController<T extends BlueAnimatable> {
 								getAnimationPointAtTick(scaleKeyFrames.yKeyframes(), 0, false, Axis.Y),
 								getAnimationPointAtTick(scaleKeyFrames.zKeyframes(), 0, false, Axis.Z));
 					}
-				}
+				}*/
 			}
 		}
 	}
@@ -430,7 +430,7 @@ public class AnimationController<T extends BlueAnimatable> {
 
 		final double finalAdjustedTick = pAdjustedTick;
 
-		// TODO: REMOVE!!!!!
+		/* TODO: REMOVE!!!!!
 		MathParser.setVariable(MoLangQueries.ANIM_TIME, () -> finalAdjustedTick / 20d);
 
 		for (BoneAnimationCache boneAnimationCache : this.currentAnimation.animationCache().boneAnimationCaches()) {
@@ -467,7 +467,7 @@ public class AnimationController<T extends BlueAnimatable> {
 						getAnimationPointAtTick(scaleKeyFrames.yKeyframes(), pAdjustedTick, false, Axis.Y),
 						getAnimationPointAtTick(scaleKeyFrames.zKeyframes(), pAdjustedTick, false, Axis.Z));
 			}
-		}
+		}*/
 
 		pAdjustedTick += this.transitionLength;
 
@@ -522,7 +522,7 @@ public class AnimationController<T extends BlueAnimatable> {
 
 	private void saveSnapshotsForAnimation(@NotNull AnimationProcessor.QueuedAnimation pAnimation, @NotNull Map<String, BoneSnapshot> pSnapshots) {
 		for (BoneSnapshot snapshot : pSnapshots.values()) {
-			if (pAnimation.animationCache().boneAnimationCaches() != null) {
+			/*if (pAnimation.animationCache().boneAnimationCaches() != null) {
 				for (BoneAnimationCache boneAnimationCache : pAnimation.animationCache().boneAnimationCaches()) {
 					if (boneAnimationCache.boneName().equals(snapshot.getBone().getName())) {
 						this.boneSnapshots.put(boneAnimationCache.boneName(), BoneSnapshot.copy(snapshot));
@@ -530,7 +530,7 @@ public class AnimationController<T extends BlueAnimatable> {
 						break;
 					}
 				}
-			}
+			}*/
 		}
 	}
 
