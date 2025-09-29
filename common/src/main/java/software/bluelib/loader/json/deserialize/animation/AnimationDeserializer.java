@@ -9,13 +9,15 @@ import software.bluelib.loader.json.deserialize.animation.keyframe.CustomInstruc
 import software.bluelib.loader.json.deserialize.animation.keyframe.ParticleKeyframeDeserializer;
 import software.bluelib.loader.json.deserialize.animation.keyframe.SoundKeyframeDeserializer;
 
+import java.util.List;
+
 public record AnimationDeserializer(
 		@Nullable Double length,
-		@NotNull String loopType,
-		@NotNull BoneAnimationDeserializer[] boneAnimation,
-		@NotNull SoundKeyframeDeserializer[] sounds,
-		@NotNull ParticleKeyframeDeserializer[] particles,
-		@NotNull CustomInstructionKeyframeDeserializer[] customInstructions) {
+		@Nullable String loopType,
+		@NotNull List<BoneAnimationDeserializer> boneAnimation,
+		@Nullable List<SoundKeyframeDeserializer> sounds,
+		@Nullable List<ParticleKeyframeDeserializer> particles,
+		@Nullable List<CustomInstructionKeyframeDeserializer> customInstructions) {
 
 	@NotNull
 	public static JsonDeserializer<AnimationDeserializer> deserializer() throws JsonParseException {
@@ -23,19 +25,13 @@ public record AnimationDeserializer(
 			JsonObject obj = json.getAsJsonObject();
 
 			Double length = JsonUtils.getOptionalDouble(obj, "animation_length");
-			String loopType = parseLoopType(obj.get("loop")); // TODO: Im here with Fixing Code, have already done AnimationFileDeserializer, Still need to do Cache
-			BoneAnimationDeserializer[] boneAnimations = context.deserialize(
-					GsonHelper.getAsJsonArray(obj, "bones", new JsonArray()),
-					BoneAnimationDeserializer[].class);
-			SoundKeyframeDeserializer[] sounds = context.deserialize(
-					GsonHelper.getAsJsonArray(obj, "sounds", new JsonArray()),
-					SoundKeyframeDeserializer[].class);
-			ParticleKeyframeDeserializer[] particles = context.deserialize(
-					GsonHelper.getAsJsonArray(obj, "particles", new JsonArray()),
-					ParticleKeyframeDeserializer[].class);
-			CustomInstructionKeyframeDeserializer[] customInstructions = context.deserialize(
-					GsonHelper.getAsJsonArray(obj, "custom_instructions", new JsonArray()),
-					CustomInstructionKeyframeDeserializer[].class);
+			String loopType = parseLoopType(obj);
+			List<BoneAnimationDeserializer> boneAnimations = JsonUtils.jsonArrayToObjectList(GsonHelper.getAsJsonArray(obj, "bones", new JsonArray()), context, BoneAnimationDeserializer.class);
+			List<SoundKeyframeDeserializer> sounds = JsonUtils.jsonArrayToObjectList(GsonHelper.getAsJsonArray(obj, "sound_effects", new JsonArray()), context, SoundKeyframeDeserializer.class);
+			List<ParticleKeyframeDeserializer> particles = JsonUtils.jsonArrayToObjectList(GsonHelper.getAsJsonArray(obj, "particles", new JsonArray()), context, ParticleKeyframeDeserializer.class);
+			List<CustomInstructionKeyframeDeserializer> customInstructions = JsonUtils.jsonArrayToObjectList(GsonHelper.getAsJsonArray(obj, "custom?", new JsonArray()), context, CustomInstructionKeyframeDeserializer.class);
+
+			// TODO: "particles", "custom?" are not the actual array names, verify the actual array names and parse them accordingly.
 
 			return new AnimationDeserializer(
 					length,
@@ -47,16 +43,15 @@ public record AnimationDeserializer(
 		};
 	}
 
-	private static @NotNull String parseLoopType(@NotNull JsonElement pObj) {
-		String value = "play_once";
-		if (pObj.isJsonPrimitive()) {
-			JsonPrimitive primitive = pObj.getAsJsonPrimitive();
+	private static @NotNull String parseLoopType(@NotNull JsonObject pObj) {
+		JsonPrimitive primitive = JsonUtils.getOptionalPrimitive(pObj, "loop");
+		if (primitive != null) {
 			if (primitive.isBoolean()) {
-				value = primitive.getAsBoolean() ? "loop" : "play_once";
+				return primitive.getAsBoolean() ? "loop" : "play_once";
 			} else if (primitive.isString()) {
-				value = primitive.getAsString();
+				return primitive.getAsString();
 			}
 		}
-		return value;
+		return "play_once";
 	}
 }

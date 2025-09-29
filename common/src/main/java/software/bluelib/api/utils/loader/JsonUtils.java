@@ -17,14 +17,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+
 import net.minecraft.util.GsonHelper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-@SuppressWarnings({ "unused" })
+@SuppressWarnings({"unused"})
 public final class JsonUtils {
 
-	private JsonUtils() {}
+	private JsonUtils() {
+	}
 
 	@NotNull
 	public static List<Float> jsonArrayToFloatList(@Nullable JsonArray pArray) throws JsonParseException {
@@ -158,7 +160,7 @@ public final class JsonUtils {
 	@NotNull
 	public static JsonObject filterJsonObject(@NotNull JsonObject pSource, @NotNull String... pAvoid) {
 		JsonObject result = new JsonObject();
-		for (Map.Entry<String, com.google.gson.JsonElement> entry : pSource.entrySet()) {
+		for (Map.Entry<String, JsonElement> entry : pSource.entrySet()) {
 			String key = entry.getKey();
 			boolean skip = false;
 			for (String avoid : pAvoid) {
@@ -177,16 +179,21 @@ public final class JsonUtils {
 	@NotNull
 	public static <T> JsonDeserializer<T> unionDeserializer(
 			@NotNull BiFunction<JsonArray, JsonDeserializationContext, T> pArrayMapper,
-			@NotNull BiFunction<JsonObject, JsonDeserializationContext, T> objectMapper) {
+			@NotNull BiFunction<JsonObject, JsonDeserializationContext, T> pObjectMapper) {
 		return (json, type, context) -> {
 			if (json.isJsonArray()) {
 				return pArrayMapper.apply(json.getAsJsonArray(), context);
 			} else if (json.isJsonObject()) {
-				return objectMapper.apply(json.getAsJsonObject(), context);
+				return pObjectMapper.apply(json.getAsJsonObject(), context);
 			} else {
 				throw new JsonParseException("Expected JSON array or object but got: " + json);
 			}
 		};
+	}
+
+	@Nullable
+	public static JsonPrimitive getOptionalPrimitive(@NotNull JsonObject pObj, @NotNull String pElementName) {
+		return pObj.has(pElementName) ? pObj.getAsJsonPrimitive(pElementName) : null;
 	}
 
 	@Nullable

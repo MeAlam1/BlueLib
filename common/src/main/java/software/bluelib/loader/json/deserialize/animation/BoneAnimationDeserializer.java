@@ -17,6 +17,7 @@ import software.bluelib.api.utils.loader.JsonUtils;
 import software.bluelib.loader.json.deserialize.animation.keyframe.KeyframeDeserializer;
 import software.bluelib.loader.json.deserialize.animation.keyframe.KeyframeStackDeserializer;
 
+@SuppressWarnings("unchecked")
 public record BoneAnimationDeserializer(
 		@NotNull String boneName,
 		@NotNull KeyframeStackDeserializer<KeyframeDeserializer<MoLangValue>> rotationKeyFrames,
