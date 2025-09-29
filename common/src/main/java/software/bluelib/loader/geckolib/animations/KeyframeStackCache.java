@@ -5,11 +5,12 @@
  * If a copy of the MIT License was not distributed with this file,
  * You can obtain one at https://opensource.org/licenses/MIT.
  */
-package software.bluelib.loader.cache.animation.keyframe;
+package software.bluelib.loader.geckolib.animations;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import java.util.List;
 import org.jetbrains.annotations.NotNull;
+import software.bluelib.loader.cache.animation.keyframe.KeyframeCache;
 
 public record KeyframeStackCache<T extends KeyframeCache<?>>(
 		@NotNull List<T> xKeyframes,

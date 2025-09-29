@@ -8,6 +8,7 @@
 package software.bluelib.loader.cache.animation;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -20,13 +21,13 @@ public record AnimationCache(
 		@NotNull String name, // TODO: Since the Animations are stored in a Map by their names, This field is redundant and can be removed later.
 		@Nullable Double length,
 		@Nullable LoopTypeCache loopType,
-		@NotNull List<BoneAnimationCache> boneAnimation,
+		@NotNull BoneAnimationsCache boneAnimation,
 		@Nullable List<SoundKeyframeCache> sounds,
 		@Nullable List<ParticleKeyframeCache> particles,
 		@Nullable List<CustomInstructionKeyframeCache> customInstructions) {
 
 	@NotNull
 	public static AnimationCache generateWaitAnimation(double pLength) {
-		return new AnimationCache(Animation.Stage.WAIT, pLength, LoopTypeCache.PLAY_ONCE, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+		return new AnimationCache(Animation.Stage.WAIT, pLength, LoopTypeCache.PLAY_ONCE, new BoneAnimationsCache(new HashMap<>()), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
 	}
 }

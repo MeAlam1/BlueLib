@@ -8,11 +8,11 @@
 package software.bluelib.loader.cache.animation;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.molang.value.MoLangValue;
-import software.bluelib.loader.cache.animation.keyframe.KeyframeCache;
-import software.bluelib.loader.cache.animation.keyframe.KeyframeStackCache;
 
-public record BoneAnimationCache(@NotNull String boneName,
-		@NotNull KeyframeStackCache<KeyframeCache<MoLangValue>> rotationKeyFrames,
-		@NotNull KeyframeStackCache<KeyframeCache<MoLangValue>> positionKeyFrames,
-		@NotNull KeyframeStackCache<KeyframeCache<MoLangValue>> scaleKeyFrames) {}
+public record BoneAnimationCache(
+		@NotNull String boneName, // TODO: Since the Bones are stored in a Map by their names, This field is redundant and can be removed later.
+		@Nullable KeyframeData<MoLangValue> rotation,
+		@Nullable KeyframeData<MoLangValue> position,
+		@Nullable KeyframeData<MoLangValue> scale) {}

@@ -8,6 +8,7 @@
 package software.bluelib.loader.json.deserialize.animation;
 
 import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import java.util.HashMap;
@@ -26,7 +27,14 @@ public record BoneAnimationsDeserializer(
 
 			Map<String, BoneAnimationDeserializer> boneAnimations = new HashMap<>();
 			for (String boneName : obj.keySet()) {
-				boneAnimations.put(boneName, context.deserialize(obj.get(boneName), BoneAnimationDeserializer.class));
+				JsonElement boneElement = obj.get(boneName);
+				if (boneElement.isJsonArray()) {
+					boneAnimations.put(boneName, context.deserialize(boneElement, BoneArrayDeserializer.class));
+				} else if (boneElement.isJsonObject()) {
+					boneAnimations.put(boneName, context.deserialize(boneElement, BoneObjectDeserializer.class));
+				} else {
+					throw new JsonParseException("Invalid bone animation format for bone: " + boneName);
+				}
 			}
 
 			return new BoneAnimationsDeserializer(

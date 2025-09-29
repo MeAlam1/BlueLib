@@ -7,37 +7,49 @@
  */
 package software.bluelib.loader.json.deserialize.animation.keyframe;
 
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
+import com.google.gson.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import net.minecraft.util.GsonHelper;
+import java.util.Map;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.molang.value.MoLangValue;
-import software.bluelib.api.utils.loader.JsonUtils;
 
 public record KeyframeDeserializer(
-		@Nullable MoLangValue pre,
-		@Nullable MoLangValue post,
-		@Nullable String easing,
-		@Nullable List<MoLangValue> easingArgs) {
+		@NotNull Map<String, KeyframeDeserializerData> keyframeData) {
 
 	@NotNull
 	public static JsonDeserializer<KeyframeDeserializer> deserializer() throws JsonParseException {
 		return (json, type, context) -> {
 			JsonObject obj = json.getAsJsonObject();
 
-			MoLangValue pre = MoLangValue.fromJson(GsonHelper.getAsJsonObject(obj, "pre"));
-			MoLangValue post = MoLangValue.fromJson(GsonHelper.getAsJsonObject(obj, "post"));
-			String lerp_mode = GsonHelper.getAsString(obj, "lerp_mode", "linear");
-			List<MoLangValue> args = JsonUtils.jsonArrayToList(GsonHelper.getAsJsonArray(obj, "easingArgs"), MoLangValue::fromJson);
+			Map<String, KeyframeDeserializerData> keyframeData = new HashMap<>();
+			for (String keyframeName : obj.keySet()) {
+				JsonElement keyframeElement = obj.get(keyframeName);
+				keyframeData.put(keyframeName, parseData(keyframeElement, context));
+			}
 
 			return new KeyframeDeserializer(
-					pre,
-					post,
-					lerp_mode,
-					args);
+					keyframeData);
 		};
 	}
+
+	@Nullable
+	private static KeyframeDeserializerData parseData(
+			JsonElement pElement,
+			JsonDeserializationContext pContext) {
+		if (pElement.isJsonArray()) {
+			List<MoLangValue> list = new ArrayList<>();
+			for (JsonElement element : pElement.getAsJsonArray()) {
+				list.add(MoLangValue.fromJson(element));
+			}
+			return new KeyframeArrayDeserializer(list);
+		} else if (pElement.isJsonObject()) {
+			return pContext.deserialize(pElement, KeyframeObjectDeserializer.class);
+		}
+		return null;
+	}
+
+	;
 }
