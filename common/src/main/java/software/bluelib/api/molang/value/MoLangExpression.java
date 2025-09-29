@@ -7,12 +7,11 @@
  */
 package software.bluelib.api.molang.value;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.molang.MoLangRuntime;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public record MoLangExpression(@NotNull String raw) implements MoLangValue {
 

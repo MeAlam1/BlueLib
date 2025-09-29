@@ -8,15 +8,12 @@
 package software.bluelib.loader.cache.animation.keyframe;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-
 import java.util.List;
 import java.util.Objects;
-
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.molang.value.MoLangValue;
 import software.bluelib.loader.cache.animation.EasingCache;
-import software.bluelib.loader.geckolib.animations.Easing;
 
 public record KeyframeCache<T extends MoLangValue>(
 		double length,

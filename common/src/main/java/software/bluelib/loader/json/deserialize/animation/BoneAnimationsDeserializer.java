@@ -10,24 +10,27 @@ package software.bluelib.loader.json.deserialize.animation;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import java.util.HashMap;
 import java.util.Map;
 import org.jetbrains.annotations.NotNull;
 
-public record AnimationsDeserializer(
-		@NotNull Map<String, AnimationDeserializer> animations) {
+public record BoneAnimationsDeserializer(
+		@NotNull Map<String, BoneAnimationDeserializer> boneAnimations
+
+) {
 
 	@NotNull
-	public static JsonDeserializer<AnimationsDeserializer> deserializer() throws JsonParseException {
+	public static JsonDeserializer<BoneAnimationsDeserializer> deserializer() throws JsonParseException {
 		return (json, type, context) -> {
 			JsonObject obj = json.getAsJsonObject();
 
-			Map<String, AnimationDeserializer> animations = new java.util.HashMap<>();
-			for (String animationName : obj.keySet()) {
-				animations.put(animationName, context.deserialize(obj.get(animationName), AnimationDeserializer.class));
+			Map<String, BoneAnimationDeserializer> boneAnimations = new HashMap<>();
+			for (String boneName : obj.keySet()) {
+				boneAnimations.put(boneName, context.deserialize(obj.get(boneName), BoneAnimationDeserializer.class));
 			}
 
-			return new AnimationsDeserializer(
-					animations);
+			return new BoneAnimationsDeserializer(
+					boneAnimations);
 		};
 	}
 }

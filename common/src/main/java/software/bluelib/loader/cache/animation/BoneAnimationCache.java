@@ -11,7 +11,6 @@ import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.molang.value.MoLangValue;
 import software.bluelib.loader.cache.animation.keyframe.KeyframeCache;
 import software.bluelib.loader.cache.animation.keyframe.KeyframeStackCache;
-import software.bluelib.loader.geckolib.math.MathValue;
 
 public record BoneAnimationCache(@NotNull String boneName,
 		@NotNull KeyframeStackCache<KeyframeCache<MoLangValue>> rotationKeyFrames,

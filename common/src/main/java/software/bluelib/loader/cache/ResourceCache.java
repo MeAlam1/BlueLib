@@ -27,12 +27,10 @@ import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
 import software.bluelib.loader.BlueLoader;
 import software.bluelib.loader.cache.animation.AnimationFileCache;
-import software.bluelib.loader.cache.animation.AnimationsCache;
 import software.bluelib.loader.cache.controller.ControllerCache;
 import software.bluelib.loader.cache.model.ModelCache;
 import software.bluelib.loader.cache.variants.EntityCache;
 import software.bluelib.loader.geckolib.animations.BakedAnimationsAdapter;
-import software.bluelib.loader.json.deserialize.animation.AnimationFileDeserializer;
 
 public class ResourceCache extends BlueLoader {
 

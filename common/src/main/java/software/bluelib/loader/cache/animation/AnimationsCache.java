@@ -7,10 +7,9 @@
  */
 package software.bluelib.loader.cache.animation;
 
+import java.util.Map;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.Map;
 
 public record AnimationsCache(@NotNull String formatVersion, @NotNull Map<String, AnimationCache> animations) {
 

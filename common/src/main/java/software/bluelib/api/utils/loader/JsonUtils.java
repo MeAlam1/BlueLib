@@ -10,23 +10,19 @@ package software.bluelib.api.utils.loader;
 import com.google.gson.*;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.Function;
-
 import net.minecraft.util.GsonHelper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-@SuppressWarnings({"unused"})
+@SuppressWarnings({ "unused" })
 public final class JsonUtils {
 
-	private JsonUtils() {
-	}
+	private JsonUtils() {}
 
 	@NotNull
 	public static List<Float> jsonArrayToFloatList(@Nullable JsonArray pArray) throws JsonParseException {
@@ -70,30 +66,11 @@ public final class JsonUtils {
 		return output;
 	}
 
-	public static <T> List<T> jsonArrayToObjectList(
-			@Nullable JsonArray pArray,
-			@NotNull JsonDeserializationContext pContext,
-			@NotNull Type typeOfT
-	) {
-		if (pArray == null)
-			return new ArrayList<>();
-
-		List<T> list = new ArrayList<>(pArray.size());
-
-		for (int i = 0; i < pArray.size(); i++) {
-			list.add(pContext.deserialize(pArray.get(i), typeOfT));
-		}
-
-		return list;
-	}
-
-
 	@NotNull
 	public static <T> List<T> jsonArrayToObjectList(
 			@Nullable JsonArray pArray,
 			@NotNull JsonDeserializationContext pContext,
-			@NotNull Class<? extends T> pObjectClass
-	) {
+			@NotNull Class<? extends T> pObjectClass) {
 		if (pArray == null)
 			return new ArrayList<>();
 
@@ -105,7 +82,6 @@ public final class JsonUtils {
 
 		return list;
 	}
-
 
 	@NotNull
 	public static <T> List<T> jsonArrayToList(@Nullable JsonArray pArray, @NotNull Function<JsonElement, T> pElementTransformer) {

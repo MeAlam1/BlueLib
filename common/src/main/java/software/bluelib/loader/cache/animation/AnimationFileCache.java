@@ -10,8 +10,6 @@ package software.bluelib.loader.cache.animation;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Map;
-
 public record AnimationFileCache(@NotNull String formatVersion, @NotNull AnimationsCache animations) {
 
 	public @NotNull AnimationsCache getAllAnimations() {

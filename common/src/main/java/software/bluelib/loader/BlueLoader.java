@@ -12,7 +12,6 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import it.unimi.dsi.fastutil.Pair;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-
 import java.io.IOException;
 import java.io.Reader;
 import java.util.Arrays;
@@ -26,7 +25,6 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.stream.Collectors;
-
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -40,7 +38,6 @@ import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
 import software.bluelib.loader.cache.ResourceCache;
 import software.bluelib.loader.cache.animation.AnimationFileCache;
-import software.bluelib.loader.cache.animation.AnimationsCache;
 import software.bluelib.loader.cache.controller.ControllerCache;
 import software.bluelib.loader.cache.model.ModelCache;
 import software.bluelib.loader.cache.variants.EntityCache;
@@ -85,8 +82,8 @@ public class BlueLoader {
 			.registerTypeAdapter(AnimationFileDeserializer.class, AnimationFileDeserializer.deserializer())
 			.registerTypeAdapter(AnimationsDeserializer.class, AnimationsDeserializer.deserializer())
 			.registerTypeAdapter(AnimationDeserializer.class, AnimationDeserializer.deserializer())
+			.registerTypeAdapter(BoneAnimationsDeserializer.class, BoneAnimationsDeserializer.deserializer())
 			.registerTypeAdapter(BoneAnimationDeserializer.class, BoneAnimationDeserializer.deserializer())
-			.registerTypeAdapter(KeyframeStackDeserializer.class, KeyframeStackDeserializer.deserializer())
 			.registerTypeAdapter(KeyframeDeserializer.class, KeyframeDeserializer.deserializer())
 			.registerTypeAdapter(SoundKeyframeDeserializer.class, SoundKeyframeDeserializer.deserializer())
 			.registerTypeAdapter(ParticleKeyframeDeserializer.class, ParticleKeyframeDeserializer.deserializer())
@@ -316,8 +313,7 @@ public class BlueLoader {
 				(namespace, animationsDeserializer) -> CacheFactory.constructWithFactory(AnimationCacheFactory.REGISTRY::getForNamespace, namespace, animationsDeserializer),
 				List.of(
 						Pair.of(loc -> loc.getPath().endsWith(".geo.json"), ".geo.json"),
-						Pair.of(loc -> loc.getPath().endsWith(".controller.json"), ".controller.json")
-				));
+						Pair.of(loc -> loc.getPath().endsWith(".controller.json"), ".controller.json")));
 	}
 
 	@NotNull

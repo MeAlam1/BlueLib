@@ -13,8 +13,8 @@ import java.util.Map;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.loader.json.deserialize.model.BoneDeserializer;
-import software.bluelib.loader.json.deserialize.model.ModelDeserializer;
 import software.bluelib.loader.json.deserialize.model.ModelDescriptionDeserializer;
+import software.bluelib.loader.json.deserialize.model.ModelDeserializer;
 import software.bluelib.loader.json.deserialize.model.ModelGeometryDeserializer;
 
 public record BoneTree(

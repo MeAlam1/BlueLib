@@ -47,4 +47,3 @@ public interface MoLangValue {
 		return new MoLangExpression(pRaw);
 	}
 }
-

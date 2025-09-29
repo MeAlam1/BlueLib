@@ -7,39 +7,63 @@
  */
 package software.bluelib.loader.json.deserialize.animation;
 
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import net.minecraft.util.GsonHelper;
+import com.google.gson.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.molang.value.MoLangValue;
 import software.bluelib.api.utils.loader.JsonUtils;
+import software.bluelib.loader.json.deserialize.animation.keyframe.KeyframeData;
 import software.bluelib.loader.json.deserialize.animation.keyframe.KeyframeDeserializer;
-import software.bluelib.loader.json.deserialize.animation.keyframe.KeyframeStackDeserializer;
 
-@SuppressWarnings("unchecked")
 public record BoneAnimationDeserializer(
-		@NotNull String boneName,
-		@NotNull KeyframeStackDeserializer<KeyframeDeserializer<MoLangValue>> rotationKeyFrames,
-		@NotNull KeyframeStackDeserializer<KeyframeDeserializer<MoLangValue>> positionKeyFrames,
-		@NotNull KeyframeStackDeserializer<KeyframeDeserializer<MoLangValue>> scaleKeyFrames) {
+		@Nullable KeyframeData<MoLangValue> rotation,
+		@Nullable KeyframeData<MoLangValue> position,
+		@Nullable KeyframeData<MoLangValue> scale) {
 
 	@NotNull
 	public static JsonDeserializer<BoneAnimationDeserializer> deserializer() throws JsonParseException {
 		return (json, type, context) -> {
 			JsonObject obj = json.getAsJsonObject();
 
-			String boneName = GsonHelper.getAsString(obj, "boneName");
-			KeyframeStackDeserializer<KeyframeDeserializer<MoLangValue>> rotationKeyFrames = GsonHelper.getAsObject(obj, "rotation", context, KeyframeStackDeserializer.class);
-			KeyframeStackDeserializer<KeyframeDeserializer<MoLangValue>> positionKeyFrames = GsonHelper.getAsObject(obj, "position", context, KeyframeStackDeserializer.class);
-			KeyframeStackDeserializer<KeyframeDeserializer<MoLangValue>> scaleKeyFrames = GsonHelper.getAsObject(obj, "scale", context, KeyframeStackDeserializer.class);
+			KeyframeData<MoLangValue> rotationKeyFrames = parseData(obj, context, "rotation", MoLangValue::fromJson);
+			KeyframeData<MoLangValue> positionKeyFrames = parseData(obj, context, "position", MoLangValue::fromJson);
+			KeyframeData<MoLangValue> scaleKeyFrames = parseData(obj, context, "scale", MoLangValue::fromJson);
 
 			return new BoneAnimationDeserializer(
-					boneName,
 					rotationKeyFrames,
 					positionKeyFrames,
-					scaleKeyFrames
-			);
+					scaleKeyFrames);
 		};
+	}
+
+	@Nullable
+	private static <T> KeyframeData<T> parseData(
+			JsonObject pObj,
+			JsonDeserializationContext pContext,
+			String pMemberName,
+			Function<JsonElement, T> pParser) {
+		JsonElement element = pObj.get(pMemberName);
+		if (element.isJsonArray()) {
+			List<T> keyframes = JsonUtils.jsonArrayToList(element.getAsJsonArray(), pParser);
+			return new KeyframeData.KeyframeArray<>(keyframes);
+		} else if (element.isJsonObject()) {
+			JsonObject obj = element.getAsJsonObject();
+			Map<String, KeyframeData<T>> keyframes = new HashMap<>();
+			for (String keyframeName : obj.keySet()) {
+				JsonElement keyframeData = obj.get(keyframeName);
+				if (keyframeData.isJsonArray()) {
+					keyframes.put(keyframeName, parseData(obj, pContext, keyframeName, pParser));
+				} else if (keyframeData.isJsonObject()) {
+					keyframes.put(keyframeName, parseData(obj, pContext, keyframeName, pElement -> pContext.deserialize(pElement, KeyframeDeserializer.class)));
+				}
+				return null;
+			}
+			return new KeyframeData.KeyframeObject<>(keyframes);
+		}
+		return null;
 	}
 }

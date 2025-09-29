@@ -15,29 +15,23 @@ import net.minecraft.core.Direction.Axis;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.molang.value.MoLangValue;
-import software.bluelib.api.utils.logging.BaseLogLevel;
-import software.bluelib.api.utils.logging.BaseLogger;
 import software.bluelib.loader.animatable.base.BlueAnimatable;
 import software.bluelib.loader.animation.bone.BoneSnapshot;
 import software.bluelib.loader.animation.keyframe.AnimationPoint;
 import software.bluelib.loader.animation.keyframe.BoneAnimationFrame;
 import software.bluelib.loader.animation.keyframe.KeyframeLocation;
-import software.bluelib.loader.geckolib.animations.CustomInstructionKeyframeData;
-import software.bluelib.loader.geckolib.animations.KeyFrameData;
-import software.bluelib.loader.geckolib.animations.ParticleKeyframeData;
-import software.bluelib.loader.geckolib.animations.SoundKeyframeData;
 import software.bluelib.loader.animation.keyframe.event.CustomInstructionKeyframeEvent;
 import software.bluelib.loader.animation.keyframe.event.ParticleKeyframeEvent;
 import software.bluelib.loader.animation.keyframe.event.SoundKeyframeEvent;
-import software.bluelib.loader.geckolib.animations.Easing;
 import software.bluelib.loader.animation.state.PlayState;
 import software.bluelib.loader.cache.animation.BoneAnimationCache;
 import software.bluelib.loader.cache.animation.keyframe.KeyframeCache;
 import software.bluelib.loader.cache.animation.keyframe.KeyframeStackCache;
 import software.bluelib.loader.cache.model.BoneCache;
+import software.bluelib.loader.geckolib.animations.Easing;
+import software.bluelib.loader.geckolib.animations.KeyFrameData;
 import software.bluelib.loader.geckolib.math.MathParser;
 import software.bluelib.loader.geckolib.math.MoLangQueries;
-import software.bluelib.loader.geckolib.math.value.Constant;
 import software.bluelib.loader.model.BlueModel;
 
 public class AnimationController<T extends BlueAnimatable> {
@@ -483,29 +477,29 @@ public class AnimationController<T extends BlueAnimatable> {
 					BaseLogger.log(BaseLogLevel.WARNING, "Sound Keyframe found for " + this.animatable.getClass().getSimpleName() + " -> " + getName() + ", but no keyframe handler registered");
 					break;
 				}
-
+		
 				this.soundKeyframeHandler.handle(new SoundKeyframeEvent<>(this.animatable, pAdjustedTick, this, keyframeData));
 			}
 		}
-
+		
 		for (ParticleKeyframeData keyframeData : this.currentAnimation.animationCache().keyFrames().particles()) {
 			if (pAdjustedTick >= keyframeData.getStartTick() && this.executedKeyFrames.add(keyframeData)) {
 				if (this.particleKeyframeHandler == null) {
 					BaseLogger.log(BaseLogLevel.WARNING, "Particle Keyframe found for " + this.animatable.getClass().getSimpleName() + " -> " + getName() + ", but no keyframe handler registered");
 					break;
 				}
-
+		
 				this.particleKeyframeHandler.handle(new ParticleKeyframeEvent<>(this.animatable, pAdjustedTick, this, keyframeData));
 			}
 		}
-
+		
 		for (CustomInstructionKeyframeData keyframeData : this.currentAnimation.animationCache().keyFrames().customInstructions()) {
 			if (pAdjustedTick >= keyframeData.getStartTick() && this.executedKeyFrames.add(keyframeData)) {
 				if (this.customKeyframeHandler == null) {
 					BaseLogger.log(BaseLogLevel.WARNING, "Custom Instruction Keyframe found for " + this.animatable.getClass().getSimpleName() + " -> " + getName() + ", but no keyframe handler registered");
 					break;
 				}
-
+		
 				this.customKeyframeHandler.handle(new CustomInstructionKeyframeEvent<>(this.animatable, pAdjustedTick, this, keyframeData));
 			}
 		}*/
@@ -563,14 +557,14 @@ public class AnimationController<T extends BlueAnimatable> {
 		/*if (pIsRotation) {
 			if (!(currentFrame.startValue() instanceof Constant)) {
 				startValue = Math.toRadians(startValue);
-
+		
 				if (pAxis == Axis.X || pAxis == Axis.Y)
 					startValue *= -1;
 			}
-
+		
 			if (!(currentFrame.endValue() instanceof Constant)) {
 				endValue = Math.toRadians(endValue);
-
+		
 				if (pAxis == Axis.X || pAxis == Axis.Y)
 					endValue *= -1;
 			}

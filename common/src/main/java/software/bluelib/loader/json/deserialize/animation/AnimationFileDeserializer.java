@@ -13,8 +13,6 @@ import com.google.gson.JsonParseException;
 import net.minecraft.util.GsonHelper;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Map;
-
 public record AnimationFileDeserializer(
 		@NotNull String formatVersion,
 		@NotNull AnimationsDeserializer animations) {
@@ -25,7 +23,7 @@ public record AnimationFileDeserializer(
 			JsonObject obj = json.getAsJsonObject();
 
 			String formatVersion = GsonHelper.getAsString(obj, "format_version");
-			AnimationsDeserializer animations = GsonHelper.getAsObject(obj,"animations", context, AnimationsDeserializer.class);
+			AnimationsDeserializer animations = GsonHelper.getAsObject(obj, "animations", context, AnimationsDeserializer.class);
 
 			return new AnimationFileDeserializer(
 					formatVersion,

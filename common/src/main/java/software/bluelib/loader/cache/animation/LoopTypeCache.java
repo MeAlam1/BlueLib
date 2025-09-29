@@ -1,22 +1,29 @@
+/*
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
+ */
 package software.bluelib.loader.cache.animation;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import org.jetbrains.annotations.NotNull;
 import software.bluelib.loader.animatable.base.BlueAnimatable;
 import software.bluelib.loader.animation.AnimationController;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
 public record LoopTypeCache(@NotNull String name,
-                            @NotNull Behavior behavior) {
+		@NotNull Behavior behavior) {
 
 	private static final @NotNull Map<String, LoopTypeCache> ALL_LOOP_TYPES = new ConcurrentHashMap<>(4);
 
 	@FunctionalInterface
 	public interface Behavior {
+
 		boolean shouldPlayAgain(@NotNull BlueAnimatable pAnimatable,
-		                        @NotNull AnimationController<? extends BlueAnimatable> pController,
-		                        @NotNull AnimationCache pAnimationCache);
+				@NotNull AnimationController<? extends BlueAnimatable> pController,
+				@NotNull AnimationCache pAnimationCache);
 	}
 
 	public LoopTypeCache register() {

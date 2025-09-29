@@ -10,7 +10,6 @@ package software.bluelib.loader.geckolib.animations;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
 import it.unimi.dsi.fastutil.doubles.Double2DoubleFunction;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -18,7 +17,6 @@ import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.loader.animation.keyframe.AnimationPoint;
-import software.bluelib.loader.geckolib.math.MathValue;
 
 @SuppressWarnings("unused")
 // TODO: Completely Rewrite Easing System
@@ -303,12 +301,12 @@ public interface Easing {
 		public double apply(@NotNull AnimationPoint pAnimationPoint, @Nullable Double pEasingValue, @NotNull Double pLerpValue) {
 			/*if (pAnimationPoint.currentTick() >= pAnimationPoint.transitionLength())
 				return pAnimationPoint.animationEndValue();
-
+			
 			List<? extends MathValue> easingArgs = pAnimationPoint.keyFrame().easingArgs();
-
+			
 			if (easingArgs.size() < 2)
 				return Mth.lerp(buildTransformer(pEasingValue).apply(pLerpValue), pAnimationPoint.animationStartValue(), pAnimationPoint.animationEndValue());
-
+			
 			return getPointOnSpline(pLerpValue, easingArgs.get(0).get(), pAnimationPoint.animationStartValue(), pAnimationPoint.animationEndValue(), easingArgs.get(1).get());*/
 			return 1;
 		}

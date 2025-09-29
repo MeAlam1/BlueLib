@@ -1,3 +1,10 @@
+/*
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
+ */
 package software.bluelib.loader.json.deserialize.animation.keyframe;
 
 import com.google.gson.JsonDeserializer;
@@ -8,8 +15,7 @@ import org.jetbrains.annotations.NotNull;
 
 public record CustomInstructionKeyframeDeserializer(
 		double startTick,
-		@NotNull String instructions
-) {
+		@NotNull String instructions) {
 
 	@NotNull
 	public static JsonDeserializer<CustomInstructionKeyframeDeserializer> deserializer() throws JsonParseException {
@@ -20,7 +26,7 @@ public record CustomInstructionKeyframeDeserializer(
 			String instructions = GsonHelper.getAsString(obj, "instructions");
 
 			return new CustomInstructionKeyframeDeserializer(
-					startTick, 
+					startTick,
 					instructions);
 		};
 	}
