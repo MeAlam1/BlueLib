@@ -7,4 +7,18 @@
  */
 package software.bluelib.loader.cache.animation;
 
-public sealed interface BoneAnimationCache permits BoneArrayCache, BoneObjectCache {}
+import org.jetbrains.annotations.Nullable;
+import software.bluelib.api.molang.value.MoLangValue;
+import software.bluelib.loader.cache.animation.keyframe.KeyframeCache;
+import software.bluelib.loader.json.deserialize.animation.keyframe.KeyframeDeserializer;
+
+import java.util.List;
+
+public record BoneAnimationCache(
+		@Nullable List<MoLangValue> rotationArray,
+		@Nullable KeyframeCache rotationObject,
+		@Nullable List<MoLangValue> positionArray,
+		@Nullable KeyframeDeserializer positionObject,
+		@Nullable List<MoLangValue> scaleArray,
+		@Nullable KeyframeDeserializer scaleObject) {
+}

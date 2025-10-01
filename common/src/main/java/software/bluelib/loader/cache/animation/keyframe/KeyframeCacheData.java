@@ -7,4 +7,16 @@
  */
 package software.bluelib.loader.cache.animation.keyframe;
 
-public sealed interface KeyframeCacheData permits KeyframeObjectCache, KeyframeArrayCache {}
+import org.jetbrains.annotations.Nullable;
+import software.bluelib.api.molang.value.MoLangValue;
+
+import java.util.List;
+
+public record KeyframeCacheData(
+		@Nullable List<MoLangValue> arrayData,
+		@Nullable MoLangValue pre,
+		@Nullable MoLangValue post,
+		@Nullable String easing,
+		@Nullable List<MoLangValue> easingArgs
+) {
+}

@@ -12,6 +12,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import it.unimi.dsi.fastutil.Pair;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+
 import java.io.IOException;
 import java.io.Reader;
 import java.util.Arrays;
@@ -25,6 +26,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.stream.Collectors;
+
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -83,10 +85,8 @@ public class BlueLoader {
 			.registerTypeAdapter(AnimationsDeserializer.class, AnimationsDeserializer.deserializer())
 			.registerTypeAdapter(AnimationDeserializer.class, AnimationDeserializer.deserializer())
 			.registerTypeAdapter(BoneAnimationsDeserializer.class, BoneAnimationsDeserializer.deserializer())
-			.registerTypeAdapter(BoneArrayDeserializer.class, BoneArrayDeserializer.deserializer())
-			.registerTypeAdapter(BoneObjectDeserializer.class, BoneObjectDeserializer.deserializer())
-			.registerTypeAdapter(KeyframeObjectDeserializer.class, KeyframeObjectDeserializer.deserializer())
 			.registerTypeAdapter(KeyframeDeserializer.class, KeyframeDeserializer.deserializer())
+			.registerTypeAdapter(KeyframeDataDeserializer.class, KeyframeDataDeserializer.deserializer())
 			.registerTypeAdapter(SoundKeyframeDeserializer.class, SoundKeyframeDeserializer.deserializer())
 			.registerTypeAdapter(ParticleKeyframeDeserializer.class, ParticleKeyframeDeserializer.deserializer())
 			.registerTypeAdapter(CustomInstructionKeyframeDeserializer.class, CustomInstructionKeyframeDeserializer.deserializer())
