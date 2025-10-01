@@ -38,16 +38,16 @@ public interface AnimationCacheFactory extends CacheFactory<AnimationFileCache, 
 
 	@Override
 	default @Nullable AnimationFileCache construct(@NotNull AnimationFileDeserializer pSource) {
-		return constructBlueAnimator(pSource);
+		return constructBlueAnimation(pSource);
 	}
 
 	@Nullable
-	AnimationFileCache constructBlueAnimator(@NotNull AnimationFileDeserializer pAnimationsDeserializer);
+	AnimationFileCache constructBlueAnimation(@NotNull AnimationFileDeserializer pAnimationsDeserializer);
 
 	final class Builtin implements AnimationCacheFactory {
 
 		@Override
-		public @Nullable AnimationFileCache constructBlueAnimator(@NotNull AnimationFileDeserializer pAnimationsDeserializer) {
+		public @Nullable AnimationFileCache constructBlueAnimation(@NotNull AnimationFileDeserializer pAnimationsDeserializer) {
 			return null;
 		}
 	}
