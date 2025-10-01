@@ -8,8 +8,10 @@
 package software.bluelib.loader.json.controller;
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+
 import java.util.List;
 import java.util.Map;
+
 import org.jetbrains.annotations.NotNull;
 import software.bluelib.loader.cache.controller.*;
 import software.bluelib.loader.json.CacheFactory;
@@ -48,8 +50,7 @@ public interface ControllerCacheFactory extends CacheFactory<ControllerCache, Co
 
 		@Override
 		public @NotNull ControllerCache constructBlueController(@NotNull ControllerDeserializer pControllerDeserializer) {
-			List<GroupCache> groupCaches = constructGroupCaches(pControllerDeserializer.groupDeserializers());
-			return new ControllerCache(pControllerDeserializer.formatVersion(), groupCaches);
+			return new ControllerCache(pControllerDeserializer.formatVersion(), constructGroupCaches(pControllerDeserializer.groupDeserializers()));
 		}
 
 		@NotNull
@@ -61,9 +62,7 @@ public interface ControllerCacheFactory extends CacheFactory<ControllerCache, Co
 
 		@NotNull
 		private GroupCache constructGroupCache(@NotNull GroupDeserializer pGroupDeserializer) {
-			Map<String, BehaviourCache> behaviourCaches = constructBehaviourCaches(pGroupDeserializer.behaviours());
-			return new GroupCache(
-					behaviourCaches);
+			return new GroupCache(constructBehaviourCaches(pGroupDeserializer.behaviours()));
 		}
 
 		@NotNull
@@ -100,10 +99,9 @@ public interface ControllerCacheFactory extends CacheFactory<ControllerCache, Co
 
 		@NotNull
 		private StateCache constructStateCache(@NotNull StateDeserializer pStateDeserializer) {
-			List<AnimationCache> animationCaches = constructAnimationsCaches(pStateDeserializer.controllerAnimationDeserializers());
 			return new StateCache(
 					pStateDeserializer.isOverlay(),
-					animationCaches);
+					constructAnimationsCaches(pStateDeserializer.controllerAnimationDeserializers()));
 		}
 
 		@NotNull

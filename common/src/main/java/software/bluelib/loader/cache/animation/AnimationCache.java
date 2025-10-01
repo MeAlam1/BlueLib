@@ -21,7 +21,7 @@ public record AnimationCache(
 		@NotNull String name, // TODO: Since the Animations are stored in a Map by their names, This field is redundant and can be removed later.
 		@Nullable Double length,
 		@Nullable LoopTypeCache loopType,
-		@NotNull BoneAnimationsCache boneAnimation,
+		@NotNull BoneAnimationsCache bones,
 		@Nullable List<SoundKeyframeCache> sounds,
 		@Nullable List<ParticleKeyframeCache> particles,
 		@Nullable List<CustomInstructionKeyframeCache> customInstructions) {
