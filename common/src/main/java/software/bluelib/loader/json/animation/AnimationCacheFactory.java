@@ -112,12 +112,12 @@ public interface AnimationCacheFactory extends CacheFactory<AnimationFileCache, 
 			);
 		}
 
-		private @NotNull Map<String, BoneAnimationCache> constructBoneAnimations(@NotNull Map<String, BoneAnimationDeserializerI> pBoneAnimationDeserializerMap) {
+		private @NotNull Map<String, BoneAnimationCache> constructBoneAnimations(@NotNull Map<String, BoneAnimationDeserializer> pBoneAnimationDeserializerMap) {
 			Map<String, BoneAnimationCache> boneAnimationMap = new Object2ObjectOpenHashMap<>(pBoneAnimationDeserializerMap.size());
 
-			for (Map.Entry<String, BoneAnimationDeserializerI> entry : pBoneAnimationDeserializerMap.entrySet()) {
+			for (Map.Entry<String, BoneAnimationDeserializer> entry : pBoneAnimationDeserializerMap.entrySet()) {
 				String name = entry.getKey();
-				BoneAnimationDeserializerI deserializer = entry.getValue();
+				BoneAnimationDeserializer deserializer = entry.getValue();
 				// TODO: Check which BoneType it is and construct accordingly.
 			}
 			return boneAnimationMap;
