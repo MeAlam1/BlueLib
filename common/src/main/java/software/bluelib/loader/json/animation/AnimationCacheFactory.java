@@ -16,14 +16,10 @@ import java.util.function.Function;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.loader.cache.animation.*;
-import software.bluelib.loader.cache.animation.keyframe.CustomInstructionKeyframeCache;
-import software.bluelib.loader.cache.animation.keyframe.ParticleKeyframeCache;
-import software.bluelib.loader.cache.animation.keyframe.SoundKeyframeCache;
+import software.bluelib.loader.cache.animation.keyframe.*;
 import software.bluelib.loader.json.CacheFactory;
 import software.bluelib.loader.json.deserialize.animation.*;
-import software.bluelib.loader.json.deserialize.animation.keyframe.CustomInstructionKeyframeDeserializer;
-import software.bluelib.loader.json.deserialize.animation.keyframe.ParticleKeyframeDeserializer;
-import software.bluelib.loader.json.deserialize.animation.keyframe.SoundKeyframeDeserializer;
+import software.bluelib.loader.json.deserialize.animation.keyframe.*;
 
 public interface AnimationCacheFactory extends CacheFactory<AnimationFileCache, AnimationFileDeserializer> {
 
@@ -118,9 +114,50 @@ public interface AnimationCacheFactory extends CacheFactory<AnimationFileCache, 
 			for (Map.Entry<String, BoneAnimationDeserializer> entry : pBoneAnimationDeserializerMap.entrySet()) {
 				String name = entry.getKey();
 				BoneAnimationDeserializer deserializer = entry.getValue();
-				// TODO: Check which BoneType it is and construct accordingly.
+				boneAnimationMap.put(name, new BoneAnimationCache(
+						name,
+						deserializer.rotationArray(),
+						constructKeyframeCache(deserializer.rotationObject()),
+						deserializer.positionArray(),
+						constructKeyframeCache(deserializer.positionObject()),
+						deserializer.scaleArray(),
+						constructKeyframeCache(deserializer.scaleObject())
+				));
 			}
 			return boneAnimationMap;
+		}
+
+		private @Nullable KeyframeCache constructKeyframeCache(@Nullable KeyframeDeserializer pKeyframeDeserializer) {
+			if (pKeyframeDeserializer == null) {
+				return null;
+			}
+			return new KeyframeCache(
+					constructKeyframeDataCache(pKeyframeDeserializer.keyframeData())
+			);
+		}
+
+		private @NotNull Map<String, KeyframeCacheData> constructKeyframeDataCache(@NotNull Map<String, KeyframeDataDeserializer> pKeyframeDataDeserializerMap) {
+			Map<String, KeyframeCacheData> keyframeDataMap = new Object2ObjectOpenHashMap<>(pKeyframeDataDeserializerMap.size());
+
+			for (Map.Entry<String, KeyframeDataDeserializer> entry : pKeyframeDataDeserializerMap.entrySet()) {
+				String name = entry.getKey();
+				KeyframeDataDeserializer deserializer = entry.getValue();
+				keyframeDataMap.put(name, new KeyframeCacheData(
+						deserializer.arrayData(),
+						deserializer.pre(),
+						deserializer.post(),
+						constructEasing(deserializer.easing()),
+						deserializer.easingArgs()
+				));
+			}
+			return keyframeDataMap;
+		}
+
+		private @Nullable EasingCache constructEasing(@Nullable String pEasing) {
+			if (pEasing == null) {
+				return null;
+			}
+			return EasingCache.fromString(pEasing);
 		}
 
 		private static <T, R> @Nullable List<R> constructCustomDataCache(

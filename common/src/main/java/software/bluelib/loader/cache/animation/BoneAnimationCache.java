@@ -7,18 +7,19 @@
  */
 package software.bluelib.loader.cache.animation;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.molang.value.MoLangValue;
 import software.bluelib.loader.cache.animation.keyframe.KeyframeCache;
-import software.bluelib.loader.json.deserialize.animation.keyframe.KeyframeDeserializer;
 
 import java.util.List;
 
 public record BoneAnimationCache(
+		@NotNull String boneName,
 		@Nullable List<MoLangValue> rotationArray,
 		@Nullable KeyframeCache rotationObject,
 		@Nullable List<MoLangValue> positionArray,
-		@Nullable KeyframeDeserializer positionObject,
+		@Nullable KeyframeCache positionObject,
 		@Nullable List<MoLangValue> scaleArray,
-		@Nullable KeyframeDeserializer scaleObject) {
+		@Nullable KeyframeCache scaleObject) {
 }
