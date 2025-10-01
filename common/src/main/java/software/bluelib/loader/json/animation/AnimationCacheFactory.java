@@ -8,10 +8,8 @@
 package software.bluelib.loader.json.animation;
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
-
 import java.util.Map;
 import java.util.function.Function;
-
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.loader.cache.animation.*;
@@ -55,15 +53,13 @@ public interface AnimationCacheFactory extends CacheFactory<AnimationFileCache, 
 		public @NotNull AnimationFileCache constructAnimationFile(@NotNull AnimationFileDeserializer pAnimationsDeserializer) {
 			return new AnimationFileCache(
 					pAnimationsDeserializer.formatVersion(),
-					constructAnimations(pAnimationsDeserializer.animations())
-			);
+					constructAnimations(pAnimationsDeserializer.animations()));
 		}
 
 		@NotNull
 		private AnimationsCache constructAnimations(@NotNull AnimationsDeserializer pAnimations) {
 			return new AnimationsCache(
-					constructAnimation(pAnimations.animations())
-			);
+					constructAnimation(pAnimations.animations()));
 		}
 
 		@NotNull
@@ -80,8 +76,7 @@ public interface AnimationCacheFactory extends CacheFactory<AnimationFileCache, 
 						constructBones(deserializer.bones()),
 						constructSound(deserializer.sounds()),
 						constructParticle(deserializer.particles()),
-						constructCustomInstruction(deserializer.customInstructions())
-				));
+						constructCustomInstruction(deserializer.customInstructions())));
 			}
 			return animationMap;
 		}
@@ -103,8 +98,7 @@ public interface AnimationCacheFactory extends CacheFactory<AnimationFileCache, 
 
 		private @NotNull BoneAnimationsCache constructBones(@NotNull BoneAnimationsDeserializer pBones) {
 			return new BoneAnimationsCache(
-					constructBoneAnimations(pBones.boneAnimations())
-			);
+					constructBoneAnimations(pBones.boneAnimations()));
 		}
 
 		private @NotNull Map<String, BoneAnimationCache> constructBoneAnimations(@NotNull Map<String, BoneAnimationDeserializer> pBoneAnimationDeserializerMap) {
@@ -120,8 +114,7 @@ public interface AnimationCacheFactory extends CacheFactory<AnimationFileCache, 
 						deserializer.positionArray(),
 						constructKeyframeCache(deserializer.positionObject()),
 						deserializer.scaleArray(),
-						constructKeyframeCache(deserializer.scaleObject())
-				));
+						constructKeyframeCache(deserializer.scaleObject())));
 			}
 			return boneAnimationMap;
 		}
@@ -131,8 +124,7 @@ public interface AnimationCacheFactory extends CacheFactory<AnimationFileCache, 
 				return null;
 			}
 			return new KeyframeCache(
-					constructKeyframeDataCache(pKeyframeDeserializer.keyframeData())
-			);
+					constructKeyframeDataCache(pKeyframeDeserializer.keyframeData()));
 		}
 
 		private @NotNull Map<String, KeyframeCacheData> constructKeyframeDataCache(@NotNull Map<String, KeyframeDataDeserializer> pKeyframeDataDeserializerMap) {
@@ -146,8 +138,7 @@ public interface AnimationCacheFactory extends CacheFactory<AnimationFileCache, 
 						deserializer.pre(),
 						deserializer.post(),
 						constructEasing(deserializer.easing()),
-						deserializer.easingArgs()
-				));
+						deserializer.easingArgs()));
 			}
 			return keyframeDataMap;
 		}
@@ -161,8 +152,7 @@ public interface AnimationCacheFactory extends CacheFactory<AnimationFileCache, 
 
 		private static <T, R> @Nullable R constructCustomDataCache(
 				@Nullable T pDeserializer,
-				Function<T, R> pMapper
-		) {
+				Function<T, R> pMapper) {
 			if (pDeserializer == null) {
 				return null;
 			}
@@ -173,24 +163,21 @@ public interface AnimationCacheFactory extends CacheFactory<AnimationFileCache, 
 		private SoundKeyframeCache constructSound(@Nullable SoundKeyframeDeserializer pDeserializer) {
 			return constructCustomDataCache(
 					pDeserializer,
-					d -> new SoundKeyframeCache(d.startTick(), d.sound())
-			);
+					d -> new SoundKeyframeCache(d.startTick(), d.sound()));
 		}
 
 		@Nullable
 		private ParticleKeyframeCache constructParticle(@Nullable ParticleKeyframeDeserializer pDeserializer) {
 			return constructCustomDataCache(
 					pDeserializer,
-					d -> new ParticleKeyframeCache(d.startTick(), d.effect(), d.locator(), d.script())
-			);
+					d -> new ParticleKeyframeCache(d.startTick(), d.effect(), d.locator(), d.script()));
 		}
 
 		@Nullable
 		private CustomInstructionKeyframeCache constructCustomInstruction(@Nullable CustomInstructionKeyframeDeserializer pDeserializer) {
 			return constructCustomDataCache(
 					pDeserializer,
-					d -> new CustomInstructionKeyframeCache(d.startTick(), d.instructions())
-			);
+					d -> new CustomInstructionKeyframeCache(d.startTick(), d.instructions()));
 		}
 	}
 }

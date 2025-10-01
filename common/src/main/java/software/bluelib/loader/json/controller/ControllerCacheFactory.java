@@ -8,10 +8,8 @@
 package software.bluelib.loader.json.controller;
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
-
 import java.util.List;
 import java.util.Map;
-
 import org.jetbrains.annotations.NotNull;
 import software.bluelib.loader.cache.controller.*;
 import software.bluelib.loader.json.CacheFactory;

@@ -7,14 +7,13 @@
  */
 package software.bluelib.loader.cache.animation;
 
+import java.util.HashMap;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.loader.animation.Animation;
 import software.bluelib.loader.cache.animation.keyframe.CustomInstructionKeyframeCache;
 import software.bluelib.loader.cache.animation.keyframe.ParticleKeyframeCache;
 import software.bluelib.loader.cache.animation.keyframe.SoundKeyframeCache;
-
-import java.util.HashMap;
 
 public record AnimationCache(
 		@NotNull String name,

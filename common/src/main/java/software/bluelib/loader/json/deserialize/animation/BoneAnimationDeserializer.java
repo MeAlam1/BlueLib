@@ -10,13 +10,12 @@ package software.bluelib.loader.json.deserialize.animation;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.molang.value.MoLangValue;
 import software.bluelib.api.utils.loader.JsonUtils;
 import software.bluelib.loader.json.deserialize.animation.keyframe.KeyframeDeserializer;
-
-import java.util.List;
 
 public record BoneAnimationDeserializer(
 		@Nullable List<MoLangValue> rotationArray,
@@ -24,8 +23,8 @@ public record BoneAnimationDeserializer(
 		@Nullable List<MoLangValue> positionArray,
 		@Nullable KeyframeDeserializer positionObject,
 		@Nullable List<MoLangValue> scaleArray,
-		@Nullable KeyframeDeserializer scaleObject
-) {
+		@Nullable KeyframeDeserializer scaleObject) {
+
 	@NotNull
 	public static JsonDeserializer<BoneAnimationDeserializer> deserializer() {
 		return (json, typeOfT, context) -> {
@@ -67,8 +66,7 @@ public record BoneAnimationDeserializer(
 			return new BoneAnimationDeserializer(
 					rotationArray, rotationObject,
 					positionArray, positionObject,
-					scaleArray, scaleObject
-			);
+					scaleArray, scaleObject);
 		};
 	}
 }

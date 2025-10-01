@@ -10,21 +10,20 @@ package software.bluelib.loader.json.deserialize.animation.keyframe;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import java.util.List;
 import net.minecraft.util.GsonHelper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.molang.value.MoLangValue;
 import software.bluelib.api.utils.loader.JsonUtils;
 
-import java.util.List;
-
 public record KeyframeDataDeserializer(
 		@Nullable List<MoLangValue> arrayData,
 		@Nullable MoLangValue pre,
 		@Nullable MoLangValue post,
 		@Nullable String easing,
-		@Nullable List<MoLangValue> easingArgs
-) {
+		@Nullable List<MoLangValue> easingArgs) {
+
 	@NotNull
 	public static JsonDeserializer<KeyframeDataDeserializer> deserializer() {
 		return (json, typeOfT, context) -> {

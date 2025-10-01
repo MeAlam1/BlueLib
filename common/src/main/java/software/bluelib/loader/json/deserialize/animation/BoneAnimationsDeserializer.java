@@ -11,10 +11,8 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-
 import java.util.HashMap;
 import java.util.Map;
-
 import org.jetbrains.annotations.NotNull;
 
 public record BoneAnimationsDeserializer(

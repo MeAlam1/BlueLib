@@ -25,13 +25,9 @@ import software.bluelib.loader.animation.keyframe.event.ParticleKeyframeEvent;
 import software.bluelib.loader.animation.keyframe.event.SoundKeyframeEvent;
 import software.bluelib.loader.animation.state.PlayState;
 import software.bluelib.loader.cache.model.BoneCache;
-import software.bluelib.loader.geckolib.animations.BoneAnimationCache;
 import software.bluelib.loader.geckolib.animations.Easing;
 import software.bluelib.loader.geckolib.animations.KeyFrameData;
 import software.bluelib.loader.geckolib.animations.KeyframeCache;
-import software.bluelib.loader.geckolib.animations.KeyframeStackCache;
-import software.bluelib.loader.geckolib.math.MathParser;
-import software.bluelib.loader.geckolib.math.MoLangQueries;
 import software.bluelib.loader.model.BlueModel;
 
 public class AnimationController<T extends BlueAnimatable> {
@@ -356,40 +352,40 @@ public class AnimationController<T extends BlueAnimatable> {
 			if (this.currentAnimation != null) {
 				/* TODO: REMOVE!!!!! 
 				MathParser.setVariable(MoLangQueries.ANIM_TIME, () -> 0);
-
+				
 				for (BoneAnimationCache boneAnimationCache : this.currentAnimation.animationCache().boneAnimationCaches()) {
 					BoneAnimationFrame boneAnimationFrame = this.boneAnimationQueues.get(boneAnimationCache.boneName());
 					BoneSnapshot boneSnapshot = this.boneSnapshots.get(boneAnimationCache.boneName());
 					BoneCache bone = pBones.get(boneAnimationCache.boneName());
-
+				
 					if (boneSnapshot == null)
 						continue;
-
+				
 					if (bone == null) {
 						if (pCrashWhenCantFindBone)
 							throw new RuntimeException("Could not find bone: " + boneAnimationCache.boneName());
-
+				
 						continue;
 					}
-
+				
 					KeyframeStackCache<KeyframeCache<MoLangValue>> rotationKeyFrames = boneAnimationCache.rotationKeyFrames();
 					KeyframeStackCache<KeyframeCache<MoLangValue>> positionKeyFrames = boneAnimationCache.positionKeyFrames();
 					KeyframeStackCache<KeyframeCache<MoLangValue>> scaleKeyFrames = boneAnimationCache.scaleKeyFrames();
-
+				
 					if (!rotationKeyFrames.xKeyframes().isEmpty()) {
 						boneAnimationFrame.addNextRotation(null, adjustedTick, this.transitionLength, boneSnapshot, bone.getInitialSnapshot(),
 								getAnimationPointAtTick(rotationKeyFrames.xKeyframes(), 0, true, Axis.X),
 								getAnimationPointAtTick(rotationKeyFrames.yKeyframes(), 0, true, Axis.Y),
 								getAnimationPointAtTick(rotationKeyFrames.zKeyframes(), 0, true, Axis.Z));
 					}
-
+				
 					if (!positionKeyFrames.xKeyframes().isEmpty()) {
 						boneAnimationFrame.addNextPosition(null, adjustedTick, this.transitionLength, boneSnapshot,
 								getAnimationPointAtTick(positionKeyFrames.xKeyframes(), 0, false, Axis.X),
 								getAnimationPointAtTick(positionKeyFrames.yKeyframes(), 0, false, Axis.Y),
 								getAnimationPointAtTick(positionKeyFrames.zKeyframes(), 0, false, Axis.Z));
 					}
-
+				
 					if (!scaleKeyFrames.xKeyframes().isEmpty()) {
 						boneAnimationFrame.addNextScale(null, adjustedTick, this.transitionLength, boneSnapshot,
 								getAnimationPointAtTick(scaleKeyFrames.xKeyframes(), 0, false, Axis.X),
@@ -432,35 +428,35 @@ public class AnimationController<T extends BlueAnimatable> {
 
 		/* TODO: REMOVE!!!!!
 		MathParser.setVariable(MoLangQueries.ANIM_TIME, () -> finalAdjustedTick / 20d);
-
+		
 		for (BoneAnimationCache boneAnimationCache : this.currentAnimation.animationCache().boneAnimationCaches()) {
 			BoneAnimationFrame boneAnimationFrame = this.boneAnimationQueues.get(boneAnimationCache.boneName());
-
+		
 			if (boneAnimationFrame == null) {
 				if (pCrashWhenCantFindBone)
 					throw new RuntimeException("Could not find bone: " + boneAnimationCache.boneName());
-
+		
 				continue;
 			}
-
+		
 			KeyframeStackCache<KeyframeCache<MoLangValue>> rotationKeyFrames = boneAnimationCache.rotationKeyFrames();
 			KeyframeStackCache<KeyframeCache<MoLangValue>> positionKeyFrames = boneAnimationCache.positionKeyFrames();
 			KeyframeStackCache<KeyframeCache<MoLangValue>> scaleKeyFrames = boneAnimationCache.scaleKeyFrames();
-
+		
 			if (!rotationKeyFrames.xKeyframes().isEmpty()) {
 				boneAnimationFrame.addRotations(
 						getAnimationPointAtTick(rotationKeyFrames.xKeyframes(), pAdjustedTick, true, Axis.X),
 						getAnimationPointAtTick(rotationKeyFrames.yKeyframes(), pAdjustedTick, true, Axis.Y),
 						getAnimationPointAtTick(rotationKeyFrames.zKeyframes(), pAdjustedTick, true, Axis.Z));
 			}
-
+		
 			if (!positionKeyFrames.xKeyframes().isEmpty()) {
 				boneAnimationFrame.addPositions(
 						getAnimationPointAtTick(positionKeyFrames.xKeyframes(), pAdjustedTick, false, Axis.X),
 						getAnimationPointAtTick(positionKeyFrames.yKeyframes(), pAdjustedTick, false, Axis.Y),
 						getAnimationPointAtTick(positionKeyFrames.zKeyframes(), pAdjustedTick, false, Axis.Z));
 			}
-
+		
 			if (!scaleKeyFrames.xKeyframes().isEmpty()) {
 				boneAnimationFrame.addScales(
 						getAnimationPointAtTick(scaleKeyFrames.xKeyframes(), pAdjustedTick, false, Axis.X),
@@ -526,7 +522,7 @@ public class AnimationController<T extends BlueAnimatable> {
 				for (BoneAnimationCache boneAnimationCache : pAnimation.animationCache().boneAnimationCaches()) {
 					if (boneAnimationCache.boneName().equals(snapshot.getBone().getName())) {
 						this.boneSnapshots.put(boneAnimationCache.boneName(), BoneSnapshot.copy(snapshot));
-
+			
 						break;
 					}
 				}

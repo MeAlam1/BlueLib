@@ -8,9 +8,6 @@
 package software.bluelib.loader.json.deserialize.animation;
 
 import com.google.gson.*;
-
-import java.util.List;
-
 import net.minecraft.util.GsonHelper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
