@@ -7,9 +7,6 @@
  */
 package software.bluelib.loader.cache.animation;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.loader.animation.Animation;
@@ -17,17 +14,19 @@ import software.bluelib.loader.cache.animation.keyframe.CustomInstructionKeyfram
 import software.bluelib.loader.cache.animation.keyframe.ParticleKeyframeCache;
 import software.bluelib.loader.cache.animation.keyframe.SoundKeyframeCache;
 
+import java.util.HashMap;
+
 public record AnimationCache(
-		@NotNull String name, // TODO: Since the Animations are stored in a Map by their names, This field is redundant and can be removed later.
+		@NotNull String name,
 		@Nullable Double length,
 		@Nullable LoopTypeCache loopType,
 		@NotNull BoneAnimationsCache bones,
-		@Nullable List<SoundKeyframeCache> sounds,
-		@Nullable List<ParticleKeyframeCache> particles,
-		@Nullable List<CustomInstructionKeyframeCache> customInstructions) {
+		@Nullable SoundKeyframeCache sounds,
+		@Nullable ParticleKeyframeCache particles,
+		@Nullable CustomInstructionKeyframeCache customInstructions) {
 
 	@NotNull
 	public static AnimationCache generateWaitAnimation(double pLength) {
-		return new AnimationCache(Animation.Stage.WAIT, pLength, LoopTypeCache.PLAY_ONCE, new BoneAnimationsCache(new HashMap<>()), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+		return new AnimationCache(Animation.Stage.WAIT, pLength, LoopTypeCache.PLAY_ONCE, new BoneAnimationsCache(new HashMap<>()), null, null, null);
 	}
 }

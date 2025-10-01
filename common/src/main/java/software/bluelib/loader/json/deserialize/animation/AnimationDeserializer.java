@@ -8,7 +8,9 @@
 package software.bluelib.loader.json.deserialize.animation;
 
 import com.google.gson.*;
+
 import java.util.List;
+
 import net.minecraft.util.GsonHelper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -21,9 +23,9 @@ public record AnimationDeserializer(
 		@Nullable Double length,
 		@Nullable String loopType,
 		@NotNull BoneAnimationsDeserializer bones,
-		@Nullable List<SoundKeyframeDeserializer> sounds,
-		@Nullable List<ParticleKeyframeDeserializer> particles,
-		@Nullable List<CustomInstructionKeyframeDeserializer> customInstructions) {
+		@Nullable SoundKeyframeDeserializer sounds,
+		@Nullable ParticleKeyframeDeserializer particles,
+		@Nullable CustomInstructionKeyframeDeserializer customInstructions) {
 
 	@NotNull
 	public static JsonDeserializer<AnimationDeserializer> deserializer() throws JsonParseException {
@@ -33,9 +35,9 @@ public record AnimationDeserializer(
 			Double length = JsonUtils.getOptionalDouble(obj, "animation_length");
 			String loopType = parseLoopType(obj);
 			BoneAnimationsDeserializer bones = GsonHelper.getAsObject(obj, "bones", context, BoneAnimationsDeserializer.class);
-			List<SoundKeyframeDeserializer> sounds = JsonUtils.jsonArrayToObjectList(GsonHelper.getAsJsonArray(obj, "sound_effects", new JsonArray()), context, SoundKeyframeDeserializer.class);
-			List<ParticleKeyframeDeserializer> particles = JsonUtils.jsonArrayToObjectList(GsonHelper.getAsJsonArray(obj, "particles", new JsonArray()), context, ParticleKeyframeDeserializer.class);
-			List<CustomInstructionKeyframeDeserializer> customInstructions = JsonUtils.jsonArrayToObjectList(GsonHelper.getAsJsonArray(obj, "custom?", new JsonArray()), context, CustomInstructionKeyframeDeserializer.class);
+			SoundKeyframeDeserializer sounds = JsonUtils.getOptionalObject(obj, "sound_effects", context, SoundKeyframeDeserializer.class);
+			ParticleKeyframeDeserializer particles = JsonUtils.getOptionalObject(obj, "particles", context, ParticleKeyframeDeserializer.class);
+			CustomInstructionKeyframeDeserializer customInstructions = JsonUtils.getOptionalObject(obj, "custom?", context, CustomInstructionKeyframeDeserializer.class);
 
 			// TODO: "particles", "custom?" are not the actual array names, verify the actual array names and parse them accordingly.
 

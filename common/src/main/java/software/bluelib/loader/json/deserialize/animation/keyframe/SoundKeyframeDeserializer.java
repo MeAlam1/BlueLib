@@ -13,6 +13,7 @@ import com.google.gson.JsonParseException;
 import net.minecraft.util.GsonHelper;
 import org.jetbrains.annotations.NotNull;
 
+// TODO: This is Incorrect, fix later
 public record SoundKeyframeDeserializer(
 		double startTick,
 		@NotNull String sound) {
