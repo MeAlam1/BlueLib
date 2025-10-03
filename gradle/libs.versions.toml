@@ -11,15 +11,15 @@ neoform = "1.21.1-20240808.144430"
 jei-api = "19.21.0.247"
 
 # Fabric
-fabric = "0.16.14"
+fabric = "0.17.2"
 fabric-range = "0.16"
-fabric-api = "0.116.4+1.21.1"
+fabric-api = "0.116.6+1.21.1"
 fabric-api-range = "0.100.0+1.21"
 
 # Neoforge
 neoforge-loader-range = "[4,)"
 neoforge-range = "[21.1.62,)"
-neoforge = "21.1.186"
+neoforge = "21.1.209"
 
 # Dependencies
 mixin = "0.8.7"
@@ -29,7 +29,7 @@ examplemod = "2.0.0"
 
 # Plugins
 plugin-github-release = "2.5.2"
-plugin-moddevgradle = "2.0.106"
+plugin-moddevgradle = "2.0.110"
 plugin-minotaur = "2.8.8"
 plugin-curseforge-gradle = "1.1.26"
 plugin-idea-ext = "1.3"
