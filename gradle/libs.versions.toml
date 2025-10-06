@@ -29,7 +29,7 @@ examplemod = "2.0.0"
 
 # Plugins
 plugin-github-release = "2.5.2"
-plugin-moddevgradle = "2.0.110"
+plugin-moddevgradle = "2.0.112"
 plugin-minotaur = "2.8.8"
 plugin-curseforge-gradle = "1.1.26"
 plugin-idea-ext = "1.3"
