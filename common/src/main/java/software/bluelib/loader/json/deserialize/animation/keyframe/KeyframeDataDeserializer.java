@@ -19,22 +19,24 @@ import software.bluelib.api.utils.loader.JsonUtils;
 
 public record KeyframeDataDeserializer(
 		@Nullable List<MoLangValue> arrayData,
-		@Nullable MoLangValue pre,
-		@Nullable MoLangValue post,
+		@Nullable List<MoLangValue> pre,
+		@Nullable List<MoLangValue> post,
 		@Nullable String easing,
 		@Nullable List<MoLangValue> easingArgs) {
 
 	@NotNull
 	public static JsonDeserializer<KeyframeDataDeserializer> deserializer() {
 		return (json, typeOfT, context) -> {
+			System.out.println("[KeyframeDataDeserializer] JSON type: " + (json.isJsonArray() ? "Array" : json.isJsonObject() ? "Object" : "Other") + " | Content: " + json);
+
 			if (json.isJsonArray()) {
 				List<MoLangValue> array = JsonUtils.jsonArrayToList(json.getAsJsonArray(), MoLangValue::fromJson);
 				return new KeyframeDataDeserializer(array, null, null, null, null);
 			} else if (json.isJsonObject()) {
 				JsonObject obj = json.getAsJsonObject();
 
-				MoLangValue pre = obj.has("pre") ? MoLangValue.fromJson(obj.getAsJsonObject("pre")) : null;
-				MoLangValue post = obj.has("post") ? MoLangValue.fromJson(obj.getAsJsonObject("post")) : null;
+				List<MoLangValue> pre = obj.has("pre") ? JsonUtils.jsonArrayToList(obj.getAsJsonArray("pre"), MoLangValue::fromJson) : null;
+				List<MoLangValue> post = obj.has("post") ? JsonUtils.jsonArrayToList(obj.getAsJsonArray("post"), MoLangValue::fromJson) : null;
 				String easing = GsonHelper.getAsString(obj, "lerp_mode", "linear");
 				List<MoLangValue> easingArgs = obj.has("easingArgs")
 						? JsonUtils.jsonArrayToList(obj.getAsJsonArray("easingArgs"), MoLangValue::fromJson)

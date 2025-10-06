@@ -13,7 +13,7 @@ import com.google.gson.JsonParseException;
 import net.minecraft.util.GsonHelper;
 import org.jetbrains.annotations.NotNull;
 
-// TODO: This is Incorrect, fix later
+// TODO: Improve the Error Handling
 public record SoundKeyframeDeserializer(
 		double startTick,
 		@NotNull String sound) {
@@ -23,12 +23,16 @@ public record SoundKeyframeDeserializer(
 		return (json, type, context) -> {
 			JsonObject obj = json.getAsJsonObject();
 
-			double startTick = GsonHelper.getAsDouble(obj, "startTick");
-			String sound = GsonHelper.getAsString(obj, "sound");
+			for (String key : obj.keySet()) {
+				double startTick = Double.parseDouble(key);
+				JsonObject soundObj = obj.getAsJsonObject(key);
+				String sound = GsonHelper.getAsString(soundObj, "effect");
 
-			return new SoundKeyframeDeserializer(
-					startTick,
-					sound);
+				return new SoundKeyframeDeserializer(
+						startTick,
+						sound);
+			}
+			return new SoundKeyframeDeserializer(0, "");
 		};
 	}
 }

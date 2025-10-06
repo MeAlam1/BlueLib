@@ -83,6 +83,7 @@ public class BlueLoader {
 			.registerTypeAdapter(AnimationsDeserializer.class, AnimationsDeserializer.deserializer())
 			.registerTypeAdapter(AnimationDeserializer.class, AnimationDeserializer.deserializer())
 			.registerTypeAdapter(BoneAnimationsDeserializer.class, BoneAnimationsDeserializer.deserializer())
+			.registerTypeAdapter(BoneAnimationDeserializer.class, BoneAnimationDeserializer.deserializer())
 			.registerTypeAdapter(KeyframeDeserializer.class, KeyframeDeserializer.deserializer())
 			.registerTypeAdapter(KeyframeDataDeserializer.class, KeyframeDataDeserializer.deserializer())
 			.registerTypeAdapter(SoundKeyframeDeserializer.class, SoundKeyframeDeserializer.deserializer())

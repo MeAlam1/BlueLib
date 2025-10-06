@@ -14,7 +14,7 @@ import software.bluelib.loader.cache.animation.EasingCache;
 
 public record KeyframeCacheData(
 		@Nullable List<MoLangValue> arrayData,
-		@Nullable MoLangValue pre,
-		@Nullable MoLangValue post,
+		@Nullable List<MoLangValue> pre,
+		@Nullable List<MoLangValue> post,
 		@Nullable EasingCache easing,
 		@Nullable List<MoLangValue> easingArgs) {}
