@@ -7,14 +7,33 @@
  */
 package software.bluelib.loader.cache.animation.keyframe;
 
-import java.util.List;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.molang.value.MoLangValue;
 import software.bluelib.loader.cache.animation.EasingCache;
+
+import java.util.List;
+import java.util.Objects;
 
 public record KeyframeCacheData(
 		@Nullable List<MoLangValue> arrayData,
 		@Nullable List<MoLangValue> pre,
 		@Nullable List<MoLangValue> post,
 		@Nullable EasingCache easing,
-		@Nullable List<MoLangValue> easingArgs) {}
+		@Nullable List<MoLangValue> easingArgs) {
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(this.arrayData, this.pre, this.post, this.easing, this.easingArgs);
+	}
+
+	@Override
+	public boolean equals(@Nullable Object pObj) {
+		if (this == pObj)
+			return true;
+
+		if (pObj == null || getClass() != pObj.getClass())
+			return false;
+
+		return hashCode() == pObj.hashCode();
+	}
+}

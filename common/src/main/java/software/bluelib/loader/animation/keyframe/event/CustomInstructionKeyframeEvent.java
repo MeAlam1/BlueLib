@@ -10,17 +10,18 @@ package software.bluelib.loader.animation.keyframe.event;
 import org.jetbrains.annotations.NotNull;
 import software.bluelib.loader.animatable.base.BlueAnimatable;
 import software.bluelib.loader.animation.AnimationController;
+import software.bluelib.loader.cache.animation.keyframe.CustomInstructionKeyframeCache;
 import software.bluelib.loader.geckolib.animations.CustomInstructionKeyframeData;
 
-public class CustomInstructionKeyframeEvent<T extends BlueAnimatable> extends KeyFrameEvent<T, CustomInstructionKeyframeData> {
+public class CustomInstructionKeyframeEvent<T extends BlueAnimatable> extends KeyFrameEvent<T, CustomInstructionKeyframeCache> {
 
 	public CustomInstructionKeyframeEvent(@NotNull T pEntity, double pAnimationTick, @NotNull AnimationController<T> pController,
-			@NotNull CustomInstructionKeyframeData pCustomInstructionKeyframeData) {
+			@NotNull CustomInstructionKeyframeCache pCustomInstructionKeyframeData) {
 		super(pEntity, pAnimationTick, pController, pCustomInstructionKeyframeData);
 	}
 
 	@Override
-	public @NotNull CustomInstructionKeyframeData getKeyframeData() {
+	public @NotNull CustomInstructionKeyframeCache getKeyframeData() {
 		return super.getKeyframeData();
 	}
 }

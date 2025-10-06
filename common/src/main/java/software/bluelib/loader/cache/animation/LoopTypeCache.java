@@ -26,6 +26,7 @@ public record LoopTypeCache(@NotNull String name,
 				@NotNull AnimationCache pAnimationCache);
 	}
 
+	@NotNull
 	public LoopTypeCache register() {
 		ALL_LOOP_TYPES.put(name, this);
 		return this;
@@ -35,10 +36,20 @@ public record LoopTypeCache(@NotNull String name,
 		return ALL_LOOP_TYPES.getOrDefault(pName, PLAY_ONCE);
 	}
 
+	@NotNull
+	public static final LoopTypeCache DEFAULT = new LoopTypeCache("default", (animatable, controller, currentAnimation) -> {
+		if (currentAnimation.loopType() == null) {
+			return false;
+		}
+		return currentAnimation.loopType().behavior().shouldPlayAgain(animatable, controller, currentAnimation);
+	}).register();
+	@NotNull
 	public static final LoopTypeCache PLAY_ONCE = new LoopTypeCache("play_once",
 			(anim, controller, cache) -> false).register();
+	@NotNull
 	public static final LoopTypeCache LOOP = new LoopTypeCache("loop",
 			(anim, controller, cache) -> true).register();
+	@NotNull
 	public static final LoopTypeCache HOLD_ON_LAST_FRAME = new LoopTypeCache("hold_on_last_frame",
 			(anim, controller, cache) -> {
 				controller.animationState = AnimationController.State.PAUSED;

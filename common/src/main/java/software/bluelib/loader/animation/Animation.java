@@ -12,14 +12,13 @@ import java.util.List;
 import java.util.Objects;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import software.bluelib.loader.geckolib.animations.LoopType;
+import software.bluelib.loader.cache.animation.LoopTypeCache;
 
 public final class Animation {
 
 	@NotNull
 	private final List<Stage> animationList = new ObjectArrayList<>();
 
-	// Private constructor to force usage of factory for logical operations
 	private Animation() {}
 
 	@NotNull
@@ -29,45 +28,38 @@ public final class Animation {
 
 	@NotNull
 	public Animation thenPlay(@NotNull String pAnimationName) {
-		return then(pAnimationName, LoopType.DEFAULT);
+		return then(pAnimationName, LoopTypeCache.DEFAULT);
 	}
 
 	@NotNull
 	public Animation thenLoop(@NotNull String pAnimationName) {
-		return then(pAnimationName, LoopType.LOOP);
+		return then(pAnimationName, LoopTypeCache.LOOP);
 	}
 
 	@NotNull
 	public Animation thenWait(int pTicks) {
-		this.animationList.add(new Stage(Stage.WAIT, LoopType.PLAY_ONCE, pTicks));
-
-		return this;
+		if (pTicks < 0)
+			throw new IllegalArgumentException("Wait time cannot be negative.");
+		return addStage(Stage.WAIT, LoopTypeCache.PLAY_ONCE, pTicks);
 	}
 
 	@NotNull
 	public Animation thenPlayAndHold(@NotNull String pAnimation) {
-		return then(pAnimation, LoopType.HOLD_ON_LAST_FRAME);
+		return then(pAnimation, LoopTypeCache.HOLD_ON_LAST_FRAME);
 	}
 
 	@NotNull
 	public Animation thenPlayXTimes(@NotNull String pAnimationName, int pPlayCount) {
 		for (int i = 0; i < pPlayCount; i++) {
-			then(pAnimationName, i == pPlayCount - 1 ? LoopType.DEFAULT : LoopType.PLAY_ONCE);
+			then(pAnimationName, i == pPlayCount - 1 ? LoopTypeCache.DEFAULT : LoopTypeCache.PLAY_ONCE);
 		}
 
 		return this;
 	}
 
 	@NotNull
-	public Animation then(@NotNull String pAnimationName, @NotNull LoopType pLoopType) {
-		this.animationList.add(new Stage(pAnimationName, pLoopType));
-
-		return this;
-	}
-
-	@NotNull
 	public List<Stage> getAnimationStages() {
-		return this.animationList;
+		return List.copyOf(this.animationList);
 	}
 
 	@NotNull
@@ -79,15 +71,28 @@ public final class Animation {
 		return newInstance;
 	}
 
+	@NotNull
+	public Animation build() {
+		return this;
+	}
+
+	@NotNull
+	public Animation then(@NotNull String pName, @NotNull LoopTypeCache pLoopTypeCache) {
+		return addStage(pName, pLoopTypeCache, 0);
+	}
+
+	private Animation addStage(@NotNull String pName, @NotNull LoopTypeCache pLoopTypeCache, int pTicks) {
+		this.animationList.add(new Stage(pName, pLoopTypeCache, pTicks));
+		return this;
+	}
+
 	@Override
 	public boolean equals(@Nullable Object pObj) {
 		if (this == pObj)
 			return true;
-
-		if (pObj == null || getClass() != pObj.getClass())
+		if (!(pObj instanceof Animation other))
 			return false;
-
-		return hashCode() == pObj.hashCode();
+		return Objects.equals(this.animationList, other.animationList);
 	}
 
 	@Override
@@ -95,29 +100,34 @@ public final class Animation {
 		return Objects.hash(this.animationList);
 	}
 
-	public record Stage(@NotNull String animationName, @NotNull LoopType loopType, int additionalTicks) {
+	@Override
+	public String toString() {
+		return "Animation: " + animationList;
+	}
+
+	public record Stage(@NotNull String animationName, @NotNull LoopTypeCache loopTypeCache, int additionalTicks) {
 
 		@NotNull
 		public static final String WAIT = "internal.wait";
 
-		public Stage(@NotNull String pAnimationName, @NotNull LoopType pLoopType) {
-			this(pAnimationName, pLoopType, 0);
+		public Stage(@NotNull String pAnimationName, @NotNull LoopTypeCache pLoopTypeCache) {
+			this(pAnimationName, pLoopTypeCache, 0);
 		}
 
 		@Override
 		public boolean equals(@Nullable Object pObj) {
 			if (this == pObj)
 				return true;
-
-			if (pObj == null || getClass() != pObj.getClass())
+			if (!(pObj instanceof Stage(String pName, LoopTypeCache pLoopTypeCache, int pTicks)))
 				return false;
-
-			return hashCode() == pObj.hashCode();
+			return Objects.equals(this.animationName, pName)
+					&& this.loopTypeCache == pLoopTypeCache
+					&& this.additionalTicks == pTicks;
 		}
 
 		@Override
 		public int hashCode() {
-			return Objects.hash(this.animationName, this.loopType);
+			return Objects.hash(this.animationName, this.loopTypeCache, this.additionalTicks);
 		}
 	}
 }
