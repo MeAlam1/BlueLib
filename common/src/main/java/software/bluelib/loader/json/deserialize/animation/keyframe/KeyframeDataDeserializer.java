@@ -27,8 +27,6 @@ public record KeyframeDataDeserializer(
 	@NotNull
 	public static JsonDeserializer<KeyframeDataDeserializer> deserializer() {
 		return (json, typeOfT, context) -> {
-			System.out.println("[KeyframeDataDeserializer] JSON type: " + (json.isJsonArray() ? "Array" : json.isJsonObject() ? "Object" : "Other") + " | Content: " + json);
-
 			if (json.isJsonArray()) {
 				List<MoLangValue> array = JsonUtils.jsonArrayToList(json.getAsJsonArray(), MoLangValue::fromJson);
 				return new KeyframeDataDeserializer(array, null, null, null, null);

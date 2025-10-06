@@ -34,7 +34,6 @@ public record BoneAnimationDeserializer(
 			KeyframeDeserializer rotationObject = null;
 			if (obj.has("rotation")) {
 				JsonElement elem = obj.get("rotation");
-				System.out.println("[BoneAnimationDeserializer] rotation type: " + (elem.isJsonArray() ? "Array" : elem.isJsonObject() ? "Object" : "Other") + " | Content: " + elem);
 				if (elem.isJsonArray()) {
 					rotationArray = JsonUtils.jsonArrayToList(elem.getAsJsonArray(), MoLangValue::fromJson);
 				} else if (elem.isJsonObject()) {
@@ -46,7 +45,6 @@ public record BoneAnimationDeserializer(
 			KeyframeDeserializer positionObject = null;
 			if (obj.has("position")) {
 				JsonElement elem = obj.get("position");
-				System.out.println("[BoneAnimationDeserializer] position type: " + (elem.isJsonArray() ? "Array" : elem.isJsonObject() ? "Object" : "Other") + " | Content: " + elem);
 				if (elem.isJsonArray()) {
 					positionArray = JsonUtils.jsonArrayToList(elem.getAsJsonArray(), MoLangValue::fromJson);
 				} else if (elem.isJsonObject()) {
@@ -58,7 +56,6 @@ public record BoneAnimationDeserializer(
 			KeyframeDeserializer scaleObject = null;
 			if (obj.has("scale")) {
 				JsonElement elem = obj.get("scale");
-				System.out.println("[BoneAnimationDeserializer] scale type: " + (elem.isJsonArray() ? "Array" : elem.isJsonObject() ? "Object" : "Other") + " | Content: " + elem);
 				if (elem.isJsonArray()) {
 					scaleArray = JsonUtils.jsonArrayToList(elem.getAsJsonArray(), MoLangValue::fromJson);
 				} else if (elem.isJsonObject()) {

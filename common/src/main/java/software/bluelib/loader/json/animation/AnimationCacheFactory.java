@@ -51,7 +51,6 @@ public interface AnimationCacheFactory extends CacheFactory<AnimationFileCache, 
 
 		@Override
 		public @NotNull AnimationFileCache constructAnimationFile(@NotNull AnimationFileDeserializer pAnimationsDeserializer) {
-			System.out.println("Raw File: " + pAnimationsDeserializer);
 			return new AnimationFileCache(
 					pAnimationsDeserializer.formatVersion(),
 					constructAnimations(pAnimationsDeserializer.animations()));

@@ -26,7 +26,6 @@ public record KeyframeDeserializer(
 			Map<String, KeyframeDataDeserializer> keyframeData = new HashMap<>();
 			for (String keyframeName : obj.keySet()) {
 				JsonElement keyframeElement = obj.get(keyframeName);
-				System.out.println("[KeyframeDeserializer] Keyframe: " + keyframeName + " | Type: " + (keyframeElement.isJsonArray() ? "Array" : keyframeElement.isJsonObject() ? "Object" : "Other") + " | Content: " + keyframeElement);
 				keyframeData.put(keyframeName, context.deserialize(keyframeElement, KeyframeDataDeserializer.class));
 			}
 
