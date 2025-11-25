@@ -31,7 +31,7 @@ public class BlueLibConstants implements BuildDetails {
 	public static <T> T load(@NotNull Class<T> pClazz) {
 		return ServiceLoader.load(pClazz)
 				.findFirst()
-				.orElseThrow(() -> new NullPointerException("Failed to load service for " + pClazz.getName()));
+				.orElseThrow(() -> new IllegalStateException("Failed to load service for " + pClazz.getName() + ". Ensure the service implementation is properly registered."));
 	}
 
 	@NotNull

@@ -60,6 +60,9 @@ public class HardPityRandom<T> extends PityRandom<T> {
 
 	public HardPityRandom(@NotNull Collection<T> pValues, @NotNull Integer pHardPity) {
 		super(pValues);
+		if (pHardPity < 0) {
+			throw new IllegalArgumentException("Hard pity threshold must be non-negative");
+		}
 		this.hardPity = pHardPity;
 	}
 

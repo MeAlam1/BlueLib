@@ -19,26 +19,49 @@ public class RandomMoLang extends BaseMoLangContext {
 				return ThreadLocalRandom.current().nextDouble();
 			}
 			if (args.size() == 1) {
-				return ThreadLocalRandom.current().nextDouble(MoLangMathUtils.toDouble(args.getFirst()));
+				double bound = MoLangMathUtils.toDouble(args.getFirst());
+				if (bound <= 0) {
+					return 0.0;
+				}
+				return ThreadLocalRandom.current().nextDouble(bound);
 			}
 			double min = MoLangMathUtils.toDouble(args.get(0));
 			double max = MoLangMathUtils.toDouble(args.get(1));
+			if (min > max) {
+				double temp = min;
+				min = max;
+				max = temp;
+			}
+			if (min == max) {
+				return min;
+			}
 			return ThreadLocalRandom.current().nextDouble(min, max);
 		});
 
 		registerFunction(MoLangNamespaceUtils.withMathNamespace("random_int"), (args, runtime) -> {
 			int min = MoLangMathUtils.toDouble(args, 0).intValue();
 			int max = MoLangMathUtils.toDouble(args, 1).intValue();
+			if (min > max) {
+				int temp = min;
+				min = max;
+				max = temp;
+			}
 			return ThreadLocalRandom.current().nextInt(min, max + 1);
 		});
 
 		registerFunction(MoLangNamespaceUtils.withMathNamespace("die_roll"), (args, runtime) -> {
 			int sides = MoLangMathUtils.toDouble(args, 0).intValue();
+			if (sides <= 0) {
+				return 1.0;
+			}
 			return 1 + ThreadLocalRandom.current().nextDouble() * sides;
 		});
 
 		registerFunction(MoLangNamespaceUtils.withMathNamespace("die_roll_integer"), (args, runtime) -> {
 			int sides = MoLangMathUtils.toDouble(args, 0).intValue();
+			if (sides <= 0) {
+				return 1;
+			}
 			return 1 + ThreadLocalRandom.current().nextInt(sides);
 		});
 	}

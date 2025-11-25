@@ -69,6 +69,9 @@ public class PityRandom<T> extends Random {
 	protected Integer totalSelections = 0;
 
 	public PityRandom(@NotNull Collection<T> pValues) {
+		if (pValues == null || pValues.isEmpty()) {
+			throw new IllegalArgumentException("PityRandom requires at least one value to choose from");
+		}
 		this.values = new ArrayList<>(pValues);
 		for (T value : pValues) {
 			selectionCounts.put(value, 0);
