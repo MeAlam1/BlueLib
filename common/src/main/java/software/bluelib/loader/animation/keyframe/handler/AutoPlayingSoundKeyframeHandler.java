@@ -25,7 +25,16 @@ public class AutoPlayingSoundKeyframeHandler<A extends BlueAnimatable> implement
 
 	@Override
 	public void handle(@NotNull SoundKeyframeEvent<A> pEvent) {
-		String[] segments = pEvent.getKeyframeData().getSound().split("\\|");
+		String soundData = pEvent.getKeyframeData().getSound();
+		if (soundData == null || soundData.isEmpty()) {
+			return;
+		}
+
+		String[] segments = soundData.split("\\|");
+		if (segments.length == 0 || segments[0].isEmpty()) {
+			return;
+		}
+
 		SoundEvent sound = BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.read(segments[0]).getOrThrow());
 
 		if (LevelUtils.getLevel() == null) {
@@ -37,8 +46,18 @@ public class AutoPlayingSoundKeyframeHandler<A extends BlueAnimatable> implement
 			Vec3 position = entity != null ? entity.position() : pEvent.getAnimatable() instanceof BlockEntity blockEntity ? blockEntity.getBlockPos().getCenter() : null;
 
 			if (position != null) {
-				float volume = segments.length > 1 ? Float.parseFloat(segments[1]) : 1;
-				float pitch = segments.length > 2 ? Float.parseFloat(segments[2]) : 1;
+				float volume = 1;
+				float pitch = 1;
+				try {
+					if (segments.length > 1) {
+						volume = Float.parseFloat(segments[1]);
+					}
+					if (segments.length > 2) {
+						pitch = Float.parseFloat(segments[2]);
+					}
+				} catch (NumberFormatException e) {
+					// Use default values if parsing fails
+				}
 				SoundSource source = entity == null ? SoundSource.BLOCKS : entity instanceof Enemy ? SoundSource.HOSTILE : SoundSource.NEUTRAL;
 
 				LevelUtils.getLevel().playLocalSound(position.x, position.y, position.z, sound, source, volume, pitch, false);
