@@ -18,7 +18,8 @@ public class MatrixUtils {
 	private MatrixUtils() {}
 
 	public static @NotNull Double[][] multiplyMatrices(@NotNull Double[][] pMatrixA, @NotNull Double[][] pMatrixB) {
-		if (pMatrixA.length == 0 || pMatrixA[0].length == 0 || pMatrixB.length == 0 || pMatrixB[0].length == 0) {
+		if (pMatrixA.length == 0 || pMatrixB.length == 0 ||
+		    pMatrixA[0].length == 0 || pMatrixB[0].length == 0) {
 			BaseLogger.log(true, BaseLogLevel.WARNING, BlueTranslation.log("math.error.calc", "matrix multiplication"));
 			return new Double[0][0];
 		}
