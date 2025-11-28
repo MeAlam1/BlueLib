@@ -79,8 +79,8 @@ public class ResourceCache extends BlueLoader {
 								ResourceCache.Client.MODELS = models.join();
 								BakedAnimationsAdapter.COMPRESSION_CACHE = null;
 
-								System.out.println("Model Cache: " + ResourceCache.Client.MODELS);
-								System.out.println("Animations Cache: " + ResourceCache.Client.ANIMATIONS);
+								BaseLogger.log(true, BaseLogLevel.INFO, "Model Cache: " + ResourceCache.Client.MODELS);
+								BaseLogger.log(true, BaseLogLevel.INFO, "Animations Cache: " + ResourceCache.Client.ANIMATIONS);
 							}, pGameExecutor));
 		}
 
@@ -133,8 +133,8 @@ public class ResourceCache extends BlueLoader {
 			return controllers.thenCombineAsync(variants, (c, v) -> {
 				ResourceCache.Server.CONTROLLERS = c;
 				ResourceCache.Server.VARIANTS = v;
-				System.out.println("Variants Cache: " + ResourceCache.Server.VARIANTS);
-				System.out.println("Controllers Cache: " + ResourceCache.Server.CONTROLLERS);
+				BaseLogger.log(true, BaseLogLevel.INFO, "Variants Cache: " + ResourceCache.Server.VARIANTS);
+				BaseLogger.log(true, BaseLogLevel.INFO, "Controllers Cache: " + ResourceCache.Server.CONTROLLERS);
 				return null;
 			}, pGameExecutor);
 		}

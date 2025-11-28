@@ -26,6 +26,9 @@ public record Entity(
 			String formatVersion = GsonHelper.getAsString(obj, "format_version", "1.0.0");
 			Map<String, Variant> variants = new java.util.HashMap<>();
 			for (String variantName : obj.keySet()) {
+				if ("format_version".equals(variantName)) {
+					continue;
+				}
 				variants.put(variantName, context.deserialize(obj.get(variantName), Variant.class));
 			}
 			return new Entity(

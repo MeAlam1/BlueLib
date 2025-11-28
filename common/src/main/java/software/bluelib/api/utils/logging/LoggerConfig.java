@@ -49,14 +49,28 @@ public abstract class LoggerConfig {
 			}
 
 			private static @NotNull String getExceptionDetails(@NotNull LogRecord pRecord) {
-				StringBuilder exceptionDetails = new StringBuilder("\nException: " + pRecord.getThrown().getMessage());
-				for (StackTraceElement element : pRecord.getThrown().getStackTrace()) {
-					String packageName = element.getClassName().substring(0, element.getClassName().lastIndexOf('.'));
-					String className = element.getClassName().substring(element.getClassName().lastIndexOf('.') + 1);
+				Throwable thrown = pRecord.getThrown();
+				StringBuilder exceptionDetails = new StringBuilder("\nException: " + (thrown.getMessage() != null ? thrown.getMessage() : thrown.getClass().getName()));
+				for (StackTraceElement element : thrown.getStackTrace()) {
+					String fullClassName = element.getClassName();
+					String packageName;
+					String className;
+					int lastDot = fullClassName.lastIndexOf('.');
+					if (lastDot >= 0) {
+						packageName = fullClassName.substring(0, lastDot);
+						className = fullClassName.substring(lastDot + 1);
+					} else {
+						packageName = "";
+						className = fullClassName;
+					}
 					String methodName = element.getMethodName();
 					int lineNumber = element.getLineNumber();
 
-					exceptionDetails.append("\n\tat ").append(packageName).append(".").append(className).append(".").append(methodName).append("(Line: ").append(lineNumber).append(")");
+					exceptionDetails.append("\n\tat ");
+					if (!packageName.isEmpty()) {
+						exceptionDetails.append(packageName).append(".");
+					}
+					exceptionDetails.append(className).append(".").append(methodName).append("(Line: ").append(lineNumber).append(")");
 				}
 				return exceptionDetails.toString();
 			}

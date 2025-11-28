@@ -189,11 +189,11 @@ public record Color(int argbInt) {
 	}
 
 	@Override
-	public boolean equals(@NotNull Object pOther) {
+	public boolean equals(Object pOther) {
 		if (this == pOther)
 			return true;
 
-		if (getClass() != pOther.getClass())
+		if (pOther == null || getClass() != pOther.getClass())
 			return false;
 
 		return hashCode() == pOther.hashCode();
