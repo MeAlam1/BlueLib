@@ -16,6 +16,8 @@ import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
+import software.bluelib.api.utils.logging.BaseLogLevel;
+import software.bluelib.api.utils.logging.BaseLogger;
 import software.bluelib.client.utils.LevelUtils;
 import software.bluelib.loader.animatable.base.BlueAnimatable;
 import software.bluelib.loader.animation.AnimationController;
@@ -56,7 +58,7 @@ public class AutoPlayingSoundKeyframeHandler<A extends BlueAnimatable> implement
 						pitch = Float.parseFloat(segments[2]);
 					}
 				} catch (NumberFormatException e) {
-					// Use default values if parsing fails
+					BaseLogger.log(true, BaseLogLevel.WARNING, "Invalid volume/pitch value in sound data: " + soundData, e);
 				}
 				SoundSource source = entity == null ? SoundSource.BLOCKS : entity instanceof Enemy ? SoundSource.HOSTILE : SoundSource.NEUTRAL;
 
