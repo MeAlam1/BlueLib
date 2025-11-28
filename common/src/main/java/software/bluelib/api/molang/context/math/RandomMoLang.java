@@ -46,8 +46,10 @@ public class RandomMoLang extends BaseMoLangContext {
 				min = max;
 				max = temp;
 			}
+			if (min == max) {
+				return min;
+			}
 			return ThreadLocalRandom.current().nextInt(min, max + 1);
-		});
 
 		registerFunction(MoLangNamespaceUtils.withMathNamespace("die_roll"), (args, runtime) -> {
 			int sides = MoLangMathUtils.toDouble(args, 0).intValue();
