@@ -43,7 +43,7 @@ public class MatrixUtils {
 	}
 
 	public static @NotNull Double[][] transposeMatrix(@NotNull Double[][] pMatrix) {
-		if (pMatrix.length == 0 || pMatrix[0].length == 0) {
+		if (pMatrix.length == 0 || (pMatrix.length > 0 && pMatrix[0].length == 0)) {
 			return new Double[0][0];
 		}
 		int rows = pMatrix.length;
