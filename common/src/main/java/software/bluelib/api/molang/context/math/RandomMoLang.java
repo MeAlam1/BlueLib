@@ -62,7 +62,7 @@ public class RandomMoLang extends BaseMoLangContext {
 		registerFunction(MoLangNamespaceUtils.withMathNamespace("die_roll_integer"), (args, runtime) -> {
 			int sides = MoLangMathUtils.toDouble(args, 0).intValue();
 			if (sides <= 0) {
-				return 1;
+				throw new IllegalArgumentException("Number of die sides must be positive, got: " + sides);
 			}
 			return 1 + ThreadLocalRandom.current().nextInt(sides);
 		});
