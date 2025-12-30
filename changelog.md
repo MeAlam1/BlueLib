@@ -1,9 +1,5 @@
-# 2.4.1
+# 2.4.2
 
-## Changed
+## Bug Fixes
 
-* Allow for JSON data to be given a literal `Null` value even if it's a primitive type.
-
-## Updated
-* Updated Gradle to 9.2.1
-* Updated Fabric and NeoForge accordingly
+* Fixed a critical issue that was preventing Servers to start.
