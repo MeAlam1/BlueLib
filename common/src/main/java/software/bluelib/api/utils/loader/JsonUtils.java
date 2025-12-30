@@ -10,19 +10,21 @@ package software.bluelib.api.utils.loader;
 import com.google.gson.*;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import net.minecraft.util.GsonHelper;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.Function;
-import net.minecraft.util.GsonHelper;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-@SuppressWarnings({ "unused" })
+@SuppressWarnings({"unused"})
 public final class JsonUtils {
 
-	private JsonUtils() {}
+	private JsonUtils() {
+	}
 
 	@NotNull
 	public static List<Float> jsonArrayToFloatList(@Nullable JsonArray pArray) throws JsonParseException {
@@ -164,43 +166,47 @@ public final class JsonUtils {
 		};
 	}
 
-	@Nullable
-	public static Long getOptionalLong(@NotNull JsonObject pObj, @NotNull String pElementName) {
-		return pObj.has(pElementName) ? GsonHelper.getAsLong(pObj, pElementName) : null;
+	private static boolean hasNonNull(@NotNull JsonObject pObj, @Nullable String pElementName) {
+		return pObj.has(pElementName) && !pObj.get(pElementName).isJsonNull();
 	}
 
 	@Nullable
-	public static Boolean getOptionalBoolean(@NotNull JsonObject pObj, @NotNull String pElementName) {
-		return pObj.has(pElementName) ? GsonHelper.getAsBoolean(pObj, pElementName) : null;
+	public static Long getOptionalLong(@NotNull JsonObject pObj, @Nullable String pElementName) {
+		return hasNonNull(pObj, pElementName) ? GsonHelper.getAsLong(pObj, pElementName) : null;
 	}
 
 	@Nullable
-	public static Float getOptionalFloat(@NotNull JsonObject pObj, @NotNull String pElementName) {
-		return pObj.has(pElementName) ? GsonHelper.getAsFloat(pObj, pElementName) : null;
+	public static Boolean getOptionalBoolean(@NotNull JsonObject pObj, @Nullable String pElementName) {
+		return hasNonNull(pObj, pElementName) ? GsonHelper.getAsBoolean(pObj, pElementName) : null;
 	}
 
 	@Nullable
-	public static Double getOptionalDouble(@NotNull JsonObject pObj, @NotNull String pElementName) {
-		return pObj.has(pElementName) ? GsonHelper.getAsDouble(pObj, pElementName) : null;
+	public static Float getOptionalFloat(@NotNull JsonObject pObj, @Nullable String pElementName) {
+		return hasNonNull(pObj, pElementName) ? GsonHelper.getAsFloat(pObj, pElementName) : null;
 	}
 
 	@Nullable
-	public static Integer getOptionalInteger(@NotNull JsonObject pObj, @NotNull String pElementName) {
-		return pObj.has(pElementName) ? GsonHelper.getAsInt(pObj, pElementName) : null;
+	public static Double getOptionalDouble(@NotNull JsonObject pObj, @Nullable String pElementName) {
+		return hasNonNull(pObj, pElementName) ? GsonHelper.getAsDouble(pObj, pElementName) : null;
 	}
 
 	@Nullable
-	public static String getOptionalString(@NotNull JsonObject pObj, @NotNull String pElementName) {
-		return pObj.has(pElementName) ? GsonHelper.getAsString(pObj, pElementName) : null;
+	public static Integer getOptionalInteger(@NotNull JsonObject pObj, @Nullable String pElementName) {
+		return hasNonNull(pObj, pElementName) ? GsonHelper.getAsInt(pObj, pElementName) : null;
 	}
 
 	@Nullable
-	public static <T> T getOptionalObject(@NotNull JsonObject pObj, @NotNull String pElementName, @NotNull JsonDeserializationContext pContext, @NotNull Class<T> pType) {
-		return pObj.has(pElementName) ? GsonHelper.getAsObject(pObj, pElementName, pContext, pType) : null;
+	public static String getOptionalString(@NotNull JsonObject pObj, @Nullable String pElementName) {
+		return hasNonNull(pObj, pElementName) ? GsonHelper.getAsString(pObj, pElementName) : null;
 	}
 
 	@Nullable
-	public static JsonArray getOptionalJsonArray(@NotNull JsonObject pObj, @NotNull String pElementName) {
-		return pObj.has(pElementName) ? GsonHelper.getAsJsonArray(pObj, pElementName) : null;
+	public static <T> T getOptionalObject(@NotNull JsonObject pObj, @Nullable String pElementName, @NotNull JsonDeserializationContext pContext, @NotNull Class<T> pType) {
+		return hasNonNull(pObj, pElementName) ? GsonHelper.getAsObject(pObj, pElementName, pContext, pType) : null;
+	}
+
+	@Nullable
+	public static JsonArray getOptionalJsonArray(@NotNull JsonObject pObj, @Nullable String pElementName) {
+		return hasNonNull(pObj, pElementName) ? GsonHelper.getAsJsonArray(pObj, pElementName) : null;
 	}
 }
