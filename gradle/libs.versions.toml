@@ -1,6 +1,6 @@
 [versions]
 # BlueLib
-bluelib = "2.4.0"
+bluelib = "2.4.1"
 
 # Common
 minecraft-range = "[1.21,)"
