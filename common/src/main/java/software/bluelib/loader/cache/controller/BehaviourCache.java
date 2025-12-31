@@ -10,13 +10,16 @@ package software.bluelib.loader.cache.controller;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.Dynamic;
+
 import java.util.List;
 import java.util.Map;
+
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import software.bluelib.api.utils.codec.NbtCodecUtils;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
 import software.bluelib.api.utils.minecraft.CompoundTagUtils;
@@ -27,21 +30,12 @@ public record BehaviourCache(
 		@NotNull Map<String, StateCache> states) {
 
 	@NotNull
-	public static final Codec<BehaviourCache> CODEC = Codec.PASSTHROUGH.comapFlatMap(
-			dynamic -> {
-				CompoundTag tag = (CompoundTag) dynamic.convert(NbtOps.INSTANCE).getValue();
-				return DataResult.success(BehaviourCache.readFromNBT(tag));
-			},
-			behaviorCache -> {
-				CompoundTag tag = new CompoundTag();
-				behaviorCache.writeToNBT(tag);
-				return new Dynamic<>(NbtOps.INSTANCE, tag);
-			});
+	public static final Codec<BehaviourCache> CODEC =
+			NbtCodecUtils.fromNbt(BehaviourCache::readFromNBT, BehaviourCache::writeToNBT);
 
 	@NotNull
-	public static final DataComponentType<BehaviourCache> BEHAVIOUR_CACHE_DATA = DataComponentType.<BehaviourCache>builder()
-			.persistent(CODEC)
-			.build();
+	public static final DataComponentType<BehaviourCache> BEHAVIOUR_CACHE_DATA =
+			NbtCodecUtils.persistentDataType(CODEC);
 
 	public void writeToNBT(@NotNull CompoundTag pTag) {
 		CompoundTagUtils.writeList(

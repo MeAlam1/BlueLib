@@ -16,6 +16,7 @@ import net.minecraft.nbt.NbtOps;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 import software.bluelib.api.json.deserializer.pos.Vector3;
+import software.bluelib.api.utils.codec.NbtCodecUtils;
 
 public record Vector3Cache(
 		@NotNull Float x,
@@ -23,21 +24,12 @@ public record Vector3Cache(
 		@NotNull Float z) {
 
 	@NotNull
-	public static final Codec<Vector3Cache> CODEC = Codec.PASSTHROUGH.comapFlatMap(
-			dynamic -> {
-				CompoundTag tag = (CompoundTag) dynamic.convert(NbtOps.INSTANCE).getValue();
-				return DataResult.success(Vector3Cache.readFromNBT(tag));
-			},
-			vector3Cache -> {
-				CompoundTag tag = new CompoundTag();
-				vector3Cache.writeToNBT(tag);
-				return new Dynamic<>(NbtOps.INSTANCE, tag);
-			});
+	public static final Codec<Vector3Cache> CODEC =
+			NbtCodecUtils.fromNbt(Vector3Cache::readFromNBT, Vector3Cache::writeToNBT);
 
 	@NotNull
-	public static final DataComponentType<Vector3Cache> VECTOR3_DATA = DataComponentType.<Vector3Cache>builder()
-			.persistent(CODEC)
-			.build();
+	public static final DataComponentType<Vector3Cache> VECTOR3_DATA =
+			NbtCodecUtils.persistentDataType(CODEC);
 
 	public void writeToNBT(@NotNull CompoundTag pTag) {
 		pTag.putFloat("x", x);

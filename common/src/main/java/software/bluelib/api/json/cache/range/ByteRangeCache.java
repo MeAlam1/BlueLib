@@ -16,27 +16,19 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.json.deserializer.range.ByteRange;
+import software.bluelib.api.utils.codec.NbtCodecUtils;
 
 public record ByteRangeCache(
 		@NotNull Byte min,
 		@NotNull Byte max) {
 
 	@NotNull
-	public static final Codec<ByteRangeCache> CODEC = Codec.PASSTHROUGH.comapFlatMap(
-			dynamic -> {
-				CompoundTag tag = (CompoundTag) dynamic.convert(NbtOps.INSTANCE).getValue();
-				return DataResult.success(ByteRangeCache.readFromNBT(tag));
-			},
-			byteRangeCache -> {
-				CompoundTag tag = new CompoundTag();
-				byteRangeCache.writeToNBT(tag);
-				return new Dynamic<>(NbtOps.INSTANCE, tag);
-			});
+	public static final Codec<ByteRangeCache> CODEC =
+			NbtCodecUtils.fromNbt(ByteRangeCache::readFromNBT, ByteRangeCache::writeToNBT);
 
 	@NotNull
-	public static final DataComponentType<ByteRangeCache> BYTE_RANGE_DATA = DataComponentType.<ByteRangeCache>builder()
-			.persistent(CODEC)
-			.build();
+	public static final DataComponentType<ByteRangeCache> BYTE_RANGE_DATA =
+			NbtCodecUtils.persistentDataType(CODEC);
 
 	public void writeToNBT(@NotNull CompoundTag pTag) {
 		pTag.putByte("Min", min);

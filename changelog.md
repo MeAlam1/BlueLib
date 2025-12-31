@@ -1,5 +1,5 @@
-# 2.4.2
+# 2.4.3
 
-## Bug Fixes
+## Changed
 
-* Fixed a critical issue that was preventing Servers to start.
+* Massive cleanup in the way we register Codecs and Data ComponentTypes.

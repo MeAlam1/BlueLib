@@ -15,6 +15,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.json.deserializer.pos.BlockPos;
+import software.bluelib.api.utils.codec.NbtCodecUtils;
 
 public record BlockPosCache(
 		@NotNull Integer x,
@@ -22,21 +23,12 @@ public record BlockPosCache(
 		@NotNull Integer z) {
 
 	@NotNull
-	public static final Codec<BlockPosCache> CODEC = Codec.PASSTHROUGH.comapFlatMap(
-			dynamic -> {
-				CompoundTag tag = (CompoundTag) dynamic.convert(NbtOps.INSTANCE).getValue();
-				return DataResult.success(BlockPosCache.readFromNBT(tag));
-			},
-			blockPosCache -> {
-				CompoundTag tag = new CompoundTag();
-				blockPosCache.writeToNBT(tag);
-				return new Dynamic<>(NbtOps.INSTANCE, tag);
-			});
+	public static final Codec<BlockPosCache> CODEC =
+			NbtCodecUtils.fromNbt(BlockPosCache::readFromNBT, BlockPosCache::writeToNBT);
 
 	@NotNull
-	public static final DataComponentType<BlockPosCache> BLOCK_POS_DATA = DataComponentType.<BlockPosCache>builder()
-			.persistent(CODEC)
-			.build();
+	public static final DataComponentType<BlockPosCache> BLOCK_POS_DATA =
+			NbtCodecUtils.persistentDataType(CODEC);
 
 	public void writeToNBT(@NotNull CompoundTag pTag) {
 		pTag.putInt("x", x);
