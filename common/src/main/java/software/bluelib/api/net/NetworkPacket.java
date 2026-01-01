@@ -8,9 +8,11 @@
 package software.bluelib.api.net;
 
 import java.util.function.Predicate;
+
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
@@ -19,7 +21,7 @@ import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
 import software.bluelib.internal.BlueTranslation;
 
-@SuppressWarnings({ "unused" })
+@SuppressWarnings({"unused"})
 public interface NetworkPacket<T extends NetworkPacket<T>> extends CustomPacketPayload, Encodable {
 
 	@NotNull
@@ -35,22 +37,16 @@ public interface NetworkPacket<T extends NetworkPacket<T>> extends CustomPacketP
 		}
 	}
 
-	default void sendToAllPlayers() {
-		NetworkRegistry.sendToAllPlayers(this);
+	default void sendToAllPlayers(@NotNull MinecraftServer pServer) {
+		NetworkRegistry.sendToAllPlayers(pServer, this);
 	}
 
 	default void sendToServer() {
 		NetworkRegistry.sendToServer(this);
 	}
 
-	default void sendToPlayersAround(@NotNull Double pX, @NotNull Double pY, @NotNull Double pZ, @NotNull Double pDistance, @NotNull ResourceKey<Level> pWorldKey, @NotNull Predicate<ServerPlayer> pExclusionCondition) {
-		var server = BlueLibConstants.PlatformHelper.PLATFORM.getServer();
-		if (server == null) {
-			BaseLogger.log(true, BaseLogLevel.ERROR, BlueTranslation.translate("server.null"));
-			return;
-		}
-
-		for (ServerPlayer player : server.getPlayerList().getPlayers()) {
+	default void sendToPlayersAround(@NotNull MinecraftServer pServer, @NotNull Double pX, @NotNull Double pY, @NotNull Double pZ, @NotNull Double pDistance, @NotNull ResourceKey<Level> pWorldKey, @NotNull Predicate<ServerPlayer> pExclusionCondition) {
+		for (ServerPlayer player : pServer.getPlayerList().getPlayers()) {
 			if (pExclusionCondition.test(player)) continue;
 			if (!player.level().dimension().equals(pWorldKey)) continue;
 
@@ -63,8 +59,8 @@ public interface NetworkPacket<T extends NetworkPacket<T>> extends CustomPacketP
 		}
 	}
 
-	default void sendToPlayersAround(@NotNull Double pX, @NotNull Double pY, @NotNull Double pZ, @NotNull Double pDistance, @NotNull ResourceKey<Level> pWorldKey) {
-		sendToPlayersAround(pX, pY, pZ, pDistance, pWorldKey, player -> false);
+	default void sendToPlayersAround(@NotNull MinecraftServer pServer, @NotNull Double pX, @NotNull Double pY, @NotNull Double pZ, @NotNull Double pDistance, @NotNull ResourceKey<Level> pWorldKey) {
+		sendToPlayersAround(pServer, pX, pY, pZ, pDistance, pWorldKey, player -> false);
 	}
 
 	@Override

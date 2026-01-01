@@ -9,6 +9,7 @@ package software.bluelib.net;
 
 import java.util.HashSet;
 import java.util.Objects;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
@@ -31,27 +32,25 @@ public class NeoForgeNetworkManager implements NetworkManager {
 	@NotNull
 	public static final String PROTOCOL_VERSION = "1.0.0";
 
-	public static void registerMessages(@NotNull RegisterPayloadHandlersEvent pEvent) {
-		var registrar = pEvent.registrar(BlueLibConstants.MOD_ID).versioned(PROTOCOL_VERSION);
+	static {
+	}
 
-		var netRegistrar = pEvent.registrar(BlueLibConstants.MOD_ID)
+	public static void registerMessages(@NotNull RegisterPayloadHandlersEvent pEvent) {
+		var registrar = pEvent.registrar(BlueLibConstants.MOD_ID)
+				.versioned(PROTOCOL_VERSION);
+
+		var optionalRegistrar = pEvent.registrar(BlueLibConstants.MOD_ID)
+				.versioned(PROTOCOL_VERSION);
+
+		var optionalNetRegistrar = pEvent.registrar(BlueLibConstants.MOD_ID)
 				.versioned(PROTOCOL_VERSION)
 				.executesOn(HandlerThread.NETWORK);
-
-		var syncPackets = new HashSet<ResourceLocation>();
-		var asyncPackets = new HashSet<ResourceLocation>();
 
 		NetworkRegistry.getS2CPayloads().stream()
 				.map(NeoForgePacketInfo::new)
 				.forEach(it -> {
 					boolean handleAsync = it.info().getHandler() instanceof DataRegistrySyncPacketHandler<?, ?>;
-					if (handleAsync) {
-						asyncPackets.add(it.info().getId());
-					} else {
-						syncPackets.add(it.info().getId());
-					}
-
-					it.registerToClient(handleAsync ? netRegistrar : registrar);
+					it.registerToClient(handleAsync ? optionalNetRegistrar : optionalRegistrar);
 				});
 
 		NetworkRegistry.getC2SPayloads().stream()

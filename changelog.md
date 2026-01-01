@@ -3,3 +3,8 @@
 ## Changed
 
 * Massive cleanup in the way we register Codecs and Data ComponentTypes.
+
+## Bug Fixes
+
+* Fixed a critical issue where Fabric Server where enable to be started due to trying to load Client sided Code on the
+  Server.

@@ -9,6 +9,8 @@ package software.bluelib.api.net;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
@@ -22,7 +24,7 @@ import software.bluelib.api.utils.logging.BaseLogger;
 import software.bluelib.internal.BlueTranslation;
 import software.bluelib.net.PacketRegisterInfo;
 
-@SuppressWarnings({ "unused" })
+@SuppressWarnings({"unused"})
 public class NetworkRegistry {
 
 	public static void sendPacket(@NotNull ServerPlayer pPlayer, @NotNull NetworkPacket<?> pPacket) {
@@ -37,13 +39,8 @@ public class NetworkRegistry {
 		BlueLibConstants.PlatformHelper.REGISTRY.getNetwork().sendPacketToPlayer(pPlayer, pPacket);
 	}
 
-	public static void sendToAllPlayers(@NotNull NetworkPacket<?> pPacket) {
-		MinecraftServer server = BlueLibConstants.PlatformHelper.PLATFORM.getServer();
-		if (server == null) {
-			BaseLogger.log(true, BaseLogLevel.ERROR, BlueTranslation.translate("server.null"));
-			return;
-		}
-		sendPacketToPlayers(server.getPlayerList().getPlayers(), pPacket);
+	public static void sendToAllPlayers(@NotNull MinecraftServer pServer, @NotNull NetworkPacket<?> pPacket) {
+		sendPacketToPlayers(pServer.getPlayerList().getPlayers(), pPacket);
 	}
 
 	public static void sendPacketToPlayers(@NotNull Iterable<ServerPlayer> pPlayers, @NotNull NetworkPacket<?> pPacket) {

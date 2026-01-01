@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+
 import net.minecraft.server.MinecraftServer;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.loading.FMLEnvironment;
@@ -82,10 +83,5 @@ public class NeoForgePlatformHelper implements IPlatformHelper {
 	@Override
 	public @NotNull ModAPI getAPI() {
 		return ModAPI.NEOFORGE;
-	}
-
-	@Override
-	public @Nullable MinecraftServer getServer() {
-		return ServerLifecycleHooks.getCurrentServer();
 	}
 }

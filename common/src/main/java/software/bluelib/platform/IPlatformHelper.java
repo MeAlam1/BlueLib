@@ -48,7 +48,4 @@ public interface IPlatformHelper {
 
 	@NotNull
 	ModAPI getAPI();
-
-	@Nullable
-	MinecraftServer getServer();
 }

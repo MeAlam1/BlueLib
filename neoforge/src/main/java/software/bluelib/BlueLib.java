@@ -28,7 +28,11 @@ import software.bluelib.platform.NeoForgeRegistryHelper;
 public class BlueLib {
 
 	public BlueLib(@NotNull IEventBus pModEventBus, @NotNull ModContainer pModContainer) {
+		pModEventBus.addListener(EventPriority.HIGHEST, NeoForgeNetworkManager::registerMessages);
+
 		NeoForgeRegistryHelper.register(pModEventBus);
+
+		setupEventListeners(pModEventBus);
 
 		BlueLibCommon.doRegistration();
 
@@ -36,7 +40,6 @@ public class BlueLib {
 			BlueLibClient.init(pModContainer);
 
 		registerConfigs(pModContainer);
-		setupEventListeners(pModEventBus);
 
 		NeoForgeReloadHandler.registerProvider(new VariantProvider());
 	}
@@ -48,7 +51,6 @@ public class BlueLib {
 
 	private void setupEventListeners(@NotNull IEventBus pModEventBus) {
 		pModEventBus.register(this);
-		pModEventBus.addListener(NeoForgeNetworkManager::registerMessages);
 	}
 
 	@SubscribeEvent(priority = EventPriority.LOWEST)

@@ -15,5 +15,5 @@ public class LoggerConfig {
 	public static boolean isBlueLibLoggingEnabled = false;
 	public static boolean isLoggingEnabled = false;
 	@ApiStatus.Internal
-	public static final boolean isExampleEnabled = false;
+	public static final boolean isExampleEnabled = true;
 }

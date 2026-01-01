@@ -31,6 +31,7 @@ public class OpenLoggerScreenCommand {
 			pContext.getSource().sendFailure(BlueTranslation.translate("command.logger.no_player"));
 			return 0;
 		}
+		NetworkRegistry.sendPacketToPlayer(player, new OpenLoggerPacket());
 		if (player.hasPermissions(3)) {
 			NetworkRegistry.sendPacketToPlayer(player, new OpenLoggerPacket());
 		} else {

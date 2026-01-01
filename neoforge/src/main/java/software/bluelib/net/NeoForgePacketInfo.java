@@ -9,6 +9,7 @@ package software.bluelib.net;
 
 import java.util.HashSet;
 import java.util.Set;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -35,7 +36,12 @@ public record NeoForgePacketInfo<T extends NetworkPacket<T>>(@NotNull PacketRegi
 			clientHandler.handle(arg, Minecraft.getInstance());
 		};
 
-		pRegistrar.playToClient(info.getPayloadId(), info.getCodec(), handler);
+		pRegistrar.playToClient(
+				info.getPayloadId(),
+				info.getCodec(),
+				handler);
+				//.optional();
+
 	}
 
 	public void registerToServer(@NotNull PayloadRegistrar pRegistrar) {
