@@ -39,6 +39,7 @@ public class BlueClientNetworkRegistry implements PacketProvider {
 		list.add(new PacketRegisterInfo<>(OpenLoggerPacket.ID, OpenLoggerPacket::decode, OpenLoggerPacketHandler::new));
 
 		// Loader
+		list.add(new PacketRegisterInfo<>(ControllerCachePacket.ID, ControllerCachePacket::decode, ControllerCachePacketHandler::new));
 		list.add(new PacketRegisterInfo<>(BlockEntityAnimTriggerPacket.ID, BlockEntityAnimTriggerPacket::decode, BlockEntityAnimTriggerPacketHandler::new));
 		list.add(new PacketRegisterInfo<>(BlockEntityDataSyncPacket.ID, BlockEntityDataSyncPacket::decode, BlockEntityDataSyncPacketHandler::new));
 		list.add(new PacketRegisterInfo<>(EntityAnimTriggerPacket.ID, EntityAnimTriggerPacket::decode, EntityAnimTriggerPacketHandler::new));

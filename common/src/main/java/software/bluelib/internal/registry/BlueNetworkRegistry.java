@@ -14,15 +14,7 @@ import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.net.PacketProvider;
 import software.bluelib.net.PacketRegisterInfo;
 import software.bluelib.net.messages.client.OpenLoggerPacket;
-import software.bluelib.net.messages.client.loader.BlockEntityAnimTriggerPacket;
-import software.bluelib.net.messages.client.loader.BlockEntityDataSyncPacket;
-import software.bluelib.net.messages.client.loader.EntityAnimTriggerPacket;
-import software.bluelib.net.messages.client.loader.EntityDataSyncPacket;
-import software.bluelib.net.messages.client.loader.SingletonAnimTriggerPacket;
-import software.bluelib.net.messages.client.loader.SingletonDataSyncPacket;
-import software.bluelib.net.messages.client.loader.StopTriggeredBlockEntityAnimPacket;
-import software.bluelib.net.messages.client.loader.StopTriggeredEntityAnimPacket;
-import software.bluelib.net.messages.client.loader.StopTriggeredSingletonAnimPacket;
+import software.bluelib.net.messages.client.loader.*;
 import software.bluelib.net.messages.server.TestPacket;
 import software.bluelib.net.serverHandling.TestPacketHandler;
 
@@ -44,6 +36,7 @@ public class BlueNetworkRegistry implements PacketProvider {
 
 		list.add(new PacketRegisterInfo<>(OpenLoggerPacket.ID, OpenLoggerPacket::decode));
 
+		list.add(new PacketRegisterInfo<>(ControllerCachePacket.ID, ControllerCachePacket::decode));
 		list.add(new PacketRegisterInfo<>(BlockEntityAnimTriggerPacket.ID, BlockEntityAnimTriggerPacket::decode));
 		list.add(new PacketRegisterInfo<>(BlockEntityDataSyncPacket.ID, BlockEntityDataSyncPacket::decode));
 		list.add(new PacketRegisterInfo<>(EntityAnimTriggerPacket.ID, EntityAnimTriggerPacket::decode));
