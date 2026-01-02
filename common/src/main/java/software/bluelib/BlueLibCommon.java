@@ -10,6 +10,7 @@ package software.bluelib;
 import static software.bluelib.BlueLibConstants.SCHEDULER;
 
 import java.util.concurrent.TimeUnit;
+
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
@@ -21,11 +22,13 @@ import software.bluelib.api.utils.logging.BaseLogger;
 import software.bluelib.internal.BlueTranslation;
 import software.bluelib.internal.registry.*;
 import software.bluelib.internal.registry.molang.BlueMoLangContextRegistry;
+import software.bluelib.client.internal.registry.BlueClientNetworkRegistry;
 
 @ApiStatus.Internal
 public class BlueLibCommon {
 
-	private BlueLibCommon() {}
+	private BlueLibCommon() {
+	}
 
 	public static void init() {
 		if (isDeveloperMode()) {
@@ -45,7 +48,8 @@ public class BlueLibCommon {
 	public static void doRegistration() {
 		BlueLibConstants.init();
 		MixinBootstrap.init();
-		InternalNetworkRegistry.networkServer();
+		InternalNetworkRegistry.registerC2SNetwork();
+		InternalNetworkRegistry.registerS2CNetwork();
 		BlueEntityRegistry.init();
 		BlueRecipeTypeRegistry.init();
 		BlueRecipeSerializerRegistry.init();
@@ -54,7 +58,8 @@ public class BlueLibCommon {
 	}
 
 	public static void doClientRegistration() {
-		InternalNetworkRegistry.networkClient();
+		InternalNetworkRegistry.registerC2SNetwork();
+		InternalNetworkRegistry.registerS2CNetwork();
 	}
 
 	@NotNull
@@ -68,17 +73,13 @@ public class BlueLibCommon {
 
 	protected static class InternalNetworkRegistry {
 
-		@NotNull
-		private static BlueNetworkRegistry getNetwork() {
-			return new BlueNetworkRegistry();
+		private static void registerC2SNetwork() {
+			NetworkRegistry.registerC2SPacketProvider(new BlueNetworkRegistry());
 		}
 
-		private static void networkServer() {
-			NetworkRegistry.registerC2SPacketProvider(getNetwork());
-		}
+		private static void registerS2CNetwork() {
+			NetworkRegistry.registerS2CPacketProvider(new BlueClientNetworkRegistry());
 
-		private static void networkClient() {
-			NetworkRegistry.registerS2CPacketProvider(getNetwork());
 		}
 	}
 }

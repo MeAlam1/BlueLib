@@ -1,10 +1,3 @@
-/*
- * Copyright (C) 2024 BlueLib Contributors
- *
- * This Source Code Form is subject to the terms of the MIT License.
- * If a copy of the MIT License was not distributed with this file,
- * You can obtain one at https://opensource.org/licenses/MIT.
- */
 package software.bluelib.net;
 
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
@@ -21,18 +14,29 @@ import software.bluelib.api.net.NetworkRegistry;
 
 public class FabricNetworkManager implements NetworkManager {
 
-	public static void registerMessages() {
-		NetworkRegistry.getS2CPayloads().forEach(info -> FabricPacketInfo.registerPacket(info, true));
-		NetworkRegistry.getC2SPayloads().forEach(info -> FabricPacketInfo.registerPacket(info, false));
+	public static void registerClientPackets() {
+		// Client receives S2C packets
+		NetworkRegistry.getS2CPayloads().forEach(FabricPacketInfo::registerS2CPayload);
+		// Client sends C2S packets (register payload type only)
+		NetworkRegistry.getC2SPayloads().forEach(FabricPacketInfo::registerC2SPayload);
+	}
+
+	public static void registerServerPackets() {
+		// Server receives C2S packets
+		NetworkRegistry.getC2SPayloads().forEach(FabricPacketInfo::registerC2SPayload);
+		// Server sends S2C packets (register payload type only)
+		NetworkRegistry.getS2CPayloads().forEach(FabricPacketInfo::registerS2CPayload);
 	}
 
 	public static void registerClientHandlers() {
+		// Only register handlers for packets the client receives (S2C)
 		NetworkRegistry.getS2CPayloads().stream()
 				.map(FabricPacketInfo::new)
 				.forEach(FabricPacketInfo::registerClientHandler);
 	}
 
 	public static void registerServerHandlers() {
+		// Only register handlers for packets the server receives (C2S)
 		NetworkRegistry.getC2SPayloads().stream()
 				.map(FabricPacketInfo::new)
 				.forEach(FabricPacketInfo::registerServerHandler);

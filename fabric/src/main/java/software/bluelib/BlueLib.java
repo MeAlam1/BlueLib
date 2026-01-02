@@ -1,10 +1,3 @@
-/*
- * Copyright (C) 2024 BlueLib Contributors
- *
- * This Source Code Form is subject to the terms of the MIT License.
- * If a copy of the MIT License was not distributed with this file,
- * You can obtain one at https://opensource.org/licenses/MIT.
- */
 package software.bluelib;
 
 import net.fabricmc.api.EnvType;
@@ -16,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import software.bluelib.event.FabricReloadHandler;
 import software.bluelib.example.event.VariantProvider;
 import software.bluelib.internal.registry.BlueEntityRegistry;
+import software.bluelib.net.BlueLibNetworkDiagnostics;
 import software.bluelib.net.FabricNetworkManager;
 
 public class BlueLib implements ModInitializer {
@@ -25,18 +19,18 @@ public class BlueLib implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		FabricEvents.register();
+
 		BlueLibCommon.doRegistration();
 
-		clientEndTick();
-		registration();
+		FabricNetworkManager.registerServerPackets();
+		FabricNetworkManager.registerServerHandlers();
+
+		BlueLibNetworkDiagnostics.registerServer();
+
+		BlueEntityRegistry.registerEntityAttributes(FabricDefaultAttributeRegistry::register);
 
 		FabricReloadHandler.registerProvider(new VariantProvider());
-	}
-
-	private void registration() {
-		BlueEntityRegistry.registerEntityAttributes(FabricDefaultAttributeRegistry::register);
-		FabricNetworkManager.registerMessages();
-		FabricNetworkManager.registerServerHandlers();
+		clientEndTick();
 	}
 
 	@NotNull
@@ -46,9 +40,7 @@ public class BlueLib implements ModInitializer {
 
 	private void clientEndTick() {
 		if (isClientEnvironment()) {
-			BlueLibCommon.doClientRegistration();
 			ClientTickEvents.END_CLIENT_TICK.register(client -> {
-				FabricNetworkManager.registerClientHandlers();
 				if (!hasInitialized) {
 					hasInitialized = true;
 					BlueLibCommon.init();

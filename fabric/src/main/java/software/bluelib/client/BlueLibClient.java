@@ -1,14 +1,8 @@
-/*
- * Copyright (C) 2024 BlueLib Contributors
- *
- * This Source Code Form is subject to the terms of the MIT License.
- * If a copy of the MIT License was not distributed with this file,
- * You can obtain one at https://opensource.org/licenses/MIT.
- */
 package software.bluelib.client;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
+
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -21,15 +15,26 @@ import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.profiling.ProfilerFiller;
 import org.jetbrains.annotations.NotNull;
+import software.bluelib.BlueLibCommon;
 import software.bluelib.BlueLibConstants;
 import software.bluelib.loader.cache.ResourceCache;
+import software.bluelib.net.BlueLibNetworkDiagnostics;
+import software.bluelib.net.FabricNetworkManager;
 
 @Environment(EnvType.CLIENT)
 public class BlueLibClient implements ClientModInitializer {
 
 	@Override
 	public void onInitializeClient() {
+		BlueLibCommon.doClientRegistration();
+
+		FabricNetworkManager.registerClientPackets();
+		FabricNetworkManager.registerClientHandlers();
+
+		BlueLibNetworkDiagnostics.registerClient();
+
 		BlueLibCommonClient.registerRenderers(EntityRendererRegistry::register, BlockEntityRenderers::register);
+
 		ResourceManagerHelper.get(PackType.CLIENT_RESOURCES)
 				.registerReloadListener(new IdentifiableResourceReloadListener() {
 

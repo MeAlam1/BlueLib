@@ -1,41 +1,49 @@
-/*
- * Copyright (C) 2024 BlueLib Contributors
- *
- * This Source Code Form is subject to the terms of the MIT License.
- * If a copy of the MIT License was not distributed with this file,
- * You can obtain one at https://opensource.org/licenses/MIT.
- */
 package software.bluelib.net;
 
-import java.util.HashSet;
-import java.util.Set;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.client.Minecraft;
-import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.net.ClientNetworkPacketHandler;
 import software.bluelib.api.net.NetworkPacket;
 import software.bluelib.api.net.ServerNetworkPacketHandler;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public record FabricPacketInfo<T extends NetworkPacket<T>>(@NotNull PacketRegisterInfo<T> info) {
 
 	@NotNull
-	private static final Set<ResourceLocation> REGISTERED_CLIENT_PAYLOADS = new HashSet<>();
+	private static final Set<ResourceLocation> REGISTERED_S2C_PAYLOAD_TYPES = new HashSet<>();
 	@NotNull
-	private static final Set<ResourceLocation> REGISTERED_SERVER_PAYLOADS = new HashSet<>();
+	private static final Set<ResourceLocation> REGISTERED_C2S_PAYLOAD_TYPES = new HashSet<>();
 
-	public static <T extends NetworkPacket<T>> void registerPacket(@NotNull PacketRegisterInfo<T> pInfo, @NotNull Boolean pClient) {
-		PayloadTypeRegistry<RegistryFriendlyByteBuf> registry = pClient ? PayloadTypeRegistry.playS2C() : PayloadTypeRegistry.playC2S();
-		registry.register(pInfo.getPayloadId(), pInfo.getCodec());
+	@NotNull
+	private static final Set<ResourceLocation> REGISTERED_CLIENT_RECEIVERS = new HashSet<>();
+	@NotNull
+	private static final Set<ResourceLocation> REGISTERED_SERVER_RECEIVERS = new HashSet<>();
+
+	/**
+	 * Registers an S2C payload type (server sends, client receives).
+	 */
+	public static <T extends NetworkPacket<T>> void registerS2CPayload(@NotNull PacketRegisterInfo<T> pInfo) {
+		if (!REGISTERED_S2C_PAYLOAD_TYPES.add(pInfo.getId())) return;
+		PayloadTypeRegistry.playS2C().register(pInfo.getPayloadId(), pInfo.getCodec());
+	}
+
+	/**
+	 * Registers a C2S payload type (client sends, server receives).
+	 */
+	public static <T extends NetworkPacket<T>> void registerC2SPayload(@NotNull PacketRegisterInfo<T> pInfo) {
+		if (!REGISTERED_C2S_PAYLOAD_TYPES.add(pInfo.getId())) return;
+		PayloadTypeRegistry.playC2S().register(pInfo.getPayloadId(), pInfo.getCodec());
 	}
 
 	public void registerClientHandler() {
-		if (!REGISTERED_CLIENT_PAYLOADS.add(info.getId())) {
-			return;
-		}
+		if (!REGISTERED_CLIENT_RECEIVERS.add(info.getId())) return;
+
 		ClientPlayNetworking.registerGlobalReceiver(info.getPayloadId(), (obj, ignored) -> {
 			ClientNetworkPacketHandler<T> handler = (ClientNetworkPacketHandler<T>) info.getHandler();
 			handler.handle(obj, Minecraft.getInstance());
@@ -43,9 +51,8 @@ public record FabricPacketInfo<T extends NetworkPacket<T>>(@NotNull PacketRegist
 	}
 
 	public void registerServerHandler() {
-		if (!REGISTERED_SERVER_PAYLOADS.add(info.getId())) {
-			return;
-		}
+		if (!REGISTERED_SERVER_RECEIVERS.add(info.getId())) return;
+
 		ServerPlayNetworking.registerGlobalReceiver(info.getPayloadId(), (obj, context) -> {
 			ServerNetworkPacketHandler<T> handler = (ServerNetworkPacketHandler<T>) info.getHandler();
 			handler.handle(obj, context.player().server, context.player());

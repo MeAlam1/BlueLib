@@ -32,11 +32,11 @@ public class OpenLoggerScreenCommand {
 			return 0;
 		}
 		NetworkRegistry.sendPacketToPlayer(player, new OpenLoggerPacket());
-		if (player.hasPermissions(3)) {
+		/*if (player.hasPermissions(3)) {
 			NetworkRegistry.sendPacketToPlayer(player, new OpenLoggerPacket());
 		} else {
 			pContext.getSource().sendFailure(BlueTranslation.translate("command.logger.no_permission"));
-		}
+		}*/
 		return 1;
 	}
 }

@@ -8,6 +8,8 @@
 package software.bluelib.net;
 
 import java.util.function.Function;
+import java.util.function.Supplier;
+
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -18,7 +20,7 @@ import software.bluelib.api.net.Encodable;
 import software.bluelib.api.net.NetworkPacket;
 import software.bluelib.api.net.PacketHandler;
 
-@SuppressWarnings({ "unused" })
+@SuppressWarnings({"unused"})
 public class PacketRegisterInfo<T extends NetworkPacket<T> & Encodable> {
 
 	@NotNull
@@ -26,7 +28,7 @@ public class PacketRegisterInfo<T extends NetworkPacket<T> & Encodable> {
 	@NotNull
 	private final Function<RegistryFriendlyByteBuf, T> decoder;
 	@NotNull
-	private final PacketHandler<T> handler;
+	private final Supplier<PacketHandler<T>> handlerSupplier;
 	@NotNull
 	private final CustomPacketPayload.Type<T> payloadId;
 	@NotNull
@@ -35,11 +37,11 @@ public class PacketRegisterInfo<T extends NetworkPacket<T> & Encodable> {
 	public PacketRegisterInfo(
 			@NotNull ResourceLocation pId,
 			@NotNull Function<RegistryFriendlyByteBuf, T> pDecoder,
-			@NotNull PacketHandler<T> pHandler,
+			@NotNull Supplier<PacketHandler<T>> pHandlerSupplier,
 			@Nullable StreamCodec<RegistryFriendlyByteBuf, T> pCodec) {
 		this.id = pId;
 		this.decoder = pDecoder;
-		this.handler = pHandler;
+		this.handlerSupplier = pHandlerSupplier;
 		this.payloadId = new CustomPacketPayload.Type<>(pId);
 		this.codec = pCodec != null ? pCodec : createDefaultCodec(pDecoder);
 	}
@@ -47,12 +49,8 @@ public class PacketRegisterInfo<T extends NetworkPacket<T> & Encodable> {
 	public PacketRegisterInfo(
 			@NotNull ResourceLocation pId,
 			@NotNull Function<RegistryFriendlyByteBuf, T> pDecoder,
-			@NotNull PacketHandler<T> pHandler) {
-		this.id = pId;
-		this.decoder = pDecoder;
-		this.handler = pHandler;
-		this.payloadId = new CustomPacketPayload.Type<>(pId);
-		this.codec = createDefaultCodec(pDecoder);
+			@NotNull Supplier<PacketHandler<T>> pHandlerSupplier) {
+		this(pId, pDecoder, pHandlerSupplier, null);
 	}
 
 	@NotNull
@@ -74,7 +72,7 @@ public class PacketRegisterInfo<T extends NetworkPacket<T> & Encodable> {
 
 	@NotNull
 	public PacketHandler<T> getHandler() {
-		return handler;
+		return handlerSupplier.get();
 	}
 
 	@NotNull
