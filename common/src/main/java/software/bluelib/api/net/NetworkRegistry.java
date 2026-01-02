@@ -93,10 +93,10 @@ public class NetworkRegistry {
 	}
 
 	@NotNull
-	private static List<PacketRegisterInfo<?>> generate(@NotNull PacketSide side) {
+	private static List<PacketRegisterInfo<?>> generate(@NotNull PacketSide pSide) {
 		List<PacketRegisterInfo<?>> list = new ArrayList<>();
 		for (PacketProvider p : providers) {
-			list.addAll(side == PacketSide.C2S ? p.getC2SPackets() : p.getS2CPackets());
+			list.addAll(pSide == PacketSide.C2S ? p.getC2SPackets() : p.getS2CPackets());
 		}
 		return list;
 	}

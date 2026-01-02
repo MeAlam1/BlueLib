@@ -44,41 +44,9 @@ public record FabricPacketInfo<T extends NetworkPacket<T> & Encodable>(@NotNull 
 		PayloadTypeRegistry.playC2S().register(pInfo.getPayloadId(), pInfo.getCodec());
 	}
 
-	@SuppressWarnings("unchecked")
-	public static <T extends NetworkPacket<T> & Encodable> void registerClientHandler(
-			@NotNull List<PacketRegisterInfo<?>> infos,
-			@NotNull ResourceLocation id,
-			@NotNull Supplier<ClientNetworkPacketHandler<T>> handlerSupplier) {
-		PacketRegisterInfo<T> info = (PacketRegisterInfo<T>) infos.stream()
-				.filter(i -> i.getId().equals(id))
-				.findFirst()
-				.orElseThrow();
-
-		ClientPlayNetworking.registerGlobalReceiver(info.getPayloadId(), (obj, ignored) -> {
-			@NotNull
-			Minecraft mc = Minecraft.getInstance();
-			handlerSupplier.get().handle(obj, mc);
-		});
-	}
-
-	@SuppressWarnings("unchecked")
-	public static <T extends NetworkPacket<T> & Encodable> void registerServerHandler(
-			@NotNull List<PacketRegisterInfo<?>> infos,
-			@NotNull ResourceLocation id,
-			@NotNull Supplier<ServerNetworkPacketHandler<T>> handlerSupplier) {
-		PacketRegisterInfo<T> info = (PacketRegisterInfo<T>) infos.stream()
-				.filter(i -> i.getId().equals(id))
-				.findFirst()
-				.orElseThrow();
-
-		ServerPlayNetworking.registerGlobalReceiver(info.getPayloadId(), (obj, context) -> {
-			handlerSupplier.get().handle(obj, context.player().server, context.player());
-		});
-	}
-
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public static void registerClientHandlers(@NotNull List<PacketRegisterInfo<?>> infos) {
-		for (PacketRegisterInfo<?> rawInfo : infos) {
+	public static void registerClientHandlers(@NotNull List<PacketRegisterInfo<?>> pInfos) {
+		for (PacketRegisterInfo<?> rawInfo : pInfos) {
 			PacketHandler<?> handler = rawInfo.getHandler();
 			if (!(handler instanceof ClientNetworkPacketHandler<?>)) continue;
 			if (!REGISTERED_S2C_HANDLERS.add(rawInfo.getId())) continue;
@@ -94,8 +62,8 @@ public record FabricPacketInfo<T extends NetworkPacket<T> & Encodable>(@NotNull 
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public static void registerServerHandlers(@NotNull List<PacketRegisterInfo<?>> infos) {
-		for (PacketRegisterInfo<?> rawInfo : infos) {
+	public static void registerServerHandlers(@NotNull List<PacketRegisterInfo<?>> pInfos) {
+		for (PacketRegisterInfo<?> rawInfo : pInfos) {
 			PacketHandler<?> handler = rawInfo.getHandler();
 			if (!(handler instanceof ServerNetworkPacketHandler<?>)) continue;
 			if (!REGISTERED_C2S_HANDLERS.add(rawInfo.getId())) continue;
