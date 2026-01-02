@@ -27,7 +27,7 @@ public class FabricNetworkManager implements NetworkManager {
 			FabricPacketInfo.registerS2CPayload(p);
 		});
 
-		FabricHandlerRegistrar.registerClientHandlers();
+		FabricPacketInfo.registerClientHandlers(NetworkRegistry.getS2CPayloads());
 	}
 
 	public static void registerServerPackets() {
@@ -36,7 +36,7 @@ public class FabricNetworkManager implements NetworkManager {
 			FabricPacketInfo.registerS2CPayload(p);
 		});
 
-		FabricHandlerRegistrar.registerServerHandlers();
+		FabricPacketInfo.registerServerHandlers(NetworkRegistry.getC2SPayloads());
 	}
 
 	@Override

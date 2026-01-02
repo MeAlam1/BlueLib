@@ -9,7 +9,6 @@ package software.bluelib.net;
 
 import java.util.function.Function;
 import java.util.function.Supplier;
-
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -20,7 +19,7 @@ import software.bluelib.api.net.Encodable;
 import software.bluelib.api.net.NetworkPacket;
 import software.bluelib.api.net.PacketHandler;
 
-@SuppressWarnings({"unused"})
+@SuppressWarnings({ "unused" })
 public class PacketRegisterInfo<T extends NetworkPacket<T> & Encodable> {
 
 	@NotNull

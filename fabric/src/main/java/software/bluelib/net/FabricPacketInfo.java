@@ -11,7 +11,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Supplier;
-
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
@@ -19,28 +18,34 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.net.ClientNetworkPacketHandler;
+import software.bluelib.api.net.Encodable;
 import software.bluelib.api.net.NetworkPacket;
+import software.bluelib.api.net.PacketHandler;
 import software.bluelib.api.net.ServerNetworkPacketHandler;
 
-public record FabricPacketInfo<T extends NetworkPacket<T>>(@NotNull PacketRegisterInfo<T> info) {
+public record FabricPacketInfo<T extends NetworkPacket<T> & Encodable>(@NotNull PacketRegisterInfo<T> info) {
 
 	@NotNull
 	private static final Set<ResourceLocation> REGISTERED_S2C_PAYLOAD_TYPES = new HashSet<>();
 	@NotNull
 	private static final Set<ResourceLocation> REGISTERED_C2S_PAYLOAD_TYPES = new HashSet<>();
+	@NotNull
+	private static final Set<ResourceLocation> REGISTERED_S2C_HANDLERS = new HashSet<>();
+	@NotNull
+	private static final Set<ResourceLocation> REGISTERED_C2S_HANDLERS = new HashSet<>();
 
-	public static <T extends NetworkPacket<T>> void registerS2CPayload(@NotNull PacketRegisterInfo<T> pInfo) {
+	public static <T extends NetworkPacket<T> & Encodable> void registerS2CPayload(@NotNull PacketRegisterInfo<T> pInfo) {
 		if (!REGISTERED_S2C_PAYLOAD_TYPES.add(pInfo.getId())) return;
 		PayloadTypeRegistry.playS2C().register(pInfo.getPayloadId(), pInfo.getCodec());
 	}
 
-	public static <T extends NetworkPacket<T>> void registerC2SPayload(@NotNull PacketRegisterInfo<T> pInfo) {
+	public static <T extends NetworkPacket<T> & Encodable> void registerC2SPayload(@NotNull PacketRegisterInfo<T> pInfo) {
 		if (!REGISTERED_C2S_PAYLOAD_TYPES.add(pInfo.getId())) return;
 		PayloadTypeRegistry.playC2S().register(pInfo.getPayloadId(), pInfo.getCodec());
 	}
 
 	@SuppressWarnings("unchecked")
-	public static <T extends NetworkPacket<T>> void registerClientHandler(
+	public static <T extends NetworkPacket<T> & Encodable> void registerClientHandler(
 			@NotNull List<PacketRegisterInfo<?>> infos,
 			@NotNull ResourceLocation id,
 			@NotNull Supplier<ClientNetworkPacketHandler<T>> handlerSupplier) {
@@ -50,12 +55,14 @@ public record FabricPacketInfo<T extends NetworkPacket<T>>(@NotNull PacketRegist
 				.orElseThrow();
 
 		ClientPlayNetworking.registerGlobalReceiver(info.getPayloadId(), (obj, ignored) -> {
-			handlerSupplier.get().handle(obj, Minecraft.getInstance());
+			@NotNull
+			Minecraft mc = Minecraft.getInstance();
+			handlerSupplier.get().handle(obj, mc);
 		});
 	}
 
 	@SuppressWarnings("unchecked")
-	public static <T extends NetworkPacket<T>> void registerServerHandler(
+	public static <T extends NetworkPacket<T> & Encodable> void registerServerHandler(
 			@NotNull List<PacketRegisterInfo<?>> infos,
 			@NotNull ResourceLocation id,
 			@NotNull Supplier<ServerNetworkPacketHandler<T>> handlerSupplier) {
@@ -67,5 +74,37 @@ public record FabricPacketInfo<T extends NetworkPacket<T>>(@NotNull PacketRegist
 		ServerPlayNetworking.registerGlobalReceiver(info.getPayloadId(), (obj, context) -> {
 			handlerSupplier.get().handle(obj, context.player().server, context.player());
 		});
+	}
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public static void registerClientHandlers(@NotNull List<PacketRegisterInfo<?>> infos) {
+		for (PacketRegisterInfo<?> rawInfo : infos) {
+			PacketHandler<?> handler = rawInfo.getHandler();
+			if (!(handler instanceof ClientNetworkPacketHandler<?>)) continue;
+			if (!REGISTERED_S2C_HANDLERS.add(rawInfo.getId())) continue;
+
+			ClientNetworkPacketHandler clientHandler = (ClientNetworkPacketHandler) handler;
+
+			ClientPlayNetworking.registerGlobalReceiver(((PacketRegisterInfo) rawInfo).getPayloadId(), (obj, ignored) -> {
+				@NotNull
+				Minecraft mc = Minecraft.getInstance();
+				clientHandler.handle((NetworkPacket) obj, mc);
+			});
+		}
+	}
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public static void registerServerHandlers(@NotNull List<PacketRegisterInfo<?>> infos) {
+		for (PacketRegisterInfo<?> rawInfo : infos) {
+			PacketHandler<?> handler = rawInfo.getHandler();
+			if (!(handler instanceof ServerNetworkPacketHandler<?>)) continue;
+			if (!REGISTERED_C2S_HANDLERS.add(rawInfo.getId())) continue;
+
+			ServerNetworkPacketHandler serverHandler = (ServerNetworkPacketHandler) handler;
+
+			ServerPlayNetworking.registerGlobalReceiver(((PacketRegisterInfo) rawInfo).getPayloadId(), (obj, context) -> {
+				serverHandler.handle((NetworkPacket) obj, context.player().server, context.player());
+			});
+		}
 	}
 }
