@@ -62,21 +62,53 @@ public class NetworkRegistry {
 	@NotNull
 	private static final List<PacketProvider.S2CPacketProvider> s2cProviders = new ArrayList<>();
 
+	@NotNull
+	private static final List<PacketTypeProvider> typeProviders = new ArrayList<>();
+
 	@Nullable
 	private static List<PacketRegisterInfo<?>> c2sPayloads = null;
 	@Nullable
 	private static List<PacketRegisterInfo<?>> s2cPayloads = null;
+	@Nullable
+	private static List<PacketRegisterInfo<?>> allPayloads = null;
+
+	public static void registerPacketTypes(@NotNull PacketTypeProvider pProvider) {
+		typeProviders.add(pProvider);
+		c2sPayloads = null;
+		s2cPayloads = null;
+		allPayloads = null;
+	}
 
 	@NotNull
 	public static List<PacketRegisterInfo<?>> getC2SPayloads() {
-		if (c2sPayloads == null) c2sPayloads = generateC2SPacketInfoList();
+		if (c2sPayloads == null) c2sPayloads = generate(PacketSide.C2S);
 		return c2sPayloads;
 	}
 
 	@NotNull
 	public static List<PacketRegisterInfo<?>> getS2CPayloads() {
-		if (s2cPayloads == null) s2cPayloads = generateS2CPacketInfoList();
+		if (s2cPayloads == null) s2cPayloads = generate(PacketSide.S2C);
 		return s2cPayloads;
+	}
+
+	@NotNull
+	public static List<PacketRegisterInfo<?>> getAllPayloads() {
+		if (allPayloads == null) {
+			List<PacketRegisterInfo<?>> out = new ArrayList<>();
+			out.addAll(getC2SPayloads());
+			out.addAll(getS2CPayloads());
+			allPayloads = out;
+		}
+		return allPayloads;
+	}
+
+	@NotNull
+	private static List<PacketRegisterInfo<?>> generate(@NotNull PacketSide side) {
+		List<PacketRegisterInfo<?>> list = new ArrayList<>();
+		for (PacketTypeProvider p : typeProviders) {
+			list.addAll(side == PacketSide.C2S ? p.getC2SPackets() : p.getS2CPackets());
+		}
+		return list;
 	}
 
 	@NotNull

@@ -19,6 +19,7 @@ import software.bluelib.BlueLibCommon;
 import software.bluelib.BlueLibConstants;
 import software.bluelib.loader.cache.ResourceCache;
 import software.bluelib.net.BlueLibNetworkDiagnostics;
+import software.bluelib.net.FabricHandlerRegistrar;
 import software.bluelib.net.FabricNetworkManager;
 
 @Environment(EnvType.CLIENT)
@@ -29,7 +30,7 @@ public class BlueLibClient implements ClientModInitializer {
 		BlueLibCommon.doClientRegistration();
 
 		FabricNetworkManager.registerClientPackets();
-		FabricNetworkManager.registerClientHandlers();
+		FabricHandlerRegistrar.registerClientHandlers();
 
 		BlueLibNetworkDiagnostics.registerClient();
 

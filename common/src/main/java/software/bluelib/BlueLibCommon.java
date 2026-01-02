@@ -48,8 +48,7 @@ public class BlueLibCommon {
 	public static void doRegistration() {
 		BlueLibConstants.init();
 		MixinBootstrap.init();
-		InternalNetworkRegistry.registerC2SNetwork();
-		InternalNetworkRegistry.registerS2CNetwork();
+		NetworkRegistry.registerPacketTypes(new software.bluelib.internal.registry.BluePacketTypes());
 		BlueEntityRegistry.init();
 		BlueRecipeTypeRegistry.init();
 		BlueRecipeSerializerRegistry.init();
@@ -58,8 +57,7 @@ public class BlueLibCommon {
 	}
 
 	public static void doClientRegistration() {
-		InternalNetworkRegistry.registerC2SNetwork();
-		InternalNetworkRegistry.registerS2CNetwork();
+		NetworkRegistry.registerPacketTypes(new software.bluelib.internal.registry.BluePacketTypes());
 	}
 
 	@NotNull

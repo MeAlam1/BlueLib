@@ -11,7 +11,9 @@ import software.bluelib.api.net.NetworkPacket;
 import software.bluelib.api.net.ServerNetworkPacketHandler;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.function.Supplier;
 
 public record FabricPacketInfo<T extends NetworkPacket<T>>(@NotNull PacketRegisterInfo<T> info) {
 
@@ -56,6 +58,39 @@ public record FabricPacketInfo<T extends NetworkPacket<T>>(@NotNull PacketRegist
 		ServerPlayNetworking.registerGlobalReceiver(info.getPayloadId(), (obj, context) -> {
 			ServerNetworkPacketHandler<T> handler = (ServerNetworkPacketHandler<T>) info.getHandler();
 			handler.handle(obj, context.player().server, context.player());
+		});
+	}
+
+
+	@SuppressWarnings("unchecked")
+	public static <T extends NetworkPacket<T>> void registerClientHandler(
+			@NotNull List<PacketRegisterInfo<?>> infos,
+			@NotNull ResourceLocation id,
+			@NotNull Supplier<ClientNetworkPacketHandler<T>> handlerSupplier) {
+
+		PacketRegisterInfo<T> info = (PacketRegisterInfo<T>) infos.stream()
+				.filter(i -> i.getId().equals(id))
+				.findFirst()
+				.orElseThrow();
+
+		ClientPlayNetworking.registerGlobalReceiver(info.getPayloadId(), (obj, ignored) -> {
+			handlerSupplier.get().handle(obj, Minecraft.getInstance());
+		});
+	}
+
+	@SuppressWarnings("unchecked")
+	public static <T extends NetworkPacket<T>> void registerServerHandler(
+			@NotNull List<PacketRegisterInfo<?>> infos,
+			@NotNull ResourceLocation id,
+			@NotNull Supplier<ServerNetworkPacketHandler<T>> handlerSupplier) {
+
+		PacketRegisterInfo<T> info = (PacketRegisterInfo<T>) infos.stream()
+				.filter(i -> i.getId().equals(id))
+				.findFirst()
+				.orElseThrow();
+
+		ServerPlayNetworking.registerGlobalReceiver(info.getPayloadId(), (obj, context) -> {
+			handlerSupplier.get().handle(obj, context.player().server, context.player());
 		});
 	}
 }
