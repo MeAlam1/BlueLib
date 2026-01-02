@@ -8,15 +8,10 @@
 package software.bluelib.loader.cache.controller;
 
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.DataResult;
-import com.mojang.serialization.Dynamic;
-
 import java.util.List;
 import java.util.Map;
-
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtOps;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.utils.codec.NbtCodecUtils;
@@ -30,12 +25,10 @@ public record BehaviourCache(
 		@NotNull Map<String, StateCache> states) {
 
 	@NotNull
-	public static final Codec<BehaviourCache> CODEC =
-			NbtCodecUtils.fromNbt(BehaviourCache::readFromNBT, BehaviourCache::writeToNBT);
+	public static final Codec<BehaviourCache> CODEC = NbtCodecUtils.fromNbt(BehaviourCache::readFromNBT, BehaviourCache::writeToNBT);
 
 	@NotNull
-	public static final DataComponentType<BehaviourCache> BEHAVIOUR_CACHE_DATA =
-			NbtCodecUtils.persistentDataType(CODEC);
+	public static final DataComponentType<BehaviourCache> BEHAVIOUR_CACHE_DATA = NbtCodecUtils.persistentDataType(CODEC);
 
 	public void writeToNBT(@NotNull CompoundTag pTag) {
 		CompoundTagUtils.writeList(

@@ -1,6 +1,12 @@
+/*
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
+ */
 package software.bluelib.net;
 
-import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.net.NetworkRegistry;
 import software.bluelib.client.net.OpenLoggerPacketHandler;
 import software.bluelib.client.net.loader.BlockEntityAnimTriggerPacketHandler;
@@ -27,8 +33,7 @@ import software.bluelib.net.serverHandling.TestPacketHandler;
 
 public final class FabricHandlerRegistrar {
 
-	private FabricHandlerRegistrar() {
-	}
+	private FabricHandlerRegistrar() {}
 
 	public static void registerClientHandlers() {
 		// S2C handlers only

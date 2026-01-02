@@ -8,7 +8,6 @@
 package software.bluelib.api.net;
 
 import java.util.function.Predicate;
-
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -16,12 +15,8 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
-import software.bluelib.BlueLibConstants;
-import software.bluelib.api.utils.logging.BaseLogLevel;
-import software.bluelib.api.utils.logging.BaseLogger;
-import software.bluelib.internal.BlueTranslation;
 
-@SuppressWarnings({"unused"})
+@SuppressWarnings({ "unused" })
 public interface NetworkPacket<T extends NetworkPacket<T>> extends CustomPacketPayload, Encodable {
 
 	@NotNull

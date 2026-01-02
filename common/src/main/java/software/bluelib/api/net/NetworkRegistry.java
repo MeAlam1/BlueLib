@@ -9,8 +9,6 @@ package software.bluelib.api.net;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
@@ -19,12 +17,9 @@ import net.minecraft.world.entity.Entity;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.BlueLibConstants;
-import software.bluelib.api.utils.logging.BaseLogLevel;
-import software.bluelib.api.utils.logging.BaseLogger;
-import software.bluelib.internal.BlueTranslation;
 import software.bluelib.net.PacketRegisterInfo;
 
-@SuppressWarnings({"unused"})
+@SuppressWarnings({ "unused" })
 public class NetworkRegistry {
 
 	public static void sendPacket(@NotNull ServerPlayer pPlayer, @NotNull NetworkPacket<?> pPacket) {
@@ -58,84 +53,51 @@ public class NetworkRegistry {
 	}
 
 	@NotNull
-	private static final List<PacketProvider.C2SPacketProvider> c2sProviders = new ArrayList<>();
-	@NotNull
-	private static final List<PacketProvider.S2CPacketProvider> s2cProviders = new ArrayList<>();
-
-	@NotNull
-	private static final List<PacketTypeProvider> typeProviders = new ArrayList<>();
+	private static final List<PacketProvider> providers = new ArrayList<>();
 
 	@Nullable
-	private static List<PacketRegisterInfo<?>> c2sPayloads = null;
+	private static List<PacketRegisterInfo<?>> c2s = null;
 	@Nullable
-	private static List<PacketRegisterInfo<?>> s2cPayloads = null;
+	private static List<PacketRegisterInfo<?>> s2c = null;
 	@Nullable
-	private static List<PacketRegisterInfo<?>> allPayloads = null;
+	private static List<PacketRegisterInfo<?>> all = null;
 
-	public static void registerPacketTypes(@NotNull PacketTypeProvider pProvider) {
-		typeProviders.add(pProvider);
-		c2sPayloads = null;
-		s2cPayloads = null;
-		allPayloads = null;
+	public static void registerPacketProvider(@NotNull PacketProvider pProvider) {
+		providers.add(pProvider);
+		c2s = null;
+		s2c = null;
+		all = null;
 	}
 
 	@NotNull
 	public static List<PacketRegisterInfo<?>> getC2SPayloads() {
-		if (c2sPayloads == null) c2sPayloads = generate(PacketSide.C2S);
-		return c2sPayloads;
+		if (c2s == null) c2s = generate(PacketSide.C2S);
+		return c2s;
 	}
 
 	@NotNull
 	public static List<PacketRegisterInfo<?>> getS2CPayloads() {
-		if (s2cPayloads == null) s2cPayloads = generate(PacketSide.S2C);
-		return s2cPayloads;
+		if (s2c == null) s2c = generate(PacketSide.S2C);
+		return s2c;
 	}
 
 	@NotNull
 	public static List<PacketRegisterInfo<?>> getAllPayloads() {
-		if (allPayloads == null) {
+		if (all == null) {
 			List<PacketRegisterInfo<?>> out = new ArrayList<>();
 			out.addAll(getC2SPayloads());
 			out.addAll(getS2CPayloads());
-			allPayloads = out;
+			all = out;
 		}
-		return allPayloads;
+		return all;
 	}
 
 	@NotNull
 	private static List<PacketRegisterInfo<?>> generate(@NotNull PacketSide side) {
 		List<PacketRegisterInfo<?>> list = new ArrayList<>();
-		for (PacketTypeProvider p : typeProviders) {
+		for (PacketProvider p : providers) {
 			list.addAll(side == PacketSide.C2S ? p.getC2SPackets() : p.getS2CPackets());
 		}
 		return list;
-	}
-
-	@NotNull
-	private static List<PacketRegisterInfo<?>> generateS2CPacketInfoList() {
-		List<PacketRegisterInfo<?>> list = new ArrayList<>();
-		for (PacketProvider.S2CPacketProvider provider : s2cProviders) {
-			list.addAll(provider.getS2CPacketInfoList());
-		}
-		return list;
-	}
-
-	@NotNull
-	private static List<PacketRegisterInfo<?>> generateC2SPacketInfoList() {
-		List<PacketRegisterInfo<?>> list = new ArrayList<>();
-		for (PacketProvider.C2SPacketProvider provider : c2sProviders) {
-			list.addAll(provider.getC2SPacketInfoList());
-		}
-		return list;
-	}
-
-	public static void registerC2SPacketProvider(@NotNull PacketProvider.C2SPacketProvider pProvider) {
-		c2sProviders.add(pProvider);
-		c2sPayloads = null;
-	}
-
-	public static void registerS2CPacketProvider(@NotNull PacketProvider.S2CPacketProvider pProvider) {
-		s2cProviders.add(pProvider);
-		s2cPayloads = null;
 	}
 }

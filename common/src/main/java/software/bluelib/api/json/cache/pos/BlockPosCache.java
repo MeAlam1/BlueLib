@@ -8,11 +8,8 @@
 package software.bluelib.api.json.cache.pos;
 
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.DataResult;
-import com.mojang.serialization.Dynamic;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtOps;
 import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.json.deserializer.pos.BlockPos;
 import software.bluelib.api.utils.codec.NbtCodecUtils;
@@ -23,12 +20,10 @@ public record BlockPosCache(
 		@NotNull Integer z) {
 
 	@NotNull
-	public static final Codec<BlockPosCache> CODEC =
-			NbtCodecUtils.fromNbt(BlockPosCache::readFromNBT, BlockPosCache::writeToNBT);
+	public static final Codec<BlockPosCache> CODEC = NbtCodecUtils.fromNbt(BlockPosCache::readFromNBT, BlockPosCache::writeToNBT);
 
 	@NotNull
-	public static final DataComponentType<BlockPosCache> BLOCK_POS_DATA =
-			NbtCodecUtils.persistentDataType(CODEC);
+	public static final DataComponentType<BlockPosCache> BLOCK_POS_DATA = NbtCodecUtils.persistentDataType(CODEC);
 
 	public void writeToNBT(@NotNull CompoundTag pTag) {
 		pTag.putInt("x", x);

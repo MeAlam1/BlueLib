@@ -1,8 +1,14 @@
+/*
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
+ */
 package software.bluelib.client;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
-
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -19,7 +25,6 @@ import software.bluelib.BlueLibCommon;
 import software.bluelib.BlueLibConstants;
 import software.bluelib.loader.cache.ResourceCache;
 import software.bluelib.net.BlueLibNetworkDiagnostics;
-import software.bluelib.net.FabricHandlerRegistrar;
 import software.bluelib.net.FabricNetworkManager;
 
 @Environment(EnvType.CLIENT)
@@ -30,7 +35,6 @@ public class BlueLibClient implements ClientModInitializer {
 		BlueLibCommon.doClientRegistration();
 
 		FabricNetworkManager.registerClientPackets();
-		FabricHandlerRegistrar.registerClientHandlers();
 
 		BlueLibNetworkDiagnostics.registerClient();
 

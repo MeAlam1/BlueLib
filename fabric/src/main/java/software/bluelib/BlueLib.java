@@ -1,3 +1,10 @@
+/*
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
+ */
 package software.bluelib;
 
 import net.fabricmc.api.EnvType;
@@ -10,7 +17,6 @@ import software.bluelib.event.FabricReloadHandler;
 import software.bluelib.example.event.VariantProvider;
 import software.bluelib.internal.registry.BlueEntityRegistry;
 import software.bluelib.net.BlueLibNetworkDiagnostics;
-import software.bluelib.net.FabricHandlerRegistrar;
 import software.bluelib.net.FabricNetworkManager;
 
 public class BlueLib implements ModInitializer {
@@ -24,7 +30,6 @@ public class BlueLib implements ModInitializer {
 		BlueLibCommon.doRegistration();
 
 		FabricNetworkManager.registerServerPackets();
-		FabricHandlerRegistrar.registerServerHandlers();
 
 		BlueLibNetworkDiagnostics.registerServer();
 

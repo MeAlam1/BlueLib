@@ -1,5 +1,16 @@
+/*
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
+ */
 package software.bluelib.net;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.function.Supplier;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
@@ -9,11 +20,6 @@ import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.net.ClientNetworkPacketHandler;
 import software.bluelib.api.net.NetworkPacket;
 import software.bluelib.api.net.ServerNetworkPacketHandler;
-
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.function.Supplier;
 
 public record FabricPacketInfo<T extends NetworkPacket<T>>(@NotNull PacketRegisterInfo<T> info) {
 
@@ -61,13 +67,11 @@ public record FabricPacketInfo<T extends NetworkPacket<T>>(@NotNull PacketRegist
 		});
 	}
 
-
 	@SuppressWarnings("unchecked")
 	public static <T extends NetworkPacket<T>> void registerClientHandler(
 			@NotNull List<PacketRegisterInfo<?>> infos,
 			@NotNull ResourceLocation id,
 			@NotNull Supplier<ClientNetworkPacketHandler<T>> handlerSupplier) {
-
 		PacketRegisterInfo<T> info = (PacketRegisterInfo<T>) infos.stream()
 				.filter(i -> i.getId().equals(id))
 				.findFirst()
@@ -83,7 +87,6 @@ public record FabricPacketInfo<T extends NetworkPacket<T>>(@NotNull PacketRegist
 			@NotNull List<PacketRegisterInfo<?>> infos,
 			@NotNull ResourceLocation id,
 			@NotNull Supplier<ServerNetworkPacketHandler<T>> handlerSupplier) {
-
 		PacketRegisterInfo<T> info = (PacketRegisterInfo<T>) infos.stream()
 				.filter(i -> i.getId().equals(id))
 				.findFirst()

@@ -8,14 +8,9 @@
 package software.bluelib.api.json.cache.range;
 
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.DataResult;
-import com.mojang.serialization.Dynamic;
-
 import java.util.concurrent.ThreadLocalRandom;
-
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtOps;
 import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.json.deserializer.range.IntRange;
 import software.bluelib.api.utils.codec.NbtCodecUtils;
@@ -25,12 +20,10 @@ public record IntRangeCache(
 		@NotNull Integer max) {
 
 	@NotNull
-	public static final Codec<IntRangeCache> CODEC =
-			NbtCodecUtils.fromNbt(IntRangeCache::readFromNBT, IntRangeCache::writeToNBT);
+	public static final Codec<IntRangeCache> CODEC = NbtCodecUtils.fromNbt(IntRangeCache::readFromNBT, IntRangeCache::writeToNBT);
 
 	@NotNull
-	public static final DataComponentType<IntRangeCache> INT_RANGE_DATA =
-			NbtCodecUtils.persistentDataType(CODEC);
+	public static final DataComponentType<IntRangeCache> INT_RANGE_DATA = NbtCodecUtils.persistentDataType(CODEC);
 
 	public void writeToNBT(@NotNull CompoundTag pTag) {
 		pTag.putInt("Min", min);

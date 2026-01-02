@@ -1,22 +1,27 @@
+/*
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
+ */
 package software.bluelib.net;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.network.ServerPlayerConnection;
 import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.net.NetworkRegistry;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
-import net.minecraft.network.chat.Component;
 
 public final class BlueLibNetworkDiagnostics {
 
-	private BlueLibNetworkDiagnostics() {
-	}
+	private BlueLibNetworkDiagnostics() {}
 
 	public static void registerServer() {
 		ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
