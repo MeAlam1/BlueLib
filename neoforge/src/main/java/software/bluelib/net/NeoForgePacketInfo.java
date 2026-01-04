@@ -7,8 +7,6 @@
  */
 package software.bluelib.net;
 
-import java.util.HashSet;
-import java.util.Set;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -20,6 +18,9 @@ import org.slf4j.LoggerFactory;
 import software.bluelib.api.net.ClientNetworkPacketHandler;
 import software.bluelib.api.net.NetworkPacket;
 import software.bluelib.api.net.ServerNetworkPacketHandler;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public record NeoForgePacketInfo<T extends NetworkPacket<T>>(@NotNull PacketRegisterInfo<T> info) {
 
@@ -35,16 +36,6 @@ public record NeoForgePacketInfo<T extends NetworkPacket<T>>(@NotNull PacketRegi
 	private static final Set<ResourceLocation> REGISTERED_SERVER_TYPES = new HashSet<>();
 
 	public void registerToClient(@NotNull PayloadRegistrar pRegistrar) {
-		if (info == null) {
-			LOGGER.error("Skipping client handler registration: PacketRegisterInfo is null");
-			return;
-		}
-		if (info.getId() == null || info.getPayloadId() == null || info.getCodec() == null) {
-			LOGGER.error("Skipping client handler registration due to null metadata: id={} payloadId={} codec={}",
-					info.getId(), info.getPayloadId(), info.getCodec());
-			return;
-		}
-
 		final Object rawHandler = info.getHandler();
 		if (!(rawHandler instanceof ClientNetworkPacketHandler<?>)) {
 			LOGGER.warn("Ignoring client handler {} because handler is {} (expected ClientNetworkPacketHandler). Handler value={}",
@@ -59,8 +50,7 @@ public record NeoForgePacketInfo<T extends NetworkPacket<T>>(@NotNull PacketRegi
 			return;
 		}
 
-		@SuppressWarnings("unchecked")
-		final ClientNetworkPacketHandler<T> clientHandler = (ClientNetworkPacketHandler<T>) rawHandler;
+		@SuppressWarnings("unchecked") final ClientNetworkPacketHandler<T> clientHandler = (ClientNetworkPacketHandler<T>) rawHandler;
 
 		IPayloadHandler<T> handler = (arg, unused) -> {
 			try {
@@ -76,16 +66,6 @@ public record NeoForgePacketInfo<T extends NetworkPacket<T>>(@NotNull PacketRegi
 	}
 
 	public void registerToServer(@NotNull PayloadRegistrar pRegistrar) {
-		if (info == null) {
-			LOGGER.error("Skipping server handler registration: PacketRegisterInfo is null");
-			return;
-		}
-		if (info.getId() == null || info.getPayloadId() == null || info.getCodec() == null) {
-			LOGGER.error("Skipping server handler registration due to null metadata: id={} payloadId={} codec={}",
-					info.getId(), info.getPayloadId(), info.getCodec());
-			return;
-		}
-
 		final Object rawHandler = info.getHandler();
 		if (!(rawHandler instanceof ServerNetworkPacketHandler<?>)) {
 			LOGGER.error("Skipping server handler {} because handler is {} (expected ServerNetworkPacketHandler). Handler value={}",
@@ -100,8 +80,7 @@ public record NeoForgePacketInfo<T extends NetworkPacket<T>>(@NotNull PacketRegi
 			return;
 		}
 
-		@SuppressWarnings("unchecked")
-		final ServerNetworkPacketHandler<T> serverHandler = (ServerNetworkPacketHandler<T>) rawHandler;
+		@SuppressWarnings("unchecked") final ServerNetworkPacketHandler<T> serverHandler = (ServerNetworkPacketHandler<T>) rawHandler;
 
 		IPayloadHandler<T> handler = (arg, ctx) -> {
 			try {
@@ -121,15 +100,6 @@ public record NeoForgePacketInfo<T extends NetworkPacket<T>>(@NotNull PacketRegi
 	 * These are S2C identifiers in the client view, so they must be CLIENTBOUND.
 	 */
 	public void registerTypeToClient(@NotNull PayloadRegistrar pRegistrar) {
-		if (info == null) {
-			LOGGER.error("Skipping client type registration: PacketRegisterInfo is null");
-			return;
-		}
-		if (info.getId() == null || info.getPayloadId() == null || info.getCodec() == null) {
-			LOGGER.error("Skipping client type registration due to null metadata: id={} payloadId={} codec={}",
-					info.getId(), info.getPayloadId(), info.getCodec());
-			return;
-		}
 
 		if (!REGISTERED_CLIENT_TYPES.add(info.getId())) {
 			LOGGER.warn("Client payload type already registered, skipping: {}", info.getId());
@@ -143,15 +113,6 @@ public record NeoForgePacketInfo<T extends NetworkPacket<T>>(@NotNull PacketRegi
 	}
 
 	public void registerTypeToServer(@NotNull PayloadRegistrar pRegistrar) {
-		if (info == null) {
-			LOGGER.error("Skipping server type registration: PacketRegisterInfo is null");
-			return;
-		}
-		if (info.getId() == null || info.getPayloadId() == null || info.getCodec() == null) {
-			LOGGER.error("Skipping server type registration due to null metadata: id={} payloadId={} codec={}",
-					info.getId(), info.getPayloadId(), info.getCodec());
-			return;
-		}
 
 		if (!REGISTERED_SERVER_TYPES.add(info.getId())) {
 			LOGGER.warn("Server payload type already registered, skipping: {}", info.getId());

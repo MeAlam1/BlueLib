@@ -2,8 +2,8 @@
 
 # TASK LIST:
 * Disable the Loggers in LoggerConfig 
-* TEST MULTIPLAYER PACKETS ON NEOFORGE
 * Fix the Permission Code in LoggerScreenCommand
+* NeoForge Rendering bug, GLOBAL SINGLEPLAYER AS WELL
 
 ## Changed
 
