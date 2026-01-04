@@ -1,13 +1,8 @@
-/*
- * Copyright (C) 2024 BlueLib Contributors
- *
- * This Source Code Form is subject to the terms of the MIT License.
- * If a copy of the MIT License was not distributed with this file,
- * You can obtain one at https://opensource.org/licenses/MIT.
- */
 package software.bluelib.client;
 
 import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.EventPriority;
+import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -19,12 +14,14 @@ import org.jetbrains.annotations.NotNull;
 import software.bluelib.BlueLibCommon;
 import software.bluelib.BlueLibConstants;
 import software.bluelib.loader.cache.ResourceCache;
+import software.bluelib.net.NeoForgeNetworkManager;
 
 @EventBusSubscriber(modid = BlueLibConstants.MOD_ID, value = Dist.CLIENT)
 public class BlueLibClient {
 
-	public static void init(@NotNull ModContainer pModContainer) {
+	public static void init(@NotNull IEventBus pModEventBus, @NotNull ModContainer pModContainer) {
 		pModContainer.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
+		pModEventBus.addListener(EventPriority.HIGHEST, NeoForgeNetworkManager::registerServerMessages);
 		BlueLibCommon.doClientRegistration();
 		ResourceCache.Client.registerReloadListener();
 	}

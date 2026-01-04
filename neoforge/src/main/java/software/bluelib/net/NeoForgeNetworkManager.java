@@ -1,5 +1,7 @@
 package software.bluelib.net;
 
+import java.util.Objects;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -7,13 +9,44 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.ChunkPos;
 import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
+import net.neoforged.neoforge.network.registration.HandlerThread;
 import org.jetbrains.annotations.NotNull;
+import software.bluelib.BlueLibConstants;
 import software.bluelib.api.net.NetworkManager;
 import software.bluelib.api.net.NetworkPacket;
-
-import java.util.Objects;
+import software.bluelib.api.net.NetworkRegistry;
+import software.bluelib.client.net.data.DataRegistrySyncPacketHandler;
 
 public class NeoForgeNetworkManager implements NetworkManager {
+
+	@NotNull
+	public static final String PROTOCOL_VERSION = "1.0.0";
+
+	public static void registerServerMessages(@NotNull RegisterPayloadHandlersEvent pEvent) {
+		var registrar = pEvent.registrar(BlueLibConstants.MOD_ID)
+				.versioned(PROTOCOL_VERSION);
+
+		NetworkRegistry.getC2SPayloads().stream()
+				.map(NeoForgePacketInfo::new)
+				.forEach(it -> it.registerToServer(registrar));
+	}
+
+	public static void registerClientMessages(@NotNull RegisterPayloadHandlersEvent pEvent) {
+		var optionalRegistrar = pEvent.registrar(BlueLibConstants.MOD_ID)
+				.versioned(PROTOCOL_VERSION);
+
+		var optionalNetRegistrar = pEvent.registrar(BlueLibConstants.MOD_ID)
+				.versioned(PROTOCOL_VERSION)
+				.executesOn(HandlerThread.NETWORK);
+
+		NetworkRegistry.getS2CPayloads().stream()
+				.map(NeoForgePacketInfo::new)
+				.forEach(it -> {
+					boolean handleAsync = it.info().getHandler() instanceof DataRegistrySyncPacketHandler<?, ?>;
+					it.registerToClient(handleAsync ? optionalNetRegistrar : optionalRegistrar);
+				});
+	}
 
 	@Override
 	public void sendPacketToPlayer(@NotNull ServerPlayer pPlayer, @NotNull NetworkPacket<?> pPacket) {
