@@ -16,7 +16,6 @@ import org.jetbrains.annotations.NotNull;
 import software.bluelib.event.FabricReloadHandler;
 import software.bluelib.example.event.VariantProvider;
 import software.bluelib.internal.registry.BlueEntityRegistry;
-import software.bluelib.net.BlueLibNetworkDiagnostics;
 import software.bluelib.net.FabricNetworkManager;
 
 public class BlueLib implements ModInitializer {
@@ -30,8 +29,6 @@ public class BlueLib implements ModInitializer {
 		BlueLibCommon.doRegistration();
 
 		FabricNetworkManager.registerServerPackets();
-
-		BlueLibNetworkDiagnostics.registerServer();
 
 		BlueEntityRegistry.registerEntityAttributes(FabricDefaultAttributeRegistry::register);
 

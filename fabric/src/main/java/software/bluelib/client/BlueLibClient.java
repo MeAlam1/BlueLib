@@ -24,7 +24,6 @@ import org.jetbrains.annotations.NotNull;
 import software.bluelib.BlueLibCommon;
 import software.bluelib.BlueLibConstants;
 import software.bluelib.loader.cache.ResourceCache;
-import software.bluelib.net.BlueLibNetworkDiagnostics;
 import software.bluelib.net.FabricNetworkManager;
 
 @Environment(EnvType.CLIENT)
@@ -35,8 +34,6 @@ public class BlueLibClient implements ClientModInitializer {
 		BlueLibCommon.doClientRegistration();
 
 		FabricNetworkManager.registerClientPackets();
-
-		BlueLibNetworkDiagnostics.registerClient();
 
 		BlueLibCommonClient.registerRenderers(EntityRendererRegistry::register, BlockEntityRenderers::register);
 
