@@ -7,12 +7,11 @@
  */
 package software.bluelib.loader.cache.animation.keyframe;
 
+import java.util.List;
+import java.util.Objects;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.molang.value.MoLangValue;
 import software.bluelib.loader.cache.animation.EasingCache;
-
-import java.util.List;
-import java.util.Objects;
 
 public record KeyframeCacheData(
 		@Nullable List<MoLangValue> arrayData,

@@ -11,7 +11,6 @@ import org.jetbrains.annotations.NotNull;
 import software.bluelib.loader.animatable.base.BlueAnimatable;
 import software.bluelib.loader.animation.AnimationController;
 import software.bluelib.loader.cache.animation.keyframe.SoundKeyframeCache;
-import software.bluelib.loader.geckolib.animations.SoundKeyframeData;
 
 public class SoundKeyframeEvent<T extends BlueAnimatable> extends KeyFrameEvent<T, SoundKeyframeCache> {
 

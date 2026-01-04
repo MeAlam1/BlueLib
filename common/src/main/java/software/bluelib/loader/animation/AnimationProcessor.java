@@ -27,7 +27,6 @@ import software.bluelib.loader.cache.animation.LoopTypeCache;
 import software.bluelib.loader.cache.model.BoneCache;
 import software.bluelib.loader.cache.model.ModelCache;
 import software.bluelib.loader.geckolib.animations.Easing;
-import software.bluelib.loader.geckolib.animations.LoopType;
 import software.bluelib.loader.geckolib.math.MathParser;
 import software.bluelib.loader.geckolib.math.MoLangQueries;
 import software.bluelib.loader.model.BlueModel;

@@ -170,7 +170,7 @@ public final class JsonUtils {
 	private static boolean hasNonNull(@NotNull JsonObject pObj, @Nullable String pElementName) {
 		return pObj.has(pElementName) && !pObj.get(pElementName).isJsonNull();
 	}
-	
+
 	@Nullable
 	public static JsonPrimitive getOptionalPrimitive(@NotNull JsonObject pObj, @NotNull String pElementName) {
 		return hasNonNull(pObj, pElementName) ? pObj.getAsJsonPrimitive(pElementName) : null;
