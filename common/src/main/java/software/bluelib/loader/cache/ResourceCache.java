@@ -23,6 +23,7 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.profiling.ProfilerFiller;
 import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.entity.variant.IVariantProvider;
+import software.bluelib.api.net.NetworkRegistry;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
 import software.bluelib.loader.BlueLoader;
@@ -31,6 +32,7 @@ import software.bluelib.loader.cache.controller.ControllerCache;
 import software.bluelib.loader.cache.model.ModelCache;
 import software.bluelib.loader.cache.variants.EntityCache;
 import software.bluelib.loader.json.deserialize.animation.BakedAnimationsAdapter;
+import software.bluelib.net.messages.client.loader.ControllerCachePacket;
 
 public class ResourceCache extends BlueLoader {
 
@@ -148,6 +150,7 @@ public class ResourceCache extends BlueLoader {
 
 				BaseLogger.log(true, BaseLogLevel.INFO, "Variants Cache: " + ResourceCache.Server.VARIANTS);
 				BaseLogger.log(true, BaseLogLevel.INFO, "Controllers Cache: " + ResourceCache.Server.CONTROLLERS);
+				NetworkRegistry.sendToAllPlayers(pServer, new ControllerCachePacket(ResourceCache.Server.CONTROLLERS));
 				return null;
 			}, pGameExecutor);
 		}

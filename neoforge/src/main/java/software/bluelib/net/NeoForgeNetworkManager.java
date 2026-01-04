@@ -7,6 +7,9 @@
  */
 package software.bluelib.net;
 
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
@@ -22,16 +25,12 @@ import software.bluelib.BlueLibConstants;
 import software.bluelib.api.net.*;
 import software.bluelib.client.net.data.DataRegistrySyncPacketHandler;
 
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
-
 public class NeoForgeNetworkManager implements NetworkManager {
+
 	@NotNull
 	public static final String PROTOCOL_VERSION = "1.0.0";
 
 	public static void registerServerMessages(@NotNull RegisterPayloadHandlersEvent pEvent) {
-
 		var registrar = pEvent.registrar(BlueLibConstants.MOD_ID)
 				.versioned(PROTOCOL_VERSION);
 

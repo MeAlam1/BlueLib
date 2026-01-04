@@ -11,8 +11,8 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.Mod;
-import net.neoforged.fml.javafmlmod.FMLModContainer;
+import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
@@ -23,10 +23,10 @@ import software.bluelib.BlueLibConstants;
 import software.bluelib.loader.cache.ResourceCache;
 import software.bluelib.net.NeoForgeNetworkManager;
 
-@Mod(value = BlueLibConstants.MOD_ID, dist = Dist.CLIENT)
+@EventBusSubscriber(modid = BlueLibConstants.MOD_ID, value = Dist.CLIENT)
 public class BlueLibClient {
 
-	public BlueLibClient(@NotNull IEventBus pModEventBus, @NotNull FMLModContainer pModContainer) {
+	public static void init(@NotNull IEventBus pModEventBus, @NotNull ModContainer pModContainer) {
 		pModContainer.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
 		pModEventBus.addListener(EventPriority.HIGHEST, NeoForgeNetworkManager::registerClientMessages);
 		BlueLibCommon.doClientRegistration();
@@ -34,12 +34,12 @@ public class BlueLibClient {
 	}
 
 	@SubscribeEvent
-	public void registerRenderers(@NotNull final EntityRenderersEvent.RegisterRenderers pEvent) {
+	public static void registerRenderers(@NotNull final EntityRenderersEvent.RegisterRenderers pEvent) {
 		BlueLibCommonClient.registerRenderers(pEvent::registerEntityRenderer, pEvent::registerBlockEntityRenderer);
 	}
 
 	@SubscribeEvent
-	public void reloadClient(@NotNull AddReloadListenerEvent pEvent) {
+	public static void reloadClient(@NotNull AddReloadListenerEvent pEvent) {
 		ResourceCache.Client.registerReloadListener();
 	}
 }
