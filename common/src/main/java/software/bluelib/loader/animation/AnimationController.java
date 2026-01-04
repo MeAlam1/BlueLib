@@ -399,7 +399,7 @@ public class AnimationController<T extends BlueAnimatable> {
 
 	private void processCurrentAnimation(double pAdjustedTick, double pSeekTime, boolean pCrashWhenCantFindBone) {
 		if (pAdjustedTick >= this.currentAnimation.animationCache().length()) {
-			if (this.currentAnimation.loopType().shouldPlayAgain(this.animatable, this, this.currentAnimation.animationCache())) {
+			if (this.currentAnimation.loopType().behavior().shouldPlayAgain(this.animatable, this, this.currentAnimation.animationCache())) {
 				if (this.animationState != State.PAUSED) {
 					this.shouldResetTick = true;
 

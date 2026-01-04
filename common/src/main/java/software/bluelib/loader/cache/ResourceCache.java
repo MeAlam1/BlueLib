@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executor;
+
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
@@ -27,11 +28,11 @@ import software.bluelib.api.net.NetworkRegistry;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
 import software.bluelib.loader.BlueLoader;
-import software.bluelib.loader.cache.animations.AnimationLibraryCache;
+import software.bluelib.loader.cache.animation.AnimationFileCache;
 import software.bluelib.loader.cache.controller.ControllerCache;
 import software.bluelib.loader.cache.model.ModelCache;
 import software.bluelib.loader.cache.variants.EntityCache;
-import software.bluelib.loader.json.deserialize.animation.BakedAnimationsAdapter;
+import software.bluelib.loader.geckolib.animations.BakedAnimationsAdapter;
 import software.bluelib.net.messages.client.loader.ControllerCachePacket;
 
 public class ResourceCache extends BlueLoader {
@@ -39,7 +40,7 @@ public class ResourceCache extends BlueLoader {
 	public static class Client {
 
 		@NotNull
-		private static Map<ResourceLocation, AnimationLibraryCache> ANIMATIONS = Collections.emptyMap();
+		private static Map<ResourceLocation, AnimationFileCache> ANIMATIONS = Collections.emptyMap();
 		@NotNull
 		private static Map<ResourceLocation, ModelCache> MODELS = Collections.emptyMap();
 
@@ -47,7 +48,7 @@ public class ResourceCache extends BlueLoader {
 		private static Map<ResourceLocation, ControllerCache> CONTROLLERS = Collections.emptyMap();
 
 		@NotNull
-		public static Map<ResourceLocation, AnimationLibraryCache> getBakedAnimations() {
+		public static Map<ResourceLocation, AnimationFileCache> getBakedAnimations() {
 			return ANIMATIONS;
 		}
 
@@ -82,7 +83,7 @@ public class ResourceCache extends BlueLoader {
 				@NotNull Executor pGameExecutor) {
 			clearCaches();
 
-			CompletableFuture<Map<ResourceLocation, AnimationLibraryCache>> animations = loadAnimations(pBackgroundExecutor, pResourceManager);
+			CompletableFuture<Map<ResourceLocation, AnimationFileCache>> animations = loadAnimations(pBackgroundExecutor, pResourceManager);
 			CompletableFuture<Map<ResourceLocation, ModelCache>> models = loadModels(pBackgroundExecutor, pResourceManager);
 
 			return CompletableFuture.runAsync(() -> BakedAnimationsAdapter.COMPRESSION_CACHE = new ConcurrentHashMap<>(), pBackgroundExecutor)

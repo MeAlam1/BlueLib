@@ -67,7 +67,10 @@ public final class JsonUtils {
 	}
 
 	@NotNull
-	public static <T> List<T> jsonArrayToObjectList(@Nullable JsonArray pArray, @NotNull JsonDeserializationContext pContext, @NotNull Class<T> pObjectClass) {
+	public static <T> List<T> jsonArrayToObjectList(
+			@Nullable JsonArray pArray,
+			@NotNull JsonDeserializationContext pContext,
+			@NotNull Class<? extends T> pObjectClass) {
 		if (pArray == null)
 			return new ArrayList<>();
 
@@ -133,7 +136,7 @@ public final class JsonUtils {
 	@NotNull
 	public static JsonObject filterJsonObject(@NotNull JsonObject pSource, @NotNull String... pAvoid) {
 		JsonObject result = new JsonObject();
-		for (Map.Entry<String, com.google.gson.JsonElement> entry : pSource.entrySet()) {
+		for (Map.Entry<String, JsonElement> entry : pSource.entrySet()) {
 			String key = entry.getKey();
 			boolean skip = false;
 			for (String avoid : pAvoid) {
@@ -152,12 +155,12 @@ public final class JsonUtils {
 	@NotNull
 	public static <T> JsonDeserializer<T> unionDeserializer(
 			@NotNull BiFunction<JsonArray, JsonDeserializationContext, T> pArrayMapper,
-			@NotNull BiFunction<JsonObject, JsonDeserializationContext, T> objectMapper) {
+			@NotNull BiFunction<JsonObject, JsonDeserializationContext, T> pObjectMapper) {
 		return (json, type, context) -> {
 			if (json.isJsonArray()) {
 				return pArrayMapper.apply(json.getAsJsonArray(), context);
 			} else if (json.isJsonObject()) {
-				return objectMapper.apply(json.getAsJsonObject(), context);
+				return pObjectMapper.apply(json.getAsJsonObject(), context);
 			} else {
 				throw new JsonParseException("Expected JSON array or object but got: " + json);
 			}
@@ -166,6 +169,11 @@ public final class JsonUtils {
 
 	private static boolean hasNonNull(@NotNull JsonObject pObj, @Nullable String pElementName) {
 		return pObj.has(pElementName) && !pObj.get(pElementName).isJsonNull();
+	}
+	
+	@Nullable
+	public static JsonPrimitive getOptionalPrimitive(@NotNull JsonObject pObj, @NotNull String pElementName) {
+		return hasNonNull(pObj, pElementName) ? pObj.getAsJsonPrimitive(pElementName) : null;
 	}
 
 	@Nullable

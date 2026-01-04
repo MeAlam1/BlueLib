@@ -14,13 +14,14 @@ transitive-accessible class net/minecraft/client/renderer/RenderStateShard$Write
 transitive-accessible class net/minecraft/client/renderer/RenderStateShard$OverlayStateShard
 transitive-accessible class net/minecraft/client/renderer/RenderType$CompositeState
 
-transitive-accessible field net/minecraft/client/modelDeserializer/geom/ModelPart cubeDeserializers Ljava/util/List;
-transitive-accessible field net/minecraft/client/modelDeserializer/AgeableListModel scaleHead Z
-transitive-accessible field net/minecraft/client/modelDeserializer/AgeableListModel babyYHeadOffset F
-transitive-accessible field net/minecraft/client/modelDeserializer/AgeableListModel babyZHeadOffset F
-transitive-accessible field net/minecraft/client/modelDeserializer/AgeableListModel babyHeadScale F
-transitive-accessible field net/minecraft/client/modelDeserializer/AgeableListModel babyBodyScale F
-transitive-accessible field net/minecraft/client/modelDeserializer/AgeableListModel bodyYOffset F
+transitive-accessible field net/minecraft/client/model/geom/ModelPart cubeDeserializers Ljava/util/List;
+transitive-accessible field net/minecraft/client/model/geom/ModelPart cubes Ljava/util/List;
+transitive-accessible field net/minecraft/client/model/AgeableListModel scaleHead Z
+transitive-accessible field net/minecraft/client/model/AgeableListModel babyYHeadOffset F
+transitive-accessible field net/minecraft/client/model/AgeableListModel babyZHeadOffset F
+transitive-accessible field net/minecraft/client/model/AgeableListModel babyHeadScale F
+transitive-accessible field net/minecraft/client/model/AgeableListModel babyBodyScale F
+transitive-accessible field net/minecraft/client/model/AgeableListModel bodyYOffset F
 
 transitive-accessible field net/minecraft/client/renderer/LevelRenderer renderBuffers Lnet/minecraft/client/renderer/RenderBuffers;
 transitive-accessible field com/mojang/blaze3d/vertex/BufferBuilder building Z
