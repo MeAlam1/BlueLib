@@ -1,8 +1,14 @@
+/*
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
+ */
 package software.bluelib.net;
 
 import java.util.HashSet;
 import java.util.Set;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -53,7 +59,8 @@ public record NeoForgePacketInfo<T extends NetworkPacket<T>>(@NotNull PacketRegi
 			return;
 		}
 
-		@SuppressWarnings("unchecked") final ClientNetworkPacketHandler<T> clientHandler = (ClientNetworkPacketHandler<T>) rawHandler;
+		@SuppressWarnings("unchecked")
+		final ClientNetworkPacketHandler<T> clientHandler = (ClientNetworkPacketHandler<T>) rawHandler;
 
 		IPayloadHandler<T> handler = (arg, unused) -> {
 			try {
@@ -93,7 +100,8 @@ public record NeoForgePacketInfo<T extends NetworkPacket<T>>(@NotNull PacketRegi
 			return;
 		}
 
-		@SuppressWarnings("unchecked") final ServerNetworkPacketHandler<T> serverHandler = (ServerNetworkPacketHandler<T>) rawHandler;
+		@SuppressWarnings("unchecked")
+		final ServerNetworkPacketHandler<T> serverHandler = (ServerNetworkPacketHandler<T>) rawHandler;
 
 		IPayloadHandler<T> handler = (arg, ctx) -> {
 			try {

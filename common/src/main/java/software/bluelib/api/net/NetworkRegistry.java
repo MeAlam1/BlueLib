@@ -1,8 +1,14 @@
+/*
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
+ */
 package software.bluelib.api.net;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
@@ -13,7 +19,7 @@ import org.jetbrains.annotations.Nullable;
 import software.bluelib.BlueLibConstants;
 import software.bluelib.net.PacketRegisterInfo;
 
-@SuppressWarnings({"unused"})
+@SuppressWarnings({ "unused" })
 public class NetworkRegistry {
 
 	public static void sendPacket(@NotNull ServerPlayer pPlayer, @NotNull NetworkPacket<?> pPacket) {

@@ -23,24 +23,20 @@ import software.bluelib.api.net.NetworkRegistry;
 public class FabricNetworkManager implements NetworkManager {
 
 	public static void registerClientPackets() {
-		// Client: register payload types for everything it knows about (S2C + C2S identifiers)
 		NetworkRegistry.getClientProvider().forEach(p -> {
 			FabricPacketInfo.registerC2SPayload(p);
 			FabricPacketInfo.registerS2CPayload(p);
 		});
 
-		// Client: register handlers only for S2C (handlers are present only on S2C entries in the client provider)
 		FabricPacketInfo.registerClientHandlers(NetworkRegistry.getClientProvider());
 	}
 
 	public static void registerServerPackets() {
-		// Server: register payload types for everything it knows about (C2S + S2C identifiers)
 		NetworkRegistry.getServerProvider().forEach(p -> {
 			FabricPacketInfo.registerC2SPayload(p);
 			FabricPacketInfo.registerS2CPayload(p);
 		});
 
-		// Server: register handlers only for C2S (handlers are present only on C2S entries in the server provider)
 		FabricPacketInfo.registerServerHandlers(NetworkRegistry.getServerProvider());
 	}
 
