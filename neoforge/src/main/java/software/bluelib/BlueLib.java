@@ -17,7 +17,6 @@ import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.InterModProcessEvent;
 import net.neoforged.fml.loading.FMLEnvironment;
 import org.jetbrains.annotations.NotNull;
-import software.bluelib.client.BlueLibClient;
 import software.bluelib.config.ConfigHolder;
 import software.bluelib.event.NeoForgeReloadHandler;
 import software.bluelib.example.event.VariantProvider;
@@ -36,9 +35,6 @@ public class BlueLib {
 		setupEventListeners(pModEventBus);
 
 		BlueLibCommon.doRegistration();
-
-		if (FMLEnvironment.dist == Dist.CLIENT)
-			BlueLibClient.init(pModEventBus, pModContainer);
 
 		registerConfigs(pModContainer);
 
