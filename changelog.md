@@ -1,32 +1,12 @@
-# 2.3.8
-
-## Warning:
-
-* **This is a major update series with extensive changes. While everything has been tested privately, the sheer size
-  means bugs
-  may still occur. Please report any issues on GitHub or message `@me_alam` on Discord.**
-* **The version will remain minor until stability and feature completeness are confirmed.**
-
-## Added
-* Added the `getRandomValue` in the Range Caches for easy random value retrieval.
-* Added `CompoundTagUtils` to simplify NBT operations.
-* Added the Data Pipeline to:
-   * VariantCache
-   * EntityCache
-   * AnimationCache
-   * StateCache
-   * GroupCache
-   * BehaviorCache
-   * ControllerCache
+# 2.4.3
 
 ## Changed
-* Modified some Annotations to improve usability and clarity.
+
+* Massive cleanup in the way we register Codecs and Data ComponentTypes.
 
 ## Bug Fixes
-* Minor Gradle Cleanup
 
-## Epilogue
-
-* Thank you for your continued support and patience.
-* Please keep reporting your issues so we can finalize these features and ensure a BugFree Experience.
-* If you have any questions or need assistance, feel free to reach out on Discord (@me_alam) or GitHub (MeAlam1)
+* Fixed a critical issue where Fabric Server where enable to be started due to trying to load Client sided Code on the
+  Server.
+* Fixed a critical issue where Clients would crash when trying to send a Packet.
+* Fixed a crash where the Client was looking for the Controller file.

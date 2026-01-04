@@ -21,15 +21,22 @@ import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.profiling.ProfilerFiller;
 import org.jetbrains.annotations.NotNull;
+import software.bluelib.BlueLibCommon;
 import software.bluelib.BlueLibConstants;
 import software.bluelib.loader.cache.ResourceCache;
+import software.bluelib.net.FabricNetworkManager;
 
 @Environment(EnvType.CLIENT)
 public class BlueLibClient implements ClientModInitializer {
 
 	@Override
 	public void onInitializeClient() {
+		BlueLibCommon.doClientRegistration();
+
+		FabricNetworkManager.registerClientPackets();
+
 		BlueLibCommonClient.registerRenderers(EntityRendererRegistry::register, BlockEntityRenderers::register);
+
 		ResourceManagerHelper.get(PackType.CLIENT_RESOURCES)
 				.registerReloadListener(new IdentifiableResourceReloadListener() {
 

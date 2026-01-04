@@ -61,8 +61,13 @@ public record MoLangExpression(@NotNull String raw) implements MoLangValue {
 	@Nullable
 	private Object getObject(@NotNull MoLangRuntime pRuntime, @NotNull String pRaw) {
 		if (pRaw.endsWith(")")) {
-			String name = pRaw.substring(0, pRaw.indexOf('('));
-			String argsRaw = pRaw.substring(pRaw.indexOf('(') + 1, pRaw.length() - 1);
+			int openParen = pRaw.indexOf('(');
+			if (openParen < 0) {
+				// Malformed expression: ends with ')' but no '('
+				return pRuntime.getVariable(pRaw);
+			}
+			String name = pRaw.substring(0, openParen);
+			String argsRaw = pRaw.substring(openParen + 1, pRaw.length() - 1);
 			List<Object> args = parseArguments(argsRaw, pRuntime);
 			return pRuntime.callFunction(name, args);
 		} else {

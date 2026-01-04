@@ -16,16 +16,14 @@ import java.util.stream.Collectors;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
-import net.minecraft.client.Minecraft;
-import net.minecraft.server.MinecraftServer;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import software.bluelib.BlueLibConstants;
 import software.bluelib.api.Environment;
 import software.bluelib.api.ModAPI;
 import software.bluelib.api.event.mod.ModMeta;
 
 public class FabricPlatformHelper implements IPlatformHelper {
+
+	public FabricPlatformHelper() {}
 
 	@Override
 	public @NotNull String getPlatformName() {
@@ -84,10 +82,5 @@ public class FabricPlatformHelper implements IPlatformHelper {
 	@Override
 	public @NotNull ModAPI getAPI() {
 		return ModAPI.FABRIC;
-	}
-
-	@Override
-	public @Nullable MinecraftServer getServer() {
-		return this.getEnvironment() == Environment.CLIENT ? Minecraft.getInstance().getSingleplayerServer() : BlueLibConstants.server;
 	}
 }

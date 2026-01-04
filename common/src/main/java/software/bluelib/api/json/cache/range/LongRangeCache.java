@@ -8,35 +8,22 @@
 package software.bluelib.api.json.cache.range;
 
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.DataResult;
-import com.mojang.serialization.Dynamic;
 import java.util.concurrent.ThreadLocalRandom;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtOps;
 import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.json.deserializer.range.LongRange;
+import software.bluelib.api.utils.codec.NbtCodecUtils;
 
 public record LongRangeCache(
 		@NotNull Long min,
 		@NotNull Long max) {
 
 	@NotNull
-	public static final Codec<LongRangeCache> CODEC = Codec.PASSTHROUGH.comapFlatMap(
-			dynamic -> {
-				CompoundTag tag = (CompoundTag) dynamic.convert(NbtOps.INSTANCE).getValue();
-				return DataResult.success(LongRangeCache.readFromNBT(tag));
-			},
-			longRangeCache -> {
-				CompoundTag tag = new CompoundTag();
-				longRangeCache.writeToNBT(tag);
-				return new Dynamic<>(NbtOps.INSTANCE, tag);
-			});
+	public static final Codec<LongRangeCache> CODEC = NbtCodecUtils.fromNbt(LongRangeCache::readFromNBT, LongRangeCache::writeToNBT);
 
 	@NotNull
-	public static final DataComponentType<LongRangeCache> LONG_RANGE_DATA = DataComponentType.<LongRangeCache>builder()
-			.persistent(CODEC)
-			.build();
+	public static final DataComponentType<LongRangeCache> LONG_RANGE_DATA = NbtCodecUtils.persistentDataType(CODEC);
 
 	public void writeToNBT(@NotNull CompoundTag pTag) {
 		pTag.putLong("Min", min);

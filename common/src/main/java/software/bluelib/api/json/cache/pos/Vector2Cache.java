@@ -8,35 +8,22 @@
 package software.bluelib.api.json.cache.pos;
 
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.DataResult;
-import com.mojang.serialization.Dynamic;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtOps;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector2f;
 import software.bluelib.api.json.deserializer.pos.Vector2;
+import software.bluelib.api.utils.codec.NbtCodecUtils;
 
 public record Vector2Cache(
 		@NotNull Float x,
 		@NotNull Float y) {
 
 	@NotNull
-	public static final Codec<Vector2Cache> CODEC = Codec.PASSTHROUGH.comapFlatMap(
-			dynamic -> {
-				CompoundTag tag = (CompoundTag) dynamic.convert(NbtOps.INSTANCE).getValue();
-				return DataResult.success(Vector2Cache.readFromNBT(tag));
-			},
-			vector2Cache -> {
-				CompoundTag tag = new CompoundTag();
-				vector2Cache.writeToNBT(tag);
-				return new Dynamic<>(NbtOps.INSTANCE, tag);
-			});
+	public static final Codec<Vector2Cache> CODEC = NbtCodecUtils.fromNbt(Vector2Cache::readFromNBT, Vector2Cache::writeToNBT);
 
 	@NotNull
-	public static final DataComponentType<Vector2Cache> VECTOR2_DATA = DataComponentType.<Vector2Cache>builder()
-			.persistent(CODEC)
-			.build();
+	public static final DataComponentType<Vector2Cache> VECTOR2_DATA = NbtCodecUtils.persistentDataType(CODEC);
 
 	public void writeToNBT(@NotNull CompoundTag pTag) {
 		pTag.putFloat("x", x);

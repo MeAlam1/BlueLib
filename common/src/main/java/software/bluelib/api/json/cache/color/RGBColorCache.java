@@ -8,14 +8,12 @@
 package software.bluelib.api.json.cache.color;
 
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.DataResult;
-import com.mojang.serialization.Dynamic;
 import java.awt.*;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtOps;
 import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.json.deserializer.color.RGBColor;
+import software.bluelib.api.utils.codec.NbtCodecUtils;
 
 public record RGBColorCache(
 		@NotNull Integer red,
@@ -23,21 +21,10 @@ public record RGBColorCache(
 		@NotNull Integer blue) {
 
 	@NotNull
-	public static final Codec<RGBColorCache> CODEC = Codec.PASSTHROUGH.comapFlatMap(
-			dynamic -> {
-				CompoundTag tag = (CompoundTag) dynamic.convert(NbtOps.INSTANCE).getValue();
-				return DataResult.success(RGBColorCache.readFromNBT(tag));
-			},
-			colorCache -> {
-				CompoundTag tag = new CompoundTag();
-				colorCache.writeToNBT(tag);
-				return new Dynamic<>(NbtOps.INSTANCE, tag);
-			});
+	public static final Codec<RGBColorCache> CODEC = NbtCodecUtils.fromNbt(RGBColorCache::readFromNBT, RGBColorCache::writeToNBT);
 
 	@NotNull
-	public static final DataComponentType<RGBColorCache> RGB_COLOR_DATA = DataComponentType.<RGBColorCache>builder()
-			.persistent(CODEC)
-			.build();
+	public static final DataComponentType<RGBColorCache> RGB_COLOR_DATA = NbtCodecUtils.persistentDataType(CODEC);
 
 	public void writeToNBT(@NotNull CompoundTag pTag) {
 		pTag.putInt("Red", red);

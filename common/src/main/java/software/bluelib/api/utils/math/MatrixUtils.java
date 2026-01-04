@@ -18,6 +18,11 @@ public class MatrixUtils {
 	private MatrixUtils() {}
 
 	public static @NotNull Double[][] multiplyMatrices(@NotNull Double[][] pMatrixA, @NotNull Double[][] pMatrixB) {
+		if (pMatrixA.length == 0 || pMatrixB.length == 0 ||
+				pMatrixA[0].length == 0 || pMatrixB[0].length == 0) {
+			BaseLogger.log(true, BaseLogLevel.WARNING, BlueTranslation.log("math.error.calc", "matrix multiplication"));
+			return new Double[0][0];
+		}
 		int rowsA = pMatrixA.length;
 		int colsA = pMatrixA[0].length;
 		int colsB = pMatrixB[0].length;
@@ -29,6 +34,7 @@ public class MatrixUtils {
 		Double[][] result = new Double[rowsA][colsB];
 		for (int i = 0; i < rowsA; i++) {
 			for (int j = 0; j < colsB; j++) {
+				result[i][j] = 0.0;
 				for (int k = 0; k < colsA; k++) {
 					result[i][j] += pMatrixA[i][k] * pMatrixB[k][j];
 				}
@@ -38,6 +44,9 @@ public class MatrixUtils {
 	}
 
 	public static @NotNull Double[][] transposeMatrix(@NotNull Double[][] pMatrix) {
+		if (pMatrix.length == 0 || (pMatrix.length > 0 && pMatrix[0].length == 0)) {
+			return new Double[0][0];
+		}
 		int rows = pMatrix.length;
 		int cols = pMatrix[0].length;
 		Double[][] transposed = new Double[cols][rows];
@@ -66,7 +75,7 @@ public class MatrixUtils {
 		}
 		@NotNull
 		Double determinant = calculate2x2MatrixDeterminant(pMatrix);
-		if (determinant == 0) {
+		if (determinant == 0 || determinant.isNaN()) {
 			Throwable throwable = new IllegalArgumentException("Matrix is not invertible.");
 			BaseLogger.log(true, BaseLogLevel.WARNING, BlueTranslation.log("math.error.inverting", "2x2 matrix"), throwable);
 			return new Double[0][0];

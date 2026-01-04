@@ -8,13 +8,11 @@
 package software.bluelib.loader.cache.controller;
 
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.DataResult;
-import com.mojang.serialization.Dynamic;
 import java.util.List;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtOps;
 import org.jetbrains.annotations.NotNull;
+import software.bluelib.api.utils.codec.NbtCodecUtils;
 import software.bluelib.api.utils.minecraft.CompoundTagUtils;
 
 public record StateCache(
@@ -22,21 +20,10 @@ public record StateCache(
 		@NotNull List<AnimationCache> animations) {
 
 	@NotNull
-	public static final Codec<StateCache> CODEC = Codec.PASSTHROUGH.comapFlatMap(
-			dynamic -> {
-				CompoundTag tag = (CompoundTag) dynamic.convert(NbtOps.INSTANCE).getValue();
-				return DataResult.success(StateCache.readFromNBT(tag));
-			},
-			stateCache -> {
-				CompoundTag tag = new CompoundTag();
-				stateCache.writeToNBT(tag);
-				return new Dynamic<>(NbtOps.INSTANCE, tag);
-			});
+	public static final Codec<StateCache> CODEC = NbtCodecUtils.fromNbt(StateCache::readFromNBT, StateCache::writeToNBT);
 
 	@NotNull
-	public static final DataComponentType<StateCache> STATE_CACHE_DATA = DataComponentType.<StateCache>builder()
-			.persistent(CODEC)
-			.build();
+	public static final DataComponentType<StateCache> STATE_CACHE_DATA = NbtCodecUtils.persistentDataType(CODEC);
 
 	public void writeToNBT(@NotNull CompoundTag pTag) {
 		pTag.putBoolean("isOverlay", isOverlay);

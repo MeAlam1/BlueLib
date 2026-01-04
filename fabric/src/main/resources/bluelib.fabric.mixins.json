@@ -3,9 +3,21 @@
   "minVersion": "0.8",
   "package": "software.bluelib.mixin",
   "refmap": "${mod_id}.refmap.json",
-  "mixins": [],
+  "mixins": [
+    "common.brewing.BrewingStandBlockEntityMixin",
+    "common.brewing.BrewingStandMenuMixin",
+    "common.brewing.IngredientSlotMixin",
+    "common.brewing.PotionSlotMixin",
+    "common.loader.AbstractContainerMenuMixin",
+    "common.loader.ItemStackMixin",
+    "common.variant.LivingEntityMixin"
+  ],
   "client": [
-    "client.HumanoidArmorLayerMixin"
+    "client.HumanoidArmorLayerMixin",
+    "client.BlockEntityWithoutLevelRendererMixin",
+    "client.LevelRendererMixin",
+    "client.TextureManagerMixin",
+    "client.VersionWarningMixin"
   ],
   "server": [],
   "injectors": {

@@ -9,6 +9,7 @@ package software.bluelib.net;
 
 import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
@@ -21,9 +22,7 @@ import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.HandlerThread;
 import org.jetbrains.annotations.NotNull;
 import software.bluelib.BlueLibConstants;
-import software.bluelib.api.net.NetworkManager;
-import software.bluelib.api.net.NetworkPacket;
-import software.bluelib.api.net.NetworkRegistry;
+import software.bluelib.api.net.*;
 import software.bluelib.client.net.data.DataRegistrySyncPacketHandler;
 
 public class NeoForgeNetworkManager implements NetworkManager {
@@ -31,32 +30,69 @@ public class NeoForgeNetworkManager implements NetworkManager {
 	@NotNull
 	public static final String PROTOCOL_VERSION = "1.0.0";
 
-	public static void registerMessages(@NotNull RegisterPayloadHandlersEvent pEvent) {
-		var registrar = pEvent.registrar(BlueLibConstants.MOD_ID).versioned(PROTOCOL_VERSION);
+	public static void registerServerMessages(@NotNull RegisterPayloadHandlersEvent pEvent) {
+		var registrar = pEvent.registrar(BlueLibConstants.MOD_ID)
+				.versioned(PROTOCOL_VERSION);
+
+		var serverView = NetworkRegistry.getServerProvider();
+
+		Set<ResourceLocation> serverS2CIds = new HashSet<>();
+		serverView.forEach(info -> {
+			if (info.getHandler() instanceof ClientNetworkPacketHandler<?>) {
+				serverS2CIds.add(info.getId());
+			}
+		});
+
+		serverView.stream()
+				.map(NeoForgePacketInfo::new)
+				.filter(it -> !(it.info().getHandler() instanceof ServerNetworkPacketHandler<?>))
+				.forEach(it -> {
+					if (!serverS2CIds.contains(it.info().getId())) {
+						it.registerTypeToClient(registrar);
+					}
+				});
+
+		serverView.stream()
+				.map(NeoForgePacketInfo::new)
+				.filter(it -> it.info().getHandler() instanceof ServerNetworkPacketHandler<?>)
+				.forEach(it -> it.registerToServer(registrar));
+	}
+
+	public static void registerClientMessages(@NotNull RegisterPayloadHandlersEvent pEvent) {
+		var registrar = pEvent.registrar(BlueLibConstants.MOD_ID)
+				.versioned(PROTOCOL_VERSION)
+				.optional();
 
 		var netRegistrar = pEvent.registrar(BlueLibConstants.MOD_ID)
 				.versioned(PROTOCOL_VERSION)
-				.executesOn(HandlerThread.NETWORK);
+				.executesOn(HandlerThread.NETWORK)
+				.optional();
 
-		var syncPackets = new HashSet<ResourceLocation>();
-		var asyncPackets = new HashSet<ResourceLocation>();
+		var clientView = NetworkRegistry.getClientProvider();
 
-		NetworkRegistry.getS2CPayloads().stream()
+		Set<ResourceLocation> clientS2CIds = new HashSet<>();
+		clientView.forEach(info -> {
+			if (info.getHandler() instanceof ClientNetworkPacketHandler<?>) {
+				clientS2CIds.add(info.getId());
+			}
+		});
+
+		clientView.stream()
 				.map(NeoForgePacketInfo::new)
+				.filter(it -> !(it.info().getHandler() instanceof ClientNetworkPacketHandler<?>))
 				.forEach(it -> {
-					boolean handleAsync = it.info().getHandler() instanceof DataRegistrySyncPacketHandler<?, ?>;
-					if (handleAsync) {
-						asyncPackets.add(it.info().getId());
-					} else {
-						syncPackets.add(it.info().getId());
+					if (!clientS2CIds.contains(it.info().getId())) {
+						it.registerTypeToServer(registrar);
 					}
-
-					it.registerToClient(handleAsync ? netRegistrar : registrar);
 				});
 
-		NetworkRegistry.getC2SPayloads().stream()
+		clientView.stream()
 				.map(NeoForgePacketInfo::new)
-				.forEach(it -> it.registerToServer(registrar));
+				.filter(it -> it.info().getHandler() instanceof ClientNetworkPacketHandler<?>)
+				.forEach(it -> {
+					boolean handleAsync = it.info().getHandler() instanceof DataRegistrySyncPacketHandler<?, ?>;
+					it.registerToClient(handleAsync ? netRegistrar : registrar);
+				});
 	}
 
 	@Override

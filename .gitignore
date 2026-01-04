@@ -61,3 +61,4 @@ common/src/main/resources/assets/bluelib/modelDeserializer/*
 common/src/main/resources/data/bluelib/controllerDeserializer/*
 common/src/main/resources/assets/bluelib/textures/*
 /.env
+/neoforge

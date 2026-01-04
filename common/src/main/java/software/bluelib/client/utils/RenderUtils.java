@@ -41,10 +41,10 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
-import software.bluelib.BlueLibConstants;
 import software.bluelib.api.utils.Color;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
+import software.bluelib.client.BlueLibCommonClient;
 import software.bluelib.loader.animatable.base.BlueAnimatable;
 import software.bluelib.loader.cache.model.BoneCache;
 import software.bluelib.loader.cache.model.CubeCache;
@@ -243,7 +243,7 @@ public final class RenderUtils {
 
 	@Nullable
 	public static BlueModel<?> getBlueModelForItem(@NotNull ItemStack pItem) {
-		return BlueLibConstants.PlatformHelper.ITEM_RENDERING.getBlueModelForItem(pItem);
+		return BlueLibCommonClient.PlatformHelper.ITEM_RENDERING.getBlueModelForItem(pItem);
 	}
 
 	@Nullable
@@ -255,7 +255,7 @@ public final class RenderUtils {
 
 	@Nullable
 	public static BlueModel<?> getBlueModelForArmor(@NotNull ItemStack pStack) {
-		return BlueLibConstants.PlatformHelper.ITEM_RENDERING.getBlueModelForArmor(pStack);
+		return BlueLibCommonClient.PlatformHelper.ITEM_RENDERING.getBlueModelForArmor(pStack);
 	}
 
 	public static @NotNull <T extends LivingEntity, M extends HumanoidModel<T>, A extends HumanoidModel<T>> Boolean tryRenderArmorPiece(@NotNull PoseStack pPoseStack, @NotNull MultiBufferSource pBufferSource, @NotNull T pEntity, @NotNull ItemStack pStack, @NotNull EquipmentSlot pEquipmentSlot, @NotNull M pParentModel, @NotNull A pBaseModel,

@@ -10,9 +10,7 @@ package software.bluelib.platform;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Set;
-import net.minecraft.server.MinecraftServer;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.Environment;
 import software.bluelib.api.ModAPI;
 import software.bluelib.api.event.mod.ModMeta;
@@ -48,7 +46,4 @@ public interface IPlatformHelper {
 
 	@NotNull
 	ModAPI getAPI();
-
-	@Nullable
-	MinecraftServer getServer();
 }

@@ -8,35 +8,22 @@
 package software.bluelib.api.json.cache.range;
 
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.DataResult;
-import com.mojang.serialization.Dynamic;
 import java.util.concurrent.ThreadLocalRandom;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtOps;
 import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.json.deserializer.range.FloatRange;
+import software.bluelib.api.utils.codec.NbtCodecUtils;
 
 public record FloatRangeCache(
 		@NotNull Float min,
 		@NotNull Float max) {
 
 	@NotNull
-	public static final Codec<FloatRangeCache> CODEC = Codec.PASSTHROUGH.comapFlatMap(
-			dynamic -> {
-				CompoundTag tag = (CompoundTag) dynamic.convert(NbtOps.INSTANCE).getValue();
-				return DataResult.success(FloatRangeCache.readFromNBT(tag));
-			},
-			floatRangeCache -> {
-				CompoundTag tag = new CompoundTag();
-				floatRangeCache.writeToNBT(tag);
-				return new Dynamic<>(NbtOps.INSTANCE, tag);
-			});
+	public static final Codec<FloatRangeCache> CODEC = NbtCodecUtils.fromNbt(FloatRangeCache::readFromNBT, FloatRangeCache::writeToNBT);
 
 	@NotNull
-	public static final DataComponentType<FloatRangeCache> FLOAT_RANGE_DATA = DataComponentType.<FloatRangeCache>builder()
-			.persistent(CODEC)
-			.build();
+	public static final DataComponentType<FloatRangeCache> FLOAT_RANGE_DATA = NbtCodecUtils.persistentDataType(CODEC);
 
 	public void writeToNBT(@NotNull CompoundTag pTag) {
 		pTag.putFloat("Min", min);

@@ -7,12 +7,15 @@
  */
 package software.bluelib.api.molang.context;
 
+import software.bluelib.api.utils.logging.BaseLogLevel;
+import software.bluelib.api.utils.logging.BaseLogger;
+
 public class GeneralMoLang extends BaseMoLangContext {
 
 	public GeneralMoLang() {
 		registerFunction("print", (arguments, runtime) -> {
 			for (Object arg : arguments) {
-				System.out.println(arg);
+				BaseLogger.log(BaseLogLevel.INFO, String.valueOf(arg));
 			}
 			return null;
 		});

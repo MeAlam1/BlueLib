@@ -32,8 +32,8 @@ import net.minecraft.world.level.block.AbstractSkullBlock;
 import net.minecraft.world.level.block.SkullBlock;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import software.bluelib.BlueLibConstants;
 import software.bluelib.api.utils.Color;
+import software.bluelib.client.BlueLibCommonClient;
 import software.bluelib.client.utils.RenderUtils;
 import software.bluelib.loader.animatable.base.BlueAnimatable;
 import software.bluelib.loader.animatable.item.BlueItem;
@@ -169,7 +169,7 @@ public class ItemArmorBlueLayer<T extends LivingEntity & BlueAnimatable> extends
 	protected HumanoidModel<?> getModelForItem(@NotNull BoneCache pBone, @NotNull EquipmentSlot pSlot, @NotNull ItemStack pStack, @NotNull T pAnimatable) {
 		HumanoidModel<LivingEntity> defaultModel = pSlot == EquipmentSlot.LEGS ? INNER_ARMOR_MODEL : OUTER_ARMOR_MODEL;
 
-		return BlueLibConstants.PlatformHelper.ITEM_RENDERING.getArmorModelForItem(pAnimatable, pStack, pSlot, defaultModel);
+		return BlueLibCommonClient.PlatformHelper.ITEM_RENDERING.getArmorModelForItem(pAnimatable, pStack, pSlot, defaultModel);
 	}
 
 	protected void renderSkullAsArmor(@NotNull PoseStack pPoseStack, @NotNull BoneCache pBone, @NotNull ItemStack pStack, @NotNull AbstractSkullBlock pSkullBlock, @NotNull MultiBufferSource pBufferSource, int pPackedLight) {

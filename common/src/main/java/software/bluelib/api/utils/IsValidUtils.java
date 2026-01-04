@@ -29,9 +29,14 @@ public class IsValidUtils {
 
 			URI uri = new URI(pUrl);
 
+			String host = uri.getHost();
+			if (host == null) {
+				BaseLogger.log(true, BaseLogLevel.WARNING, BlueTranslation.log("invalid_url", pUrl));
+				return false;
+			}
+
 			String domainRegex = "^[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
 			Pattern pattern = Pattern.compile(domainRegex);
-			String host = uri.getHost();
 
 			return uri.isAbsolute() && (pattern.matcher(host).matches());
 		} catch (Exception pException) {

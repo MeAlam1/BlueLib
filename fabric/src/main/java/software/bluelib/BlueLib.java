@@ -25,18 +25,15 @@ public class BlueLib implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		FabricEvents.register();
+
 		BlueLibCommon.doRegistration();
 
-		clientEndTick();
-		registration();
+		FabricNetworkManager.registerServerPackets();
+
+		BlueEntityRegistry.registerEntityAttributes(FabricDefaultAttributeRegistry::register);
 
 		FabricReloadHandler.registerProvider(new VariantProvider());
-	}
-
-	private void registration() {
-		BlueEntityRegistry.registerEntityAttributes(FabricDefaultAttributeRegistry::register);
-		FabricNetworkManager.registerMessages();
-		FabricNetworkManager.registerServerHandlers();
+		clientEndTick();
 	}
 
 	@NotNull
@@ -46,9 +43,7 @@ public class BlueLib implements ModInitializer {
 
 	private void clientEndTick() {
 		if (isClientEnvironment()) {
-			BlueLibCommon.doClientRegistration();
 			ClientTickEvents.END_CLIENT_TICK.register(client -> {
-				FabricNetworkManager.registerClientHandlers();
 				if (!hasInitialized) {
 					hasInitialized = true;
 					BlueLibCommon.init();

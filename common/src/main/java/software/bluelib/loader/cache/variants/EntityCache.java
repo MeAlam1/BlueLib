@@ -8,15 +8,13 @@
 package software.bluelib.loader.cache.variants;
 
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.DataResult;
-import com.mojang.serialization.Dynamic;
 import java.util.Map;
 import java.util.Set;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtOps;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import software.bluelib.api.utils.codec.NbtCodecUtils;
 import software.bluelib.api.utils.minecraft.CompoundTagUtils;
 
 public record EntityCache(
@@ -24,21 +22,10 @@ public record EntityCache(
 		@NotNull Map<String, VariantCache> variants) {
 
 	@NotNull
-	public static final Codec<EntityCache> CODEC = Codec.PASSTHROUGH.comapFlatMap(
-			dynamic -> {
-				CompoundTag tag = (CompoundTag) dynamic.convert(NbtOps.INSTANCE).getValue();
-				return DataResult.success(EntityCache.readFromNBT(tag));
-			},
-			entityCache -> {
-				CompoundTag tag = new CompoundTag();
-				entityCache.writeToNBT(tag);
-				return new Dynamic<>(NbtOps.INSTANCE, tag);
-			});
+	public static final Codec<EntityCache> CODEC = NbtCodecUtils.fromNbt(EntityCache::readFromNBT, EntityCache::writeToNBT);
 
 	@NotNull
-	public static final DataComponentType<EntityCache> ENTITY_CACHE_DATA = DataComponentType.<EntityCache>builder()
-			.persistent(CODEC)
-			.build();
+	public static final DataComponentType<EntityCache> ENTITY_CACHE_DATA = NbtCodecUtils.persistentDataType(CODEC);
 
 	public void writeToNBT(@NotNull CompoundTag pTag) {
 		pTag.putString("formatVersion", formatVersion);

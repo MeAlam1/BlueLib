@@ -19,7 +19,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.event.IEventProxy;
 import software.bluelib.internal.BlueResource;
-import software.bluelib.platform.IPlatformClient;
 import software.bluelib.platform.IPlatformHelper;
 import software.bluelib.platform.IRegistryHelper;
 
@@ -31,7 +30,7 @@ public class BlueLibConstants implements BuildDetails {
 	public static <T> T load(@NotNull Class<T> pClazz) {
 		return ServiceLoader.load(pClazz)
 				.findFirst()
-				.orElseThrow(() -> new NullPointerException("Failed to load service for " + pClazz.getName()));
+				.orElseThrow(() -> new IllegalStateException("Failed to load service for " + pClazz.getName() + ". Ensure the service implementation is properly registered."));
 	}
 
 	@NotNull
@@ -52,7 +51,7 @@ public class BlueLibConstants implements BuildDetails {
 	public static final String MOD_NAME = "BlueLib";
 
 	@NotNull
-	public static final String VERSION = "2.3.8";
+	public static final String VERSION = "2.4.2";
 
 	@Nullable
 	public static MinecraftServer server;
@@ -100,8 +99,5 @@ public class BlueLibConstants implements BuildDetails {
 
 		@NotNull
 		public static final IRegistryHelper REGISTRY = load(IRegistryHelper.class);
-
-		@NotNull
-		public static final IPlatformClient ITEM_RENDERING = load(IPlatformClient.class);
 	}
 }
