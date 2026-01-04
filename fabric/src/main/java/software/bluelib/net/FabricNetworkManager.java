@@ -1,3 +1,4 @@
+// file: `fabric/src/main/java/software/bluelib/net/FabricNetworkManager.java`
 /*
  * Copyright (C) 2024 BlueLib Contributors
  *
@@ -22,25 +23,29 @@ import software.bluelib.api.net.NetworkRegistry;
 public class FabricNetworkManager implements NetworkManager {
 
 	public static void registerClientPackets() {
-		NetworkRegistry.getAllPayloads().forEach(p -> {
+		// Client: register payload types for everything it knows about (S2C + C2S identifiers)
+		NetworkRegistry.getClientProvider().forEach(p -> {
 			FabricPacketInfo.registerC2SPayload(p);
 			FabricPacketInfo.registerS2CPayload(p);
 		});
 
-		FabricPacketInfo.registerClientHandlers(NetworkRegistry.getS2CPayloads());
+		// Client: register handlers only for S2C (handlers are present only on S2C entries in the client provider)
+		FabricPacketInfo.registerClientHandlers(NetworkRegistry.getClientProvider());
 	}
 
 	public static void registerServerPackets() {
-		NetworkRegistry.getAllPayloads().forEach(p -> {
+		// Server: register payload types for everything it knows about (C2S + S2C identifiers)
+		NetworkRegistry.getServerProvider().forEach(p -> {
 			FabricPacketInfo.registerC2SPayload(p);
 			FabricPacketInfo.registerS2CPayload(p);
 		});
 
-		FabricPacketInfo.registerServerHandlers(NetworkRegistry.getC2SPayloads());
+		// Server: register handlers only for C2S (handlers are present only on C2S entries in the server provider)
+		FabricPacketInfo.registerServerHandlers(NetworkRegistry.getServerProvider());
 	}
 
 	@Override
-	public void sendPacketToPlayer(@NotNull ServerPlayer pPlayer, @NotNull NetworkPacket<?> pPacket) {
+	public void sendPacketToPlayer(@NotNull ServerPlayer pPlayer, @NotNull software.bluelib.api.net.NetworkPacket<?> pPacket) {
 		ServerPlayNetworking.send(pPlayer, pPacket);
 	}
 

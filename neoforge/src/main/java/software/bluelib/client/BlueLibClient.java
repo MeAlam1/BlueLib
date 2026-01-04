@@ -21,7 +21,7 @@ public class BlueLibClient {
 
 	public static void init(@NotNull IEventBus pModEventBus, @NotNull ModContainer pModContainer) {
 		pModContainer.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
-		pModEventBus.addListener(EventPriority.HIGHEST, NeoForgeNetworkManager::registerServerMessages);
+		pModEventBus.addListener(EventPriority.HIGHEST, NeoForgeNetworkManager::registerClientMessages);
 		BlueLibCommon.doClientRegistration();
 		ResourceCache.Client.registerReloadListener();
 	}

@@ -1,14 +1,8 @@
-/*
- * Copyright (C) 2024 BlueLib Contributors
- *
- * This Source Code Form is subject to the terms of the MIT License.
- * If a copy of the MIT License was not distributed with this file,
- * You can obtain one at https://opensource.org/licenses/MIT.
- */
 package software.bluelib.api.net;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
@@ -19,7 +13,7 @@ import org.jetbrains.annotations.Nullable;
 import software.bluelib.BlueLibConstants;
 import software.bluelib.net.PacketRegisterInfo;
 
-@SuppressWarnings({ "unused" })
+@SuppressWarnings({"unused"})
 public class NetworkRegistry {
 
 	public static void sendPacket(@NotNull ServerPlayer pPlayer, @NotNull NetworkPacket<?> pPacket) {
@@ -55,49 +49,66 @@ public class NetworkRegistry {
 	@NotNull
 	private static final List<PacketProvider> providers = new ArrayList<>();
 
+	/**
+	 * CLIENT view:
+	 * - S2C: decode + handler
+	 * - C2S: decode only (identifiers, no handler)
+	 */
 	@Nullable
-	private static List<PacketRegisterInfo<?>> c2s = null;
+	private static List<PacketRegisterInfo<?>> clientProvider = null;
+
+	/**
+	 * SERVER/COMMON view:
+	 * - C2S: decode + handler
+	 * - S2C: decode only (identifiers, no handler)
+	 */
 	@Nullable
-	private static List<PacketRegisterInfo<?>> s2c = null;
-	@Nullable
-	private static List<PacketRegisterInfo<?>> all = null;
+	private static List<PacketRegisterInfo<?>> serverProvider = null;
 
 	public static void registerPacketProvider(@NotNull PacketProvider pProvider) {
 		providers.add(pProvider);
-		c2s = null;
-		s2c = null;
-		all = null;
+		clientProvider = null;
+		serverProvider = null;
 	}
 
 	@NotNull
-	public static List<PacketRegisterInfo<?>> getC2SPayloads() {
-		if (c2s == null) c2s = generate(PacketSide.C2S);
-		return c2s;
+	public static List<PacketRegisterInfo<?>> getClientProvider() {
+		if (clientProvider == null) clientProvider = generateClientProvider();
+		return clientProvider;
 	}
 
 	@NotNull
-	public static List<PacketRegisterInfo<?>> getS2CPayloads() {
-		if (s2c == null) s2c = generate(PacketSide.S2C);
-		return s2c;
+	public static List<PacketRegisterInfo<?>> getServerProvider() {
+		if (serverProvider == null) serverProvider = generateServerProvider();
+		return serverProvider;
 	}
 
 	@NotNull
-	public static List<PacketRegisterInfo<?>> getAllPayloads() {
-		if (all == null) {
-			List<PacketRegisterInfo<?>> out = new ArrayList<>();
-			out.addAll(getC2SPayloads());
-			out.addAll(getS2CPayloads());
-			all = out;
-		}
-		return all;
-	}
-
-	@NotNull
-	private static List<PacketRegisterInfo<?>> generate(@NotNull PacketSide pSide) {
-		List<PacketRegisterInfo<?>> list = new ArrayList<>();
+	private static List<PacketRegisterInfo<?>> generateClientProvider() {
+		List<PacketRegisterInfo<?>> out = new ArrayList<>();
 		for (PacketProvider p : providers) {
-			list.addAll(pSide == PacketSide.C2S ? p.getC2SPackets() : p.getS2CPackets());
+			out.addAll(p.getS2CPackets());
+			out.addAll(stripHandlers(p.getC2SPackets()));
 		}
-		return list;
+		return out;
+	}
+
+	@NotNull
+	private static List<PacketRegisterInfo<?>> generateServerProvider() {
+		List<PacketRegisterInfo<?>> out = new ArrayList<>();
+		for (PacketProvider p : providers) {
+			out.addAll(p.getC2SPackets());
+			out.addAll(stripHandlers(p.getS2CPackets()));
+		}
+		return out;
+	}
+
+	@NotNull
+	private static List<PacketRegisterInfo<?>> stripHandlers(@NotNull List<PacketRegisterInfo<?>> in) {
+		List<PacketRegisterInfo<?>> out = new ArrayList<>(in.size());
+		for (PacketRegisterInfo<?> info : in) {
+			out.add(new PacketRegisterInfo<>(info.getId(), info.getDecoder()));
+		}
+		return out;
 	}
 }
