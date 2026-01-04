@@ -9,8 +9,6 @@ package software.bluelib.api.net;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
@@ -19,12 +17,9 @@ import net.minecraft.world.entity.Entity;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.BlueLibConstants;
-import software.bluelib.api.utils.logging.BaseLogLevel;
-import software.bluelib.api.utils.logging.BaseLogger;
-import software.bluelib.internal.BlueTranslation;
 import software.bluelib.net.PacketRegisterInfo;
 
-@SuppressWarnings({"unused"})
+@SuppressWarnings({ "unused" })
 public class NetworkRegistry {
 
 	public static void sendPacket(@NotNull ServerPlayer pPlayer, @NotNull NetworkPacket<?> pPacket) {
@@ -58,52 +53,68 @@ public class NetworkRegistry {
 	}
 
 	@NotNull
-	private static final List<PacketProvider.C2SPacketProvider> c2sProviders = new ArrayList<>();
-	@NotNull
-	private static final List<PacketProvider.S2CPacketProvider> s2cProviders = new ArrayList<>();
+	private static final List<PacketProvider> providers = new ArrayList<>();
 
+	/**
+	 * CLIENT view:
+	 * - S2C: decode + handler
+	 * - C2S: decode only (identifiers, no handler)
+	 */
 	@Nullable
-	private static List<PacketRegisterInfo<?>> c2sPayloads = null;
+	private static List<PacketRegisterInfo<?>> clientProvider = null;
+
+	/**
+	 * SERVER/COMMON view:
+	 * - C2S: decode + handler
+	 * - S2C: decode only (identifiers, no handler)
+	 */
 	@Nullable
-	private static List<PacketRegisterInfo<?>> s2cPayloads = null;
+	private static List<PacketRegisterInfo<?>> serverProvider = null;
 
-	@NotNull
-	public static List<PacketRegisterInfo<?>> getC2SPayloads() {
-		if (c2sPayloads == null) c2sPayloads = generateC2SPacketInfoList();
-		return c2sPayloads;
+	public static void registerPacketProvider(@NotNull PacketProvider pProvider) {
+		providers.add(pProvider);
+		clientProvider = null;
+		serverProvider = null;
 	}
 
 	@NotNull
-	public static List<PacketRegisterInfo<?>> getS2CPayloads() {
-		if (s2cPayloads == null) s2cPayloads = generateS2CPacketInfoList();
-		return s2cPayloads;
+	public static List<PacketRegisterInfo<?>> getClientProvider() {
+		if (clientProvider == null) clientProvider = generateClientProvider();
+		return clientProvider;
 	}
 
 	@NotNull
-	private static List<PacketRegisterInfo<?>> generateS2CPacketInfoList() {
-		List<PacketRegisterInfo<?>> list = new ArrayList<>();
-		for (PacketProvider.S2CPacketProvider provider : s2cProviders) {
-			list.addAll(provider.getS2CPacketInfoList());
+	public static List<PacketRegisterInfo<?>> getServerProvider() {
+		if (serverProvider == null) serverProvider = generateServerProvider();
+		return serverProvider;
+	}
+
+	@NotNull
+	private static List<PacketRegisterInfo<?>> generateClientProvider() {
+		List<PacketRegisterInfo<?>> out = new ArrayList<>();
+		for (PacketProvider p : providers) {
+			out.addAll(p.getS2CPackets());
+			out.addAll(stripHandlers(p.getC2SPackets()));
 		}
-		return list;
+		return out;
 	}
 
 	@NotNull
-	private static List<PacketRegisterInfo<?>> generateC2SPacketInfoList() {
-		List<PacketRegisterInfo<?>> list = new ArrayList<>();
-		for (PacketProvider.C2SPacketProvider provider : c2sProviders) {
-			list.addAll(provider.getC2SPacketInfoList());
+	private static List<PacketRegisterInfo<?>> generateServerProvider() {
+		List<PacketRegisterInfo<?>> out = new ArrayList<>();
+		for (PacketProvider p : providers) {
+			out.addAll(p.getC2SPackets());
+			out.addAll(stripHandlers(p.getS2CPackets()));
 		}
-		return list;
+		return out;
 	}
 
-	public static void registerC2SPacketProvider(@NotNull PacketProvider.C2SPacketProvider pProvider) {
-		c2sProviders.add(pProvider);
-		c2sPayloads = null;
-	}
-
-	public static void registerS2CPacketProvider(@NotNull PacketProvider.S2CPacketProvider pProvider) {
-		s2cProviders.add(pProvider);
-		s2cPayloads = null;
+	@NotNull
+	private static List<PacketRegisterInfo<?>> stripHandlers(@NotNull List<PacketRegisterInfo<?>> in) {
+		List<PacketRegisterInfo<?>> out = new ArrayList<>(in.size());
+		for (PacketRegisterInfo<?> info : in) {
+			out.add(new PacketRegisterInfo<>(info.getId(), info.getDecoder()));
+		}
+		return out;
 	}
 }

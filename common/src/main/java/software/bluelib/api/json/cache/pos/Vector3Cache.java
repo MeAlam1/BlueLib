@@ -8,11 +8,8 @@
 package software.bluelib.api.json.cache.pos;
 
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.DataResult;
-import com.mojang.serialization.Dynamic;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtOps;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 import software.bluelib.api.json.deserializer.pos.Vector3;
@@ -24,12 +21,10 @@ public record Vector3Cache(
 		@NotNull Float z) {
 
 	@NotNull
-	public static final Codec<Vector3Cache> CODEC =
-			NbtCodecUtils.fromNbt(Vector3Cache::readFromNBT, Vector3Cache::writeToNBT);
+	public static final Codec<Vector3Cache> CODEC = NbtCodecUtils.fromNbt(Vector3Cache::readFromNBT, Vector3Cache::writeToNBT);
 
 	@NotNull
-	public static final DataComponentType<Vector3Cache> VECTOR3_DATA =
-			NbtCodecUtils.persistentDataType(CODEC);
+	public static final DataComponentType<Vector3Cache> VECTOR3_DATA = NbtCodecUtils.persistentDataType(CODEC);
 
 	public void writeToNBT(@NotNull CompoundTag pTag) {
 		pTag.putFloat("x", x);

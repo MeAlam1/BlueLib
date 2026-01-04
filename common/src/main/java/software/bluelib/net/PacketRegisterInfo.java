@@ -8,6 +8,7 @@
 package software.bluelib.net;
 
 import java.util.function.Function;
+import java.util.function.Supplier;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -25,8 +26,8 @@ public class PacketRegisterInfo<T extends NetworkPacket<T> & Encodable> {
 	private final ResourceLocation id;
 	@NotNull
 	private final Function<RegistryFriendlyByteBuf, T> decoder;
-	@NotNull
-	private final PacketHandler<T> handler;
+	@Nullable
+	private final Supplier<PacketHandler<T>> handlerSupplier;
 	@NotNull
 	private final CustomPacketPayload.Type<T> payloadId;
 	@NotNull
@@ -35,11 +36,11 @@ public class PacketRegisterInfo<T extends NetworkPacket<T> & Encodable> {
 	public PacketRegisterInfo(
 			@NotNull ResourceLocation pId,
 			@NotNull Function<RegistryFriendlyByteBuf, T> pDecoder,
-			@NotNull PacketHandler<T> pHandler,
+			@Nullable Supplier<PacketHandler<T>> pHandlerSupplier,
 			@Nullable StreamCodec<RegistryFriendlyByteBuf, T> pCodec) {
 		this.id = pId;
 		this.decoder = pDecoder;
-		this.handler = pHandler;
+		this.handlerSupplier = pHandlerSupplier;
 		this.payloadId = new CustomPacketPayload.Type<>(pId);
 		this.codec = pCodec != null ? pCodec : createDefaultCodec(pDecoder);
 	}
@@ -47,12 +48,25 @@ public class PacketRegisterInfo<T extends NetworkPacket<T> & Encodable> {
 	public PacketRegisterInfo(
 			@NotNull ResourceLocation pId,
 			@NotNull Function<RegistryFriendlyByteBuf, T> pDecoder,
-			@NotNull PacketHandler<T> pHandler) {
+			@Nullable Supplier<PacketHandler<T>> pHandlerSupplier) {
+		this(pId, pDecoder, pHandlerSupplier, null);
+	}
+
+	public PacketRegisterInfo(
+			@NotNull ResourceLocation pId,
+			@NotNull Function<RegistryFriendlyByteBuf, T> pDecoder) {
+		this(pId, pDecoder, null, null);
+	}
+
+	public PacketRegisterInfo(
+			@NotNull ResourceLocation pId,
+			@NotNull Function<RegistryFriendlyByteBuf, T> pDecoder,
+			@Nullable StreamCodec<RegistryFriendlyByteBuf, T> pCodec) {
 		this.id = pId;
 		this.decoder = pDecoder;
-		this.handler = pHandler;
+		this.handlerSupplier = null;
 		this.payloadId = new CustomPacketPayload.Type<>(pId);
-		this.codec = createDefaultCodec(pDecoder);
+		this.codec = pCodec != null ? pCodec : createDefaultCodec(pDecoder);
 	}
 
 	@NotNull
@@ -72,9 +86,12 @@ public class PacketRegisterInfo<T extends NetworkPacket<T> & Encodable> {
 		return decoder;
 	}
 
-	@NotNull
+	@Nullable
 	public PacketHandler<T> getHandler() {
-		return handler;
+		if (handlerSupplier == null) {
+			return null;
+		}
+		return handlerSupplier.get();
 	}
 
 	@NotNull

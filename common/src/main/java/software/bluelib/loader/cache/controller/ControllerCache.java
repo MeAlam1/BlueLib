@@ -8,14 +8,9 @@
 package software.bluelib.loader.cache.controller;
 
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.DataResult;
-import com.mojang.serialization.Dynamic;
-
 import java.util.List;
-
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtOps;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.utils.codec.NbtCodecUtils;
@@ -26,12 +21,10 @@ public record ControllerCache(
 		@NotNull List<GroupCache> groups) {
 
 	@NotNull
-	public static final Codec<ControllerCache> CODEC =
-			NbtCodecUtils.fromNbt(ControllerCache::readFromNBT, ControllerCache::writeToNBT);
+	public static final Codec<ControllerCache> CODEC = NbtCodecUtils.fromNbt(ControllerCache::readFromNBT, ControllerCache::writeToNBT);
 
 	@NotNull
-	public static final DataComponentType<ControllerCache> CONTROLLER_CACHE_DATA =
-			NbtCodecUtils.persistentDataType(CODEC);
+	public static final DataComponentType<ControllerCache> CONTROLLER_CACHE_DATA = NbtCodecUtils.persistentDataType(CODEC);
 
 	public void writeToNBT(@NotNull CompoundTag pTag) {
 		pTag.putString("formatVersion", formatVersion);

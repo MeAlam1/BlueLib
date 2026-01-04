@@ -5,12 +5,9 @@
  * If a copy of the MIT License was not distributed with this file,
  * You can obtain one at https://opensource.org/licenses/MIT.
  */
-package software.bluelib.config.bluelib;
+package software.bluelib.api.net;
 
-import software.bluelib.config.BlueLibConfig;
-
-public class LoggerConfig extends BlueLibConfig {
-
-	public boolean isBlueLibLoggingEnabled = true;
-	public boolean isLoggingEnabled = true;
+public enum PacketSide {
+	C2S, // client->server
+	S2C  // server->client
 }

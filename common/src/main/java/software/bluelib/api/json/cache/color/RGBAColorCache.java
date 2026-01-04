@@ -8,14 +8,9 @@
 package software.bluelib.api.json.cache.color;
 
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.DataResult;
-import com.mojang.serialization.Dynamic;
-
 import java.awt.*;
-
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtOps;
 import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.json.deserializer.color.RGBAColor;
 import software.bluelib.api.utils.codec.NbtCodecUtils;
@@ -27,12 +22,10 @@ public record RGBAColorCache(
 		@NotNull Integer alpha) {
 
 	@NotNull
-	public static final Codec<RGBAColorCache> CODEC =
-			NbtCodecUtils.fromNbt(RGBAColorCache::readFromNBT, RGBAColorCache::writeToNBT);
+	public static final Codec<RGBAColorCache> CODEC = NbtCodecUtils.fromNbt(RGBAColorCache::readFromNBT, RGBAColorCache::writeToNBT);
 
 	@NotNull
-	public static final DataComponentType<RGBAColorCache> RGBA_COLOR_DATA =
-			NbtCodecUtils.persistentDataType(CODEC);
+	public static final DataComponentType<RGBAColorCache> RGBA_COLOR_DATA = NbtCodecUtils.persistentDataType(CODEC);
 
 	public void writeToNBT(@NotNull CompoundTag pTag) {
 		pTag.putInt("Red", red);

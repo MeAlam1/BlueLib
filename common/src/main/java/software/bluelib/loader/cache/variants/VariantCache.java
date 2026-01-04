@@ -10,11 +10,8 @@ package software.bluelib.loader.cache.variants;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.DataResult;
-import com.mojang.serialization.Dynamic;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtOps;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.utils.codec.NbtCodecUtils;
@@ -24,12 +21,10 @@ public record VariantCache(
 		@Nullable JsonArray parameters) {
 
 	@NotNull
-	public static final Codec<VariantCache> CODEC =
-			NbtCodecUtils.fromNbt(VariantCache::readFromNBT, VariantCache::writeToNBT);
+	public static final Codec<VariantCache> CODEC = NbtCodecUtils.fromNbt(VariantCache::readFromNBT, VariantCache::writeToNBT);
 
 	@NotNull
-	public static final DataComponentType<VariantCache> VARIANT_CACHE_DATA =
-			NbtCodecUtils.persistentDataType(CODEC);
+	public static final DataComponentType<VariantCache> VARIANT_CACHE_DATA = NbtCodecUtils.persistentDataType(CODEC);
 
 	public void writeToNBT(@NotNull CompoundTag pTag) {
 		CompoundTagUtils.writeJsonArray(pTag, "parameters", parameters);

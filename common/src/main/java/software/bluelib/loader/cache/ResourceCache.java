@@ -23,6 +23,7 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.profiling.ProfilerFiller;
 import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.entity.variant.IVariantProvider;
+import software.bluelib.api.net.NetworkRegistry;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
 import software.bluelib.loader.BlueLoader;
@@ -31,6 +32,7 @@ import software.bluelib.loader.cache.controller.ControllerCache;
 import software.bluelib.loader.cache.model.ModelCache;
 import software.bluelib.loader.cache.variants.EntityCache;
 import software.bluelib.loader.json.deserialize.animation.BakedAnimationsAdapter;
+import software.bluelib.net.messages.client.loader.ControllerCachePacket;
 
 public class ResourceCache extends BlueLoader {
 
@@ -42,6 +44,9 @@ public class ResourceCache extends BlueLoader {
 		private static Map<ResourceLocation, ModelCache> MODELS = Collections.emptyMap();
 
 		@NotNull
+		private static Map<ResourceLocation, ControllerCache> CONTROLLERS = Collections.emptyMap();
+
+		@NotNull
 		public static Map<ResourceLocation, AnimationLibraryCache> getBakedAnimations() {
 			return ANIMATIONS;
 		}
@@ -49,6 +54,15 @@ public class ResourceCache extends BlueLoader {
 		@NotNull
 		public static Map<ResourceLocation, ModelCache> getBakedModels() {
 			return MODELS;
+		}
+
+		@NotNull
+		public static Map<ResourceLocation, ControllerCache> getControllers() {
+			return CONTROLLERS;
+		}
+
+		public static void setControllers(@NotNull Map<ResourceLocation, ControllerCache> pControllers) {
+			CONTROLLERS = pControllers;
 		}
 
 		public static void registerReloadListener() {
@@ -108,23 +122,23 @@ public class ResourceCache extends BlueLoader {
 		}
 
 		public static void registerReloadListener(@NotNull MinecraftServer pServer, @NotNull List<IVariantProvider> pProviders) {
-			ResourceCache.Server.reload(pProviders, pServer.getResourceManager(), Util.backgroundExecutor(), pServer);
+			ResourceCache.Server.reload(pProviders, pServer, Util.backgroundExecutor(), pServer);
 		}
 
 		public static CompletableFuture<Void> reload(
 				@NotNull List<IVariantProvider> pProviders,
-				@NotNull ResourceManager pResourceManager,
+				@NotNull MinecraftServer pServer,
 				@NotNull Executor pBackgroundExecutor,
 				@NotNull Executor pGameExecutor) {
 			clearCaches();
 
-			CompletableFuture<Map<ResourceLocation, ControllerCache>> controllers = loadControllers(pBackgroundExecutor, pResourceManager)
+			CompletableFuture<Map<ResourceLocation, ControllerCache>> controllers = loadControllers(pBackgroundExecutor, pServer.getResourceManager())
 					.exceptionally(ex -> {
 						BaseLogger.log(true, BaseLogLevel.ERROR, "controllers failed: " + ex.getMessage());
 						return java.util.Collections.emptyMap();
 					});
 
-			CompletableFuture<Map<ResourceLocation, EntityCache>> variants = loadVariants(pBackgroundExecutor, pResourceManager, pProviders)
+			CompletableFuture<Map<ResourceLocation, EntityCache>> variants = loadVariants(pBackgroundExecutor, pServer.getResourceManager(), pProviders)
 					.exceptionally(ex -> {
 						BaseLogger.log(true, BaseLogLevel.ERROR, "variants failed: " + ex.getMessage());
 						return java.util.Collections.emptyMap();
@@ -133,8 +147,10 @@ public class ResourceCache extends BlueLoader {
 			return controllers.thenCombineAsync(variants, (c, v) -> {
 				ResourceCache.Server.CONTROLLERS = c;
 				ResourceCache.Server.VARIANTS = v;
+
 				BaseLogger.log(true, BaseLogLevel.INFO, "Variants Cache: " + ResourceCache.Server.VARIANTS);
 				BaseLogger.log(true, BaseLogLevel.INFO, "Controllers Cache: " + ResourceCache.Server.CONTROLLERS);
+				NetworkRegistry.sendToAllPlayers(pServer, new ControllerCachePacket(ResourceCache.Server.CONTROLLERS));
 				return null;
 			}, pGameExecutor);
 		}

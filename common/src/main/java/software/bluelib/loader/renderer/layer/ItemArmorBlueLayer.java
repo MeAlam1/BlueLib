@@ -32,7 +32,6 @@ import net.minecraft.world.level.block.AbstractSkullBlock;
 import net.minecraft.world.level.block.SkullBlock;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import software.bluelib.BlueLibConstants;
 import software.bluelib.api.utils.Color;
 import software.bluelib.client.BlueLibCommonClient;
 import software.bluelib.client.utils.RenderUtils;

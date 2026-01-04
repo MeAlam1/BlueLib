@@ -40,7 +40,6 @@ public class ControllerManager<T extends BlueAnimatable> {
 				int maxPriority = Integer.MIN_VALUE;
 				for (Map.Entry<String, BehaviourCache> entry : behaviours.entrySet()) {
 					BehaviourCache behaviour = entry.getValue();
-					// Only consider non-overlay states
 					boolean hasNonOverlayState = behaviour.states().values().stream().anyMatch(state -> !state.isOverlay());
 					if (!hasNonOverlayState) continue;
 					int priority = getEffectiveBehaviourPriority(behaviour, pAnimatable);
@@ -136,8 +135,10 @@ public class ControllerManager<T extends BlueAnimatable> {
 				LoaderUtils.stripSuffix(".controller.json", pLocation)
 		};
 
+		final Map<ResourceLocation, ControllerCache> controllerMap = ResourceCache.Client.getControllers();
+
 		for (ResourceLocation loc : attempts) {
-			ControllerCache controller = ResourceCache.Server.getControllers().get(loc);
+			ControllerCache controller = controllerMap.get(loc);
 			if (controller != null) {
 				return controller;
 			}

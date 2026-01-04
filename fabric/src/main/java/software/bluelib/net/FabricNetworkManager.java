@@ -1,3 +1,4 @@
+// file: `fabric/src/main/java/software/bluelib/net/FabricNetworkManager.java`
 /*
  * Copyright (C) 2024 BlueLib Contributors
  *
@@ -21,25 +22,26 @@ import software.bluelib.api.net.NetworkRegistry;
 
 public class FabricNetworkManager implements NetworkManager {
 
-	public static void registerMessages() {
-		NetworkRegistry.getS2CPayloads().forEach(info -> FabricPacketInfo.registerPacket(info, true));
-		NetworkRegistry.getC2SPayloads().forEach(info -> FabricPacketInfo.registerPacket(info, false));
+	public static void registerClientPackets() {
+		NetworkRegistry.getClientProvider().forEach(p -> {
+			FabricPacketInfo.registerC2SPayload(p);
+			FabricPacketInfo.registerS2CPayload(p);
+		});
+
+		FabricPacketInfo.registerClientHandlers(NetworkRegistry.getClientProvider());
 	}
 
-	public static void registerClientHandlers() {
-		NetworkRegistry.getS2CPayloads().stream()
-				.map(FabricPacketInfo::new)
-				.forEach(FabricPacketInfo::registerClientHandler);
-	}
+	public static void registerServerPackets() {
+		NetworkRegistry.getServerProvider().forEach(p -> {
+			FabricPacketInfo.registerC2SPayload(p);
+			FabricPacketInfo.registerS2CPayload(p);
+		});
 
-	public static void registerServerHandlers() {
-		NetworkRegistry.getC2SPayloads().stream()
-				.map(FabricPacketInfo::new)
-				.forEach(FabricPacketInfo::registerServerHandler);
+		FabricPacketInfo.registerServerHandlers(NetworkRegistry.getServerProvider());
 	}
 
 	@Override
-	public void sendPacketToPlayer(@NotNull ServerPlayer pPlayer, @NotNull NetworkPacket<?> pPacket) {
+	public void sendPacketToPlayer(@NotNull ServerPlayer pPlayer, @NotNull software.bluelib.api.net.NetworkPacket<?> pPacket) {
 		ServerPlayNetworking.send(pPlayer, pPacket);
 	}
 
@@ -50,18 +52,12 @@ public class FabricNetworkManager implements NetworkManager {
 
 	@Override
 	public void sendToAllPlayersTrackingEntity(@NotNull Entity pTrackingEntity, @NotNull NetworkPacket<?> pPacket) {
-		if (pTrackingEntity instanceof ServerPlayer pl)
-			sendPacketToPlayer(pl, pPacket);
-
-		for (ServerPlayer player : PlayerLookup.tracking(pTrackingEntity)) {
-			sendPacketToPlayer(player, pPacket);
-		}
+		if (pTrackingEntity instanceof ServerPlayer pl) sendPacketToPlayer(pl, pPacket);
+		for (ServerPlayer player : PlayerLookup.tracking(pTrackingEntity)) sendPacketToPlayer(player, pPacket);
 	}
 
 	@Override
 	public void sendToAllPlayersTrackingBlock(@NotNull ServerLevel pLevel, @NotNull BlockPos pBlockPos, @NotNull NetworkPacket<?> pPacket) {
-		for (ServerPlayer player : PlayerLookup.tracking(pLevel, pBlockPos)) {
-			sendPacketToPlayer(player, pPacket);
-		}
+		for (ServerPlayer player : PlayerLookup.tracking(pLevel, pBlockPos)) sendPacketToPlayer(player, pPacket);
 	}
 }

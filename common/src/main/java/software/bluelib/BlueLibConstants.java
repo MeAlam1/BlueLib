@@ -19,7 +19,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.event.IEventProxy;
 import software.bluelib.internal.BlueResource;
-import software.bluelib.platform.IPlatformClient;
 import software.bluelib.platform.IPlatformHelper;
 import software.bluelib.platform.IRegistryHelper;
 
