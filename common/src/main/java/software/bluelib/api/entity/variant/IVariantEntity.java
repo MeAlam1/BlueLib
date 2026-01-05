@@ -10,16 +10,19 @@ package software.bluelib.api.entity.variant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import software.bluelib.api.net.NetworkRegistry;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
 import software.bluelib.api.utils.variant.ParameterUtils;
 import software.bluelib.entity.variant.IVariantAccessor;
 import software.bluelib.internal.BlueTranslation;
+import software.bluelib.net.messages.client.variant.SetVariantPacket;
 
 @SuppressWarnings("unused")
 public interface IVariantEntity<T extends Entity> {
@@ -56,6 +59,9 @@ public interface IVariantEntity<T extends Entity> {
 
 	default void setVariantName(@NotNull String pVariantName) {
 		T entity = getEntity();
+		int id = entity.getId();
+		SetVariantPacket packet = new SetVariantPacket(id, pVariantName);
+		NetworkRegistry.sendToAllPlayers(entity.getServer(), packet);
 		((IVariantAccessor) entity).setEntityVariantName(pVariantName);
 	}
 }

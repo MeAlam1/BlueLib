@@ -13,6 +13,9 @@
 - `toString()` method added to `Animation` and `AnimationState` for better debugging
 - Input validation with `IllegalArgumentException` for negative ticks, non-positive play counts, and NaN animation
   values
+- New packet that syncs the Variant Name with all clients when changed on the server
+    - Shouldn't be necessary to add this manually, but due to a high amount of reports about desyncs, we added it just
+      to be sure
 
 ## Changed
 

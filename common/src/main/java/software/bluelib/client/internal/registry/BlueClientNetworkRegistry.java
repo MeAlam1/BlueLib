@@ -9,14 +9,17 @@ package software.bluelib.client.internal.registry;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.net.PacketProvider;
 import software.bluelib.client.net.OpenLoggerPacketHandler;
 import software.bluelib.client.net.loader.*;
+import software.bluelib.client.net.variant.SetVariantPacketHandler;
 import software.bluelib.net.PacketRegisterInfo;
 import software.bluelib.net.messages.client.OpenLoggerPacket;
 import software.bluelib.net.messages.client.loader.*;
+import software.bluelib.net.messages.client.variant.SetVariantPacket;
 import software.bluelib.net.messages.server.TestPacket;
 
 @ApiStatus.Internal
@@ -34,6 +37,9 @@ public class BlueClientNetworkRegistry implements PacketProvider {
 	@Override
 	public @NotNull List<PacketRegisterInfo<?>> getS2CPackets() {
 		List<PacketRegisterInfo<?>> list = new ArrayList<>();
+
+		// Variants
+		list.add(new PacketRegisterInfo<>(SetVariantPacket.ID, SetVariantPacket::decode, SetVariantPacketHandler::new));
 
 		// Logger
 		list.add(new PacketRegisterInfo<>(OpenLoggerPacket.ID, OpenLoggerPacket::decode, OpenLoggerPacketHandler::new));
