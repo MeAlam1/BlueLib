@@ -1,11 +1,12 @@
-package software.bluelib_examples.registry;
+package software.bluelib_examples.client.registry;
 
-import java.util.ArrayList;
-import java.util.List;
 import software.bluelib.api.net.PacketProvider;
 import software.bluelib.net.PacketRegisterInfo;
 
-public class NetworkRegistry implements PacketProvider {
+import java.util.ArrayList;
+import java.util.List;
+
+public class ClientNetworkRegistry implements PacketProvider {
 
     @Override
     public List<PacketRegisterInfo<?>> getC2SPackets() {

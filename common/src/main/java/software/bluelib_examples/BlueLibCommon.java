@@ -8,18 +8,13 @@ import software.bluelib_examples.registry.EntityRegistry;
 public class BlueLibCommon {
 
     @ApiStatus.Internal
-    public static software.bluelib_examples.registry.NetworkRegistry getRegistry() {
-        return new software.bluelib_examples.registry.NetworkRegistry();
-    }
-
-    @ApiStatus.Internal
     public static void doServerRegistration() {
         EntityRegistry.init();
-        NetworkRegistry.registerC2SPacketProvider(getRegistry());
+        NetworkRegistry.registerPacketProvider(new software.bluelib_examples.registry.NetworkRegistry());
     }
 
     @ApiStatus.Internal
     public static void doClientRegistration() {
-        NetworkRegistry.registerS2CPacketProvider(getRegistry());
+        NetworkRegistry.registerPacketProvider(new software.bluelib_examples.client.registry.ClientNetworkRegistry());
     }
 }

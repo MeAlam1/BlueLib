@@ -126,7 +126,6 @@ processResources {
             'neoforge_version_range'       : neoforge_version_range,
             'credits'                      : credits,
             'java_version'                 : java_version,
-            'geckolib_version'             : geckolib_version,
             'bluelib_version'              : bluelib_version
     ]
 

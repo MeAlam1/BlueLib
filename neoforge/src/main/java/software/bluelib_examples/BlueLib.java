@@ -9,7 +9,6 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import software.bluelib.client.BlueLibClient;
 import software.bluelib.event.ReloadHandler;
 import software.bluelib_examples.registry.EntityRegistry;
 import software.bluelib_examples.variant.VariantProvider;

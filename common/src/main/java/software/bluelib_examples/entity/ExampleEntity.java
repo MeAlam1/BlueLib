@@ -9,18 +9,15 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.animation.AnimatableManager;
-import software.bernie.geckolib.util.GeckoLibUtil;
 import software.bluelib.api.entity.variant.IVariantEntity;
 import software.bluelib.api.net.NetworkRegistry;
+import software.bluelib.loader.animatable.cache.AnimatableInstanceCache;
+import software.bluelib.loader.animatable.entity.BlueEntity;
 import software.bluelib.net.messages.client.OpenLoggerPacket;
 import software.bluelib_examples.BlueLibConstants;
 
-public class ExampleEntity extends PathfinderMob implements GeoEntity, IVariantEntity<ExampleEntity> {
+public class ExampleEntity extends PathfinderMob implements BlueEntity, IVariantEntity<ExampleEntity> {
 
-	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 	public final String entityName = "test";
 
 	public ExampleEntity(EntityType<? extends ExampleEntity> type, Level level) {
@@ -32,25 +29,21 @@ public class ExampleEntity extends PathfinderMob implements GeoEntity, IVariantE
 	}
 
 	@Override
-	public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
-	}
-
-	@Override
-	public AnimatableInstanceCache getAnimatableInstanceCache() {
-		return cache;
-	}
-
-	@Override
 	public @NotNull ExampleEntity getEntity() {
 		return this;
 	}
 
 	@Override
 	public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor pLevel, @NotNull DifficultyInstance pDifficulty, @NotNull MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData) {
-		NetworkRegistry.sendToAllPlayers(new OpenLoggerPacket());
+		NetworkRegistry.sendToAllPlayers(pLevel.getServer(), new OpenLoggerPacket());
 		if (getVariantName().isEmpty()) {
 			setVariantName(getRandomVariant(getEntityVariants(ResourceLocation.fromNamespaceAndPath(BlueLibConstants.MOD_ID, entityName)), "normal"));
 		}
 		return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData);
+	}
+
+	@Override
+	public @NotNull ResourceLocation getControllerResource() {
+		return ResourceLocation.fromNamespaceAndPath(BlueLibConstants.MOD_ID, entityName + ".json");
 	}
 }

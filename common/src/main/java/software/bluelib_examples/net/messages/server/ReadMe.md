@@ -56,8 +56,11 @@ public record TestPacket(boolean value) implements NetworkPacket<TestPacket> {
 # Important
 
 * Create a handler in `net.serverHandling`.
-* Register the packet in your own `NetworkRegistry.getC2SPacketInfoList()` method.
-
+* Register the packet in your own `NetworkRegistry.getC2SPackets()` method.
 ```java
-list.add(new PacketRegisterInfo<>(TestPacket.ID, TestPacket::decode, new TestPacketHandler()));
+list.add(new PacketRegisterInfo<>(TestPacket.ID, TestPacket::decode));
+```
+* and `ClientNetworkRegistry.getC2SPackets()`
+```java
+list.add(new PacketRegisterInfo<>(TestPacket.ID, TestPacket::decode, TestPacketHandler::new));
 ```

@@ -60,8 +60,11 @@ public class TestPacket implements NetworkPacket<TestPacket> {
 
 # Important
 * Create a handler in `client.net`.
-* Register the packet in your own `NetworkRegistry.getS2CPacketInfoList()` method.
-
+* Register the packet in your own `NetworkRegistry.getS2CPackets()` method.
 ```java
-list.add(new PacketRegisterInfo<>(TestPacket.ID, TestPacket::decode, new TestPacketHandler()));
+list.add(new PacketRegisterInfo<>(TestPacket.ID, TestPacket::decode));
+```
+* and `ClientNetworkRegistry.getS2CPackets()`
+```java
+list.add(new PacketRegisterInfo<>(TestPacket.ID, TestPacket::decode, TestPacketHandler::new));
 ```

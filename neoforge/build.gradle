@@ -37,8 +37,6 @@ neoForge {
 }
 
 dependencies {
-    implementation "software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}"
-    //implementation files("LocalVersion/${bluelib_version}-neoforge-${minecraft_version}-bluelib.jar")
     implementation("maven.modrinth:bluelib:neoforge-${bluelib_version}")
 }
 
