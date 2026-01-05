@@ -21,6 +21,8 @@
   `animationEndValue` → `endValue`)
 - Renamed `AnimationPointFrame` to `AnimationFrame` and moved to `frame` subpackage
 - Renamed `getAnimationStages()` to `getAnimationFrames()` in `Animation` class
+- Renamed `BoneSnapshot` to `BoneFrame` for consistency
+- Refactored `BoneAnimationFrame` to be a final class instead of record to avoid a misleading immutable structure.
 - Refactored `BoneAnimationFrame` to use `AnimationFrameVector` instead of individual X/Y/Z queues
 - Renamed methods in `BoneAnimationFrame`: `addRotations` → `addNextRotation`, `addPositions` → `addNextPosition`,
   `addScales` → `addNextScale`
