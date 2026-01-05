@@ -113,9 +113,9 @@ public interface AnimationCacheFactory extends CacheFactory<AnimationFileCache, 
 				String name = entry.getKey();
 				BoneAnimationDeserializer deserializer = entry.getValue();
 
-				TransformChannelCache rotation = constructTransformChannel(deserializer.rotationArray(), deserializer.rotationObject());
-				TransformChannelCache position = constructTransformChannel(deserializer.positionArray(), deserializer.positionObject());
-				TransformChannelCache scale = constructTransformChannel(deserializer.scaleArray(), deserializer.scaleObject());
+				TransformKeyframeCache rotation = constructTransformKeyframe(deserializer.rotationArray(), deserializer.rotationObject());
+				TransformKeyframeCache position = constructTransformKeyframe(deserializer.positionArray(), deserializer.positionObject());
+				TransformKeyframeCache scale = constructTransformKeyframe(deserializer.scaleArray(), deserializer.scaleObject());
 
 				boneAnimationMap.put(name, new BoneAnimationCache(name, rotation, position, scale));
 			}
@@ -123,20 +123,13 @@ public interface AnimationCacheFactory extends CacheFactory<AnimationFileCache, 
 			return boneAnimationMap;
 		}
 
-		private @Nullable TransformChannelCache constructTransformChannel(
-				@Nullable List<MoLangValue> pArray,
-				@Nullable KeyframeDeserializer pObject) {
-
-			KeyframeCache keyframes = constructKeyframeCache(pObject);
-			if (keyframes != null) {
-				return new TransformChannelCache.Keyframes(keyframes);
+		private @Nullable TransformKeyframeCache constructTransformKeyframe(
+				@Nullable List<MoLangValue> pArrayData,
+				@Nullable KeyframeDeserializer pObjectData) {
+			if (pArrayData == null && pObjectData == null) {
+				return null;
 			}
-
-			if (pArray != null) {
-				return new TransformChannelCache.Array(pArray);
-			}
-
-			return null;
+			return new TransformKeyframeCache(pArrayData, constructKeyframeCache(pObjectData));
 		}
 
 		private @Nullable KeyframeCache constructKeyframeCache(@Nullable KeyframeDeserializer pKeyframeDeserializer) {
@@ -153,12 +146,16 @@ public interface AnimationCacheFactory extends CacheFactory<AnimationFileCache, 
 			for (Map.Entry<String, KeyframeDataDeserializer> entry : pKeyframeDataDeserializerMap.entrySet()) {
 				String name = entry.getKey();
 				KeyframeDataDeserializer deserializer = entry.getValue();
-				keyframeDataMap.put(name, new KeyframeCacheData(
-						deserializer.arrayData(),
-						deserializer.pre(),
-						deserializer.post(),
-						constructEasing(deserializer.easing()),
-						deserializer.easingArgs()));
+
+				if (deserializer.arrayData() != null) {
+					keyframeDataMap.put(name, KeyframeCacheData.fromArray(deserializer.arrayData()));
+				} else {
+					keyframeDataMap.put(name, new KeyframeCacheData(
+							deserializer.pre(),
+							deserializer.post(),
+							constructEasing(deserializer.easing()),
+							deserializer.easingArgs()));
+				}
 			}
 			return keyframeDataMap;
 		}
@@ -170,34 +167,40 @@ public interface AnimationCacheFactory extends CacheFactory<AnimationFileCache, 
 			return EasingCache.fromString(pEasing);
 		}
 
-		private static <T, R> @Nullable R constructCustomDataCache(
-				@Nullable T pDeserializer,
-				Function<T, R> pMapper) {
+		@Nullable
+		private List<SoundKeyframeCache> constructSound(@Nullable List<SoundKeyframeDeserializer> pDeserializer) {
 			if (pDeserializer == null) {
 				return null;
 			}
-			return pMapper.apply(pDeserializer);
+			List<SoundKeyframeCache> result = new java.util.ArrayList<>(pDeserializer.size());
+			for (SoundKeyframeDeserializer d : pDeserializer) {
+				result.add(new SoundKeyframeCache(d.startTick(), d.sound()));
+			}
+			return result;
 		}
 
 		@Nullable
-		private SoundKeyframeCache constructSound(@Nullable SoundKeyframeDeserializer pDeserializer) {
-			return constructCustomDataCache(
-					pDeserializer,
-					d -> new SoundKeyframeCache(d.startTick(), d.sound()));
+		private List<ParticleKeyframeCache> constructParticle(@Nullable List<ParticleKeyframeDeserializer> pDeserializer) {
+			if (pDeserializer == null) {
+				return null;
+			}
+			List<ParticleKeyframeCache> result = new java.util.ArrayList<>(pDeserializer.size());
+			for (ParticleKeyframeDeserializer d : pDeserializer) {
+				result.add(new ParticleKeyframeCache(d.startTick(), d.effect(), d.locator(), d.script()));
+			}
+			return result;
 		}
 
 		@Nullable
-		private ParticleKeyframeCache constructParticle(@Nullable ParticleKeyframeDeserializer pDeserializer) {
-			return constructCustomDataCache(
-					pDeserializer,
-					d -> new ParticleKeyframeCache(d.startTick(), d.effect(), d.locator(), d.script()));
-		}
-
-		@Nullable
-		private CustomInstructionKeyframeCache constructCustomInstruction(@Nullable CustomInstructionKeyframeDeserializer pDeserializer) {
-			return constructCustomDataCache(
-					pDeserializer,
-					d -> new CustomInstructionKeyframeCache(d.startTick(), d.instructions()));
+		private List<CustomInstructionKeyframeCache> constructCustomInstruction(@Nullable List<CustomInstructionKeyframeDeserializer> pDeserializer) {
+			if (pDeserializer == null) {
+				return null;
+			}
+			List<CustomInstructionKeyframeCache> result = new java.util.ArrayList<>(pDeserializer.size());
+			for (CustomInstructionKeyframeDeserializer d : pDeserializer) {
+				result.add(new CustomInstructionKeyframeCache(d.startTick(), d.instructions()));
+			}
+			return result;
 		}
 	}
 }
