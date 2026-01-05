@@ -8,10 +8,14 @@
 package software.bluelib.loader.json.animation;
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import software.bluelib.api.molang.value.MoLangValue;
 import software.bluelib.loader.cache.animation.*;
 import software.bluelib.loader.cache.animation.keyframe.*;
 import software.bluelib.loader.json.CacheFactory;
@@ -101,22 +105,38 @@ public interface AnimationCacheFactory extends CacheFactory<AnimationFileCache, 
 					constructBoneAnimations(pBones.boneAnimations()));
 		}
 
-		private @NotNull Map<String, BoneAnimationCache> constructBoneAnimations(@NotNull Map<String, BoneAnimationDeserializer> pBoneAnimationDeserializerMap) {
+		private @NotNull Map<String, BoneAnimationCache> constructBoneAnimations(
+				@NotNull Map<String, BoneAnimationDeserializer> pBoneAnimationDeserializerMap) {
 			Map<String, BoneAnimationCache> boneAnimationMap = new Object2ObjectOpenHashMap<>(pBoneAnimationDeserializerMap.size());
 
 			for (Map.Entry<String, BoneAnimationDeserializer> entry : pBoneAnimationDeserializerMap.entrySet()) {
 				String name = entry.getKey();
 				BoneAnimationDeserializer deserializer = entry.getValue();
-				boneAnimationMap.put(name, new BoneAnimationCache(
-						name,
-						deserializer.rotationArray(),
-						constructKeyframeCache(deserializer.rotationObject()),
-						deserializer.positionArray(),
-						constructKeyframeCache(deserializer.positionObject()),
-						deserializer.scaleArray(),
-						constructKeyframeCache(deserializer.scaleObject())));
+
+				TransformChannelCache rotation = constructTransformChannel(deserializer.rotationArray(), deserializer.rotationObject());
+				TransformChannelCache position = constructTransformChannel(deserializer.positionArray(), deserializer.positionObject());
+				TransformChannelCache scale = constructTransformChannel(deserializer.scaleArray(), deserializer.scaleObject());
+
+				boneAnimationMap.put(name, new BoneAnimationCache(name, rotation, position, scale));
 			}
+
 			return boneAnimationMap;
+		}
+
+		private @Nullable TransformChannelCache constructTransformChannel(
+				@Nullable List<MoLangValue> pArray,
+				@Nullable KeyframeDeserializer pObject) {
+
+			KeyframeCache keyframes = constructKeyframeCache(pObject);
+			if (keyframes != null) {
+				return new TransformChannelCache.Keyframes(keyframes);
+			}
+
+			if (pArray != null) {
+				return new TransformChannelCache.Array(pArray);
+			}
+
+			return null;
 		}
 
 		private @Nullable KeyframeCache constructKeyframeCache(@Nullable KeyframeDeserializer pKeyframeDeserializer) {

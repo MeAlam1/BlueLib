@@ -9,12 +9,16 @@ package software.bluelib.loader.animation;
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
+
 import java.util.*;
 import java.util.function.Function;
+
 import net.minecraft.core.Direction.Axis;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.molang.value.MoLangValue;
+import software.bluelib.api.utils.logging.BaseLogLevel;
+import software.bluelib.api.utils.logging.BaseLogger;
 import software.bluelib.loader.animatable.base.BlueAnimatable;
 import software.bluelib.loader.animation.bone.BoneSnapshot;
 import software.bluelib.loader.animation.keyframe.AnimationPoint;
@@ -24,10 +28,14 @@ import software.bluelib.loader.animation.keyframe.event.CustomInstructionKeyfram
 import software.bluelib.loader.animation.keyframe.event.ParticleKeyframeEvent;
 import software.bluelib.loader.animation.keyframe.event.SoundKeyframeEvent;
 import software.bluelib.loader.animation.state.PlayState;
+import software.bluelib.loader.cache.animation.BoneAnimationCache;
+import software.bluelib.loader.cache.animation.BoneAnimationsCache;
+import software.bluelib.loader.cache.animation.TransformChannelCache;
+import software.bluelib.loader.cache.animation.keyframe.*;
 import software.bluelib.loader.cache.model.BoneCache;
 import software.bluelib.loader.geckolib.animations.Easing;
-import software.bluelib.loader.geckolib.animations.KeyFrameData;
-import software.bluelib.loader.geckolib.animations.KeyframeCache;
+import software.bluelib.loader.geckolib.math.MathParser;
+import software.bluelib.loader.geckolib.math.MoLangQueries;
 import software.bluelib.loader.model.BlueModel;
 
 public class AnimationController<T extends BlueAnimatable> {
@@ -78,7 +86,7 @@ public class AnimationController<T extends BlueAnimatable> {
 	@NotNull
 	protected Function<T, Easing> overrideEasingTypeFunction = animatable -> null;
 	@NotNull
-	private final Set<KeyFrameData> executedKeyFrames = new ObjectOpenHashSet<>();
+	private final Set<KeyframeDataCache> executedKeyFrames = new ObjectOpenHashSet<>();
 	@Nullable
 	protected BlueModel<T> lastModel;
 
@@ -350,49 +358,49 @@ public class AnimationController<T extends BlueAnimatable> {
 			}
 
 			if (this.currentAnimation != null) {
-				/* TODO: REMOVE!!!!! 
+
 				MathParser.setVariable(MoLangQueries.ANIM_TIME, () -> 0);
-				
-				for (BoneAnimationCache boneAnimationCache : this.currentAnimation.animationCache().boneAnimationCaches()) {
+
+				for (BoneAnimationCache boneAnimationCache : this.currentAnimation.animationCache().bones().boneAnimations().values()) {
 					BoneAnimationFrame boneAnimationFrame = this.boneAnimationQueues.get(boneAnimationCache.boneName());
 					BoneSnapshot boneSnapshot = this.boneSnapshots.get(boneAnimationCache.boneName());
 					BoneCache bone = pBones.get(boneAnimationCache.boneName());
-				
+
 					if (boneSnapshot == null)
 						continue;
-				
+
 					if (bone == null) {
 						if (pCrashWhenCantFindBone)
 							throw new RuntimeException("Could not find bone: " + boneAnimationCache.boneName());
-				
+
 						continue;
 					}
-				
-					KeyframeStackCache<KeyframeCache<MoLangValue>> rotationKeyFrames = boneAnimationCache.rotationKeyFrames();
-					KeyframeStackCache<KeyframeCache<MoLangValue>> positionKeyFrames = boneAnimationCache.positionKeyFrames();
-					KeyframeStackCache<KeyframeCache<MoLangValue>> scaleKeyFrames = boneAnimationCache.scaleKeyFrames();
-				
+
+					TransformChannelCache rotationKeyFrames = boneAnimationCache.rotation();
+					TransformChannelCache positionKeyFrames = boneAnimationCache.position();
+					TransformChannelCache scaleKeyFrames = boneAnimationCache.scale();
+
 					if (!rotationKeyFrames.xKeyframes().isEmpty()) {
 						boneAnimationFrame.addNextRotation(null, adjustedTick, this.transitionLength, boneSnapshot, bone.getInitialSnapshot(),
 								getAnimationPointAtTick(rotationKeyFrames.xKeyframes(), 0, true, Axis.X),
 								getAnimationPointAtTick(rotationKeyFrames.yKeyframes(), 0, true, Axis.Y),
 								getAnimationPointAtTick(rotationKeyFrames.zKeyframes(), 0, true, Axis.Z));
 					}
-				
+
 					if (!positionKeyFrames.xKeyframes().isEmpty()) {
 						boneAnimationFrame.addNextPosition(null, adjustedTick, this.transitionLength, boneSnapshot,
 								getAnimationPointAtTick(positionKeyFrames.xKeyframes(), 0, false, Axis.X),
 								getAnimationPointAtTick(positionKeyFrames.yKeyframes(), 0, false, Axis.Y),
 								getAnimationPointAtTick(positionKeyFrames.zKeyframes(), 0, false, Axis.Z));
 					}
-				
+
 					if (!scaleKeyFrames.xKeyframes().isEmpty()) {
 						boneAnimationFrame.addNextScale(null, adjustedTick, this.transitionLength, boneSnapshot,
 								getAnimationPointAtTick(scaleKeyFrames.xKeyframes(), 0, false, Axis.X),
 								getAnimationPointAtTick(scaleKeyFrames.yKeyframes(), 0, false, Axis.Y),
 								getAnimationPointAtTick(scaleKeyFrames.zKeyframes(), 0, false, Axis.Z));
 					}
-				}*/
+				}
 			}
 		}
 	}
@@ -426,79 +434,85 @@ public class AnimationController<T extends BlueAnimatable> {
 
 		final double finalAdjustedTick = pAdjustedTick;
 
-		/* TODO: REMOVE!!!!!
+
 		MathParser.setVariable(MoLangQueries.ANIM_TIME, () -> finalAdjustedTick / 20d);
-		
-		for (BoneAnimationCache boneAnimationCache : this.currentAnimation.animationCache().boneAnimationCaches()) {
+
+		for (BoneAnimationCache boneAnimationCache : this.currentAnimation.animationCache().bones().boneAnimations().values()) {
 			BoneAnimationFrame boneAnimationFrame = this.boneAnimationQueues.get(boneAnimationCache.boneName());
-		
+
 			if (boneAnimationFrame == null) {
 				if (pCrashWhenCantFindBone)
 					throw new RuntimeException("Could not find bone: " + boneAnimationCache.boneName());
-		
+
 				continue;
 			}
-		
-			KeyframeStackCache<KeyframeCache<MoLangValue>> rotationKeyFrames = boneAnimationCache.rotationKeyFrames();
-			KeyframeStackCache<KeyframeCache<MoLangValue>> positionKeyFrames = boneAnimationCache.positionKeyFrames();
-			KeyframeStackCache<KeyframeCache<MoLangValue>> scaleKeyFrames = boneAnimationCache.scaleKeyFrames();
-		
+
+			TransformChannelCache rotationKeyFrames = boneAnimationCache.rotation();
+			TransformChannelCache positionKeyFrames = boneAnimationCache.position();
+			TransformChannelCache scaleKeyFrames = boneAnimationCache.scale();
+
 			if (!rotationKeyFrames.xKeyframes().isEmpty()) {
 				boneAnimationFrame.addRotations(
 						getAnimationPointAtTick(rotationKeyFrames.xKeyframes(), pAdjustedTick, true, Axis.X),
 						getAnimationPointAtTick(rotationKeyFrames.yKeyframes(), pAdjustedTick, true, Axis.Y),
 						getAnimationPointAtTick(rotationKeyFrames.zKeyframes(), pAdjustedTick, true, Axis.Z));
 			}
-		
+
 			if (!positionKeyFrames.xKeyframes().isEmpty()) {
 				boneAnimationFrame.addPositions(
 						getAnimationPointAtTick(positionKeyFrames.xKeyframes(), pAdjustedTick, false, Axis.X),
 						getAnimationPointAtTick(positionKeyFrames.yKeyframes(), pAdjustedTick, false, Axis.Y),
 						getAnimationPointAtTick(positionKeyFrames.zKeyframes(), pAdjustedTick, false, Axis.Z));
 			}
-		
+
 			if (!scaleKeyFrames.xKeyframes().isEmpty()) {
 				boneAnimationFrame.addScales(
 						getAnimationPointAtTick(scaleKeyFrames.xKeyframes(), pAdjustedTick, false, Axis.X),
 						getAnimationPointAtTick(scaleKeyFrames.yKeyframes(), pAdjustedTick, false, Axis.Y),
 						getAnimationPointAtTick(scaleKeyFrames.zKeyframes(), pAdjustedTick, false, Axis.Z));
 			}
-		}*/
+		}
 
 		pAdjustedTick += this.transitionLength;
 
-		/*for (SoundKeyframeData keyframeData : this.currentAnimation.animationCache().keyFrames().sounds()) {
-			if (pAdjustedTick >= keyframeData.getStartTick() && this.executedKeyFrames.add(keyframeData)) {
-				if (this.soundKeyframeHandler == null) {
-					BaseLogger.log(BaseLogLevel.WARNING, "Sound Keyframe found for " + this.animatable.getClass().getSimpleName() + " -> " + getName() + ", but no keyframe handler registered");
-					break;
+		if (this.currentAnimation.animationCache().sounds() != null) {
+			for (SoundKeyframeCache keyframeData : this.currentAnimation.animationCache().sounds()) {
+				if (pAdjustedTick >= keyframeData.getStartTick() && this.executedKeyFrames.add(keyframeData)) {
+					if (this.soundKeyframeHandler == null) {
+						BaseLogger.log(BaseLogLevel.WARNING, "Sound Keyframe found for " + this.animatable.getClass().getSimpleName() + " -> " + getName() + ", but no keyframe handler registered");
+						break;
+					}
+
+					this.soundKeyframeHandler.handle(new SoundKeyframeEvent<>(this.animatable, pAdjustedTick, this, keyframeData));
 				}
-		
-				this.soundKeyframeHandler.handle(new SoundKeyframeEvent<>(this.animatable, pAdjustedTick, this, keyframeData));
 			}
 		}
-		
-		for (ParticleKeyframeData keyframeData : this.currentAnimation.animationCache().keyFrames().particles()) {
-			if (pAdjustedTick >= keyframeData.getStartTick() && this.executedKeyFrames.add(keyframeData)) {
-				if (this.particleKeyframeHandler == null) {
-					BaseLogger.log(BaseLogLevel.WARNING, "Particle Keyframe found for " + this.animatable.getClass().getSimpleName() + " -> " + getName() + ", but no keyframe handler registered");
-					break;
+
+		if (this.currentAnimation.animationCache().particles() != null) {
+			for (ParticleKeyframeCache keyframeData : this.currentAnimation.animationCache().particles()) {
+				if (pAdjustedTick >= keyframeData.getStartTick() && this.executedKeyFrames.add(keyframeData)) {
+					if (this.particleKeyframeHandler == null) {
+						BaseLogger.log(BaseLogLevel.WARNING, "Particle Keyframe found for " + this.animatable.getClass().getSimpleName() + " -> " + getName() + ", but no keyframe handler registered");
+						break;
+					}
+
+					this.particleKeyframeHandler.handle(new ParticleKeyframeEvent<>(this.animatable, pAdjustedTick, this, keyframeData));
 				}
-		
-				this.particleKeyframeHandler.handle(new ParticleKeyframeEvent<>(this.animatable, pAdjustedTick, this, keyframeData));
 			}
 		}
-		
-		for (CustomInstructionKeyframeData keyframeData : this.currentAnimation.animationCache().keyFrames().customInstructions()) {
-			if (pAdjustedTick >= keyframeData.getStartTick() && this.executedKeyFrames.add(keyframeData)) {
-				if (this.customKeyframeHandler == null) {
-					BaseLogger.log(BaseLogLevel.WARNING, "Custom Instruction Keyframe found for " + this.animatable.getClass().getSimpleName() + " -> " + getName() + ", but no keyframe handler registered");
-					break;
+
+		if (this.currentAnimation.animationCache().customInstructions() != null) {
+			for (CustomInstructionKeyframeCache keyframeData : this.currentAnimation.animationCache().customInstructions()) {
+				if (pAdjustedTick >= keyframeData.getStartTick() && this.executedKeyFrames.add(keyframeData)) {
+					if (this.customKeyframeHandler == null) {
+						BaseLogger.log(BaseLogLevel.WARNING, "Custom Instruction Keyframe found for " + this.animatable.getClass().getSimpleName() + " -> " + getName() + ", but no keyframe handler registered");
+						break;
+					}
+
+					this.customKeyframeHandler.handle(new CustomInstructionKeyframeEvent<>(this.animatable, pAdjustedTick, this, keyframeData));
 				}
-		
-				this.customKeyframeHandler.handle(new CustomInstructionKeyframeEvent<>(this.animatable, pAdjustedTick, this, keyframeData));
 			}
-		}*/
+		}
 
 		if (this.transitionLength == 0 && this.shouldResetTick && this.animationState == State.TRANSITIONING)
 			this.currentAnimation = this.animationQueue.poll();
@@ -517,16 +531,17 @@ public class AnimationController<T extends BlueAnimatable> {
 	}
 
 	private void saveSnapshotsForAnimation(@NotNull AnimationProcessor.QueuedAnimation pAnimation, @NotNull Map<String, BoneSnapshot> pSnapshots) {
-		for (BoneSnapshot snapshot : pSnapshots.values()) {
-			/*if (pAnimation.animationCache().boneAnimationCaches() != null) {
-				for (BoneAnimationCache boneAnimationCache : pAnimation.animationCache().boneAnimationCaches()) {
-					if (boneAnimationCache.boneName().equals(snapshot.getBone().getName())) {
-						this.boneSnapshots.put(boneAnimationCache.boneName(), BoneSnapshot.copy(snapshot));
-			
-						break;
-					}
-				}
-			}*/
+		this.boneSnapshots.clear();
+
+		BoneAnimationsCache bones = pAnimation.animationCache().bones();
+
+		for (Map.Entry<String, BoneAnimationCache> entry : bones.boneAnimations().entrySet()) {
+			String boneName = entry.getKey();
+			BoneSnapshot snapshot = pSnapshots.get(boneName);
+
+			if (snapshot != null) {
+				this.boneSnapshots.put(boneName, BoneSnapshot.copy(snapshot));
+			}
 		}
 	}
 
@@ -543,45 +558,43 @@ public class AnimationController<T extends BlueAnimatable> {
 	}
 
 	@NotNull
-	private AnimationPoint getAnimationPointAtTick(@NotNull List<KeyframeCache<MoLangValue>> pFrames, double pTick, boolean pIsRotation,
-			@NotNull Axis pAxis) {
-		KeyframeLocation<KeyframeCache<MoLangValue>> location = getCurrentKeyFrameLocation(pFrames, pTick);
-		KeyframeCache<MoLangValue> currentFrame = location.keyframe();
+	private AnimationPoint getAnimationPointAtTick(@NotNull List<KeyframeCacheData> pFrames, double pTick, boolean pIsRotation,
+	                                               @NotNull Axis pAxis) {
+		KeyframeCache location = getCurrentKeyFrameLocation(pFrames, pTick);
+		Map<String, KeyframeCacheData> currentFrame = location.keyframeData();
 		double startValue = 1;
 		double endValue = 1;
 
-		/*if (pIsRotation) {
-			if (!(currentFrame.startValue() instanceof Constant)) {
-				startValue = Math.toRadians(startValue);
-		
-				if (pAxis == Axis.X || pAxis == Axis.Y)
-					startValue *= -1;
-			}
-		
-			if (!(currentFrame.endValue() instanceof Constant)) {
-				endValue = Math.toRadians(endValue);
-		
-				if (pAxis == Axis.X || pAxis == Axis.Y)
-					endValue *= -1;
-			}
-		}*/
+		if (pIsRotation) {
+			// TODO: Possibly handle MoLang here?
+			startValue = Math.toRadians(startValue);
 
-		return new AnimationPoint(currentFrame, location.startTick(), currentFrame.length(), startValue, endValue);
+			if (pAxis == Axis.X || pAxis == Axis.Y)
+				startValue *= -1;
+
+
+			endValue = Math.toRadians(endValue);
+
+			if (pAxis == Axis.X || pAxis == Axis.Y)
+				endValue *= -1;
+		}
+
+		return new AnimationPoint(currentFrame, location, currentFrame, startValue, endValue);
 	}
 
 	@NotNull
-	private KeyframeLocation<KeyframeCache<MoLangValue>> getCurrentKeyFrameLocation(@NotNull List<KeyframeCache<MoLangValue>> pFrames,
-			double pAgeInTicks) {
+	private KeyframeCache getCurrentKeyFrameLocation(@NotNull List<KeyframeCacheData> pFrames,
+	                                                                                double pAgeInTicks) {
 		double totalFrameTime = 0;
 
-		for (KeyframeCache<MoLangValue> frame : pFrames) {
+		for (KeyframeCacheData frame : pFrames) {
 			totalFrameTime += frame.length();
 
 			if (totalFrameTime > pAgeInTicks)
-				return new KeyframeLocation<>(frame, (pAgeInTicks - (totalFrameTime - frame.length())));
+				return new KeyframeCache(frame, (pAgeInTicks - (totalFrameTime - frame.length())));
 		}
 
-		return new KeyframeLocation<>(pFrames.getLast(), pAgeInTicks);
+		return new KeyframeCache(pFrames.getLast(), pAgeInTicks);
 	}
 
 	private void resetEventKeyFrames() {

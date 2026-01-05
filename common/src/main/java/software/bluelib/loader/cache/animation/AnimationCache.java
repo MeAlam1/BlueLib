@@ -8,6 +8,8 @@
 package software.bluelib.loader.cache.animation;
 
 import java.util.HashMap;
+import java.util.List;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.loader.animation.Animation;
@@ -20,9 +22,9 @@ public record AnimationCache(
 		@NotNull Double length,
 		@Nullable LoopTypeCache loopType,
 		@NotNull BoneAnimationsCache bones,
-		@Nullable SoundKeyframeCache sounds,
-		@Nullable ParticleKeyframeCache particles,
-		@Nullable CustomInstructionKeyframeCache customInstructions) {
+		@Nullable List<SoundKeyframeCache> sounds,
+		@Nullable List<ParticleKeyframeCache> particles,
+		@Nullable List<CustomInstructionKeyframeCache> customInstructions) {
 
 	@NotNull
 	public static AnimationCache generateWaitAnimation(double pLength) {

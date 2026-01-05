@@ -8,9 +8,9 @@
 package software.bluelib.loader.animation.keyframe;
 
 import org.jetbrains.annotations.NotNull;
-import software.bluelib.loader.geckolib.animations.KeyframeCache;
+import software.bluelib.loader.cache.animation.keyframe.KeyframeCache;
 
-public record AnimationPoint(KeyframeCache<?> keyFrame, double currentTick, double transitionLength, double animationStartValue, double animationEndValue) {
+public record AnimationPoint(KeyframeCache keyFrame, double currentTick, double transitionLength, double animationStartValue, double animationEndValue) {
 
 	@Override
 	public @NotNull String toString() {
