@@ -17,7 +17,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import software.bluelib.loader.animation.keyframe.AnimationPoint;
+import software.bluelib.loader.animation.keyframe.InterpolationData;
 import software.bluelib.loader.geckolib.math.MathValue;
 
 @SuppressWarnings("unused")
@@ -97,29 +97,29 @@ public interface Easing {
 	@NotNull
 	Double2DoubleFunction buildTransformer(@Nullable Double pValue);
 
-	static double lerpWithOverride(@NotNull AnimationPoint pAnimationPoint, @Nullable Easing pOverride) {
+	static double lerpWithOverride(@NotNull InterpolationData pInterpolationData, @Nullable Easing pOverride) {
 		Easing easing = pOverride;
 
 		if (pOverride == null)
-			easing = pAnimationPoint.keyFrame() == null ? LINEAR : pAnimationPoint.keyFrame().easing();
+			easing = pInterpolationData.keyframe() == null ? LINEAR : pInterpolationData.keyframe().easing();
 
-		return easing.apply(pAnimationPoint);
+		return easing.apply(pInterpolationData);
 	}
 
-	default double apply(@NotNull AnimationPoint pAnimationPoint) {
+	default double apply(@NotNull InterpolationData pInterpolationData) {
 		Double easingVariable = null;
 
-		if (pAnimationPoint.keyFrame() != null && !pAnimationPoint.keyFrame().easingArgs().isEmpty())
-			easingVariable = pAnimationPoint.keyFrame().easingArgs().getFirst().get();
+		if (pInterpolationData.keyframe() != null && !pInterpolationData.keyframe().easingArgs().isEmpty())
+			easingVariable = pInterpolationData.keyframe().easingArgs().getFirst().get();
 
-		return apply(pAnimationPoint, easingVariable, pAnimationPoint.currentTick() / pAnimationPoint.transitionLength());
+		return apply(pInterpolationData, easingVariable, pInterpolationData.currentTick() / pInterpolationData.transitionLength());
 	}
 
-	default double apply(@NotNull AnimationPoint pAnimationPoint, @Nullable Double pEasingValue, Double pLerpValue) {
-		if (pAnimationPoint.currentTick() >= pAnimationPoint.transitionLength())
-			return (float) pAnimationPoint.animationEndValue();
+	default double apply(@NotNull InterpolationData pInterpolationData, @Nullable Double pEasingValue, Double pLerpValue) {
+		if (pInterpolationData.currentTick() >= pInterpolationData.transitionLength())
+			return (float) pInterpolationData.endValue();
 
-		return Mth.lerp(buildTransformer(pEasingValue).apply(pLerpValue), pAnimationPoint.animationStartValue(), pAnimationPoint.animationEndValue());
+		return Mth.lerp(buildTransformer(pEasingValue).apply(pLerpValue), pInterpolationData.startValue(), pInterpolationData.endValue());
 	}
 
 	@NotNull
@@ -299,16 +299,16 @@ public interface Easing {
 		}
 
 		@Override
-		public double apply(@NotNull AnimationPoint pAnimationPoint, @Nullable Double pEasingValue, @NotNull Double pLerpValue) {
-			if (pAnimationPoint.currentTick() >= pAnimationPoint.transitionLength())
-				return pAnimationPoint.animationEndValue();
+		public double apply(@NotNull InterpolationData pInterpolationData, @Nullable Double pEasingValue, @NotNull Double pLerpValue) {
+			if (pInterpolationData.currentTick() >= pInterpolationData.transitionLength())
+				return pInterpolationData.endValue();
 
-			List<? extends MathValue> easingArgs = pAnimationPoint.keyFrame().easingArgs();
+			List<? extends MathValue> easingArgs = pInterpolationData.keyframe().easingArgs();
 
 			if (easingArgs.size() < 2)
-				return Mth.lerp(buildTransformer(pEasingValue).apply(pLerpValue), pAnimationPoint.animationStartValue(), pAnimationPoint.animationEndValue());
+				return Mth.lerp(buildTransformer(pEasingValue).apply(pLerpValue), pInterpolationData.startValue(), pInterpolationData.endValue());
 
-			return getPointOnSpline(pLerpValue, easingArgs.get(0).get(), pAnimationPoint.animationStartValue(), pAnimationPoint.animationEndValue(), easingArgs.get(1).get());
+			return getPointOnSpline(pLerpValue, easingArgs.get(0).get(), pInterpolationData.startValue(), pInterpolationData.endValue(), easingArgs.get(1).get());
 		}
 	}
 }

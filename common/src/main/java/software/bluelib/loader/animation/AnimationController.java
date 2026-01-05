@@ -9,8 +9,10 @@ package software.bluelib.loader.animation;
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
+
 import java.util.*;
 import java.util.function.Function;
+
 import net.minecraft.core.Direction.Axis;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -18,7 +20,7 @@ import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
 import software.bluelib.loader.animatable.base.BlueAnimatable;
 import software.bluelib.loader.animation.bone.BoneSnapshot;
-import software.bluelib.loader.animation.keyframe.AnimationPoint;
+import software.bluelib.loader.animation.keyframe.InterpolationData;
 import software.bluelib.loader.animation.keyframe.BoneAnimationFrame;
 import software.bluelib.loader.animation.keyframe.KeyframeLocation;
 import software.bluelib.loader.animation.keyframe.data.CustomInstructionKeyframeData;
@@ -230,7 +232,7 @@ public class AnimationController<T extends BlueAnimatable> {
 	}
 
 	public void setAnimation(@NotNull Animation pAnimation) {
-		if (pAnimation.getAnimationStages().isEmpty()) {
+		if (pAnimation.getAnimationFrames().isEmpty()) {
 			stop();
 
 			return;
@@ -454,21 +456,21 @@ public class AnimationController<T extends BlueAnimatable> {
 			KeyframeStackCache<KeyframeCache<MathValue>> scaleKeyFrames = boneAnimationCache.scaleKeyFrames();
 
 			if (!rotationKeyFrames.xKeyframes().isEmpty()) {
-				boneAnimationFrame.addRotations(
+				boneAnimationFrame.addNextRotation(
 						getAnimationPointAtTick(rotationKeyFrames.xKeyframes(), pAdjustedTick, true, Axis.X),
 						getAnimationPointAtTick(rotationKeyFrames.yKeyframes(), pAdjustedTick, true, Axis.Y),
 						getAnimationPointAtTick(rotationKeyFrames.zKeyframes(), pAdjustedTick, true, Axis.Z));
 			}
 
 			if (!positionKeyFrames.xKeyframes().isEmpty()) {
-				boneAnimationFrame.addPositions(
+				boneAnimationFrame.addNextPosition(
 						getAnimationPointAtTick(positionKeyFrames.xKeyframes(), pAdjustedTick, false, Axis.X),
 						getAnimationPointAtTick(positionKeyFrames.yKeyframes(), pAdjustedTick, false, Axis.Y),
 						getAnimationPointAtTick(positionKeyFrames.zKeyframes(), pAdjustedTick, false, Axis.Z));
 			}
 
 			if (!scaleKeyFrames.xKeyframes().isEmpty()) {
-				boneAnimationFrame.addScales(
+				boneAnimationFrame.addNextScale(
 						getAnimationPointAtTick(scaleKeyFrames.xKeyframes(), pAdjustedTick, false, Axis.X),
 						getAnimationPointAtTick(scaleKeyFrames.yKeyframes(), pAdjustedTick, false, Axis.Y),
 						getAnimationPointAtTick(scaleKeyFrames.zKeyframes(), pAdjustedTick, false, Axis.Z));
@@ -553,8 +555,8 @@ public class AnimationController<T extends BlueAnimatable> {
 	}
 
 	@NotNull
-	private AnimationPoint getAnimationPointAtTick(@NotNull List<KeyframeCache<MathValue>> pFrames, double pTick, boolean pIsRotation,
-			@NotNull Axis pAxis) {
+	private InterpolationData getAnimationPointAtTick(@NotNull List<KeyframeCache<MathValue>> pFrames, double pTick, boolean pIsRotation,
+	                                                  @NotNull Axis pAxis) {
 		KeyframeLocation<KeyframeCache<MathValue>> location = getCurrentKeyFrameLocation(pFrames, pTick);
 		KeyframeCache<MathValue> currentFrame = location.keyframe();
 		double startValue = currentFrame.startValue().get();
@@ -576,12 +578,12 @@ public class AnimationController<T extends BlueAnimatable> {
 			}
 		}
 
-		return new AnimationPoint(currentFrame, location.startTick(), currentFrame.length(), startValue, endValue);
+		return new InterpolationData(currentFrame, location.startTick(), currentFrame.length(), startValue, endValue);
 	}
 
 	@NotNull
 	private KeyframeLocation<KeyframeCache<MathValue>> getCurrentKeyFrameLocation(@NotNull List<KeyframeCache<MathValue>> pFrames,
-			double pAgeInTicks) {
+	                                                                              double pAgeInTicks) {
 		double totalFrameTime = 0;
 
 		for (KeyframeCache<MathValue> frame : pFrames) {

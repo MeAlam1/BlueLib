@@ -5,12 +5,14 @@
  * If a copy of the MIT License was not distributed with this file,
  * You can obtain one at https://opensource.org/licenses/MIT.
  */
-package software.bluelib.loader.animation.keyframe;
+package software.bluelib.loader.animation.keyframe.frame;
+
+import software.bluelib.loader.animation.keyframe.InterpolationData;
 
 import java.io.Serial;
 import java.util.LinkedList;
 
-public final class AnimationPointFrame extends LinkedList<AnimationPoint> {
+public final class AnimationFrame extends LinkedList<InterpolationData> {
 
 	@Serial
 	private static final long serialVersionUID = 5472797438476621193L;

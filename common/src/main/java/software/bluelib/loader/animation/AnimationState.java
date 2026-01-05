@@ -7,40 +7,44 @@
  */
 package software.bluelib.loader.animation;
 
-import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
-import java.util.Map;
-import java.util.Objects;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.loader.animatable.base.BlueAnimatable;
 import software.bluelib.loader.animation.state.PlayState;
 import software.bluelib.loader.geckolib.constant.dataticket.DataTicket;
 
-public class AnimationState<T extends BlueAnimatable> {
+import java.util.Map;
+import java.util.Objects;
+
+/**
+ * Represents the current state of an animation for an animatable entity.
+ * Combines immutable snapshot data with mutable controller interaction.
+ *
+ * @param <T> the type of animatable entity
+ */
+public final class AnimationState<T extends BlueAnimatable> {
 
 	@NotNull
 	private final T animatable;
-	private final float limbSwing;
-	private final float limbSwingAmount;
-	private final float partialTick;
-	private final boolean isMoving;
 	@NotNull
-	private final Map<DataTicket<?>, Object> extraData = new Object2ObjectOpenHashMap<>();
+	private final AnimationSnapshot snapshot;
+	@NotNull
+	private final AnimationExtraData extraData;
 
 	@Nullable
-	protected AnimationController<T> controller;
-	public double animationTick;
+	private AnimationController<T> controller;
+	private double animationTick;
 
-	public AnimationState(@NotNull T pAnimatable, float pLimbSwing, float pLimbSwingAmount, float pPartialTick, boolean pIsMoving) {
+	public AnimationState(
+			@NotNull T pAnimatable,
+			float pLimbSwing,
+			float pLimbSwingAmount,
+			float pPartialTick,
+			boolean pIsMoving
+	) {
 		this.animatable = pAnimatable;
-		this.limbSwing = pLimbSwing;
-		this.limbSwingAmount = pLimbSwingAmount;
-		this.partialTick = pPartialTick;
-		this.isMoving = pIsMoving;
-	}
-
-	public double getAnimationTick() {
-		return this.animationTick;
+		this.snapshot = new AnimationSnapshot(pLimbSwing, pLimbSwingAmount, pPartialTick, pIsMoving);
+		this.extraData = new AnimationExtraData();
 	}
 
 	@NotNull
@@ -49,88 +53,106 @@ public class AnimationState<T extends BlueAnimatable> {
 	}
 
 	public float getLimbSwing() {
-		return this.limbSwing;
+		return this.snapshot.limbSwing();
 	}
 
 	public float getLimbSwingAmount() {
-		return this.limbSwingAmount;
+		return this.snapshot.limbSwingAmount();
 	}
 
 	public float getPartialTick() {
-		return this.partialTick;
+		return this.snapshot.partialTick();
 	}
 
 	public boolean isMoving() {
-		return this.isMoving;
+		return this.snapshot.isMoving();
 	}
 
-	public @Nullable AnimationController<T> getController() {
+	@NotNull
+	public AnimationSnapshot getSnapshot() {
+		return this.snapshot;
+	}
+
+	public double getAnimationTick() {
+		return this.animationTick;
+	}
+
+	public void setAnimationTick(double pTick) {
+		if (pTick < 0) {
+			throw new IllegalArgumentException("Animation tick cannot be negative");
+		}
+		this.animationTick = pTick;
+	}
+
+	@NotNull
+	public AnimationController<T> getController() {
+		if (this.controller == null) {
+			throw new IllegalStateException("AnimationController has not been set");
+		}
 		return this.controller;
+	}
+
+	public boolean hasController() {
+		return this.controller != null;
 	}
 
 	@NotNull
 	public AnimationState<T> withController(@NotNull AnimationController<T> pController) {
-		this.controller = pController;
-
+		this.controller = Objects.requireNonNull(pController, "Controller cannot be null");
 		return this;
 	}
 
 	@NotNull
 	public Map<DataTicket<?>, ?> getExtraData() {
-		return this.extraData;
+		return this.extraData.asUnmodifiableMap();
 	}
 
 	@Nullable
-	public <D> D getData(@NotNull DataTicket<D> pDataTicket) {
-		return pDataTicket.getData(this.extraData);
+	public <D> D getData(@NotNull DataTicket<D> pTicket) {
+		return this.extraData.get(pTicket);
 	}
 
-	public <D> void setData(@NotNull DataTicket<D> pDataTicket, D pData) {
-		this.extraData.put(pDataTicket, pData);
+	public <D> void setData(@NotNull DataTicket<D> pTicket, @Nullable D pData) {
+		this.extraData.set(pTicket, pData);
 	}
 
 	public void setAnimation(@NotNull Animation pAnimation) {
-		if (getController() == null) {
-			throw new IllegalStateException("AnimationController is not set for this AnimationState.");
-		}
 		getController().setAnimation(pAnimation);
 	}
 
 	@NotNull
 	public PlayState setAndContinue(@NotNull Animation pAnimation) {
-		if (getController() == null) {
-			throw new IllegalStateException("AnimationController is not set for this AnimationState.");
-		}
-		getController().setAnimation(pAnimation);
-
+		setAnimation(pAnimation);
 		return PlayState.PLAY;
 	}
 
 	public boolean isCurrentAnimation(@NotNull Animation pAnimation) {
-		if (getController() == null) {
-			throw new IllegalStateException("AnimationController is not set for this AnimationState.");
-		}
 		return Objects.equals(getController().currentRawAnimation, pAnimation);
 	}
 
 	public boolean isCurrentAnimationStage(@NotNull String pName) {
-		if (getController() == null) {
-			throw new IllegalStateException("AnimationController is not set for this AnimationState.");
-		}
-		return getController().getCurrentAnimation() != null && getController().getCurrentAnimation().animationCache().name().equals(pName);
+		var currentAnim = getController().getCurrentAnimation();
+		return currentAnim != null && pName.equals(currentAnim.animationCache().name());
 	}
 
 	public void resetCurrentAnimation() {
-		if (getController() == null) {
-			throw new IllegalStateException("AnimationController is not set for this AnimationState.");
-		}
 		getController().forceAnimationReset();
 	}
 
-	public void setControllerSpeed(@NotNull Double pSpeed) {
-		if (getController() == null) {
-			throw new IllegalStateException("AnimationController is not set for this AnimationState.");
+	public void setControllerSpeed(double pSpeed) {
+		if (pSpeed < 0) {
+			throw new IllegalArgumentException("Speed cannot be negative");
 		}
 		getController().setAnimationSpeed(pSpeed);
+	}
+
+	@Override
+	public String toString() {
+		return "AnimationState{" +
+				"animatable=" + this.animatable.getClass().getSimpleName() +
+				", tick=" + this.animationTick +
+				", moving=" + this.snapshot.isMoving() +
+				", hasController=" + (this.controller != null) +
+				'}';
 	}
 }

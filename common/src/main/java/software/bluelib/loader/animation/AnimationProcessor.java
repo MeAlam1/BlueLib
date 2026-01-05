@@ -8,10 +8,12 @@
 package software.bluelib.loader.animation;
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
+
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -20,7 +22,7 @@ import software.bluelib.api.utils.logging.BaseLogger;
 import software.bluelib.loader.animatable.base.AnimatableManager;
 import software.bluelib.loader.animatable.base.BlueAnimatable;
 import software.bluelib.loader.animation.bone.BoneSnapshot;
-import software.bluelib.loader.animation.keyframe.AnimationPoint;
+import software.bluelib.loader.animation.keyframe.InterpolationData;
 import software.bluelib.loader.animation.keyframe.BoneAnimationFrame;
 import software.bluelib.loader.animation.math.Easing;
 import software.bluelib.loader.cache.animations.AnimationCache;
@@ -48,22 +50,22 @@ public class AnimationProcessor<T extends BlueAnimatable> {
 		LinkedList<QueuedAnimation> animations = new LinkedList<>();
 		boolean error = false;
 
-		for (Animation.Stage stage : pAnimation.getAnimationStages()) {
+		for (Animation.Frame frame : pAnimation.getAnimationFrames()) {
 			AnimationCache animationCache = null;
 
-			if (stage.animationName() == Animation.Stage.WAIT) {
-				animationCache = AnimationCache.generateWaitAnimation(stage.additionalTicks());
+			if (frame.animationName() == Animation.Frame.WAIT) {
+				animationCache = AnimationCache.generateWaitAnimation(frame.additionalTicks());
 			} else {
 				try {
-					animationCache = this.model.getAnimation(pAnimatable, stage.animationName());
+					animationCache = this.model.getAnimation(pAnimatable, frame.animationName());
 				} catch (RuntimeException ex) {
-					BaseLogger.log(BaseLogLevel.ERROR, "Unable to find animation: " + stage.animationName() + " for " + pAnimatable.getClass().getSimpleName(), ex);
+					BaseLogger.log(BaseLogLevel.ERROR, "Unable to find animation: " + frame.animationName() + " for " + pAnimatable.getClass().getSimpleName(), ex);
 					error = true;
 				}
 			}
 
 			if (animationCache != null)
-				animations.add(new QueuedAnimation(animationCache, stage.loopType()));
+				animations.add(new QueuedAnimation(animationCache, frame.loopType()));
 		}
 
 		return error ? null : animations;
@@ -81,7 +83,6 @@ public class AnimationProcessor<T extends BlueAnimatable> {
 			controller.isJustStarting = pAnimatableManager.isFirstTick();
 
 			pState.withController(controller);
-			// TODO: REMOVE!!!!
 			MathParser.setVariable(MoLangQueries.ANIM_TIME, () -> pState.getController() != null ? pState.getController().getAnimTime() : 0d);
 			controller.process(pModel, pState, this.bones, boneSnapshots, pAnimTime, pCrashWhenCantFindBone);
 
@@ -90,15 +91,15 @@ public class AnimationProcessor<T extends BlueAnimatable> {
 				BoneSnapshot snapshot = boneSnapshots.get(bone.getName());
 				BoneSnapshot initialSnapshot = bone.getInitialSnapshot();
 
-				AnimationPoint rotXPoint = boneAnimation.rotationXQueue().poll();
-				AnimationPoint rotYPoint = boneAnimation.rotationYQueue().poll();
-				AnimationPoint rotZPoint = boneAnimation.rotationZQueue().poll();
-				AnimationPoint posXPoint = boneAnimation.positionXQueue().poll();
-				AnimationPoint posYPoint = boneAnimation.positionYQueue().poll();
-				AnimationPoint posZPoint = boneAnimation.positionZQueue().poll();
-				AnimationPoint scaleXPoint = boneAnimation.scaleXQueue().poll();
-				AnimationPoint scaleYPoint = boneAnimation.scaleYQueue().poll();
-				AnimationPoint scaleZPoint = boneAnimation.scaleZQueue().poll();
+				InterpolationData rotXPoint = boneAnimation.rotation().x().poll();
+				InterpolationData rotYPoint = boneAnimation.rotation().y().poll();
+				InterpolationData rotZPoint = boneAnimation.rotation().z().poll();
+				InterpolationData posXPoint = boneAnimation.position().x().poll();
+				InterpolationData posYPoint = boneAnimation.position().y().poll();
+				InterpolationData posZPoint = boneAnimation.position().z().poll();
+				InterpolationData scaleXPoint = boneAnimation.scale().x().poll();
+				InterpolationData scaleYPoint = boneAnimation.scale().y().poll();
+				InterpolationData scaleZPoint = boneAnimation.scale().z().poll();
 				Easing easing = controller.overrideEasingTypeFunction.apply(pAnimatable);
 
 				if (rotXPoint != null && rotYPoint != null && rotZPoint != null) {
@@ -268,5 +269,6 @@ public class AnimationProcessor<T extends BlueAnimatable> {
 		this.model.applyMolangQueries(pAnimationState, pAnimTime);
 	}
 
-	public record QueuedAnimation(@NotNull AnimationCache animationCache, @NotNull AnimationCache.LoopType loopType) {}
+	public record QueuedAnimation(@NotNull AnimationCache animationCache, @NotNull AnimationCache.LoopType loopType) {
+	}
 }
