@@ -17,7 +17,7 @@ import software.bluelib.loader.cache.animation.keyframe.SoundKeyframeCache;
 
 public record AnimationCache(
 		@NotNull String name,
-		@Nullable Double length,
+		@NotNull Double length,
 		@Nullable LoopTypeCache loopType,
 		@NotNull BoneAnimationsCache bones,
 		@Nullable SoundKeyframeCache sounds,

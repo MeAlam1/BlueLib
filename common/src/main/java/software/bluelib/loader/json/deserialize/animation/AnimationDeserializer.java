@@ -16,9 +16,11 @@ import software.bluelib.loader.json.deserialize.animation.keyframe.CustomInstruc
 import software.bluelib.loader.json.deserialize.animation.keyframe.ParticleKeyframeDeserializer;
 import software.bluelib.loader.json.deserialize.animation.keyframe.SoundKeyframeDeserializer;
 
+import java.util.Objects;
+
 public record AnimationDeserializer(
 		@Nullable Double length,
-		@Nullable String loopType,
+		@NotNull String loopType,
 		@NotNull BoneAnimationsDeserializer bones,
 		@Nullable SoundKeyframeDeserializer sounds,
 		@Nullable ParticleKeyframeDeserializer particles,
@@ -29,7 +31,7 @@ public record AnimationDeserializer(
 		return (json, type, context) -> {
 			JsonObject obj = json.getAsJsonObject();
 
-			Double length = JsonUtils.getOptionalDouble(obj, "animation_length");
+			Double length = Objects.requireNonNullElse(JsonUtils.getOptionalDouble(obj, "animation_length"), 0.0D);
 			String loopType = parseLoopType(obj);
 			BoneAnimationsDeserializer bones = GsonHelper.getAsObject(obj, "bones", context, BoneAnimationsDeserializer.class);
 			SoundKeyframeDeserializer sounds = JsonUtils.getOptionalObject(obj, "sound_effects", context, SoundKeyframeDeserializer.class);
