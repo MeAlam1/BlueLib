@@ -35,8 +35,6 @@
 - `setControllerSpeed()` parameter changed from `Double` to primitive `double`
 - `animationTick` field in `AnimationState` is now private with getter/setter methods
 - Improved `equals()` and `hashCode()` implementations for `Animation` and `Animation.Frame`
-- Added `/fabric/out` to `.gitignore`
-- Enabled example logging (`isExampleEnabled = true`)
 
 ## Deleted
 
