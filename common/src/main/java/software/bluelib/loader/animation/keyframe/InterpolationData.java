@@ -33,8 +33,7 @@ public record InterpolationData(
 		double currentTick,
 		double transitionLength,
 		double startValue,
-		double endValue
-) {
+		double endValue) {
 
 	/**
 	 * Calculates the normalized progress (0.0 to 1.0) through this interpolation.

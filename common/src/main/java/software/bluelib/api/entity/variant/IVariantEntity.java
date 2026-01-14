@@ -10,7 +10,6 @@ package software.bluelib.api.entity.variant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;

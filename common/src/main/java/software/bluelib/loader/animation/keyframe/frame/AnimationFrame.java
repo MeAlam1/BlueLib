@@ -7,10 +7,9 @@
  */
 package software.bluelib.loader.animation.keyframe.frame;
 
-import software.bluelib.loader.animation.keyframe.InterpolationData;
-
 import java.io.Serial;
 import java.util.LinkedList;
+import software.bluelib.loader.animation.keyframe.InterpolationData;
 
 public final class AnimationFrame extends LinkedList<InterpolationData> {
 

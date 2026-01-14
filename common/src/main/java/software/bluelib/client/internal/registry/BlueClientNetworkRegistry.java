@@ -9,7 +9,6 @@ package software.bluelib.client.internal.registry;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import software.bluelib.api.net.PacketProvider;

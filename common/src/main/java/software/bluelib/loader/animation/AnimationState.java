@@ -7,14 +7,13 @@
  */
 package software.bluelib.loader.animation;
 
+import java.util.Map;
+import java.util.Objects;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.loader.animatable.base.BlueAnimatable;
 import software.bluelib.loader.animation.state.PlayState;
 import software.bluelib.loader.geckolib.constant.dataticket.DataTicket;
-
-import java.util.Map;
-import java.util.Objects;
 
 /**
  * Represents the current state of an animation for an animatable entity.
@@ -40,8 +39,7 @@ public final class AnimationState<T extends BlueAnimatable> {
 			float pLimbSwing,
 			float pLimbSwingAmount,
 			float pPartialTick,
-			boolean pIsMoving
-	) {
+			boolean pIsMoving) {
 		this.animatable = pAnimatable;
 		this.snapshot = new AnimationSnapshot(pLimbSwing, pLimbSwingAmount, pPartialTick, pIsMoving);
 		this.extraData = new AnimationExtraData();

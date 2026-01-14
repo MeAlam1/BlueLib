@@ -9,19 +9,17 @@ package software.bluelib.loader.animation;
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
-
 import java.util.*;
 import java.util.function.Function;
-
 import net.minecraft.core.Direction.Axis;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
 import software.bluelib.loader.animatable.base.BlueAnimatable;
+import software.bluelib.loader.animation.keyframe.BoneAnimationFrame;
 import software.bluelib.loader.animation.keyframe.BoneFrame;
 import software.bluelib.loader.animation.keyframe.InterpolationData;
-import software.bluelib.loader.animation.keyframe.BoneAnimationFrame;
 import software.bluelib.loader.animation.keyframe.KeyframeLocation;
 import software.bluelib.loader.animation.keyframe.data.CustomInstructionKeyframeData;
 import software.bluelib.loader.animation.keyframe.data.KeyFrameData;
@@ -556,7 +554,7 @@ public class AnimationController<T extends BlueAnimatable> {
 
 	@NotNull
 	private InterpolationData getAnimationPointAtTick(@NotNull List<KeyframeCache<MathValue>> pFrames, double pTick, boolean pIsRotation,
-	                                                  @NotNull Axis pAxis) {
+			@NotNull Axis pAxis) {
 		KeyframeLocation<KeyframeCache<MathValue>> location = getCurrentKeyFrameLocation(pFrames, pTick);
 		KeyframeCache<MathValue> currentFrame = location.keyframe();
 		double startValue = currentFrame.startValue().get();
@@ -583,7 +581,7 @@ public class AnimationController<T extends BlueAnimatable> {
 
 	@NotNull
 	private KeyframeLocation<KeyframeCache<MathValue>> getCurrentKeyFrameLocation(@NotNull List<KeyframeCache<MathValue>> pFrames,
-	                                                                              double pAgeInTicks) {
+			double pAgeInTicks) {
 		double totalFrameTime = 0;
 
 		for (KeyframeCache<MathValue> frame : pFrames) {

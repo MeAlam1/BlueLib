@@ -11,8 +11,8 @@ public record AnimationSnapshot(
 		float limbSwing,
 		float limbSwingAmount,
 		float partialTick,
-		boolean isMoving
-) {
+		boolean isMoving) {
+
 	public AnimationSnapshot {
 		if (Float.isNaN(limbSwing) || Float.isNaN(limbSwingAmount) || Float.isNaN(partialTick)) {
 			throw new IllegalArgumentException("Animation values cannot be NaN");

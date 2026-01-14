@@ -1,3 +1,10 @@
+/*
+ * Copyright (C) 2024 BlueLib Contributors
+ *
+ * This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT License was not distributed with this file,
+ * You can obtain one at https://opensource.org/licenses/MIT.
+ */
 package software.bluelib.loader.animation.keyframe;
 
 import org.jetbrains.annotations.NotNull;
@@ -21,8 +28,8 @@ public final class BoneAnimationFrame {
 	}
 
 	public void addNextPosition(@Nullable KeyframeCache<?> pKeyFrame, double pLerpedTick, double pTransitionLength,
-	                            @NotNull BoneFrame pStartSnapshot,
-	                            @NotNull InterpolationData pNextX, @NotNull InterpolationData pNextY, @NotNull InterpolationData pNextZ) {
+			@NotNull BoneFrame pStartSnapshot,
+			@NotNull InterpolationData pNextX, @NotNull InterpolationData pNextY, @NotNull InterpolationData pNextZ) {
 		position.addPoint(pKeyFrame, pLerpedTick, pTransitionLength,
 				pStartSnapshot.getOffsetX(), pNextX.startValue(),
 				pStartSnapshot.getOffsetY(), pNextY.startValue(),
@@ -30,8 +37,8 @@ public final class BoneAnimationFrame {
 	}
 
 	public void addNextScale(@Nullable KeyframeCache<?> pKeyFrame, double pLerpedTick, double pTransitionLength,
-	                         @NotNull BoneFrame pStartSnapshot,
-	                         @NotNull InterpolationData pNextX, @NotNull InterpolationData pNextY, @NotNull InterpolationData pNextZ) {
+			@NotNull BoneFrame pStartSnapshot,
+			@NotNull InterpolationData pNextX, @NotNull InterpolationData pNextY, @NotNull InterpolationData pNextZ) {
 		scale.addPoint(pKeyFrame, pLerpedTick, pTransitionLength,
 				pStartSnapshot.getScaleX(), pNextX.startValue(),
 				pStartSnapshot.getScaleY(), pNextY.startValue(),
@@ -39,8 +46,8 @@ public final class BoneAnimationFrame {
 	}
 
 	public void addNextRotation(@Nullable KeyframeCache<?> pKeyFrame, double pLerpedTick, double pTransitionLength,
-	                            @NotNull BoneFrame pStartSnapshot, @NotNull BoneFrame pInitialSnapshot,
-	                            @NotNull InterpolationData pNextX, @NotNull InterpolationData pNextY, @NotNull InterpolationData pNextZ) {
+			@NotNull BoneFrame pStartSnapshot, @NotNull BoneFrame pInitialSnapshot,
+			@NotNull InterpolationData pNextX, @NotNull InterpolationData pNextY, @NotNull InterpolationData pNextZ) {
 		rotation.addPoint(pKeyFrame, pLerpedTick, pTransitionLength,
 				pStartSnapshot.getRotX() - pInitialSnapshot.getRotX(), pNextX.startValue(),
 				pStartSnapshot.getRotY() - pInitialSnapshot.getRotY(), pNextY.startValue(),

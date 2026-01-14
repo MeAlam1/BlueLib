@@ -8,11 +8,9 @@
 package software.bluelib.loader.animation;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.loader.cache.animations.AnimationCache;
@@ -22,8 +20,7 @@ public final class Animation {
 	@NotNull
 	private final List<Frame> animationList = new ObjectArrayList<>();
 
-	private Animation() {
-	}
+	private Animation() {}
 
 	@NotNull
 	public static Animation begin() {

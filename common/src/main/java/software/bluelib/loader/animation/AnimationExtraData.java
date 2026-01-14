@@ -8,11 +8,9 @@
 package software.bluelib.loader.animation;
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
-
 import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
-
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.loader.geckolib.constant.dataticket.DataTicket;

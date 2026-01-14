@@ -8,12 +8,10 @@
 package software.bluelib.loader.animation;
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
-
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
-
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -21,9 +19,9 @@ import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
 import software.bluelib.loader.animatable.base.AnimatableManager;
 import software.bluelib.loader.animatable.base.BlueAnimatable;
+import software.bluelib.loader.animation.keyframe.BoneAnimationFrame;
 import software.bluelib.loader.animation.keyframe.BoneFrame;
 import software.bluelib.loader.animation.keyframe.InterpolationData;
-import software.bluelib.loader.animation.keyframe.BoneAnimationFrame;
 import software.bluelib.loader.animation.math.Easing;
 import software.bluelib.loader.cache.animations.AnimationCache;
 import software.bluelib.loader.cache.model.BoneCache;
@@ -269,6 +267,5 @@ public class AnimationProcessor<T extends BlueAnimatable> {
 		this.model.applyMolangQueries(pAnimationState, pAnimTime);
 	}
 
-	public record QueuedAnimation(@NotNull AnimationCache animationCache, @NotNull AnimationCache.LoopType loopType) {
-	}
+	public record QueuedAnimation(@NotNull AnimationCache animationCache, @NotNull AnimationCache.LoopType loopType) {}
 }
