@@ -62,3 +62,4 @@ common/src/main/resources/data/bluelib/controller/*
 common/src/main/resources/assets/bluelib/textures/*
 /.env
 /neoforge
+/fabric/out

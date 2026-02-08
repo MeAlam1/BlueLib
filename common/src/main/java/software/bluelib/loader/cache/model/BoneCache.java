@@ -16,7 +16,7 @@ import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 import org.joml.Vector3d;
 import org.joml.Vector4f;
-import software.bluelib.loader.animation.bone.BoneSnapshot;
+import software.bluelib.loader.animation.keyframe.BoneFrame;
 
 // TODO: Record Class?!?!?!?
 @SuppressWarnings("unused")
@@ -42,7 +42,7 @@ public class BoneCache {
 	private final Boolean reset;
 
 	@Nullable
-	private BoneSnapshot initialSnapshot;
+	private BoneFrame initialSnapshot;
 
 	private boolean hidden;
 	private boolean childrenHidden = false;
@@ -296,7 +296,7 @@ public class BoneCache {
 	}
 
 	@Nullable
-	public BoneSnapshot getInitialSnapshot() {
+	public BoneFrame getInitialSnapshot() {
 		return this.initialSnapshot;
 	}
 
@@ -447,8 +447,8 @@ public class BoneCache {
 	}
 
 	@NotNull
-	public BoneSnapshot saveSnapshot() {
-		return new BoneSnapshot(this);
+	public BoneFrame saveSnapshot() {
+		return new BoneFrame(this);
 	}
 
 	public boolean equals(@Nullable Object pObj) {

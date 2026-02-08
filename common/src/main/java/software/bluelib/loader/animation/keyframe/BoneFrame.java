@@ -5,13 +5,13 @@
  * If a copy of the MIT License was not distributed with this file,
  * You can obtain one at https://opensource.org/licenses/MIT.
  */
-package software.bluelib.loader.animation.bone;
+package software.bluelib.loader.animation.keyframe;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bluelib.loader.cache.model.BoneCache;
 
-public class BoneSnapshot {
+public class BoneFrame {
 
 	@NotNull
 	private final BoneCache bone;
@@ -36,7 +36,7 @@ public class BoneSnapshot {
 	private boolean posAnimInProgress = true;
 	private boolean scaleAnimInProgress = true;
 
-	public BoneSnapshot(@NotNull BoneCache pBone) {
+	public BoneFrame(@NotNull BoneCache pBone) {
 		this.rotX = pBone.getRotX();
 		this.rotY = pBone.getRotY();
 		this.rotZ = pBone.getRotZ();
@@ -53,8 +53,8 @@ public class BoneSnapshot {
 	}
 
 	@NotNull
-	public static BoneSnapshot copy(@NotNull BoneSnapshot pSnapshot) {
-		BoneSnapshot newSnapshot = new BoneSnapshot(pSnapshot.bone);
+	public static BoneFrame copy(@NotNull BoneFrame pSnapshot) {
+		BoneFrame newSnapshot = new BoneFrame(pSnapshot.bone);
 
 		newSnapshot.scaleX = pSnapshot.scaleX;
 		newSnapshot.scaleY = pSnapshot.scaleY;

@@ -19,9 +19,9 @@ import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
 import software.bluelib.loader.animatable.base.AnimatableManager;
 import software.bluelib.loader.animatable.base.BlueAnimatable;
-import software.bluelib.loader.animation.bone.BoneSnapshot;
-import software.bluelib.loader.animation.keyframe.AnimationPoint;
 import software.bluelib.loader.animation.keyframe.BoneAnimationFrame;
+import software.bluelib.loader.animation.keyframe.BoneFrame;
+import software.bluelib.loader.animation.keyframe.InterpolationData;
 import software.bluelib.loader.animation.math.Easing;
 import software.bluelib.loader.cache.animations.AnimationCache;
 import software.bluelib.loader.cache.model.BoneCache;
@@ -48,29 +48,29 @@ public class AnimationProcessor<T extends BlueAnimatable> {
 		LinkedList<QueuedAnimation> animations = new LinkedList<>();
 		boolean error = false;
 
-		for (Animation.Stage stage : pAnimation.getAnimationStages()) {
+		for (Animation.Frame frame : pAnimation.getAnimationFrames()) {
 			AnimationCache animationCache = null;
 
-			if (stage.animationName() == Animation.Stage.WAIT) {
-				animationCache = AnimationCache.generateWaitAnimation(stage.additionalTicks());
+			if (frame.animationName() == Animation.Frame.WAIT) {
+				animationCache = AnimationCache.generateWaitAnimation(frame.additionalTicks());
 			} else {
 				try {
-					animationCache = this.model.getAnimation(pAnimatable, stage.animationName());
+					animationCache = this.model.getAnimation(pAnimatable, frame.animationName());
 				} catch (RuntimeException ex) {
-					BaseLogger.log(BaseLogLevel.ERROR, "Unable to find animation: " + stage.animationName() + " for " + pAnimatable.getClass().getSimpleName(), ex);
+					BaseLogger.log(BaseLogLevel.ERROR, "Unable to find animation: " + frame.animationName() + " for " + pAnimatable.getClass().getSimpleName(), ex);
 					error = true;
 				}
 			}
 
 			if (animationCache != null)
-				animations.add(new QueuedAnimation(animationCache, stage.loopType()));
+				animations.add(new QueuedAnimation(animationCache, frame.loopType()));
 		}
 
 		return error ? null : animations;
 	}
 
 	public void tickAnimation(@NotNull T pAnimatable, @NotNull BlueModel<T> pModel, @NotNull AnimatableManager<T> pAnimatableManager, double pAnimTime, @NotNull AnimationState<T> pState, boolean pCrashWhenCantFindBone) {
-		Map<String, BoneSnapshot> boneSnapshots = updateBoneSnapshots(pAnimatableManager.getBoneSnapshotCollection());
+		Map<String, BoneFrame> boneSnapshots = updateBoneSnapshots(pAnimatableManager.getBoneSnapshotCollection());
 
 		for (AnimationController<T> controller : pAnimatableManager.getAnimationControllers().values()) {
 			if (this.reloadAnimations) {
@@ -81,24 +81,23 @@ public class AnimationProcessor<T extends BlueAnimatable> {
 			controller.isJustStarting = pAnimatableManager.isFirstTick();
 
 			pState.withController(controller);
-			// TODO: REMOVE!!!!
 			MathParser.setVariable(MoLangQueries.ANIM_TIME, () -> pState.getController() != null ? pState.getController().getAnimTime() : 0d);
 			controller.process(pModel, pState, this.bones, boneSnapshots, pAnimTime, pCrashWhenCantFindBone);
 
 			for (BoneAnimationFrame boneAnimation : controller.getBoneAnimationQueues().values()) {
-				BoneCache bone = boneAnimation.bone();
-				BoneSnapshot snapshot = boneSnapshots.get(bone.getName());
-				BoneSnapshot initialSnapshot = bone.getInitialSnapshot();
+				BoneCache bone = boneAnimation.getBone();
+				BoneFrame snapshot = boneSnapshots.get(bone.getName());
+				BoneFrame initialSnapshot = bone.getInitialSnapshot();
 
-				AnimationPoint rotXPoint = boneAnimation.rotationXQueue().poll();
-				AnimationPoint rotYPoint = boneAnimation.rotationYQueue().poll();
-				AnimationPoint rotZPoint = boneAnimation.rotationZQueue().poll();
-				AnimationPoint posXPoint = boneAnimation.positionXQueue().poll();
-				AnimationPoint posYPoint = boneAnimation.positionYQueue().poll();
-				AnimationPoint posZPoint = boneAnimation.positionZQueue().poll();
-				AnimationPoint scaleXPoint = boneAnimation.scaleXQueue().poll();
-				AnimationPoint scaleYPoint = boneAnimation.scaleYQueue().poll();
-				AnimationPoint scaleZPoint = boneAnimation.scaleZQueue().poll();
+				InterpolationData rotXPoint = boneAnimation.getRotation().x().poll();
+				InterpolationData rotYPoint = boneAnimation.getRotation().y().poll();
+				InterpolationData rotZPoint = boneAnimation.getRotation().z().poll();
+				InterpolationData posXPoint = boneAnimation.getPosition().x().poll();
+				InterpolationData posYPoint = boneAnimation.getPosition().y().poll();
+				InterpolationData posZPoint = boneAnimation.getPosition().z().poll();
+				InterpolationData scaleXPoint = boneAnimation.getScale().x().poll();
+				InterpolationData scaleYPoint = boneAnimation.getScale().y().poll();
+				InterpolationData scaleZPoint = boneAnimation.getScale().z().poll();
 				Easing easing = controller.overrideEasingTypeFunction.apply(pAnimatable);
 
 				if (rotXPoint != null && rotYPoint != null && rotZPoint != null) {
@@ -135,8 +134,8 @@ public class AnimationProcessor<T extends BlueAnimatable> {
 
 		for (BoneCache bone : getRegisteredBones()) {
 			if (!bone.hasRotationChanged()) {
-				BoneSnapshot initialSnapshot = bone.getInitialSnapshot();
-				BoneSnapshot saveSnapshot = boneSnapshots.get(bone.getName());
+				BoneFrame initialSnapshot = bone.getInitialSnapshot();
+				BoneFrame saveSnapshot = boneSnapshots.get(bone.getName());
 
 				if (saveSnapshot.isRotAnimInProgress())
 					saveSnapshot.stopRotAnim(pAnimTime);
@@ -177,8 +176,8 @@ public class AnimationProcessor<T extends BlueAnimatable> {
 			}
 
 			if (!bone.hasPositionChanged()) {
-				BoneSnapshot initialSnapshot = bone.getInitialSnapshot();
-				BoneSnapshot saveSnapshot = boneSnapshots.get(bone.getName());
+				BoneFrame initialSnapshot = bone.getInitialSnapshot();
+				BoneFrame saveSnapshot = boneSnapshots.get(bone.getName());
 
 				if (saveSnapshot.isPosAnimInProgress())
 					saveSnapshot.stopPosAnim(pAnimTime);
@@ -194,8 +193,8 @@ public class AnimationProcessor<T extends BlueAnimatable> {
 			}
 
 			if (!bone.hasScaleChanged()) {
-				BoneSnapshot initialSnapshot = bone.getInitialSnapshot();
-				BoneSnapshot saveSnapshot = boneSnapshots.get(bone.getName());
+				BoneFrame initialSnapshot = bone.getInitialSnapshot();
+				BoneFrame saveSnapshot = boneSnapshots.get(bone.getName());
 
 				if (saveSnapshot.isScaleAnimInProgress())
 					saveSnapshot.stopScaleAnim(pAnimTime);
@@ -227,10 +226,10 @@ public class AnimationProcessor<T extends BlueAnimatable> {
 	}
 
 	@NotNull
-	private Map<String, BoneSnapshot> updateBoneSnapshots(@NotNull Map<String, BoneSnapshot> pSnapshots) {
+	private Map<String, BoneFrame> updateBoneSnapshots(@NotNull Map<String, BoneFrame> pSnapshots) {
 		for (BoneCache bone : getRegisteredBones()) {
 			if (!pSnapshots.containsKey(bone.getName()))
-				pSnapshots.put(bone.getName(), BoneSnapshot.copy(bone.getInitialSnapshot()));
+				pSnapshots.put(bone.getName(), BoneFrame.copy(bone.getInitialSnapshot()));
 		}
 
 		return pSnapshots;

@@ -1,12 +1,49 @@
-# 2.4.3
+# 2.4.4
+
+## Added
+
+- New `AnimationExtraData` class for managing animation-related data with type-safe `DataTicket` support
+- New `AnimationSnapshot` record to encapsulate immutable animation state (limbSwing, limbSwingAmount, partialTick,
+  isMoving)
+- New `InterpolationData` record replacing `AnimationPoint` with added `getProgress()` method for calculating normalized
+  interpolation progress
+- New `AnimationFrameVector` record to group X, Y, Z animation frames together
+- Utility methods `isEmpty()` and `size()` added to `Animation` class
+- `isWait()` helper method added to `Animation.Frame` record
+- `toString()` method added to `Animation` and `AnimationState` for better debugging
+- Input validation with `IllegalArgumentException` for negative ticks, non-positive play counts, and NaN animation
+  values
+- New packet that syncs the Variant Name with all clients when changed on the server
+    - Shouldn't be necessary to add this manually, but due to a high amount of reports about desyncs, we added it just
+      to be sure
 
 ## Changed
 
-* Massive cleanup in the way we register Codecs and Data ComponentTypes.
+- Renamed `Animation.Stage` to `Animation.Frame` for clearer semantics
+- Renamed `AnimationPoint` to `InterpolationData` with updated field names (`animationStartValue` → `startValue`,
+  `animationEndValue` → `endValue`)
+- Renamed `AnimationPointFrame` to `AnimationFrame` and moved to `frame` subpackage
+- Renamed `getAnimationStages()` to `getAnimationFrames()` in `Animation` class
+- Renamed `BoneSnapshot` to `BoneFrame` for consistency
+- Refactored `BoneAnimationFrame` to be a final class instead of record to avoid a misleading immutable structure.
+- Refactored `BoneAnimationFrame` to use `AnimationFrameVector` instead of individual X/Y/Z queues
+- Renamed methods in `BoneAnimationFrame`: `addRotations` → `addNextRotation`, `addPositions` → `addNextPosition`,
+  `addScales` → `addNextScale`
+- `AnimationState` now uses composition with `AnimationSnapshot` and `AnimationExtraData` instead of individual fields
+- `getAnimationFrames()` now returns an unmodifiable list
+- `getController()` in `AnimationState` now throws `IllegalStateException` if controller is not set
+- `setControllerSpeed()` parameter changed from `Double` to primitive `double`
+- `animationTick` field in `AnimationState` is now private with getter/setter methods
+- Improved `equals()` and `hashCode()` implementations for `Animation` and `Animation.Frame`
+
+## Deleted
+
+- Removed `AnimationPoint` class (replaced by `InterpolationData`)
+- Removed individual rotation/position/scale queue fields from `BoneAnimationFrame` (consolidated into
+  `AnimationFrameVector`)
+- Removed individual `addRotationXPoint`, `addRotationYPoint`, etc. methods (replaced with vector-based methods)
 
 ## Bug Fixes
 
-* Fixed a critical issue where Fabric Server where enable to be started due to trying to load Client sided Code on the
-  Server.
-* Fixed a critical issue where Clients would crash when trying to send a Packet.
-* Fixed a crash where the Client was looking for the Controller file.
+- Fixed `equals()` method in `Animation` and `Animation.Frame` to properly compare field values instead of just hashCode
+- Added proper null handling in `AnimationExtraData.set()` method

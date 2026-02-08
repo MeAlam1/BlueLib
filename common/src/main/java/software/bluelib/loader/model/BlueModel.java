@@ -194,7 +194,7 @@ public abstract class BlueModel<T extends BlueAnimatable> {
 			this.lastGameTickTime = lastUpdateTime;
 		}
 
-		pAnimationState.animationTick = this.animTime;
+		pAnimationState.setAnimationTick(this.animTime);
 		this.lastRenderedInstance = pInstanceId;
 		AnimationProcessor<T> processor = getAnimationProcessor();
 

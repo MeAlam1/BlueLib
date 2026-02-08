@@ -17,9 +17,9 @@ import org.jetbrains.annotations.Nullable;
 import software.bluelib.api.utils.logging.BaseLogLevel;
 import software.bluelib.api.utils.logging.BaseLogger;
 import software.bluelib.loader.animatable.base.BlueAnimatable;
-import software.bluelib.loader.animation.bone.BoneSnapshot;
-import software.bluelib.loader.animation.keyframe.AnimationPoint;
 import software.bluelib.loader.animation.keyframe.BoneAnimationFrame;
+import software.bluelib.loader.animation.keyframe.BoneFrame;
+import software.bluelib.loader.animation.keyframe.InterpolationData;
 import software.bluelib.loader.animation.keyframe.KeyframeLocation;
 import software.bluelib.loader.animation.keyframe.data.CustomInstructionKeyframeData;
 import software.bluelib.loader.animation.keyframe.data.KeyFrameData;
@@ -51,7 +51,7 @@ public class AnimationController<T extends BlueAnimatable> {
 	@NotNull
 	protected final Map<String, BoneAnimationFrame> boneAnimationQueues = new Object2ObjectOpenHashMap<>();
 	@NotNull
-	protected final Map<String, BoneSnapshot> boneSnapshots = new Object2ObjectOpenHashMap<>();
+	protected final Map<String, BoneFrame> boneSnapshots = new Object2ObjectOpenHashMap<>();
 	@NotNull
 	protected Queue<AnimationProcessor.QueuedAnimation> animationQueue = new LinkedList<>();
 
@@ -230,7 +230,7 @@ public class AnimationController<T extends BlueAnimatable> {
 	}
 
 	public void setAnimation(@NotNull Animation pAnimation) {
-		if (pAnimation.getAnimationStages().isEmpty()) {
+		if (pAnimation.getAnimationFrames().isEmpty()) {
 			stop();
 
 			return;
@@ -306,7 +306,7 @@ public class AnimationController<T extends BlueAnimatable> {
 		return this.stateHandler.handle(pState);
 	}
 
-	public void process(@NotNull BlueModel<T> pModel, @NotNull AnimationState<T> pState, @NotNull Map<String, BoneCache> pBones, @NotNull Map<String, BoneSnapshot> pSnapshots, final double pSeekTime, boolean pCrashWhenCantFindBone) {
+	public void process(@NotNull BlueModel<T> pModel, @NotNull AnimationState<T> pState, @NotNull Map<String, BoneCache> pBones, @NotNull Map<String, BoneFrame> pSnapshots, final double pSeekTime, boolean pCrashWhenCantFindBone) {
 		double adjustedTick = adjustTick(pSeekTime);
 		this.lastModel = pModel;
 
@@ -365,10 +365,10 @@ public class AnimationController<T extends BlueAnimatable> {
 
 				for (BoneAnimationCache boneAnimationCache : this.currentAnimation.animationCache().boneAnimationCaches()) {
 					BoneAnimationFrame boneAnimationFrame = this.boneAnimationQueues.get(boneAnimationCache.boneName());
-					BoneSnapshot boneSnapshot = this.boneSnapshots.get(boneAnimationCache.boneName());
+					BoneFrame boneFrame = this.boneSnapshots.get(boneAnimationCache.boneName());
 					BoneCache bone = pBones.get(boneAnimationCache.boneName());
 
-					if (boneSnapshot == null)
+					if (boneFrame == null)
 						continue;
 
 					if (bone == null) {
@@ -383,21 +383,21 @@ public class AnimationController<T extends BlueAnimatable> {
 					KeyframeStackCache<KeyframeCache<MathValue>> scaleKeyFrames = boneAnimationCache.scaleKeyFrames();
 
 					if (!rotationKeyFrames.xKeyframes().isEmpty()) {
-						boneAnimationFrame.addNextRotation(null, adjustedTick, this.transitionLength, boneSnapshot, bone.getInitialSnapshot(),
+						boneAnimationFrame.addNextRotation(null, adjustedTick, this.transitionLength, boneFrame, bone.getInitialSnapshot(),
 								getAnimationPointAtTick(rotationKeyFrames.xKeyframes(), 0, true, Axis.X),
 								getAnimationPointAtTick(rotationKeyFrames.yKeyframes(), 0, true, Axis.Y),
 								getAnimationPointAtTick(rotationKeyFrames.zKeyframes(), 0, true, Axis.Z));
 					}
 
 					if (!positionKeyFrames.xKeyframes().isEmpty()) {
-						boneAnimationFrame.addNextPosition(null, adjustedTick, this.transitionLength, boneSnapshot,
+						boneAnimationFrame.addNextPosition(null, adjustedTick, this.transitionLength, boneFrame,
 								getAnimationPointAtTick(positionKeyFrames.xKeyframes(), 0, false, Axis.X),
 								getAnimationPointAtTick(positionKeyFrames.yKeyframes(), 0, false, Axis.Y),
 								getAnimationPointAtTick(positionKeyFrames.zKeyframes(), 0, false, Axis.Z));
 					}
 
 					if (!scaleKeyFrames.xKeyframes().isEmpty()) {
-						boneAnimationFrame.addNextScale(null, adjustedTick, this.transitionLength, boneSnapshot,
+						boneAnimationFrame.addNextScale(null, adjustedTick, this.transitionLength, boneFrame,
 								getAnimationPointAtTick(scaleKeyFrames.xKeyframes(), 0, false, Axis.X),
 								getAnimationPointAtTick(scaleKeyFrames.yKeyframes(), 0, false, Axis.Y),
 								getAnimationPointAtTick(scaleKeyFrames.zKeyframes(), 0, false, Axis.Z));
@@ -454,21 +454,21 @@ public class AnimationController<T extends BlueAnimatable> {
 			KeyframeStackCache<KeyframeCache<MathValue>> scaleKeyFrames = boneAnimationCache.scaleKeyFrames();
 
 			if (!rotationKeyFrames.xKeyframes().isEmpty()) {
-				boneAnimationFrame.addRotations(
+				boneAnimationFrame.addNextRotation(
 						getAnimationPointAtTick(rotationKeyFrames.xKeyframes(), pAdjustedTick, true, Axis.X),
 						getAnimationPointAtTick(rotationKeyFrames.yKeyframes(), pAdjustedTick, true, Axis.Y),
 						getAnimationPointAtTick(rotationKeyFrames.zKeyframes(), pAdjustedTick, true, Axis.Z));
 			}
 
 			if (!positionKeyFrames.xKeyframes().isEmpty()) {
-				boneAnimationFrame.addPositions(
+				boneAnimationFrame.addNextPosition(
 						getAnimationPointAtTick(positionKeyFrames.xKeyframes(), pAdjustedTick, false, Axis.X),
 						getAnimationPointAtTick(positionKeyFrames.yKeyframes(), pAdjustedTick, false, Axis.Y),
 						getAnimationPointAtTick(positionKeyFrames.zKeyframes(), pAdjustedTick, false, Axis.Z));
 			}
 
 			if (!scaleKeyFrames.xKeyframes().isEmpty()) {
-				boneAnimationFrame.addScales(
+				boneAnimationFrame.addNextScale(
 						getAnimationPointAtTick(scaleKeyFrames.xKeyframes(), pAdjustedTick, false, Axis.X),
 						getAnimationPointAtTick(scaleKeyFrames.yKeyframes(), pAdjustedTick, false, Axis.Y),
 						getAnimationPointAtTick(scaleKeyFrames.zKeyframes(), pAdjustedTick, false, Axis.Z));
@@ -526,12 +526,12 @@ public class AnimationController<T extends BlueAnimatable> {
 		}
 	}
 
-	private void saveSnapshotsForAnimation(@NotNull AnimationProcessor.QueuedAnimation pAnimation, @NotNull Map<String, BoneSnapshot> pSnapshots) {
-		for (BoneSnapshot snapshot : pSnapshots.values()) {
+	private void saveSnapshotsForAnimation(@NotNull AnimationProcessor.QueuedAnimation pAnimation, @NotNull Map<String, BoneFrame> pSnapshots) {
+		for (BoneFrame snapshot : pSnapshots.values()) {
 			if (pAnimation.animationCache().boneAnimationCaches() != null) {
 				for (BoneAnimationCache boneAnimationCache : pAnimation.animationCache().boneAnimationCaches()) {
 					if (boneAnimationCache.boneName().equals(snapshot.getBone().getName())) {
-						this.boneSnapshots.put(boneAnimationCache.boneName(), BoneSnapshot.copy(snapshot));
+						this.boneSnapshots.put(boneAnimationCache.boneName(), BoneFrame.copy(snapshot));
 
 						break;
 					}
@@ -553,7 +553,7 @@ public class AnimationController<T extends BlueAnimatable> {
 	}
 
 	@NotNull
-	private AnimationPoint getAnimationPointAtTick(@NotNull List<KeyframeCache<MathValue>> pFrames, double pTick, boolean pIsRotation,
+	private InterpolationData getAnimationPointAtTick(@NotNull List<KeyframeCache<MathValue>> pFrames, double pTick, boolean pIsRotation,
 			@NotNull Axis pAxis) {
 		KeyframeLocation<KeyframeCache<MathValue>> location = getCurrentKeyFrameLocation(pFrames, pTick);
 		KeyframeCache<MathValue> currentFrame = location.keyframe();
@@ -576,7 +576,7 @@ public class AnimationController<T extends BlueAnimatable> {
 			}
 		}
 
-		return new AnimationPoint(currentFrame, location.startTick(), currentFrame.length(), startValue, endValue);
+		return new InterpolationData(currentFrame, location.startTick(), currentFrame.length(), startValue, endValue);
 	}
 
 	@NotNull
